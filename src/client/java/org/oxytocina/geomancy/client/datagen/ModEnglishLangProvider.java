@@ -1,0 +1,46 @@
+package org.oxytocina.geomancy.client.datagen;
+
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
+import net.minecraft.registry.RegistryWrapper;
+import org.oxytocina.geomancy.Geomancy;
+
+import java.util.concurrent.CompletableFuture;
+
+public class ModEnglishLangProvider extends FabricLanguageProvider {
+    public ModEnglishLangProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
+        // Specifying en_us is optional, as it's the default language code
+        super(dataOutput, "en_us");
+    }
+
+    private TranslationBuilder tb;
+
+    @Override
+    public void generateTranslations(TranslationBuilder tb) {
+        this.tb =tb;
+
+        // Items
+        add("item.MODID.suspicious_substance"   , "Suspicious Substance");
+        add("item.MODID.guidite_sword"          , "Guidite Sword");
+        add("item.MODID.raw_mithril"            , "Raw Mithril");
+        add("item.MODID.mithril_ingot"          , "Mithril Ingot");
+        add("item.MODID.mithril_nugget"         , "Mithril Nugget");
+
+        // Blocks
+        add("block.MODID.condensed_dirt"        , "Condensed Dirt");
+        add("block.MODID.deepslate_mithril_ore" , "Deepslate Mithril Ore");
+        add("block.MODID.raw_mithril_block"     , "Raw Mithril Block");
+        add("block.MODID.mithril_block"         , "Mithril Block");
+
+        // Misc
+        add("itemGroup.MODID"                   , "Geomancy");
+
+        tb=null;
+    }
+
+    // helper function
+    void add(String key, String value){
+        key=key.replace("MODID", Geomancy.MOD_ID);
+        tb.add(key,value);
+    }
+}
