@@ -4,8 +4,11 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.client.BlockStateModelGenerator;
 import net.minecraft.data.client.ItemModelGenerator;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 
 import net.minecraft.data.client.Models;
+import org.oxytocina.geomancy.blocks.ExtraBlockSettings;
 import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.items.ModItems;
 
@@ -17,16 +20,20 @@ public class ModModelProvider extends FabricModelProvider {
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
 
-        blockStateModelGenerator.registerSimpleCubeAll(ModBlocks.CONDENSED_DIRT);
-        blockStateModelGenerator.registerSimpleCubeAll(ModBlocks.DEEPSLATE_MITHRIL_ORE);
+        for(Block b : ExtraBlockSettings.SimpleCubeBlocks){
+            blockStateModelGenerator.registerSimpleCubeAll(b);
+        }
     }
 
 
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
 
-        itemModelGenerator.register(ModItems.SUSPICIOUS_SUBSTANCE, Models.GENERATED);
         itemModelGenerator.register(ModItems.GUIDITE_SWORD, Models.HANDHELD);
+
+        for(Item i : ModItems.ItemsWithGeneratedModel){
+            itemModelGenerator.register(i, Models.GENERATED);
+        }
     }
 
     @Override

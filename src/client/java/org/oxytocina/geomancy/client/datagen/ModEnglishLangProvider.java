@@ -28,9 +28,10 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
         // Blocks
         add("block.MODID.condensed_dirt"        , "Condensed Dirt");
+        add("block.MODID.mithril_ore"           , "Mithril Ore");
         add("block.MODID.deepslate_mithril_ore" , "Deepslate Mithril Ore");
-        add("block.MODID.raw_mithril_block"     , "Raw Mithril Block");
-        add("block.MODID.mithril_block"         , "Mithril Block");
+        add("block.MODID.raw_mithril_block"     , "Block of Raw Mithril");
+        add("block.MODID.mithril_block"         , "Block of Mithril");
 
         // Misc
         add("itemGroup.MODID"                   , "Geomancy");
