@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_raw_mithril": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "geomancy:raw_mithril"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:mithril_ingot_from_blasting_raw_mithril"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_raw_mithril",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:mithril_ingot_from_blasting_raw_mithril"
+    ]
+  },
+  "sends_telemetry_event": false
+}

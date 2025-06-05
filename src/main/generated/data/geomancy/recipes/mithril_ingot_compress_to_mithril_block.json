@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "geomancy:mithril_ingot"
+    },
+    {
+      "item": "geomancy:mithril_ingot"
+    },
+    {
+      "item": "geomancy:mithril_ingot"
+    },
+    {
+      "item": "geomancy:mithril_ingot"
+    },
+    {
+      "item": "geomancy:mithril_ingot"
+    },
+    {
+      "item": "geomancy:mithril_ingot"
+    },
+    {
+      "item": "geomancy:mithril_ingot"
+    },
+    {
+      "item": "geomancy:mithril_ingot"
+    },
+    {
+      "item": "geomancy:mithril_ingot"
+    }
+  ],
+  "result": {
+    "item": "geomancy:mithril_block"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "geomancy:raw_mithril"
+    },
+    {
+      "item": "geomancy:raw_mithril"
+    },
+    {
+      "item": "geomancy:raw_mithril"
+    },
+    {
+      "item": "geomancy:raw_mithril"
+    },
+    {
+      "item": "geomancy:raw_mithril"
+    },
+    {
+      "item": "geomancy:raw_mithril"
+    },
+    {
+      "item": "geomancy:raw_mithril"
+    },
+    {
+      "item": "geomancy:raw_mithril"
+    },
+    {
+      "item": "geomancy:raw_mithril"
+    }
+  ],
+  "result": {
+    "item": "geomancy:raw_mithril_block"
+  }
+}

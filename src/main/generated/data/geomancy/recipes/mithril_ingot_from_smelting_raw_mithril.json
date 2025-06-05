@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 400,
+  "experience": 5.0,
+  "ingredient": {
+    "item": "geomancy:raw_mithril"
+  },
+  "result": "geomancy:mithril_ingot"
+}

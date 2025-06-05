@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "geomancy:mithril_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "geomancy:mithril_ingot"
+  }
+}

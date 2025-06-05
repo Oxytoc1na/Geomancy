@@ -2,13 +2,13 @@ package org.oxytocina.geomancy.client.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
-import net.minecraft.data.server.recipe.RecipeJsonProvider;
-import net.minecraft.data.server.recipe.RecipeProvider;
-import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder;
-import net.minecraft.data.server.recipe.ShapelessRecipeJsonBuilder;
+import net.minecraft.data.server.recipe.*;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
@@ -17,6 +17,7 @@ import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.items.ModItems;
+import org.oxytocina.geomancy.recipe.*;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -55,6 +56,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         AddReversibleCompressionRecipe(ModItems.MITHRIL_INGOT,ModItems.MITHRIL_NUGGET);
         AddReversibleCompressionRecipe(ModBlocks.MITHRIL_BLOCK,ModItems.MITHRIL_INGOT);
         AddReversibleCompressionRecipe(ModBlocks.RAW_MITHRIL_BLOCK,ModItems.RAW_MITHRIL);
+
 
         this.exporter=null;
     }

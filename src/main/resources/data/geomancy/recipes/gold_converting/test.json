@@ -1,0 +1,12 @@
+{
+  "type": "geomancy:gold_converting",
+  "ingredient":
+    {
+      "item": "geomancy:raw_mithril"
+    }
+  ,
+  "result": {
+    "item": "geomancy:mithril_ingot",
+    "count": 1
+  }
+}

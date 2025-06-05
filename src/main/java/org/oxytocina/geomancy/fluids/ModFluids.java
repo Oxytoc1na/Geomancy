@@ -12,20 +12,20 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.items.ModItems;
 
 public class ModFluids {
 
-    public static FlowableFluid STILL_GOLD;
-    public static FlowableFluid FLOWING_GOLD;
+    public static ModFluid STILL_GOLD;
+    public static ModFluid FLOWING_GOLD;
     public static Item GOLD_BUCKET;
-    public static Block GOLD;
+    public static GoldFluidBlock GOLD;
 
     public static void initialize(){
-        STILL_GOLD = Registry.register(Registries.FLUID, new Identifier(Geomancy.MOD_ID, "gold"), new GoldFluid.Still());
+        STILL_GOLD = Registry.register(Registries.FLUID, new Identifier(Geomancy.MOD_ID, "still_gold"), new GoldFluid.Still());
         FLOWING_GOLD = Registry.register(Registries.FLUID, new Identifier(Geomancy.MOD_ID, "flowing_gold"), new GoldFluid.Flowing());
-        GOLD_BUCKET = Registry.register(Registries.ITEM, new Identifier(Geomancy.MOD_ID, "gold_bucket"),
-                new BucketItem(STILL_GOLD, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1)));
-        GOLD = Registry.register(Registries.BLOCK, new Identifier(Geomancy.MOD_ID, "gold"), new FluidBlock(STILL_GOLD, FabricBlockSettings.copy(Blocks.LAVA)){});
+        GOLD_BUCKET = ModItems.register(new BucketItem(STILL_GOLD, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1)),"gold_bucket");
+        GOLD = Registry.register(Registries.BLOCK, new Identifier(Geomancy.MOD_ID, "gold"), new GoldFluidBlock(STILL_GOLD, FabricBlockSettings.copy(Blocks.LAVA)){});
     }
 }
 

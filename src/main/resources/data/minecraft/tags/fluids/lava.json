@@ -2,7 +2,7 @@
   "replace": false,
   "values":
   [
-    "geomancy:gold",
+    "geomancy:still_gold",
     "geomancy:flowing_gold"
   ]
 }

@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class ModItems {
 
-    private static final ArrayList<Item> ItemsInGroup = new ArrayList<Item>();
+    public static final ArrayList<Item> ItemsInGroup = new ArrayList<Item>();
     public static final ArrayList<Item> ItemsWithGeneratedModel = new ArrayList<Item>();
 
     public static final FoodComponent SUSPICIOUS_FOOD_COMPONENT = new FoodComponent.Builder()
@@ -37,6 +37,7 @@ public class ModItems {
     public static final Item MITHRIL_INGOT = register(new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof()), "mithril_ingot");
     public static final Item MITHRIL_NUGGET = register(new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof()), "mithril_nugget");
 
+    public static final Item GUIDE_BOOK = register(new Item(new FabricItemSettings()), "guidebook",false,true);
 
 
     public static void initialize() {
