@@ -29,8 +29,6 @@ public class GoldFluidBlock extends FluidBlock {
         super.onEntityCollision(state, world, pos, entity);
         modfluid.onEntityCollision(state,world,pos,entity);
 
-        Geomancy.logInfo("AAAAA");
-
         if (state.getFluidState().isOf(ModFluids.FLOWING_GOLD) && !world.isClient) {
             if (entity instanceof ItemEntity itemEntity && !itemEntity.isRemoved()) {
                 ItemStack itemStack = itemEntity.getStack();
@@ -46,9 +44,6 @@ public class GoldFluidBlock extends FluidBlock {
 
                         itemEntity.discard();
                     }
-
-
-
                 }
             }
         }

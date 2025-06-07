@@ -41,7 +41,6 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         // Guidebook
         add("book.MODID.guidebook.name"         , "Notes on Minerals");
         add("book.MODID.guidebook.tooltip"      , "we can never dig too deep");
-        add("book.MODID.guidebook.tooltip"      , "we can never dig too deep");
 
         add("book.MODID.guidebook.main.name"        , "Discovery");
         add("book.MODID.guidebook.main.entry.name"  , "Discovery");
