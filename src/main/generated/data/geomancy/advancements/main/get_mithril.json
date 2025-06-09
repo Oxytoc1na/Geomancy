@@ -1,11 +1,12 @@
 {
+  "parent": "geomancy:main/root",
   "criteria": {
-    "got_dirt": {
+    "got_mithril": {
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:dirt"
+              "geomancy:raw_mithril"
             ]
           }
         ]
@@ -15,23 +16,22 @@
   },
   "display": {
     "announce_to_chat": true,
-    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
     "description": {
-      "text": "Now make a house from it"
+      "translate": "advancement.geomancy.main.get_mithril.description"
     },
     "frame": "task",
-    "hidden": false,
+    "hidden": true,
     "icon": {
-      "item": "minecraft:dirt"
+      "item": "geomancy:raw_mithril"
     },
     "show_toast": true,
     "title": {
-      "text": "Your First Dirt Block"
+      "translate": "advancement.geomancy.main.get_mithril.name"
     }
   },
   "requirements": [
     [
-      "got_dirt"
+      "got_mithril"
     ]
   ],
   "sends_telemetry_event": true

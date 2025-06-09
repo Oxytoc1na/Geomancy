@@ -34,9 +34,18 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         add("block.MODID.raw_mithril_block"     , "Block of Raw Mithril");
         add("block.MODID.mithril_block"         , "Block of Mithril");
         add("block.MODID.gold"                  , "Molten Gold");
+        add("block.MODID.mithril_anvil"         , "Mithril Anvil");
 
         // Misc
         add("itemGroup.MODID"                   , "Geomancy");
+
+        // Advancements
+        add("advancement.MODID.main.name"                   , "Geomancy");
+        add("advancement.MODID.main.description"            , "A world of buried treasures and wonders");
+        add("advancement.MODID.main.get_mithril.name"       , "Precious");
+        add("advancement.MODID.main.get_mithril.description", "Discover Raw Mithril");
+        add("advancement.MODID.main.get_gold.name"          , "Greedy");
+        add("advancement.MODID.main.get_gold.description"   , "Discover Molten Gold");
 
         // Guidebook
         add("book.MODID.guidebook.name"         , "Notes on Minerals");

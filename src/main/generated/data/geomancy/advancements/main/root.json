@@ -1,0 +1,38 @@
+{
+  "criteria": {
+    "crafting_table": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:crafting_table"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "geomancy:textures/block/deepslate_mithril_ore.png",
+    "description": {
+      "translate": "advancement.geomancy.main.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "geomancy:guidebook"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancement.geomancy.main.name"
+    }
+  },
+  "requirements": [
+    [
+      "crafting_table"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

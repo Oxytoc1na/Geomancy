@@ -20,6 +20,8 @@ public class ModModelProvider extends FabricModelProvider {
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
 
+        blockStateModelGenerator.registerAnvil(ModBlocks.MITHRIL_ANVIL);
+
         for(Block b : ExtraBlockSettings.SimpleCubeBlocks){
             blockStateModelGenerator.registerSimpleCubeAll(b);
         }
