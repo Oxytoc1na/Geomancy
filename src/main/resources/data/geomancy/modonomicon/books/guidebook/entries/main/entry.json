@@ -1,16 +1,29 @@
 {
   "background_u_index": 0,
-  "background_v_index": 1,
+  "background_v_index": 0,
   "category": "geomancy:main",
   "description": "book.geomancy.guidebook.main.entry.description",
   "hide_while_locked": false,
   "icon": {
     "height": 16,
-    "texture": "geomancy:mithril_ingot",
+    "texture": "geomancy:textures/item/guidebook.png",
     "width": 16
   },
   "name": "book.geomancy.guidebook.main.entry.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.main.entry.intro.text",
+      "title": "book.geomancy.guidebook.main.entry.intro.title",
+      "use_markdown_in_title": false
+    }
+  ],
   "show_when_any_parent_unlocked": false,
-  "x": 0,
-  "y": 0
+  "x": -10,
+  "y": -1
 }

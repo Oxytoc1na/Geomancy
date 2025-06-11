@@ -5,7 +5,10 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementFrame;
 import net.minecraft.advancement.criterion.InventoryChangedCriterion;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.Items;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -22,15 +25,16 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         super(output);
     }
 
+    private Consumer<Advancement> consumer;
     @Override
     public void generateAdvancement(Consumer<Advancement> consumer) {
-
+        this.consumer=consumer;
         Advancement main = Advancement.Builder.create()
                 .display(
                         ModItems.GUIDE_BOOK, // The display icon
                         Text.translatable("advancement."+Geomancy.MOD_ID+".main.name"), // The title
                         Text.translatable("advancement."+Geomancy.MOD_ID+".main.description"), // The title
-                        Identifier.of(Geomancy.MOD_ID,"textures/block/deepslate_mithril_ore.png"), // Background image for the tab in the advancements page, if this is a root advancement (has no parent)
+                        Identifier.of(Geomancy.MOD_ID,"textures/block/raw_mithril_block.png"), // Background image for the tab in the advancements page, if this is a root advancement (has no parent)
                         AdvancementFrame.TASK, // TASK, CHALLENGE, or GOAL
                         false, // Show the toast when completing it
                         false, // Announce it to chat
@@ -39,36 +43,33 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                 .criterion("crafting_table", InventoryChangedCriterion.Conditions.items(Items.CRAFTING_TABLE))
                 .build(consumer, Geomancy.MOD_ID + ":main/root");
 
-        Advancement get_mithril = Advancement.Builder.create()
-                .display(
-                        ModItems.RAW_MITHRIL, // The display icon
-                        Text.translatable("advancement."+Geomancy.MOD_ID+".main.get_mithril.name"), // The title
-                        Text.translatable("advancement."+Geomancy.MOD_ID+".main.get_mithril.description"), // The title
-                        null,
-                        AdvancementFrame.TASK, // TASK, CHALLENGE, or GOAL
-                        true, // Show the toast when completing it
-                        true, // Announce it to chat
-                        true // Hide it in the advancement tab until it's achieved
-                )
-                // "got_mithril" is the name referenced by other advancements when they want to have "requirements."
-                .criterion("got_mithril", InventoryChangedCriterion.Conditions.items(ModItems.RAW_MITHRIL))
-                .parent(main)
-                // Give the advancement an id
-                .build(consumer, Geomancy.MOD_ID + ":main/get_mithril");
+        Advancement got_molten_gold = AddGetItemAdvancement(ModFluids.GOLD_BUCKET,"molten_gold",ModFluids.GOLD_BUCKET,"main",AdvancementFrame.CHALLENGE,true,false,main);
+        Advancement got_mithril = AddGetItemAdvancement(ModItems.RAW_MITHRIL,"mithril",ModItems.RAW_MITHRIL,"main",AdvancementFrame.TASK,true,false,main);
+        Advancement got_gilded_deepslate = AddGetItemAdvancement(ModBlocks.DECORATED_GILDED_DEEPSLATE,"gilded_deepslate",new ItemConvertible[]{ModBlocks.GILDED_DEEPSLATE,ModBlocks.DECORATED_GILDED_DEEPSLATE},"main",AdvancementFrame.TASK,true,false,main);
 
-        Advancement get_gold = Advancement.Builder.create()
+    }
+    private Advancement AddGetItemAdvancement(ItemConvertible item,String name, ItemConvertible conditionItem, String category, AdvancementFrame frame, boolean announce, boolean hidden, Advancement parent){
+        return AddGetItemAdvancement(item,name,new Item[]{conditionItem.asItem()},category,frame,announce,hidden,parent);
+    }
+
+    private Advancement AddGetItemAdvancement(ItemConvertible item,String name, ItemConvertible[] conditionItems, String category, AdvancementFrame frame, boolean announce, boolean hidden, Advancement parent)
+    {
+
+        Advancement res = Advancement.Builder.create()
                 .display(
-                        ModFluids.GOLD_BUCKET, // The display icon
-                        Text.translatable("advancement."+Geomancy.MOD_ID+".main.get_gold.name"), // The title
-                        Text.translatable("advancement."+Geomancy.MOD_ID+".main.get_gold.description"), // The title
+                        item, // The display icon
+                        Text.translatable("advancement."+Geomancy.MOD_ID+"."+category+".get_"+name+".name"), // The title
+                        Text.translatable("advancement."+Geomancy.MOD_ID+"."+category+".get_"+name+".description"), // The title
                         null,
-                        AdvancementFrame.CHALLENGE, // TASK, CHALLENGE, or GOAL
-                        true, // Show the toast when completing it
-                        true, // Announce it to chat
-                        true // Hide it in the advancement tab until it's achieved
+                        frame, // TASK, CHALLENGE, or GOAL
+                        announce, // Show the toast when completing it
+                        announce, // Announce it to chat
+                        hidden // Hide it in the advancement tab until it's achieved
                 )
-                .criterion("got_gold", InventoryChangedCriterion.Conditions.items(ModFluids.GOLD_BUCKET))
-                .parent(main)
-                .build(consumer, Geomancy.MOD_ID + ":main/get_gold");
+                .criterion("got_"+name, InventoryChangedCriterion.Conditions.items(conditionItems))
+                .parent(parent)
+                .build(consumer, Geomancy.MOD_ID + ":"+category+"/get_"+name);
+
+        return res;
     }
 }

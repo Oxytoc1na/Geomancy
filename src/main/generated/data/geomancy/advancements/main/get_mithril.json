@@ -20,7 +20,7 @@
       "translate": "advancement.geomancy.main.get_mithril.description"
     },
     "frame": "task",
-    "hidden": true,
+    "hidden": false,
     "icon": {
       "item": "geomancy:raw_mithril"
     },

@@ -35,26 +35,52 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         add("block.MODID.mithril_block"         , "Block of Mithril");
         add("block.MODID.gold"                  , "Molten Gold");
         add("block.MODID.mithril_anvil"         , "Mithril Anvil");
+        add("block.MODID.gilded_deepslate"      , "Gilded Deepslate");
+        add("block.MODID.decorated_gilded_deepslate", "Decorated Gilded Deepslate");
 
         // Misc
         add("itemGroup.MODID"                   , "Geomancy");
 
         // Advancements
-        add("advancement.MODID.main.name"                   , "Geomancy");
-        add("advancement.MODID.main.description"            , "A world of buried treasures and wonders");
-        add("advancement.MODID.main.get_mithril.name"       , "Precious");
-        add("advancement.MODID.main.get_mithril.description", "Discover Raw Mithril");
-        add("advancement.MODID.main.get_gold.name"          , "Greedy");
-        add("advancement.MODID.main.get_gold.description"   , "Discover Molten Gold");
+        add("advancement.MODID.main.name"                               , "Geomancy");
+        add("advancement.MODID.main.description"                        , "A world of buried treasures and wonders");
+        add("advancement.MODID.main.get_mithril.name"                   , "Precious");
+        add("advancement.MODID.main.get_mithril.description"            , "Discover Raw Mithril");
+        add("advancement.MODID.main.get_molten_gold.name"               , "Greedy");
+        add("advancement.MODID.main.get_molten_gold.description"        , "Discover Molten Gold");
+        add("advancement.MODID.main.get_gilded_deepslate.name"          , "Adorned");
+        add("advancement.MODID.main.get_gilded_deepslate.description"   , "Discover Gilded Deepslate");
 
         // Guidebook
-        add("book.MODID.guidebook.name"         , "Notes on Minerals");
-        add("book.MODID.guidebook.tooltip"      , "we can never dig too deep");
+        add("book.MODID.guidebook.name", "Notes on Minerals");
+        add("book.MODID.guidebook.tooltip", "we can never dig too deep");
 
-        add("book.MODID.guidebook.main.name"        , "Discovery");
-        add("book.MODID.guidebook.main.entry.name"  , "Discovery");
-        add("book.MODID.guidebook.main.gold.name"   , "Molten Gold");
+        add("book.MODID.guidebook.main.name", "Discovery");
+
+        add("book.MODID.guidebook.main.entry.name", "Discovery");
+        add("book.MODID.guidebook.main.entry.description", "");
+        add("book.MODID.guidebook.main.entry.intro.title", "Discovery");
+        add("book.MODID.guidebook.main.entry.intro.text", "There exist ruins in this world, ruins of ancient deepslate and inscriptions of rare metals.\nWhat do they mean? I will write down my findings in this book.");
+
+        add("book.MODID.guidebook.main.gold.name", "Molten Gold");
+        add("book.MODID.guidebook.main.gold.description", "");
+        add("book.MODID.guidebook.main.gold.intro.title", "Molten Gold");
+        add("book.MODID.guidebook.main.gold.intro.text", "Fascinating. I'm not used to finding fluids other than water or lava... yet here's some molten gold.\nWhat is equally as fascinating is that the only places I've found it in seem to be these ruins... How has it not resolidified after all these years?");
+        add("book.MODID.guidebook.main.gold.spotlight1.text", "I doubt I'll be able to dip my apples or carrots in it...");
+
+        add("book.MODID.guidebook.main.deepslate.name", "Gilded Deepslate");
+        add("book.MODID.guidebook.main.deepslate.description", "");
+        add("book.MODID.guidebook.main.deepslate.intro.title", "Gilded Deepslate");
+        add("book.MODID.guidebook.main.deepslate.intro.text", "I have discovered these polished deepslate blocks in some of those ruins. Some of them bear ancient symbols and sigils. I wonder what they mean.");
+        add("book.MODID.guidebook.main.deepslate.spotlight1.text", "It's skillfully adorned with glittering gold.");
+        add("book.MODID.guidebook.main.deepslate.spotlight2.text", "It appears to display various tools, weapons, and treasure.");
+
+
         add("book.MODID.guidebook.main.mithril.name", "Mithril");
+        add("book.MODID.guidebook.main.mithril.description"  , "");
+        add("book.MODID.guidebook.main.mithril.intro.title", "Mithril");
+        add("book.MODID.guidebook.main.mithril.intro.text", "This incredibly rare metal is impressively durable for its light weight. It shines with a bright white color. I can sense that there is more to it than tools and armor.");
+        add("book.MODID.guidebook.main.mithril.spotlight1.text", "It is also definitely not edible.");
 
 
         tb=null;

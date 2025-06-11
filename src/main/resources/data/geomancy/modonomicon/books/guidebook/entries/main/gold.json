@@ -1,16 +1,45 @@
 {
   "background_u_index": 0,
-  "background_v_index": 1,
+  "background_v_index": 0,
   "category": "geomancy:main",
+  "condition": {
+    "type": "modonomicon:advancement",
+    "advancement_id": "geomancy:main/get_molten_gold"
+  },
   "description": "book.geomancy.guidebook.main.gold.description",
   "hide_while_locked": false,
   "icon": {
     "height": 16,
-    "texture": "geomancy:gold_bucket",
+    "texture": "geomancy:textures/item/gold_bucket.png",
     "width": 16
   },
   "name": "book.geomancy.guidebook.main.gold.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.main.gold.intro.text",
+      "title": "book.geomancy.guidebook.main.gold.intro.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "item": {
+        "item": "geomancy:gold_bucket"
+      },
+      "text": "book.geomancy.guidebook.main.gold.spotlight1.text",
+      "title": ""
+    }
+  ],
   "show_when_any_parent_unlocked": false,
-  "x": 0,
+  "x": -10,
   "y": 2
 }
