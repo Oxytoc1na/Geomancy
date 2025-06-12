@@ -24,7 +24,7 @@ public class ModFluids {
     public static void initialize(){
         STILL_GOLD = Registry.register(Registries.FLUID, new Identifier(Geomancy.MOD_ID, "still_gold"), new GoldFluid.Still());
         FLOWING_GOLD = Registry.register(Registries.FLUID, new Identifier(Geomancy.MOD_ID, "flowing_gold"), new GoldFluid.Flowing());
-        GOLD_BUCKET = ModItems.register(new BucketItem(STILL_GOLD, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1)),"gold_bucket");
+        GOLD_BUCKET = ModItems.register("gold_bucket",new BucketItem(STILL_GOLD, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1)));
         GOLD = Registry.register(Registries.BLOCK, new Identifier(Geomancy.MOD_ID, "gold"), new GoldFluidBlock(STILL_GOLD, FabricBlockSettings.copy(Blocks.LAVA)){});
     }
 }

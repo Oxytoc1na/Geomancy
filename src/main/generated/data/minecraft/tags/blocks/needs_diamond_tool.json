@@ -1,9 +1,9 @@
 {
   "replace": false,
   "values": [
+    "geomancy:mithril_ore",
     "geomancy:deepslate_mithril_ore",
     "geomancy:mithril_block",
-    "geomancy:raw_mithril_block",
-    "geomancy:mithril_ore"
+    "geomancy:raw_mithril_block"
   ]
 }

@@ -1,0 +1,57 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "geomancy:main",
+  "condition": {
+    "type": "modonomicon:advancement",
+    "advancement_id": "geomancy:main/get_gilded_deepslate"
+  },
+  "description": "book.geomancy.guidebook.main.deepslate.description",
+  "hide_while_locked": false,
+  "icon": {
+    "height": 16,
+    "texture": "geomancy:textures/block/gilded_deepslate.png",
+    "width": 16
+  },
+  "name": "book.geomancy.guidebook.main.deepslate.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.main.deepslate.intro.text",
+      "title": "book.geomancy.guidebook.main.deepslate.intro.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "item": {
+        "item": "geomancy:gilded_deepslate"
+      },
+      "text": "book.geomancy.guidebook.main.deepslate.spotlight1.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "item": {
+        "item": "geomancy:decorated_gilded_deepslate"
+      },
+      "text": "book.geomancy.guidebook.main.deepslate.spotlight2.text",
+      "title": ""
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "x": -8,
+  "y": 2
+}

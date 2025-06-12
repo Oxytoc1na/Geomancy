@@ -14,6 +14,7 @@ import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.fluids.ModFluids;
 import org.oxytocina.geomancy.features.ModFeatures;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
+import org.oxytocina.geomancy.sound.ModSoundEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,6 +43,7 @@ public class Geomancy implements ModInitializer {
         ModFluids.initialize();
         ModFeatures.initialize();
         ModRecipeTypes.registerSerializer();
+        ModSoundEvents.initialize();
 
         logInfo(Registries.RECIPE_SERIALIZER.get(locate(ModRecipeTypes.GOLD_CONVERTING_ID)).toString());
 

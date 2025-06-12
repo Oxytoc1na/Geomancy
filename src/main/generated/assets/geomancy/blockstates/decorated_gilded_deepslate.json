@@ -1,0 +1,18 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "geomancy:block/decorated_gilded_deepslate/decorated_gilded_deepslate1"
+      },
+      {
+        "model": "geomancy:block/decorated_gilded_deepslate/decorated_gilded_deepslate2"
+      },
+      {
+        "model": "geomancy:block/decorated_gilded_deepslate/decorated_gilded_deepslate3"
+      },
+      {
+        "model": "geomancy:block/decorated_gilded_deepslate/decorated_gilded_deepslate4"
+      }
+    ]
+  }
+}

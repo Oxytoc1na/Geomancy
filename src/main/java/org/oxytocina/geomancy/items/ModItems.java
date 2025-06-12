@@ -12,11 +12,13 @@ import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.ModToolMaterials;
+import org.oxytocina.geomancy.sound.ModSoundEvents;
 
 import java.util.ArrayList;
 
@@ -28,17 +30,19 @@ public class ModItems {
     public static final FoodComponent SUSPICIOUS_FOOD_COMPONENT = new FoodComponent.Builder()
             .hunger(1).alwaysEdible().snack().statusEffect(new StatusEffectInstance(StatusEffects.POISON, 6 * 20, 1), 1.0f).build();
 
-    public static final Item SUSPICIOUS_SUBSTANCE = register(new Item(new FabricItemSettings().food(SUSPICIOUS_FOOD_COMPONENT)), "suspicious_substance");
+    public static final Item SUSPICIOUS_SUBSTANCE = register("suspicious_substance",new Item(new FabricItemSettings().food(SUSPICIOUS_FOOD_COMPONENT)));
 
-    public static final Item GUIDITE_SWORD = register(new SwordItem(ModToolMaterials.GUIDITE, 2, 0.5F, new FabricItemSettings()), "guidite_sword",true,false);
+    public static final Item GUIDITE_SWORD = register("guidite_sword",new SwordItem(ModToolMaterials.GUIDITE, 2, 0.5F, new FabricItemSettings()),true,false);
 
     // mithril
-    public static final Item RAW_MITHRIL = register(new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof()), "raw_mithril");
-    public static final Item MITHRIL_INGOT = register(new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof()), "mithril_ingot");
-    public static final Item MITHRIL_NUGGET = register(new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof()), "mithril_nugget");
+    public static final Item RAW_MITHRIL = register("raw_mithril",new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof()));
+    public static final Item MITHRIL_INGOT = register("mithril_ingot",new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof()));
+    public static final Item MITHRIL_NUGGET = register("mithril_nugget",new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof()));
 
-    public static final Item GUIDE_BOOK = register(new Item(new FabricItemSettings()), "guidebook",false,true);
+    public static final Item GUIDE_BOOK = register("guidebook",new Item(new FabricItemSettings()),false,true);
 
+    // music discs
+    public static final Item MUSIC_DISC_DIGGY = register("music_disc_diggy",(Item)(new MusicDiscItem(15, ModSoundEvents.MUSIC_DISC_DIGGY, (new Item.Settings()).maxCount(1).rarity(Rarity.RARE), 235)));
 
     public static void initialize() {
         // initialize static fields
@@ -68,10 +72,10 @@ public class ModItems {
             .displayName(Text.translatable("itemGroup."+Geomancy.MOD_ID))
             .build();
 
-    public static Item register(Item item, String id) {
-        return register(item,id,true,true);
+    public static Item register(String id,Item item) {
+        return register(id,item,true,true);
     }
-    public static Item register(Item item, String id, boolean shouldAddItemToGroup, boolean hasGeneratedModel) {
+    public static Item register(String id,Item item,  boolean shouldAddItemToGroup, boolean hasGeneratedModel) {
         // Create the identifier for the item.
         Identifier itemID = new Identifier(Geomancy.MOD_ID, id);
 
@@ -83,6 +87,7 @@ public class ModItems {
             ItemsWithGeneratedModel.add(registeredItem);
         // Return the registered item!
         return registeredItem;
+
     }
 }
 

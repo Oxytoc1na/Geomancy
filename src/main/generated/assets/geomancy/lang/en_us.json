@@ -43,6 +43,8 @@
   "item.geomancy.guidite_sword": "Guidite Sword",
   "item.geomancy.mithril_ingot": "Mithril Ingot",
   "item.geomancy.mithril_nugget": "Mithril Nugget",
+  "item.geomancy.music_disc_diggy": "Music Disc",
+  "item.geomancy.music_disc_diggy.desc": "Diggy",
   "item.geomancy.raw_mithril": "Raw Mithril",
   "item.geomancy.suspicious_substance": "Suspicious Substance",
   "itemGroup.geomancy": "Geomancy"

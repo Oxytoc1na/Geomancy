@@ -26,6 +26,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         add("item.MODID.mithril_ingot"          , "Mithril Ingot");
         add("item.MODID.mithril_nugget"         , "Mithril Nugget");
         add("item.MODID.gold_bucket"            , "Molten Gold Bucket");
+        add("item.MODID.music_disc_diggy"       , "Music Disc");
+        add("item.MODID.music_disc_diggy.desc"  , "Diggy");
 
         // Blocks
         add("block.MODID.condensed_dirt"        , "Condensed Dirt");

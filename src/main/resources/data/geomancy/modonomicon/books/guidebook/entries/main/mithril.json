@@ -1,0 +1,45 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "geomancy:main",
+  "condition": {
+    "type": "modonomicon:advancement",
+    "advancement_id": "geomancy:main/get_mithril"
+  },
+  "description": "book.geomancy.guidebook.main.mithril.description",
+  "hide_while_locked": false,
+  "icon": {
+    "height": 16,
+    "texture": "geomancy:textures/item/mithril_ingot.png",
+    "width": 16
+  },
+  "name": "book.geomancy.guidebook.main.mithril.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.main.mithril.intro.text",
+      "title": "book.geomancy.guidebook.main.mithril.intro.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "item": {
+        "item": "geomancy:mithril_ingot"
+      },
+      "text": "book.geomancy.guidebook.main.mithril.spotlight1.text",
+      "title": ""
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "x": -12,
+  "y": 2
+}

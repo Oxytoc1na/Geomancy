@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "geomancy:block/decorated_gilded_deepslate/decorated_gilded_deepslate1"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "parent": "geomancy:main/root",
+  "criteria": {
+    "got_molten_gold": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "geomancy:gold_bucket"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.geomancy.main.get_molten_gold.description"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "geomancy:gold_bucket"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.geomancy.main.get_molten_gold.name"
+    }
+  },
+  "requirements": [
+    [
+      "got_molten_gold"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
