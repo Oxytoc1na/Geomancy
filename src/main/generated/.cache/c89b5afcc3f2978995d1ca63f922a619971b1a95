@@ -1,5 +1,5 @@
-// 1.20.1	2025-06-12T19:48:14.0014442	Geomancy/Block Loot Tables
+// 1.20.1	2025-06-15T13:32:27.9031509	Geomancy/Block Loot Tables
+c58600a18584f36218c9e15216c158dd85827e98 data\geomancy\loot_tables\blocks\mithril_block.json
 e20487566c21b6063f1f14ab0f16e4d840885ecb data\geomancy\loot_tables\blocks\mithril_ore.json
 89ef65277dc4c2e4e1ff06d9892e46ea898e8409 data\geomancy\loot_tables\blocks\raw_mithril_block.json
 41ebce57527028eae5047cf2ba421818bf46a0fb data\geomancy\loot_tables\blocks\deepslate_mithril_ore.json
-c58600a18584f36218c9e15216c158dd85827e98 data\geomancy\loot_tables\blocks\mithril_block.json

@@ -13,6 +13,7 @@ import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.fluids.ModFluids;
 import org.oxytocina.geomancy.features.ModFeatures;
+import org.oxytocina.geomancy.loottables.ModLootTables;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
 import org.slf4j.Logger;
@@ -44,6 +45,7 @@ public class Geomancy implements ModInitializer {
         ModFeatures.initialize();
         ModRecipeTypes.registerSerializer();
         ModSoundEvents.initialize();
+        ModLootTables.initialize();
 
         logInfo(Registries.RECIPE_SERIALIZER.get(locate(ModRecipeTypes.GOLD_CONVERTING_ID)).toString());
 
