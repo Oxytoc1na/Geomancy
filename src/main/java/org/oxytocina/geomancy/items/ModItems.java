@@ -5,19 +5,20 @@ import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.registry.CompostingChanceRegistry;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
-import net.minecraft.block.Block;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.ModToolMaterials;
+import org.oxytocina.geomancy.items.artifacts.ArtifactItem;
+import org.oxytocina.geomancy.items.artifacts.ArtifactSettings;
+import org.oxytocina.geomancy.items.artifacts.IronArtifact;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class ModItems {
 
     public static final ArrayList<Item> ItemsInGroup = new ArrayList<Item>();
     public static final ArrayList<Item> ItemsWithGeneratedModel = new ArrayList<Item>();
+    public static final ArrayList<ArtifactItem> ArtifactItems = new ArrayList<ArtifactItem>();
 
     public static final FoodComponent SUSPICIOUS_FOOD_COMPONENT = new FoodComponent.Builder()
             .hunger(1).alwaysEdible().snack().statusEffect(new StatusEffectInstance(StatusEffects.POISON, 6 * 20, 1), 1.0f).build();
@@ -42,7 +44,11 @@ public class ModItems {
     public static final Item GUIDE_BOOK = register("guidebook",new Item(new FabricItemSettings()),false,true);
 
     // music discs
-    public static final Item MUSIC_DISC_DIGGY = register("music_disc_diggy",(Item)(new MusicDiscItem(15, ModSoundEvents.MUSIC_DISC_DIGGY, (new Item.Settings()).maxCount(1).rarity(Rarity.RARE), 235)));
+    public static final Item MUSIC_DISC_DIGGY = register("music_disc_diggy",new MusicDiscItem(15, ModSoundEvents.MUSIC_DISC_DIGGY, (new Item.Settings()).maxCount(1).rarity(Rarity.RARE), 235));
+
+    // artifacts
+    public static final IronArtifact ARTIFACT_OF_IRON = (IronArtifact) register("artifact_of_iron",new IronArtifact(new Item.Settings().maxCount(1).rarity(Rarity.RARE).fireproof(),new ArtifactSettings()));
+
 
     public static void initialize() {
         // initialize static fields

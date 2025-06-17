@@ -29,6 +29,9 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         add("item.MODID.music_disc_diggy"       , "Music Disc");
         add("item.MODID.music_disc_diggy.desc"  , "Diggy");
 
+        add("item.MODID.artifact_of_iron"       , "Artifact of Iron");
+        add("item.MODID.artifact_of_iron.desc"  , "Does something idk");
+
         // Blocks
         add("block.MODID.condensed_dirt"        , "Condensed Dirt");
         add("block.MODID.mithril_ore"           , "Mithril Ore");

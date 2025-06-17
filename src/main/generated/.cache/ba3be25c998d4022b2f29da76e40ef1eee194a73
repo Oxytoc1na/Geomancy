@@ -1,7 +1,7 @@
-// 1.20.1	2025-06-15T13:32:27.9001493	Geomancy/Tags for minecraft:block
+// 1.20.1	2025-06-16T21:20:32.7274973	Geomancy/Tags for minecraft:block
 8a23702b05296c8af5014d6aa6e9265ded85c7d9 data\minecraft\tags\blocks\mineable\axe.json
 b2d8d06638a2647fc8c8b4b51b03f084399bc3ff data\minecraft\tags\blocks\mineable\pickaxe.json
-8a23702b05296c8af5014d6aa6e9265ded85c7d9 data\minecraft\tags\blocks\needs_stone_tool.json
-8a23702b05296c8af5014d6aa6e9265ded85c7d9 data\minecraft\tags\blocks\mineable\shovel.json
 8a23702b05296c8af5014d6aa6e9265ded85c7d9 data\minecraft\tags\blocks\needs_iron_tool.json
-c4ca25ca896d899beb03692bc6da01c37679a440 data\minecraft\tags\blocks\needs_diamond_tool.json
+473f405dc5c9c6d0a421a7b295406eaab2be7240 data\minecraft\tags\blocks\needs_diamond_tool.json
+8a23702b05296c8af5014d6aa6e9265ded85c7d9 data\minecraft\tags\blocks\mineable\shovel.json
+8a23702b05296c8af5014d6aa6e9265ded85c7d9 data\minecraft\tags\blocks\needs_stone_tool.json

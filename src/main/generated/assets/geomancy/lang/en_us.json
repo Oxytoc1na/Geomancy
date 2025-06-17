@@ -39,6 +39,8 @@
   "book.geomancy.guidebook.main.name": "Discovery",
   "book.geomancy.guidebook.name": "Notes on Minerals",
   "book.geomancy.guidebook.tooltip": "we can never dig too deep",
+  "item.geomancy.artifact_of_iron": "Artifact of Iron",
+  "item.geomancy.artifact_of_iron.desc": "Does something idk",
   "item.geomancy.gold_bucket": "Molten Gold Bucket",
   "item.geomancy.guidite_sword": "Guidite Sword",
   "item.geomancy.mithril_ingot": "Mithril Ingot",

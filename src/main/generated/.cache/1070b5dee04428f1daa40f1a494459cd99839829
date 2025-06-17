@@ -1,3 +1,6 @@
-// 1.20.1	2025-06-15T13:32:27.9031509	Geomancy/Tags for minecraft:item
-567c4278101b906d748fc452f26873131eb5df82 data\minecraft\tags\items\music_discs.json
+// 1.20.1	2025-06-16T21:20:32.7364727	Geomancy/Tags for minecraft:item
+c6783fe0cc8d2447f3fdb1a558986a78266c4e7a data\trinkets\tags\items\all.json
 1ac9d9ca8539937ae59cfaab84445aa667729da8 data\geomancy\tags\items\smelly_items.json
+8a23702b05296c8af5014d6aa6e9265ded85c7d9 data\trinkets\tags\items\offhand\ring.json
+567c4278101b906d748fc452f26873131eb5df82 data\minecraft\tags\items\music_discs.json
+8a23702b05296c8af5014d6aa6e9265ded85c7d9 data\trinkets\tags\items\hand\ring.json
