@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "geomancy:artifact_of_iron"
+    "geomancy:artifact_of_iron",
+    "geomancy:artifact_of_gold"
   ]
 }

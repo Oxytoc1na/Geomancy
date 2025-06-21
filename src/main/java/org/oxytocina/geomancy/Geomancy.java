@@ -1,6 +1,8 @@
 package org.oxytocina.geomancy;
 
+import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.item.Item;
 import net.minecraft.recipe.RecipeManager;
 import net.minecraft.registry.Registries;
@@ -10,10 +12,12 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.blocks.ModBlocks;
+import org.oxytocina.geomancy.blocks.blockEntities.ModBlockEntities;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.fluids.ModFluids;
 import org.oxytocina.geomancy.features.ModFeatures;
 import org.oxytocina.geomancy.loottables.ModLootTables;
+import org.oxytocina.geomancy.progression.advancement.ModCriteria;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
 import org.slf4j.Logger;
@@ -46,6 +50,9 @@ public class Geomancy implements ModInitializer {
         ModRecipeTypes.registerSerializer();
         ModSoundEvents.initialize();
         ModLootTables.initialize();
+        ModCriteria.initialize();
+        ModBlockEntities.initialize();
+        //ModDamageSources.initialize( ?????? , DynamicRegistryManager.EMPTY);
 
         logInfo(Registries.RECIPE_SERIALIZER.get(locate(ModRecipeTypes.GOLD_CONVERTING_ID)).toString());
 
@@ -88,4 +95,10 @@ public class Geomancy implements ModInitializer {
     public static Optional<RecipeManager> getRecipeManager(@Nullable World world) {
         return world == null ? minecraftServer == null ? Optional.empty() : Optional.of(minecraftServer.getRecipeManager()) : Optional.of(world.getRecipeManager());
     }
+
+    public static boolean Client() {
+        return FabricLoader.getInstance().getEnvironmentType() != EnvType.SERVER;
+    }
+
+    public static boolean Server() {return !Client();}
 }

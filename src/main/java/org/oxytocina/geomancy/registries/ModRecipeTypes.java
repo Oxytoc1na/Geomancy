@@ -4,12 +4,17 @@ import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.recipe.*;
 import net.minecraft.recipe.*;
 import net.minecraft.registry.*;
+import org.oxytocina.geomancy.recipe.SmitheryRecipe;
 
 public class ModRecipeTypes {
 
     public static final String GOLD_CONVERTING_ID = "gold_converting";
     public static FluidConvertingRecipeSerializer<GoldConvertingRecipe> GOLD_CONVERTING_SERIALIZER;
     public static RecipeType<GoldConvertingRecipe> GOLD_CONVERTING;
+
+    public static final String SMITHING_ID = "smithing";
+    public static SmitheryRecipeSerializer<SmitheryRecipe> SMITHING_SERIALIZER;
+    public static RecipeType<SmitheryRecipe> SMITHING;
 
 
 
@@ -30,6 +35,9 @@ public class ModRecipeTypes {
 
         GOLD_CONVERTING_SERIALIZER = registerSerializer(GOLD_CONVERTING_ID, new FluidConvertingRecipeSerializer<>(GoldConvertingRecipe::new));
         GOLD_CONVERTING = registerRecipeType(GOLD_CONVERTING_ID);
+
+        SMITHING_SERIALIZER = registerSerializer(SMITHING_ID, new SmitheryRecipeSerializer<>(SmitheryRecipe::new));
+        SMITHING = registerRecipeType(SMITHING_ID);
     }
 
 }

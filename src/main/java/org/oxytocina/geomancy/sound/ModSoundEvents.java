@@ -8,6 +8,8 @@ import org.oxytocina.geomancy.Geomancy;
 
 public class ModSoundEvents {
     public static final SoundEvent MUSIC_DISC_DIGGY = register("music_disc.diggy");
+    public static final SoundEvent USE_HAMMER = register("use_hammer");
+    public static final SoundEvent USE_HAMMER_FAIL = register("use_hammer_fail");
 
     public static void initialize(){
 

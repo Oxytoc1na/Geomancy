@@ -14,10 +14,13 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.collection.DefaultedList;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.ModBlocks;
+import org.oxytocina.geomancy.client.datagen.recipes.SmitheryRecipeJsonBuilder;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.recipe.*;
+import org.oxytocina.geomancy.registries.ModRecipeTypes;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -39,12 +42,13 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
         // shaped recipes
         ShapedRecipeJsonBuilder.create(
-            RecipeCategory.MISC, ModItems.SUSPICIOUS_SUBSTANCE, 1)
-                .input('#', ModItems.SUSPICIOUS_SUBSTANCE)
-                .pattern(" # ")
-                .pattern("# #")
-                .pattern(" # ")
-                .criterion(hasItem(ModItems.SUSPICIOUS_SUBSTANCE), conditionsFromItem(ModItems.SUSPICIOUS_SUBSTANCE))
+                        RecipeCategory.TOOLS, ModItems.IRON_HAMMER, 1)
+                .input('#', Items.IRON_INGOT)
+                .input('s', Items.STICK)
+                .pattern("###")
+                .pattern("#s#")
+                .pattern(" s ")
+                .criterion(hasItem(Items.IRON_INGOT), conditionsFromItem(Items.IRON_INGOT))
                 .offerTo(exporter);
 
         // smelting recipes
@@ -57,6 +61,12 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         AddReversibleCompressionRecipe(ModBlocks.MITHRIL_BLOCK,ModItems.MITHRIL_INGOT);
         AddReversibleCompressionRecipe(ModBlocks.RAW_MITHRIL_BLOCK,ModItems.RAW_MITHRIL);
 
+        // smithing recipes
+        DefaultedList<Ingredient> ingredients = DefaultedList.of();
+        ingredients.add(Ingredient.ofItems(Items.IRON_INGOT));
+        ingredients.add(Ingredient.ofItems(Items.GOLD_INGOT));
+        ingredients.add(Ingredient.ofItems(Items.DIAMOND));
+        SmitheryRecipeJsonBuilder.create(ingredients,ModItems.ARTIFACT_OF_IRON,1, RecipeCategory.MISC).criterion(hasItem(Items.IRON_INGOT), conditionsFromItem(Items.IRON_INGOT)).offerTo(exporter,new Identifier(Geomancy.MOD_ID,"smithing_artifact_of_iron"));
 
         this.exporter=null;
     }

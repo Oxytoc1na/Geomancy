@@ -29,8 +29,13 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         add("item.MODID.music_disc_diggy"       , "Music Disc");
         add("item.MODID.music_disc_diggy.desc"  , "Diggy");
 
+        add("item.MODID.iron_hammer"            , "Iron Hammer");
+        add("item.MODID.iron_hammer.desc"       , "Can be used to smith items");
+
         add("item.MODID.artifact_of_iron"       , "Artifact of Iron");
-        add("item.MODID.artifact_of_iron.desc"  , "Does something idk");
+        add("item.MODID.artifact_of_iron.desc"  , "Makes you feel stalwart");
+        add("item.MODID.artifact_of_gold"       , "Artifact of Gold");
+        add("item.MODID.artifact_of_gold.desc"  , "Does something idk");
 
         // Blocks
         add("block.MODID.condensed_dirt"        , "Condensed Dirt");
@@ -42,6 +47,9 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         add("block.MODID.mithril_anvil"         , "Mithril Anvil");
         add("block.MODID.gilded_deepslate"      , "Gilded Deepslate");
         add("block.MODID.decorated_gilded_deepslate", "Decorated Gilded Deepslate");
+
+        // damage types
+        add("death.attack.geomancy.duplicate_trinkets", "%1$s felt their own hubris");
 
         // Misc
         add("itemGroup.MODID"                   , "Geomancy");
@@ -55,6 +63,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         add("advancement.MODID.main.get_molten_gold.description"        , "Discover Molten Gold");
         add("advancement.MODID.main.get_gilded_deepslate.name"          , "Adorned");
         add("advancement.MODID.main.get_gilded_deepslate.description"   , "Discover Gilded Deepslate");
+        add("advancement.MODID.main.simple_duplicate_trinkets.name"         , "Hubris");
+        add("advancement.MODID.main.simple_duplicate_trinkets.description"  , "Try and fail to equip two artifacts of the same type at once");
 
         // Guidebook
         add("book.MODID.guidebook.name", "Notes on Minerals");

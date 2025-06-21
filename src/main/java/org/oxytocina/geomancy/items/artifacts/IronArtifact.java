@@ -22,11 +22,10 @@ public class IronArtifact extends ArtifactItem {
 
     @Override
     public void tick(ItemStack stack, SlotReference slot, LivingEntity entity) {
-        if(entity instanceof PlayerEntity player)
-        {
-            player.sendMessage(Text.literal("IRON!!: " + player.getDisplayName().getString()), false);
-
-        }
+        //if(entity instanceof PlayerEntity player)
+        //{
+        //    player.sendMessage(Text.literal("IRON!!: " + player.getDisplayName().getString()), false);
+        //}
     }
 
     public Multimap<EntityAttribute, EntityAttributeModifier> getModifiers(ItemStack stack, SlotReference slot, LivingEntity entity, UUID uuid) {

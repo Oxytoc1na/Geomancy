@@ -11,6 +11,7 @@ import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.ExtraBlockSettings;
 import org.oxytocina.geomancy.blocks.ModBlocks;
+import org.oxytocina.geomancy.items.ExtraItemSettings;
 import org.oxytocina.geomancy.items.ModItems;
 
 import java.util.ArrayList;
@@ -76,10 +77,12 @@ public class ModModelProvider extends FabricModelProvider {
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
 
-        itemModelGenerator.register(ModItems.GUIDITE_SWORD, Models.HANDHELD);
-
-        for(Item i : ModItems.ItemsWithGeneratedModel){
+        for(Item i : ExtraItemSettings.GeneratedModel){
             itemModelGenerator.register(i, Models.GENERATED);
+        }
+
+        for(Item i : ExtraItemSettings.HandheldModel){
+            itemModelGenerator.register(i, Models.HANDHELD);
         }
     }
 

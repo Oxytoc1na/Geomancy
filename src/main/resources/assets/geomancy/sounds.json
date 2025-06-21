@@ -3,5 +3,18 @@
     "sounds": [
       "geomancy:records/diggy"
     ]
+  },
+  "use_hammer": {
+    "sounds": [
+      "geomancy:anvil_use_1",
+      "geomancy:anvil_use_2",
+      "geomancy:anvil_use_3",
+      "geomancy:anvil_use_4"
+    ]
+  },
+  "use_hammer_fail": {
+    "sounds": [
+      "geomancy:anvil_break"
+    ]
   }
 }

@@ -1,5 +1,6 @@
-// 1.20.1	2025-06-16T21:20:32.7294915	Geomancy/Advancements
+// 1.20.1	2025-06-21T22:08:56.2461152	Geomancy/Advancements
 1eb73091364a4761e962083abcf2995e149a005b data\geomancy\advancements\main\get_molten_gold.json
-6ab6e9b57cca5d2788066540c0e25784b03d61b7 data\geomancy\advancements\main\root.json
-11b3040f0f4721eea6aa07702f05f6ad26ee4578 data\geomancy\advancements\main\get_gilded_deepslate.json
+b0060e75957fc88bddb52fdea2f460decceebbc4 data\geomancy\advancements\main\simple_duplicate_trinkets.json
 4280e18c8e4da8f0831b9bd7b3bf0ff95153d625 data\geomancy\advancements\main\get_mithril.json
+11b3040f0f4721eea6aa07702f05f6ad26ee4578 data\geomancy\advancements\main\get_gilded_deepslate.json
+6ab6e9b57cca5d2788066540c0e25784b03d61b7 data\geomancy\advancements\main\root.json
