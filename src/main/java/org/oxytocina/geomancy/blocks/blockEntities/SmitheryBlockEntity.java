@@ -1,22 +1,19 @@
 package org.oxytocina.geomancy.blocks.blockEntities;
 
+import com.mojang.datafixers.util.Function4;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
-import net.fabricmc.loader.impl.lib.sat4j.core.Vec;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Recipe;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
@@ -32,15 +29,13 @@ import org.oxytocina.geomancy.recipe.SmitheryRecipe;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
 
-import java.util.Collections;
-
 public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory, ImplementedInventory {
 
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(SLOT_COUNT,ItemStack.EMPTY);
 
-    private static final int INPUT_SLOT = 0;
-    private static final int OUTPUT_SLOT = 1;
-    private static final int SLOT_COUNT = 9;
+    public static final int INPUT_SLOT = 0;
+    public static final int OUTPUT_SLOT = 9;
+    public static final int SLOT_COUNT = 10;
 
     protected final PropertyDelegate propertyDelegate;
     private int progress = 0;
@@ -97,10 +92,13 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
         return Text.literal("AAAA");
     }
 
+    @Nullable
     @Override
-    public @Nullable ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-        return null;
+    public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+        return getHandler.apply(syncId, playerInventory, this, this.propertyDelegate);
     }
+    public static Function4<Integer, PlayerInventory,SmitheryBlockEntity, PropertyDelegate,ScreenHandler> getHandler = (a, b, c, d) -> null;
+    public static void SetScreenHandler(Function4<Integer, PlayerInventory,SmitheryBlockEntity, PropertyDelegate,ScreenHandler> f){getHandler=f;}
 
     @Override
     public DefaultedList<ItemStack> getItems() {
@@ -147,7 +145,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
             int count = result.getCount();
             result.setCount(count);
 
-            MultiblockCrafter.spawnItemStackAsEntitySplitViaMaxCount(world, Vec3d.ofCenter(pos).add(new Vec3d(0,1,0)), result, count, new Vec3d(0,0.5f,0), false, null);
+            MultiblockCrafter.spawnItemStackAsEntitySplitViaMaxCount(world, Vec3d.ofCenter(pos).add(new Vec3d(0,1,0)), result, count, new Vec3d(0,0.25f,0), false, null);
         }
     }
 

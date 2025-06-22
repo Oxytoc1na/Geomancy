@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-21T22:08:56.2481181	Geomancy/Geomancy Model Provider
+// 1.20.1	2025-06-22T11:20:29.0227621	Geomancy/Geomancy Model Provider
 e6c24576a3d64517306a0dae44c15dc2a6c2f513 assets\geomancy\models\block\mithril_block.json
 f7cc00ab1495e0f5bbc4b2e3b40ad1259e446540 assets\geomancy\blockstates\gilded_deepslate.json
 4573cdd63d9f659a8ac32e083dafc5e08f28f812 assets\geomancy\blockstates\raw_mithril_block.json
@@ -14,11 +14,10 @@ a53928742bd515e703e2bca52c4c9d1a91647ea3 assets\geomancy\models\item\decorated_g
 52acbf7e61b8eb5751524764670ae4a63e48f2b6 assets\geomancy\models\block\raw_mithril_block.json
 53a3195c56eac50eb9a9199424f01b31d7f9408e assets\geomancy\models\item\mithril_nugget.json
 39b9555f2edef7fa62348b1722137a5540b28d05 assets\geomancy\models\item\mithril_ore.json
-80317e9bc1e35f19e48e313c422a3c87806a2569 assets\geomancy\models\item\raw_mithril.json
 b8e6a57928813ba6dc5e2131918e1b39004cd504 assets\geomancy\models\item\music_disc_diggy.json
-f78f0d474e4b3f033640d4ed10329b7b2c32d0c9 assets\geomancy\models\block\smithery_block.json
-592f0039078a94e4244518e2912c9a12b2abb797 assets\geomancy\models\item\mithril_ingot.json
+80317e9bc1e35f19e48e313c422a3c87806a2569 assets\geomancy\models\item\raw_mithril.json
 03d1e89a619b6ebc697aec757c724d2d46aa43b3 assets\geomancy\models\block\gilded_deepslate.json
+592f0039078a94e4244518e2912c9a12b2abb797 assets\geomancy\models\item\mithril_ingot.json
 e256e48dcde34b1e1dbffb9c47e6ac7019e161a5 assets\geomancy\blockstates\mithril_block.json
 456fccccd5978d9c6194e803b50744838a2bfd4b assets\geomancy\models\item\gilded_deepslate.json
 174ee2e6da24c1f9bd0057fc0b040aa8e3ac2b1d assets\geomancy\models\block\decorated_gilded_deepslate\decorated_gilded_deepslate4.json

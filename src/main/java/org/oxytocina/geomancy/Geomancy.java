@@ -52,6 +52,7 @@ public class Geomancy implements ModInitializer {
         ModLootTables.initialize();
         ModCriteria.initialize();
         ModBlockEntities.initialize();
+
         //ModDamageSources.initialize( ?????? , DynamicRegistryManager.EMPTY);
 
         logInfo(Registries.RECIPE_SERIALIZER.get(locate(ModRecipeTypes.GOLD_CONVERTING_ID)).toString());

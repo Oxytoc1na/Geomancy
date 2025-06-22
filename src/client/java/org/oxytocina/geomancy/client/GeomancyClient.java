@@ -4,16 +4,15 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
 import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
+import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.registry.Registries;
-import net.minecraft.screen.PlayerScreenHandler;
-import net.minecraft.util.Identifier;
 //import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 
+import org.oxytocina.geomancy.client.screen.ModScreenHandlers;
+import org.oxytocina.geomancy.client.screen.SmitheryScreen;
 import org.oxytocina.geomancy.fluids.ModFluids;
-import org.oxytocina.geomancy.Geomancy;
-import org.oxytocina.geomancy.registries.ModRecipeTypes;
 
 public class GeomancyClient implements ClientModInitializer {
 
@@ -22,6 +21,9 @@ public class GeomancyClient implements ClientModInitializer {
 
         RegisterFluid(ModFluids.STILL_GOLD,ModFluids.FLOWING_GOLD);
 
+        ModScreenHandlers.initialize();
+
+        HandledScreens.register(ModScreenHandlers.SMITHERY_SCREEN_HANDLER, SmitheryScreen::new);
     }
 
     private void RegisterFluid(Fluid still, Fluid flowing)

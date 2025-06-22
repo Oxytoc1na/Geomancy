@@ -31,7 +31,7 @@ public class SmitheryRecipeSerializer<R extends SmitheryRecipe> implements Gated
         JsonArray jsonElement = JsonHelper.getArray(jsonObject, "ingredients");
         DefaultedList<Ingredient> ingredients = DefaultedList.of();
         for(JsonElement elem : jsonElement){
-            Ingredient ingredient = Ingredient.fromJson(jsonElement);
+            Ingredient ingredient = Ingredient.fromJson(elem);
             ingredients.add(ingredient);
         }
         ItemStack outputItemStack = RecipeUtils.itemStackWithNbtFromJson(JsonHelper.getObject(jsonObject, "result"));

@@ -47,6 +47,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         add("block.MODID.mithril_anvil"         , "Mithril Anvil");
         add("block.MODID.gilded_deepslate"      , "Gilded Deepslate");
         add("block.MODID.decorated_gilded_deepslate", "Decorated Gilded Deepslate");
+        add("block.MODID.smithery_block"            , "Smithery");
 
         // damage types
         add("death.attack.geomancy.duplicate_trinkets", "%1$s felt their own hubris");

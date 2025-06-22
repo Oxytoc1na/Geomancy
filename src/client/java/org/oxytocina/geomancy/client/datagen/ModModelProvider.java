@@ -31,6 +31,8 @@ public class ModModelProvider extends FabricModelProvider {
 
         blockStateModelGenerator.registerAnvil(ModBlocks.MITHRIL_ANVIL);
 
+        blockStateModelGenerator.registerSimpleState(ModBlocks.SMITHERY);
+
         // cube all
         for(Block b : ExtraBlockSettings.SimpleCubeBlocks){
             blockStateModelGenerator.registerSimpleCubeAll(b);
