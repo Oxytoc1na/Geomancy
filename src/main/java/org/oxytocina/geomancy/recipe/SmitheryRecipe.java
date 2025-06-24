@@ -15,33 +15,97 @@ import org.oxytocina.geomancy.fluids.ModFluids;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
 
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
 public class SmitheryRecipe extends GatedModRecipe<Inventory> {
 
-    protected final DefaultedList<Ingredient> inputs;
+    protected final DefaultedList<SmithingIngredient> inputs;
     protected final ItemStack output;
+    protected final int progressRequired;
+    protected final int difficulty;
+    protected final boolean shapeless;
 
-    public SmitheryRecipe(Identifier id, String group, boolean secret, Identifier requiredAdvancementIdentifier, @NotNull DefaultedList<Ingredient> inputs, ItemStack output) {
+    public SmitheryRecipe(Identifier id, String group, boolean secret, Identifier requiredAdvancementIdentifier, @NotNull DefaultedList<SmithingIngredient> inputs, ItemStack output, int progressRequired,int difficulty,boolean shapeless) {
         super(id, group, secret, requiredAdvancementIdentifier);
         this.inputs = inputs;
         this.output = output;
+        this.progressRequired = progressRequired;
+        this.difficulty=difficulty;
+        this.shapeless=shapeless;
     }
 
     @Override
     public boolean matches(@NotNull Inventory inv, World world) {
 
+        if(shapeless){
+            // shapeless logic
+            for(CountIngredient ing : inputs)
+            {
+                int countLeft = ing.count;
+                boolean ingredientAvailable = false;
+                for (int i = 0; i < inv.size(); i++) {
+                    var slot = inv.getStack(i);
+                    if(!slot.isEmpty() && ing.test(slot)/*&& ing.count <= slot.getCount()*/){
+                        int removed = Math.min(countLeft,slot.getCount());
+                        countLeft-=removed;
+                        if(countLeft<=0){
+                            ingredientAvailable = true;
+                            break;
+                        }
 
-        for(Ingredient ing : inputs)
-        {
-            boolean ingredientAvailable = false;
-            for (int i = 0; i < inv.size(); i++) {
-                var slot = inv.getStack(i);
-                if(!slot.isEmpty() && ing.test(slot)/*&& ing.count <= slot.getCount()*/){
-                    ingredientAvailable = true;
-                    break;
+                    }
                 }
+                if(!ingredientAvailable) return false;
             }
-            if(!ingredientAvailable) return false;
         }
+        else{
+            // shaped logic
+
+            ArrayList<Integer> shapelessExcludedSlots = new ArrayList<>();
+
+            // partial shaped logic
+            for(CountIngredient ing : inputs)
+            {
+                if(!ing.hasSlot()) continue;
+
+                shapelessExcludedSlots.add(ing.slot);
+
+                boolean ingredientAvailable = false;
+                var slot = inv.getStack(ing.slot);
+                if(!slot.isEmpty() && ing.test(slot)){
+                    if(slot.getCount() >= ing.count){
+                        ingredientAvailable = true;
+                    }
+                }
+                if(!ingredientAvailable) return false;
+            }
+
+            // partial shapeless logic
+            for(CountIngredient ing : inputs)
+            {
+                if(ing.hasSlot()) continue;
+
+                int countLeft = ing.count;
+                boolean ingredientAvailable = false;
+                for (int i = 0; i < inv.size(); i++) {
+                    if(shapelessExcludedSlots.contains(i)) continue;
+                    var slot = inv.getStack(i);
+                    if(!slot.isEmpty() && ing.test(slot)/*&& ing.count <= slot.getCount()*/){
+                        int removed = Math.min(countLeft,slot.getCount());
+                        countLeft-=removed;
+                        if(countLeft<=0){
+                            ingredientAvailable = true;
+                            break;
+                        }
+
+                    }
+                }
+                if(!ingredientAvailable) return false;
+            }
+        }
+
+
 
         return true;
     }
@@ -50,9 +114,9 @@ public class SmitheryRecipe extends GatedModRecipe<Inventory> {
     public ItemStack craft(Inventory inv, DynamicRegistryManager drm) {
 
         // remove items from inventory
-        for(Ingredient ing : inputs)
+        for(CountIngredient ing : inputs)
         {
-            int countLeft = 1;
+            int countLeft = ing.count;
             for (int i = 0; i < inv.size(); i++) {
                 var slot = inv.getStack(i);
                 if(!slot.isEmpty() && ing.test(slot)  /*&& ing.count <= slot.getCount()*/){
@@ -86,8 +150,20 @@ public class SmitheryRecipe extends GatedModRecipe<Inventory> {
 
     @Override
     public DefaultedList<Ingredient> getIngredients() {
+        DefaultedList<Ingredient> res = DefaultedList.of();
+        res.addAll(inputs.stream()
+                .map((a)->a.ingredient)
+                .toList());
+        return res;
+    }
+
+    public DefaultedList<SmithingIngredient> getSmithingIngredients(){
         return inputs;
     }
+
+    public int getProgressRequired() {return progressRequired;}
+    public int getDifficulty() {return difficulty;}
+    public boolean getShapeless() {return shapeless;}
 
     @Override
     public ItemStack createIcon() {

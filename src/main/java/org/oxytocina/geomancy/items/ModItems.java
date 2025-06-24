@@ -48,11 +48,13 @@ public class ModItems {
     public static final Item MUSIC_DISC_DIGGY = register("music_disc_diggy",new MusicDiscItem(15, ModSoundEvents.MUSIC_DISC_DIGGY, (new Item.Settings()).maxCount(1).rarity(Rarity.RARE), 235));
 
     // artifacts
+    public static final ArtifactItem EMPTY_ARTIFACT = (ArtifactItem) register("empty_artifact",new ArtifactItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON).fireproof(),new ArtifactSettings()));
     public static final IronArtifact ARTIFACT_OF_IRON = (IronArtifact) register("artifact_of_iron",new IronArtifact(new Item.Settings().maxCount(1).rarity(Rarity.RARE).fireproof(),new ArtifactSettings()));
     public static final GoldArtifact ARTIFACT_OF_GOLD = (GoldArtifact) register("artifact_of_gold",new GoldArtifact(new Item.Settings().maxCount(1).rarity(Rarity.RARE).fireproof(),new ArtifactSettings()));
 
     // tools
-    public static final HammerItem IRON_HAMMER = (HammerItem) register("iron_hammer",new HammerItem(6,-3.3f,ToolMaterials.IRON, TagKey.of(RegistryKeys.BLOCK,new Identifier(Geomancy.MOD_ID,"hammer_mineable")),new FabricItemSettings()),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final HammerItem IRON_HAMMER = (HammerItem) register("iron_hammer",new HammerItem(5,-3.3f,ToolMaterials.IRON, TagKey.of(RegistryKeys.BLOCK,new Identifier(Geomancy.MOD_ID,"hammer_mineable")),new FabricItemSettings(),10,1,10,20),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final HammerItem MITHRIL_HAMMER = (HammerItem) register("mithril_hammer",new HammerItem(7,-3.3f,ToolMaterials.DIAMOND, TagKey.of(RegistryKeys.BLOCK,new Identifier(Geomancy.MOD_ID,"hammer_mineable")),new FabricItemSettings(),1000,100,50,10),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Handheld));
 
     public static void initialize() {
         // initialize static fields

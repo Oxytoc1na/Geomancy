@@ -1,0 +1,127 @@
+package org.oxytocina.geomancy.client.datagen;
+
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
+import net.minecraft.advancement.criterion.CriterionConditions;
+import net.minecraft.data.server.recipe.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemConvertible;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.predicate.item.ItemPredicate;
+import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.recipe.book.RecipeCategory;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.collection.DefaultedList;
+import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.blocks.ModBlocks;
+import org.oxytocina.geomancy.client.datagen.recipes.SmitheryRecipeJsonBuilder;
+import org.oxytocina.geomancy.items.ModItems;
+import org.oxytocina.geomancy.recipe.*;
+import org.oxytocina.geomancy.registries.ModRecipeTypes;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
+
+public class ModRecipeProvider extends FabricRecipeProvider {
+    public ModRecipeProvider(FabricDataOutput output) {
+        super(output);
+    }
+
+    private Consumer<RecipeJsonProvider> exporter;
+
+    @Override
+    public void generate(Consumer<RecipeJsonProvider> exporter) {
+        this.exporter=exporter;
+
+        // shapeless recipes
+        offerShapelessRecipe(exporter, ModItems.SUSPICIOUS_SUBSTANCE,ModItems.SUSPICIOUS_SUBSTANCE,null,1);
+
+        // shaped recipes
+        ShapedRecipeJsonBuilder.create(
+                        RecipeCategory.TOOLS, ModItems.IRON_HAMMER, 1)
+                .input('#', Items.IRON_INGOT)
+                .input('s', Items.STICK)
+                .pattern("###")
+                .pattern("#s#")
+                .pattern(" s ")
+                .criterion(hasItem(Items.IRON_INGOT), conditionsFromItem(Items.IRON_INGOT))
+                .offerTo(exporter);
+
+        // smelting recipes
+        AddSmeltAndBlastRecipe(List.of(
+            ModItems.RAW_MITHRIL, ModBlocks.MITHRIL_ORE, ModBlocks.DEEPSLATE_MITHRIL_ORE),
+            ModItems.MITHRIL_INGOT,5f,400,100);
+
+        // compacting recipes
+        AddReversibleCompressionRecipe(ModItems.MITHRIL_INGOT,ModItems.MITHRIL_NUGGET);
+        AddReversibleCompressionRecipe(ModBlocks.MITHRIL_BLOCK,ModItems.MITHRIL_INGOT);
+        AddReversibleCompressionRecipe(ModBlocks.RAW_MITHRIL_BLOCK,ModItems.RAW_MITHRIL);
+
+        // smithing recipes
+        AddSmitheryRecipe(Arrays.stream(new SmithingIngredient[] {
+                        SmithingIngredient.ofItems(ModItems.MITHRIL_INGOT),
+                        SmithingIngredient.ofItems(Items.LEATHER)
+                }).toList(),ModItems.EMPTY_ARTIFACT,1, 40,5, true,
+                conditionsFromItem(ModItems.MITHRIL_INGOT));
+
+        AddSmitheryRecipe(Arrays.stream(new SmithingIngredient[] {
+                        SmithingIngredient.ofItems(1,1,4,ModItems.EMPTY_ARTIFACT),
+                        SmithingIngredient.ofItems(1,1,1,Items.IRON_BLOCK),
+                        SmithingIngredient.ofItems(1,1,3,Items.SHIELD),
+                        SmithingIngredient.ofItems(1,1,5,Items.IRON_CHESTPLATE),
+                        SmithingIngredient.ofItems(1,1,7,Items.IRON_BARS),
+        }).toList(),ModItems.ARTIFACT_OF_IRON,1, 100,20,false,
+                conditionsFromItem(ModItems.EMPTY_ARTIFACT));
+
+        this.exporter=null;
+    }
+
+    private void AddSmeltAndBlastRecipe(List<ItemConvertible> input, ItemConvertible output, float xp, int smeltTime, int blastTime){
+        AddSmeltRecipe(input,output,xp,smeltTime);
+        AddBlastingRecipe(input,output,xp,blastTime);
+    }
+    private void AddSmeltRecipe(List<ItemConvertible> input, ItemConvertible output, float xp, int cookTime){
+        offerSmelting(exporter, input, RecipeCategory.MISC,output,xp,cookTime,null);
+    }
+    private void AddBlastingRecipe(List<ItemConvertible> input, ItemConvertible output, float xp, int cookTime){
+        offerBlasting(exporter, input, RecipeCategory.MISC,output,xp,cookTime,null);
+    }
+    private void AddReversibleCompressionRecipe(ItemConvertible dense, ItemConvertible base){
+
+        ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, dense).input(base, 9).criterion(hasItem(base), conditionsFromItem(base)).offerTo(exporter,getItemName(base)+"_compress_to_"+getItemName(dense));
+        ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, base,9).input(dense).criterion(hasItem(dense), conditionsFromItem(dense)).offerTo(exporter,getItemName(dense)+"_decompress_to_"+getItemName(base));
+    }
+
+    //private void AddSmitheryRecipe(List<CountIngredient> input, ItemConvertible output, int outputCount, int requiredProgress, int difficulty, boolean shapeless){
+    //    Item inputItem = Arrays.stream(input.getFirst().ingredient.getMatchingStacks()).findFirst().get().getItem();
+    //    AddSmitheryRecipe(input,output,outputCount,requiredProgress,difficulty, shapeless,hasItem(inputItem),conditionsFromItem(inputItem));
+    //}
+
+    private void AddSmitheryRecipe(List<SmithingIngredient> input, ItemConvertible output, int outputCount, int requiredProgress, int difficulty, boolean shapeless, CriterionConditions conditions){
+        AddSmitheryRecipe(input,output,outputCount,requiredProgress,difficulty, shapeless,"default_conditions",conditions);
+    }
+
+    private void AddSmitheryRecipe(List<SmithingIngredient> input, ItemConvertible output, int outputCount, int requiredProgress, int difficulty, boolean shapeless, String criterionName, CriterionConditions conditions){
+        DefaultedList<SmithingIngredient> ingredients = DefaultedList.of();
+        ingredients.addAll(input);
+        SmitheryRecipeJsonBuilder.create(ingredients,output.asItem(),outputCount, requiredProgress,difficulty,shapeless,RecipeCategory.MISC).criterion(criterionName,conditions).offerTo(exporter,new Identifier(Geomancy.MOD_ID,"smithing_"+getItemName(output)));
+
+    }
+
+    static String getItemName(ItemConvertible item) {
+        return Registries.ITEM.getId(item.asItem()).getPath();
+    }
+
+    @Override
+    public String getName() {
+        return Geomancy.MOD_ID + " Recipe Provider";
+    }
+}

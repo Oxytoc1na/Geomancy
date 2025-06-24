@@ -19,7 +19,7 @@ public class SmitheryRecipeSerializer<R extends SmitheryRecipe> implements Gated
     }
 
     public interface RecipeFactory<R> {
-        R create(Identifier id, String group, boolean secret, Identifier requiredAdvancementIdentifier, DefaultedList<Ingredient> inputIngredients, ItemStack outputItemStack);
+        R create(Identifier id, String group, boolean secret, Identifier requiredAdvancementIdentifier, DefaultedList<SmithingIngredient> inputIngredients, ItemStack outputItemStack, int progressRequired,int difficulty,boolean shapeless);
     }
 
     @Override
@@ -29,14 +29,17 @@ public class SmitheryRecipeSerializer<R extends SmitheryRecipe> implements Gated
         Identifier requiredAdvancementIdentifier = readRequiredAdvancementIdentifier(jsonObject);
 
         JsonArray jsonElement = JsonHelper.getArray(jsonObject, "ingredients");
-        DefaultedList<Ingredient> ingredients = DefaultedList.of();
-        for(JsonElement elem : jsonElement){
-            Ingredient ingredient = Ingredient.fromJson(elem);
+        DefaultedList<SmithingIngredient> ingredients = DefaultedList.of();
+        for(JsonElement ingredientElement : jsonElement){
+            SmithingIngredient ingredient = SmithingIngredient.fromJson(ingredientElement);
             ingredients.add(ingredient);
         }
         ItemStack outputItemStack = RecipeUtils.itemStackWithNbtFromJson(JsonHelper.getObject(jsonObject, "result"));
 
-        return this.recipeFactory.create(identifier, group, secret, requiredAdvancementIdentifier, ingredients, outputItemStack);
+        int progressRequired = jsonObject.get("progressRequired").getAsInt();
+        int difficulty = jsonObject.get("difficulty").getAsInt();
+        boolean shapeless = jsonObject.get("shapeless").getAsBoolean();
+        return this.recipeFactory.create(identifier, group, secret, requiredAdvancementIdentifier, ingredients, outputItemStack, progressRequired,difficulty,shapeless);
     }
 
     @Override
@@ -51,6 +54,9 @@ public class SmitheryRecipeSerializer<R extends SmitheryRecipe> implements Gated
         }
 
         packetByteBuf.writeItemStack(recipe.output);
+        packetByteBuf.writeInt(recipe.progressRequired);
+        packetByteBuf.writeInt(recipe.difficulty);
+        packetByteBuf.writeBoolean(recipe.shapeless);
     }
 
     @Override
@@ -60,14 +66,17 @@ public class SmitheryRecipeSerializer<R extends SmitheryRecipe> implements Gated
         Identifier requiredAdvancementIdentifier = readNullableIdentifier(packetByteBuf);
 
         int ingredientCount = packetByteBuf.readInt();
-        DefaultedList<Ingredient> ingredients = DefaultedList.of();
+        DefaultedList<SmithingIngredient> ingredients = DefaultedList.of();
         for (int i = 0; i < ingredientCount; i++) {
-            Ingredient ingredient = Ingredient.fromPacket(packetByteBuf);
+            SmithingIngredient ingredient = SmithingIngredient.fromPacket(packetByteBuf);
             ingredients.add(ingredient);
         }
 
         ItemStack outputItemStack = packetByteBuf.readItemStack();
-        return this.recipeFactory.create(identifier, group, secret, requiredAdvancementIdentifier, ingredients, outputItemStack);
+        int progressRequired = packetByteBuf.readInt();
+        int difficulty = packetByteBuf.readInt();
+        boolean shapeless = packetByteBuf.readBoolean();
+        return this.recipeFactory.create(identifier, group, secret, requiredAdvancementIdentifier, ingredients, outputItemStack, progressRequired,difficulty,shapeless);
     }
 
 }

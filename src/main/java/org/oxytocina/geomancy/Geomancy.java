@@ -59,6 +59,18 @@ public class Geomancy implements ModInitializer {
 
     }
 
+    public static void logInfo(String message,World world) {
+        LOGGER.info("[Geomancy "+(world!=null&&world.isClient?"Client":"Server")+"] " + message);
+    }
+
+    public static void logWarning(String message,World world) {
+        LOGGER.warn("[Geomancy "+(world!=null&&world.isClient?"Client":"Server")+"] " + message);
+    }
+
+    public static void logError(String message,World world) {
+        LOGGER.error("[Geomancy "+(world!=null&&world.isClient?"Client":"Server")+"] " + message);
+    }
+
     public static void logInfo(String message) {
         LOGGER.info("[Geomancy] " + message);
     }

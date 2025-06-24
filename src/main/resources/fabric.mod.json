@@ -21,11 +21,7 @@
     ]
   },
   "mixins": [
-    "geomancy.mixins.json",
-    {
-      "config": "geomancy.client.mixins.json",
-      "environment": "client"
-    }
+    "geomancy.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=${loader_version}",

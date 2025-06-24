@@ -47,7 +47,7 @@ public class SmitheryBlock extends BlockWithEntity implements BlockEntityProvide
         if(state.getBlock() != newState.getBlock()){
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if(blockEntity instanceof SmitheryBlockEntity smithery){
-                ItemScatterer.spawn(world, pos, smithery);
+                ItemScatterer.spawn(world, pos, smithery.inputInventory());
                 world.updateComparators(pos,this);
             }
             super.onStateReplaced(state,world,pos,newState,moved);

@@ -12,9 +12,24 @@
       "geomancy:anvil_use_4"
     ]
   },
+  "smithery_finished": {
+    "sounds": [
+      "geomancy:anvil_use_4"
+    ]
+  },
   "use_hammer_fail": {
     "sounds": [
       "geomancy:anvil_break"
+    ]
+  },
+  "use_hammer_slip": {
+    "sounds": [
+      "geomancy:hammer_slip1",
+      "geomancy:hammer_slip2",
+      "geomancy:hammer_slip3",
+      "geomancy:hammer_slip4",
+      "geomancy:hammer_slip5",
+      "geomancy:hammer_slip6"
     ]
   }
 }

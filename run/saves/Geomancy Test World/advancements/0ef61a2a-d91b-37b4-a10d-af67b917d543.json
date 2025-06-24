@@ -1,0 +1,87 @@
+{
+  "minecraft:recipes/combat/leather_helmet": {
+    "criteria": {
+      "has_leather": "2025-06-23 18:13:49 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/leather_leggings": {
+    "criteria": {
+      "has_leather": "2025-06-23 18:13:49 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/mithril_ingot_decompress_to_mithril_nugget": {
+    "criteria": {
+      "has_mithril_ingot": "2025-06-23 18:13:49 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_artifact_of_iron": {
+    "criteria": {
+      "default_conditions": "2025-06-23 18:13:49 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_empty_artifact": {
+    "criteria": {
+      "default_conditions": "2025-06-23 18:13:49 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/item_frame": {
+    "criteria": {
+      "has_leather": "2025-06-23 18:13:49 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/leather_chestplate": {
+    "criteria": {
+      "has_leather": "2025-06-23 18:13:49 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/iron_ingot_from_iron_block": {
+    "criteria": {
+      "has_iron_block": "2025-06-23 18:13:49 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/crafting_table": {
+    "criteria": {
+      "unlock_right_away": "2025-06-23 18:13:49 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/mithril_ingot_compress_to_mithril_block": {
+    "criteria": {
+      "has_mithril_ingot": "2025-06-23 18:13:49 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/chest": {
+    "criteria": {
+      "has_lots_of_items": "2025-06-23 18:13:49 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/leather_boots": {
+    "criteria": {
+      "has_leather": "2025-06-23 18:13:49 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/leather_horse_armor": {
+    "criteria": {
+      "has_leather": "2025-06-23 18:13:49 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/anvil": {
+    "criteria": {
+      "has_iron_block": "2025-06-23 18:13:49 +0200"
+    },
+    "done": true
+  },
+  "DataVersion": 3465
+}

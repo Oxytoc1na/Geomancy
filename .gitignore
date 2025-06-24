@@ -112,9 +112,21 @@ gradle-app.setting
 **/build/
 
 # Common working directory
-run/
 runs/
 
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
+
 /src/main/generated/.cache/
+
+/run/config/
+/run/.fabric/
+/run/logs/
+/run/crash-reports/
+/run/resourcepacks/
+/run/resources/
+/run/usercache.json
+/run/options.txt
+/run/temp/
+/run/screenshots/
+/run/data/

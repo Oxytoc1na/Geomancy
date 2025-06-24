@@ -1,17 +1,41 @@
 {
   "type": "geomancy:smithing",
+  "difficulty": 20,
   "ingredients": [
     {
-      "item": "minecraft:iron_ingot"
+      "count": 1,
+      "item": "geomancy:empty_artifact",
+      "mishapWeight": 1,
+      "slot": 4
     },
     {
-      "item": "minecraft:gold_ingot"
+      "count": 1,
+      "item": "minecraft:iron_block",
+      "mishapWeight": 1,
+      "slot": 1
     },
     {
-      "item": "minecraft:diamond"
+      "count": 1,
+      "item": "minecraft:shield",
+      "mishapWeight": 1,
+      "slot": 3
+    },
+    {
+      "count": 1,
+      "item": "minecraft:iron_chestplate",
+      "mishapWeight": 1,
+      "slot": 5
+    },
+    {
+      "count": 1,
+      "item": "minecraft:iron_bars",
+      "mishapWeight": 1,
+      "slot": 7
     }
   ],
+  "progressRequired": 100,
   "result": {
     "item": "geomancy:artifact_of_iron"
-  }
+  },
+  "shapeless": false
 }
