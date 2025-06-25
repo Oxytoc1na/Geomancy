@@ -3,6 +3,7 @@ package org.oxytocina.geomancy.client.datagen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.advancement.criterion.CriterionConditions;
+import net.minecraft.block.Blocks;
 import net.minecraft.data.server.recipe.*;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
@@ -53,6 +54,15 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .pattern("#s#")
                 .pattern(" s ")
                 .criterion(hasItem(Items.IRON_INGOT), conditionsFromItem(Items.IRON_INGOT))
+                .offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(
+                        RecipeCategory.TOOLS, ModBlocks.SMITHERY, 1)
+                .input('i', Blocks.IRON_BLOCK)
+                .input('g', Items.GOLD_INGOT)
+                .pattern("gg")
+                .pattern("ii")
+                .criterion("has_ingredient", conditionsFromItemPredicates(ItemPredicate.Builder.create().items(new ItemConvertible[]{
+                        Items.IRON_INGOT,Blocks.IRON_BLOCK,Items.GOLD_INGOT}).build()))
                 .offerTo(exporter);
 
         // smelting recipes

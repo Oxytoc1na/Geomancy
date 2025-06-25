@@ -67,6 +67,7 @@ public class ModItems {
         // 20 ticks = 1 second.
         FuelRegistry.INSTANCE.add(ModItems.SUSPICIOUS_SUBSTANCE, 30 * 20);
 
+
         // Register the group.
         Registry.register(Registries.ITEM_GROUP, CUSTOM_ITEM_GROUP_KEY, CUSTOM_ITEM_GROUP);
 
@@ -81,7 +82,7 @@ public class ModItems {
 
     public static final RegistryKey<ItemGroup> CUSTOM_ITEM_GROUP_KEY = RegistryKey.of(Registries.ITEM_GROUP.getKey(), new Identifier(Geomancy.MOD_ID, "item_group"));
     public static final ItemGroup CUSTOM_ITEM_GROUP = FabricItemGroup.builder()
-            .icon(() -> new ItemStack(ModItems.GUIDITE_SWORD))
+            .icon(() -> new ItemStack(ModItems.GUIDE_BOOK))
             .displayName(Text.translatable("itemGroup."+Geomancy.MOD_ID))
             .build();
 

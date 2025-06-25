@@ -26,6 +26,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.CheckedRandom;
 import net.minecraft.util.math.random.LocalRandom;
@@ -393,5 +394,21 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
         super.markDirty();
     }
 
+    @Override
+    public boolean canExtract(int slot, ItemStack stack, Direction side) {
+        if(slot>=INPUT_SLOT_COUNT) return false;
+        return ImplementedInventory.super.canExtract(slot, stack, side);
+    }
 
+    @Override
+    public boolean canInsert(int slot, ItemStack stack, @Nullable Direction side) {
+        if(slot>=INPUT_SLOT_COUNT) return false;
+        return ImplementedInventory.super.canInsert(slot, stack, side);
+    }
+
+    @Override
+    public boolean canTransferTo(Inventory hopperInventory, int slot, ItemStack stack) {
+        if(slot>=INPUT_SLOT_COUNT) return false;
+        return ImplementedInventory.super.canTransferTo(hopperInventory, slot, stack);
+    }
 }

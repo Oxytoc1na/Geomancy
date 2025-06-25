@@ -1,9 +1,6 @@
 package org.oxytocina.geomancy.items;
 
-import dev.emi.trinkets.api.SlotReference;
-import dev.emi.trinkets.api.TrinketComponent;
-import dev.emi.trinkets.api.TrinketItem;
-import dev.emi.trinkets.api.TrinketsApi;
+import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
@@ -12,28 +9,19 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.TagKey;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import org.oxytocina.geomancy.Geomancy;
-import org.oxytocina.geomancy.Toolbox;
-import org.oxytocina.geomancy.blocks.ModBlocks;
+import org.oxytocina.geomancy.blocks.SmitheryBlock;
 import org.oxytocina.geomancy.blocks.blockEntities.SmitheryBlockEntity;
-import org.oxytocina.geomancy.damageTypes.ModDamageTypes;
-import org.oxytocina.geomancy.items.artifacts.ArtifactSettings;
-import org.oxytocina.geomancy.progression.advancement.ModCriteria;
-import org.oxytocina.geomancy.sound.ModSoundEvents;
 
 import java.util.List;
 
@@ -50,6 +38,20 @@ public class HammerItem extends MiningToolItem {
         this.skillMultiplier=skillMultiplier;
         this.progressPerHit=progressPerHit;
         this.cooldown=cooldown;
+
+        // Register left-click event for attacking blocks in the constructor of your special item
+        AttackBlockCallback.EVENT.register((player, world, hand, pos, direction) -> {
+            if (/*!world.isClient() && */hand == Hand.MAIN_HAND) {
+                ItemStack stack = player.getStackInHand(hand);
+
+                // Check if the player is holding specific item
+                if (stack.getItem() instanceof HammerItem hammer) {
+                    hammer.useOnBlock(new ItemUsageContext(world,player,hand,stack, new BlockHitResult(pos.toCenterPos(),direction,pos,false)));
+                    return ActionResult.SUCCESS;
+                }
+            }
+            return ActionResult.PASS;
+        });
     }
 
     @Override
@@ -65,12 +67,33 @@ public class HammerItem extends MiningToolItem {
     public boolean canMine(BlockState state, World world, BlockPos pos, PlayerEntity miner) {
 
         boolean hittingSmithery = false;
-
-        if(miner.getWorld().getBlockEntity(pos) instanceof SmitheryBlockEntity smithery){
+        if(miner.getWorld().getBlockEntity(pos) instanceof SmitheryBlockEntity){
             hittingSmithery = true;
+        }
+        return !miner.isCreative() && !hittingSmithery;
+
+    }
+
+    @Override
+    public float getMiningSpeedMultiplier(ItemStack stack, BlockState state) {
+        boolean hittingSmithery = false;
+        if(state.getBlock() instanceof SmitheryBlock){
+            hittingSmithery = true;
+        }
+        return hittingSmithery?0:super.getMiningSpeedMultiplier(stack,state);
+    }
+
+    @Override
+    public ActionResult useOnBlock(ItemUsageContext context) {
+
+        PlayerEntity miner = context.getPlayer();
+        BlockPos pos = context.getBlockPos();
+        World world = context.getWorld();
+
+        if(world.getBlockEntity(pos) instanceof SmitheryBlockEntity smithery){
 
             if(smithery.currentRecipe!=null){
-                ItemStack hammerStack = miner.getInventory().getMainHandStack();
+                ItemStack hammerStack = context.getStack();
 
                 if(!miner.getItemCooldownManager().isCoolingDown(hammerStack.getItem())){
 
@@ -93,8 +116,10 @@ public class HammerItem extends MiningToolItem {
 
         }
 
-        return !miner.isCreative() && !hittingSmithery;
+        return super.useOnBlock(context);
     }
+
+
 
     public int getHitProgress(PlayerEntity player){
         return progressPerHit;
