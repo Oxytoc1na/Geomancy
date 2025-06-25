@@ -276,7 +276,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
 
                 // mishaps
 
-                int[] mishapTypeWeights = {10,1000,10,10,5};
+                int[] mishapTypeWeights = {10,1,10,10,5};
                 int mishapType = Toolbox.SelectWeightedRandomIndex(mishapTypeWeights);
 
                 switch(mishapType){

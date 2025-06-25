@@ -18,7 +18,7 @@ public class SmitheryPreviewSlot extends PreviewSlot implements SlotWithOnClickA
         if (this.inventory instanceof SmitheryBlockEntity smithery) {
             if (player instanceof ServerPlayerEntity serverPlayerEntity) {
                 if (smithery.currentRecipe != null) {
-                    Toolbox.grantAdvancementCriterion(serverPlayerEntity, "main/simple_tried_to_take_smithery_result", "tried_to_take_smithery_result");
+                    Toolbox.grantAdvancementCriterion(serverPlayerEntity, "main/simple_tried_to_take_smithery_result", "simple_tried_to_take_smithery_result");
                 }
             }
         }
