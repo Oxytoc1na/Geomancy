@@ -20,8 +20,11 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.SmitheryBlock;
 import org.oxytocina.geomancy.blocks.blockEntities.SmitheryBlockEntity;
+import org.oxytocina.geomancy.enchantments.ModEnchantments;
+import org.oxytocina.geomancy.enchantments.SkillfulEnchantment;
 
 import java.util.List;
 
@@ -97,7 +100,7 @@ public class HammerItem extends MiningToolItem {
 
                 if(!miner.getItemCooldownManager().isCoolingDown(hammerStack.getItem())){
 
-                    float skill = getPlayerSmithingSkill(smithery,miner);
+                    float skill = getSmithingSkill(smithery,miner,hammerStack);
                     smithery.onHitWithHammer(miner,hammerStack,skill);
 
                     if(!world.isClient)
@@ -129,10 +132,14 @@ public class HammerItem extends MiningToolItem {
         return cooldown;
     }
 
-    public float getPlayerSmithingSkill(SmitheryBlockEntity smithery, PlayerEntity player){
+    public float getSmithingSkill(SmitheryBlockEntity smithery, PlayerEntity player, ItemStack hammerStack){
         float res = 0;
 
         res+=skillBonus;
+
+        int skillfulLevel = ModEnchantments.getLevel(hammerStack, Geomancy.locate("skillful"));
+
+        res+=skillfulLevel*5;
 
         res*=skillMultiplier;
 

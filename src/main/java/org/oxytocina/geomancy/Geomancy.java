@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.blocks.blockEntities.ModBlockEntities;
+import org.oxytocina.geomancy.enchantments.ModEnchantments;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.fluids.ModFluids;
 import org.oxytocina.geomancy.features.ModFeatures;
@@ -52,6 +53,7 @@ public class Geomancy implements ModInitializer {
         ModLootTables.initialize();
         ModCriteria.initialize();
         ModBlockEntities.initialize();
+        ModEnchantments.initialize();
 
         //ModDamageSources.initialize( ?????? , DynamicRegistryManager.EMPTY);
 
