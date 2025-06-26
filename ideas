@@ -4,8 +4,12 @@ MINERALS
 x Mithril
 - Lead
 - Titanium
-- Tungsten
 - Molybdenium
+- Octangulite
+-- alien, exclusively found in ruined alien structures
+-- in the form of scrap, then refined
+-- basically magical tungsten
+-- properties arent internally consistent (some hard, some soft, some brittle, some dusty, all sticking together, undulating between its states)
 
 JEWELRY
 

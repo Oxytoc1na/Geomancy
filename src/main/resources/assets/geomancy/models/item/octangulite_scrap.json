@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "geomancy:block/octangulite_scrap/octangulite_scrap"
+  }
+}

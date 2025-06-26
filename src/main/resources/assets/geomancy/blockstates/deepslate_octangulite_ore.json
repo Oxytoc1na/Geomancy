@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "geomancy:block/deepslate_octangulite_ore/deepslate_octangulite_ore1"
+      },
+      {
+        "model": "geomancy:block/deepslate_octangulite_ore/deepslate_octangulite_ore2"
+      },
+      {
+        "model": "geomancy:block/deepslate_octangulite_ore/deepslate_octangulite_ore3"
+      },
+      {
+        "model": "geomancy:block/deepslate_octangulite_ore/deepslate_octangulite_ore4"
+      },
+      {
+        "model": "geomancy:block/deepslate_octangulite_ore/deepslate_octangulite_ore5"
+      },
+      {
+        "model": "geomancy:block/deepslate_octangulite_ore/deepslate_octangulite_ore6"
+      },
+      {
+        "model": "geomancy:block/deepslate_octangulite_ore/deepslate_octangulite_ore7"
+      },
+      {
+        "model": "geomancy:block/deepslate_octangulite_ore/deepslate_octangulite_ore8"
+      }
+    ]
+  }
+}
