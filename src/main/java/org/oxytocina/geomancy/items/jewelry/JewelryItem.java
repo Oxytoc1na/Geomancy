@@ -1,13 +1,16 @@
 package org.oxytocina.geomancy.items.jewelry;
 
+import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
-import dev.emi.trinkets.api.SlotReference;
-import dev.emi.trinkets.api.Trinket;
-import dev.emi.trinkets.api.TrinketItem;
+import com.google.common.collect.Sets;
+import dev.emi.trinkets.TrinketSlot;
+import dev.emi.trinkets.api.*;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.DyeableItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -15,17 +18,22 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
+import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.items.ModItems;
 
-import java.util.ArrayList;
-import java.util.UUID;
+import java.util.*;
 
 public class JewelryItem extends TrinketItem implements DyeableItem {
 
     public static final ArrayList<JewelryItem> List = new ArrayList<>();
 
     public final int gemSlotCount;
+    private final boolean canEquipAnywhere;
+    private final JewelryItemSettings jewelrySettings;
 
     public JewelryItem(Settings settings, JewelryItemSettings jewelryItemSettings) {
         super(settings);
@@ -39,6 +47,8 @@ public class JewelryItem extends TrinketItem implements DyeableItem {
             default:break;
         }
 
+        canEquipAnywhere = jewelryItemSettings.slot == JewelryItemSettings.TrinketSlot.ANY;
+        this.jewelrySettings=jewelryItemSettings;
     }
 
     public ArrayList<GemSlot> getSlots(ItemStack stack) {
@@ -115,4 +125,21 @@ public class JewelryItem extends TrinketItem implements DyeableItem {
 
         return modifiers;
     }
+
+    @Override
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> list, TooltipContext context) {
+
+        var gems = getSlots(stack);
+        boolean hasGems = !gems.isEmpty();
+        for(var gem : gems)
+            GemSlot.appendTooltip(stack,gem,world,list,context);
+
+        if(!hasGems){
+            list.add(Text.translatable("tooltip.geomancy.jewelry.nogems").formatted(Formatting.GRAY));
+        }
+
+        super.appendTooltip(stack, world, list, context);
+    }
+
+
 }

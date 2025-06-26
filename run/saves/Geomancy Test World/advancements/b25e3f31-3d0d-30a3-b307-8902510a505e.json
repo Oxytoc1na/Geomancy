@@ -89,5 +89,23 @@
     },
     "done": true
   },
+  "geomancy:recipes/misc/smithing_artifact_of_iron": {
+    "criteria": {
+      "default_conditions": "2025-06-25 21:02:21 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/iron_ingot_from_iron_block": {
+    "criteria": {
+      "has_iron_block": "2025-06-25 21:02:21 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/anvil": {
+    "criteria": {
+      "has_iron_block": "2025-06-25 21:02:21 +0200"
+    },
+    "done": true
+  },
   "DataVersion": 3465
 }

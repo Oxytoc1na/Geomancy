@@ -2,8 +2,10 @@ package org.oxytocina.geomancy.items.jewelry;
 
 import com.google.common.collect.Multimap;
 import com.mojang.datafixers.util.Function4;
+import com.mojang.datafixers.util.Function5;
 import com.mojang.datafixers.util.Function6;
 import dev.emi.trinkets.api.SlotReference;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -14,11 +16,16 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.registry.Registries;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.Util.Toolbox;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 public class GemSlot {
@@ -32,6 +39,7 @@ public class GemSlot {
     public static HashMap<Item, Function4<ItemStack,GemSlot, SlotReference, LivingEntity,Boolean>> gemEquipFunctionMap = new HashMap<>();
     public static HashMap<Item, Function4<ItemStack,GemSlot, SlotReference, LivingEntity,Boolean>> gemUnequipFunctionMap = new HashMap<>();
     public static HashMap<Item, Function6<ItemStack,GemSlot, SlotReference, LivingEntity,UUID,Multimap<EntityAttribute, EntityAttributeModifier>,Multimap<EntityAttribute, EntityAttributeModifier>>> gemModifierFunctionMap = new HashMap<>();
+    public static HashMap<Item, Function5<ItemStack,GemSlot, World , List<Text> , TooltipContext ,Boolean>> gemTooltipFunctionMap = new HashMap<>();
 
     static{
         registerColor(Items.DIAMOND,0f,1f,1f);
@@ -43,6 +51,16 @@ public class GemSlot {
             modifiers.put(EntityAttributes.GENERIC_ARMOR, new EntityAttributeModifier(uuid, "geomancy:jewelry_diamond_gem_armor", 2*gemSlot.getEffectiveQuality(itemStack,livingEntity), EntityAttributeModifier.Operation.ADDITION));
             return modifiers;
         }));
+        registerTooltipFunction(Items.DIAMOND,((itemStack, gemSlot, world, texts, tooltipContext) ->  {
+            texts.add(Text.translatable(gemSlot.gemItem.getTranslationKey()).formatted(Formatting.AQUA)); return true;}));
+
+        // Emeralds
+        registerTooltipFunction(Items.EMERALD,((itemStack, gemSlot, world, texts, tooltipContext) ->  {
+            texts.add(Text.translatable(gemSlot.gemItem.getTranslationKey()).formatted(Formatting.GREEN)); return true;}));
+
+        // Lapis
+        registerTooltipFunction(Items.LAPIS_LAZULI,((itemStack, gemSlot, world, texts, tooltipContext) ->  {
+            texts.add(Text.translatable(gemSlot.gemItem.getTranslationKey()).formatted(Formatting.DARK_BLUE)); return true;}));
     }
 
     public static void registerColor(Item item, float red, float green, float blue){
@@ -71,6 +89,10 @@ public class GemSlot {
 
     public static void registerModifierFunction(Item item, Function6<ItemStack,GemSlot, SlotReference, LivingEntity,UUID,Multimap<EntityAttribute, EntityAttributeModifier>,Multimap<EntityAttribute, EntityAttributeModifier>> func){
         gemModifierFunctionMap.put(item,func);
+    }
+
+    public static void registerTooltipFunction(Item item, Function5<ItemStack,GemSlot, World, List<Text>, TooltipContext, Boolean> func){
+        gemTooltipFunctionMap.put(item,func);
     }
 
     public GemSlot(Item item) {
@@ -123,37 +145,32 @@ public class GemSlot {
     }
 
     public static boolean tick(ItemStack stack,GemSlot gem, SlotReference slot, LivingEntity entity){
-
-        Item item = stack.getItem();
-        if(gemTickFunctionMap.containsKey(item))
-            return gemTickFunctionMap.get(item).apply(stack,gem,slot,entity);
-
+        if(gemTickFunctionMap.containsKey(gem.gemItem))
+            return gemTickFunctionMap.get(gem.gemItem).apply(stack,gem,slot,entity);
         return false;
     }
 
     public static boolean equip(ItemStack stack,GemSlot gem, SlotReference slot, LivingEntity entity){
-
-        Item item = stack.getItem();
-        if(gemEquipFunctionMap.containsKey(item))
-            return gemEquipFunctionMap.get(item).apply(stack,gem,slot,entity);
-
+        if(gemEquipFunctionMap.containsKey(gem.gemItem))
+            return gemEquipFunctionMap.get(gem.gemItem).apply(stack,gem,slot,entity);
         return false;
     }
 
     public static boolean unequip(ItemStack stack,GemSlot gem, SlotReference slot, LivingEntity entity){
-
-        Item item = stack.getItem();
-        if(gemUnequipFunctionMap.containsKey(item))
-            return gemUnequipFunctionMap.get(item).apply(stack,gem,slot,entity);
-
+        if(gemUnequipFunctionMap.containsKey(gem.gemItem))
+            return gemUnequipFunctionMap.get(gem.gemItem).apply(stack,gem,slot,entity);
         return false;
     }
 
     public static Multimap<EntityAttribute, EntityAttributeModifier> modifyModifiers(ItemStack stack, GemSlot gem, SlotReference slot, LivingEntity entity, UUID uuid, Multimap<EntityAttribute, EntityAttributeModifier> modifiers){
-        Item item = stack.getItem();
-        if(gemModifierFunctionMap.containsKey(item))
-            return gemModifierFunctionMap.get(item).apply(stack,gem,slot,entity,uuid,modifiers);
-
+        if(gemModifierFunctionMap.containsKey(gem.gemItem))
+            return gemModifierFunctionMap.get(gem.gemItem).apply(stack,gem,slot,entity,uuid,modifiers);
         return modifiers;
+    }
+
+    public static boolean appendTooltip(ItemStack stack, GemSlot gem, World world, List<Text> list, TooltipContext context) {
+        if(gemTooltipFunctionMap.containsKey(gem.gemItem))
+            return gemTooltipFunctionMap.get(gem.gemItem).apply(stack,gem,world,list,context);
+        return false;
     }
 }
