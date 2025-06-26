@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "geomancy:item/jewelry/iron_ring",
+    "layer1": "geomancy:item/jewelry/iron_ring_gem"
+  }
+}

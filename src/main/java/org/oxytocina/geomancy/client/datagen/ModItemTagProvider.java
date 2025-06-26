@@ -3,6 +3,7 @@ package org.oxytocina.geomancy.client.datagen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.Registries;
@@ -13,6 +14,8 @@ import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.items.artifacts.ArtifactItem;
 import org.oxytocina.geomancy.items.ModItems;
+import org.oxytocina.geomancy.items.jewelry.GemSlot;
+import org.oxytocina.geomancy.items.jewelry.JewelryItem;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -23,6 +26,7 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
 
     public static final TagKey<Item> SMELLY_ITEMS = TagKey.of(RegistryKeys.ITEM, Identifier.of(Geomancy.MOD_ID, "smelly_items"));
     public static final TagKey<Item> MUSIC_DISCS = TagKey.of(RegistryKeys.ITEM, Identifier.of(Identifier.DEFAULT_NAMESPACE, "music_discs"));
+    public static final TagKey<Item> JEWELRY_GEMS = TagKey.of(RegistryKeys.ITEM, Geomancy.locate("jewelry_gems"));
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
@@ -38,25 +42,35 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
                 .add(ModItems.MUSIC_DISC_DIGGY)
                 .setReplace(true);
 
+        // jewelry gems
+        for(ItemConvertible item : GemSlot.gemColorMap.keySet())
+            getOrCreateTagBuilder(JEWELRY_GEMS).add(item.asItem());
+
         generateAccessoryTags();
     }
 
     private void generateAccessoryTags() {
         //this.getOrCreateTagBuilder(accessory("chest/cape")).add(
-        //);
-        //this.getOrCreateTagBuilder(accessory("chest/necklace")).add(
-        //);
-        Item[] rings = {
-
-        };
-        this.getOrCreateTagBuilder(accessory("hand/ring")).add(rings);
-        this.getOrCreateTagBuilder(accessory("offhand/ring")).add(rings);
         //this.getOrCreateTagBuilder(accessory("head/face")).add(
-        //);
         //this.getOrCreateTagBuilder(accessory("head/hat")).add(
-        //);
         //this.getOrCreateTagBuilder(accessory("legs/belt")).add(
-        //);
+
+        for(JewelryItem any : ModItems.JewelryAnySlotItems)
+        {
+            this.getOrCreateTagBuilder(accessory("all")).add(any);
+        }
+
+        for(JewelryItem necklace : ModItems.JewelryNecklaceItems)
+        {
+            this.getOrCreateTagBuilder(accessory("chest/necklace")).add(necklace);
+        }
+
+        for(JewelryItem ring : ModItems.JewelryRingItems)
+        {
+            this.getOrCreateTagBuilder(accessory("hand/ring")).add(ring);
+            this.getOrCreateTagBuilder(accessory("offhand/ring")).add(ring);
+        }
+
         for(ArtifactItem artifact : ModItems.ArtifactItems)
         {
             this.getOrCreateTagBuilder(accessory("all")).add(

@@ -41,6 +41,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("item.MODID.artifact_of_iron.desc"  , "Makes you feel stalwart");
             add("item.MODID.artifact_of_gold"       , "Artifact of Gold");
             add("item.MODID.artifact_of_gold.desc"  , "Does something idk");
+
+            add("item.MODID.iron_ring"  , "Iron Ring");
         }
 
         // Blocks
@@ -57,6 +59,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("block.MODID.smithery_block"            , "Smithery");
             add("container.MODID.smithery_block"        , "Smithery");
             add("message.MODID.smithery.fail.break"     ,"that didn't sound good...");
+            add("block.MODID.octangulite_ore"           , "Octangulite Ore");
+            add("block.MODID.deepslate_octangulite_ore" , "Deepslate Octangulite Ore");
         }
 
         // Enchantments

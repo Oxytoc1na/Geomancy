@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/template_anvil",
-  "textures": {
-    "top": "geomancy:block/mithril_anvil_top"
-  }
-}

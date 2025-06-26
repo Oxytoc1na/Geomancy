@@ -13,6 +13,9 @@ import net.minecraft.registry.Registries;
 
 import org.oxytocina.geomancy.blocks.blockEntities.ModBlockEntities;
 import org.oxytocina.geomancy.client.blocks.blockEntities.SmitheryBlockEntityRenderer;
+import org.oxytocina.geomancy.client.rendering.ModBlockTransparency;
+import org.oxytocina.geomancy.client.rendering.ModColorizationHandler;
+import org.oxytocina.geomancy.client.rendering.ModModelPredicateProvider;
 import org.oxytocina.geomancy.client.screen.ModScreenHandlers;
 import org.oxytocina.geomancy.client.screen.SmitheryScreen;
 import org.oxytocina.geomancy.fluids.ModFluids;
@@ -25,6 +28,9 @@ public class GeomancyClient implements ClientModInitializer {
         RegisterFluid(ModFluids.STILL_GOLD,ModFluids.FLOWING_GOLD);
 
         ModScreenHandlers.initialize();
+        ModColorizationHandler.initialize();
+        ModBlockTransparency.initialize();
+        ModModelPredicateProvider.initialize();
 
         HandledScreens.register(ModScreenHandlers.SMITHERY_SCREEN_HANDLER, SmitheryScreen::new);
 

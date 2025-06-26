@@ -22,6 +22,8 @@ import org.oxytocina.geomancy.items.artifacts.ArtifactItem;
 import org.oxytocina.geomancy.items.artifacts.ArtifactSettings;
 import org.oxytocina.geomancy.items.artifacts.GoldArtifact;
 import org.oxytocina.geomancy.items.artifacts.IronArtifact;
+import org.oxytocina.geomancy.items.jewelry.JewelryItem;
+import org.oxytocina.geomancy.items.jewelry.JewelryItemSettings;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
 
 import java.util.ArrayList;
@@ -29,6 +31,9 @@ import java.util.ArrayList;
 public class ModItems {
 
     public static final ArrayList<ArtifactItem> ArtifactItems = new ArrayList<ArtifactItem>();
+    public static final ArrayList<JewelryItem> JewelryRingItems = new ArrayList<JewelryItem>();
+    public static final ArrayList<JewelryItem> JewelryNecklaceItems = new ArrayList<JewelryItem>();
+    public static final ArrayList<JewelryItem> JewelryAnySlotItems = new ArrayList<JewelryItem>();
 
     public static final FoodComponent SUSPICIOUS_FOOD_COMPONENT = new FoodComponent.Builder()
             .hunger(1).alwaysEdible().snack().statusEffect(new StatusEffectInstance(StatusEffects.POISON, 6 * 20, 1), 1.0f).build();
@@ -51,6 +56,10 @@ public class ModItems {
     public static final ArtifactItem EMPTY_ARTIFACT = (ArtifactItem) register("empty_artifact",new ArtifactItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON).fireproof(),new ArtifactSettings()));
     public static final IronArtifact ARTIFACT_OF_IRON = (IronArtifact) register("artifact_of_iron",new IronArtifact(new Item.Settings().maxCount(1).rarity(Rarity.RARE).fireproof(),new ArtifactSettings()));
     public static final GoldArtifact ARTIFACT_OF_GOLD = (GoldArtifact) register("artifact_of_gold",new GoldArtifact(new Item.Settings().maxCount(1).rarity(Rarity.RARE).fireproof(),new ArtifactSettings()));
+
+    // jewelry
+    public static final JewelryItem IRON_RING = (JewelryItem) register("iron_ring",new JewelryItem(new Item.Settings().maxCount(1),
+            JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.RING).withGemCount(1)),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
 
     // tools
     public static final HammerItem IRON_HAMMER = (HammerItem) register("iron_hammer",new HammerItem(5,-3.3f,
