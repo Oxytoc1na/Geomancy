@@ -127,8 +127,20 @@ public class JewelryItem extends TrinketItem implements DyeableItem {
 
         var gems = getSlots(stack);
         boolean hasGems = !gems.isEmpty();
+        List<Text> gemList = new ArrayList<>();
         for(var gem : gems)
-            GemSlot.appendTooltip(stack,gem,world,list,context);
+            GemSlot.appendTooltip(stack,gem,world,gemList,context);
+
+        Map<Text,Integer> textMap = new HashMap<>();
+        for(Text t : gemList){
+            if(textMap.containsKey(t)) textMap.put(t,textMap.get(t)+1);
+            else textMap.put(t,1);
+        }
+
+        for(Text t : textMap.keySet()){
+            int amount = textMap.get(t);
+            list.add(Text.literal(amount>1?("x"+amount+" "):"").formatted(Formatting.YELLOW).append(t));
+        }
 
         if(!hasGems){
             list.add(Text.translatable("tooltip.geomancy.jewelry.nogems").formatted(Formatting.GRAY));

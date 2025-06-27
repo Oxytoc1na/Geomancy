@@ -46,6 +46,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("item.MODID.iron_necklace"  , "Iron Necklace");
             add("tooltip.geomancy.jewelry.nogems","No Gems");
             add("tooltip.geomancy.jewelry.unsmith","Salvages gems");
+            add("tooltip.geomancy.jewelry.quality","Quality");
         }
 
         // Blocks

@@ -42,7 +42,31 @@ public class GemSlot {
 
         // Diamond gems give 2 Armor per quality
         register(Settings.create(Items.DIAMOND).setColor(0,1,1).setDifficulty(1).setProgressCost(0).withGenericTooltip(Formatting.AQUA).setModifier((itemStack, gemSlot, slotReference, livingEntity, uuid, modifiers) -> {
-            modifiers.put(EntityAttributes.GENERIC_ARMOR, new EntityAttributeModifier(uuid, "geomancy:jewelry_diamond_gem_armor", 2*gemSlot.getEffectiveQuality(itemStack,livingEntity), EntityAttributeModifier.Operation.ADDITION));
+            float value = 2*gemSlot.getEffectiveQuality(itemStack,livingEntity);
+            String id = "geomancy:jewelry_diamond_gem_armor";
+            EntityAttributeModifier.Operation op = EntityAttributeModifier.Operation.ADDITION;
+            var newMod = new EntityAttributeModifier(uuid, id, value, op);
+
+            // check for duplicates
+            boolean added = false;
+            if(modifiers.containsKey(EntityAttributes.GENERIC_ARMOR)){
+                for(EntityAttributeModifier mod : modifiers.get(EntityAttributes.GENERIC_ARMOR).stream().toList()){
+                    if(mod.equals(newMod))
+                    {
+                        // matches!
+                        // replace with combined
+                        modifiers.replaceValues(EntityAttributes.GENERIC_ARMOR,modifiers.get(EntityAttributes.GENERIC_ARMOR).stream().map(entityAttributeModifier -> {
+                            if(mod.equals(newMod))
+                                return new EntityAttributeModifier(uuid, id, mod.getValue()+value, op);
+                            return entityAttributeModifier;
+                        }).toList());
+                        added=true;
+                        break;
+                    }
+                }
+            }
+            if(!added)
+                modifiers.put(EntityAttributes.GENERIC_ARMOR, newMod);
             return modifiers;
         }));
         register(Settings.create(Items.EMERALD).setColor(0,1,0).setDifficulty(1).setProgressCost(0).withGenericTooltip(Formatting.GREEN));
@@ -185,11 +209,27 @@ public class GemSlot {
         public Settings setModifier(Function6<ItemStack,GemSlot, SlotReference, LivingEntity,UUID,Multimap<EntityAttribute, EntityAttributeModifier>,Multimap<EntityAttribute, EntityAttributeModifier>> f){modifierFunction=f;return this;}
         public Settings setTooltip(Function5<ItemStack,GemSlot, World , List<Text> , TooltipContext ,Boolean> f){tooltipFunction=f;return this;}
         public Settings withGenericTooltip(net.minecraft.util.Formatting formatting){ return setTooltip((itemStack, gemSlot, world, texts, tooltipContext) -> {
-            texts.add(Text.translatable(gemSlot.gemItem.getTranslationKey()).formatted(formatting)); return true;});};
+            texts.add(Text.translatable("tooltip.geomancy.jewelry.quality").formatted(Formatting.AQUA)
+                    .append(" ")
+                    .append(gemSlot.getQualityString()).append(" ")
+                    .append(Text.translatable(gemSlot.gemItem.getTranslationKey()).formatted(formatting))); return true;});};
         public Settings setItem(Item item){this.item=item;return this;}
 
         public static Settings create(Item item){
             return new Settings().setItem(item);
         }
+    }
+
+    private Text getQualityString() {
+        Formatting formatting = Formatting.DARK_RED;
+        int qualityPercent = Math.round(quality*100);
+
+        if(qualityPercent > 100) formatting = Formatting.LIGHT_PURPLE;
+        else if (qualityPercent>80) formatting = Formatting.GREEN;
+        else if (qualityPercent>60) formatting = Formatting.YELLOW;
+        else if (qualityPercent>40) formatting = Formatting.GOLD;
+        else if (qualityPercent>20) formatting = Formatting.RED;
+
+        return Text.literal(Integer.toString(qualityPercent)).append("%").formatted(formatting);
     }
 }

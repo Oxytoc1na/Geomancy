@@ -13,12 +13,14 @@ x Mithril
 
 JEWELRY
 
+- materials
+-- iron: 1 base gem slot
 - rings
--- 1 base gem slot
+-- +0 base gem slot
 - necklace
--- 3 base gem slots
+-- +0 base gem slots
 - pendant
--- 2 base gem slots
+-- +1 base gem slots
 -- increases effectiveness of other gems of the same type as the inserted ones
 
 GEMS
