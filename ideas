@@ -23,6 +23,10 @@ JEWELRY
 -- +1 base gem slots
 -- increases effectiveness of other gems of the same type as the inserted ones
 
+- infinity glove mit 5 gem slots
+-- probability glove
+-- "it's probably a reference"
+
 GEMS
 
 can be slotted into jewelry to bestow effects upon the wearer
@@ -61,8 +65,8 @@ X-- journey book (treasures of the deep)
 --- "mana"
 --- runic crafting
 ---- multiblock for enchanting things with runes
----- hit the workpiece with a hammer over and over to do it
----- mishaps
+X--- hit the workpiece with a hammer over and over to do it
+X--- mishaps
 ---- smithing levels to increase speed and proficiency
 --- ores
 --- oakenshield
@@ -74,3 +78,15 @@ X-- liquid gold
 --- slag
 --- mithril anvil
 X-- diggy diggy hole record
+
+MODONOMICON
+
+MAIN
+
+SMITHING
+pages:
+- hammers
+- rings
+- necklaces
+- pendants
+- gem effects
