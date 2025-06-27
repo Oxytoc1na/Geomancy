@@ -15,7 +15,7 @@ import net.minecraft.item.DyeableItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.*;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.text.Text;
@@ -32,7 +32,6 @@ public class JewelryItem extends TrinketItem implements DyeableItem {
     public static final ArrayList<JewelryItem> List = new ArrayList<>();
 
     public final int gemSlotCount;
-    private final boolean canEquipAnywhere;
     private final JewelryItemSettings jewelrySettings;
 
     public JewelryItem(Settings settings, JewelryItemSettings jewelryItemSettings) {
@@ -47,7 +46,6 @@ public class JewelryItem extends TrinketItem implements DyeableItem {
             default:break;
         }
 
-        canEquipAnywhere = jewelryItemSettings.slot == JewelryItemSettings.TrinketSlot.ANY;
         this.jewelrySettings=jewelryItemSettings;
     }
 
@@ -90,9 +88,7 @@ public class JewelryItem extends TrinketItem implements DyeableItem {
         return (float)getSlots(stack).size() / gemSlotCount;
     }
 
-    public static boolean ItemIsGem(ItemStack item){
-        return item.isIn(TagKey.of(RegistryKeys.ITEM, Geomancy.locate("jewelry_gems")));
-    }
+
 
     @Override
     public void tick(ItemStack stack, SlotReference slot, LivingEntity entity) {
@@ -141,5 +137,30 @@ public class JewelryItem extends TrinketItem implements DyeableItem {
         super.appendTooltip(stack, world, list, context);
     }
 
+    public int getMishapWeight(){
+        return jewelrySettings.baseMishapWeight;
+    }
 
+    public List<ItemStack> UnSmith(ItemStack stack){
+        List<ItemStack> res = new ArrayList<>();
+        ItemStack base = stack.copy();
+        base.removeSubNbt("gems");
+        res.add(base);
+
+        // add gems
+        var gems = getSlots(stack);
+        for(var gem : gems){
+            res.add(new ItemStack(gem.gemItem));
+        }
+
+        return res;
+    }
+
+    public void addSlot(ItemStack stack, GemSlot slot){
+        NbtList nbt = stack.getOrCreateNbt().getList("gems",NbtList.COMPOUND_TYPE);
+
+        nbt.add(GemSlot.toNbt(slot));
+
+        stack.setSubNbt("gems",nbt);
+    }
 }

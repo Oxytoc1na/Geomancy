@@ -16,11 +16,12 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.Util.Toolbox;
 
@@ -172,5 +173,9 @@ public class GemSlot {
         if(gemTooltipFunctionMap.containsKey(gem.gemItem))
             return gemTooltipFunctionMap.get(gem.gemItem).apply(stack,gem,world,list,context);
         return false;
+    }
+
+    public static boolean itemIsGem(ItemStack item){
+        return item.isIn(TagKey.of(RegistryKeys.ITEM, Geomancy.locate("jewelry_gems")));
     }
 }

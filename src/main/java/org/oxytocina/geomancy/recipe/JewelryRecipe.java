@@ -1,0 +1,225 @@
+package org.oxytocina.geomancy.recipe;
+
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.recipe.RecipeType;
+import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
+import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.items.ModItems;
+import org.oxytocina.geomancy.items.jewelry.JewelryItem;
+import org.oxytocina.geomancy.registries.ModRecipeTypes;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import org.oxytocina.geomancy.items.jewelry.GemSlot;
+
+public class JewelryRecipe extends GatedModRecipe<Inventory> implements SmitheryRecipeI{
+
+    protected final SmithingIngredient base;
+    protected final int progressRequiredBase;
+    protected final int difficulty;
+    protected final float gemProgressCostMultiplier;
+    protected final float gemDifficultyMultiplier;
+
+    public JewelryRecipe(Identifier id, String group, boolean secret, Identifier requiredAdvancementIdentifier, @NotNull SmithingIngredient base, int progressRequiredBase, float gemProgressCostMultiplier, int difficulty, float gemDifficultyMultiplier) {
+        super(id,group,secret,requiredAdvancementIdentifier);
+        this.base = base;
+        this.progressRequiredBase = progressRequiredBase;
+        this.difficulty=difficulty;
+        this.gemProgressCostMultiplier=gemProgressCostMultiplier;
+        this.gemDifficultyMultiplier=gemDifficultyMultiplier;
+    }
+
+    @Override
+    public boolean matches(@NotNull Inventory inv, World world) {
+
+        return !getOutput(inv,false).isEmpty();
+    }
+
+    @Override
+    public ItemStack craft(Inventory inventory, DynamicRegistryManager registryManager) {
+        List<ItemStack> res = newCraft(inventory);
+        return res.isEmpty()?ItemStack.EMPTY:res.get(0);
+    }
+
+    public List<ItemStack> newCraft(Inventory inv) {
+        return getOutput(inv, true);
+    }
+
+    @Override
+    public boolean fits(int width, int height) {
+        return true;
+    }
+
+    @Override
+    public ItemStack getOutput(DynamicRegistryManager registryManager) {
+        return null;
+    }
+
+    public List<ItemStack> getOutput(Inventory inv, boolean removeIngredients) {
+
+        // check if at least one new gem is there
+        // check for a free gem slot
+        // if none, set output to empty slots
+        List<ItemStack> res = new ArrayList<>();
+
+        // check for base
+        boolean hasBase = false;
+        int baseSlot;
+        for (baseSlot = 0; baseSlot < inv.size(); baseSlot++) {
+            if(base.test(inv.getStack(baseSlot))){
+                hasBase = true;
+                break;
+            }
+        }
+        if(!hasBase) return res;
+
+        // fetch already slotted gems
+        ItemStack baseStack = inv.getStack(baseSlot);
+        JewelryItem jewelryItem = (JewelryItem)baseStack.getItem();
+        var presentGems = jewelryItem.getSlots(baseStack);
+
+        // fetch free slots
+        int freeSlots = jewelryItem.gemSlotCount-presentGems.size();
+
+        if(freeSlots<=0){
+            // unsmith
+            if(presentGems.isEmpty()) return res;
+            res.addAll(jewelryItem.UnSmith(baseStack));
+            if(removeIngredients){
+                baseStack.decrement(1);
+            }
+            return res;
+        }
+        else{
+            // add gems
+
+            // fetch ingredient gems
+            HashMap<Integer,ItemStack> slotsWithGems = new HashMap<>();
+            for (int i = 0; i < inv.size(); i++) {
+                var slot = inv.getStack(i);
+                if(!slot.isEmpty() && GemSlot.itemIsGem(slot)){
+                    slotsWithGems.put(i,slot);
+                }
+            }
+
+            // no new gems
+            if(slotsWithGems.isEmpty()) return res;
+
+            // fetch which gems to add
+            HashMap<Integer,ItemStack> gemSlotsToAdd = new HashMap<>();
+            for(Integer i : slotsWithGems.keySet())
+            {
+                if(gemSlotsToAdd.size() >= freeSlots) break;
+                gemSlotsToAdd.put(i,slotsWithGems.get(i));
+            }
+
+            // add gems to output
+            ItemStack output = baseStack.copy();
+            for(Integer i : gemSlotsToAdd.keySet()){
+                GemSlot newSlot = new GemSlot(gemSlotsToAdd.get(i).getItem(),1);
+                jewelryItem.addSlot(output,newSlot);
+
+                if(removeIngredients){
+                    gemSlotsToAdd.get(i).decrement(1);
+                }
+            }
+
+            if(removeIngredients)
+            {
+                baseStack.decrement(1);
+            }
+
+            res.add(output);
+            return res;
+        }
+
+        //return res;
+    }
+
+    @Override
+    public DefaultedList<Ingredient> getIngredients() {
+        DefaultedList<Ingredient> res = DefaultedList.of();
+        res.add(base.ingredient);
+        return res;
+    }
+
+    public int getDifficulty() {
+        // TODO
+        return difficulty;
+    }
+
+    @Override
+    public int getProgressRequired() {
+        // TODO
+        return progressRequiredBase;
+    }
+
+    @Override
+    public ItemStack getPreviewOutput(Inventory inv) {
+        List<ItemStack> outputs = getOutput(inv,false);
+        return outputs.isEmpty()?ItemStack.EMPTY:outputs.get(0);
+    }
+
+    @Override
+    public boolean hasBaseStack() {
+        return false;
+    }
+
+    @Override
+    public List<SmithingIngredient> getSmithingIngredients(Inventory inv) {
+        List<SmithingIngredient> res = new ArrayList<>();
+        for (int i = 0; i < inv.size(); i++) {
+            ItemStack stack = inv.getStack(i);
+            if(stack.isEmpty()) continue;
+
+            if(base.test(stack)){
+                SmithingIngredient ing = SmithingIngredient.ofItems(stack.getCount(),base.mishapWeight,stack.getItem());
+                res.add(ing);
+            } else if (GemSlot.itemIsGem(stack)){
+                SmithingIngredient ing = SmithingIngredient.ofItems(stack.getCount(),1,stack.getItem());
+                res.add(ing);
+            }
+        }
+        return res;
+    }
+
+    @Override
+    public ItemStack createIcon() {
+        return new ItemStack(ModItems.IRON_RING);
+    }
+
+    @Override
+    public RecipeSerializer<?> getSerializer() {
+        return ModRecipeTypes.JEWELRY_SERIALIZER;
+    }
+
+    @Override
+    public RecipeType<?> getType() {
+        return ModRecipeTypes.JEWELRY;
+    }
+
+    @Override
+    public Identifier getRecipeTypeUnlockIdentifier() {
+        Geomancy.logError("getRecipeTypeUnlockIdentifier returning null");
+        return null; //UNLOCK_IDENTIFIER;
+    }
+
+    @Override
+    public String getRecipeTypeShortID() {
+        return ModRecipeTypes.JEWELRY_ID;
+    }
+
+    @Override
+    public List<ItemStack> getSmithingResult(Inventory inv, boolean removeItems) {
+        return getOutput(inv,removeItems);
+    }
+}

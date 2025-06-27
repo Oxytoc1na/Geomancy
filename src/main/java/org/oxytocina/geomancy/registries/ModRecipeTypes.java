@@ -16,7 +16,9 @@ public class ModRecipeTypes {
     public static SmitheryRecipeSerializer<SmitheryRecipe> SMITHING_SERIALIZER;
     public static RecipeType<SmitheryRecipe> SMITHING;
 
-
+    public static final String JEWELRY_ID = "jewelry";
+    public static JewelryRecipeSerializer<JewelryRecipe> JEWELRY_SERIALIZER;
+    public static RecipeType<JewelryRecipe> JEWELRY;
 
     static <S extends RecipeSerializer<T>, T extends Recipe<?>> S registerSerializer(String id, S serializer) {
         return Registry.register(Registries.RECIPE_SERIALIZER, Geomancy.locate(id), serializer);
@@ -38,6 +40,9 @@ public class ModRecipeTypes {
 
         SMITHING_SERIALIZER = registerSerializer(SMITHING_ID, new SmitheryRecipeSerializer<>(SmitheryRecipe::new));
         SMITHING = registerRecipeType(SMITHING_ID);
+
+        JEWELRY_SERIALIZER = registerSerializer(JEWELRY_ID, new JewelryRecipeSerializer<>(JewelryRecipe::new));
+        JEWELRY = registerRecipeType(JEWELRY_ID);
     }
 
 }

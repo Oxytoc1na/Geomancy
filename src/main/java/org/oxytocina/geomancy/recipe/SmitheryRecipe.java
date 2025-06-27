@@ -16,9 +16,10 @@ import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
-public class SmitheryRecipe extends GatedModRecipe<Inventory> {
+public class SmitheryRecipe extends GatedModRecipe<Inventory> implements SmitheryRecipeI{
 
     protected final DefaultedList<SmithingIngredient> inputs;
     protected final ItemStack output;
@@ -157,11 +158,23 @@ public class SmitheryRecipe extends GatedModRecipe<Inventory> {
         return res;
     }
 
-    public DefaultedList<SmithingIngredient> getSmithingIngredients(){
+    public int getProgressRequired() {return progressRequired;}
+
+    @Override
+    public ItemStack getPreviewOutput(Inventory inv) {
+        return getOutput(null);
+    }
+
+    @Override
+    public boolean hasBaseStack() {
+        return !getShapeless();
+    }
+
+    @Override
+    public List<SmithingIngredient> getSmithingIngredients(Inventory inv) {
         return inputs;
     }
 
-    public int getProgressRequired() {return progressRequired;}
     public int getDifficulty() {return difficulty;}
     public boolean getShapeless() {return shapeless;}
 
@@ -189,5 +202,10 @@ public class SmitheryRecipe extends GatedModRecipe<Inventory> {
     @Override
     public String getRecipeTypeShortID() {
         return ModRecipeTypes.SMITHING_ID;
+    }
+
+    @Override
+    public List<ItemStack> getSmithingResult(Inventory inv, boolean removeItems) {
+        return removeItems?List.of(craft(inv,null)):List.of(getOutput(null));
     }
 }

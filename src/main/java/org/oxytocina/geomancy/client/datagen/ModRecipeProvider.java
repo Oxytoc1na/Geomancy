@@ -20,8 +20,10 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.ModBlocks;
+import org.oxytocina.geomancy.client.datagen.recipes.JewelryRecipeJsonBuilder;
 import org.oxytocina.geomancy.client.datagen.recipes.SmitheryRecipeJsonBuilder;
 import org.oxytocina.geomancy.items.ModItems;
+import org.oxytocina.geomancy.items.jewelry.JewelryItem;
 import org.oxytocina.geomancy.recipe.*;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
 
@@ -76,20 +78,36 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         AddReversibleCompressionRecipe(ModBlocks.RAW_MITHRIL_BLOCK,ModItems.RAW_MITHRIL);
 
         // smithing recipes
-        AddSmitheryRecipe(Arrays.stream(new SmithingIngredient[] {
-                        SmithingIngredient.ofItems(ModItems.MITHRIL_INGOT),
-                        SmithingIngredient.ofItems(Items.LEATHER)
-                }).toList(),ModItems.EMPTY_ARTIFACT,1, 40,5, true,
-                conditionsFromItem(ModItems.MITHRIL_INGOT));
+        {
+            AddSmitheryRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(ModItems.MITHRIL_INGOT),
+                            SmithingIngredient.ofItems(Items.LEATHER)
+                    }).toList(),ModItems.EMPTY_ARTIFACT,1, 40,5, true,
+                    conditionsFromItem(ModItems.MITHRIL_INGOT));
 
-        AddSmitheryRecipe(Arrays.stream(new SmithingIngredient[] {
-                        SmithingIngredient.ofItems(1,1,4,ModItems.EMPTY_ARTIFACT),
-                        SmithingIngredient.ofItems(1,1,1,Items.IRON_BLOCK),
-                        SmithingIngredient.ofItems(1,1,3,Items.SHIELD),
-                        SmithingIngredient.ofItems(1,1,5,Items.IRON_CHESTPLATE),
-                        SmithingIngredient.ofItems(1,1,7,Items.IRON_BARS),
-        }).toList(),ModItems.ARTIFACT_OF_IRON,1, 100,20,false,
-                conditionsFromItem(ModItems.EMPTY_ARTIFACT));
+            AddSmitheryRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,1,Items.IRON_INGOT),
+                            SmithingIngredient.ofItems(1,1,3,Items.IRON_INGOT),
+                            SmithingIngredient.ofItems(1,1,5,Items.IRON_INGOT),
+                            SmithingIngredient.ofItems(1,1,7,Items.IRON_INGOT),
+                    }).toList(),ModItems.IRON_RING,1, 40,15, false,
+                    conditionsFromItem(Items.IRON_INGOT));
+
+            // jewelry recipes
+            for(JewelryItem item : JewelryItem.List){
+                AddSmitheryJewelryRecipe(item);
+            }
+
+            AddSmitheryRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,4,ModItems.EMPTY_ARTIFACT),
+                            SmithingIngredient.ofItems(1,1,1,Items.IRON_BLOCK),
+                            SmithingIngredient.ofItems(1,1,3,Items.SHIELD),
+                            SmithingIngredient.ofItems(1,1,5,Items.IRON_CHESTPLATE),
+                            SmithingIngredient.ofItems(1,1,7,Items.IRON_BARS),
+                    }).toList(),ModItems.ARTIFACT_OF_IRON,1, 100,20,false,
+                    conditionsFromItem(ModItems.EMPTY_ARTIFACT));
+        }
+
 
         this.exporter=null;
     }
@@ -110,11 +128,6 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, base,9).input(dense).criterion(hasItem(dense), conditionsFromItem(dense)).offerTo(exporter,getItemName(dense)+"_decompress_to_"+getItemName(base));
     }
 
-    //private void AddSmitheryRecipe(List<CountIngredient> input, ItemConvertible output, int outputCount, int requiredProgress, int difficulty, boolean shapeless){
-    //    Item inputItem = Arrays.stream(input.getFirst().ingredient.getMatchingStacks()).findFirst().get().getItem();
-    //    AddSmitheryRecipe(input,output,outputCount,requiredProgress,difficulty, shapeless,hasItem(inputItem),conditionsFromItem(inputItem));
-    //}
-
     private void AddSmitheryRecipe(List<SmithingIngredient> input, ItemConvertible output, int outputCount, int requiredProgress, int difficulty, boolean shapeless, CriterionConditions conditions){
         AddSmitheryRecipe(input,output,outputCount,requiredProgress,difficulty, shapeless,"default_conditions",conditions);
     }
@@ -123,6 +136,20 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         DefaultedList<SmithingIngredient> ingredients = DefaultedList.of();
         ingredients.addAll(input);
         SmitheryRecipeJsonBuilder.create(ingredients,output.asItem(),outputCount, requiredProgress,difficulty,shapeless,RecipeCategory.MISC).criterion(criterionName,conditions).offerTo(exporter,new Identifier(Geomancy.MOD_ID,"smithing_"+getItemName(output)));
+
+    }
+
+    private void AddSmitheryJewelryRecipe(JewelryItem base){
+
+        int progressRequiredBase = 10;
+        int difficulty = 15;
+        float gemProgressCostMultiplier = 1;
+        float gemDifficultyMultiplier = 1;
+        int baseMishapWeight = base.getMishapWeight();
+
+        JewelryRecipeJsonBuilder.create(SmithingIngredient.ofItems(1,baseMishapWeight,4,base), progressRequiredBase,
+                gemProgressCostMultiplier,difficulty,gemDifficultyMultiplier,RecipeCategory.MISC)
+                .criterion("has_ingredient",conditionsFromItem(base)).offerTo(exporter,new Identifier(Geomancy.MOD_ID,"jewelry_"+getItemName(base)));
 
     }
 

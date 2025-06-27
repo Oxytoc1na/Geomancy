@@ -39,11 +39,13 @@ import org.oxytocina.geomancy.inventories.AutoCraftingInventory;
 import org.oxytocina.geomancy.inventories.ImplementedInventory;
 import org.oxytocina.geomancy.items.HammerItem;
 import org.oxytocina.geomancy.recipe.SmitheryRecipe;
+import org.oxytocina.geomancy.recipe.SmitheryRecipeI;
 import org.oxytocina.geomancy.recipe.SmithingIngredient;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory, ImplementedInventory {
 
@@ -58,7 +60,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
     protected final PropertyDelegate propertyDelegate;
     private int progress = 0;
     private int maxProgress = 72;
-    public SmitheryRecipe currentRecipe = null;
+    public SmitheryRecipeI currentRecipe = null;
     private boolean initialized = false;
 
     public SmitheryBlockEntity(BlockPos pos, BlockState state) {
@@ -132,7 +134,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
     public void tick(World world, BlockPos pos, BlockState state) {
         if(!initialized) initialize(world,pos,state);
 
-        SmitheryRecipe prevRecipe = currentRecipe;
+        SmitheryRecipeI prevRecipe = currentRecipe;
         this.currentRecipe=getRecipe();
 
         if(this.hasRecipe()){
@@ -159,7 +161,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
         this.currentRecipe=getRecipe();
         this.resetProgress();
         this.maxProgress=currentRecipe!=null?this.currentRecipe.getProgressRequired():10000;
-        setOutput(currentRecipe!=null?this.currentRecipe.getOutput(null):ItemStack.EMPTY);
+        setOutput(currentRecipe!=null?this.currentRecipe.getPreviewOutput(inputInventory()):ItemStack.EMPTY);
 
     }
 
@@ -168,19 +170,22 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
     }
 
     private void craftItem() {
-        SmitheryRecipe recipe = getRecipe();
+        SmitheryRecipeI recipe = getRecipe();
         if (recipe != null) {
 
-            ItemStack result = craft(recipe, inventory, world);
-            int count = result.getCount();
-            result.setCount(count);
-
-            if(!world.isClient)
+            List<ItemStack> results = craft(recipe, inventory, world);
+            for(ItemStack result : results)
             {
-                MultiblockCrafter.spawnItemStackAsEntitySplitViaMaxCount(world, Vec3d.ofCenter(pos).add(new Vec3d(0,1,0)), result, count, new Vec3d(0,0.25f,0), false, null);
-                world.playSound(null, pos, ModSoundEvents.SMITHERY_FINISHED, SoundCategory.NEUTRAL, 1.0F, 0.6F + world.getRandom().nextFloat() * 0.2F);
+                int count = result.getCount();
+                //result.setCount(count); ??
 
+                if(!world.isClient)
+                {
+                    MultiblockCrafter.spawnItemStackAsEntitySplitViaMaxCount(world, Vec3d.ofCenter(pos).add(new Vec3d(0,1,0)), result, count, new Vec3d(0,0.25f,0), false, null);
+                }
             }
+            world.playSound(null, pos, ModSoundEvents.SMITHERY_FINISHED, SoundCategory.NEUTRAL, 1.0F, 0.6F + world.getRandom().nextFloat() * 0.2F);
+
         }
     }
 
@@ -192,7 +197,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
         return currentRecipe != null;
     }
 
-    private SmitheryRecipe getRecipe(){
+    private SmitheryRecipeI getRecipe(){
         return getRecipeFor(world,getItems());
 
     }
@@ -201,13 +206,12 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
         progress+=amount;
     }
 
-    public SmitheryRecipe getRecipeFor(@NotNull World world, DefaultedList<ItemStack> inventory) {
+    public SmitheryRecipeI getRecipeFor(@NotNull World world, DefaultedList<ItemStack> inventory) {
         AUTO_INVENTORY.setInputInventory( inputInventory().getItems() );
-        return world.getRecipeManager().getFirstMatch(ModRecipeTypes.SMITHING, AUTO_INVENTORY, world).orElse(null);
-    }
 
-    public int getRecipeID(@NotNull World world, SmitheryRecipe recipe){
-        return world.getRecipeManager().listAllOfType(ModRecipeTypes.SMITHING).indexOf(recipe);
+        SmitheryRecipeI res = world.getRecipeManager().getFirstMatch(ModRecipeTypes.SMITHING, AUTO_INVENTORY, world).orElse(null);
+        if(res==null) res = world.getRecipeManager().getFirstMatch(ModRecipeTypes.JEWELRY, AUTO_INVENTORY, world).orElse(null);
+        return res;
     }
 
     public ImplementedInventory inputInventory(){
@@ -222,9 +226,9 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
         setStack(OUTPUT_SLOT,stack);
     }
 
-    public ItemStack craft(SmitheryRecipe recipe, DefaultedList<ItemStack> inventory, World world) {
+    public List<ItemStack> craft(SmitheryRecipeI recipe, DefaultedList<ItemStack> inventory, World world) {
         AUTO_INVENTORY.setInputInventory(inventory);
-        return recipe.craft(AUTO_INVENTORY, world.getRegistryManager());
+        return recipe.getSmithingResult(AUTO_INVENTORY, true);
     }
 
     private static final AutoCraftingInventory AUTO_INVENTORY = new AutoCraftingInventory(SLOT_COUNT, 1);
@@ -343,7 +347,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
         HashMap<Integer,Integer> weights = new HashMap<>();
 
         for (int i = 0; i < inputs.size(); i++) {
-            for(SmithingIngredient ing : currentRecipe.getSmithingIngredients()){
+            for(SmithingIngredient ing : currentRecipe.getSmithingIngredients(inputs)){
                 if(!ing.test(inputs.getStack(i))) continue;
                 weights.put(i,ing.mishapWeight);
                 break;
@@ -364,7 +368,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
     }
 
     public ItemStack getBaseStack() {
-        if(currentRecipe==null || currentRecipe.getShapeless()) return ItemStack.EMPTY;
+        if(currentRecipe==null || !currentRecipe.hasBaseStack()) return ItemStack.EMPTY;
         return getStack(BASE_SLOT);
     }
 
