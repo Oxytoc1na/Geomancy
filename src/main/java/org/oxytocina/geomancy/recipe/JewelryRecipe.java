@@ -41,7 +41,7 @@ public class JewelryRecipe extends GatedModRecipe<Inventory> implements Smithery
     @Override
     public boolean matches(@NotNull Inventory inv, World world) {
 
-        return !getOutput(inv,false).isEmpty();
+        return !getOutput(inv,false,false).isEmpty();
     }
 
     @Override
@@ -51,7 +51,7 @@ public class JewelryRecipe extends GatedModRecipe<Inventory> implements Smithery
     }
 
     public List<ItemStack> newCraft(Inventory inv) {
-        return getOutput(inv, true);
+        return getOutput(inv, true, false);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class JewelryRecipe extends GatedModRecipe<Inventory> implements Smithery
         return null;
     }
 
-    public List<ItemStack> getOutput(Inventory inv, boolean removeIngredients) {
+    public List<ItemStack> getOutput(Inventory inv, boolean removeIngredients, boolean preview) {
 
         // check if at least one new gem is there
         // check for a free gem slot
@@ -79,10 +79,13 @@ public class JewelryRecipe extends GatedModRecipe<Inventory> implements Smithery
         // fetch free slots
         int freeSlots = jewelryItem.gemSlotCount-presentGems.size();
 
-        if(freeSlots<=0){
+        // fetch ingredient gems
+        HashMap<Integer,ItemStack> gemSlotsToAdd = getAddedGems(inv,freeSlots);
+
+        if(freeSlots<=0 || (gemSlotsToAdd.isEmpty() && !presentGems.isEmpty())){
             // unsmith
             if(presentGems.isEmpty()) return res;
-            res.addAll(jewelryItem.UnSmith(baseStack));
+            res.addAll(jewelryItem.UnSmith(baseStack,preview));
             if(removeIngredients){
                 baseStack.decrement(1);
             }
@@ -91,8 +94,8 @@ public class JewelryRecipe extends GatedModRecipe<Inventory> implements Smithery
         else{
             // add gems
 
-            // fetch ingredient gems
-            HashMap<Integer,ItemStack> gemSlotsToAdd = getAddedGems(inv,freeSlots);
+            // no gems in crafting grid
+            if(gemSlotsToAdd.isEmpty()) return res;
 
             // add gems to output
             ItemStack output = baseStack.copy();
@@ -165,7 +168,7 @@ public class JewelryRecipe extends GatedModRecipe<Inventory> implements Smithery
 
         // fetch already slotted gems
         ItemStack baseStack = getRecipeBase(inv);
-        JewelryItem jewelryItem = (JewelryItem)baseStack.getItem();
+        if(baseStack.isEmpty() || !(baseStack.getItem() instanceof JewelryItem jewelryItem)) return difficulty;
         var presentGems = jewelryItem.getSlots(baseStack);
 
         // fetch free slots
@@ -203,7 +206,7 @@ public class JewelryRecipe extends GatedModRecipe<Inventory> implements Smithery
 
     @Override
     public ItemStack getPreviewOutput(Inventory inv) {
-        List<ItemStack> outputs = getOutput(inv,false);
+        List<ItemStack> outputs = getOutput(inv,false,true);
         return outputs.isEmpty()?ItemStack.EMPTY:outputs.get(0);
     }
 
@@ -257,7 +260,7 @@ public class JewelryRecipe extends GatedModRecipe<Inventory> implements Smithery
     }
 
     @Override
-    public List<ItemStack> getSmithingResult(Inventory inv, boolean removeItems) {
-        return getOutput(inv,removeItems);
+    public List<ItemStack> getSmithingResult(Inventory inv, boolean removeItems, boolean preview) {
+        return getOutput(inv,removeItems,preview);
     }
 }

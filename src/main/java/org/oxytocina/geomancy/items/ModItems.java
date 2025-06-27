@@ -60,6 +60,8 @@ public class ModItems {
     // jewelry
     public static final JewelryItem IRON_RING = (JewelryItem) register("iron_ring",new JewelryItem(new Item.Settings().maxCount(1),
             JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.RING).withGemCount(1)),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
+    public static final JewelryItem IRON_NECKLACE = (JewelryItem) register("iron_necklace",new JewelryItem(new Item.Settings().maxCount(1),
+            JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(100)),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
 
     // tools
     public static final HammerItem IRON_HAMMER = (HammerItem) register("iron_hammer",new HammerItem(5,-3.3f,

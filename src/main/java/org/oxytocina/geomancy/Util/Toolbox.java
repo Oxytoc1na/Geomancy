@@ -103,4 +103,11 @@ public class Toolbox {
         int alpha = ((int)(a*255))&255;
         return alpha << 24 | red << 16 | green << 8 | blue;
     }
+
+    public static boolean itemStacksAreEqual(ItemStack a, ItemStack b){
+        if(a.getItem()!=b.getItem()) return false;
+        if(a.hasNbt()!=b.hasNbt()) return false;
+        if(a.hasNbt() && !a.getNbt().equals(b.getNbt())) return false;
+        return true;
+    }
 }

@@ -61,6 +61,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
     private int progress = 0;
     private int maxProgress = 72;
     public SmitheryRecipeI currentRecipe = null;
+    public ItemStack currentResult = ItemStack.EMPTY;
     private boolean initialized = false;
 
     public SmitheryBlockEntity(BlockPos pos, BlockState state) {
@@ -98,7 +99,6 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
         super.writeNbt(nbt);
         Inventories.writeNbt(nbt,inventory);
         nbt.putInt("Progress",progress);
-        Geomancy.logInfo("writeNbt",world);
     }
 
     @Override
@@ -107,7 +107,6 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
         clear();
         Inventories.readNbt(nbt,inventory);
         progress = nbt.getInt("Progress");
-        Geomancy.logInfo("readNbt",world);
     }
 
     @Override
@@ -136,26 +135,33 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
 
         SmitheryRecipeI prevRecipe = currentRecipe;
         this.currentRecipe=getRecipe();
-
+        ItemStack previousResult = currentResult;
         if(this.hasRecipe()){
+            currentResult = currentRecipe.getPreviewOutput(inputInventory());
             if(hasCraftingFinished()){
                 this.craftItem();
                 this.resetProgress();
                 markDirty();
             }
         }
+        else
+            currentResult = ItemStack.EMPTY;
 
         if(prevRecipe!=currentRecipe){
-            recipeChanged(state);
+            recipeChanged();
+        }
+
+        if(Toolbox.itemStacksAreEqual(previousResult, currentResult)){
+            recipeChanged();
         }
 
     }
 
     private void initialize(World world, BlockPos pos, BlockState state){
-        recipeChanged(state);
+        recipeChanged();
         initialized=true;
     }
-    private void recipeChanged(BlockState state){
+    private void recipeChanged(){
         if(world==null) return;
 
         this.currentRecipe=getRecipe();
@@ -187,6 +193,8 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
             world.playSound(null, pos, ModSoundEvents.SMITHERY_FINISHED, SoundCategory.NEUTRAL, 1.0F, 0.6F + world.getRandom().nextFloat() * 0.2F);
 
         }
+
+        recipeChanged();
     }
 
     private boolean hasCraftingFinished() {
@@ -228,7 +236,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
 
     public List<ItemStack> craft(SmitheryRecipeI recipe, DefaultedList<ItemStack> inventory, World world) {
         AUTO_INVENTORY.setInputInventory(inventory);
-        return recipe.getSmithingResult(AUTO_INVENTORY, true);
+        return recipe.getSmithingResult(AUTO_INVENTORY, true,false);
     }
 
     private static final AutoCraftingInventory AUTO_INVENTORY = new AutoCraftingInventory(SLOT_COUNT, 1);
@@ -375,7 +383,6 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
     @Override
     @Nullable
     public Packet<ClientPlayPacketListener> toUpdatePacket() {
-        Geomancy.logInfo("toUpdatePacket",world);
         return BlockEntityUpdateS2CPacket.create(this);
     }
 
@@ -386,7 +393,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
     }
 
     public void inventoryChanged() {
-        this.markDirty();
+        recipeChanged();
     }
 
     @Override
@@ -412,5 +419,32 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
     public boolean canTransferTo(Inventory hopperInventory, int slot, ItemStack stack) {
         if(slot>=INPUT_SLOT_COUNT) return false;
         return ImplementedInventory.super.canTransferTo(hopperInventory, slot, stack);
+    }
+
+    @Override
+    public ItemStack removeStack(int slot) {
+
+        if(slot<INPUT_SLOT_COUNT)
+            inventoryChanged();
+
+        return ImplementedInventory.super.removeStack(slot);
+    }
+
+    @Override
+    public ItemStack removeStack(int slot, int count) {
+
+        if(slot<INPUT_SLOT_COUNT)
+            inventoryChanged();
+
+        return ImplementedInventory.super.removeStack(slot, count);
+    }
+
+    @Override
+    public void setStack(int slot, ItemStack stack) {
+
+        if(slot<INPUT_SLOT_COUNT)
+            inventoryChanged();
+
+        ImplementedInventory.super.setStack(slot, stack);
     }
 }

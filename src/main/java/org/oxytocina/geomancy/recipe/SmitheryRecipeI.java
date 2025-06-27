@@ -6,15 +6,15 @@ import net.minecraft.item.ItemStack;
 import java.util.List;
 
 public interface SmitheryRecipeI {
-    public List<ItemStack> getSmithingResult(Inventory inv, boolean removeItems);
+    List<ItemStack> getSmithingResult(Inventory inv, boolean removeItems, boolean preview);
 
-    public int getDifficulty(Inventory inv);
+    int getDifficulty(Inventory inv);
 
-    public int getProgressRequired(Inventory inv);
+    int getProgressRequired(Inventory inv);
 
-    public ItemStack getPreviewOutput(Inventory inv);
+    ItemStack getPreviewOutput(Inventory inv);
 
-    public boolean hasBaseStack();
+    boolean hasBaseStack();
 
-    public List<SmithingIngredient> getSmithingIngredients(Inventory inv);
+    List<SmithingIngredient> getSmithingIngredients(Inventory inv);
 }

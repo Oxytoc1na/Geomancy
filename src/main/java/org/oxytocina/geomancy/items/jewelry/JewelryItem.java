@@ -134,6 +134,9 @@ public class JewelryItem extends TrinketItem implements DyeableItem {
             list.add(Text.translatable("tooltip.geomancy.jewelry.nogems").formatted(Formatting.GRAY));
         }
 
+        if(stack.hasNbt() && stack.getNbt().contains("preview",NbtElement.BYTE_TYPE) && stack.getNbt().getBoolean("preview"))
+            list.add(Text.translatable("tooltip.geomancy.jewelry.unsmith").formatted(Formatting.DARK_GREEN));
+
         super.appendTooltip(stack, world, list, context);
     }
 
@@ -141,10 +144,13 @@ public class JewelryItem extends TrinketItem implements DyeableItem {
         return jewelrySettings.baseMishapWeight;
     }
 
-    public List<ItemStack> UnSmith(ItemStack stack){
+    public List<ItemStack> UnSmith(ItemStack stack, boolean preview){
         List<ItemStack> res = new ArrayList<>();
         ItemStack base = stack.copy();
         base.removeSubNbt("gems");
+
+        if(preview) base.setSubNbt("preview",NbtByte.of(true));
+
         res.add(base);
 
         // add gems

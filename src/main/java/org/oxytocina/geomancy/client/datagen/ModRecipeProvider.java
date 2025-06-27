@@ -90,7 +90,15 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                             SmithingIngredient.ofItems(1,1,3,Items.IRON_INGOT),
                             SmithingIngredient.ofItems(1,1,5,Items.IRON_INGOT),
                             SmithingIngredient.ofItems(1,1,7,Items.IRON_INGOT),
-                    }).toList(),ModItems.IRON_RING,1, 40,15, false,
+                    }).toList(),ModItems.IRON_RING,1, 30,15, false,
+                    conditionsFromItem(Items.IRON_INGOT));
+            AddSmitheryRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,0,Items.IRON_INGOT),
+                            SmithingIngredient.ofItems(1,1,2,Items.IRON_INGOT),
+                            SmithingIngredient.ofItems(1,1,3,Items.IRON_INGOT),
+                            SmithingIngredient.ofItems(1,1,5,Items.IRON_INGOT),
+                            SmithingIngredient.ofItems(1,1,7,Items.IRON_INGOT),
+                    }).toList(),ModItems.IRON_NECKLACE,1, 50,15, false,
                     conditionsFromItem(Items.IRON_INGOT));
 
             // jewelry recipes

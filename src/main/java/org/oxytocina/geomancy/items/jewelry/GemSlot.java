@@ -35,65 +35,28 @@ public class GemSlot {
     public float quality;
     public final String gemItemIdentifierString;
 
+    public static HashMap<Item, Settings> settingsMap = new HashMap<>();
     public static HashMap<Item, Integer> gemColorMap = new HashMap<>();
-    public static HashMap<Item, Function4<ItemStack,GemSlot, SlotReference, LivingEntity,Boolean>> gemTickFunctionMap = new HashMap<>();
-    public static HashMap<Item, Function4<ItemStack,GemSlot, SlotReference, LivingEntity,Boolean>> gemEquipFunctionMap = new HashMap<>();
-    public static HashMap<Item, Function4<ItemStack,GemSlot, SlotReference, LivingEntity,Boolean>> gemUnequipFunctionMap = new HashMap<>();
-    public static HashMap<Item, Function6<ItemStack,GemSlot, SlotReference, LivingEntity,UUID,Multimap<EntityAttribute, EntityAttributeModifier>,Multimap<EntityAttribute, EntityAttributeModifier>>> gemModifierFunctionMap = new HashMap<>();
-    public static HashMap<Item, Function5<ItemStack,GemSlot, World , List<Text> , TooltipContext ,Boolean>> gemTooltipFunctionMap = new HashMap<>();
 
     static{
-        registerColor(Items.DIAMOND,0f,1f,1f);
-        registerColor(Items.EMERALD,0f,1f,0f);
-        registerColor(Items.LAPIS_LAZULI,0f,0f,1f);
 
         // Diamond gems give 2 Armor per quality
-        registerModifierFunction(Items.DIAMOND,((itemStack, gemSlot, slotReference, livingEntity, uuid, modifiers) -> {
+        register(Settings.create(Items.DIAMOND).setColor(0,1,1).setDifficulty(1).setProgressCost(0).withGenericTooltip(Formatting.AQUA).setModifier((itemStack, gemSlot, slotReference, livingEntity, uuid, modifiers) -> {
             modifiers.put(EntityAttributes.GENERIC_ARMOR, new EntityAttributeModifier(uuid, "geomancy:jewelry_diamond_gem_armor", 2*gemSlot.getEffectiveQuality(itemStack,livingEntity), EntityAttributeModifier.Operation.ADDITION));
             return modifiers;
         }));
-        registerTooltipFunction(Items.DIAMOND,((itemStack, gemSlot, world, texts, tooltipContext) ->  {
-            texts.add(Text.translatable(gemSlot.gemItem.getTranslationKey()).formatted(Formatting.AQUA)); return true;}));
+        register(Settings.create(Items.EMERALD).setColor(0,1,0).setDifficulty(1).setProgressCost(0).withGenericTooltip(Formatting.GREEN));
+        register(Settings.create(Items.LAPIS_LAZULI).setColor(0,0,1).setDifficulty(1).setProgressCost(0).withGenericTooltip(Formatting.BLUE));
 
-        // Emeralds
-        registerTooltipFunction(Items.EMERALD,((itemStack, gemSlot, world, texts, tooltipContext) ->  {
-            texts.add(Text.translatable(gemSlot.gemItem.getTranslationKey()).formatted(Formatting.GREEN)); return true;}));
-
-        // Lapis
-        registerTooltipFunction(Items.LAPIS_LAZULI,((itemStack, gemSlot, world, texts, tooltipContext) ->  {
-            texts.add(Text.translatable(gemSlot.gemItem.getTranslationKey()).formatted(Formatting.DARK_BLUE)); return true;}));
     }
 
-    public static void registerColor(Item item, float red, float green, float blue){
-        registerColor(item, Toolbox.colorFromRGBA(red,green,blue,1));
-    }
-
-    public static void registerColor(Item item, int red, int green, int blue){
-        registerColor(item,0xFF000000 | red << 16 | green << 8 | blue);
+    public static void register(Settings settings){
+        settingsMap.put(settings.item,settings);
+        registerColor(settings.item,settings.color);
     }
 
     public static void registerColor(Item item, int color){
         gemColorMap.put(item,color);
-    }
-
-    public static void registerTickFunction(Item item, Function4<ItemStack,GemSlot, SlotReference, LivingEntity,Boolean> func){
-        gemTickFunctionMap.put(item,func);
-    }
-
-    public static void registerEquipFunction(Item item, Function4<ItemStack,GemSlot, SlotReference, LivingEntity,Boolean> func){
-        gemEquipFunctionMap.put(item,func);
-    }
-
-    public static void registerUnequipFunction(Item item, Function4<ItemStack,GemSlot, SlotReference, LivingEntity,Boolean> func){
-        gemUnequipFunctionMap.put(item,func);
-    }
-
-    public static void registerModifierFunction(Item item, Function6<ItemStack,GemSlot, SlotReference, LivingEntity,UUID,Multimap<EntityAttribute, EntityAttributeModifier>,Multimap<EntityAttribute, EntityAttributeModifier>> func){
-        gemModifierFunctionMap.put(item,func);
-    }
-
-    public static void registerTooltipFunction(Item item, Function5<ItemStack,GemSlot, World, List<Text>, TooltipContext, Boolean> func){
-        gemTooltipFunctionMap.put(item,func);
     }
 
     public GemSlot(Item item) {
@@ -145,33 +108,43 @@ public class GemSlot {
         return quality;
     }
 
+    public static Settings getSettings(Item item){
+        if(!settingsMap.containsKey(item)) return null;
+        return settingsMap.get(item);
+    }
+
     public static boolean tick(ItemStack stack,GemSlot gem, SlotReference slot, LivingEntity entity){
-        if(gemTickFunctionMap.containsKey(gem.gemItem))
-            return gemTickFunctionMap.get(gem.gemItem).apply(stack,gem,slot,entity);
+        Settings s = getSettings(gem.gemItem);
+        if(s!=null&&s.tickFunction!=null)
+            return s.tickFunction.apply(stack,gem,slot,entity);
         return false;
     }
 
     public static boolean equip(ItemStack stack,GemSlot gem, SlotReference slot, LivingEntity entity){
-        if(gemEquipFunctionMap.containsKey(gem.gemItem))
-            return gemEquipFunctionMap.get(gem.gemItem).apply(stack,gem,slot,entity);
+        Settings s = getSettings(gem.gemItem);
+        if(s!=null&&s.equipFunction!=null)
+            return s.equipFunction.apply(stack,gem,slot,entity);
         return false;
     }
 
     public static boolean unequip(ItemStack stack,GemSlot gem, SlotReference slot, LivingEntity entity){
-        if(gemUnequipFunctionMap.containsKey(gem.gemItem))
-            return gemUnequipFunctionMap.get(gem.gemItem).apply(stack,gem,slot,entity);
+        Settings s = getSettings(gem.gemItem);
+        if(s!=null&&s.unequipFunction!=null)
+            return s.unequipFunction.apply(stack,gem,slot,entity);
         return false;
     }
 
     public static Multimap<EntityAttribute, EntityAttributeModifier> modifyModifiers(ItemStack stack, GemSlot gem, SlotReference slot, LivingEntity entity, UUID uuid, Multimap<EntityAttribute, EntityAttributeModifier> modifiers){
-        if(gemModifierFunctionMap.containsKey(gem.gemItem))
-            return gemModifierFunctionMap.get(gem.gemItem).apply(stack,gem,slot,entity,uuid,modifiers);
+        Settings s = getSettings(gem.gemItem);
+        if(s!=null&&s.modifierFunction!=null)
+            return s.modifierFunction.apply(stack,gem,slot,entity,uuid,modifiers);
         return modifiers;
     }
 
     public static boolean appendTooltip(ItemStack stack, GemSlot gem, World world, List<Text> list, TooltipContext context) {
-        if(gemTooltipFunctionMap.containsKey(gem.gemItem))
-            return gemTooltipFunctionMap.get(gem.gemItem).apply(stack,gem,world,list,context);
+        Settings s = getSettings(gem.gemItem);
+        if(s!=null&&s.tooltipFunction!=null)
+            return s.tooltipFunction.apply(stack,gem,world,list,context);
         return false;
     }
 
@@ -185,5 +158,38 @@ public class GemSlot {
 
     public static float getGemProgressCost(ItemStack item){
         return 0;
+    }
+
+    public static class Settings{
+        public Item item;
+        public int difficulty = 0;
+        public int progressCost = 0;
+        public int color = 0xFFFFFFFF;
+        public Function4<ItemStack,GemSlot, SlotReference, LivingEntity,Boolean> tickFunction = null;
+        public Function4<ItemStack,GemSlot, SlotReference, LivingEntity,Boolean> equipFunction = null;
+        public Function4<ItemStack,GemSlot, SlotReference, LivingEntity,Boolean> unequipFunction = null;
+        public Function6<ItemStack,GemSlot, SlotReference, LivingEntity,UUID,Multimap<EntityAttribute, EntityAttributeModifier>,Multimap<EntityAttribute, EntityAttributeModifier>> modifierFunction = null;
+        public Function5<ItemStack,GemSlot, World , List<Text> , TooltipContext ,Boolean> tooltipFunction = null;
+
+        private Settings(){
+
+        }
+
+        public Settings setDifficulty(int difficulty){this.difficulty=difficulty;return this;}
+        public Settings setProgressCost(int progressCost){this.progressCost=progressCost;return this;}
+        public Settings setColor(int color){this.color=color;return this;}
+        public Settings setColor(float r, float g, float b){this.color=Toolbox.colorFromRGB(r,g,b);return this;}
+        public Settings setTick(Function4<ItemStack,GemSlot, SlotReference, LivingEntity,Boolean> f){tickFunction=f;return this;}
+        public Settings setEquip(Function4<ItemStack,GemSlot, SlotReference, LivingEntity,Boolean> f){equipFunction=f;return this;}
+        public Settings setUnequip(Function4<ItemStack,GemSlot, SlotReference, LivingEntity,Boolean> f){unequipFunction=f;return this;}
+        public Settings setModifier(Function6<ItemStack,GemSlot, SlotReference, LivingEntity,UUID,Multimap<EntityAttribute, EntityAttributeModifier>,Multimap<EntityAttribute, EntityAttributeModifier>> f){modifierFunction=f;return this;}
+        public Settings setTooltip(Function5<ItemStack,GemSlot, World , List<Text> , TooltipContext ,Boolean> f){tooltipFunction=f;return this;}
+        public Settings withGenericTooltip(net.minecraft.util.Formatting formatting){ return setTooltip((itemStack, gemSlot, world, texts, tooltipContext) -> {
+            texts.add(Text.translatable(gemSlot.gemItem.getTranslationKey()).formatted(formatting)); return true;});};
+        public Settings setItem(Item item){this.item=item;return this;}
+
+        public static Settings create(Item item){
+            return new Settings().setItem(item);
+        }
     }
 }

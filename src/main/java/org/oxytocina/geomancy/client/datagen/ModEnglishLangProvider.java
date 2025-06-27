@@ -43,7 +43,9 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("item.MODID.artifact_of_gold.desc"  , "Does something idk");
 
             add("item.MODID.iron_ring"  , "Iron Ring");
+            add("item.MODID.iron_necklace"  , "Iron Necklace");
             add("tooltip.geomancy.jewelry.nogems","No Gems");
+            add("tooltip.geomancy.jewelry.unsmith","Salvages gems");
         }
 
         // Blocks
