@@ -71,19 +71,8 @@ public class JewelryRecipe extends GatedModRecipe<Inventory> implements Smithery
         // if none, set output to empty slots
         List<ItemStack> res = new ArrayList<>();
 
-        // check for base
-        boolean hasBase = false;
-        int baseSlot;
-        for (baseSlot = 0; baseSlot < inv.size(); baseSlot++) {
-            if(base.test(inv.getStack(baseSlot))){
-                hasBase = true;
-                break;
-            }
-        }
-        if(!hasBase) return res;
-
-        // fetch already slotted gems
-        ItemStack baseStack = inv.getStack(baseSlot);
+        ItemStack baseStack = getRecipeBase(inv);
+        if(baseStack.isEmpty()) return res;
         JewelryItem jewelryItem = (JewelryItem)baseStack.getItem();
         var presentGems = jewelryItem.getSlots(baseStack);
 
@@ -103,24 +92,7 @@ public class JewelryRecipe extends GatedModRecipe<Inventory> implements Smithery
             // add gems
 
             // fetch ingredient gems
-            HashMap<Integer,ItemStack> slotsWithGems = new HashMap<>();
-            for (int i = 0; i < inv.size(); i++) {
-                var slot = inv.getStack(i);
-                if(!slot.isEmpty() && GemSlot.itemIsGem(slot)){
-                    slotsWithGems.put(i,slot);
-                }
-            }
-
-            // no new gems
-            if(slotsWithGems.isEmpty()) return res;
-
-            // fetch which gems to add
-            HashMap<Integer,ItemStack> gemSlotsToAdd = new HashMap<>();
-            for(Integer i : slotsWithGems.keySet())
-            {
-                if(gemSlotsToAdd.size() >= freeSlots) break;
-                gemSlotsToAdd.put(i,slotsWithGems.get(i));
-            }
+            HashMap<Integer,ItemStack> gemSlotsToAdd = getAddedGems(inv,freeSlots);
 
             // add gems to output
             ItemStack output = baseStack.copy();
@@ -145,6 +117,41 @@ public class JewelryRecipe extends GatedModRecipe<Inventory> implements Smithery
         //return res;
     }
 
+    public HashMap<Integer,ItemStack> getAddedGems(Inventory inv, int freeSlots){
+        HashMap<Integer,ItemStack> res = new HashMap<>();
+
+        // fetch ingredient gems
+        HashMap<Integer,ItemStack> slotsWithGems = new HashMap<>();
+        for (int i = 0; i < inv.size(); i++) {
+            var slot = inv.getStack(i);
+            if(!slot.isEmpty() && GemSlot.itemIsGem(slot)){
+                slotsWithGems.put(i,slot);
+            }
+        }
+
+        // no new gems
+        if(slotsWithGems.isEmpty()) return res;
+
+        // fetch which gems to add
+        for(Integer i : slotsWithGems.keySet())
+        {
+            if(res.size() >= freeSlots) break;
+            res.put(i,slotsWithGems.get(i));
+        }
+
+        return res;
+    }
+
+    public ItemStack getRecipeBase(Inventory inv){
+        // check for base
+        for (int baseSlot = 0; baseSlot < inv.size(); baseSlot++) {
+            if(base.test(inv.getStack(baseSlot))){
+                return inv.getStack(baseSlot);
+            }
+        }
+        return ItemStack.EMPTY;
+    }
+
     @Override
     public DefaultedList<Ingredient> getIngredients() {
         DefaultedList<Ingredient> res = DefaultedList.of();
@@ -152,15 +159,46 @@ public class JewelryRecipe extends GatedModRecipe<Inventory> implements Smithery
         return res;
     }
 
-    public int getDifficulty() {
-        // TODO
-        return difficulty;
+    @Override
+    public int getDifficulty(Inventory inv) {
+        int res = difficulty;
+
+        // fetch already slotted gems
+        ItemStack baseStack = getRecipeBase(inv);
+        JewelryItem jewelryItem = (JewelryItem)baseStack.getItem();
+        var presentGems = jewelryItem.getSlots(baseStack);
+
+        // fetch free slots
+        int freeSlots = jewelryItem.gemSlotCount-presentGems.size();
+
+        HashMap<Integer,ItemStack> gemsToAdd = getAddedGems(inv,freeSlots);
+
+        for(ItemStack s : gemsToAdd.values()){
+            res += Math.round(GemSlot.getGemDifficulty(s)*gemDifficultyMultiplier);
+        }
+
+        return res;
     }
 
     @Override
-    public int getProgressRequired() {
-        // TODO
-        return progressRequiredBase;
+    public int getProgressRequired(Inventory inv) {
+        int res = progressRequiredBase;
+
+        // fetch already slotted gems
+        ItemStack baseStack = getRecipeBase(inv);
+        JewelryItem jewelryItem = (JewelryItem)baseStack.getItem();
+        var presentGems = jewelryItem.getSlots(baseStack);
+
+        // fetch free slots
+        int freeSlots = jewelryItem.gemSlotCount-presentGems.size();
+
+        HashMap<Integer,ItemStack> gemsToAdd = getAddedGems(inv,freeSlots);
+
+        for(ItemStack s : gemsToAdd.values()){
+            res += Math.round(GemSlot.getGemProgressCost(s)*gemProgressCostMultiplier);
+        }
+
+        return res;
     }
 
     @Override

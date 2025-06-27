@@ -158,7 +158,8 @@ public class SmitheryRecipe extends GatedModRecipe<Inventory> implements Smither
         return res;
     }
 
-    public int getProgressRequired() {return progressRequired;}
+    @Override
+    public int getProgressRequired(Inventory inv) {return progressRequired;}
 
     @Override
     public ItemStack getPreviewOutput(Inventory inv) {
@@ -175,7 +176,8 @@ public class SmitheryRecipe extends GatedModRecipe<Inventory> implements Smither
         return inputs;
     }
 
-    public int getDifficulty() {return difficulty;}
+    @Override
+    public int getDifficulty(Inventory inv) {return difficulty;}
     public boolean getShapeless() {return shapeless;}
 
     @Override

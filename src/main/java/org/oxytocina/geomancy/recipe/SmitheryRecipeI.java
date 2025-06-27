@@ -8,9 +8,9 @@ import java.util.List;
 public interface SmitheryRecipeI {
     public List<ItemStack> getSmithingResult(Inventory inv, boolean removeItems);
 
-    public int getDifficulty();
+    public int getDifficulty(Inventory inv);
 
-    public int getProgressRequired();
+    public int getProgressRequired(Inventory inv);
 
     public ItemStack getPreviewOutput(Inventory inv);
 

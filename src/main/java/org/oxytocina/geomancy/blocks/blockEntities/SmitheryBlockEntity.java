@@ -71,7 +71,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
                 return switch(index) {
                     case 0 -> SmitheryBlockEntity.this.progress;
                     case 1 -> SmitheryBlockEntity.this.maxProgress;
-                    case 2 -> SmitheryBlockEntity.this.currentRecipe!=null?SmitheryBlockEntity.this.currentRecipe.getDifficulty():-1;
+                    case 2 -> SmitheryBlockEntity.this.currentRecipe!=null?SmitheryBlockEntity.this.currentRecipe.getDifficulty(SmitheryBlockEntity.this.inputInventory()):-1;
                     default -> 0;
                 };
             }
@@ -160,7 +160,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
 
         this.currentRecipe=getRecipe();
         this.resetProgress();
-        this.maxProgress=currentRecipe!=null?this.currentRecipe.getProgressRequired():10000;
+        this.maxProgress=currentRecipe!=null?this.currentRecipe.getProgressRequired(inputInventory()):10000;
         setOutput(currentRecipe!=null?this.currentRecipe.getPreviewOutput(inputInventory()):ItemStack.EMPTY);
 
     }
@@ -361,7 +361,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
 
         if(currentRecipe==null) return false;
 
-        float fraction = skill / currentRecipe.getDifficulty();
+        float fraction = skill / currentRecipe.getDifficulty(inputInventory());
         float random = mishapRandom.nextFloat();
 
         return fraction > random;

@@ -178,4 +178,12 @@ public class GemSlot {
     public static boolean itemIsGem(ItemStack item){
         return item.isIn(TagKey.of(RegistryKeys.ITEM, Geomancy.locate("jewelry_gems")));
     }
+
+    public static float getGemDifficulty(ItemStack item){
+        return 1;
+    }
+
+    public static float getGemProgressCost(ItemStack item){
+        return 0;
+    }
 }
