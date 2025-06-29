@@ -3,12 +3,13 @@ package org.oxytocina.geomancy.client.datagen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.minecraft.advancement.Advancement;
+import net.minecraft.advancement.AdvancementCriterion;
 import net.minecraft.advancement.AdvancementFrame;
+import net.minecraft.advancement.criterion.CriterionConditions;
 import net.minecraft.advancement.criterion.InventoryChangedCriterion;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.Items;
-import net.minecraft.predicate.entity.LootContextPredicate;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -16,9 +17,11 @@ import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.fluids.ModFluids;
 import org.oxytocina.geomancy.items.ModItems;
-import org.oxytocina.geomancy.progression.advancement.ModCriteria;
 import org.oxytocina.geomancy.progression.advancement.SimpleCriterion;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
@@ -50,6 +53,9 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         Advancement got_gilded_deepslate = AddGetItemAdvancement(ModBlocks.DECORATED_GILDED_DEEPSLATE,"gilded_deepslate",new ItemConvertible[]{ModBlocks.GILDED_DEEPSLATE,ModBlocks.DECORATED_GILDED_DEEPSLATE},"main",AdvancementFrame.TASK,true,false,main);
         Advancement simple_duplicate_trinkets = AddSimpleAdvancement(ModItems.ARTIFACT_OF_IRON,"duplicate_trinkets","duplicate_trinkets","main",AdvancementFrame.TASK,true,false,main);
         Advancement simple_tried_to_take_smithery_result = AddSimpleAdvancement(ModItems.IRON_HAMMER,"tried_to_take_smithery_result","tried_to_take_smithery_result","main",AdvancementFrame.TASK,true,true,main);
+
+        // progression milestones
+        Advancement milestone_smithery = AddOrMilestoneAdvancement("smithery", Arrays.stream(new String[]{"geomancy:recipes/tools/smithery_block"}).toList());
     }
     private Advancement AddGetItemAdvancement(ItemConvertible item,String name, ItemConvertible conditionItem, String category, AdvancementFrame frame, boolean announce, boolean hidden, Advancement parent){
         return AddGetItemAdvancement(item,name,new Item[]{conditionItem.asItem()},category,frame,announce,hidden,parent);
@@ -95,5 +101,31 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                 .build(consumer, Geomancy.MOD_ID + ":"+category+"/simple_"+name);
 
         return res;
+    }
+
+    private Advancement AddOrMilestoneAdvancement(String name, List<String> ORprerequisites){
+        List<List<String>> AND = new ArrayList<>();
+        AND.add(ORprerequisites);
+        return AddAndMilestoneAdvancement(name,AND);
+    }
+
+    private Advancement AddAndMilestoneAdvancement(String name, List<List<String>> ANDprerequisites){
+        Advancement.Builder builder = Advancement.Builder.create();
+
+        String[][] reqs = new String[ANDprerequisites.size()][];
+        for (int i = 0; i < ANDprerequisites.size(); i++) {
+            var ORprereqs = ANDprerequisites.get(i);
+            reqs[i] = new String[ORprereqs.size()];
+            for (int j = 0; j < ORprereqs.size(); j++) {
+                reqs[i][j] = ORprereqs.get(j);
+
+                CriterionConditions conditions = Con
+
+                builder.criterion("",InventoryChangedCriterion.Conditions)
+            }
+        }
+        builder.requirements(reqs);
+
+        return builder.build(consumer, Geomancy.MOD_ID + ":milestones/milestone_"+name);
     }
 }
