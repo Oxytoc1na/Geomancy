@@ -151,7 +151,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
             recipeChanged();
         }
 
-        if(Toolbox.itemStacksAreEqual(previousResult, currentResult)){
+        if(!Toolbox.itemStacksAreEqual(previousResult, currentResult)){
             recipeChanged();
         }
 
