@@ -1,6 +1,7 @@
 package org.oxytocina.geomancy.progression.advancement;
 
 import com.google.gson.JsonObject;
+import net.minecraft.advancement.AdvancementCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterionConditions;
 import net.minecraft.loot.condition.EntityPropertiesLootCondition;
@@ -19,8 +20,8 @@ public class ModAdvancementCriterion extends AbstractCriterion<ModAdvancementCri
     protected Conditions conditionsFromJson(JsonObject obj,
                                             LootContextPredicate playerPredicate,
                                             AdvancementEntityPredicateDeserializer predicateDeserializer) {
-        String name = obj.get("name").getAsString();
-        Conditions conditions = new Conditions(name,playerPredicate);
+        String name = obj.get("advancement").getAsString();
+        Conditions conditions = conditionsFromAdvancement(new Identifier(name));
         return conditions;
     }
 
@@ -29,7 +30,7 @@ public class ModAdvancementCriterion extends AbstractCriterion<ModAdvancementCri
         return getID();
     }
 
-    public static Identifier getID(){return new Identifier(Geomancy.MOD_ID,"simple");}
+    public static Identifier getID(){return new Identifier(Geomancy.MOD_ID,"advancement");}
 
     public static Conditions conditionsFromAdvancement(Identifier advancement){
         Conditions res =new Conditions(advancement.toString(),LootContextPredicate.create(
@@ -61,13 +62,13 @@ public class ModAdvancementCriterion extends AbstractCriterion<ModAdvancementCri
 
         @Override
         public Identifier getId() {
-            return getID();
+            return new Identifier("inventory_changed");
         }
 
         @Override
         public JsonObject toJson(AdvancementEntityPredicateSerializer predicateSerializer) {
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("name", advancement);
+            JsonObject jsonObject = super.toJson(predicateSerializer);
+            jsonObject.addProperty("advancement", advancement);
             return jsonObject;
         }
     }
@@ -75,6 +76,5 @@ public class ModAdvancementCriterion extends AbstractCriterion<ModAdvancementCri
     public void trigger(ServerPlayerEntity player,String name) {
         trigger(player, conditions -> conditions.requirementsMet(name));
     }
-
 
 }
