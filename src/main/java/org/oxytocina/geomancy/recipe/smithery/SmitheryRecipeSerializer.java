@@ -1,14 +1,15 @@
-package org.oxytocina.geomancy.recipe;
+package org.oxytocina.geomancy.recipe.smithery;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
+import org.oxytocina.geomancy.recipe.GatedRecipeSerializer;
+import org.oxytocina.geomancy.recipe.RecipeUtils;
 
 public class SmitheryRecipeSerializer<R extends SmitheryRecipe> implements GatedRecipeSerializer<R> {
 

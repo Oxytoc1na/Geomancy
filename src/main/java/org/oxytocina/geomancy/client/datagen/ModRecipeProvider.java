@@ -14,11 +14,13 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.ModBlocks;
+import org.oxytocina.geomancy.client.datagen.recipes.GeodeRecipeJsonBuilder;
 import org.oxytocina.geomancy.client.datagen.recipes.JewelryRecipeJsonBuilder;
 import org.oxytocina.geomancy.client.datagen.recipes.SmitheryRecipeJsonBuilder;
+import org.oxytocina.geomancy.items.GeodeItem;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.jewelry.JewelryItem;
-import org.oxytocina.geomancy.recipe.*;
+import org.oxytocina.geomancy.recipe.smithery.SmithingIngredient;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -109,6 +111,11 @@ public class ModRecipeProvider extends FabricRecipeProvider {
             // jewelry recipes
             for(JewelryItem item : JewelryItem.List){
                 AddSmitheryJewelryRecipe(item);
+            }
+
+            // geode recipes
+            for(GeodeItem item : ModItems.geodeItems){
+                AddGeodeRecipe(item);
             }
 
             // Artifact of Iron
@@ -209,6 +216,17 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         JewelryRecipeJsonBuilder.create(SmithingIngredient.ofItems(1,baseMishapWeight,4,base), progressRequiredBase,
                 gemProgressCostMultiplier,difficulty,gemDifficultyMultiplier,RecipeCategory.MISC)
                 .criterion("has_ingredient",conditionsFromItem(base)).offerTo(exporter,new Identifier(Geomancy.MOD_ID,"jewelry_"+getItemName(base)));
+
+    }
+
+    private void AddGeodeRecipe(GeodeItem geodeItem){
+        int progressRequiredBase = geodeItem.getProgressRequired();
+        int difficulty = geodeItem.getBaseDifficulty();
+        float difficultyPerMighty = geodeItem.getDifficultyPerMighty();
+
+        GeodeRecipeJsonBuilder.create(SmithingIngredient.ofItems(1,1,geodeItem), progressRequiredBase,
+                        difficulty,difficultyPerMighty,RecipeCategory.MISC)
+                .criterion("has_ingredient",conditionsFromItem(geodeItem)).offerTo(exporter,new Identifier(Geomancy.MOD_ID,"geode_"+getItemName(geodeItem)));
 
     }
 

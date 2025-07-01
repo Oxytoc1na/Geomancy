@@ -23,7 +23,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import org.oxytocina.geomancy.Geomancy;
-import org.oxytocina.geomancy.Util.Toolbox;
+import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.HashMap;
 import java.util.List;

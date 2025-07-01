@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Function4;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
@@ -33,14 +34,13 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.Geomancy;
-import org.oxytocina.geomancy.Util.Toolbox;
+import org.oxytocina.geomancy.util.Toolbox;
 import org.oxytocina.geomancy.blocks.MultiblockCrafter;
 import org.oxytocina.geomancy.inventories.AutoCraftingInventory;
 import org.oxytocina.geomancy.inventories.ImplementedInventory;
 import org.oxytocina.geomancy.items.HammerItem;
-import org.oxytocina.geomancy.recipe.SmitheryRecipe;
-import org.oxytocina.geomancy.recipe.SmitheryRecipeI;
-import org.oxytocina.geomancy.recipe.SmithingIngredient;
+import org.oxytocina.geomancy.recipe.smithery.SmitheryRecipeI;
+import org.oxytocina.geomancy.recipe.smithery.SmithingIngredient;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
 
@@ -64,6 +64,9 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
     public ItemStack currentResult = ItemStack.EMPTY;
     private boolean initialized = false;
 
+    private ItemStack lastHammerStack = ItemStack.EMPTY;
+    private PlayerEntity lastHammerer = null;
+
     public SmitheryBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.SMITHERY_BLOCK_ENTITY, pos, state);
         this.propertyDelegate = new PropertyDelegate() {
@@ -72,7 +75,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
                 return switch(index) {
                     case 0 -> SmitheryBlockEntity.this.progress;
                     case 1 -> SmitheryBlockEntity.this.maxProgress;
-                    case 2 -> SmitheryBlockEntity.this.currentRecipe!=null?SmitheryBlockEntity.this.currentRecipe.getDifficulty(SmitheryBlockEntity.this.inputInventory()):-1;
+                    case 2 -> SmitheryBlockEntity.this.currentRecipe!=null?SmitheryBlockEntity.this.currentRecipe.getDifficulty(SmitheryBlockEntity.this.inputInventory(),SmitheryBlockEntity.this.getLastHammerStack(),SmitheryBlockEntity.this.getLastHammerer()):-1;
                     default -> 0;
                 };
             }
@@ -219,6 +222,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
 
         SmitheryRecipeI res = world.getRecipeManager().getFirstMatch(ModRecipeTypes.SMITHING, AUTO_INVENTORY, world).orElse(null);
         if(res==null) res = world.getRecipeManager().getFirstMatch(ModRecipeTypes.JEWELRY, AUTO_INVENTORY, world).orElse(null);
+        if(res==null) res = world.getRecipeManager().getFirstMatch(ModRecipeTypes.GEODE, AUTO_INVENTORY, world).orElse(null);
         return res;
     }
 
@@ -236,18 +240,20 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
 
     public List<ItemStack> craft(SmitheryRecipeI recipe, DefaultedList<ItemStack> inventory, World world) {
         AUTO_INVENTORY.setInputInventory(inventory);
-        return recipe.getSmithingResult(AUTO_INVENTORY, true,false);
+        return recipe.getSmithingResult(AUTO_INVENTORY, true,false,getLastHammerStack(),getLastHammerer());
     }
 
     private static final AutoCraftingInventory AUTO_INVENTORY = new AutoCraftingInventory(SLOT_COUNT, 1);
 
     public void onHitWithHammer(PlayerEntity player, ItemStack hammer,float skill){
         HammerItem hammerItem = ((HammerItem)hammer.getItem());
+        lastHammerer=player;
+        lastHammerStack=hammer;
 
         if(world==null) return;
 
         // skill check
-        if(skillcheckPassed(skill)){
+        if(skillcheckPassed(skill,hammer,player)){
             // success
             increaseCraftProgress(hammerItem.getHitProgress(player));
 
@@ -365,11 +371,11 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
         return Toolbox.SelectWeightedRandomIndex(weights,-1);
     }
 
-    public boolean skillcheckPassed(float skill){
+    public boolean skillcheckPassed(float skill, ItemStack hammer, LivingEntity hammerer){
 
         if(currentRecipe==null) return false;
 
-        float fraction = skill / currentRecipe.getDifficulty(inputInventory());
+        float fraction = skill / currentRecipe.getDifficulty(inputInventory(),hammer,hammerer);
         float random = mishapRandom.nextFloat();
 
         return fraction > random;
@@ -446,5 +452,13 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
             inventoryChanged();
 
         ImplementedInventory.super.setStack(slot, stack);
+    }
+
+    public ItemStack getLastHammerStack(){
+        return lastHammerStack;
+    }
+
+    public PlayerEntity getLastHammerer(){
+        return lastHammerer;
     }
 }

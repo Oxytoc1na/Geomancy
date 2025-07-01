@@ -1,14 +1,15 @@
-package org.oxytocina.geomancy.recipe;
+package org.oxytocina.geomancy.recipe.smithery;
 
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
 public interface SmitheryRecipeI {
-    List<ItemStack> getSmithingResult(Inventory inv, boolean removeItems, boolean preview);
+    List<ItemStack> getSmithingResult(Inventory inv, boolean removeItems, boolean preview, ItemStack hammer, LivingEntity hammerer);
 
-    int getDifficulty(Inventory inv);
+    int getDifficulty(Inventory inv, ItemStack hammer, LivingEntity holder);
 
     int getProgressRequired(Inventory inv);
 

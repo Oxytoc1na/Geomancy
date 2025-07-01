@@ -1,4 +1,4 @@
-package org.oxytocina.geomancy.Util;
+package org.oxytocina.geomancy.util;
 
 /*
  * A speed-improved simplex noise algorithm for 2D, 3D and 4D in Java.

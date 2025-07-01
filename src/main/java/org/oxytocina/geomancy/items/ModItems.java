@@ -24,16 +24,18 @@ import org.oxytocina.geomancy.items.artifacts.GoldArtifact;
 import org.oxytocina.geomancy.items.artifacts.IronArtifact;
 import org.oxytocina.geomancy.items.jewelry.JewelryItem;
 import org.oxytocina.geomancy.items.jewelry.JewelryItemSettings;
+import org.oxytocina.geomancy.loottables.ModLootTables;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
 
 import java.util.ArrayList;
 
 public class ModItems {
 
-    public static final ArrayList<ArtifactItem> ArtifactItems = new ArrayList<ArtifactItem>();
-    public static final ArrayList<JewelryItem> JewelryRingItems = new ArrayList<JewelryItem>();
-    public static final ArrayList<JewelryItem> JewelryNecklaceItems = new ArrayList<JewelryItem>();
-    public static final ArrayList<JewelryItem> JewelryAnySlotItems = new ArrayList<JewelryItem>();
+    public static final ArrayList<ArtifactItem> ArtifactItems = new ArrayList<>();
+    public static final ArrayList<JewelryItem> JewelryRingItems = new ArrayList<>();
+    public static final ArrayList<JewelryItem> JewelryNecklaceItems = new ArrayList<>();
+    public static final ArrayList<JewelryItem> JewelryAnySlotItems = new ArrayList<>();
+    public static final ArrayList<GeodeItem> geodeItems = new ArrayList<>();
 
     public static final FoodComponent SUSPICIOUS_FOOD_COMPONENT = new FoodComponent.Builder()
             .hunger(1).alwaysEdible().snack().statusEffect(new StatusEffectInstance(StatusEffects.POISON, 6 * 20, 1), 1.0f).build();
@@ -71,7 +73,10 @@ public class ModItems {
             ToolMaterials.DIAMOND, TagKey.of(RegistryKeys.BLOCK,new Identifier(Geomancy.MOD_ID,"hammer_mineable")),new FabricItemSettings(),
             1000,100,50,10),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Handheld));
 
-    public static void register() {
+    // geodes
+    public static final GeodeItem STONE_GEODE = (GeodeItem) register("stone_geode",new GeodeItem(new FabricItemSettings(),ModLootTables.STONE_GEODE));
+
+    public static void initialize() {
         // initialize static fields
         // calling this method is sufficient to do that, actually
 

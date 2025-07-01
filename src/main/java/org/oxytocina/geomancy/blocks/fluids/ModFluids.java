@@ -17,7 +17,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import org.joml.Vector3f;
 import org.oxytocina.geomancy.Geomancy;
-import org.oxytocina.geomancy.Util.Toolbox;
+import org.oxytocina.geomancy.util.Toolbox;
 import org.oxytocina.geomancy.items.ModItems;
 
 public class ModFluids {

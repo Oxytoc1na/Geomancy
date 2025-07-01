@@ -18,6 +18,8 @@ public class ExtraItemSettings {
 
     private boolean shouldAddItemToGroup = true;
 
+
+
     public ExtraItemSettings(){
 
     }

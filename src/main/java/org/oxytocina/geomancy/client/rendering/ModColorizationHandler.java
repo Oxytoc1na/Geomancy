@@ -2,7 +2,7 @@ package org.oxytocina.geomancy.client.rendering;
 
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.minecraft.util.math.BlockPos;
-import org.oxytocina.geomancy.Util.Toolbox;
+import org.oxytocina.geomancy.util.Toolbox;
 import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.items.jewelry.JewelryItem;
 
@@ -26,7 +26,7 @@ public class ModColorizationHandler {
         float y = zoom*(pos.getY() * (1+tintIndex*0.3f) + tintIndex*16);
         float z = zoom*(pos.getZ() * (1+tintIndex*0.3f) + tintIndex*16);
 
-        return hsvToRgb((float)(org.oxytocina.geomancy.Util.SimplexNoise.noise(x,y,z)+1)/2,1,1);
+        return hsvToRgb((float)(org.oxytocina.geomancy.util.SimplexNoise.noise(x,y,z)+1)/2,1,1);
 
     }
 

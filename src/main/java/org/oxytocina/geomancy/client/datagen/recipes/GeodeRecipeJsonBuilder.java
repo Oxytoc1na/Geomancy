@@ -16,32 +16,30 @@ import org.oxytocina.geomancy.registries.ModRecipeTypes;
 
 import java.util.function.Consumer;
 
-public class JewelryRecipeJsonBuilder {
+public class GeodeRecipeJsonBuilder {
     private final RecipeCategory category;
     private final SmithingIngredient base;
     private final int progressRequiredBase;
     private final int difficulty;
-    private final float gemProgressCostMultiplier;
-    private final float gemDifficultyMultiplier;
+    private final float difficultyPerMighty;
     private final Advancement.Builder advancement = Advancement.Builder.createUntelemetered();
     private final RecipeSerializer<?> serializer;
 
-    public JewelryRecipeJsonBuilder(RecipeSerializer<?> serializer, RecipeCategory category, SmithingIngredient base, int progressRequiredBase,float gemProgressCostMultiplier, int difficulty, float gemDifficultyMultiplier) {
+    public GeodeRecipeJsonBuilder(RecipeSerializer<?> serializer, RecipeCategory category, SmithingIngredient base, int progressRequiredBase, int difficulty, float difficultyPerMighty) {
         this.category = category;
         this.serializer = serializer;
         this.base = base;
         this.progressRequiredBase=progressRequiredBase;
         this.difficulty=difficulty;
-        this.gemProgressCostMultiplier=gemProgressCostMultiplier;
-        this.gemDifficultyMultiplier=gemDifficultyMultiplier;
+        this.difficultyPerMighty=difficultyPerMighty;
     }
 
-    public static JewelryRecipeJsonBuilder create(SmithingIngredient base, int progressRequiredBase,float gemProgressCostMultiplier, int difficulty, float gemDifficultyMultiplier, RecipeCategory category) {
-        return new JewelryRecipeJsonBuilder(ModRecipeTypes.JEWELRY_SERIALIZER, category, base, progressRequiredBase,
-                gemProgressCostMultiplier,difficulty, gemDifficultyMultiplier);
+    public static GeodeRecipeJsonBuilder create(SmithingIngredient base, int progressRequiredBase, int difficulty, float difficultyPerMighty, RecipeCategory category) {
+        return new GeodeRecipeJsonBuilder(ModRecipeTypes.GEODE_SERIALIZER, category, base, progressRequiredBase,
+                difficulty, difficultyPerMighty);
     }
 
-    public JewelryRecipeJsonBuilder criterion(String name, CriterionConditions conditions) {
+    public GeodeRecipeJsonBuilder criterion(String name, CriterionConditions conditions) {
         this.advancement.criterion(name, conditions);
         return this;
     }
@@ -50,8 +48,8 @@ public class JewelryRecipeJsonBuilder {
         this.validate(recipeId);
         this.advancement.parent(CraftingRecipeJsonBuilder.ROOT).criterion("has_the_recipe", RecipeUnlockedCriterion.create(recipeId)).rewards(net.minecraft.advancement.AdvancementRewards.Builder.recipe(recipeId)).criteriaMerger(CriterionMerger.OR);
         exporter.accept(new Provider(
-                recipeId, this.serializer, this.base, this.progressRequiredBase, this.gemProgressCostMultiplier,
-                this.difficulty,this.gemDifficultyMultiplier, this.advancement,
+                recipeId, this.serializer, this.base, this.progressRequiredBase,
+                this.difficulty,this.difficultyPerMighty, this.advancement,
                 recipeId.withPrefixedPath("recipes/" + this.category.getName() + "/")));
     }
 
@@ -61,7 +59,7 @@ public class JewelryRecipeJsonBuilder {
         }
     }
 
-    public static record Provider(Identifier id, RecipeSerializer<?> type, SmithingIngredient base, int progressRequiredBase,float gemProgressCostMultiplier, int difficulty, float gemDifficultyMultiplier,
+    public static record Provider(Identifier id, RecipeSerializer<?> type, SmithingIngredient base, int progressRequiredBase, int difficulty, float difficultyPerMighty,
                                   Advancement.Builder advancement, Identifier advancementId) implements RecipeJsonProvider {
         public void serialize(JsonObject json) {
             //if (!this.group.isEmpty()) {
@@ -73,9 +71,8 @@ public class JewelryRecipeJsonBuilder {
 
             json.add("base", ingredientElement);
             json.addProperty("progressRequiredBase",this.progressRequiredBase);
-            json.addProperty("gemProgressCostMultiplier",this.gemProgressCostMultiplier);
             json.addProperty("difficulty",this.difficulty);
-            json.addProperty("gemDifficultyMultiplier",this.gemDifficultyMultiplier);
+            json.addProperty("difficultyPerMighty",this.difficultyPerMighty);
         }
 
         public Identifier getRecipeId() {

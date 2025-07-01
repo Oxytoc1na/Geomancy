@@ -19,6 +19,9 @@ import org.oxytocina.geomancy.client.rendering.ModModelPredicateProvider;
 import org.oxytocina.geomancy.client.screen.ModScreenHandlers;
 import org.oxytocina.geomancy.client.screen.SmitheryScreen;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
+import org.oxytocina.geomancy.event.KeyInputHandler;
+import org.oxytocina.geomancy.fluids.ModFluids;
+import org.oxytocina.geomancy.networking.ModMessages;
 
 public class GeomancyClient implements ClientModInitializer {
 
@@ -29,6 +32,8 @@ public class GeomancyClient implements ClientModInitializer {
         ModColorizationHandler.initialize();
         ModBlockTransparency.initialize();
         ModModelPredicateProvider.initialize();
+        KeyInputHandler.initialize();
+        ModMessages.registerS2CPackets();
         ModFluids.registerClient();
 
         HandledScreens.register(ModScreenHandlers.SMITHERY_SCREEN_HANDLER, SmitheryScreen::new);

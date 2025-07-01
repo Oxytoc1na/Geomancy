@@ -1,15 +1,15 @@
-package org.oxytocina.geomancy.recipe;
+package org.oxytocina.geomancy.recipe.smithery;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.item.ItemConvertible;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import org.jetbrains.annotations.Nullable;
+import org.oxytocina.geomancy.recipe.CountIngredient;
 
-public class SmithingIngredient extends CountIngredient{
+public class SmithingIngredient extends CountIngredient {
 
     public int mishapWeight = 1;
 

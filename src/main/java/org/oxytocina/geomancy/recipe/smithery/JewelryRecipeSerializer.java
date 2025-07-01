@@ -1,13 +1,9 @@
-package org.oxytocina.geomancy.recipe;
+package org.oxytocina.geomancy.recipe.smithery;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.JsonHelper;
-import net.minecraft.util.collection.DefaultedList;
+import org.oxytocina.geomancy.recipe.GatedRecipeSerializer;
 
 public class JewelryRecipeSerializer<R extends JewelryRecipe> implements GatedRecipeSerializer<R> {
 

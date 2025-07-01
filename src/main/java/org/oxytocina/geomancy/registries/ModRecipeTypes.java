@@ -4,7 +4,7 @@ import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.recipe.*;
 import net.minecraft.recipe.*;
 import net.minecraft.registry.*;
-import org.oxytocina.geomancy.recipe.SmitheryRecipe;
+import org.oxytocina.geomancy.recipe.smithery.*;
 
 public class ModRecipeTypes {
 
@@ -19,6 +19,10 @@ public class ModRecipeTypes {
     public static final String JEWELRY_ID = "jewelry";
     public static JewelryRecipeSerializer<JewelryRecipe> JEWELRY_SERIALIZER;
     public static RecipeType<JewelryRecipe> JEWELRY;
+
+    public static final String GEODE_ID = "geode";
+    public static GeodeRecipeSerializer<GeodeRecipe> GEODE_SERIALIZER;
+    public static RecipeType<GeodeRecipe> GEODE;
 
     static <S extends RecipeSerializer<T>, T extends Recipe<?>> S registerSerializer(String id, S serializer) {
         return Registry.register(Registries.RECIPE_SERIALIZER, Geomancy.locate(id), serializer);
@@ -43,6 +47,9 @@ public class ModRecipeTypes {
 
         JEWELRY_SERIALIZER = registerSerializer(JEWELRY_ID, new JewelryRecipeSerializer<>(JewelryRecipe::new));
         JEWELRY = registerRecipeType(JEWELRY_ID);
+
+        GEODE_SERIALIZER = registerSerializer(GEODE_ID, new GeodeRecipeSerializer<>(GeodeRecipe::new));
+        GEODE = registerRecipeType(GEODE_ID);
     }
 
 }

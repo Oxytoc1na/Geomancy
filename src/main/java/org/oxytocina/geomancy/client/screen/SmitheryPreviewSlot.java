@@ -5,7 +5,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ClickType;
-import org.oxytocina.geomancy.Util.Toolbox;
+import org.oxytocina.geomancy.util.Toolbox;
 import org.oxytocina.geomancy.blocks.blockEntities.SmitheryBlockEntity;
 
 public class SmitheryPreviewSlot extends PreviewSlot implements SlotWithOnClickAction{

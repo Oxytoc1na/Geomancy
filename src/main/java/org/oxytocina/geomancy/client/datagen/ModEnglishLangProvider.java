@@ -8,6 +8,7 @@ import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryWrapper;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.ModBlocks;
+import org.oxytocina.geomancy.event.KeyInputHandler;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.jewelry.GemSlot;
 
@@ -31,6 +32,9 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
         addShort("gb:mn","book.MODID.guidebook.main.");
         addShort("gb:sm","book.MODID.guidebook.smithing.");
+
+        add(KeyInputHandler.KEY_CATEGORY_GEOMANCY,"Geomancy");
+        add(KeyInputHandler.KEY_OPEN_SKILLTREE,"Skills");
 
         // Items
         {
@@ -60,6 +64,10 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("tooltip.geomancy.jewelry.nogems"   ,"No Gems");
             add("tooltip.geomancy.jewelry.unsmith"  ,"Salvages gems");
             add("tooltip.geomancy.jewelry.quality"  ,"Quality");
+
+            add("item.MODID.stone_geode"            , "Stone Geode");
+            add("tooltip.MODID.geodes"              , "Can be hammered open...if you're careful.");
+
         }
 
         // Blocks
@@ -82,6 +90,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
         // Enchantments
         add("enchantment.MODID.skillful"    , "Skillful");
+        add("enchantment.MODID.mighty"      , "Mighty");
 
         // damage types
         add("death.attack.geomancy.duplicate_trinkets", "%1$s felt their own hubris");

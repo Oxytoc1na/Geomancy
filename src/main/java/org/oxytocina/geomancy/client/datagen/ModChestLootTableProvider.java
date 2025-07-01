@@ -47,72 +47,10 @@ public class ModChestLootTableProvider extends SimpleFabricLootTableProvider {
     }
 
     public void accept(BiConsumer<Identifier, LootTable.Builder> exporter) {
-        exporter.accept(ModLootTables.DWARVEN_REMNANTS_CHEST, LootTable.builder()
-                //.pool(LootPool.builder()
-                //.rolls(ConstantLootNumberProvider.create(1.0F))
-                //.with(ItemEntry.builder(
-                //        Items.HEART_OF_THE_SEA)))
-                .pool(LootPool.builder()
-                        .rolls(UniformLootNumberProvider.create(-1.0F,1.0F))
-                        .with(ItemEntry.builder(
-                                ModItems.MUSIC_DISC_DIGGY)))
-                .pool(LootPool.builder()
-                        .rolls(UniformLootNumberProvider.create(1.0F, 3.0F))
-                        .with(ItemEntry.builder(
-                                        ModItems.RAW_MITHRIL)
-                                .weight(20)
-                                .apply(SetCountLootFunction.builder(
-                                        UniformLootNumberProvider.create(1.0F, 4.0F))))
-                        .with(ItemEntry.builder(
-                                        ModItems.MITHRIL_INGOT)
-                                .weight(5)
-                                .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 2.0F))))
-                        .with(ItemEntry.builder(
-                                        ModItems.MITHRIL_NUGGET)
-                                .weight(10)
-                                .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(5.0F, 16.0F)))))
-                .pool(LootPool.builder()
-                    .rolls(UniformLootNumberProvider.create(2.0F, 4.0F))
-                    .with(ItemEntry.builder(
-                            ModBlocks.GILDED_DEEPSLATE)
-                            .weight(20)
-                            .apply(SetCountLootFunction.builder(
-                                    UniformLootNumberProvider.create(3.0F, 8.0F))))
-                            .with(ItemEntry.builder(
-                                    ModBlocks.DECORATED_GILDED_DEEPSLATE)
-                                    .weight(10)
-                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(3.0F, 8.0F)))))
-                .pool(LootPool.builder()
-                        .rolls(UniformLootNumberProvider.create(3.0F, 7.0F))
-                        .with(ItemEntry.builder(
-                                Items.EMERALD)
-                                .weight(5)
-                                .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(4.0F, 8.0F))))
-                        .with(ItemEntry.builder(
-                                Items.DIAMOND)
-                                .weight(5)
-                                .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 2.0F))))
-                        .with(ItemEntry.builder(
-                                Items.GOLD_INGOT)
-                                .weight(5)
-                                .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(3.0F, 8.0F)))))
-                .pool(LootPool.builder()
-                        .rolls(UniformLootNumberProvider.create(1.0F, 3.0F))
-                        .with(ItemEntry.builder(
-                                Items.IRON_HELMET))
-                        .with(ItemEntry.builder(
-                                Items.IRON_CHESTPLATE))
-                        .with(ItemEntry.builder(
-                                Items.IRON_LEGGINGS))
-                        .with(ItemEntry.builder(
-                                Items.IRON_BOOTS))
-                        .with(ItemEntry.builder(
-                                Items.IRON_SWORD))
-                        .with(ItemEntry.builder(
-                                Items.IRON_PICKAXE))
-                        .with(ItemEntry.builder(
-                                Items.IRON_AXE)))
-                );
+
+        for(Identifier id : ModLootTables.LOOT_TABLE_BUILDERS.keySet()){
+            exporter.accept(id, ModLootTables.LOOT_TABLE_BUILDERS.get(id));
+        }
 
 
         //exporter.accept(LootTables.ABANDONED_MINESHAFT_CHEST, LootTable.builder().pool(LootPool.builder().rolls(ConstantLootNumberProvider.create(1.0F)).with(ItemEntry.builder(Items.GOLDEN_APPLE).weight(20)).with(ItemEntry.builder(Items.ENCHANTED_GOLDEN_APPLE)).with(ItemEntry.builder(Items.NAME_TAG).weight(30)).with(ItemEntry.builder(Items.BOOK).weight(10).apply(EnchantRandomlyLootFunction.builder())).with(ItemEntry.builder(Items.IRON_PICKAXE).weight(5)).with(EmptyEntry.builder().weight(5))).pool(LootPool.builder().rolls(UniformLootNumberProvider.create(2.0F, 4.0F)).with(ItemEntry.builder(Items.IRON_INGOT).weight(10).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 5.0F)))).with(ItemEntry.builder(Items.GOLD_INGOT).weight(5).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F)))).with(ItemEntry.builder(Items.REDSTONE).weight(5).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(4.0F, 9.0F)))).with(ItemEntry.builder(Items.LAPIS_LAZULI).weight(5).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(4.0F, 9.0F)))).with(ItemEntry.builder(Items.DIAMOND).weight(3).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 2.0F)))).with(ItemEntry.builder(Items.COAL).weight(10).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(3.0F, 8.0F)))).with(ItemEntry.builder(Items.BREAD).weight(15).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F)))).with(ItemEntry.builder(Items.GLOW_BERRIES).weight(15).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(3.0F, 6.0F)))).with(ItemEntry.builder(Items.MELON_SEEDS).weight(10).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(2.0F, 4.0F)))).with(ItemEntry.builder(Items.PUMPKIN_SEEDS).weight(10).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(2.0F, 4.0F)))).with(ItemEntry.builder(Items.BEETROOT_SEEDS).weight(10).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(2.0F, 4.0F))))).pool(LootPool.builder().rolls(ConstantLootNumberProvider.create(3.0F)).with(ItemEntry.builder(Blocks.RAIL).weight(20).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(4.0F, 8.0F)))).with(ItemEntry.builder(Blocks.POWERED_RAIL).weight(5).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F)))).with(ItemEntry.builder(Blocks.DETECTOR_RAIL).weight(5).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F)))).with(ItemEntry.builder(Blocks.ACTIVATOR_RAIL).weight(5).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F)))).with(ItemEntry.builder(Blocks.TORCH).weight(15).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 16.0F))))));

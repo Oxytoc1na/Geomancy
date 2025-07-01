@@ -1,4 +1,4 @@
-package org.oxytocina.geomancy.Util;
+package org.oxytocina.geomancy.util;
 
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.PlayerAdvancementTracker;

@@ -13,6 +13,7 @@ import java.util.Objects;
 public class ModEnchantments {
 
     public static final SkillfulEnchantment SKILLFUL = (SkillfulEnchantment) register("skillful",new SkillfulEnchantment());
+    public static final MightyEnchantment MIGHTY = (MightyEnchantment) register("mighty",new MightyEnchantment());
 
     public static void register(){
 
@@ -24,6 +25,10 @@ public class ModEnchantments {
 
     public static int getLevel(ItemStack stack, String vanillaEnchantment){
         return getLevel(stack,new Identifier(Identifier.DEFAULT_NAMESPACE,vanillaEnchantment));
+    }
+
+    public static int getLevel(ItemStack stack, Enchantment enchantment){
+        return getLevel(stack,Registries.ENCHANTMENT.getId(enchantment));
     }
 
     public static int getLevel(ItemStack stack, Identifier enchantment){

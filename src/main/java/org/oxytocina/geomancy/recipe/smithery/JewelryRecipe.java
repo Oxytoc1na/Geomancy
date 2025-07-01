@@ -1,5 +1,6 @@
-package org.oxytocina.geomancy.recipe;
+package org.oxytocina.geomancy.recipe.smithery;
 
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
@@ -13,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.jewelry.JewelryItem;
+import org.oxytocina.geomancy.recipe.GatedModRecipe;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
 
 import java.util.ArrayList;
@@ -163,7 +165,7 @@ public class JewelryRecipe extends GatedModRecipe<Inventory> implements Smithery
     }
 
     @Override
-    public int getDifficulty(Inventory inv) {
+    public int getDifficulty(Inventory inv,ItemStack hammer, LivingEntity hammerer) {
         int res = difficulty;
 
         // fetch already slotted gems
@@ -260,7 +262,7 @@ public class JewelryRecipe extends GatedModRecipe<Inventory> implements Smithery
     }
 
     @Override
-    public List<ItemStack> getSmithingResult(Inventory inv, boolean removeItems, boolean preview) {
+    public List<ItemStack> getSmithingResult(Inventory inv, boolean removeItems, boolean preview, ItemStack hammer, LivingEntity hammerer) {
         return getOutput(inv,removeItems,preview);
     }
 }

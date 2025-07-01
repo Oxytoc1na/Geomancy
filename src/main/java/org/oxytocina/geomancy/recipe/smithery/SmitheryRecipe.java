@@ -1,5 +1,6 @@
-package org.oxytocina.geomancy.recipe;
+package org.oxytocina.geomancy.recipe.smithery;
 
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
@@ -12,6 +13,8 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.items.ModItems;
+import org.oxytocina.geomancy.recipe.CountIngredient;
+import org.oxytocina.geomancy.recipe.GatedModRecipe;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
 
 import java.util.ArrayList;
@@ -175,7 +178,7 @@ public class SmitheryRecipe extends GatedModRecipe<Inventory> implements Smither
     }
 
     @Override
-    public int getDifficulty(Inventory inv) {return difficulty;}
+    public int getDifficulty(Inventory inv,ItemStack hammer, LivingEntity hammerer) {return difficulty;}
     public boolean getShapeless() {return shapeless;}
 
     @Override
@@ -205,7 +208,7 @@ public class SmitheryRecipe extends GatedModRecipe<Inventory> implements Smither
     }
 
     @Override
-    public List<ItemStack> getSmithingResult(Inventory inv, boolean removeItems,boolean preview) {
+    public List<ItemStack> getSmithingResult(Inventory inv, boolean removeItems,boolean preview, ItemStack hammer, LivingEntity hammerer) {
         return removeItems?List.of(craft(inv,null)):List.of(getOutput(null));
     }
 }
