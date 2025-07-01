@@ -18,6 +18,8 @@ import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 import org.oxytocina.geomancy.features.ModFeatures;
 import org.oxytocina.geomancy.loottables.ModLootTables;
+import org.oxytocina.geomancy.particles.ModParticleFactories;
+import org.oxytocina.geomancy.particles.ModParticleTypes;
 import org.oxytocina.geomancy.progression.advancement.ModCriteria;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
@@ -44,16 +46,18 @@ public class Geomancy implements ModInitializer {
 
         LOGGER.info("Loading Geomancy");
 
-        ModItems.initialize();
-        ModBlocks.initialize();
-        ModFluids.initialize();
-        ModFeatures.initialize();
+        ModItems.register();
+        ModBlocks.register();
+        ModFluids.register();
+        ModFeatures.register();
         ModRecipeTypes.registerSerializer();
-        ModSoundEvents.initialize();
-        ModLootTables.initialize();
-        ModCriteria.initialize();
-        ModBlockEntities.initialize();
-        ModEnchantments.initialize();
+        ModSoundEvents.register();
+        ModLootTables.register();
+        ModCriteria.register();
+        ModBlockEntities.register();
+        ModEnchantments.register();
+        ModParticleTypes.register();
+        ModParticleFactories.register();
 
         //ModDamageSources.initialize( ?????? , DynamicRegistryManager.EMPTY);
 

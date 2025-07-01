@@ -11,7 +11,7 @@ public class ModLootTables {
 
     public static final Identifier DWARVEN_REMNANTS_CHEST = register("chests/dwarven_remnants");
 
-    public static void initialize(){
+    public static void register(){
 
     }
 

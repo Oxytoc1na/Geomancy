@@ -70,7 +70,7 @@ public class ModBlocks {
     public static final Block MOLTEN_GOLD = register("molten_gold", settings -> new GoldFluidBlock(ModFluids.MOLTEN_GOLD,null,settings),fluid(MapColor.GOLD).luminance(value -> 15).replaceable());
 
 
-    public static void initialize(){
+    public static void register(){
         ItemGroupEvents.modifyEntriesEvent(ModItems.CUSTOM_ITEM_GROUP_KEY).register((itemGroup) -> {
 
             for(Block b : ExtraBlockSettings.BlocksInGroup){

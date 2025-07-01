@@ -71,7 +71,7 @@ public class ModItems {
             ToolMaterials.DIAMOND, TagKey.of(RegistryKeys.BLOCK,new Identifier(Geomancy.MOD_ID,"hammer_mineable")),new FabricItemSettings(),
             1000,100,50,10),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Handheld));
 
-    public static void initialize() {
+    public static void register() {
         // initialize static fields
         // calling this method is sufficient to do that, actually
 

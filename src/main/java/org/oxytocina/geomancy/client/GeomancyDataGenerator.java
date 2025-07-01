@@ -15,6 +15,7 @@ public class GeomancyDataGenerator implements DataGeneratorEntrypoint {
         pack.addProvider(ModItemTagProvider::new);
         pack.addProvider(ModBiomeTagProvider::new);
         pack.addProvider(ModBlockTagProvider::new);
+        pack.addProvider(ModFluidTagProvider::new);
         pack.addProvider(ModBlockLootTableProvider::new);
         pack.addProvider(ModModelProvider::new);
         pack.addProvider(ModEnglishLangProvider::new);

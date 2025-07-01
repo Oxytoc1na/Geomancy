@@ -1,10 +1,8 @@
 package org.oxytocina.geomancy.enchantments;
 
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
@@ -16,7 +14,7 @@ public class ModEnchantments {
 
     public static final SkillfulEnchantment SKILLFUL = (SkillfulEnchantment) register("skillful",new SkillfulEnchantment());
 
-    public static void initialize(){
+    public static void register(){
 
     }
 

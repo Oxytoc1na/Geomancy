@@ -7,8 +7,6 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
 import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.minecraft.block.Blocks;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.BucketItem;
@@ -16,7 +14,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import org.joml.Vector3f;
 import org.oxytocina.geomancy.Geomancy;
@@ -36,7 +33,7 @@ public class ModFluids {
     public static final Identifier MOLTEN_GOLD_OVERLAY_TEXTURE = Geomancy.locate("textures/misc/liquid_crystal_overlay.png");
     public static final float MOLTEN_GOLD_OVERLAY_ALPHA = 0.6F;
 
-    public static void initialize() {
+    public static void register() {
         registerFluid("molten_gold", MOLTEN_GOLD, FLOWING_MOLTEN_GOLD);
         MOLTEN_GOLD_BUCKET = ModItems.register("gold_bucket",new BucketItem(MOLTEN_GOLD, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1)));
 

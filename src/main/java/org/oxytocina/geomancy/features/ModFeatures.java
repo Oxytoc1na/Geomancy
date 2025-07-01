@@ -16,7 +16,7 @@ public class ModFeatures {
     public static final RegistryKey<PlacedFeature> OCTANGULITE_ORE_PLACED_KEY = RegistryKey.of(RegistryKeys.PLACED_FEATURE, Identifier.of(Geomancy.MOD_ID,"octangulite_ore"));
 
 
-    public static void initialize(){
+    public static void register(){
 
         BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Feature.UNDERGROUND_ORES, MITHRIL_ORE_PLACED_KEY);
         BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Feature.UNDERGROUND_ORES, OCTANGULITE_ORE_PLACED_KEY);

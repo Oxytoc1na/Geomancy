@@ -1,7 +1,7 @@
 package org.oxytocina.geomancy.mixin;
 
 
-//import de.dafuqs.spectrum.api.entity.*;
+import org.oxytocina.geomancy.entity.TouchingWaterAware;
 import org.oxytocina.geomancy.registries.*;
 import net.minecraft.entity.*;
 import net.minecraft.fluid.*;
@@ -13,24 +13,24 @@ import org.spongepowered.asm.mixin.injection.callback.*;
 import java.util.*;
 
 @Mixin(Entity.class)
-public abstract class EntityApplyFluidsMixin /*implements TouchingWaterAware*/ {
+public abstract class EntityApplyFluidsMixin implements TouchingWaterAware {
 
     @Final
     @Shadow
     private Set<TagKey<Fluid>> submergedFluidTag;
 
-    /*
+
     @Unique
     private boolean actuallyTouchingWater = false;
 
     @Override
-    public boolean spectrum$isActuallyTouchingWater() {
+    public boolean geomancy$isActuallyTouchingWater() {
         return this.actuallyTouchingWater;
     }
 
     @Override
-    public void spectrum$setActuallyTouchingWater(boolean actuallyTouchingWater) { this.actuallyTouchingWater = actuallyTouchingWater; }
-*/
+    public void geomancy$setActuallyTouchingWater(boolean actuallyTouchingWater) { this.actuallyTouchingWater = actuallyTouchingWater; }
+
 
     @Inject(method = "isSubmergedIn", at = @At("RETURN"), cancellable = true)
     public void geomancy$isSubmergedIn(TagKey<Fluid> fluidTag, CallbackInfoReturnable<Boolean> cir) {

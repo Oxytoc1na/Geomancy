@@ -13,7 +13,7 @@ public class ModSoundEvents {
     public static final SoundEvent USE_HAMMER_FAIL = register("use_hammer_fail");
     public static final SoundEvent USE_HAMMER_SLIP = register("use_hammer_slip");
 
-    public static void initialize(){
+    public static void register(){
 
     }
 

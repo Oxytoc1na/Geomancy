@@ -15,7 +15,7 @@ public class ModBlockEntities {
     public static final BlockEntityType<SmitheryBlockEntity> SMITHERY_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE,new Identifier(Geomancy.MOD_ID,"smithery_be"),
             FabricBlockEntityTypeBuilder.create(SmitheryBlockEntity::new,ModBlocks.SMITHERY).build());
 
-    public static void initialize() {
+    public static void register() {
 
     }
 
