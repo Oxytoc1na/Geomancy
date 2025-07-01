@@ -5,7 +5,7 @@ import net.minecraft.util.Identifier;
 import static org.oxytocina.geomancy.Geomancy.locate;
 
 public enum CapeType {
-    DEV(locate("textures/capes/immortal.png"), true),
+    DEV(locate("textures/capes/dev.png"), true),
     NONE(null, false);
 
     public final Identifier capePath;

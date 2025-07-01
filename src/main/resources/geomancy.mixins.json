@@ -9,6 +9,7 @@
     "LivingEntityMixin"
   ],
   "client": [
+    "client.AbstractClientEntityMixin",
     "client.BlockOverlayRendererMixin"
   ],
   "injectors": {

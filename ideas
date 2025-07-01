@@ -46,6 +46,8 @@ SMITHING
 ARTIFACTS
 
 - Smithing
+- Air
+-- double jump
 
 -- aliens
 --- stellarite octangulists
@@ -72,12 +74,15 @@ X--- mishaps
 --- oakenshield
 X-- liquid gold
 ---- upgraded lava for smithing structure
---- geodes
+X-- geodes
+X--- mighty enchant increases break chance
+---- skillful reduces it
 --- bimmstone
 --- grimmstone
 --- slag
 --- mithril anvil
 X-- diggy diggy hole record
+--- emerald decoartion
 
 MODONOMICON
 

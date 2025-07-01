@@ -30,7 +30,7 @@ public class ModFluids {
     public static Item MOLTEN_GOLD_BUCKET;
     public static final int LIQUID_CRYSTAL_TINT = 0xcbbbcb;
     public static final Vector3f MOLTEN_GOLD_COLOR_VEC = Toolbox.colorIntToVec(LIQUID_CRYSTAL_TINT);
-    public static final Identifier MOLTEN_GOLD_OVERLAY_TEXTURE = Geomancy.locate("textures/misc/liquid_crystal_overlay.png");
+    public static final Identifier MOLTEN_GOLD_OVERLAY_TEXTURE = Geomancy.locate("textures/misc/molten_gold_overlay.png");
     public static final float MOLTEN_GOLD_OVERLAY_ALPHA = 0.6F;
 
     public static void register() {

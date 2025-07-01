@@ -74,9 +74,9 @@ public class ModItems {
             1000,100,50,10),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Handheld));
 
     // geodes
-    public static final GeodeItem STONE_GEODE = (GeodeItem) register("stone_geode",new GeodeItem(new FabricItemSettings(),ModLootTables.STONE_GEODE));
+    public static final GeodeItem STONE_GEODE = (GeodeItem) register("stone_geode",new GeodeItem(new FabricItemSettings(),ModLootTables.GEODE_STONE));
 
-    public static void initialize() {
+    public static void register() {
         // initialize static fields
         // calling this method is sufficient to do that, actually
 

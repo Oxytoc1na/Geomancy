@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:jigsaw",
+  "biomes": "#geomancy:has_dwarven_remnants",
+  "step": "underground_structures",
+  "spawn_overrides": {},
+  "terrain_adaptation": "bury",
+  "start_pool": "geomancy:ancient_hall/center",
+  "size": 7,
+  "start_height": {
+    "type": "uniform",
+    "min_inclusive": {
+      "above_bottom": 0
+    },
+    "max_inclusive": {
+      "absolute": -15
+    }
+  },
+  "project_start_to_heightmap": "WORLD_SURFACE_WG",
+  "max_distance_from_center": 80,
+  "use_expansion_hack": false
+}

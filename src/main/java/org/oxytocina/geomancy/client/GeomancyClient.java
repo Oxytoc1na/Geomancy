@@ -1,14 +1,8 @@
 package org.oxytocina.geomancy.client;
 
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
-import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
-import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.registry.Registries;
 //import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 
 import org.oxytocina.geomancy.blocks.blockEntities.ModBlockEntities;
@@ -20,7 +14,6 @@ import org.oxytocina.geomancy.client.screen.ModScreenHandlers;
 import org.oxytocina.geomancy.client.screen.SmitheryScreen;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 import org.oxytocina.geomancy.event.KeyInputHandler;
-import org.oxytocina.geomancy.fluids.ModFluids;
 import org.oxytocina.geomancy.networking.ModMessages;
 
 public class GeomancyClient implements ClientModInitializer {
@@ -28,11 +21,11 @@ public class GeomancyClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
 
-        ModScreenHandlers.initialize();
-        ModColorizationHandler.initialize();
-        ModBlockTransparency.initialize();
-        ModModelPredicateProvider.initialize();
-        KeyInputHandler.initialize();
+        ModScreenHandlers.register();
+        ModColorizationHandler.register();
+        ModBlockTransparency.register();
+        ModModelPredicateProvider.register();
+        KeyInputHandler.register();
         ModMessages.registerS2CPackets();
         ModFluids.registerClient();
 

@@ -6,8 +6,6 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
 import org.oxytocina.geomancy.networking.ModMessages;
 
@@ -25,7 +23,7 @@ public class KeyInputHandler {
         });
     }
 
-    public static void initialize(){
+    public static void register(){
         skilltreeKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 KEY_OPEN_SKILLTREE,
                 InputUtil.Type.KEYSYM,

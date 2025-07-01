@@ -8,7 +8,7 @@ import org.oxytocina.geomancy.items.jewelry.JewelryItem;
 
 public class ModColorizationHandler {
 
-    public static void initialize(){
+    public static void register(){
 
         ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> {
                     if (view == null || pos == null) {return 0xFFFFFFFF;} else {return octanguliteNoise(pos,tintIndex,1);}

@@ -73,6 +73,8 @@ public class ModModelProvider extends FabricModelProvider {
             VariantsBlockStateSupplier supplier = VariantsBlockStateSupplier.create(b,variants);
             blockStateModelGenerator.blockStateCollector.accept(supplier);
         }
+
+        // fluids
     }
 
 

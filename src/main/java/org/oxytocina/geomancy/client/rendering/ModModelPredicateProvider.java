@@ -2,12 +2,11 @@ package org.oxytocina.geomancy.client.rendering;
 
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import org.oxytocina.geomancy.Geomancy;
-import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.jewelry.JewelryItem;
 
 public class ModModelPredicateProvider {
 
-    public static void initialize(){
+    public static void register(){
 
         // jewelry
         for(JewelryItem item : JewelryItem.List) {
