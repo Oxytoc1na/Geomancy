@@ -18,33 +18,21 @@ import org.oxytocina.geomancy.client.rendering.ModColorizationHandler;
 import org.oxytocina.geomancy.client.rendering.ModModelPredicateProvider;
 import org.oxytocina.geomancy.client.screen.ModScreenHandlers;
 import org.oxytocina.geomancy.client.screen.SmitheryScreen;
-import org.oxytocina.geomancy.fluids.ModFluids;
+import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 
 public class GeomancyClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
 
-        RegisterFluid(ModFluids.STILL_GOLD,ModFluids.FLOWING_GOLD);
-
         ModScreenHandlers.initialize();
         ModColorizationHandler.initialize();
         ModBlockTransparency.initialize();
         ModModelPredicateProvider.initialize();
+        ModFluids.registerClient();
 
         HandledScreens.register(ModScreenHandlers.SMITHERY_SCREEN_HANDLER, SmitheryScreen::new);
 
         BlockEntityRendererFactories.register(ModBlockEntities.SMITHERY_BLOCK_ENTITY, SmitheryBlockEntityRenderer::new);
-    }
-
-    private void RegisterFluid(Fluid still, Fluid flowing)
-    {
-        FluidRenderHandlerRegistry.INSTANCE.register(still, flowing, new SimpleFluidRenderHandler(
-            Registries.FLUID.getId(still).withPrefixedPath("block/"),
-            Registries.FLUID.getId(flowing).withPrefixedPath("block/"),
-            0xFFFFFF
-        ));
-
-        BlockRenderLayerMap.INSTANCE.putFluids(RenderLayer.getTranslucent(), still, flowing);
     }
 }

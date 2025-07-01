@@ -1,0 +1,69 @@
+package org.oxytocina.geomancy.blocks.fluids;
+
+import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
+import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
+import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.minecraft.block.Blocks;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.item.BucketItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.Items;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.util.DyeColor;
+import net.minecraft.util.Identifier;
+import org.joml.Vector3f;
+import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.Util.Toolbox;
+import org.oxytocina.geomancy.items.ModItems;
+
+public class ModFluids {
+
+    // RenderHandler storage for compatibility purposes
+    public static final Object2ObjectArrayMap<FluidRenderHandler, Fluid[]> HANDLER_MAP = new Object2ObjectArrayMap<>(4);
+
+    public static ModFluid MOLTEN_GOLD = new GoldFluid.Still();
+    public static ModFluid FLOWING_MOLTEN_GOLD = new GoldFluid.Flowing();
+    public static Item MOLTEN_GOLD_BUCKET;
+    public static final int LIQUID_CRYSTAL_TINT = 0xcbbbcb;
+    public static final Vector3f MOLTEN_GOLD_COLOR_VEC = Toolbox.colorIntToVec(LIQUID_CRYSTAL_TINT);
+    public static final Identifier MOLTEN_GOLD_OVERLAY_TEXTURE = Geomancy.locate("textures/misc/liquid_crystal_overlay.png");
+    public static final float MOLTEN_GOLD_OVERLAY_ALPHA = 0.6F;
+
+    public static void initialize() {
+        registerFluid("molten_gold", MOLTEN_GOLD, FLOWING_MOLTEN_GOLD);
+        MOLTEN_GOLD_BUCKET = ModItems.register("gold_bucket",new BucketItem(MOLTEN_GOLD, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1)));
+
+    }
+
+    private static void registerFluid(String name, Fluid stillFluid, Fluid flowingFluid) {
+        Registry.register(Registries.FLUID, Geomancy.locate(name), stillFluid);
+        Registry.register(Registries.FLUID, Geomancy.locate("flowing_" + name), flowingFluid);
+    }
+
+    @Environment(EnvType.CLIENT)
+    public static void registerClient() {
+        setupFluidRendering(MOLTEN_GOLD, FLOWING_MOLTEN_GOLD, "molten_gold", LIQUID_CRYSTAL_TINT);
+    }
+
+    @Environment(EnvType.CLIENT)
+    private static void setupFluidRendering(final Fluid stillFluid, final Fluid flowingFluid, final String name, int tint) {
+        var handler = new SimpleFluidRenderHandler(
+                Geomancy.locate("block/" + name + "_still"),
+                Geomancy.locate("block/" + name + "_flow"),
+                tint
+        );
+
+        HANDLER_MAP.put(handler, new Fluid[]{stillFluid, flowingFluid});
+        FluidRenderHandlerRegistry.INSTANCE.register(stillFluid, flowingFluid, handler);
+
+        BlockRenderLayerMap.INSTANCE.putFluids(RenderLayer.getTranslucent(), stillFluid, flowingFluid);
+    }
+}
+

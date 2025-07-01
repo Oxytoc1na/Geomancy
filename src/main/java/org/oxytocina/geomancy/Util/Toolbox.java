@@ -12,8 +12,10 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 import org.oxytocina.geomancy.Geomancy;
 
+import java.awt.*;
 import java.util.*;
 
 public class Toolbox {
@@ -109,5 +111,13 @@ public class Toolbox {
         if(a.hasNbt()!=b.hasNbt()) return false;
         if(a.hasNbt() && !a.getNbt().equals(b.getNbt())) return false;
         return true;
+    }
+
+    @NotNull
+    public static Vector3f colorIntToVec(int color) {
+        Color colorObj = new Color(color);
+        float[] argb = new float[4];
+        colorObj.getColorComponents(argb);
+        return new Vector3f(argb[0], argb[1], argb[2]);
     }
 }

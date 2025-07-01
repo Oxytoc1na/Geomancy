@@ -4,9 +4,11 @@
   "package": "org.oxytocina.geomancy.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "EntityApplyFluidsMixin",
     "ItemStackMixin"
   ],
   "client": [
+    "client.BlockOverlayRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

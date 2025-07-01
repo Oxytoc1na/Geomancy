@@ -11,13 +11,11 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.oxytocina.geomancy.Geomancy;
-import org.oxytocina.geomancy.fluids.ModFluids;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class SmitheryRecipe extends GatedModRecipe<Inventory> implements SmitheryRecipeI{
 

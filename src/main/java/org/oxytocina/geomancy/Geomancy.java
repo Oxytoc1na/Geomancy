@@ -15,7 +15,7 @@ import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.blocks.blockEntities.ModBlockEntities;
 import org.oxytocina.geomancy.enchantments.ModEnchantments;
 import org.oxytocina.geomancy.items.ModItems;
-import org.oxytocina.geomancy.fluids.ModFluids;
+import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 import org.oxytocina.geomancy.features.ModFeatures;
 import org.oxytocina.geomancy.loottables.ModLootTables;
 import org.oxytocina.geomancy.progression.advancement.ModCriteria;

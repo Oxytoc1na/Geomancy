@@ -7,7 +7,7 @@ import net.minecraft.recipe.*;
 import net.minecraft.util.*;
 import org.jetbrains.annotations.*;
 import org.oxytocina.geomancy.Geomancy;
-import org.oxytocina.geomancy.fluids.ModFluids;
+import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
 
 import java.util.*;
@@ -28,7 +28,7 @@ public class GoldConvertingRecipe extends FluidConvertingRecipe {
 
     @Override
     public ItemStack createIcon() {
-        return new ItemStack(ModFluids.GOLD_BUCKET);
+        return new ItemStack(ModFluids.MOLTEN_GOLD_BUCKET);
     }
 
     @Override
