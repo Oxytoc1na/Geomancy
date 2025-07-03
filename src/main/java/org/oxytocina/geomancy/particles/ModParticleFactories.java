@@ -1,11 +1,8 @@
 package org.oxytocina.geomancy.particles;
 
 import org.oxytocina.geomancy.particles.client.ModBlockLeakParticles;
-import net.fabricmc.api.*;
 import net.fabricmc.fabric.api.client.particle.v1.*;
-import net.minecraft.client.*;
 import net.minecraft.client.particle.*;
-import net.minecraft.particle.*;
 
 public class ModParticleFactories {
     public static void register(){
@@ -14,15 +11,15 @@ public class ModParticleFactories {
 
 
         // Fluid Dripping
-        ParticleFactoryRegistry.getInstance().register(ModParticleTypes.DRIPPING_MOLTEN_GOLD, ModBlockLeakParticles.DrippingLiquidCrystalFactory::new);
+        ParticleFactoryRegistry.getInstance().register(ModParticleTypes.DRIPPING_MOLTEN_GOLD, ModBlockLeakParticles.DrippingMoltenGoldFactory::new);
 
 
         // Fluid Falling
-        ParticleFactoryRegistry.getInstance().register(ModParticleTypes.FALLING_MOLTEN_GOLD, ModBlockLeakParticles.FallingLiquidCrystalFactory::new);
+        ParticleFactoryRegistry.getInstance().register(ModParticleTypes.FALLING_MOLTEN_GOLD, ModBlockLeakParticles.FallingMoltenGoldFactory::new);
 
 
         // Fluid Landing
-        ParticleFactoryRegistry.getInstance().register(ModParticleTypes.LANDING_MOLTEN_GOLD, ModBlockLeakParticles.LandingLiquidCrystalFactory::new);
+        ParticleFactoryRegistry.getInstance().register(ModParticleTypes.LANDING_MOLTEN_GOLD, ModBlockLeakParticles.LandingMoltenGoldFactory::new);
 
 
         // Fluid Fishing

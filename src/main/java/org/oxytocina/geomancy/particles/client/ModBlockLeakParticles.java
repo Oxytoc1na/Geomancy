@@ -1,6 +1,5 @@
 package org.oxytocina.geomancy.particles.client;
 
-import org.oxytocina.geomancy.registries.*;
 import org.oxytocina.geomancy.particles.*;
 import net.fabricmc.api.*;
 import net.minecraft.client.particle.*;
@@ -11,10 +10,10 @@ import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 @Environment(EnvType.CLIENT)
 public class ModBlockLeakParticles {
 
-    public static class LandingLiquidCrystalFactory implements ParticleFactory<DefaultParticleType> {
+    public static class LandingMoltenGoldFactory implements ParticleFactory<DefaultParticleType> {
         protected final SpriteProvider spriteProvider;
 
-        public LandingLiquidCrystalFactory(SpriteProvider spriteProvider) {
+        public LandingMoltenGoldFactory(SpriteProvider spriteProvider) {
             this.spriteProvider = spriteProvider;
         }
 
@@ -27,10 +26,10 @@ public class ModBlockLeakParticles {
         }
     }
 
-    public static class FallingLiquidCrystalFactory implements ParticleFactory<DefaultParticleType> {
+    public static class FallingMoltenGoldFactory implements ParticleFactory<DefaultParticleType> {
         protected final SpriteProvider spriteProvider;
 
-        public FallingLiquidCrystalFactory(SpriteProvider spriteProvider) {
+        public FallingMoltenGoldFactory(SpriteProvider spriteProvider) {
             this.spriteProvider = spriteProvider;
         }
 
@@ -43,10 +42,10 @@ public class ModBlockLeakParticles {
         }
     }
 
-    public static class DrippingLiquidCrystalFactory implements ParticleFactory<DefaultParticleType> {
+    public static class DrippingMoltenGoldFactory implements ParticleFactory<DefaultParticleType> {
         protected final SpriteProvider spriteProvider;
 
-        public DrippingLiquidCrystalFactory(SpriteProvider spriteProvider) {
+        public DrippingMoltenGoldFactory(SpriteProvider spriteProvider) {
             this.spriteProvider = spriteProvider;
         }
 
