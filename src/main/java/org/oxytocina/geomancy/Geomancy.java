@@ -18,6 +18,7 @@ import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 import org.oxytocina.geomancy.features.ModFeatures;
 import org.oxytocina.geomancy.loottables.ModLootTables;
+import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.particles.ModParticleFactories;
 import org.oxytocina.geomancy.particles.ModParticleTypes;
 import org.oxytocina.geomancy.progression.advancement.ModCriteria;
@@ -58,6 +59,7 @@ public class Geomancy implements ModInitializer {
         ModEnchantments.register();
         ModParticleTypes.register();
         ModParticleFactories.register();
+        ModMessages.registerC2SPackets();
 
         //ModDamageSources.initialize( ?????? , DynamicRegistryManager.EMPTY);
 

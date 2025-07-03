@@ -6,7 +6,8 @@
   "mixins": [
     "EntityApplyFluidsMixin",
     "ItemStackMixin",
-    "LivingEntityMixin"
+    "LivingEntityMixin",
+    "ModEntityDataSaverMixin"
   ],
   "client": [
     "client.AbstractClientEntityMixin",
