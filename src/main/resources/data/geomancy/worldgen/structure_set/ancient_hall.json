@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "geomancy:ancient_hall",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 15,
+    "separation": 10,
+    "salt": 576275782
+  }
+}

@@ -67,7 +67,7 @@ public class ModBlocks {
         return AbstractBlock.Settings.create().mapColor(mapColor).replaceable().noCollision().pistonBehavior(PistonBehavior.DESTROY).liquid();
     }
 
-    public static final Block MOLTEN_GOLD = register("molten_gold", settings -> new GoldFluidBlock(ModFluids.MOLTEN_GOLD,null,settings),fluid(MapColor.GOLD).luminance(value -> 15).replaceable());
+    public static final Block MOLTEN_GOLD = register("molten_gold", settings -> new GoldFluidBlock(ModFluids.MOLTEN_GOLD,null,settings),fluid(MapColor.GOLD).luminance(value -> 15).replaceable(),ExtraBlockSettings.create().fluid());
 
 
     public static void register(){

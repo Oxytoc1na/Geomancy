@@ -12,7 +12,7 @@
       "above_bottom": 0
     },
     "max_inclusive": {
-      "absolute": -15
+      "absolute": -40
     }
   },
   "project_start_to_heightmap": "WORLD_SURFACE_WG",

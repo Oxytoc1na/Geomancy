@@ -7,7 +7,7 @@
         "element_type": "minecraft:single_pool_element",
         "location": "geomancy:ancient_hall/pillar/intact",
         "projection": "rigid",
-        "processors": "minecraft:empty"
+        "processors": "geomancy:ancient_hall_degrade"
       }
     },
     {
@@ -16,7 +16,7 @@
         "element_type": "minecraft:single_pool_element",
         "location": "geomancy:ancient_hall/pillar/broken",
         "projection": "rigid",
-        "processors": "minecraft:empty"
+        "processors": "geomancy:ancient_hall_degrade"
       }
     }
   ]

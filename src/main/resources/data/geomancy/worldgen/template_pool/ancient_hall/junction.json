@@ -1,22 +1,22 @@
 {
-  "fallback": "minecraft:empty",
+  "fallback": "geomancy:ancient_hall/fallback_junction",
   "elements": [
     {
-      "weight": 1,
+      "weight": 10,
       "element": {
         "element_type": "minecraft:single_pool_element",
         "location": "geomancy:ancient_hall/junction/cross",
         "projection": "rigid",
-        "processors": "minecraft:empty"
+        "processors": "geomancy:ancient_hall_degrade"
       }
     },
     {
-      "weight": 2,
+      "weight": 10,
       "element": {
         "element_type": "minecraft:single_pool_element",
         "location": "geomancy:ancient_hall/junction/t",
         "projection": "rigid",
-        "processors": "minecraft:empty"
+        "processors": "geomancy:ancient_hall_degrade"
       }
     }
   ]

@@ -77,7 +77,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("block.MODID.deepslate_mithril_ore" , "Deepslate Mithril Ore");
             add("block.MODID.raw_mithril_block"     , "Block of Raw Mithril");
             add("block.MODID.mithril_block"         , "Block of Mithril");
-            add("block.MODID.gold"                  , "Molten Gold");
+            add("block.MODID.molten_gold"                  , "Molten Gold");
             add("block.MODID.mithril_anvil"         , "Mithril Anvil");
             add("block.MODID.gilded_deepslate"      , "Gilded Deepslate");
             add("block.MODID.decorated_gilded_deepslate", "Decorated Gilded Deepslate");
@@ -86,6 +86,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("message.MODID.smithery.fail.break"     ,"that didn't sound good...");
             add("block.MODID.octangulite_ore"           , "Octangulite Ore");
             add("block.MODID.deepslate_octangulite_ore" , "Deepslate Octangulite Ore");
+            add("block.MODID.octangulite_scrap"         , "Octangulite Scrap");
         }
 
         // Enchantments

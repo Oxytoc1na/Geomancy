@@ -28,14 +28,18 @@ public class ModFluids {
     public static ModFluid MOLTEN_GOLD = new GoldFluid.Still();
     public static ModFluid FLOWING_MOLTEN_GOLD = new GoldFluid.Flowing();
     public static Item MOLTEN_GOLD_BUCKET;
-    public static final int LIQUID_CRYSTAL_TINT = 0xcbbbcb;
-    public static final Vector3f MOLTEN_GOLD_COLOR_VEC = Toolbox.colorIntToVec(LIQUID_CRYSTAL_TINT);
+    public static final int MOLTEN_GOLD_TINT = 0xffffff;
+    public static final Vector3f MOLTEN_GOLD_COLOR_VEC = Toolbox.colorIntToVec(MOLTEN_GOLD_TINT);
     public static final Identifier MOLTEN_GOLD_OVERLAY_TEXTURE = Geomancy.locate("textures/misc/molten_gold_overlay.png");
     public static final float MOLTEN_GOLD_OVERLAY_ALPHA = 0.6F;
 
-    public static void register() {
+    static{
         registerFluid("molten_gold", MOLTEN_GOLD, FLOWING_MOLTEN_GOLD);
         MOLTEN_GOLD_BUCKET = ModItems.register("gold_bucket",new BucketItem(MOLTEN_GOLD, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1)));
+
+    }
+
+    public static void register() {
 
     }
 
@@ -46,7 +50,7 @@ public class ModFluids {
 
     @Environment(EnvType.CLIENT)
     public static void registerClient() {
-        setupFluidRendering(MOLTEN_GOLD, FLOWING_MOLTEN_GOLD, "molten_gold", LIQUID_CRYSTAL_TINT);
+        setupFluidRendering(MOLTEN_GOLD, FLOWING_MOLTEN_GOLD, "molten_gold", MOLTEN_GOLD_TINT);
     }
 
     @Environment(EnvType.CLIENT)

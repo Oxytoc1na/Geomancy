@@ -5,9 +5,9 @@
       "weight": 1,
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "geomancy:dwarven_remnants1",
+        "location": "geomancy:dwarven_remnants",
         "projection": "rigid",
-        "processors": "minecraft:empty"
+        "processors": "geomancy:ancient_hall_degrade"
       }
     }
   ]

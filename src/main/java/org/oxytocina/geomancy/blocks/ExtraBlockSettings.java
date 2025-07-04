@@ -57,6 +57,7 @@ public class ExtraBlockSettings {
     public ExtraBlockSettings miningLevel(int level){miningLevel=level; return this;}
     public ExtraBlockSettings hasTextureVariants(int count){textureVariants=count; variantCube = true; notSimpleCube(); return this;}
     public ExtraBlockSettings hasTextureVariantsColumn(int count){textureVariants=count; variantCubeColumn = true; notSimpleCube(); return this;}
+    public ExtraBlockSettings fluid() { return notSimpleCube().dontGroupItem(); }
 
     public void apply(){
         if(pickaxe) ToolableBlock_Pickaxe.add(block);

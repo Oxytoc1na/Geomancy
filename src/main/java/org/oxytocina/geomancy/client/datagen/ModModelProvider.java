@@ -11,6 +11,7 @@ import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.ExtraBlockSettings;
 import org.oxytocina.geomancy.blocks.ModBlocks;
+import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 import org.oxytocina.geomancy.items.ExtraItemSettings;
 import org.oxytocina.geomancy.items.ModItems;
 
@@ -74,7 +75,6 @@ public class ModModelProvider extends FabricModelProvider {
             blockStateModelGenerator.blockStateCollector.accept(supplier);
         }
 
-        // fluids
     }
 
 
