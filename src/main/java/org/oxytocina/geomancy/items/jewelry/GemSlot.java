@@ -23,8 +23,10 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.enchantments.ModEnchantments;
 import org.oxytocina.geomancy.util.Toolbox;
 
+import java.text.Normalizer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -129,7 +131,7 @@ public class GemSlot {
     }
 
     public float getEffectiveQuality(ItemStack stack, LivingEntity entity){
-        return quality;
+        return quality * (1 + ModEnchantments.getLevel(stack,ModEnchantments.BRILLIANCE) * 0.2F);
     }
 
     public static Settings getSettings(Item item){
@@ -165,10 +167,10 @@ public class GemSlot {
         return modifiers;
     }
 
-    public static boolean appendTooltip(ItemStack stack, GemSlot gem, World world, List<Text> list, TooltipContext context) {
+    public static boolean appendTooltip(ItemStack stack, GemSlot gem,LivingEntity wearer, World world, List<Text> list, TooltipContext context) {
         Settings s = getSettings(gem.gemItem);
         if(s!=null&&s.tooltipFunction!=null)
-            return s.tooltipFunction.apply(stack,gem,world,list,context);
+            return s.tooltipFunction.apply(stack,gem,wearer,world,list,context);
         return false;
     }
 
@@ -193,7 +195,7 @@ public class GemSlot {
         public Function4<ItemStack,GemSlot, SlotReference, LivingEntity,Boolean> equipFunction = null;
         public Function4<ItemStack,GemSlot, SlotReference, LivingEntity,Boolean> unequipFunction = null;
         public Function6<ItemStack,GemSlot, SlotReference, LivingEntity,UUID,Multimap<EntityAttribute, EntityAttributeModifier>,Multimap<EntityAttribute, EntityAttributeModifier>> modifierFunction = null;
-        public Function5<ItemStack,GemSlot, World , List<Text> , TooltipContext ,Boolean> tooltipFunction = null;
+        public Function6<ItemStack,GemSlot, LivingEntity, World , List<Text> , TooltipContext ,Boolean> tooltipFunction = null;
 
         private Settings(){
 
@@ -207,11 +209,11 @@ public class GemSlot {
         public Settings setEquip(Function4<ItemStack,GemSlot, SlotReference, LivingEntity,Boolean> f){equipFunction=f;return this;}
         public Settings setUnequip(Function4<ItemStack,GemSlot, SlotReference, LivingEntity,Boolean> f){unequipFunction=f;return this;}
         public Settings setModifier(Function6<ItemStack,GemSlot, SlotReference, LivingEntity,UUID,Multimap<EntityAttribute, EntityAttributeModifier>,Multimap<EntityAttribute, EntityAttributeModifier>> f){modifierFunction=f;return this;}
-        public Settings setTooltip(Function5<ItemStack,GemSlot, World , List<Text> , TooltipContext ,Boolean> f){tooltipFunction=f;return this;}
-        public Settings withGenericTooltip(net.minecraft.util.Formatting formatting){ return setTooltip((itemStack, gemSlot, world, texts, tooltipContext) -> {
+        public Settings setTooltip(Function6<ItemStack,GemSlot,LivingEntity, World , List<Text> , TooltipContext ,Boolean> f){tooltipFunction=f;return this;}
+        public Settings withGenericTooltip(net.minecraft.util.Formatting formatting){ return setTooltip((itemStack, gemSlot,wearer, world, texts, tooltipContext) -> {
             texts.add(Text.translatable("tooltip.geomancy.jewelry.quality").formatted(Formatting.AQUA)
                     .append(" ")
-                    .append(gemSlot.getQualityString()).append(" ")
+                    .append(gemSlot.getQualityString(itemStack,wearer)).append(" ")
                     .append(Text.translatable(gemSlot.gemItem.getTranslationKey()).formatted(formatting))); return true;});};
         public Settings setItem(Item item){this.item=item;return this;}
 
@@ -220,9 +222,10 @@ public class GemSlot {
         }
     }
 
-    private Text getQualityString() {
+    private Text getQualityString(ItemStack stack, LivingEntity wearer) {
         Formatting formatting = Formatting.DARK_RED;
         int qualityPercent = Math.round(quality*100);
+        int effectiveQualityPercent = Math.round(getEffectiveQuality(stack,wearer)*100);
 
         if(qualityPercent > 100) formatting = Formatting.LIGHT_PURPLE;
         else if (qualityPercent>80) formatting = Formatting.GREEN;
@@ -230,7 +233,15 @@ public class GemSlot {
         else if (qualityPercent>40) formatting = Formatting.GOLD;
         else if (qualityPercent>20) formatting = Formatting.RED;
 
-        return Text.literal(Integer.toString(qualityPercent)).append("%").formatted(formatting);
+        Text effectiveText = Text.empty();
+        if(effectiveQualityPercent!=qualityPercent){
+            effectiveText = Text.literal(" ("+ effectiveQualityPercent +"%)").formatted(
+                    effectiveQualityPercent>qualityPercent? Formatting.LIGHT_PURPLE
+                            : Formatting.RED
+            );
+        }
+
+        return Text.literal(Integer.toString(qualityPercent)).append("%").formatted(formatting).append(effectiveText);
     }
 
     public float getXPMultiplier(ItemStack parent, LivingEntity wearer){

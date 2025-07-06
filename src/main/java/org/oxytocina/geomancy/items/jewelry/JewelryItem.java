@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import dev.emi.trinkets.TrinketSlot;
 import dev.emi.trinkets.api.*;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
@@ -129,8 +130,10 @@ public class JewelryItem extends TrinketItem implements DyeableItem {
         var gems = getSlots(stack);
         boolean hasGems = !gems.isEmpty();
         List<Text> gemList = new ArrayList<>();
+        LivingEntity wearer = MinecraftClient.getInstance().player;
+        //LivingEntity wearer = stack.getHolder() instanceof LivingEntity l ? l : null;
         for(var gem : gems)
-            GemSlot.appendTooltip(stack,gem,world,gemList,context);
+            GemSlot.appendTooltip(stack,gem,wearer,world,gemList,context);
 
         Map<Text,Integer> textMap = new HashMap<>();
         for(Text t : gemList){

@@ -113,6 +113,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         // Enchantments
         add("enchantment.MODID.skillful"    , "Skillful");
         add("enchantment.MODID.mighty"      , "Mighty");
+        add("enchantment.MODID.brilliance"  , "Brilliance");
 
         // damage types
         add("death.attack.geomancy.duplicate_trinkets", "%1$s felt their own hubris");
