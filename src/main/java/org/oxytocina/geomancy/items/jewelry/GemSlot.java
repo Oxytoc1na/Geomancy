@@ -6,6 +6,7 @@ import com.mojang.datafixers.util.Function5;
 import com.mojang.datafixers.util.Function6;
 import dev.emi.trinkets.api.SlotReference;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -30,6 +31,7 @@ import java.text.Normalizer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Function;
 
 public class GemSlot {
 
@@ -43,7 +45,9 @@ public class GemSlot {
     static{
 
         // Diamond gems give 2 Armor per quality
-        register(Settings.create(Items.DIAMOND).setColor(0,1,1).setDifficulty(1).setProgressCost(0).withGenericTooltip(Formatting.AQUA).setModifier((itemStack, gemSlot, slotReference, livingEntity, uuid, modifiers) -> {
+        register(Settings.create(Items.DIAMOND).setColor(0,1,1).setDifficulty(1).setProgressCost(0).withGenericTooltip(Formatting.AQUA,(q)->Integer.toString(Math.round(q*2))).setModifier((itemStack, gemSlot, slotReference, livingEntity, uuid, modifiers) -> {
+            if(JewelryItem.isPendant(itemStack)) return modifiers;
+
             float value = 2*gemSlot.getEffectiveQuality(itemStack,livingEntity);
             String id = "geomancy:jewelry_diamond_gem_armor";
             EntityAttributeModifier.Operation op = EntityAttributeModifier.Operation.ADDITION;
@@ -71,9 +75,10 @@ public class GemSlot {
                 modifiers.put(EntityAttributes.GENERIC_ARMOR, newMod);
             return modifiers;
         }));
-        register(Settings.create(Items.EMERALD).setColor(0,1,0).setDifficulty(1).setProgressCost(0).withGenericTooltip(Formatting.GREEN));
-        register(Settings.create(Items.LAPIS_LAZULI).setColor(0,0,1).setDifficulty(1).setProgressCost(0).withGenericTooltip(Formatting.BLUE));
+        register(Settings.create(Items.EMERALD).setColor(0,1,0).setDifficulty(1).setProgressCost(0).withGenericTooltip(Formatting.GREEN,(q)->Integer.toString(Math.round(q*100))));
+        register(Settings.create(Items.LAPIS_LAZULI).setColor(0,0,1).setDifficulty(1).setProgressCost(0).withGenericTooltip(Formatting.BLUE,(q)->Float.toString(q)));
 
+        Enchantments.FORTUNE
     }
 
     public static void register(Settings settings){
@@ -131,7 +136,9 @@ public class GemSlot {
     }
 
     public float getEffectiveQuality(ItemStack stack, LivingEntity entity){
-        return quality * (1 + ModEnchantments.getLevel(stack,ModEnchantments.BRILLIANCE) * 0.2F);
+        return quality *
+                (1 + ModEnchantments.getLevel(stack,ModEnchantments.BRILLIANCE) * 0.2F)
+                * JewelryItem.getGemQualityMultiplierFor(this,stack,entity);
     }
 
     public static Settings getSettings(Item item){
@@ -210,11 +217,13 @@ public class GemSlot {
         public Settings setUnequip(Function4<ItemStack,GemSlot, SlotReference, LivingEntity,Boolean> f){unequipFunction=f;return this;}
         public Settings setModifier(Function6<ItemStack,GemSlot, SlotReference, LivingEntity,UUID,Multimap<EntityAttribute, EntityAttributeModifier>,Multimap<EntityAttribute, EntityAttributeModifier>> f){modifierFunction=f;return this;}
         public Settings setTooltip(Function6<ItemStack,GemSlot,LivingEntity, World , List<Text> , TooltipContext ,Boolean> f){tooltipFunction=f;return this;}
-        public Settings withGenericTooltip(net.minecraft.util.Formatting formatting){ return setTooltip((itemStack, gemSlot,wearer, world, texts, tooltipContext) -> {
+        public Settings withGenericTooltip(net.minecraft.util.Formatting formatting, Function<Float,String> qualityFunc){ return setTooltip((itemStack, gemSlot, wearer, world, texts, tooltipContext) -> {
             texts.add(Text.translatable("tooltip.geomancy.jewelry.quality").formatted(Formatting.AQUA)
                     .append(" ")
                     .append(gemSlot.getQualityString(itemStack,wearer)).append(" ")
-                    .append(Text.translatable(gemSlot.gemItem.getTranslationKey()).formatted(formatting))); return true;});};
+                    .append(Text.translatable(gemSlot.gemItem.getTranslationKey()).formatted(formatting)));
+            texts.add(Text.translatable("tooltip.geomancy.jewelry.gemeffect."+Registries.ITEM.getId(gemSlot.gemItem).getPath(),qualityFunc.apply(gemSlot.getEffectiveQuality(itemStack,wearer))));
+            return true;});};
         public Settings setItem(Item item){this.item=item;return this;}
 
         public static Settings create(Item item){

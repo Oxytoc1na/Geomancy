@@ -226,4 +226,41 @@ public class JewelryItem extends TrinketItem implements DyeableItem {
 
         return res;
     }
+
+    public static float getGemQualityMultiplierFor(GemSlot gem,ItemStack onItem,LivingEntity wearer){
+        float res = 1;
+
+        if(isPendant(onItem)) return res;
+
+        var wornJewelry = getAllWornJewelryItems(wearer);
+        for(ItemStack jewelryItem : wornJewelry){
+            if(isPendant(jewelryItem)){
+                res += getGemQualityMultiplier(gem,jewelryItem,wearer);
+            }
+        }
+
+        return res;
+    }
+
+    public static float getGemQualityMultiplier(GemSlot refgem,ItemStack stack,LivingEntity wearer){
+        float res = 0;
+
+        JewelryItem jewelryItem = (JewelryItem) stack.getItem();
+        var gems = jewelryItem.getSlots(stack);
+
+        for(var gem : gems){
+            if(gem.gemItem == refgem.gemItem)
+                res += gem.getEffectiveQuality(stack,wearer);
+        }
+
+        return res;
+    }
+
+    public boolean isPendant(){
+        return jewelrySettings.pendant;
+    }
+
+    public static boolean isPendant(ItemStack stack){
+        return stack.getItem() instanceof JewelryItem j && j.isPendant();
+    }
 }

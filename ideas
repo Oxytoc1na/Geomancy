@@ -2,14 +2,20 @@
 MINERALS
 
 x Mithril
+-- hard to work with, many gem slots, quality bonus
 - Lead
+-- easy to work with, many gem slots, quality malus, but slowly poisons you (random effects)
+-- lead cleanse drink item
 - Titanium
-- Molybdenium
-- Octangulite
+-- hard to work with, many gem slots
+x Molybdenium
+-- normal to work with, medium gem slots
+x Octangulite
 -- alien, exclusively found in ruined alien structures
 -- in the form of scrap, then refined
 -- basically magical tungsten
 -- properties arent internally consistent (some hard, some soft, some brittle, some dusty, all sticking together, undulating between its states)
+-- incredibly difficult to work with, very many gem slots
 
 JEWELRY
 
@@ -83,6 +89,8 @@ X--- mighty enchant increases break chance
 --- mithril anvil
 X-- diggy diggy hole record
 --- emerald decoartion
+--- brilliance enchantment for jewelry
+---- increases effective quality
 
 MODONOMICON
 
@@ -97,3 +105,10 @@ pages:
 - gem effects
 - artifacts
 - greater artifacts
+
+OCTANGULITE
+pages:
+- raw octangulite
+
+TODO:
+removing pendants and similar updates modifiers

@@ -50,6 +50,14 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("item.MODID.molybdenium_ingot"          , "Molybdenium Ingot");
             add("item.MODID.molybdenium_nugget"         , "Molybdenium Nugget");
 
+            add("item.MODID.raw_titanium"            , "Raw Titanium");
+            add("item.MODID.titanium_ingot"          , "Titanium Ingot");
+            add("item.MODID.titanium_nugget"         , "Titanium Nugget");
+
+            add("item.MODID.raw_lead"            , "Raw Lead");
+            add("item.MODID.lead_ingot"          , "Lead Ingot");
+            add("item.MODID.lead_nugget"         , "Lead Nugget");
+
             add("item.MODID.raw_octangulite"        , "Raw Octangulite");
             add("item.MODID.octangulite_ingot"      , "Octangulite Ingot");
             add("item.MODID.octangulite_nugget"     , "Octangulite Nugget");
@@ -73,6 +81,10 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("item.MODID.iron_ring"              , "Iron Ring");
             add("item.MODID.iron_necklace"          , "Iron Necklace");
             add("tooltip.geomancy.jewelry.nogems"   ,"No Gems");
+            add("tooltip.geomancy.jewelry.pendant1" ,"Empowers other worn gems of the");
+            add("tooltip.geomancy.jewelry.pendant2" ,"same type as slotted in this item");
+            add("tooltip.geomancy.jewelry.gemeffect.diamond"        ,"provides %1$s armor");
+            add("tooltip.geomancy.jewelry.gemeffect.lapis_lazuli"   ,"increases XP drops by %1$s");
             add("tooltip.geomancy.jewelry.unsmith"  ,"Salvages gems");
             add("tooltip.geomancy.jewelry.quality"  ,"Quality");
 
@@ -108,6 +120,16 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("block.MODID.deepslate_molybdenium_ore" , "Deepslate Molybdenium Ore");
             add("block.MODID.raw_molybdenium_block"     , "Block of raw Molybdenium");
             add("block.MODID.molybdenium_block"         , "Block of Molybdenium");
+
+            add("block.MODID.titanium_ore"           , "Titanium Ore");
+            add("block.MODID.deepslate_titanium_ore" , "Deepslate Titanium Ore");
+            add("block.MODID.raw_titanium_block"     , "Block of raw Titanium");
+            add("block.MODID.titanium_block"         , "Block of Titanium");
+
+            add("block.MODID.lead_ore"           , "Lead Ore");
+            add("block.MODID.deepslate_lead_ore" , "Deepslate Lead Ore");
+            add("block.MODID.raw_lead_block"     , "Block of raw Lead");
+            add("block.MODID.lead_block"         , "Block of Lead");
         }
 
         // Enchantments
@@ -132,6 +154,12 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
             add("advancement.MODID.main.get_octangulite.name"               , "Otherworldy");
             add("advancement.MODID.main.get_octangulite.description"        , "Discover something strange");
+
+            add("advancement.MODID.main.get_titanium.name"               , "Indestructible");
+            add("advancement.MODID.main.get_titanium.description"        , "Discover something really tough");
+
+            add("advancement.MODID.main.get_lead.name"               , "Heavy");
+            add("advancement.MODID.main.get_lead.description"        , "Discover something heavy and soft");
 
             add("advancement.MODID.main.get_molten_gold.name"               , "Greedy");
             add("advancement.MODID.main.get_molten_gold.description"        , "Discover Molten Gold");

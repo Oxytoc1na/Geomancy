@@ -59,6 +59,16 @@ public class ModItems {
     public static final Item MOLYBDENIUM_INGOT = register("molybdenium_ingot",new Item(new FabricItemSettings().rarity(Rarity.COMMON).fireproof()));
     public static final Item MOLYBDENIUM_NUGGET = register("molybdenium_nugget",new Item(new FabricItemSettings().rarity(Rarity.COMMON).fireproof()));
 
+    // titanium
+    public static final Item RAW_TITANIUM = register("raw_titanium",new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof()));
+    public static final Item TITANIUM_INGOT = register("titanium_ingot",new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof()));
+    public static final Item TITANIUM_NUGGET = register("titanium_nugget",new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof()));
+
+    // lead
+    public static final LeadItem RAW_LEAD = (LeadItem) register("raw_lead",new LeadItem(new FabricItemSettings().rarity(Rarity.COMMON).fireproof()));
+    public static final LeadItem LEAD_INGOT = (LeadItem) register("lead_ingot",new LeadItem(new FabricItemSettings().rarity(Rarity.COMMON).fireproof()));
+    public static final LeadItem LEAD_NUGGET = (LeadItem) register("lead_nugget",new LeadItem(new FabricItemSettings().rarity(Rarity.COMMON).fireproof()));
+
 
     public static final Item GUIDE_BOOK = register("guidebook",new Item(new FabricItemSettings()),new ExtraItemSettings().dontGroupItem());
 
@@ -74,7 +84,10 @@ public class ModItems {
     public static final JewelryItem IRON_RING = (JewelryItem) register("iron_ring",new JewelryItem(new Item.Settings().maxCount(1),
             JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.RING).withGemCount(1)),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
     public static final JewelryItem IRON_NECKLACE = (JewelryItem) register("iron_necklace",new JewelryItem(new Item.Settings().maxCount(1),
-            JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(100)),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
+            JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(1)),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
+    public static final JewelryItem IRON_PENDANT = (JewelryItem) register("iron_pendant",new JewelryItem(new Item.Settings().maxCount(1),
+            JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(2).setPendant()),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
+
 
     // tools
     public static final HammerItem IRON_HAMMER = (HammerItem) register("iron_hammer",new HammerItem(5,-3.3f,

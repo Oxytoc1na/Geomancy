@@ -4,6 +4,7 @@
   "package": "org.oxytocina.geomancy.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "ApplyBonusLootFunctionMixin",
     "EntityApplyFluidsMixin",
     "EntityMixin",
     "ItemStackMixin",

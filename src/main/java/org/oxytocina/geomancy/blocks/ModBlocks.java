@@ -51,16 +51,34 @@ public class ModBlocks {
             AbstractBlock.Settings.copy(MOLYBDENIUM_ORE).mapColor(MapColor.DEEPSLATE_GRAY).strength(4.5F, 3.0F).sounds(BlockSoundGroup.DEEPSLATE),
             ExtraBlockSettings.create().mineableByPickaxe().miningLevel(1).notRegularDrop(),new FabricItemSettings().rarity(Rarity.COMMON));
 
+    public static final ExperienceDroppingBlock TITANIUM_ORE = (ExperienceDroppingBlock) register("titanium_ore", (AbstractBlock.Settings s) -> new ExperienceDroppingBlock(s, UniformIntProvider.create(9,13)),
+            AbstractBlock.Settings.create().mapColor(MapColor.STONE_GRAY).instrument(Instrument.BASEDRUM).requiresTool().strength(3.0F, 3.0F).sounds(BlockSoundGroup.STONE),
+            ExtraBlockSettings.create().mineableByPickaxe().miningLevel(1).notRegularDrop(),new FabricItemSettings().rarity(Rarity.COMMON));
+    public static final ExperienceDroppingBlock DEEPSLATE_TITANIUM_ORE = (ExperienceDroppingBlock) register("deepslate_titanium_ore", (AbstractBlock.Settings s) -> new ExperienceDroppingBlock(s, UniformIntProvider.create(9,13)),
+            AbstractBlock.Settings.copy(TITANIUM_ORE).mapColor(MapColor.DEEPSLATE_GRAY).strength(4.5F, 3.0F).sounds(BlockSoundGroup.DEEPSLATE),
+            ExtraBlockSettings.create().mineableByPickaxe().miningLevel(1).notRegularDrop(),new FabricItemSettings().rarity(Rarity.COMMON));
+
+    public static final ExperienceDroppingBlock LEAD_ORE = (ExperienceDroppingBlock) register("lead_ore", (AbstractBlock.Settings s) -> new ExperienceDroppingBlock(s, UniformIntProvider.create(9,13)),
+            AbstractBlock.Settings.create().mapColor(MapColor.STONE_GRAY).instrument(Instrument.BASEDRUM).requiresTool().strength(3.0F, 3.0F).sounds(BlockSoundGroup.STONE),
+            ExtraBlockSettings.create().mineableByPickaxe().miningLevel(1).notRegularDrop(),new FabricItemSettings().rarity(Rarity.COMMON));
+    public static final ExperienceDroppingBlock DEEPSLATE_LEAD_ORE = (ExperienceDroppingBlock) register("deepslate_lead_ore", (AbstractBlock.Settings s) -> new ExperienceDroppingBlock(s, UniformIntProvider.create(9,13)),
+            AbstractBlock.Settings.copy(LEAD_ORE).mapColor(MapColor.DEEPSLATE_GRAY).strength(4.5F, 3.0F).sounds(BlockSoundGroup.DEEPSLATE),
+            ExtraBlockSettings.create().mineableByPickaxe().miningLevel(1).notRegularDrop(),new FabricItemSettings().rarity(Rarity.COMMON));
+
 
     // raw ore blocks
     public static final Block RAW_MITHRIL_BLOCK = register("raw_mithril_block", Block::new, AbstractBlock.Settings.create().mapColor(MapColor.IRON_GRAY).instrument(Instrument.BASEDRUM).requiresTool().strength(5.0F, 6.0F),ExtraBlockSettings.create().mineableByPickaxe().miningLevel(3),new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof());
     public static final Block RAW_OCTANGULITE_BLOCK = register("raw_octangulite_block", Block::new, AbstractBlock.Settings.create().mapColor(MapColor.IRON_GRAY).instrument(Instrument.BASEDRUM).requiresTool().strength(5.0F, 6.0F),ExtraBlockSettings.create().mineableByPickaxe().miningLevel(3).notSimpleCube(),new FabricItemSettings().rarity(Rarity.RARE).fireproof());
     public static final Block RAW_MOLYBDENIUM_BLOCK = register("raw_molybdenium_block", Block::new, AbstractBlock.Settings.create().mapColor(MapColor.IRON_GRAY).instrument(Instrument.BASEDRUM).requiresTool().strength(5.0F, 6.0F),ExtraBlockSettings.create().mineableByPickaxe().miningLevel(1),new FabricItemSettings().rarity(Rarity.COMMON).fireproof());
+    public static final Block RAW_TITANIUM_BLOCK = register("raw_titanium_block", Block::new, AbstractBlock.Settings.create().mapColor(MapColor.IRON_GRAY).instrument(Instrument.BASEDRUM).requiresTool().strength(5.0F, 6.0F),ExtraBlockSettings.create().mineableByPickaxe().miningLevel(1),new FabricItemSettings().rarity(Rarity.COMMON).fireproof());
+    public static final Block RAW_LEAD_BLOCK = register("raw_lead_block", Block::new, AbstractBlock.Settings.create().mapColor(MapColor.IRON_GRAY).instrument(Instrument.BASEDRUM).requiresTool().strength(5.0F, 6.0F),ExtraBlockSettings.create().mineableByPickaxe().miningLevel(1),new FabricItemSettings().rarity(Rarity.COMMON).fireproof());
 
     // ore blocks
     public static final Block MITHRIL_BLOCK = register("mithril_block", Block::new,AbstractBlock.Settings.create().mapColor(MapColor.IRON_GRAY).instrument(Instrument.BELL).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.METAL),ExtraBlockSettings.create().mineableByPickaxe().miningLevel(3),new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof());
     public static final Block OCTANGULITE_BLOCK = register("octangulite_block", Block::new,AbstractBlock.Settings.create().mapColor(MapColor.IRON_GRAY).instrument(Instrument.BELL).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.METAL),ExtraBlockSettings.create().mineableByPickaxe().miningLevel(3).notSimpleCube(),new FabricItemSettings().rarity(Rarity.RARE).fireproof());
     public static final Block MOLYBDENIUM_BLOCK = register("molybdenium_block", Block::new,AbstractBlock.Settings.create().mapColor(MapColor.IRON_GRAY).instrument(Instrument.BELL).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.METAL),ExtraBlockSettings.create().mineableByPickaxe().miningLevel(1),new FabricItemSettings().rarity(Rarity.COMMON).fireproof());
+    public static final Block TITANIUM_BLOCK = register("titanium_block", Block::new,AbstractBlock.Settings.create().mapColor(MapColor.IRON_GRAY).instrument(Instrument.BELL).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.METAL),ExtraBlockSettings.create().mineableByPickaxe().miningLevel(1),new FabricItemSettings().rarity(Rarity.COMMON).fireproof());
+    public static final Block LEAD_BLOCK = register("lead_block", Block::new,AbstractBlock.Settings.create().mapColor(MapColor.IRON_GRAY).instrument(Instrument.BELL).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.METAL),ExtraBlockSettings.create().mineableByPickaxe().miningLevel(1),new FabricItemSettings().rarity(Rarity.COMMON).fireproof());
 
     // mithril anvil
     public static final Block MITHRIL_ANVIL = register("mithril_anvil",AnvilBlock::new,AbstractBlock.Settings.create().mapColor(MapColor.IRON_GRAY).requiresTool().strength(5.0F, 1200.0F).sounds(BlockSoundGroup.ANVIL).pistonBehavior(PistonBehavior.BLOCK),ExtraBlockSettings.create().mineableByPickaxe().notSimpleCube(),new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof());
