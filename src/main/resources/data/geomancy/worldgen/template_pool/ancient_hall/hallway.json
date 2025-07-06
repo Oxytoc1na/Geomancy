@@ -36,6 +36,24 @@
         "projection": "rigid",
         "processors": "geomancy:ancient_hall_degrade"
       }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "geomancy:ancient_hall/rooms/barracks",
+        "projection": "rigid",
+        "processors": "geomancy:ancient_hall_degrade"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "geomancy:ancient_hall/rooms/food",
+        "projection": "rigid",
+        "processors": "geomancy:ancient_hall_degrade"
+      }
     }
   ]
 }

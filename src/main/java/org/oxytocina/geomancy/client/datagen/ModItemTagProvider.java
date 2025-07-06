@@ -40,7 +40,7 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
 
         getOrCreateTagBuilder(MUSIC_DISCS)
                 .add(ModItems.MUSIC_DISC_DIGGY)
-                .setReplace(true);
+                .setReplace(false);
 
         // jewelry gems
         for(ItemConvertible item : GemSlot.gemColorMap.keySet())

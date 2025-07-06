@@ -3,17 +3,30 @@ package org.oxytocina.geomancy.blocks.fluids;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.recipe.RecipeType;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.oxytocina.geomancy.blocks.ModBlocks;
+import org.oxytocina.geomancy.damageTypes.ModDamageTypes;
+import org.oxytocina.geomancy.particles.ModParticleTypes;
 import org.oxytocina.geomancy.recipe.FluidConvertingRecipe;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
+import net.minecraft.particle.ParticleEffect;
+import org.oxytocina.geomancy.util.Toolbox;
 
 public abstract class GoldFluid extends ModFluid {
     @Override
@@ -34,6 +47,53 @@ public abstract class GoldFluid extends ModFluid {
     @Override
     public BlockState toBlockState(FluidState fluidState) {
         return ModBlocks.MOLTEN_GOLD.getDefaultState().with(Properties.LEVEL_15, getBlockStateLevel(fluidState));
+    }
+
+    @Override
+    public ParticleEffect getParticle() {
+        return ModParticleTypes.DRIPPING_MOLTEN_GOLD;
+    }
+
+    @Override
+    public ParticleEffect getSplashParticle() {
+        return ModParticleTypes.MOLTEN_GOLD_SPLASH;
+    }
+
+    /**
+     * Entities colliding with liquid crystal will get a slight regeneration effect
+     */
+    @Override
+    public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
+        super.onEntityCollision(state, world, pos, entity);
+
+        // creating more fluid gold
+        if (!world.isClient && state.getFluidState().isOf(ModFluids.FLOWING_MOLTEN_GOLD)) {
+            if (entity instanceof ItemEntity itemEntity && !itemEntity.isRemoved()) {
+                ItemStack itemStack = itemEntity.getStack();
+                if (itemStack.getItem() == Items.GOLD_BLOCK) {
+
+                    if(world.setBlockState(pos,ModFluids.MOLTEN_GOLD.getDefaultState().getBlockState())){
+                        world.playSound(null, itemEntity.getBlockPos(), SoundEvents.BLOCK_LAVA_AMBIENT, SoundCategory.NEUTRAL, 1.0F, 0.9F + world.getRandom().nextFloat() * 0.2F);
+
+
+                        if (itemEntity.getOwner() instanceof ServerPlayerEntity serverPlayerEntity) {
+                            //SpectrumAdvancementCriteria.FLUID_DIPPING.trigger(serverPlayerEntity, (ServerWorld) world, pos, itemStack, result);
+                        }
+
+                        itemEntity.discard();
+                    }
+                }
+            }
+        }
+
+        if (!world.isClient && entity instanceof LivingEntity livingEntity) {
+            // damage!!
+            if(livingEntity.damage(ModDamageTypes.of(world, ModDamageTypes.MOLTEN_GOLD), 6.0F))
+                livingEntity.playSound(SoundEvents.ENTITY_GENERIC_BURN, 0.4F, 2.0F + Toolbox.random.nextFloat() * 0.4F);
+            if(!livingEntity.isFireImmune()){
+                livingEntity.setOnFireFor(15);
+            }
+        }
     }
 
 

@@ -29,8 +29,16 @@ public class ModFluidTagProvider extends FabricTagProvider<Fluid> {
 
         // swimmable
         var swimmableBuilder = getOrCreateTagBuilder(ModFluidTags.SWIMMABLE_FLUID).setReplace(false);
-        swimmableBuilder.add(ModFluids.MOLTEN_GOLD);
-        swimmableBuilder.add(ModFluids.FLOWING_MOLTEN_GOLD);
+
+        // extinguishing
+        var extinguishingBuilder = getOrCreateTagBuilder(ModFluidTags.EXTINGUISHING_FLUID).setReplace(false);
+
+        // viscous
+        var viscousBuilder = getOrCreateTagBuilder(ModFluidTags.VISCOUS_FLUID).setReplace(false);
+        viscousBuilder.add(ModFluids.MOLTEN_GOLD);
+        viscousBuilder.add(ModFluids.FLOWING_MOLTEN_GOLD);
+
+
 
     }
 }

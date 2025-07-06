@@ -36,27 +36,6 @@ public class GoldFluidBlock extends ModFluidBlock {
     @Override
     public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
         super.onEntityCollision(state, world, pos, entity);
-        modFluid.onEntityCollision(state,world,pos,entity);
-
-        // creating more fluid gold
-        if (state.getFluidState().isOf(ModFluids.FLOWING_MOLTEN_GOLD) && !world.isClient) {
-            if (entity instanceof ItemEntity itemEntity && !itemEntity.isRemoved()) {
-                ItemStack itemStack = itemEntity.getStack();
-                if (itemStack.getItem() == Items.GOLD_BLOCK) {
-
-                    if(world.setBlockState(pos,ModFluids.MOLTEN_GOLD.getDefaultState().getBlockState())){
-                        world.playSound(null, itemEntity.getBlockPos(), SoundEvents.BLOCK_LAVA_AMBIENT, SoundCategory.NEUTRAL, 1.0F, 0.9F + world.getRandom().nextFloat() * 0.2F);
-
-
-                        if (itemEntity.getOwner() instanceof ServerPlayerEntity serverPlayerEntity) {
-                            //SpectrumAdvancementCriteria.FLUID_DIPPING.trigger(serverPlayerEntity, (ServerWorld) world, pos, itemStack, result);
-                        }
-
-                        itemEntity.discard();
-                    }
-                }
-            }
-        }
     }
 
     @Override

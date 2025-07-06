@@ -72,6 +72,10 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         AddReversibleCompressionRecipe(ModBlocks.MITHRIL_BLOCK,ModItems.MITHRIL_INGOT);
         AddReversibleCompressionRecipe(ModBlocks.RAW_MITHRIL_BLOCK,ModItems.RAW_MITHRIL);
 
+        AddReversibleCompressionRecipe(ModItems.OCTANGULITE_INGOT,ModItems.OCTANGULITE_NUGGET);
+        AddReversibleCompressionRecipe(ModBlocks.OCTANGULITE_BLOCK,ModItems.OCTANGULITE_INGOT);
+        AddReversibleCompressionRecipe(ModBlocks.RAW_OCTANGULITE_BLOCK,ModItems.RAW_OCTANGULITE);
+
         // smithing recipes
         {
             // Empty Artifact

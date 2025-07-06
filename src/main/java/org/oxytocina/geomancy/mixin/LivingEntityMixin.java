@@ -3,19 +3,27 @@ package org.oxytocina.geomancy.mixin;
 import com.llamalad7.mixinextras.injector.*;
 import com.llamalad7.mixinextras.injector.wrapoperation.*;
 
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.*;
 import net.minecraft.entity.damage.*;
 import net.minecraft.entity.effect.*;
 import net.minecraft.entity.player.*;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.item.*;
 import net.minecraft.nbt.*;
+import net.minecraft.registry.tag.FluidTags;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.sound.*;
 import net.minecraft.util.math.*;
 import net.minecraft.world.*;
 import org.jetbrains.annotations.*;
-import org.oxytocina.geomancy.entity.TouchingWaterAware;
+import org.oxytocina.geomancy.entity.TouchingFluidAware;
+import org.oxytocina.geomancy.mixin.EntityMixin;
+import org.oxytocina.geomancy.registries.ModFluidTags;
 import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.*;
 
@@ -61,9 +69,6 @@ public abstract class LivingEntityMixin {
     public abstract double getAttributeValue(EntityAttribute attribute);
 
     @Shadow public abstract void remove(Entity.RemovalReason reason);
-
-    @Shadow
-    public abstract void travel(Vec3d movementInput);
 
     @Shadow protected ItemStack activeItemStack;
 
@@ -201,7 +206,72 @@ public abstract class LivingEntityMixin {
 
     @Redirect(method = "tickMovement()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isWet()Z"))
     private boolean geomancy$isWet(LivingEntity livingEntity) {
-        return livingEntity.isTouchingWater() ? ((TouchingWaterAware) livingEntity).geomancy$isActuallyTouchingWater() : livingEntity.isWet();
+        return livingEntity.isTouchingWater() ? ((TouchingFluidAware) livingEntity).geomancy$isTouchingExtinguishingFluid() : livingEntity.isWet();
     }
+
+    @Shadow
+    abstract protected boolean shouldSwimInFluids();
+
+    @Inject(method = "travel", at = @At("HEAD"), cancellable = true)
+    public void geomancy$travel(Vec3d movementInput, CallbackInfo ci) {
+
+        LivingEntity thisEntity = (LivingEntity) (Object) this;
+
+        if (thisEntity.isLogicalSideForUpdatingMovement()) {
+            double d = 0.08;
+            boolean bl = thisEntity.getVelocity().y <= (double)0.0F;
+            if (bl && this.hasStatusEffect(StatusEffects.SLOW_FALLING)) {
+                d = 0.01;
+            }
+
+            FluidState fluidState = thisEntity.getWorld().getFluidState(thisEntity.getBlockPos());
+            if (isInViscousFluid() && this.shouldSwimInFluids() && !thisEntity.canWalkOnFluid(fluidState)) {
+                double e = thisEntity.getY();
+                thisEntity.updateVelocity(0.02F, movementInput);
+                thisEntity.move(MovementType.SELF, thisEntity.getVelocity());
+                if (thisEntity.getFluidHeight(ModFluidTags.VISCOUS_FLUID) <= thisEntity.getSwimHeight()) {
+                    thisEntity.setVelocity(thisEntity.getVelocity().multiply((double)0.5F, (double)0.8F, (double)0.5F));
+                    Vec3d vec3d3 = thisEntity.applyFluidMovingSpeed(d, bl, thisEntity.getVelocity());
+                    thisEntity.setVelocity(vec3d3);
+                } else {
+                    thisEntity.setVelocity(thisEntity.getVelocity().multiply((double)0.5F));
+                }
+
+                if (!thisEntity.hasNoGravity()) {
+                    thisEntity.setVelocity(thisEntity.getVelocity().add((double)0.0F, -d / (double)4.0F, (double)0.0F));
+                }
+
+                Vec3d vec3d3 = thisEntity.getVelocity();
+                if (thisEntity.horizontalCollision && thisEntity.doesNotCollide(vec3d3.x, vec3d3.y + (double)0.6F - thisEntity.getY() + e, vec3d3.z)) {
+                    thisEntity.setVelocity(vec3d3.x, (double)0.3F, vec3d3.z);
+                }
+
+                ci.cancel();
+                thisEntity.updateLimbs(this instanceof Flutterer);
+            }
+        }
+
+    }
+
+    // viscous fluids
+    @ModifyVariable(method = "tickMovement", at = @At(value = "STORE"), ordinal = 0)
+    private boolean geomancy$canSwimInViscousLiquid(boolean bl) {
+
+        if(isInViscousFluid()){
+
+            double k = ((LivingEntity)(Object)this).getFluidHeight(ModFluidTags.VISCOUS_FLUID);
+
+            return k>0;
+        }
+
+        return bl;
+    }
+
+    @Unique
+    boolean isInViscousFluid() {
+        Entity ent = (Entity)(Object)this;
+        return !(((EntityMixin)ent).getFirstUpdate()) && ((EntityMixin)ent).getFluidHeight().getDouble(ModFluidTags.VISCOUS_FLUID) > (double)0.0F;
+    }
+
 
 }

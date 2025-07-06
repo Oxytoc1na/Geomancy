@@ -22,6 +22,7 @@ import net.minecraft.predicate.item.EnchantmentPredicate;
 import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.blocks.ExtraBlockSettings;
 import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.items.ModItems;
 
@@ -33,11 +34,15 @@ public class ModBlockLootTableProvider extends FabricBlockLootTableProvider {
     @Override
     public void generate() {
 
-        addDrop(ModBlocks.MITHRIL_BLOCK);
-        addDrop(ModBlocks.RAW_MITHRIL_BLOCK);
-
         addOreDrop(ModBlocks.MITHRIL_ORE,ModItems.RAW_MITHRIL);
         addOreDrop(ModBlocks.DEEPSLATE_MITHRIL_ORE,ModItems.RAW_MITHRIL);
+
+        addOreDrop(ModBlocks.OCTANGULITE_ORE,ModItems.RAW_OCTANGULITE);
+        addOreDrop(ModBlocks.DEEPSLATE_OCTANGULITE_ORE,ModItems.RAW_OCTANGULITE);
+
+        for(Block b : ExtraBlockSettings.RegularDropBlocks){
+            addDrop(b);
+        }
     }
 
     private void addOreDrop(Block block, ItemConvertible result){

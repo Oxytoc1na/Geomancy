@@ -1,6 +1,3 @@
 {
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "geomancy:block/octangulite_ore/deepslate_octangulite_ore"
-  }
+  "parent": "geomancy:block/deepslate_octangulite_ore/deepslate_octangulite_ore1"
 }

@@ -16,8 +16,6 @@ public class ModParticleTypes {
     public static DefaultParticleType DRIPPING_MOLTEN_GOLD = register("dripping_molten_gold", false);
     public static DefaultParticleType FALLING_MOLTEN_GOLD = register("falling_molten_gold", false);
     public static DefaultParticleType LANDING_MOLTEN_GOLD = register("landing_molten_gold", false);
-    public static DefaultParticleType MOLTEN_GOLD_FISHING = register("molten_gold_fishing", false);
-    public static DefaultParticleType MOLTEN_GOLD_SPARKLE = register("molten_gold_sparkle", false);
 
     // Simple particles
     private static DefaultParticleType register(String name, boolean alwaysShow) {

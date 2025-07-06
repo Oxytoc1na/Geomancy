@@ -1,9 +1,9 @@
 {
   "parent": "block/block",
   "textures": {
-    "1": "geomancy:block/octangulite_scrap/octangulite_scrap1",
-    "2": "geomancy:block/octangulite_scrap/octangulite_scrap2",
-    "particle": "geomancy:block/octangulite_scrap/octangulite_scrap"
+    "1": "geomancy:block/raw_octangulite_block/raw_octangulite_block_1",
+    "2": "geomancy:block/raw_octangulite_block/raw_octangulite_block_2",
+    "particle": "geomancy:block/raw_octangulite_block/raw_octangulite_block"
   },
   "elements": [
     { "from": [ 0, 0, 0 ],

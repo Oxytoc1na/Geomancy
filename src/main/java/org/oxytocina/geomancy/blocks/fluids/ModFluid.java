@@ -1,5 +1,6 @@
 package org.oxytocina.geomancy.blocks.fluids;
 
+import net.minecraft.particle.ParticleEffect;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
@@ -100,6 +101,7 @@ public abstract class ModFluid extends FlowableFluid {
         return 100.0F;
     }
 
+    public abstract ParticleEffect getSplashParticle();
 
     public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
 

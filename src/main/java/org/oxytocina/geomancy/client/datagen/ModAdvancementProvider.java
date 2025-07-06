@@ -6,6 +6,7 @@ import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementFrame;
 import net.minecraft.advancement.criterion.CriterionConditions;
 import net.minecraft.advancement.criterion.InventoryChangedCriterion;
+import net.minecraft.advancement.criterion.TravelCriterion;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
@@ -17,6 +18,7 @@ import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 import org.oxytocina.geomancy.items.ModItems;
+import org.oxytocina.geomancy.progression.advancement.LocationCriterion;
 import org.oxytocina.geomancy.progression.advancement.ModAdvancementCriterion;
 import org.oxytocina.geomancy.progression.advancement.SimpleCriterion;
 
@@ -51,12 +53,16 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
 
         Advancement got_molten_gold = AddGetItemAdvancement(ModFluids.MOLTEN_GOLD_BUCKET,"molten_gold",ModFluids.MOLTEN_GOLD_BUCKET,"main",AdvancementFrame.CHALLENGE,true,false,main);
         Advancement got_mithril = AddGetItemAdvancement(ModItems.RAW_MITHRIL,"mithril",ModItems.RAW_MITHRIL,"main",AdvancementFrame.TASK,true,false,main);
+        Advancement got_octangulite = AddGetItemAdvancement(ModItems.RAW_OCTANGULITE,"octangulite",ModItems.RAW_OCTANGULITE,"main",AdvancementFrame.TASK,true,false,main);
         Advancement got_gilded_deepslate = AddGetItemAdvancement(ModBlocks.DECORATED_GILDED_DEEPSLATE,"gilded_deepslate",new ItemConvertible[]{ModBlocks.GILDED_DEEPSLATE,ModBlocks.DECORATED_GILDED_DEEPSLATE},"main",AdvancementFrame.TASK,true,false,main);
         Advancement simple_duplicate_trinkets = AddSimpleAdvancement(ModItems.ARTIFACT_OF_IRON,"duplicate_trinkets","duplicate_trinkets","main",AdvancementFrame.TASK,true,false,main);
         Advancement simple_tried_to_take_smithery_result = AddSimpleAdvancement(ModItems.IRON_HAMMER,"tried_to_take_smithery_result","tried_to_take_smithery_result","main",AdvancementFrame.TASK,true,true,main);
 
         // progression milestones
         Advancement milestone_smithery = AddOrMilestoneAdvancement("smithery", Arrays.stream(new String[]{"geomancy:recipes/tools/smithery_block"}).toList(),ModBlocks.SMITHERY,Geomancy.locate("textures/block/gilded_deepslate.png"));
+
+        // structures visited
+        Advancement structure_ancient_hall = AddLocationAdvancement("ancient_hall","ancient_hall",Items.GILDED_BLACKSTONE,main);
     }
     private Advancement AddGetItemAdvancement(ItemConvertible item,String name, ItemConvertible conditionItem, String category, AdvancementFrame frame, boolean announce, boolean hidden, Advancement parent){
         return AddGetItemAdvancement(item,name,new Item[]{conditionItem.asItem()},category,frame,announce,hidden,parent);
@@ -139,6 +145,30 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                 true, // Announce it to chat
                 true // Hide it in the advancement tab until it's achieved
         );
+
+        return builder.build(consumer, advancementName);
+    }
+
+    private Advancement AddLocationAdvancement(String name, String location, ItemConvertible icon, Advancement parent){
+        return AddLocationAdvancement(name,Geomancy.locate(location),icon,parent);
+    }
+
+    private Advancement AddLocationAdvancement(String name, Identifier location, ItemConvertible icon, Advancement parent){
+        Advancement.Builder builder = Advancement.Builder.create();
+        String advancementName = Geomancy.MOD_ID + ":location/"+name;
+
+        builder.criterion(location.toString(),new LocationCriterion.Conditions(location.toString()));
+        builder.display(
+                new ItemStack(icon.asItem()), // The display icon
+                Text.translatable("advancement."+advancementName+".name"), // The title
+                Text.translatable("advancement."+advancementName+".description"), // The description
+                null, // Background image for the tab in the advancements page, if this is a root advancement (has no parent)
+                AdvancementFrame.CHALLENGE, // TASK, CHALLENGE, or GOAL
+                true, // Show the toast when completing it
+                true, // Announce it to chat
+                true // Hide it in the advancement tab until it's achieved
+        );
+        builder.parent(parent);
 
         return builder.build(consumer, advancementName);
     }

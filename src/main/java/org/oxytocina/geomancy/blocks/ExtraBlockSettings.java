@@ -15,6 +15,7 @@ public class ExtraBlockSettings {
     public static final ArrayList<Block> ToolableBlock_Shovel = new ArrayList<Block>();
     public static final ArrayList<Block> BlocksInGroup = new ArrayList<Block>();
     public static final ArrayList<Block> SimpleCubeBlocks = new ArrayList<Block>();
+    public static final ArrayList<Block> RegularDropBlocks = new ArrayList<Block>();
     public static final HashMap<Block,Integer> VariantCubeBlocks = new HashMap<Block,Integer>();
     public static final HashMap<Block,Integer> VariantCubeColumnBlocks = new HashMap<Block,Integer>();
 
@@ -29,6 +30,7 @@ public class ExtraBlockSettings {
     public boolean shouldRegisterItem = true;
     private boolean shouldAddItemToGroup = true;
     private boolean simpleCubeModel = true;
+    private boolean regularDrop = true;
 
     private int miningLevel = 0;
     private int textureVariants = 0;
@@ -58,6 +60,7 @@ public class ExtraBlockSettings {
     public ExtraBlockSettings hasTextureVariants(int count){textureVariants=count; variantCube = true; notSimpleCube(); return this;}
     public ExtraBlockSettings hasTextureVariantsColumn(int count){textureVariants=count; variantCubeColumn = true; notSimpleCube(); return this;}
     public ExtraBlockSettings fluid() { return notSimpleCube().dontGroupItem(); }
+    public ExtraBlockSettings notRegularDrop() { regularDrop = false; return this; }
 
     public void apply(){
         if(pickaxe) ToolableBlock_Pickaxe.add(block);
@@ -72,6 +75,8 @@ public class ExtraBlockSettings {
             VariantCubeBlocks.put(block,textureVariants);
         if(variantCubeColumn)
             VariantCubeColumnBlocks.put(block,textureVariants);
+        if(regularDrop)
+            RegularDropBlocks.add(block);
 
         BlockMiningLevels.put(block,miningLevel);
     }

@@ -23,6 +23,6 @@ public class ModParticleFactories {
 
 
         // Fluid Fishing
-        ParticleFactoryRegistry.getInstance().register(ModParticleTypes.MOLTEN_GOLD_FISHING, FishingParticle.Factory::new);
+        //ParticleFactoryRegistry.getInstance().register(ModParticleTypes.MOLTEN_GOLD_FISHING, FishingParticle.Factory::new);
     }
 }

@@ -49,6 +49,12 @@ public class ModItems {
     public static final Item MITHRIL_INGOT = register("mithril_ingot",new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof()));
     public static final Item MITHRIL_NUGGET = register("mithril_nugget",new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof()));
 
+    // octangulite
+    public static final Item RAW_OCTANGULITE = register("raw_octangulite",new Item(new FabricItemSettings().rarity(Rarity.RARE).fireproof()));
+    public static final Item OCTANGULITE_INGOT = register("octangulite_ingot",new Item(new FabricItemSettings().rarity(Rarity.RARE).fireproof()));
+    public static final Item OCTANGULITE_NUGGET = register("octangulite_nugget",new Item(new FabricItemSettings().rarity(Rarity.RARE).fireproof()));
+
+
     public static final Item GUIDE_BOOK = register("guidebook",new Item(new FabricItemSettings()),new ExtraItemSettings().dontGroupItem());
 
     // music discs

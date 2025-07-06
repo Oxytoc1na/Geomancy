@@ -8,6 +8,8 @@ import org.oxytocina.geomancy.Geomancy;
 public class ModFluidTags {
 
     public static final TagKey<Fluid> SWIMMABLE_FLUID = of("swimmable_fluid");
+    public static final TagKey<Fluid> VISCOUS_FLUID = of("viscous_fluid");
+    public static final TagKey<Fluid> EXTINGUISHING_FLUID = of("extinguishing_fluid");
 
     public static final TagKey<Fluid> MOLTEN_GOLD = of("molten_gold");
 

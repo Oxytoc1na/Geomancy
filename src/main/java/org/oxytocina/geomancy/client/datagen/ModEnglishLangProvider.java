@@ -32,6 +32,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
         addShort("gb:mn","book.MODID.guidebook.main.");
         addShort("gb:sm","book.MODID.guidebook.smithing.");
+        addShort("gb:oc","book.MODID.guidebook.octangulite.");
 
         add(KeyInputHandler.KEY_CATEGORY_GEOMANCY,"Geomancy");
         add(KeyInputHandler.KEY_OPEN_SKILLTREE,"Skills");
@@ -40,9 +41,15 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         {
             add("item.MODID.suspicious_substance"   , "Suspicious Substance");
             add("item.MODID.guidite_sword"          , "Guidite Sword");
+
             add("item.MODID.raw_mithril"            , "Raw Mithril");
             add("item.MODID.mithril_ingot"          , "Mithril Ingot");
             add("item.MODID.mithril_nugget"         , "Mithril Nugget");
+
+            add("item.MODID.raw_octangulite"        , "Raw Octangulite");
+            add("item.MODID.octangulite_ingot"      , "Octangulite Ingot");
+            add("item.MODID.octangulite_nugget"     , "Octangulite Nugget");
+
             add("item.MODID.gold_bucket"            , "Molten Gold Bucket");
             add("item.MODID.music_disc_diggy"       , "Music Disc");
             add("item.MODID.music_disc_diggy.desc"  , "Diggy");
@@ -73,20 +80,24 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         // Blocks
         {
             add("block.MODID.condensed_dirt"        , "Condensed Dirt");
+
             add("block.MODID.mithril_ore"           , "Mithril Ore");
             add("block.MODID.deepslate_mithril_ore" , "Deepslate Mithril Ore");
             add("block.MODID.raw_mithril_block"     , "Block of Raw Mithril");
             add("block.MODID.mithril_block"         , "Block of Mithril");
-            add("block.MODID.molten_gold"                  , "Molten Gold");
+
+            add("block.MODID.molten_gold"           , "Molten Gold");
             add("block.MODID.mithril_anvil"         , "Mithril Anvil");
             add("block.MODID.gilded_deepslate"      , "Gilded Deepslate");
             add("block.MODID.decorated_gilded_deepslate", "Decorated Gilded Deepslate");
             add("block.MODID.smithery_block"            , "Smithery");
             add("container.MODID.smithery_block"        , "Smithery");
             add("message.MODID.smithery.fail.break"     ,"that didn't sound good...");
+
             add("block.MODID.octangulite_ore"           , "Octangulite Ore");
             add("block.MODID.deepslate_octangulite_ore" , "Deepslate Octangulite Ore");
-            add("block.MODID.octangulite_scrap"         , "Octangulite Scrap");
+            add("block.MODID.raw_octangulite_block"     , "Octangulite Scrap");
+            add("block.MODID.octangulite_block"         , "Block of Octangulite");
         }
 
         // Enchantments
@@ -95,6 +106,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
         // damage types
         add("death.attack.geomancy.duplicate_trinkets", "%1$s felt their own hubris");
+        add("death.attack.geomancy.molten_gold", "%1$s fell into King Midas' bathtub");
 
         // Misc
         add("itemGroup.MODID", "Geomancy");
@@ -103,19 +115,30 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         {
             add("advancement.MODID.main.name"                               , "Geomancy");
             add("advancement.MODID.main.description"                        , "A world of buried treasures and wonders");
+
             add("advancement.MODID.main.get_mithril.name"                   , "Precious");
             add("advancement.MODID.main.get_mithril.description"            , "Discover Raw Mithril");
+
+            add("advancement.MODID.main.get_octangulite.name"               , "Otherworldy");
+            add("advancement.MODID.main.get_octangulite.description"        , "Discover something strange");
+
             add("advancement.MODID.main.get_molten_gold.name"               , "Greedy");
             add("advancement.MODID.main.get_molten_gold.description"        , "Discover Molten Gold");
+
             add("advancement.MODID.main.get_gilded_deepslate.name"          , "Adorned");
             add("advancement.MODID.main.get_gilded_deepslate.description"   , "Discover Gilded Deepslate");
+
             add("advancement.MODID.main.simple_duplicate_trinkets.name"         , "Hubris");
             add("advancement.MODID.main.simple_duplicate_trinkets.description"  , "Try and fail to equip two artifacts of the same type at once");
+
             add("advancement.MODID.main.simple_tried_to_take_smithery_result.name"          , "You've gotta hammer it!");
             add("advancement.MODID.main.simple_tried_to_take_smithery_result.description"   , "You need to smack the smithery with a hammer to start crafting");
 
             add("advancement.MODID:milestones/milestone_smithery.name", "The Craft of the Ancients");
             add("advancement.MODID:milestones/milestone_smithery.description", "Obtain the smithery");
+
+            add("advancement.MODID:location/ancient_hall.name", "Ancient");
+            add("advancement.MODID:location/ancient_hall.description", "Discover the once prosperous remains of the ancients");
         }
 
         // Guidebook
@@ -124,77 +147,85 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("book.MODID.guidebook.tooltip", "we can never dig too deep");
 
 
-
             add(getS("gb:mn")+"name", "Discovery");
+            {
+                addGBEntryAndInfo(getS("gb:mn")+"intro","Discovery");
+                add(getS("gb:mn")+"intro.description", "");
+                add(getS("gb:mn")+"intro.info.text", "There exist ruins in this world, ruins of ancient deepslate and inscriptions of rare metals.\nWhat do they mean? I will write down my findings in this book.");
 
-            addGBEntryAndInfo(getS("gb:mn")+"intro","Discovery");
-            add(getS("gb:mn")+"intro.description", "");
-            add(getS("gb:mn")+"intro.info.text", "There exist ruins in this world, ruins of ancient deepslate and inscriptions of rare metals.\nWhat do they mean? I will write down my findings in this book.");
+                addGBEntryAndInfo(getS("gb:mn")+"gold","Molten Gold");
+                add(getS("gb:mn")+"gold.description", "");
+                add(getS("gb:mn")+"gold.intro.text", "Fascinating. I'm not used to finding fluids other than water or lava... yet here's some molten gold.\nWhat is equally as fascinating is that the only places I've found it in seem to be these ruins... How has it not resolidified after all these years?");
+                add(getS("gb:mn")+"gold.gold_bucket.text", "I doubt I'll be able to dip my apples or carrots in it...");
 
-            addGBEntryAndInfo(getS("gb:mn")+"gold","Molten Gold");
-            add(getS("gb:mn")+"gold.description", "");
-            add(getS("gb:mn")+"gold.intro.text", "Fascinating. I'm not used to finding fluids other than water or lava... yet here's some molten gold.\nWhat is equally as fascinating is that the only places I've found it in seem to be these ruins... How has it not resolidified after all these years?");
-            add(getS("gb:mn")+"gold.gold_bucket.text", "I doubt I'll be able to dip my apples or carrots in it...");
+                addGBEntryAndInfo(getS("gb:mn")+"deepslate","Gilded Deepslate");
+                add(getS("gb:mn")+"deepslate.description", "");
+                add(getS("gb:mn")+"deepslate.intro.text", "I have discovered these polished deepslate blocks in some of those ruins. Some of them bear ancient symbols and sigils. I wonder what they mean.");
+                add(getS("gb:mn")+"deepslate.gilded_deepslate.text", "It's skillfully adorned with glittering gold.");
+                add(getS("gb:mn")+"deepslate.decoaretd_gilded_deepslate.text", "It appears to display various tools, weapons, and treasure.");
 
-            addGBEntryAndInfo(getS("gb:mn")+"deepslate","Gilded Deepslate");
-            add(getS("gb:mn")+"deepslate.description", "");
-            add(getS("gb:mn")+"deepslate.intro.text", "I have discovered these polished deepslate blocks in some of those ruins. Some of them bear ancient symbols and sigils. I wonder what they mean.");
-            add(getS("gb:mn")+"deepslate.gilded_deepslate.text", "It's skillfully adorned with glittering gold.");
-            add(getS("gb:mn")+"deepslate.decoaretd_gilded_deepslate.text", "It appears to display various tools, weapons, and treasure.");
-
-            addGBEntryAndInfo(getS("gb:mn")+"mithril","Mithril");
-            add(getS("gb:mn")+"mithril.description"  , "");
-            add(getS("gb:mn")+"mithril.intro.text", "This incredibly rare metal is impressively durable for its light weight. It shines with a bright white color. I can sense that there is more to it than tools and armor.");
-            add(getS("gb:mn")+"mithril.mithril_ingot.text", "It is also definitely not edible.");
-
-
+                addGBEntryAndInfo(getS("gb:mn")+"mithril","Mithril");
+                add(getS("gb:mn")+"mithril.description"  , "");
+                add(getS("gb:mn")+"mithril.intro.text", "This incredibly rare metal is impressively durable for its light weight. It shines with a bright white color. I can sense that there is more to it than tools and armor.");
+                add(getS("gb:mn")+"mithril.mithril_ingot.text", "It is also definitely not edible.");
+            }
 
             add(getS("gb:sm")+"name", "Smithing");
+            {
+                addGBEntryAndInfo(getS("gb:sm")+"intro","Smithing");
+                add(getS("gb:sm")+"intro.description","");
+                add(getS("gb:sm")+"intro.info.text","This station will allow me to put my elbow grease to work and form all kinds of metals into new shapes!");
+                add(getS("gb:sm")+"intro.smithery.title",getItemName(ModBlocks.SMITHERY));
+                add(getS("gb:sm")+"intro.smithery.text","It is time for me to swing the hammer like the ancients did!");
 
-            addGBEntryAndInfo(getS("gb:sm")+"intro","Smithing");
-            add(getS("gb:sm")+"intro.description","");
-            add(getS("gb:sm")+"intro.info.text","This station will allow me to put my elbow grease to work and form all kinds of metals into new shapes!");
-            add(getS("gb:sm")+"intro.smithery.title",getItemName(ModBlocks.SMITHERY));
-            add(getS("gb:sm")+"intro.smithery.text","It is time for me to swing the hammer like the ancients did!");
+                addGBEntryAndInfo(getS("gb:sm")+"hammers","Hammers");
+                add(getS("gb:sm")+"hammers.description","");
+                add(getS("gb:sm")+"hammers.info.text","The hammer that one uses to whack the workpiece determines how successful they shall be in doing so.");
+                add(getS("gb:sm")+"hammers.iron.title",getItemName(ModItems.IRON_HAMMER));
+                add(getS("gb:sm")+"hammers.iron.text","Probably the most basic hammer for smithing there is.");
+                add(getS("gb:sm")+"hammers.mithril.title",getItemName(ModItems.MITHRIL_HAMMER));
+                add(getS("gb:sm")+"hammers.mithril.text","Mithrils durability and feathery weight makes it ideal at continuously hitting a workpiece without getting tired.");
 
-            addGBEntryAndInfo(getS("gb:sm")+"hammers","Hammers");
-            add(getS("gb:sm")+"hammers.description","");
-            add(getS("gb:sm")+"hammers.info.text","The hammer that one uses to whack the workpiece determines how successful they shall be in doing so.");
-            add(getS("gb:sm")+"hammers.iron.title",getItemName(ModItems.IRON_HAMMER));
-            add(getS("gb:sm")+"hammers.iron.text","Probably the most basic hammer for smithing there is.");
-            add(getS("gb:sm")+"hammers.mithril.title",getItemName(ModItems.MITHRIL_HAMMER));
-            add(getS("gb:sm")+"hammers.mithril.text","Mithrils durability and feathery weight makes it ideal at continuously hitting a workpiece without getting tired.");
+                addGBEntryAndInfo(getS("gb:sm")+"jewelry_bases","Jewelry");
+                add(getS("gb:sm")+"jewelry_bases.description","");
+                add(getS("gb:sm")+"jewelry_bases.info.text","Inspired by the ancient scriptures detailing jewelry, I have devised these recipes for empty jewelry items.");
+                add(getS("gb:sm")+"jewelry_bases.iron_ring.text","This vessel holds up to one gem and can be worn on ones fingers.");
+                add(getS("gb:sm")+"jewelry_bases.iron_necklace.text","This vessel holds up to one gem and can be worn around ones neck.");
 
-            addGBEntryAndInfo(getS("gb:sm")+"jewelry_bases","Jewelry");
-            add(getS("gb:sm")+"jewelry_bases.description","");
-            add(getS("gb:sm")+"jewelry_bases.info.text","Inspired by the ancient scriptures detailing jewelry, I have devised these recipes for empty jewelry items.");
-            add(getS("gb:sm")+"jewelry_bases.iron_ring.text","This vessel holds up to one gem and can be worn on ones fingers.");
-            add(getS("gb:sm")+"jewelry_bases.iron_necklace.text","This vessel holds up to one gem and can be worn around ones neck.");
-
-            addGBEntryAndInfo(getS("gb:sm")+"artifacts","Artifacts");
-            add(getS("gb:sm")+"artifacts.description","");
-            add(getS("gb:sm")+"artifacts.info.text","I am coming the magic of the ancients one step closer with these.");
-            add(getS("gb:sm")+"artifacts.empty.text","Not useful on its own, this empty vessel will serve as a base to imbue with elemental magic.");
-            add(getS("gb:sm")+"artifacts.iron.text","This artifact bestows its wearer with armor and knockback resistance.");
-            add(getS("gb:sm")+"artifacts.gold.text","???");
+                addGBEntryAndInfo(getS("gb:sm")+"artifacts","Artifacts");
+                add(getS("gb:sm")+"artifacts.description","");
+                add(getS("gb:sm")+"artifacts.info.text","I am coming the magic of the ancients one step closer with these.");
+                add(getS("gb:sm")+"artifacts.empty.text","Not useful on its own, this empty vessel will serve as a base to imbue with elemental magic.");
+                add(getS("gb:sm")+"artifacts.iron.text","This artifact bestows its wearer with armor and knockback resistance.");
+                add(getS("gb:sm")+"artifacts.gold.text","???");
 
 
-            addGBEntryAndInfo(getS("gb:sm")+"gems","Gemstones");
-            add(getS("gb:sm")+"gems.description","");
-            add(getS("gb:sm")+"gems.info.text","This page holds all the different kinds of gemstones I can put into my jewelry.");
+                addGBEntryAndInfo(getS("gb:sm")+"gems","Gemstones");
+                add(getS("gb:sm")+"gems.description","");
+                add(getS("gb:sm")+"gems.info.text","This page holds all the different kinds of gemstones I can put into my jewelry.");
 
-            addShort("gems.difficulty.negligible","negligible");
-            addShort("gems.difficulty.noticeable","noticeable");
-            addShort("gems.difficulty.immense","immense");
-            addShort("gems.difficulty.legendary","legendary");
-            addShort("gems.progress.negligible","negligible");
-            addShort("gems.progress.prolonging","prolonging");
-            addShort("gems.progress.molasses","molasses");
-            addShort("gems.progress.odyssey","odyssey");
+                addShort("gems.difficulty.negligible","negligible");
+                addShort("gems.difficulty.noticeable","noticeable");
+                addShort("gems.difficulty.immense","immense");
+                addShort("gems.difficulty.legendary","legendary");
+                addShort("gems.progress.negligible","negligible");
+                addShort("gems.progress.prolonging","prolonging");
+                addShort("gems.progress.molasses","molasses");
+                addShort("gems.progress.odyssey","odyssey");
 
-            addGemStatsText(getS("gb:sm")+"gems.diamond.text", Items.DIAMOND,"provides two armor points.");
-            addGemStatsText(getS("gb:sm")+"gems.emerald.text", Items.EMERALD,"???");
-            addGemStatsText(getS("gb:sm")+"gems.lapis_lazuli.text", Items.LAPIS_LAZULI,"???");
+                addGemStatsText(getS("gb:sm")+"gems.diamond.text", Items.DIAMOND,"provides two armor points.");
+                addGemStatsText(getS("gb:sm")+"gems.emerald.text", Items.EMERALD,"???");
+                addGemStatsText(getS("gb:sm")+"gems.lapis_lazuli.text", Items.LAPIS_LAZULI,"???");
+            }
+
+            add(getS("gb:oc")+"name", "Smithing");
+            {
+                addGBEntryAndInfo(getS("gb:oc")+"octangulite","Octangulite");
+                add(getS("gb:oc")+"octangulite.description"  , "");
+                add(getS("gb:oc")+"octangulite.intro.text", "This... strange substance seems to shift in color when I don't look. Its hardness also doesn't seem to stay consistent. It feels out of this world. I am not quite sure what to do with it.");
+                add(getS("gb:oc")+"octangulite.raw_octangulite.text", "Undulating.");
+            }
+
 
         }
 
