@@ -46,6 +46,10 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("item.MODID.mithril_ingot"          , "Mithril Ingot");
             add("item.MODID.mithril_nugget"         , "Mithril Nugget");
 
+            add("item.MODID.raw_molybdenium"            , "Raw Molybdenium");
+            add("item.MODID.molybdenium_ingot"          , "Molybdenium Ingot");
+            add("item.MODID.molybdenium_nugget"         , "Molybdenium Nugget");
+
             add("item.MODID.raw_octangulite"        , "Raw Octangulite");
             add("item.MODID.octangulite_ingot"      , "Octangulite Ingot");
             add("item.MODID.octangulite_nugget"     , "Octangulite Nugget");
@@ -98,6 +102,11 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("block.MODID.deepslate_octangulite_ore" , "Deepslate Octangulite Ore");
             add("block.MODID.raw_octangulite_block"     , "Octangulite Scrap");
             add("block.MODID.octangulite_block"         , "Block of Octangulite");
+
+            add("block.MODID.molybdenium_ore"           , "Molybdenium Ore");
+            add("block.MODID.deepslate_molybdenium_ore" , "Deepslate Molybdenium Ore");
+            add("block.MODID.raw_molybdenium_block"     , "Block of raw Molybdenium");
+            add("block.MODID.molybdenium_block"         , "Block of Molybdenium");
         }
 
         // Enchantments
@@ -218,12 +227,13 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                 addGemStatsText(getS("gb:sm")+"gems.lapis_lazuli.text", Items.LAPIS_LAZULI,"???");
             }
 
-            add(getS("gb:oc")+"name", "Smithing");
+            add(getS("gb:oc")+"name", "Octangulite");
             {
                 addGBEntryAndInfo(getS("gb:oc")+"octangulite","Octangulite");
                 add(getS("gb:oc")+"octangulite.description"  , "");
                 add(getS("gb:oc")+"octangulite.intro.text", "This... strange substance seems to shift in color when I don't look. Its hardness also doesn't seem to stay consistent. It feels out of this world. I am not quite sure what to do with it.");
                 add(getS("gb:oc")+"octangulite.raw_octangulite.text", "Undulating.");
+
             }
 
 

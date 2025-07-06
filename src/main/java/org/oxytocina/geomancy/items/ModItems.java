@@ -54,6 +54,11 @@ public class ModItems {
     public static final Item OCTANGULITE_INGOT = register("octangulite_ingot",new Item(new FabricItemSettings().rarity(Rarity.RARE).fireproof()));
     public static final Item OCTANGULITE_NUGGET = register("octangulite_nugget",new Item(new FabricItemSettings().rarity(Rarity.RARE).fireproof()));
 
+    // molybdenium
+    public static final Item RAW_MOLYBDENIUM = register("raw_molybdenium",new Item(new FabricItemSettings().rarity(Rarity.COMMON).fireproof()));
+    public static final Item MOLYBDENIUM_INGOT = register("molybdenium_ingot",new Item(new FabricItemSettings().rarity(Rarity.COMMON).fireproof()));
+    public static final Item MOLYBDENIUM_NUGGET = register("molybdenium_nugget",new Item(new FabricItemSettings().rarity(Rarity.COMMON).fireproof()));
+
 
     public static final Item GUIDE_BOOK = register("guidebook",new Item(new FabricItemSettings()),new ExtraItemSettings().dontGroupItem());
 
