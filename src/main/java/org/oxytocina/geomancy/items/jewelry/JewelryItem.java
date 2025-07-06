@@ -25,6 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.items.ModItems;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class JewelryItem extends TrinketItem implements DyeableItem {
@@ -180,5 +181,46 @@ public class JewelryItem extends TrinketItem implements DyeableItem {
         nbt.add(GemSlot.toNbt(slot));
 
         stack.setSubNbt("gems",nbt);
+    }
+
+    public static float getXPMultiplier(LivingEntity wearer){
+        float res = 1;
+
+        var wornJewelry = getAllWornJewelryItems(wearer);
+        for(ItemStack jewelryItem : wornJewelry){
+            res += getXPMultiplier(jewelryItem,wearer);
+        }
+
+        return res;
+    }
+
+    public static float getXPMultiplier(ItemStack stack,LivingEntity wearer){
+        float res = 0;
+
+        JewelryItem jewelryItem = (JewelryItem) stack.getItem();
+        var gems = jewelryItem.getSlots(stack);
+
+        for(var gem : gems){
+            res += gem.getXPMultiplier(stack,wearer);
+        }
+
+        return res;
+    }
+
+    public static List<ItemStack> getAllWornJewelryItems(LivingEntity wearer){
+        List<ItemStack> res = new ArrayList<>();
+
+        var trinkComp = TrinketsApi.getTrinketComponent(wearer);
+        if(trinkComp.isPresent()){
+            var pairs = trinkComp.get().getAllEquipped();
+            for(var pair : pairs){
+                ItemStack stack = pair.getRight();
+                if(stack.getItem() instanceof JewelryItem){
+                    res.add(stack);
+                }
+            }
+        }
+
+        return res;
     }
 }

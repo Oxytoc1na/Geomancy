@@ -28,7 +28,7 @@ public class ModFluids {
     public static ModFluid MOLTEN_GOLD = new GoldFluid.Still();
     public static ModFluid FLOWING_MOLTEN_GOLD = new GoldFluid.Flowing();
     public static Item MOLTEN_GOLD_BUCKET;
-    public static final int MOLTEN_GOLD_TINT = 0xffffff;
+    public static final int MOLTEN_GOLD_TINT = 0xFCD557; // for falling particle color
     public static final Vector3f MOLTEN_GOLD_COLOR_VEC = Toolbox.colorIntToVec(MOLTEN_GOLD_TINT);
     public static final Identifier MOLTEN_GOLD_OVERLAY_TEXTURE = Geomancy.locate("textures/misc/molten_gold_overlay.png");
     public static final float MOLTEN_GOLD_OVERLAY_ALPHA = 0.6F;
@@ -50,7 +50,7 @@ public class ModFluids {
 
     @Environment(EnvType.CLIENT)
     public static void registerClient() {
-        setupFluidRendering(MOLTEN_GOLD, FLOWING_MOLTEN_GOLD, "molten_gold", MOLTEN_GOLD_TINT);
+        setupFluidRendering(MOLTEN_GOLD, FLOWING_MOLTEN_GOLD, "molten_gold", 0xFFFFFF);
     }
 
     @Environment(EnvType.CLIENT)

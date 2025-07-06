@@ -4,13 +4,18 @@ import com.google.common.collect.Sets;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.Items;
+import net.minecraft.item.map.MapIcon;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
+import net.minecraft.loot.LootTables;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.function.*;
 import net.minecraft.loot.provider.number.UniformLootNumberProvider;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.Potions;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.TagKey;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.ModBlocks;
@@ -37,6 +42,21 @@ public class ModLootTables {
         // DWARVEN_REMNANTS_CHEST
         {
             DWARVEN_REMNANTS_CHEST = register("chests/dwarven_remnants", LootTable.builder()
+                // ancient hall treasure map
+                .pool(LootPool.builder()
+                        .rolls(UniformLootNumberProvider.create(1.0F, 1.0F))
+                        .with(ItemEntry.builder(
+                                Items.MAP)
+                                .apply(ExplorationMapLootFunction.builder()
+                                        .withDestination(TagKey.of(RegistryKeys.STRUCTURE,Geomancy.locate("on_ancient_hall_map")))
+                                        .withDecoration(MapIcon.Type.BANNER_YELLOW)
+                                        .withSkipExistingChunks(false)
+                                        .withZoom((byte)1)
+                                )
+                                .apply(SetNameLootFunction.builder(Text.translatable("item.geomancy.explorers_map.ancient_hall")))
+                        )
+
+                )
                 .pool(LootPool.builder()
                         .rolls(UniformLootNumberProvider.create(-1.0F, 1.0F))
                         .with(ItemEntry.builder(
@@ -96,7 +116,9 @@ public class ModLootTables {
                         .with(ItemEntry.builder(
                                 Items.IRON_PICKAXE))
                         .with(ItemEntry.builder(
-                                Items.IRON_AXE))));
+                                Items.IRON_AXE)))
+                    .randomSequenceId(Geomancy.locate("chests/dwarven_remnants"))
+            );
         }
 
         //GEODE_STONE

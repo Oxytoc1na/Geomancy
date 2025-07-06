@@ -20,6 +20,7 @@ import net.minecraft.util.math.*;
 import net.minecraft.world.*;
 import org.jetbrains.annotations.*;
 import org.oxytocina.geomancy.entity.TouchingFluidAware;
+import org.oxytocina.geomancy.items.jewelry.JewelryItem;
 import org.oxytocina.geomancy.mixin.EntityMixin;
 import org.oxytocina.geomancy.registries.ModFluidTags;
 import org.spongepowered.asm.mixin.*;
@@ -94,13 +95,11 @@ public abstract class LivingEntityMixin {
 
     @Unique
     private float geomancy$getXpDropMultiplier(PlayerEntity attackingPlayer) {
-        //if (attackingPlayer != null && ModEnchantments.EXUBERANCE.canEntityUse(attackingPlayer)) {
-        //    int exuberanceLevel = EnchantmentHelper.getEquipmentLevel(ModEnchantments.EXUBERANCE, attackingPlayer);
-        //    return 1.0F + exuberanceLevel * GeomancyCommon.CONFIG.ExuberanceBonusExperiencePercentPerLevel;
-        //} else {
-        //    return 1.0F;
-        //}
-        return 1;
+        float res = 1;
+
+        res = JewelryItem.getXPMultiplier(attackingPlayer);
+
+        return res;
     }
     
 

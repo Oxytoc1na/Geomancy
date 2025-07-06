@@ -78,6 +78,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
             add("item.MODID.stone_geode"            , "Stone Geode");
             add("tooltip.MODID.geodes"              , "Can be hammered open...if you're careful.");
+            add("item.MODID.explorers_map.ancient_hall", "Directions home");
 
         }
 

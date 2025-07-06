@@ -232,4 +232,14 @@ public class GemSlot {
 
         return Text.literal(Integer.toString(qualityPercent)).append("%").formatted(formatting);
     }
+
+    public float getXPMultiplier(ItemStack parent, LivingEntity wearer){
+        float res = 0;
+
+        if(gemItem == Items.LAPIS_LAZULI){
+            res += getEffectiveQuality(parent,wearer);
+        }
+
+        return res;
+    }
 }
