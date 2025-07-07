@@ -136,7 +136,7 @@ public class ModModelProvider extends FabricModelProvider {
         for (int i = 0; i < item.gemSlotCount; i++) {
             JsonObject override = new JsonObject();
             JsonObject predicate = new JsonObject();
-            predicate.addProperty("geomancy:has_gem" , i+1);
+            predicate.addProperty("geomancy:has_gem" , (i+0.5f)/(float)item.gemSlotCount);
             override.add("predicate", predicate);
             override.addProperty("model", jewelryGemmedVariantModelID(item,i).toString());
             overrides.add(override);

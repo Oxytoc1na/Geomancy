@@ -45,7 +45,7 @@ public class GemSlot {
     static{
 
         // Diamond gems give 2 Armor per quality
-        register(Settings.create(Items.DIAMOND).setColor(0,1,1).setDifficulty(1).setProgressCost(0).withGenericTooltip(Formatting.AQUA,(q)->Integer.toString(Math.round(q*2))).setModifier((itemStack, gemSlot, slotReference, livingEntity, uuid, modifiers) -> {
+        register(Settings.create(Items.DIAMOND).setColor(0,1,1).setDifficulty(10).setProgressCost(20).withGenericTooltip(Formatting.AQUA,(q)->Integer.toString(Math.round(q*2))).setModifier((itemStack, gemSlot, slotReference, livingEntity, uuid, modifiers) -> {
             if(JewelryItem.isPendant(itemStack)) return modifiers;
 
             float value = 2*gemSlot.getEffectiveQuality(itemStack,livingEntity);
@@ -75,8 +75,9 @@ public class GemSlot {
                 modifiers.put(EntityAttributes.GENERIC_ARMOR, newMod);
             return modifiers;
         }));
-        register(Settings.create(Items.EMERALD).setColor(0,1,0).setDifficulty(1).setProgressCost(0).withGenericTooltip(Formatting.GREEN,(q)->Integer.toString(Math.round(q))));
-        register(Settings.create(Items.LAPIS_LAZULI).setColor(0,0,1).setDifficulty(1).setProgressCost(0).withGenericTooltip(Formatting.BLUE,(q)->Integer.toString(Math.round(q*100))));
+        register(Settings.create(Items.EMERALD).setColor(0,1,0).setDifficulty(10).setProgressCost(20).withGenericTooltip(Formatting.GREEN,(q)->Integer.toString(Math.round(q))));
+        register(Settings.create(Items.LAPIS_LAZULI).setColor(0,0,1).setDifficulty(10).setProgressCost(20).withGenericTooltip(Formatting.BLUE,(q)->Integer.toString(Math.round(q*100))));
+        register(Settings.create(Items.AMETHYST_SHARD).setColor(0x8D6ACC).setDifficulty(10).setProgressCost(20).withGenericTooltip(Formatting.DARK_PURPLE,(q)->Integer.toString(Math.round(q*100))));
     }
 
     public static void register(Settings settings){
@@ -220,7 +221,8 @@ public class GemSlot {
                     .append(" ")
                     .append(gemSlot.getQualityString(itemStack,wearer)).append(" ")
                     .append(Text.translatable(gemSlot.gemItem.getTranslationKey()).formatted(formatting)));
-            texts.add(Text.translatable("tooltip.geomancy.jewelry.gemeffect."+Registries.ITEM.getId(gemSlot.gemItem).getPath(),qualityFunc.apply(gemSlot.getEffectiveQuality(itemStack,wearer))));
+            if(!JewelryItem.isPendant(itemStack))
+                texts.add(Text.translatable("tooltip.geomancy.jewelry.gemeffect."+Registries.ITEM.getId(gemSlot.gemItem).getPath(),qualityFunc.apply(gemSlot.getEffectiveQuality(itemStack,wearer))));
             return true;});};
         public Settings setItem(Item item){this.item=item;return this;}
 

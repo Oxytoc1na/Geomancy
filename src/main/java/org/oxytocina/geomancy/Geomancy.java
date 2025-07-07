@@ -19,6 +19,7 @@ import org.oxytocina.geomancy.event.PlayerTickHandler;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 import org.oxytocina.geomancy.features.ModFeatures;
+import org.oxytocina.geomancy.items.jewelry.JewelryItem;
 import org.oxytocina.geomancy.loottables.ModLootTables;
 import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.particles.ModParticleFactories;
@@ -50,6 +51,7 @@ public class Geomancy implements ModInitializer {
         LOGGER.info("Loading Geomancy");
 
         ModItems.register();
+        JewelryItem.populateItemGroup();
         ModBlocks.register();
         ModFluids.register();
         ModFeatures.register();

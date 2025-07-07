@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import dev.emi.trinkets.TrinketSlot;
 import dev.emi.trinkets.api.*;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
@@ -17,13 +18,17 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.*;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Pair;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.client.rendering.ModColorizationHandler;
+import org.oxytocina.geomancy.items.ExtraItemSettings;
 import org.oxytocina.geomancy.items.ModItems;
 
 import java.lang.reflect.Array;
@@ -76,18 +81,26 @@ public class JewelryItem extends TrinketItem implements DyeableItem {
 
     public int getColor(ItemStack stack, int tintIndex){
         tintIndex--;
-        if(tintIndex < 0 || tintIndex >= gemSlotCount) return 0xFFFFFFFF;
+        if(tintIndex < 0 || tintIndex >= gemSlotCount) return getBaseColor(stack);
 
         var slots = getSlots(stack);
         return slots.size()>tintIndex?slots.get(tintIndex).getColor():getEmptyColor(tintIndex);
+    }
+
+    public int getBaseColor(ItemStack stack){
+
+        if(Registries.ITEM.getId(stack.getItem()).getPath().contains("octangulite"))
+            return ModColorizationHandler.octanguliteItemNoise(stack,0,0.03f,true);
+
+        return 0xFFFFFFFF;
     }
 
     public int getEmptyColor(int tintIndex){
         return 0xFFFFFFFF;
     }
 
-    public int getHasGemPredicate(ItemStack stack){
-        return getSlots(stack).size();
+    public float getHasGemPredicate(ItemStack stack){
+        return  getSlots(stack).size() / (float)gemSlotCount;
     }
 
 
@@ -127,23 +140,50 @@ public class JewelryItem extends TrinketItem implements DyeableItem {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> list, TooltipContext context) {
 
-        var gems = getSlots(stack);
-        boolean hasGems = !gems.isEmpty();
-        List<Text> gemList = new ArrayList<>();
-        LivingEntity wearer = MinecraftClient.getInstance().player;
-        //LivingEntity wearer = stack.getHolder() instanceof LivingEntity l ? l : null;
-        for(var gem : gems)
-            GemSlot.appendTooltip(stack,gem,wearer,world,gemList,context);
-
-        Map<Text,Integer> textMap = new HashMap<>();
-        for(Text t : gemList){
-            if(textMap.containsKey(t)) textMap.put(t,textMap.get(t)+1);
-            else textMap.put(t,1);
+        if(isPendant())
+        {
+            list.add(Text.translatable("tooltip.geomancy.jewelry.pendant1"));
+            list.add(Text.translatable("tooltip.geomancy.jewelry.pendant2"));
         }
 
-        for(Text t : textMap.keySet()){
-            int amount = textMap.get(t);
-            list.add(Text.literal(amount>1?("x"+amount+" "):"").formatted(Formatting.YELLOW).append(t));
+        var gems = getSlots(stack);
+        boolean hasGems = !gems.isEmpty();
+        LivingEntity wearer = MinecraftClient.getInstance().player;
+        //LivingEntity wearer = stack.getHolder() instanceof LivingEntity l ? l : null;
+
+        // consolidate tooltips
+        // collect
+        ArrayList<List<Text>> tooltips = new ArrayList<>();
+        for(var gem : gems)
+        {
+            List<Text> texts = new ArrayList<>();
+            GemSlot.appendTooltip(stack,gem,wearer,world,texts,context);
+            if(!texts.isEmpty())
+                tooltips.add(texts);
+        }
+        // sort in
+        ArrayList<Pair<List<Text>,Integer>> textsCounted = new ArrayList<>();
+        for(var l : tooltips){
+            boolean sortedIn = false;
+            for (int i = 0; i < textsCounted.size(); i++) {
+                if(textsCounted.get(i).getLeft().stream().findFirst().equals(l.stream().findFirst()))
+                {
+                    textsCounted.get(i).setRight(textsCounted.get(i).getRight()+1);
+                    sortedIn=true;
+                    break;
+                }
+            }
+            if(!sortedIn)
+                textsCounted.add(new Pair<>(l,1));
+        }
+
+        // append
+        for(var pair : textsCounted){
+            int amount = pair.getRight();
+            var texts = pair.getLeft();
+            for(Text t : texts){
+                list.add(Text.literal(amount>1?("x"+amount+" "):"").formatted(Formatting.YELLOW).append(t));
+            }
         }
 
         if(!hasGems){
@@ -178,12 +218,13 @@ public class JewelryItem extends TrinketItem implements DyeableItem {
         return res;
     }
 
-    public void addSlot(ItemStack stack, GemSlot slot){
+    public ItemStack addSlot(ItemStack stack, GemSlot slot){
         NbtList nbt = stack.getOrCreateNbt().getList("gems",NbtList.COMPOUND_TYPE);
 
         nbt.add(GemSlot.toNbt(slot));
 
         stack.setSubNbt("gems",nbt);
+        return stack;
     }
 
     public static float getXPMultiplier(LivingEntity wearer){
@@ -288,5 +329,24 @@ public class JewelryItem extends TrinketItem implements DyeableItem {
             res+=getFortuneBonus(ji,entity);
 
         return res;
+    }
+
+    public static void populateItemGroup(){
+        // Register items to the custom item group.
+        ItemGroupEvents.modifyEntriesEvent(ModItems.JEWELRY_ITEM_GROUP_KEY).register(itemGroup -> {
+            for(JewelryItem i : List){
+
+                // generate full jewelry for every gem type
+                for(var gem : GemSlot.settingsMap.keySet())
+                {
+                    ItemStack fullJewelry = new ItemStack(i);
+                    for (int j = 0; j < i.gemSlotCount; j++) {
+                        i.addSlot(fullJewelry,new GemSlot(gem,1));
+                    }
+                    itemGroup.add(fullJewelry);
+                }
+
+            }
+        });
     }
 }

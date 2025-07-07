@@ -106,8 +106,9 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("tooltip.geomancy.jewelry.pendant1" ,"Empowers other worn gems of the");
             add("tooltip.geomancy.jewelry.pendant2" ,"same type as slotted in this item");
             add("tooltip.geomancy.jewelry.gemeffect.diamond"        ,"provides %1$s armor");
-            add("tooltip.geomancy.jewelry.gemeffect.lapis_lazuli"   ,"increases XP drops by %1$s");
-            add("tooltip.geomancy.jewelry.gemeffect.emerald"   ,"increases your fortune by %1$s levels");
+            add("tooltip.geomancy.jewelry.gemeffect.lapis_lazuli"   ,"increases XP drops by %1$s%%");
+            add("tooltip.geomancy.jewelry.gemeffect.emerald"        ,"increases your fortune by %1$s levels");
+            add("tooltip.geomancy.jewelry.gemeffect.amethyst_shard" ,"TODO, quality: %1$s");
             add("tooltip.geomancy.jewelry.unsmith"  ,"Salvages gems");
             add("tooltip.geomancy.jewelry.quality"  ,"Quality");
 
@@ -165,7 +166,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         add("death.attack.geomancy.molten_gold", "%1$s fell into King Midas' bathtub");
 
         // Misc
-        add("itemGroup.MODID", "Geomancy");
+        add("itemGroup.MODID.main",    "Geomancy");
+        add("itemGroup.MODID.jewelry", "Geomancy Jewelry");
 
         // Advancements
         {

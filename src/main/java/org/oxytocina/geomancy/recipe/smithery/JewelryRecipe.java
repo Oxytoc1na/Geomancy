@@ -75,7 +75,7 @@ public class JewelryRecipe extends GatedModRecipe<Inventory> implements Smithery
 
         ItemStack baseStack = getRecipeBase(inv);
         if(baseStack.isEmpty()) return res;
-        JewelryItem jewelryItem = (JewelryItem)baseStack.getItem();
+        if(!(baseStack.getItem() instanceof JewelryItem jewelryItem)) return res;
         var presentGems = JewelryItem.getSlots(baseStack);
 
         // fetch free slots
@@ -191,7 +191,9 @@ public class JewelryRecipe extends GatedModRecipe<Inventory> implements Smithery
 
         // fetch already slotted gems
         ItemStack baseStack = getRecipeBase(inv);
-        JewelryItem jewelryItem = (JewelryItem)baseStack.getItem();
+
+        if(!(baseStack.getItem() instanceof JewelryItem jewelryItem)) return 1000000;
+
         var presentGems = JewelryItem.getSlots(baseStack);
 
         // fetch free slots

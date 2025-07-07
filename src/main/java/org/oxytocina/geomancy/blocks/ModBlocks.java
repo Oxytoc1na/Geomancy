@@ -99,7 +99,7 @@ public class ModBlocks {
 
 
     public static void register(){
-        ItemGroupEvents.modifyEntriesEvent(ModItems.CUSTOM_ITEM_GROUP_KEY).register((itemGroup) -> {
+        ItemGroupEvents.modifyEntriesEvent(ModItems.MAIN_ITEM_GROUP_KEY).register((itemGroup) -> {
 
             for(Block b : ExtraBlockSettings.BlocksInGroup){
                 itemGroup.add(b.asItem());

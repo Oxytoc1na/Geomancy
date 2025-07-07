@@ -72,7 +72,7 @@ public class ModColorizationHandler {
 
     }
 
-    private static int octanguliteItemNoise(ItemStack stack, int tintIndex,float zoom, boolean withSlotOffset){
+    public static int octanguliteItemNoise(ItemStack stack, int tintIndex,float zoom, boolean withSlotOffset){
         float baseX, baseY, baseZ;
 
         if(stack.getHolder()!=null){
@@ -92,11 +92,28 @@ public class ModColorizationHandler {
                 baseZ = (float)pos.getZ();
             }
         }
-        else if(MinecraftClient.getInstance() != null && MinecraftClient.getInstance().cameraEntity!=null){
-            Vec3d pos = MinecraftClient.getInstance().cameraEntity.getPos();
-            baseX = (float)pos.getX();
-            baseY = (float)pos.getY();
-            baseZ = (float)pos.getZ();
+        else if(MinecraftClient.getInstance() != null)
+        {
+            if(withSlotOffset && MinecraftClient.getInstance().player != null)
+            {
+                Vec3d pos = MinecraftClient.getInstance().player.getPos();
+                int slot = MinecraftClient.getInstance().player.getInventory().getSlotWithStack(stack);
+
+                baseX = (float)pos.getX()+slot;
+                baseY = (float)pos.getY()+13+slot*2;
+                baseZ = (float)pos.getZ()+54+slot*3;
+            }
+            else if(MinecraftClient.getInstance().cameraEntity!=null) {
+                Vec3d pos = MinecraftClient.getInstance().cameraEntity.getPos();
+                baseX = (float) pos.getX();
+                baseY = (float) pos.getY();
+                baseZ = (float) pos.getZ();
+            }
+            else{
+                baseX = 0;
+                baseY = 0;
+                baseZ = 0;
+            }
         }
         else{
             baseX = 0;
@@ -122,36 +139,6 @@ public class ModColorizationHandler {
                 (float) (1-Math.pow(1F-((SimplexNoise.noise(x3,y3,z3)+1)/2),2))
         );
 
-    }
-
-
-    private static int octangulite(BlockPos pos, int tintIndex, float zoom){
-        int x = Math.round(pos.getX() * (1+tintIndex*0.3f) + tintIndex*16);
-        int y = Math.round(pos.getY() * (1+tintIndex*0.3f) + tintIndex*16);
-        int z = Math.round(pos.getZ() * (1+tintIndex*0.3f) + tintIndex*16);
-
-        int red, green, blue;
-
-        // RAINBOW!
-        red = x * 32 + y * 16;
-        if ((red & 256) != 0) {
-            red = 255 - (red & 255);
-        }
-        red &= 255;
-
-        green = y * 32 + z * 16;
-        if ((green & 256) != 0) {
-            green = 255 - (green & 255);
-        }
-        green &= 255;
-
-        blue = x * 16 + z * 32;
-        if ((blue & 256) != 0) {
-            blue = 255 - (blue & 255);
-        }
-        blue &= 255;
-
-        return 0xFF000000 | red << 16 | green << 8 | blue;
     }
 
     public static int hsvToRgb(float hue, float saturation, float value) {

@@ -14,6 +14,7 @@ public class ManaUtil {
     }
 
     public static boolean setMana(IEntityDataSaver player, int amount){
+        if(player==null) return false;
         NbtCompound nbt = player.getPersistentData();
         int old = getMana(player);
         int mana = Toolbox.clampI(amount,0,getMaxMana(player));

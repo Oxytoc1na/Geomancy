@@ -22,6 +22,7 @@ import org.oxytocina.geomancy.items.artifacts.ArtifactItem;
 import org.oxytocina.geomancy.items.artifacts.ArtifactSettings;
 import org.oxytocina.geomancy.items.artifacts.GoldArtifact;
 import org.oxytocina.geomancy.items.artifacts.IronArtifact;
+import org.oxytocina.geomancy.items.jewelry.GemSlot;
 import org.oxytocina.geomancy.items.jewelry.JewelryItem;
 import org.oxytocina.geomancy.items.jewelry.JewelryItemSettings;
 import org.oxytocina.geomancy.loottables.ModLootTables;
@@ -133,11 +134,12 @@ public class ModItems {
         FuelRegistry.INSTANCE.add(ModItems.SUSPICIOUS_SUBSTANCE, 30 * 20);
 
 
-        // Register the group.
-        Registry.register(Registries.ITEM_GROUP, CUSTOM_ITEM_GROUP_KEY, CUSTOM_ITEM_GROUP);
+        // Register the groups.
+        Registry.register(Registries.ITEM_GROUP, MAIN_ITEM_GROUP_KEY, MAIN_ITEM_GROUP);
+        Registry.register(Registries.ITEM_GROUP, JEWELRY_ITEM_GROUP_KEY, JEWELRY_ITEM_GROUP);
 
         // Register items to the custom item group.
-        ItemGroupEvents.modifyEntriesEvent(CUSTOM_ITEM_GROUP_KEY).register(itemGroup -> {
+        ItemGroupEvents.modifyEntriesEvent(MAIN_ITEM_GROUP_KEY).register(itemGroup -> {
             for(Item i : ExtraItemSettings.ItemsInGroup){
                 itemGroup.add(i);
             }
@@ -145,10 +147,16 @@ public class ModItems {
 
     }
 
-    public static final RegistryKey<ItemGroup> CUSTOM_ITEM_GROUP_KEY = RegistryKey.of(Registries.ITEM_GROUP.getKey(), new Identifier(Geomancy.MOD_ID, "item_group"));
-    public static final ItemGroup CUSTOM_ITEM_GROUP = FabricItemGroup.builder()
+    public static final RegistryKey<ItemGroup> MAIN_ITEM_GROUP_KEY = RegistryKey.of(Registries.ITEM_GROUP.getKey(), new Identifier(Geomancy.MOD_ID, "main_item_group"));
+    public static final ItemGroup MAIN_ITEM_GROUP = FabricItemGroup.builder()
             .icon(() -> new ItemStack(ModItems.GUIDE_BOOK))
-            .displayName(Text.translatable("itemGroup."+Geomancy.MOD_ID))
+            .displayName(Text.translatable("itemGroup."+Geomancy.MOD_ID+".main"))
+            .build();
+
+    public static final RegistryKey<ItemGroup> JEWELRY_ITEM_GROUP_KEY = RegistryKey.of(Registries.ITEM_GROUP.getKey(), new Identifier(Geomancy.MOD_ID, "jewelry_item_group"));
+    public static final ItemGroup JEWELRY_ITEM_GROUP = FabricItemGroup.builder()
+            .icon(() -> IRON_RING.addSlot(new ItemStack(ModItems.IRON_RING),new GemSlot(Items.DIAMOND,1)))
+            .displayName(Text.translatable("itemGroup."+Geomancy.MOD_ID+".jewelry"))
             .build();
 
     public static Item register(String id,Item item) {
