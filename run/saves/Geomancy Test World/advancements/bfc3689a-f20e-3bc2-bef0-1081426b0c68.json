@@ -5,21 +5,9 @@
     },
     "done": true
   },
-  "minecraft:recipes/combat/leather_helmet": {
-    "criteria": {
-      "has_leather": "2025-06-23 16:26:53 +0200"
-    },
-    "done": true
-  },
   "minecraft:recipes/building_blocks/stone_brick_slab_from_stone_stonecutting": {
     "criteria": {
       "has_stone": "2025-06-23 16:26:42 +0200"
-    },
-    "done": true
-  },
-  "minecraft:recipes/combat/leather_leggings": {
-    "criteria": {
-      "has_leather": "2025-06-23 16:26:53 +0200"
     },
     "done": true
   },
@@ -29,33 +17,9 @@
     },
     "done": true
   },
-  "geomancy:recipes/misc/mithril_ingot_decompress_to_mithril_nugget": {
-    "criteria": {
-      "has_mithril_ingot": "2025-06-23 16:26:53 +0200"
-    },
-    "done": true
-  },
-  "geomancy:recipes/misc/smithing_artifact_of_iron": {
-    "criteria": {
-      "default_conditions": "2025-06-23 16:27:02 +0200"
-    },
-    "done": true
-  },
   "minecraft:recipes/building_blocks/stone_slab_from_stone_stonecutting": {
     "criteria": {
       "has_stone": "2025-06-23 16:26:42 +0200"
-    },
-    "done": true
-  },
-  "geomancy:recipes/misc/smithing_empty_artifact": {
-    "criteria": {
-      "default_conditions": "2025-06-23 16:26:53 +0200"
-    },
-    "done": true
-  },
-  "minecraft:recipes/decorations/item_frame": {
-    "criteria": {
-      "has_leather": "2025-06-23 16:26:53 +0200"
     },
     "done": true
   },
@@ -71,21 +35,9 @@
     },
     "done": true
   },
-  "minecraft:recipes/combat/leather_chestplate": {
-    "criteria": {
-      "has_leather": "2025-06-23 16:26:53 +0200"
-    },
-    "done": true
-  },
   "minecraft:recipes/decorations/crafting_table": {
     "criteria": {
       "unlock_right_away": "2025-06-23 16:26:42 +0200"
-    },
-    "done": true
-  },
-  "geomancy:recipes/misc/mithril_ingot_compress_to_mithril_block": {
-    "criteria": {
-      "has_mithril_ingot": "2025-06-23 16:26:53 +0200"
     },
     "done": true
   },
@@ -119,21 +71,9 @@
     },
     "done": true
   },
-  "minecraft:recipes/combat/leather_boots": {
-    "criteria": {
-      "has_leather": "2025-06-23 16:26:53 +0200"
-    },
-    "done": true
-  },
   "minecraft:recipes/building_blocks/smooth_stone": {
     "criteria": {
       "has_stone": "2025-06-23 16:26:42 +0200"
-    },
-    "done": true
-  },
-  "minecraft:recipes/misc/leather_horse_armor": {
-    "criteria": {
-      "has_leather": "2025-06-23 16:26:53 +0200"
     },
     "done": true
   },
@@ -146,6 +86,426 @@
   "minecraft:recipes/building_blocks/stone_stairs": {
     "criteria": {
       "has_stone": "2025-06-23 16:26:42 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/leather_helmet": {
+    "criteria": {
+      "has_leather": "2025-06-23 16:26:53 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/leather_leggings": {
+    "criteria": {
+      "has_leather": "2025-06-23 16:26:53 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/mithril_ingot_decompress_to_mithril_nugget": {
+    "criteria": {
+      "has_mithril_ingot": "2025-06-23 16:26:53 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_empty_artifact": {
+    "criteria": {
+      "default_conditions": "2025-06-23 16:26:53 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/item_frame": {
+    "criteria": {
+      "has_leather": "2025-06-23 16:26:53 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/leather_chestplate": {
+    "criteria": {
+      "has_leather": "2025-06-23 16:26:53 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/mithril_ingot_compress_to_mithril_block": {
+    "criteria": {
+      "has_mithril_ingot": "2025-06-23 16:26:53 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/leather_boots": {
+    "criteria": {
+      "has_leather": "2025-06-23 16:26:53 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/leather_horse_armor": {
+    "criteria": {
+      "has_leather": "2025-06-23 16:26:53 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_artifact_of_iron": {
+    "criteria": {
+      "default_conditions": "2025-06-23 16:27:02 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_lead_necklace": {
+    "criteria": {
+      "default_conditions": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/diamond_leggings": {
+    "criteria": {
+      "has_diamond": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/food/cooked_chicken_from_campfire_cooking": {
+    "criteria": {
+      "has_chicken": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/iron_nugget_from_smelting": {
+    "criteria": {
+      "has_iron_pickaxe": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/blue_dye": {
+    "criteria": {
+      "has_lapis_lazuli": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/golden_axe": {
+    "criteria": {
+      "has_gold_ingot": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:story/iron_tools": {
+    "criteria": {
+      "iron_pickaxe": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/golden_pickaxe": {
+    "criteria": {
+      "has_gold_ingot": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/iron_ingot_from_smelting_raw_iron": {
+    "criteria": {
+      "has_raw_iron": "2025-07-07 17:42:09 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/lapis_block": {
+    "criteria": {
+      "has_lapis_lazuli": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/iron_ingot_from_smelting_iron_ore": {
+    "criteria": {
+      "has_iron_ore": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/food/cooked_chicken": {
+    "criteria": {
+      "has_chicken": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/raw_iron_block": {
+    "criteria": {
+      "has_raw_iron": "2025-07-07 17:42:09 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/jewelry_octangulite_ring": {
+    "criteria": {
+      "has_ingredient": "2025-07-07 17:37:36 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/diamond_sword": {
+    "criteria": {
+      "has_diamond": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/jukebox": {
+    "criteria": {
+      "has_diamond": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/gold_nugget": {
+    "criteria": {
+      "has_gold_ingot": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/iron_ingot_from_blasting_iron_ore": {
+    "criteria": {
+      "has_iron_ore": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/golden_shovel": {
+    "criteria": {
+      "has_gold_ingot": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/food/cooked_chicken_from_smoking": {
+    "criteria": {
+      "has_chicken": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/diamond_chestplate": {
+    "criteria": {
+      "has_diamond": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/lead_ingot_decompress_to_lead_nugget": {
+    "criteria": {
+      "has_lead_ingot": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/food/golden_apple": {
+    "criteria": {
+      "has_gold_ingot": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/diamond_helmet": {
+    "criteria": {
+      "has_diamond": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/golden_boots": {
+    "criteria": {
+      "has_gold_ingot": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/arrow": {
+    "criteria": {
+      "has_feather": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/titanium_ingot_compress_to_titanium_block": {
+    "criteria": {
+      "has_titanium_ingot": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/golden_helmet": {
+    "criteria": {
+      "has_gold_ingot": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/jewelry_gold_ring": {
+    "criteria": {
+      "has_ingredient": "2025-07-07 17:39:43 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_gold_necklace": {
+    "criteria": {
+      "default_conditions": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_titanium_necklace": {
+    "criteria": {
+      "default_conditions": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/lead_ingot_compress_to_lead_block": {
+    "criteria": {
+      "has_lead_ingot": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_titanium_pendant": {
+    "criteria": {
+      "default_conditions": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/golden_sword": {
+    "criteria": {
+      "has_gold_ingot": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/chest": {
+    "criteria": {
+      "has_lots_of_items": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/emerald_block": {
+    "criteria": {
+      "has_emerald": "2025-07-07 17:38:07 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/jewelry_octangulite_pendant": {
+    "criteria": {
+      "has_ingredient": "2025-07-07 17:41:27 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/gold_block": {
+    "criteria": {
+      "has_gold_ingot": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/diamond_pickaxe": {
+    "criteria": {
+      "has_diamond": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/golden_chestplate": {
+    "criteria": {
+      "has_gold_ingot": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/iron_ingot_from_blasting_raw_iron": {
+    "criteria": {
+      "has_raw_iron": "2025-07-07 17:42:09 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_titanium_ring": {
+    "criteria": {
+      "default_conditions": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/iron_nugget_from_blasting": {
+    "criteria": {
+      "has_iron_pickaxe": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/diamond_block": {
+    "criteria": {
+      "has_diamond": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "geomancy:milestones/milestone_smithery": {
+    "criteria": {
+      "geomancy:recipes/tools/smithery_block": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/golden_hoe": {
+    "criteria": {
+      "has_gold_ingot": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_gold_pendant": {
+    "criteria": {
+      "default_conditions": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_gold_ring": {
+    "criteria": {
+      "default_conditions": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/diamond_hoe": {
+    "criteria": {
+      "has_diamond": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/diamond_shovel": {
+    "criteria": {
+      "has_diamond": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:story/mine_diamond": {
+    "criteria": {
+      "diamond": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/smithery_block": {
+    "criteria": {
+      "has_ingredient": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/diamond_axe": {
+    "criteria": {
+      "has_diamond": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/jewelry_iron_ring": {
+    "criteria": {
+      "has_ingredient": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/light_weighted_pressure_plate": {
+    "criteria": {
+      "has_gold_ingot": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/titanium_ingot_decompress_to_titanium_nugget": {
+    "criteria": {
+      "has_titanium_ingot": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_lead_ring": {
+    "criteria": {
+      "default_conditions": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/golden_leggings": {
+    "criteria": {
+      "has_gold_ingot": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/diamond_boots": {
+    "criteria": {
+      "has_diamond": "2025-07-07 17:37:23 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_lead_pendant": {
+    "criteria": {
+      "default_conditions": "2025-07-07 17:37:23 +0200"
     },
     "done": true
   },

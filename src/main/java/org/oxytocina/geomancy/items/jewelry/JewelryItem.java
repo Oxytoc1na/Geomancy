@@ -142,8 +142,8 @@ public class JewelryItem extends TrinketItem implements DyeableItem {
 
         if(isPendant())
         {
-            list.add(Text.translatable("tooltip.geomancy.jewelry.pendant1"));
-            list.add(Text.translatable("tooltip.geomancy.jewelry.pendant2"));
+            list.add(Text.translatable("tooltip.geomancy.jewelry.pendant1").formatted(Formatting.DARK_GRAY));
+            list.add(Text.translatable("tooltip.geomancy.jewelry.pendant2").formatted(Formatting.DARK_GRAY));
         }
 
         var gems = getSlots(stack);
@@ -187,7 +187,7 @@ public class JewelryItem extends TrinketItem implements DyeableItem {
         }
 
         if(!hasGems){
-            list.add(Text.translatable("tooltip.geomancy.jewelry.nogems").formatted(Formatting.GRAY));
+            list.add(Text.translatable("tooltip.geomancy.jewelry.nogems").formatted(Formatting.DARK_GRAY));
         }
 
         if(stack.hasNbt() && stack.getNbt().contains("preview",NbtElement.BYTE_TYPE) && stack.getNbt().getBoolean("preview"))

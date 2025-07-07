@@ -222,7 +222,7 @@ public class GemSlot {
                     .append(gemSlot.getQualityString(itemStack,wearer)).append(" ")
                     .append(Text.translatable(gemSlot.gemItem.getTranslationKey()).formatted(formatting)));
             if(!JewelryItem.isPendant(itemStack))
-                texts.add(Text.translatable("tooltip.geomancy.jewelry.gemeffect."+Registries.ITEM.getId(gemSlot.gemItem).getPath(),qualityFunc.apply(gemSlot.getEffectiveQuality(itemStack,wearer))));
+                texts.add(Text.literal("  ").append(Text.translatable("tooltip.geomancy.jewelry.gemeffect."+Registries.ITEM.getId(gemSlot.gemItem).getPath(),qualityFunc.apply(gemSlot.getEffectiveQuality(itemStack,wearer))).formatted(Formatting.DARK_GRAY)));
             return true;});};
         public Settings setItem(Item item){this.item=item;return this;}
 

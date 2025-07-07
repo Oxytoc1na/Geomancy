@@ -14,8 +14,7 @@ public class PlayerTickHandler implements ServerTickEvents.StartTick {
     public void onStartTick(MinecraftServer server) {
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
             if(new Random().nextFloat() <= 0.005f) {
-                IEntityDataSaver dataPlayer = ((IEntityDataSaver) player);
-                ManaUtil.setMana(dataPlayer,(ManaUtil.getMana(dataPlayer)+1) % 10);
+                ManaUtil.setMana(player,(ManaUtil.getMana(player)+1) % 10);
                 //player.sendMessage(Text.literal("added mana"));
             }
         }

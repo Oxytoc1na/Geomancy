@@ -14,7 +14,5 @@ public class ClientJoinedC2SPacket {
 
     public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender){
 
-        // synchronize data with client
-        ManaUtil.syncMana((IEntityDataSaver) player);
     }
 }

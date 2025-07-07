@@ -11,7 +11,7 @@ public class ManaSyncS2CPacket {
 
     public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler,
                                PacketByteBuf buf, PacketSender responseSender) {
-        ManaUtil.setMana((IEntityDataSaver) client.player,buf.readInt());
+        ManaUtil.setMana(client.player,buf.readInt());
     }
 
     //public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender){

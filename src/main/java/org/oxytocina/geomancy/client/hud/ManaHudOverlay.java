@@ -43,7 +43,7 @@ public class ManaHudOverlay implements HudRenderCallback {
 
         RenderSystem.setShaderTexture(0, FILLED_THIRST);
         for(int i = 0; i < 10; i++) {
-            if(ManaUtil.getMana((IEntityDataSaver) MinecraftClient.getInstance().player) > i) {
+            if(ManaUtil.getMana(MinecraftClient.getInstance().player) > i) {
                 drawContext.drawTexture(FILLED_THIRST,x - 94 + (i * 9),y - 54,0,0,12,12,
                         12,12);
             } else {
