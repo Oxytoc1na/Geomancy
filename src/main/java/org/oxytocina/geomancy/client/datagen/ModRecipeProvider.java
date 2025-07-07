@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.advancement.criterion.CriterionConditions;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.server.recipe.*;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.Items;
 import net.minecraft.predicate.item.ItemPredicate;
@@ -68,42 +69,52 @@ public class ModRecipeProvider extends FabricRecipeProvider {
             ModItems.MITHRIL_INGOT,5f,400,100);
 
         // compacting recipes
-        AddReversibleCompressionRecipe(ModItems.MITHRIL_INGOT,ModItems.MITHRIL_NUGGET);
-        AddReversibleCompressionRecipe(ModBlocks.MITHRIL_BLOCK,ModItems.MITHRIL_INGOT);
-        AddReversibleCompressionRecipe(ModBlocks.RAW_MITHRIL_BLOCK,ModItems.RAW_MITHRIL);
+        AddOreCompactingRecipes(ModItems.MITHRIL_NUGGET,ModItems.MITHRIL_INGOT,ModBlocks.MITHRIL_BLOCK,ModItems.RAW_MITHRIL,ModBlocks.RAW_MITHRIL_BLOCK);
+        AddOreCompactingRecipes(ModItems.OCTANGULITE_NUGGET,ModItems.OCTANGULITE_INGOT,ModBlocks.OCTANGULITE_BLOCK,ModItems.RAW_OCTANGULITE,ModBlocks.RAW_OCTANGULITE_BLOCK);
+        AddOreCompactingRecipes(ModItems.MOLYBDENUM_NUGGET,ModItems.MOLYBDENUM_INGOT,ModBlocks.MOLYBDENUM_BLOCK,ModItems.RAW_MOLYBDENUM,ModBlocks.RAW_MOLYBDENUM_BLOCK);
+        AddOreCompactingRecipes(ModItems.TITANIUM_NUGGET,ModItems.TITANIUM_INGOT,ModBlocks.TITANIUM_BLOCK,ModItems.RAW_TITANIUM,ModBlocks.RAW_TITANIUM_BLOCK);
+        AddOreCompactingRecipes(ModItems.LEAD_NUGGET,ModItems.LEAD_INGOT,ModBlocks.LEAD_BLOCK,ModItems.RAW_LEAD,ModBlocks.RAW_LEAD_BLOCK);
 
-        AddReversibleCompressionRecipe(ModItems.OCTANGULITE_INGOT,ModItems.OCTANGULITE_NUGGET);
-        AddReversibleCompressionRecipe(ModBlocks.OCTANGULITE_BLOCK,ModItems.OCTANGULITE_INGOT);
-        AddReversibleCompressionRecipe(ModBlocks.RAW_OCTANGULITE_BLOCK,ModItems.RAW_OCTANGULITE);
-
-        AddReversibleCompressionRecipe(ModItems.MOLYBDENIUM_INGOT,ModItems.MOLYBDENIUM_NUGGET);
-        AddReversibleCompressionRecipe(ModBlocks.MOLYBDENIUM_BLOCK,ModItems.MOLYBDENIUM_INGOT);
-        AddReversibleCompressionRecipe(ModBlocks.RAW_MOLYBDENIUM_BLOCK,ModItems.RAW_MOLYBDENIUM);
 
         // smithing recipes
         {
-            // Empty Artifact
-            AddSmitheryRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(ModItems.MITHRIL_INGOT),
-                            SmithingIngredient.ofItems(Items.LEATHER)
-                    }).toList(),ModItems.EMPTY_ARTIFACT,1, 40,5, true,
-                    conditionsFromItem(ModItems.MITHRIL_INGOT));
 
-            // Iron Ring
-            AddShapedSmitheryRecipe(new String[]{
-                            " o ",
-                            "o o",
-                            " o "}
-                    ,new SPatKey[]{new SPatKey("o",SmithingIngredient.ofItems(1,1,1,Items.IRON_INGOT))},
-                    ModItems.IRON_RING,1,30,15,conditionsFromItem(Items.IRON_INGOT));
 
-            // Iron Necklace
-            AddShapedSmitheryRecipe(new String[]{
-                            "o o",
-                            "o o",
-                            " o "}
-                    ,new SPatKey[]{new SPatKey("o",SmithingIngredient.ofItems(1,1,1,Items.IRON_INGOT))},
-                    ModItems.IRON_NECKLACE,1,30,15,conditionsFromItem(Items.IRON_INGOT));
+            // generic jewelry recipes
+            GenJewelryRecData[] mats = new GenJewelryRecData[]{
+                    new GenJewelryRecData("iron",Items.IRON_INGOT,30,15),
+                    new GenJewelryRecData("gold",Items.GOLD_INGOT,40,30),
+                    new GenJewelryRecData("mithril",ModItems.MITHRIL_INGOT,50,30),
+                    new GenJewelryRecData("copper",Items.COPPER_INGOT,30,20),
+                    new GenJewelryRecData("molybdenum",ModItems.MOLYBDENUM_INGOT,40,20),
+                    new GenJewelryRecData("titanium",ModItems.TITANIUM_INGOT,70,40),
+                    new GenJewelryRecData("lead",ModItems.LEAD_INGOT,20,17),
+                    new GenJewelryRecData("octangulite",ModItems.OCTANGULITE_INGOT,80,100),
+            };
+
+            for(var dat : mats){
+                // rings
+                Identifier tempID = Geomancy.locate(dat.resultPrefix+"_ring");
+                Item ringResult = Registries.ITEM.containsId(tempID) ? Registries.ITEM.get(tempID) : null;
+                if(ringResult!=null) AddRingSmitheryRecipe(dat.ingredient,ringResult,dat.progress,dat.difficulty);
+
+                // necklaces
+                tempID = Geomancy.locate(dat.resultPrefix+"_necklace");
+                Item necklaceResult = Registries.ITEM.containsId(tempID) ? Registries.ITEM.get(tempID) : null;
+                if(necklaceResult!=null) AddNecklaceSmitheryRecipe(dat.ingredient,necklaceResult,dat.progress,dat.difficulty);
+
+                // pendants
+                tempID = Geomancy.locate(dat.resultPrefix+"_pendant");
+                Item pendantResult = Registries.ITEM.containsId(tempID) ? Registries.ITEM.get(tempID) : null;
+                if(pendantResult!=null) AddPendantSmitheryRecipe(dat.ingredient,pendantResult,dat.progress,dat.difficulty);
+            }
+
+            // jewelry gem slotting recipes
+            for(JewelryItem item : JewelryItem.List){
+                AddSmitheryJewelryRecipe(item);
+            }
+
+
 
             // mithril hammer
             AddShapedSmitheryRecipe(new String[]{
@@ -116,15 +127,18 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     },
                     ModItems.MITHRIL_HAMMER,1,100,12,conditionsFromItem(ModItems.MITHRIL_INGOT));
 
-            // jewelry recipes
-            for(JewelryItem item : JewelryItem.List){
-                AddSmitheryJewelryRecipe(item);
-            }
 
             // geode recipes
             for(GeodeItem item : ModItems.geodeItems){
                 AddGeodeRecipe(item);
             }
+
+            // Empty Artifact
+            AddSmitheryRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(ModItems.MITHRIL_INGOT),
+                            SmithingIngredient.ofItems(Items.LEATHER)
+                    }).toList(),ModItems.EMPTY_ARTIFACT,1, 40,5, true,
+                    conditionsFromItem(ModItems.MITHRIL_INGOT));
 
             // Artifact of Iron
             AddSmitheryRecipe(Arrays.stream(new SmithingIngredient[] {
@@ -166,6 +180,11 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, dense).input(base, 9).criterion(hasItem(base), conditionsFromItem(base)).offerTo(exporter,getItemName(base)+"_compress_to_"+getItemName(dense));
         ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, base,9).input(dense).criterion(hasItem(dense), conditionsFromItem(dense)).offerTo(exporter,getItemName(dense)+"_decompress_to_"+getItemName(base));
     }
+    private void AddOreCompactingRecipes(ItemConvertible nugget, ItemConvertible ingot, ItemConvertible block, ItemConvertible raw, ItemConvertible rawBlock){
+        AddReversibleCompressionRecipe(ingot,nugget);
+        AddReversibleCompressionRecipe(block,ingot);
+        AddReversibleCompressionRecipe(rawBlock,raw);
+    }
 
     private void AddSmitheryRecipe(List<SmithingIngredient> input, ItemConvertible output, int outputCount, int requiredProgress, int difficulty, boolean shapeless, CriterionConditions conditions){
         AddSmitheryRecipe(input,output,outputCount,requiredProgress,difficulty, shapeless,"default_conditions",conditions);
@@ -206,6 +225,20 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         }
     }
 
+    private static class GenJewelryRecData {
+        public int difficulty;
+        public int progress;
+        public ItemConvertible ingredient;
+        public String resultPrefix;
+
+        public GenJewelryRecData(String resultPrefix, ItemConvertible ingredient, int progress, int difficulty ){
+            this.resultPrefix=resultPrefix;
+            this.ingredient=ingredient;
+            this.progress=progress;
+            this.difficulty=difficulty;
+        }
+    }
+
     private void AddSmitheryRecipe(List<SmithingIngredient> input, ItemConvertible output, int outputCount, int requiredProgress, int difficulty, boolean shapeless, String criterionName, CriterionConditions conditions){
         DefaultedList<SmithingIngredient> ingredients = DefaultedList.of();
         ingredients.addAll(input);
@@ -236,6 +269,30 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         difficulty,difficultyPerMighty,RecipeCategory.MISC)
                 .criterion("has_ingredient",conditionsFromItem(geodeItem)).offerTo(exporter,new Identifier(Geomancy.MOD_ID,"geode_"+getItemName(geodeItem)));
 
+    }
+
+    private void AddRingSmitheryRecipe(ItemConvertible ingredient, ItemConvertible result, int requiredProgress, int difficulty) {
+        AddDefaultedSmitheryRecipe(new String[]{
+                " o ",
+                "o o",
+                " o "},ingredient,result,requiredProgress,difficulty);
+    }
+    private void AddNecklaceSmitheryRecipe(ItemConvertible ingredient, ItemConvertible result, int requiredProgress, int difficulty) {
+        AddDefaultedSmitheryRecipe(new String[]{
+                "o o",
+                "o o",
+                " o "},ingredient,result,requiredProgress,difficulty);
+    }
+    private void AddPendantSmitheryRecipe(ItemConvertible ingredient, ItemConvertible result, int requiredProgress, int difficulty) {
+        AddDefaultedSmitheryRecipe(new String[]{
+                "o o",
+                "ooo",
+                "   "},ingredient,result,requiredProgress,difficulty);
+    }
+    private void AddDefaultedSmitheryRecipe(String[] pattern, ItemConvertible ingredient, ItemConvertible result, int requiredProgress, int difficulty) {
+        AddShapedSmitheryRecipe(pattern
+                ,new SPatKey[]{new SPatKey("o",SmithingIngredient.ofItems(1,1,1,ingredient))},
+                result,1,requiredProgress,difficulty,conditionsFromItem(ingredient));
     }
 
     static String getItemName(ItemConvertible item) {

@@ -148,7 +148,7 @@ public class GeodeRecipe extends GatedModRecipe<Inventory> implements SmitheryRe
 
     @Override
     public ItemStack createIcon() {
-        return new ItemStack(ModItems.IRON_RING);
+        return new ItemStack(ModItems.STONE_GEODE);
     }
 
     @Override

@@ -1,12 +1,14 @@
 package org.oxytocina.geomancy.client;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 //import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 
 import org.oxytocina.geomancy.blocks.blockEntities.ModBlockEntities;
 import org.oxytocina.geomancy.client.blocks.blockEntities.SmitheryBlockEntityRenderer;
+import org.oxytocina.geomancy.client.hud.ManaHudOverlay;
 import org.oxytocina.geomancy.client.rendering.ModBlockTransparency;
 import org.oxytocina.geomancy.client.rendering.ModColorizationHandler;
 import org.oxytocina.geomancy.client.rendering.ModModelPredicateProvider;
@@ -30,6 +32,8 @@ public class GeomancyClient implements ClientModInitializer {
         ModFluids.registerClient();
 
         HandledScreens.register(ModScreenHandlers.SMITHERY_SCREEN_HANDLER, SmitheryScreen::new);
+
+        HudRenderCallback.EVENT.register(new ManaHudOverlay());
 
         BlockEntityRendererFactories.register(ModBlockEntities.SMITHERY_BLOCK_ENTITY, SmitheryBlockEntityRenderer::new);
     }

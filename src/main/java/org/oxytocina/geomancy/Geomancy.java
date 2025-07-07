@@ -2,6 +2,7 @@ package org.oxytocina.geomancy;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.item.Item;
 import net.minecraft.recipe.RecipeManager;
@@ -14,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.blocks.blockEntities.ModBlockEntities;
 import org.oxytocina.geomancy.enchantments.ModEnchantments;
+import org.oxytocina.geomancy.event.PlayerTickHandler;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 import org.oxytocina.geomancy.features.ModFeatures;
@@ -60,6 +62,8 @@ public class Geomancy implements ModInitializer {
         ModParticleTypes.register();
         ModParticleFactories.register();
         ModMessages.registerC2SPackets();
+
+        ServerTickEvents.START_SERVER_TICK.register(new PlayerTickHandler());
 
         //ModDamageSources.initialize( ?????? , DynamicRegistryManager.EMPTY);
 

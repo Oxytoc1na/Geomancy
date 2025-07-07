@@ -1,9 +1,12 @@
 package org.oxytocina.geomancy.client.datagen;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.client.*;
 import net.minecraft.block.Block;
+import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
 
 import net.minecraft.registry.Registries;
@@ -14,9 +17,11 @@ import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 import org.oxytocina.geomancy.items.ExtraItemSettings;
 import org.oxytocina.geomancy.items.ModItems;
+import org.oxytocina.geomancy.items.jewelry.JewelryItem;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Optional;
 
 public class ModModelProvider extends FabricModelProvider {
@@ -25,6 +30,7 @@ public class ModModelProvider extends FabricModelProvider {
     }
 
     private static BlockStateModelGenerator blockGenerator;
+    private static ItemModelGenerator itemModelGenerator;
 
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
@@ -80,6 +86,7 @@ public class ModModelProvider extends FabricModelProvider {
 
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
+        ModModelProvider.itemModelGenerator = itemModelGenerator;
 
         for(Item i : ExtraItemSettings.GeneratedModel){
             itemModelGenerator.register(i, Models.GENERATED);
@@ -88,6 +95,59 @@ public class ModModelProvider extends FabricModelProvider {
         for(Item i : ExtraItemSettings.HandheldModel){
             itemModelGenerator.register(i, Models.HANDHELD);
         }
+
+        for(JewelryItem i : ExtraItemSettings.JewelryModel){
+            registerJewelryItemModels(i);
+        }
+    }
+
+    private void registerJewelryItemModels(JewelryItem item){
+
+        String itemPath = Registries.ITEM.getId(item).getPath();
+
+        // base layer ID
+        Identifier baseLayerTexture = Geomancy.locate("item/jewelry/"+itemPath);
+
+        // generate base model
+        Model baseModel = new Model(Optional.of(new Identifier("item/generated")),Optional.empty(),TextureKey.LAYER0);
+        baseModel.upload(ModelIds.getItemModelId(item), TextureMap.layer0(baseLayerTexture), itemModelGenerator.writer, (id, textures) -> this.createBaseJewelryJson(item,id, textures));
+
+        // generate gemmed models
+        for (int i = 0; i < item.gemSlotCount; i++) {
+            TextureKey[] keys = new TextureKey[i+2];
+            TextureMap map = new TextureMap();
+            keys[0] = TextureKey.of("layer0");
+            map.put(keys[0],baseLayerTexture);
+            for (int j = 1; j < keys.length; j++) {
+                keys[j] = TextureKey.of("layer"+j);
+                map.put(keys[j],Geomancy.locate("item/jewelry/"+itemPath+"_gem_"+j));
+            }
+            Model gemmedModel = new Model(Optional.of(new Identifier("item/generated")),Optional.empty(),keys);
+
+            gemmedModel.upload(jewelryGemmedVariantModelID(item,i),map, itemModelGenerator.writer);
+        }
+
+    }
+
+    public final JsonObject createBaseJewelryJson(JewelryItem item, Identifier id, Map<TextureKey, Identifier> textures) {
+        JsonObject jsonObject = Models.GENERATED.createJson(id, textures);
+        JsonArray overrides = new JsonArray();
+
+        for (int i = 0; i < item.gemSlotCount; i++) {
+            JsonObject override = new JsonObject();
+            JsonObject predicate = new JsonObject();
+            predicate.addProperty("geomancy:has_gem" , i+1);
+            override.add("predicate", predicate);
+            override.addProperty("model", jewelryGemmedVariantModelID(item,i).toString());
+            overrides.add(override);
+        }
+
+        jsonObject.add("overrides", overrides);
+        return jsonObject;
+    }
+
+    private static Identifier jewelryGemmedVariantModelID(JewelryItem item, int index){
+        return Geomancy.locate("item/jewelry/"+Registries.ITEM.getId(item).getPath()+"_gem_"+(index+1));
     }
 
     @Override

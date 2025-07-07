@@ -40,8 +40,14 @@ public class ModBlockLootTableProvider extends FabricBlockLootTableProvider {
         addOreDrop(ModBlocks.OCTANGULITE_ORE,ModItems.RAW_OCTANGULITE);
         addOreDrop(ModBlocks.DEEPSLATE_OCTANGULITE_ORE,ModItems.RAW_OCTANGULITE);
 
-        addOreDrop(ModBlocks.MOLYBDENIUM_ORE,ModItems.RAW_MOLYBDENIUM);
-        addOreDrop(ModBlocks.DEEPSLATE_MOLYBDENIUM_ORE,ModItems.RAW_MOLYBDENIUM);
+        addOreDrop(ModBlocks.MOLYBDENUM_ORE,ModItems.RAW_MOLYBDENUM);
+        addOreDrop(ModBlocks.DEEPSLATE_MOLYBDENUM_ORE,ModItems.RAW_MOLYBDENUM);
+
+        addOreDrop(ModBlocks.TITANIUM_ORE,ModItems.RAW_TITANIUM);
+        addOreDrop(ModBlocks.DEEPSLATE_TITANIUM_ORE,ModItems.RAW_TITANIUM);
+
+        addOreDrop(ModBlocks.LEAD_ORE,ModItems.RAW_LEAD);
+        addOreDrop(ModBlocks.DEEPSLATE_LEAD_ORE,ModItems.RAW_LEAD);
 
         for(Block b : ExtraBlockSettings.RegularDropBlocks){
             addDrop(b);

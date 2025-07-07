@@ -75,10 +75,8 @@ public class GemSlot {
                 modifiers.put(EntityAttributes.GENERIC_ARMOR, newMod);
             return modifiers;
         }));
-        register(Settings.create(Items.EMERALD).setColor(0,1,0).setDifficulty(1).setProgressCost(0).withGenericTooltip(Formatting.GREEN,(q)->Integer.toString(Math.round(q*100))));
-        register(Settings.create(Items.LAPIS_LAZULI).setColor(0,0,1).setDifficulty(1).setProgressCost(0).withGenericTooltip(Formatting.BLUE,(q)->Float.toString(q)));
-
-        Enchantments.FORTUNE
+        register(Settings.create(Items.EMERALD).setColor(0,1,0).setDifficulty(1).setProgressCost(0).withGenericTooltip(Formatting.GREEN,(q)->Integer.toString(Math.round(q))));
+        register(Settings.create(Items.LAPIS_LAZULI).setColor(0,0,1).setDifficulty(1).setProgressCost(0).withGenericTooltip(Formatting.BLUE,(q)->Integer.toString(Math.round(q*100))));
     }
 
     public static void register(Settings settings){

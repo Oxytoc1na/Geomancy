@@ -51,7 +51,7 @@ public class JewelryItem extends TrinketItem implements DyeableItem {
         this.jewelrySettings=jewelryItemSettings;
     }
 
-    public ArrayList<GemSlot> getSlots(ItemStack stack) {
+    public static ArrayList<GemSlot> getSlots(ItemStack stack) {
         NbtList nbt = stack.getOrCreateNbt().getList("gems",NbtList.COMPOUND_TYPE);
         ArrayList<GemSlot> res = new ArrayList<>();
         for (int i = 0; i < nbt.size(); i++) {
@@ -61,7 +61,7 @@ public class JewelryItem extends TrinketItem implements DyeableItem {
         return res;
     }
 
-    public void setSlots(ItemStack stack, ArrayList<GemSlot> slots){
+    public static void setSlots(ItemStack stack, ArrayList<GemSlot> slots){
         NbtList nbt = new NbtList();
         for(GemSlot slot : slots){
             nbt.add(GemSlot.toNbt(slot));
@@ -86,8 +86,8 @@ public class JewelryItem extends TrinketItem implements DyeableItem {
         return 0xFFFFFFFF;
     }
 
-    public float getHasGemPredicate(ItemStack stack){
-        return (float)getSlots(stack).size() / gemSlotCount;
+    public int getHasGemPredicate(ItemStack stack){
+        return getSlots(stack).size();
     }
 
 
@@ -201,7 +201,8 @@ public class JewelryItem extends TrinketItem implements DyeableItem {
         float res = 0;
 
         JewelryItem jewelryItem = (JewelryItem) stack.getItem();
-        var gems = jewelryItem.getSlots(stack);
+        if(jewelryItem.isPendant()) return res;
+        var gems = getSlots(stack);
 
         for(var gem : gems){
             res += gem.getXPMultiplier(stack,wearer);
@@ -245,8 +246,7 @@ public class JewelryItem extends TrinketItem implements DyeableItem {
     public static float getGemQualityMultiplier(GemSlot refgem,ItemStack stack,LivingEntity wearer){
         float res = 0;
 
-        JewelryItem jewelryItem = (JewelryItem) stack.getItem();
-        var gems = jewelryItem.getSlots(stack);
+        var gems = getSlots(stack);
 
         for(var gem : gems){
             if(gem.gemItem == refgem.gemItem)
@@ -262,5 +262,31 @@ public class JewelryItem extends TrinketItem implements DyeableItem {
 
     public static boolean isPendant(ItemStack stack){
         return stack.getItem() instanceof JewelryItem j && j.isPendant();
+    }
+
+    public static float getFortuneBonus(ItemStack jewelryItem,LivingEntity wearer){
+        if(wearer==null) return 0;
+        float res = 0;
+
+        if(!(jewelryItem.getItem() instanceof JewelryItem ji) || ji.isPendant()) return res;
+        var gsls = getSlots(jewelryItem);
+        for(var gsl : gsls)
+        {
+            if(gsl.gemItem == Items.EMERALD){
+                res+=gsl.getEffectiveQuality(jewelryItem,wearer);
+            }
+        }
+
+        return res;
+    }
+
+    public static float getFortuneBonus(LivingEntity entity){
+        float res = 0;
+
+        var jis = getAllWornJewelryItems(entity);
+        for(var ji : jis)
+            res+=getFortuneBonus(ji,entity);
+
+        return res;
     }
 }

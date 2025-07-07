@@ -120,4 +120,8 @@ public class Toolbox {
         colorObj.getColorComponents(argb);
         return new Vector3f(argb[0], argb[1], argb[2]);
     }
+
+    public static int clampI(int v, int m, int m2){
+        return Math.min(Math.max(v,m), m2);
+    }
 }

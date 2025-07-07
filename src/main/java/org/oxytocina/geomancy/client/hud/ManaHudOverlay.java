@@ -8,6 +8,7 @@ import net.minecraft.client.render.GameRenderer;
 import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.util.IEntityDataSaver;
+import org.oxytocina.geomancy.util.ManaUtil;
 
 public class ManaHudOverlay implements HudRenderCallback {
 
@@ -18,9 +19,12 @@ public class ManaHudOverlay implements HudRenderCallback {
 
     @Override
     public void onHudRender(DrawContext drawContext, float tickDelta) {
+
+        MinecraftClient client = MinecraftClient.getInstance();
+        if(client==null||client.options.hudHidden) return;
+
         int x = 0;
         int y = 0;
-        MinecraftClient client = MinecraftClient.getInstance();
         if (client != null) {
             int width = client.getWindow().getScaledWidth();
             int height = client.getWindow().getScaledHeight();
@@ -39,7 +43,7 @@ public class ManaHudOverlay implements HudRenderCallback {
 
         RenderSystem.setShaderTexture(0, FILLED_THIRST);
         for(int i = 0; i < 10; i++) {
-            if(((IEntityDataSaver) MinecraftClient.getInstance().player).getPersistentData().getInt("mana") > i) {
+            if(ManaUtil.getMana((IEntityDataSaver) MinecraftClient.getInstance().player) > i) {
                 drawContext.drawTexture(FILLED_THIRST,x - 94 + (i * 9),y - 54,0,0,12,12,
                         12,12);
             } else {

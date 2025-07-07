@@ -34,8 +34,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         addShort("gb:sm","book.MODID.guidebook.smithing.");
         addShort("gb:oc","book.MODID.guidebook.octangulite.");
 
-        add(KeyInputHandler.KEY_CATEGORY_GEOMANCY,"Geomancy");
-        add(KeyInputHandler.KEY_OPEN_SKILLTREE,"Skills");
+        add(KeyInputHandler.LANG_CATEGORY_GEOMANCY,"Geomancy");
+        add(KeyInputHandler.LANG_OPEN_SKILLTREE,"Skills");
 
         // Items
         {
@@ -46,9 +46,9 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("item.MODID.mithril_ingot"          , "Mithril Ingot");
             add("item.MODID.mithril_nugget"         , "Mithril Nugget");
 
-            add("item.MODID.raw_molybdenium"            , "Raw Molybdenium");
-            add("item.MODID.molybdenium_ingot"          , "Molybdenium Ingot");
-            add("item.MODID.molybdenium_nugget"         , "Molybdenium Nugget");
+            add("item.MODID.raw_molybdenum"            , "Raw Molybdenum");
+            add("item.MODID.molybdenum_ingot"          , "Molybdenum Ingot");
+            add("item.MODID.molybdenum_nugget"         , "Molybdenum Nugget");
 
             add("item.MODID.raw_titanium"            , "Raw Titanium");
             add("item.MODID.titanium_ingot"          , "Titanium Ingot");
@@ -80,11 +80,34 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
             add("item.MODID.iron_ring"              , "Iron Ring");
             add("item.MODID.iron_necklace"          , "Iron Necklace");
+            add("item.MODID.iron_pendant"           , "Iron Pendant");
+            add("item.MODID.gold_ring"              , "Gold Ring");
+            add("item.MODID.gold_necklace"          , "Gold Necklace");
+            add("item.MODID.gold_pendant"           , "Gold Pendant");
+            add("item.MODID.copper_ring"            , "Copper Ring");
+            add("item.MODID.copper_necklace"        , "Copper Necklace");
+            add("item.MODID.copper_pendant"         , "Copper Pendant");
+            add("item.MODID.mithril_ring"           , "Mithril Ring");
+            add("item.MODID.mithril_necklace"       , "Mithril Necklace");
+            add("item.MODID.mithril_pendant"        , "Mithril Pendant");
+            add("item.MODID.molybdenum_ring"        , "Molybdenum Ring");
+            add("item.MODID.molybdenum_necklace"    , "Molybdenum Necklace");
+            add("item.MODID.molybdenum_pendant"     , "Molybdenum Pendant");
+            add("item.MODID.titanium_ring"          , "Titanium Ring");
+            add("item.MODID.titanium_necklace"      , "Titanium Necklace");
+            add("item.MODID.titanium_pendant"       , "Titanium Pendant");
+            add("item.MODID.lead_ring"              , "Lead Ring");
+            add("item.MODID.lead_necklace"          , "Lead Necklace");
+            add("item.MODID.lead_pendant"           , "Lead Pendant");
+            add("item.MODID.octangulite_ring"       , "Octangulite Ring");
+            add("item.MODID.octangulite_necklace"   , "Octangulite Necklace");
+            add("item.MODID.octangulite_pendant"    , "Octangulite Pendant");
             add("tooltip.geomancy.jewelry.nogems"   ,"No Gems");
             add("tooltip.geomancy.jewelry.pendant1" ,"Empowers other worn gems of the");
             add("tooltip.geomancy.jewelry.pendant2" ,"same type as slotted in this item");
             add("tooltip.geomancy.jewelry.gemeffect.diamond"        ,"provides %1$s armor");
             add("tooltip.geomancy.jewelry.gemeffect.lapis_lazuli"   ,"increases XP drops by %1$s");
+            add("tooltip.geomancy.jewelry.gemeffect.emerald"   ,"increases your fortune by %1$s levels");
             add("tooltip.geomancy.jewelry.unsmith"  ,"Salvages gems");
             add("tooltip.geomancy.jewelry.quality"  ,"Quality");
 
@@ -116,10 +139,10 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("block.MODID.raw_octangulite_block"     , "Octangulite Scrap");
             add("block.MODID.octangulite_block"         , "Block of Octangulite");
 
-            add("block.MODID.molybdenium_ore"           , "Molybdenium Ore");
-            add("block.MODID.deepslate_molybdenium_ore" , "Deepslate Molybdenium Ore");
-            add("block.MODID.raw_molybdenium_block"     , "Block of raw Molybdenium");
-            add("block.MODID.molybdenium_block"         , "Block of Molybdenium");
+            add("block.MODID.molybdenum_ore"           , "Molybdenum Ore");
+            add("block.MODID.deepslate_molybdenum_ore" , "Deepslate Molybdenum Ore");
+            add("block.MODID.raw_molybdenum_block"     , "Block of raw Molybdenum");
+            add("block.MODID.molybdenum_block"         , "Block of Molybdenum");
 
             add("block.MODID.titanium_ore"           , "Titanium Ore");
             add("block.MODID.deepslate_titanium_ore" , "Deepslate Titanium Ore");
