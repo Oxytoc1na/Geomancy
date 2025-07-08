@@ -124,4 +124,8 @@ public class Toolbox {
     public static int clampI(int v, int m, int m2){
         return Math.min(Math.max(v,m), m2);
     }
+
+    public static float clampF(float v, float m, float m2){
+        return Math.min(Math.max(v,m), m2);
+    }
 }

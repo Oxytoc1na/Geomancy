@@ -5,18 +5,23 @@ import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.PlayerManager;
+import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.entity.PlayerData;
 import org.oxytocina.geomancy.entity.StateSaverAndLoader;
 import org.oxytocina.geomancy.networking.packet.ClientJoinedC2SPacket;
 import org.oxytocina.geomancy.networking.packet.InitialSyncS2CPacket;
+import org.oxytocina.geomancy.networking.packet.ItemManaSyncS2CPacket;
 import org.oxytocina.geomancy.networking.packet.ManaSyncS2CPacket;
 
 public class ModMessages {
 
     // server to client
     public static final Identifier MANA_SYNC = Geomancy.locate("mana_sync");
+    public static final Identifier ITEM_MANA_SYNC = Geomancy.locate("item_mana_sync");
     public static final Identifier INITIAL_SYNC = Geomancy.locate("initial_sync");
 
     // client to server
@@ -42,8 +47,14 @@ public class ModMessages {
 
     public static void registerS2CPackets(){
         ClientPlayNetworking.registerGlobalReceiver(MANA_SYNC, ManaSyncS2CPacket::receive);
+        ClientPlayNetworking.registerGlobalReceiver(ITEM_MANA_SYNC, ItemManaSyncS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(INITIAL_SYNC, InitialSyncS2CPacket::receive);
     }
 
+    public static void sendToAllClients(MinecraftServer server, Identifier id, PacketByteBuf buf){
+        for(var player : server.getPlayerManager().getPlayerList()){
+            ServerPlayNetworking.send(player,ModMessages.ITEM_MANA_SYNC,buf);
+        }
+    }
 
 }

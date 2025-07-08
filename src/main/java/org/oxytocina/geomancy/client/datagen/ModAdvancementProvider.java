@@ -54,6 +54,9 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         Advancement got_molten_gold = AddGetItemAdvancement(ModFluids.MOLTEN_GOLD_BUCKET,"molten_gold",ModFluids.MOLTEN_GOLD_BUCKET,"main",AdvancementFrame.CHALLENGE,true,false,main);
         Advancement got_mithril = AddGetItemAdvancement(ModItems.RAW_MITHRIL,"mithril",ModItems.RAW_MITHRIL,"main",AdvancementFrame.TASK,true,false,main);
         Advancement got_octangulite = AddGetItemAdvancement(ModItems.RAW_OCTANGULITE,"octangulite",ModItems.RAW_OCTANGULITE,"main",AdvancementFrame.TASK,true,false,main);
+        Advancement got_titanium = AddGetItemAdvancement(ModItems.RAW_TITANIUM,"titanium",ModItems.RAW_TITANIUM,"main",AdvancementFrame.TASK,true,false,main);
+        Advancement got_lead = AddGetItemAdvancement(ModItems.RAW_LEAD,"lead",ModItems.RAW_LEAD,"main",AdvancementFrame.TASK,true,false,main);
+        Advancement got_molybdenum = AddGetItemAdvancement(ModItems.RAW_MOLYBDENUM,"molybdenum",ModItems.RAW_MOLYBDENUM,"main",AdvancementFrame.TASK,true,false,main);
         Advancement got_gilded_deepslate = AddGetItemAdvancement(ModBlocks.DECORATED_GILDED_DEEPSLATE,"gilded_deepslate",new ItemConvertible[]{ModBlocks.GILDED_DEEPSLATE,ModBlocks.DECORATED_GILDED_DEEPSLATE},"main",AdvancementFrame.TASK,true,false,main);
         Advancement simple_duplicate_trinkets = AddSimpleAdvancement(ModItems.ARTIFACT_OF_IRON,"duplicate_trinkets","duplicate_trinkets","main",AdvancementFrame.TASK,true,false,main);
         Advancement simple_tried_to_take_smithery_result = AddSimpleAdvancement(ModItems.IRON_HAMMER,"tried_to_take_smithery_result","tried_to_take_smithery_result","main",AdvancementFrame.TASK,true,true,main);

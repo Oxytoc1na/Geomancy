@@ -187,6 +187,9 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("advancement.MODID.main.get_lead.name"               , "Heavy");
             add("advancement.MODID.main.get_lead.description"        , "Discover something heavy and soft");
 
+            add("advancement.MODID.main.get_molybdenum.name"               , "Eccentric");
+            add("advancement.MODID.main.get_molybdenum.description"        , "Discover something quirky");
+
             add("advancement.MODID.main.get_molten_gold.name"               , "Greedy");
             add("advancement.MODID.main.get_molten_gold.description"        , "Discover Molten Gold");
 

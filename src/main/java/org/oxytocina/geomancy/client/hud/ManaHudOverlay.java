@@ -3,7 +3,9 @@ package org.oxytocina.geomancy.client.hud;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
@@ -21,17 +23,15 @@ public class ManaHudOverlay implements HudRenderCallback {
     public void onHudRender(DrawContext drawContext, float tickDelta) {
 
         MinecraftClient client = MinecraftClient.getInstance();
-        if(client==null||client.options.hudHidden) return;
-
+        if(client==null||client.options.hudHidden||client.player==null) return;
+        ClientPlayerEntity player = client.player;
         int x = 0;
         int y = 0;
-        if (client != null) {
-            int width = client.getWindow().getScaledWidth();
-            int height = client.getWindow().getScaledHeight();
+        int width = client.getWindow().getScaledWidth();
+        int height = client.getWindow().getScaledHeight();
 
-            x = width / 2;
-            y = height;
-        }
+        x = width / 2;
+        y = height;
 
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -43,12 +43,16 @@ public class ManaHudOverlay implements HudRenderCallback {
 
         RenderSystem.setShaderTexture(0, FILLED_THIRST);
         for(int i = 0; i < 10; i++) {
-            if(ManaUtil.getMana(MinecraftClient.getInstance().player) > i) {
+            if(ManaUtil.getMana(player) > i) {
                 drawContext.drawTexture(FILLED_THIRST,x - 94 + (i * 9),y - 54,0,0,12,12,
                         12,12);
             } else {
                 break;
             }
         }
+
+        drawContext.drawText(MinecraftClient.getInstance().textRenderer,
+                "vpb: "+ManaUtil.getAmbientSoulsPerBlock(player.getWorld(),player.getBlockPos())+
+                " cv: "+ManaUtil.getMana(player)+"/"+ManaUtil.getMaxMana(player),x-100,y-70,0xFFFFFFFF,true);
     }
 }

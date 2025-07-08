@@ -16,6 +16,13 @@ x Octangulite
 -- basically magical tungsten
 -- properties arent internally consistent (some hard, some soft, some brittle, some dusty, all sticking together, undulating between its states)
 -- incredibly difficult to work with, very many gem slots
+-- magical abilities, channels soul energy
+-- ore more common in soul sand valley biome
+-- lebendes zeug in der umgebung erhöht vpb
+-- octangulite item sprite changes based on position (dust, gem, ball)
+-- madness gated dangeous augmentation
+--- implant octangulite
+--- soldering machine?????????
 
 JEWELRY
 
@@ -33,6 +40,8 @@ JEWELRY
 -- probability glove
 -- "it's probably a reference"
 
+- smithing more gems of the same type increases difficulty
+
 GEMS
 
 can be slotted into jewelry to bestow effects upon the wearer
@@ -43,6 +52,7 @@ can be slotted into jewelry to bestow effects upon the wearer
 - Lapis (more xp drops)
 - Axinite (mining)
 - Tourmaline (speed)
+- Amethyst (mana)
 
 SMITHING
 

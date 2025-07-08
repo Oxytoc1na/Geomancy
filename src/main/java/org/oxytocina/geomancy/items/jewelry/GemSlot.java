@@ -262,4 +262,15 @@ public class GemSlot {
 
         return res;
     }
+
+    public float getManaRegenMultiplier(ItemStack parent, LivingEntity wearer){
+        float res = 0;
+
+        if(gemItem == Items.AMETHYST_SHARD){
+            res += getEffectiveQuality(parent,wearer);
+        }
+
+        return res;
+    }
+
 }

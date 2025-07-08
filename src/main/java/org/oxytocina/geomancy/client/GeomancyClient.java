@@ -1,13 +1,16 @@
 package org.oxytocina.geomancy.client;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 //import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 
 import org.oxytocina.geomancy.blocks.blockEntities.ModBlockEntities;
 import org.oxytocina.geomancy.client.blocks.blockEntities.SmitheryBlockEntityRenderer;
+import org.oxytocina.geomancy.client.event.ClientPlayerTickHandler;
 import org.oxytocina.geomancy.client.hud.ManaHudOverlay;
 import org.oxytocina.geomancy.client.rendering.ModBlockTransparency;
 import org.oxytocina.geomancy.client.rendering.ModColorizationHandler;
@@ -16,9 +19,12 @@ import org.oxytocina.geomancy.client.screen.ModScreenHandlers;
 import org.oxytocina.geomancy.client.screen.SmitheryScreen;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 import org.oxytocina.geomancy.event.KeyInputHandler;
+import org.oxytocina.geomancy.event.PlayerTickHandler;
 import org.oxytocina.geomancy.networking.ModMessages;
 
 public class GeomancyClient implements ClientModInitializer {
+
+    public static long tick = 0;
 
     @Override
     public void onInitializeClient() {
@@ -34,6 +40,8 @@ public class GeomancyClient implements ClientModInitializer {
         HandledScreens.register(ModScreenHandlers.SMITHERY_SCREEN_HANDLER, SmitheryScreen::new);
 
         HudRenderCallback.EVENT.register(new ManaHudOverlay());
+
+        ClientTickEvents.START_CLIENT_TICK.register(new ClientPlayerTickHandler());
 
         BlockEntityRendererFactories.register(ModBlockEntities.SMITHERY_BLOCK_ENTITY, SmitheryBlockEntityRenderer::new);
     }

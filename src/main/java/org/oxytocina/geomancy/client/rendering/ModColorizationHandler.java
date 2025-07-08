@@ -5,8 +5,10 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.TimeHelper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import org.oxytocina.geomancy.client.GeomancyClient;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.util.SimplexNoise;
 import org.oxytocina.geomancy.util.Toolbox;
@@ -140,6 +142,33 @@ public class ModColorizationHandler {
         );
 
     }
+
+    public static int octanguliteItemBarNoise(float progress){
+        float baseX = 0, baseY = 0, baseZ = 0;
+        float zoom = 0.008f;
+
+        baseX = GeomancyClient.tick;
+
+        float x = zoom*baseX * (1+0.3f);
+        float y = zoom*baseY * (1+0.3f);
+        float z = zoom*baseZ * (1+0.3f);
+
+        float x2 = zoom*1.5f*((baseX+230) * (1+0.3f));
+        float y2 = zoom*1.5f*((baseY+590) * (1+0.3f));
+        float z2 = zoom*1.5f*((baseZ+367) * (1+0.3f));
+
+        float x3 = zoom*2f*((baseX+129) * (1+0.3f));
+        float y3 = zoom*2f*((baseY+395) * (1+0.3f));
+        float z3 = zoom*2f*((baseZ+529) * (1+0.3f));
+
+        return hsvToRgb(
+                (float)(org.oxytocina.geomancy.util.SimplexNoise.noise(x,y,z)+1)/2,
+                (float) (1-Math.pow(1F-((SimplexNoise.noise(x2,y2,z2)+1)/2),2)),
+                (float) (1-Math.pow(1F-((SimplexNoise.noise(x3,y3,z3)+1)/2),2))
+        );
+
+    }
+
 
     public static int hsvToRgb(float hue, float saturation, float value) {
 
