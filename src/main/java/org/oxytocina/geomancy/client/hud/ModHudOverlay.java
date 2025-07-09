@@ -3,16 +3,15 @@ package org.oxytocina.geomancy.client.hud;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
-import org.oxytocina.geomancy.util.IEntityDataSaver;
+import org.oxytocina.geomancy.util.LeadUtil;
 import org.oxytocina.geomancy.util.ManaUtil;
 
-public class ManaHudOverlay implements HudRenderCallback {
+public class ModHudOverlay implements HudRenderCallback {
 
     private static final Identifier FILLED_THIRST = new Identifier(Geomancy.MOD_ID,
             "textures/item/artifact_of_gold.png");
@@ -53,6 +52,8 @@ public class ManaHudOverlay implements HudRenderCallback {
 
         drawContext.drawText(MinecraftClient.getInstance().textRenderer,
                 "vpb: "+ManaUtil.getAmbientSoulsPerBlock(player.getWorld(),player.getBlockPos())+
-                " cv: "+ManaUtil.getMana(player)+"/"+ManaUtil.getMaxMana(player),x-100,y-70,0xFFFFFFFF,true);
+                " cv: "+ManaUtil.getMana(player)+"/"+ManaUtil.getMaxMana(player)
+                +" leadspeed: "+ LeadUtil.getPoisoningSpeed(player)+" lead: "+LeadUtil.getPoisoning(player)
+                +" madspeed: "+ LeadUtil.getPoisoningSpeed(player)+" mad: "+LeadUtil.getPoisoning(player),x-100,y-70,0xFFFFFFFF,true);
     }
 }

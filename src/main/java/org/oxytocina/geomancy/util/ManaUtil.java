@@ -7,7 +7,6 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.MinecraftServer;
@@ -18,18 +17,21 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import org.oxytocina.geomancy.entity.ManaStoringItemData;
 import org.oxytocina.geomancy.entity.PlayerData;
-import org.oxytocina.geomancy.items.ManaStoringItem;
+import org.oxytocina.geomancy.items.IManaStoringItem;
 import org.oxytocina.geomancy.items.jewelry.JewelryItem;
 import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.registries.ModBiomeTags;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 public class ManaUtil {
 
     private static final ArrayList<PlayerEntity> queuedRecalcs = new ArrayList<>();
+    // cache recently calculated ambient soul values to reduce overhead
+    // clears every 40 ticks
+    private static final HashMap<BlockPos,Float> cachedAmbientSouls = new HashMap<>();
 
     /// DOESNT sync mana
     public static boolean setMana(PlayerEntity player, float amount){
@@ -70,7 +72,7 @@ public class ManaUtil {
 
         var items = getAllSoulStoringItems(player);
         for(var item : items){
-            if(item.getItem() instanceof ManaStoringItem storer){
+            if(item.getItem() instanceof IManaStoringItem storer){
                 cap += storer.getCapacity(player.getWorld(),item);
                 mana += storer.getMana(player.getWorld(),item);
             }
@@ -82,6 +84,7 @@ public class ManaUtil {
         syncMana(player);
     }
 
+    private static int cacheClearTimer = 0;
     public static void tick(MinecraftServer server){
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
             ManaUtil.tickMana(player);
@@ -92,6 +95,11 @@ public class ManaUtil {
             recalculateMana(entity);
         }
         queuedRecalcs.clear();
+
+        if(++cacheClearTimer > 40){
+            cachedAmbientSouls.clear();
+            cacheClearTimer=0;
+        }
     }
 
     public static void queueRecalculateMana(PlayerEntity player){
@@ -111,7 +119,7 @@ public class ManaUtil {
     public static void syncItemMana(World world, ItemStack stack){
         if(!(world instanceof ServerWorld svw)) return;
 
-        ManaStoringItemData data = ManaStoringItemData.from(world,stack,ManaStoringItem.getUUID(stack));
+        ManaStoringItemData data = ManaStoringItemData.from(world,stack, IManaStoringItem.getUUID(stack));
 
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeUuid(data.uuid);
@@ -126,6 +134,8 @@ public class ManaUtil {
         return getAmbientSoulsPerBlock(entity.getWorld(),entity.getBlockPos());
     }
     public static float getAmbientSoulsPerBlock(World world, BlockPos pos){
+        if(cachedAmbientSouls.containsKey(pos)) return cachedAmbientSouls.get(pos);
+
         float res = 100;
 
         // from biome
@@ -139,6 +149,10 @@ public class ManaUtil {
         else if(biome.isIn(ModBiomeTags.VPB_LOWER)) res /= 3.5f;
         else if(biome.isIn(ModBiomeTags.VPB_LOW)) res /= 2f;
 
+        // from nearby living blocks
+        // TODO
+
+        cachedAmbientSouls.put(pos,res);
         return res;
     }
 
@@ -164,11 +178,11 @@ public class ManaUtil {
     }
 
     public static boolean canStoreMana(ItemStack stack){
-        return stack.getItem() instanceof ManaStoringItem;// stack.hasNbt() && stack.getNbt().contains("soul");
+        return stack.getItem() instanceof IManaStoringItem;// stack.hasNbt() && stack.getNbt().contains("soul");
     }
 
     public static ItemStack setItemManaCapacity(World world,ItemStack stack,float capacity){
-        if(stack.getItem() instanceof ManaStoringItem storingItem){
+        if(stack.getItem() instanceof IManaStoringItem storingItem){
             storingItem.setCapacity(world,stack,capacity);
         }
         return stack;
@@ -193,7 +207,7 @@ public class ManaUtil {
     private static boolean tickMana(ItemStack soulStorage, ServerPlayerEntity player, float ambientMana, float regenSpeed){
         boolean changed = false;
 
-        var data = ManaStoringItem.getData(player.getWorld(),soulStorage);
+        var data = IManaStoringItem.getData(player.getWorld(),soulStorage);
 
         // per tick
         float actualRegenSpeed = 0.001f * regenSpeed * ambientMana;

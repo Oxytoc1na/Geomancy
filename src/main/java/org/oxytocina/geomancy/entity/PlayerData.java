@@ -14,12 +14,12 @@ public class PlayerData {
     public float mana = 0;
     public float maxMana = 0;
     public float baseManaRechargeRate = 1;
+
     public float leadPoisoning = 0;
-    public float octanguliteInfluence = 0;
+    public float leadPoisoningSpeed = 0;
 
-    //public HashMap<Integer, Integer> fatigue = new HashMap<>();
-
-    //public List<Integer> oldCravings = new ArrayList<>();
+    public float madness = 0;
+    public float madnessSpeed = 0;
 
     public PlayerData(){
 
@@ -34,7 +34,9 @@ public class PlayerData {
         res.mana = nbt.getFloat("mana");
         res.maxMana = nbt.getFloat("maxMana");
         res.leadPoisoning = nbt.getFloat("leadPoisoning");
-        res.octanguliteInfluence = nbt.getFloat("octanguliteInfluence");
+        res.leadPoisoningSpeed = nbt.getFloat("leadPoisoningSpeed");
+        res.madness = nbt.getFloat("madness");
+        res.madnessSpeed = nbt.getFloat("madnessSpeed");
         res.baseManaRechargeRate = nbt.getFloat("baseManaRechargeRate");
         return res;
     }
@@ -44,7 +46,9 @@ public class PlayerData {
         res.mana = buf.readFloat();
         res.maxMana = buf.readFloat();
         res.leadPoisoning = buf.readFloat();
-        res.octanguliteInfluence = buf.readFloat();
+        res.leadPoisoningSpeed = buf.readFloat();
+        res.madness = buf.readFloat();
+        res.madnessSpeed = buf.readFloat();
         res.baseManaRechargeRate = buf.readFloat();
         return res;
     }
@@ -53,7 +57,9 @@ public class PlayerData {
         nbt.putFloat("mana",mana);
         nbt.putFloat("maxMana",maxMana);
         nbt.putFloat("leadPoisoning",leadPoisoning);
-        nbt.putFloat("octanguliteInfluence",octanguliteInfluence);
+        nbt.putFloat("leadPoisoningSpeed",leadPoisoningSpeed);
+        nbt.putFloat("madness",madness);
+        nbt.putFloat("madnessSpeed",madnessSpeed);
         nbt.putFloat("baseManaRechargeRate",baseManaRechargeRate);
     }
 
@@ -61,7 +67,9 @@ public class PlayerData {
         buf.writeFloat(mana);
         buf.writeFloat(maxMana);
         buf.writeFloat(leadPoisoning);
-        buf.writeFloat(octanguliteInfluence);
+        buf.writeFloat(leadPoisoningSpeed);
+        buf.writeFloat(madness);
+        buf.writeFloat(madnessSpeed);
         buf.writeFloat(baseManaRechargeRate);
     }
 

@@ -9,7 +9,7 @@ import org.oxytocina.geomancy.entity.ManaStoringItemData;
 
 import java.util.UUID;
 
-public interface ManaStoringItem {
+public interface IManaStoringItem {
     static void init(ItemStack stack){
         if(stack.getSubNbt("soul")!=null) return;
         NbtCompound soul = new NbtCompound();

@@ -1,46 +1,26 @@
 package org.oxytocina.geomancy.items.jewelry;
 
-import com.google.common.collect.Multimap;
 import dev.emi.trinkets.api.SlotReference;
-import dev.emi.trinkets.api.TrinketItem;
-import dev.emi.trinkets.api.TrinketsApi;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.DyeableItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtByte;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Pair;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
-import org.oxytocina.geomancy.client.rendering.ModColorizationHandler;
-import org.oxytocina.geomancy.entity.PlayerData;
-import org.oxytocina.geomancy.items.ManaStoringItem;
-import org.oxytocina.geomancy.items.ModItems;
+import org.oxytocina.geomancy.items.IMaddeningItem;
+import org.oxytocina.geomancy.items.IManaStoringItem;
 import org.oxytocina.geomancy.util.ManaUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-public class OctanguliteJewelryItem extends JewelryItem implements ManaStoringItem {
+public class OctanguliteJewelryItem extends JewelryItem implements IManaStoringItem, IMaddeningItem {
 
     public float baseSoulCapacity;
+    public float maddeningSpeed;
+    public float maddeningSpeedWorn;
 
-    public OctanguliteJewelryItem(Settings settings, JewelryItemSettings jewelryItemSettings, float baseSoulCapacity) {
+    public OctanguliteJewelryItem(Settings settings, JewelryItemSettings jewelryItemSettings, float baseSoulCapacity, float maddeningSpeed, float maddeningSpeedWorn) {
         super(settings, jewelryItemSettings);
         this.baseSoulCapacity = baseSoulCapacity;
+        this.maddeningSpeed=maddeningSpeed;
+        this.maddeningSpeedWorn=maddeningSpeedWorn;
     }
 
     @Override
@@ -76,7 +56,7 @@ public class OctanguliteJewelryItem extends JewelryItem implements ManaStoringIt
 
     @Override
     public int getItemBarColor(ItemStack stack) {
-        return ((ManaStoringItem)stack.getItem()).getBarColor(stack);
+        return ((IManaStoringItem)stack.getItem()).getBarColor(stack);
     }
 
     @Override
@@ -85,5 +65,15 @@ public class OctanguliteJewelryItem extends JewelryItem implements ManaStoringIt
 
         var world = MinecraftClient.getInstance().world;
         return Math.round(getMana(world,stack) * 13.0F / getCapacity(world,stack));
+    }
+
+    @Override
+    public float getInInventoryMaddeningSpeed() {
+        return maddeningSpeed;
+    }
+
+    @Override
+    public float getWornMaddeningSpeed() {
+        return maddeningSpeedWorn;
     }
 }

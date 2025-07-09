@@ -12,15 +12,14 @@ import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.entity.PlayerData;
 import org.oxytocina.geomancy.entity.StateSaverAndLoader;
-import org.oxytocina.geomancy.networking.packet.ClientJoinedC2SPacket;
-import org.oxytocina.geomancy.networking.packet.InitialSyncS2CPacket;
-import org.oxytocina.geomancy.networking.packet.ItemManaSyncS2CPacket;
-import org.oxytocina.geomancy.networking.packet.ManaSyncS2CPacket;
+import org.oxytocina.geomancy.networking.packet.*;
 
 public class ModMessages {
 
     // server to client
     public static final Identifier MANA_SYNC = Geomancy.locate("mana_sync");
+    public static final Identifier LEAD_POISONING_SYNC = Geomancy.locate("lead_poisoning_sync");
+    public static final Identifier MADNESS_SYNC = Geomancy.locate("madness_sync");
     public static final Identifier ITEM_MANA_SYNC = Geomancy.locate("item_mana_sync");
     public static final Identifier INITIAL_SYNC = Geomancy.locate("initial_sync");
 
@@ -47,6 +46,8 @@ public class ModMessages {
 
     public static void registerS2CPackets(){
         ClientPlayNetworking.registerGlobalReceiver(MANA_SYNC, ManaSyncS2CPacket::receive);
+        ClientPlayNetworking.registerGlobalReceiver(LEAD_POISONING_SYNC, LeadPoisoningSyncS2CPacket::receive);
+        ClientPlayNetworking.registerGlobalReceiver(MADNESS_SYNC, MadnessSyncS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(ITEM_MANA_SYNC, ItemManaSyncS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(INITIAL_SYNC, InitialSyncS2CPacket::receive);
     }

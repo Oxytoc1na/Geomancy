@@ -3,7 +3,6 @@ package org.oxytocina.geomancy.entity;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.PersistentState;
 
@@ -11,16 +10,9 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.PersistentState;
 import net.minecraft.world.PersistentStateManager;
 import net.minecraft.world.World;
 import org.oxytocina.geomancy.Geomancy;
-import org.oxytocina.geomancy.items.ManaStoringItem;
-
-import java.util.HashMap;
-import java.util.UUID;
 
 public class StateSaverAndLoader extends PersistentState {
 

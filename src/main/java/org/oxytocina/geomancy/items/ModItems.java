@@ -22,10 +22,7 @@ import org.oxytocina.geomancy.items.artifacts.ArtifactItem;
 import org.oxytocina.geomancy.items.artifacts.ArtifactSettings;
 import org.oxytocina.geomancy.items.artifacts.GoldArtifact;
 import org.oxytocina.geomancy.items.artifacts.IronArtifact;
-import org.oxytocina.geomancy.items.jewelry.GemSlot;
-import org.oxytocina.geomancy.items.jewelry.JewelryItem;
-import org.oxytocina.geomancy.items.jewelry.JewelryItemSettings;
-import org.oxytocina.geomancy.items.jewelry.OctanguliteJewelryItem;
+import org.oxytocina.geomancy.items.jewelry.*;
 import org.oxytocina.geomancy.loottables.ModLootTables;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
 
@@ -67,9 +64,9 @@ public class ModItems {
     public static final Item TITANIUM_NUGGET = register("titanium_nugget",new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof()));
 
     // lead
-    public static final LeadItem RAW_LEAD = (LeadItem) register("raw_lead",new LeadItem(new FabricItemSettings().rarity(Rarity.COMMON).fireproof()));
-    public static final LeadItem LEAD_INGOT = (LeadItem) register("lead_ingot",new LeadItem(new FabricItemSettings().rarity(Rarity.COMMON).fireproof()));
-    public static final LeadItem LEAD_NUGGET = (LeadItem) register("lead_nugget",new LeadItem(new FabricItemSettings().rarity(Rarity.COMMON).fireproof()));
+    public static final LeadItem RAW_LEAD = (LeadItem) register("raw_lead",new LeadItem(new FabricItemSettings().rarity(Rarity.COMMON).fireproof(),1));
+    public static final LeadItem LEAD_INGOT = (LeadItem) register("lead_ingot",new LeadItem(new FabricItemSettings().rarity(Rarity.COMMON).fireproof(),1/9f));
+    public static final LeadItem LEAD_NUGGET = (LeadItem) register("lead_nugget",new LeadItem(new FabricItemSettings().rarity(Rarity.COMMON).fireproof(),1));
 
 
     public static final Item GUIDE_BOOK = register("guidebook",new Item(new FabricItemSettings()),new ExtraItemSettings().dontGroupItem());
@@ -90,8 +87,8 @@ public class ModItems {
     public static final JewelryItem COPPER_RING = (JewelryItem) register("copper_ring",new JewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.RING).withGemCount(1)),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
     public static final JewelryItem MOLYBDENUM_RING = (JewelryItem) register("molybdenum_ring",new JewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.RING).withGemCount(2)),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
     public static final JewelryItem TITANIUM_RING = (JewelryItem) register("titanium_ring",new JewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.RING).withGemCount(2)),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
-    public static final JewelryItem LEAD_RING = (JewelryItem) register("lead_ring",new JewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.RING).withGemCount(2)),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
-    public static final OctanguliteJewelryItem OCTANGULITE_RING = (OctanguliteJewelryItem) register("octangulite_ring",new OctanguliteJewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.RING).withGemCount(3),100),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
+    public static final LeadJewelryItem LEAD_RING = (LeadJewelryItem) register("lead_ring",new LeadJewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.RING).withGemCount(2),1,5),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
+    public static final OctanguliteJewelryItem OCTANGULITE_RING = (OctanguliteJewelryItem) register("octangulite_ring",new OctanguliteJewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.RING).withGemCount(3),100,1,3),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
     // necklaces
     public static final JewelryItem IRON_NECKLACE = (JewelryItem) register("iron_necklace",new JewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(1)),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
     public static final JewelryItem GOLD_NECKLACE = (JewelryItem) register("gold_necklace",new JewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(2)),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
@@ -99,8 +96,8 @@ public class ModItems {
     public static final JewelryItem COPPER_NECKLACE = (JewelryItem) register("copper_necklace",new JewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(1)),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
     public static final JewelryItem MOLYBDENUM_NECKLACE = (JewelryItem) register("molybdenum_necklace",new JewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(2)),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
     public static final JewelryItem TITANIUM_NECKLACE = (JewelryItem) register("titanium_necklace",new JewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(3)),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
-    public static final JewelryItem LEAD_NECKLACE = (JewelryItem) register("lead_necklace",new JewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(2)),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
-    public static final OctanguliteJewelryItem OCTANGULITE_NECKLACE = (OctanguliteJewelryItem) register("octangulite_necklace",new OctanguliteJewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(4),200),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
+    public static final LeadJewelryItem LEAD_NECKLACE = (LeadJewelryItem) register("lead_necklace",new LeadJewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(2),1,5),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
+    public static final OctanguliteJewelryItem OCTANGULITE_NECKLACE = (OctanguliteJewelryItem) register("octangulite_necklace",new OctanguliteJewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(4),200,1,4),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
     // pendants
     public static final JewelryItem IRON_PENDANT = (JewelryItem) register("iron_pendant",new JewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(1).setPendant()),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
     public static final JewelryItem GOLD_PENDANT = (JewelryItem) register("gold_pendant",new JewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(2).setPendant()),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
@@ -108,8 +105,8 @@ public class ModItems {
     public static final JewelryItem COPPER_PENDANT = (JewelryItem) register("copper_pendant",new JewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(1).setPendant()),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
     public static final JewelryItem MOLYBDENUM_PENDANT = (JewelryItem) register("molybdenum_pendant",new JewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(2).setPendant()),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
     public static final JewelryItem TITANIUM_PENDANT = (JewelryItem) register("titanium_pendant",new JewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(3).setPendant()),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
-    public static final JewelryItem LEAD_PENDANT = (JewelryItem) register("lead_pendant",new JewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(2).setPendant()),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
-    public static final OctanguliteJewelryItem OCTANGULITE_PENDANT = (OctanguliteJewelryItem) register("octangulite_pendant",new OctanguliteJewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(4).setPendant(),100),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
+    public static final LeadJewelryItem LEAD_PENDANT = (LeadJewelryItem) register("lead_pendant",new LeadJewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(2).setPendant(),1,5),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
+    public static final OctanguliteJewelryItem OCTANGULITE_PENDANT = (OctanguliteJewelryItem) register("octangulite_pendant",new OctanguliteJewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(4).setPendant(),100,1,4),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
 
 
     // tools

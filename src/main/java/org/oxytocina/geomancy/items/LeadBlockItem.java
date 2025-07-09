@@ -1,13 +1,15 @@
 package org.oxytocina.geomancy.items;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 
-public class LeadItem extends Item implements ILeadPoisoningItem{
+public class LeadBlockItem extends BlockItem implements ILeadPoisoningItem{
 
     public final float poisoningSpeed;
 
-    public LeadItem(Settings settings,float poisoningSpeed) {
-        super(settings);
+    public LeadBlockItem(Block block, Settings settings, float poisoningSpeed) {
+        super(block, settings);
         this.poisoningSpeed=poisoningSpeed;
     }
 

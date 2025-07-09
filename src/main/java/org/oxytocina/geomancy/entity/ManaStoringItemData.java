@@ -1,16 +1,12 @@
 package org.oxytocina.geomancy.entity;
 
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
-import org.oxytocina.geomancy.items.ManaStoringItem;
+import org.oxytocina.geomancy.items.IManaStoringItem;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.UUID;
 
 public class ManaStoringItemData {
@@ -41,7 +37,7 @@ public class ManaStoringItemData {
     public ManaStoringItemData(UUID uuid, ItemStack base){
         this.uuid=uuid;
         mana=0;
-        maxMana = ((ManaStoringItem)base.getItem()).getBaseCapacity(base);
+        maxMana = ((IManaStoringItem)base.getItem()).getBaseCapacity(base);
     }
 
     public static ManaStoringItemData fromNbt(NbtCompound nbt){
@@ -83,7 +79,7 @@ public class ManaStoringItemData {
             //duplicate! split into new UUID
             ManaStoringItemData newData = StateSaverAndLoader.getManaStoringItemData(world,uuid,stack).clone();
             newData.uuid = UUID.randomUUID();
-            ManaStoringItem.setUUID(stack,newData.uuid);
+            IManaStoringItem.setUUID(stack,newData.uuid);
             stackMap.put(newData.uuid,stack);
             uuid = newData.uuid;
             StateSaverAndLoader.setManaStoringItemData(world,uuid,newData);

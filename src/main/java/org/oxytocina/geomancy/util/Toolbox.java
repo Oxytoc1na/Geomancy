@@ -128,4 +128,8 @@ public class Toolbox {
     public static float clampF(float v, float m, float m2){
         return Math.min(Math.max(v,m), m2);
     }
+
+    public static float Lerp(float value, float target, float t){
+        return (value * (1.0f - t)) + (target * t);
+    }
 }

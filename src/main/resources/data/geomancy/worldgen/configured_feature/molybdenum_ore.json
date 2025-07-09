@@ -6,7 +6,7 @@
     "targets": [
       {
         "state": {
-          "Name": "geomancy:molybdenium_ore"
+          "Name": "geomancy:molybdenum_ore"
         },
         "target": {
           "predicate_type": "minecraft:tag_match",
@@ -15,7 +15,7 @@
       },
       {
         "state": {
-          "Name": "geomancy:deepslate_molybdenium_ore"
+          "Name": "geomancy:deepslate_molybdenum_ore"
         },
         "target": {
           "predicate_type": "minecraft:tag_match",
