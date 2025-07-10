@@ -5,8 +5,11 @@ import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.registry.CompostingChanceRegistry;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
+import net.minecraft.datafixer.fix.MobSpawnerEntityIdentifiersFix;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -18,6 +21,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.ModToolMaterials;
+import org.oxytocina.geomancy.entity.ExtraEntitySettings;
+import org.oxytocina.geomancy.entity.ModEntityTypes;
 import org.oxytocina.geomancy.items.artifacts.ArtifactItem;
 import org.oxytocina.geomancy.items.artifacts.ArtifactSettings;
 import org.oxytocina.geomancy.items.artifacts.GoldArtifact;
@@ -27,6 +32,7 @@ import org.oxytocina.geomancy.loottables.ModLootTables;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ModItems {
 
@@ -35,6 +41,7 @@ public class ModItems {
     public static final ArrayList<JewelryItem> JewelryNecklaceItems = new ArrayList<>();
     public static final ArrayList<JewelryItem> JewelryAnySlotItems = new ArrayList<>();
     public static final ArrayList<GeodeItem> geodeItems = new ArrayList<>();
+    public static final HashMap<EntityType<? extends MobEntity>, SpawnEggItem> spawnEggs = new HashMap<>();
 
     public static final FoodComponent SUSPICIOUS_FOOD_COMPONENT = new FoodComponent.Builder()
             .hunger(1).alwaysEdible().snack().statusEffect(new StatusEffectInstance(StatusEffects.POISON, 6 * 20, 1), 1.0f).build();
@@ -173,6 +180,13 @@ public class ModItems {
         // Return the registered item!
         return registeredItem;
 
+    }
+
+    public static void registerSpawnEgg(ExtraEntitySettings settings) {
+        SpawnEggItem spawnEgg = (SpawnEggItem) register(settings.mobEntity.getUntranslatedName()+"_spawn_egg",new SpawnEggItem(settings.mobEntity, settings.spawnEggColorMain, settings.spawnEggColorSecond, new FabricItemSettings()),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.SPAWN_EGGS)
+                .register((itemGroup) -> itemGroup.add(spawnEgg));
+        spawnEggs.put(settings.mobEntity,spawnEgg);
     }
 }
 

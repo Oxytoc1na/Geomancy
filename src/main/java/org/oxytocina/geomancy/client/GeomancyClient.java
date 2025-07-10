@@ -9,6 +9,7 @@ import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 
 import org.oxytocina.geomancy.blocks.blockEntities.ModBlockEntities;
 import org.oxytocina.geomancy.client.blocks.blockEntities.SmitheryBlockEntityRenderer;
+import org.oxytocina.geomancy.client.entity.ModEntityRenderers;
 import org.oxytocina.geomancy.client.event.ClientPlayerTickHandler;
 import org.oxytocina.geomancy.client.hud.ModHudOverlay;
 import org.oxytocina.geomancy.client.rendering.ModBlockTransparency;
@@ -34,6 +35,7 @@ public class GeomancyClient implements ClientModInitializer {
         KeyInputHandler.register();
         ModMessages.registerS2CPackets();
         ModFluids.registerClient();
+        ModEntityRenderers.register();
 
         HandledScreens.register(ModScreenHandlers.SMITHERY_SCREEN_HANDLER, SmitheryScreen::new);
 

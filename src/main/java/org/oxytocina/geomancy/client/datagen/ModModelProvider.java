@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
 
+import net.minecraft.item.SpawnEggItem;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
@@ -99,6 +100,10 @@ public class ModModelProvider extends FabricModelProvider {
         for(JewelryItem i : ExtraItemSettings.JewelryModel){
             registerJewelryItemModels(i);
         }
+
+        for(var ent : ModItems.spawnEggs.entrySet()){
+            registerSpawnEgg(ent.getValue());
+        }
     }
 
     private void registerJewelryItemModels(JewelryItem item){
@@ -149,6 +154,17 @@ public class ModModelProvider extends FabricModelProvider {
     private static Identifier jewelryGemmedVariantModelID(JewelryItem item, int index){
         return Geomancy.locate("item/jewelry/"+Registries.ITEM.getId(item).getPath()+"_gem_"+(index+1));
     }
+
+    private void registerSpawnEgg(SpawnEggItem item){
+        // generate base model
+        Model baseModel = new Model(Optional.of(new Identifier("item/template_spawn_egg")),Optional.empty());
+        baseModel.upload(ModelIds.getItemModelId(item), new TextureMap(), itemModelGenerator.writer, (id, textures) -> {
+            var res = new JsonObject();
+            res.addProperty("parent","minecraft:item/template_spawn_egg");
+            return res;
+        });
+    }
+
 
     @Override
     public String getName() {

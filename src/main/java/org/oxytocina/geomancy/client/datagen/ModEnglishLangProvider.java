@@ -298,6 +298,11 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
         }
 
+        // Entities
+        {
+            add("entity.MODID.stellge_engineer"         , "Stellge Engineer");
+            add("item.MODID.stellge_engineer_spawn_egg" , "Stellge Engineer Spawn Egg");
+        }
 
         tb=null;
     }

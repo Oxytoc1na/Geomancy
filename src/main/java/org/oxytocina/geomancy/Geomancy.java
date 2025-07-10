@@ -14,7 +14,9 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.blocks.blockEntities.ModBlockEntities;
+import org.oxytocina.geomancy.commands.ModCommands;
 import org.oxytocina.geomancy.enchantments.ModEnchantments;
+import org.oxytocina.geomancy.entity.ModEntityTypes;
 import org.oxytocina.geomancy.event.PlayerTickHandler;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
@@ -64,6 +66,8 @@ public class Geomancy implements ModInitializer {
         ModParticleTypes.register();
         ModParticleFactories.register();
         ModMessages.registerC2SPackets();
+        ModCommands.register();
+        ModEntityTypes.register();
 
         ServerTickEvents.START_SERVER_TICK.register(new PlayerTickHandler());
 

@@ -18,6 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.ILeadPoisoningBlock;
 import org.oxytocina.geomancy.entity.PlayerData;
 import org.oxytocina.geomancy.items.ILeadPoisoningItem;
@@ -126,20 +127,21 @@ public class LeadUtil {
     public static float getAmbientPoisoning(World world, BlockPos pos){
         if(cachedAmbientPoison.containsKey(pos)) return cachedAmbientPoison.get(pos);
 
-        final float checkRadius = 5;
+        final float checkRadius = 2;
 
         float res = 0;
 
-        BlockPos.stream(Box.from(new BlockBox(pos)).expand(checkRadius))
-                .filter(pos3 -> isPoisonous(world.getBlockState(pos3))).toList().forEach((pos2)->
+        List<BlockPos> checkedBlockPos = BlockPos.stream(Box.from(new BlockBox(pos)).expand(checkRadius))
+                /*.filter(pos3 -> isPoisonous(world.getBlockState(pos3)))*/.toList();
+        for(var pos2 : checkedBlockPos)
         {
             BlockState state = world.getBlockState(pos2);
             if(state.getBlock() instanceof ILeadPoisoningBlock poisoningBlock){
                 float poisonousness = poisoningBlock.getAmbientPoisoningSpeed();
                 double dist = pos.getSquaredDistance(pos2);
-                res+=poisonousness/(float)(Math.sqrt(dist));
+                res+=poisonousness/Math.max(1,(float)(Math.sqrt(dist)));
             }
-        });
+        }
 
         cachedAmbientPoison.put(pos,res);
         return res;
