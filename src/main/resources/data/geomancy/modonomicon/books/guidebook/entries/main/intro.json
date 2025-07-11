@@ -1,0 +1,27 @@
+{
+  "background_u_index": 1,
+  "background_v_index": 0,
+  "category": "geomancy:main",
+  "description": "book.geomancy.guidebook.main.intro.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "geomancy:guidebook"
+  },
+  "name": "book.geomancy.guidebook.main.intro.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.main.intro.info.text",
+      "title": "book.geomancy.guidebook.main.intro.info.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "x": -10,
+  "y": -1
+}

@@ -1,0 +1,38 @@
+{
+  "background_u_index": 1,
+  "background_v_index": 0,
+  "category": "geomancy:smithing",
+  "description": "book.geomancy.guidebook.smithing.intro.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "geomancy:smithery_block"
+  },
+  "name": "book.geomancy.guidebook.smithing.intro.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.smithing.intro.info.text",
+      "title": "book.geomancy.guidebook.smithing.intro.info.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:crafting_recipe",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "recipe_id_1": "geomancy:smithery_block",
+      "text": "book.geomancy.guidebook.smithing.intro.smithery.text",
+      "title1": "smithery_block",
+      "title2": ""
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "x": -10,
+  "y": -1
+}

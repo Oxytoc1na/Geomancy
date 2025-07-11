@@ -1,0 +1,68 @@
+{
+  "background_u_index": 1,
+  "background_v_index": 0,
+  "category": "geomancy:smithing",
+  "description": "book.geomancy.guidebook.smithing.artifacts.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "geomancy:empty_artifact"
+  },
+  "name": "book.geomancy.guidebook.smithing.artifacts.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.smithing.artifacts.info.text",
+      "title": "book.geomancy.guidebook.smithing.artifacts.info.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:crafting_recipe",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "recipe_id_1": "geomancy:smithing_empty_artifact",
+      "text": "book.geomancy.guidebook.smithing.artifacts.empty.text",
+      "title1": "empty_artifact",
+      "title2": ""
+    },
+    {
+      "type": "modonomicon:crafting_recipe",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "recipe_id_1": "geomancy:smithing_artifact_of_iron",
+      "text": "book.geomancy.guidebook.smithing.artifacts.iron.text",
+      "title1": "artifact_of_",
+      "title2": ""
+    },
+    {
+      "type": "modonomicon:crafting_recipe",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "recipe_id_1": "geomancy:smithing_artifact_of_gold",
+      "text": "book.geomancy.guidebook.smithing.artifacts.gold.text",
+      "title1": "artifact_of_",
+      "title2": ""
+    }
+  ],
+  "parents": [
+    {
+      "draw_arrow": true,
+      "entry": "geomancy:smithing/intro",
+      "line_enabled": true,
+      "line_reversed": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "x": -12,
+  "y": -4
+}

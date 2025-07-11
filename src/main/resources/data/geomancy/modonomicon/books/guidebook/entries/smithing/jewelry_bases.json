@@ -1,0 +1,57 @@
+{
+  "background_u_index": 1,
+  "background_v_index": 0,
+  "category": "geomancy:smithing",
+  "description": "book.geomancy.guidebook.smithing.jewelry_bases.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "geomancy:iron_ring"
+  },
+  "name": "book.geomancy.guidebook.smithing.jewelry_bases.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.smithing.jewelry_bases.info.text",
+      "title": "book.geomancy.guidebook.smithing.jewelry_bases.info.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:crafting_recipe",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "recipe_id_1": "geomancy:smithing_iron_ring",
+      "text": "book.geomancy.guidebook.smithing.jewelry_bases.iron_ring.text",
+      "title1": "iron_ring",
+      "title2": ""
+    },
+    {
+      "type": "modonomicon:crafting_recipe",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "recipe_id_1": "geomancy:smithing_iron_necklace",
+      "text": "book.geomancy.guidebook.smithing.jewelry_bases.iron_necklace.text",
+      "title1": "iron_necklace",
+      "title2": ""
+    }
+  ],
+  "parents": [
+    {
+      "draw_arrow": true,
+      "entry": "geomancy:smithing/intro",
+      "line_enabled": true,
+      "line_reversed": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "x": -10,
+  "y": 2
+}

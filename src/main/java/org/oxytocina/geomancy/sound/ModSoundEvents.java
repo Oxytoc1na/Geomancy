@@ -34,6 +34,10 @@ public class ModSoundEvents {
     //public static final SoundEvent BLOCK_METAL_WHISPERS_HIT =       register("block_metal_whispers_hit");
     //public static final SoundEvent BLOCK_METAL_WHISPERS_FALL =      register("block_metal_whispers_fall");
 
+    public static final SoundEvent ENTITY_STELLGE_ENGINEER_TALK =     register("entity_stellge_engineer_talk",new ExtraData().count(6).prefix("geomancy:mob/stellge_engineer/talk"));
+    public static final SoundEvent ENTITY_STELLGE_ENGINEER_ANGRY =     register("entity_stellge_engineer_angry",new ExtraData().count(1).prefix("geomancy:mob/stellge_engineer/angry"));
+
+
     public static final SoundEvent WHISPERS = register("whispers");
 
     public static void register(){
