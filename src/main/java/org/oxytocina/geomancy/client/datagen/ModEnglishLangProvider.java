@@ -34,6 +34,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         addShort("gb:mn","book.MODID.guidebook.main.");
         addShort("gb:sm","book.MODID.guidebook.smithing.");
         addShort("gb:oc","book.MODID.guidebook.octangulite.");
+        addShort("gb:lr","book.MODID.guidebook.lore.");
 
         add(KeyInputHandler.LANG_CATEGORY_GEOMANCY,"Geomancy");
         add(KeyInputHandler.LANG_OPEN_SKILLTREE,"Skills");
@@ -218,6 +219,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("book.MODID.guidebook.name", "Notes on Minerals");
             add("book.MODID.guidebook.tooltip", "we can never dig too deep");
 
+            add("item.MODID.guidebook","Notes on Minerals");
+
 
             add(getS("gb:mn")+"name", "Discovery");
             {
@@ -292,10 +295,22 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
             add(getS("gb:oc")+"name", "Octangulite");
             {
-                addGBEntryAndInfo(getS("gb:oc")+"octangulite","Octangulite");
-                add(getS("gb:oc")+"octangulite.description"  , "");
-                add(getS("gb:oc")+"octangulite.intro.text", "This... strange substance seems to shift in color when I don't look. Its hardness also doesn't seem to stay consistent. It feels out of this world. I am not quite sure what to do with it.");
-                add(getS("gb:oc")+"octangulite.raw_octangulite.text", "Undulating.");
+                addGBEntryAndInfo(getS("gb:oc")+"intro","Octangulite");
+                add(getS("gb:oc")+"intro.description"  , "");
+                add(getS("gb:oc")+"intro.info.title", "Octangulite");
+                add(getS("gb:oc")+"intro.info.text", "This... strange substance seems to shift in color when I don't look. Its hardness also doesn't seem to stay consistent. It feels out of this world. I am not quite sure what to do with it.");
+                add(getS("gb:oc")+"intro.raw_octangulite.text", "Undulating.");
+            }
+
+            add(getS("gb:lr")+"name", "History");
+            {
+                add("item.MODID.lorebook_goldsmith_1","Chronicles of the Goldsmith Pt. 1");
+                add("item.MODID.lorebook_goldsmith_1.tooltip","Notes on Minerals");
+                addGBEntryAndInfo(getS("gb:lr")+"goldsmith_1","Chronicles of the Goldsmith Pt. 1");
+                add(getS("gb:lr")+"goldsmith_1.description"  , "");
+                add(getS("gb:lr")+"goldsmith_1.1.text", "");
+                add(getS("gb:lr")+"goldsmith_1.2.text", "");
+                add(getS("gb:lr")+"goldsmith_1.3.text", "");
 
             }
 

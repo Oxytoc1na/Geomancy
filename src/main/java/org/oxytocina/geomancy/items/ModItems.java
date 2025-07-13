@@ -75,8 +75,9 @@ public class ModItems {
     public static final LeadItem LEAD_INGOT = (LeadItem) register("lead_ingot",new LeadItem(new FabricItemSettings().rarity(Rarity.COMMON).fireproof(),1/9f));
     public static final LeadItem LEAD_NUGGET = (LeadItem) register("lead_nugget",new LeadItem(new FabricItemSettings().rarity(Rarity.COMMON).fireproof(),1));
 
-
-    public static final Item GUIDE_BOOK = register("guidebook",new Item(new FabricItemSettings()),new ExtraItemSettings().dontGroupItem());
+    // guidebook and lore
+    public static final GuidebookItem GUIDE_BOOK = (GuidebookItem)register("guidebook",new GuidebookItem(new FabricItemSettings()),new ExtraItemSettings());
+    public static final LorebookItem LORE_BOOK_GOLDSMITH_1 = (LorebookItem)register("lorebook_goldsmith_1",new LorebookItem(new FabricItemSettings(),"lore/goldsmith_1"),new ExtraItemSettings());
 
     // music discs
     public static final Item MUSIC_DISC_DIGGY = register("music_disc_diggy",new MusicDiscItem(15, ModSoundEvents.MUSIC_DISC_DIGGY, (new Item.Settings()).maxCount(1).rarity(Rarity.RARE), 235));
@@ -128,7 +129,7 @@ public class ModItems {
     public static final GeodeItem STONE_GEODE = (GeodeItem) register("stone_geode",new GeodeItem(new FabricItemSettings(),ModLootTables.GEODE_STONE));
 
     // test alien tooltip
-    public static final StellgeTooltippedItem TEST = (StellgeTooltippedItem) register("stellge_test",new StellgeTooltippedItem(new FabricItemSettings(),"test"));
+    public static final StellgeTooltippedItem TEST = (StellgeTooltippedItem) register("stellge_test",new StellgeTooltippedItem(new FabricItemSettings(),"lorem ipsum dolor sit amet"));
 
     public static void register() {
         // initialize static fields

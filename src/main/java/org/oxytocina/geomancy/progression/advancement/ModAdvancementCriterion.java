@@ -46,6 +46,8 @@ public class ModAdvancementCriterion extends AbstractCriterion<ModAdvancementCri
 
         String advancement;
 
+        public Identifier getAdvancement()  {return Identifier.tryParse(advancement);}
+
         public Conditions(String name,LootContextPredicate playerPredicate) {
             super(getID(),playerPredicate);
             this.advancement =name;

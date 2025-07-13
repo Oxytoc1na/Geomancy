@@ -12,6 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.entity.IMobWithHome;
+import org.oxytocina.geomancy.util.Toolbox;
 
 public class WanderNearHomeGoal extends Goal {
     public static final int DEFAULT_CHANCE = 120;
@@ -103,7 +104,6 @@ public class WanderNearHomeGoal extends Goal {
     }
 
     private BlockPos getHome(){
-        if(homeHaver!=null) return homeHaver.getHome();
-        return mob.getBlockPos();
+        return Toolbox.ifNotNullThenElse(homeHaver!=null?homeHaver.getHome():null,mob.getBlockPos());
     }
 }
