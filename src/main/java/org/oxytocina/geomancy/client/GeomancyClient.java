@@ -11,7 +11,7 @@ import org.oxytocina.geomancy.blocks.blockEntities.ModBlockEntities;
 import org.oxytocina.geomancy.client.blocks.blockEntities.SmitheryBlockEntityRenderer;
 import org.oxytocina.geomancy.client.entity.ModEntityRenderers;
 import org.oxytocina.geomancy.client.event.ClientPlayerTickHandler;
-import org.oxytocina.geomancy.client.hud.ModHudOverlay;
+import org.oxytocina.geomancy.client.hud.ModHudRenderer;
 import org.oxytocina.geomancy.client.rendering.ModBlockTransparency;
 import org.oxytocina.geomancy.client.rendering.ModColorizationHandler;
 import org.oxytocina.geomancy.client.rendering.ModModelPredicateProvider;
@@ -38,8 +38,6 @@ public class GeomancyClient implements ClientModInitializer {
         ModEntityRenderers.register();
 
         HandledScreens.register(ModScreenHandlers.SMITHERY_SCREEN_HANDLER, SmitheryScreen::new);
-
-        HudRenderCallback.EVENT.register(new ModHudOverlay());
 
         ClientTickEvents.START_CLIENT_TICK.register(new ClientPlayerTickHandler());
 

@@ -15,7 +15,8 @@
   ],
   "client": [
     "client.AbstractClientEntityMixin",
-    "client.BlockOverlayRendererMixin"
+    "client.BlockOverlayRendererMixin",
+    "client.InGameHudMixin"
   ],
   "injectors": {
     "defaultRequire": 1

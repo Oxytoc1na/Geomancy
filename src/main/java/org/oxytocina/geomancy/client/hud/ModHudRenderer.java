@@ -6,21 +6,19 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
-import org.oxytocina.geomancy.util.LeadUtil;
 import org.oxytocina.geomancy.util.ManaUtil;
-import org.oxytocina.geomancy.util.MadnessUtil;
 
-public class ModHudOverlay implements HudRenderCallback {
+public class ModHudRenderer {
 
     private static final Identifier FILLED_THIRST = new Identifier(Geomancy.MOD_ID,
             "textures/item/artifact_of_gold.png");
     private static final Identifier EMPTY_THIRST = new Identifier(Geomancy.MOD_ID,
             "textures/item/empty_artifact.png");
 
-    @Override
-    public void onHudRender(DrawContext drawContext, float tickDelta) {
+    public static void onHudRender(DrawContext drawContext, PlayerEntity playerEntity) {
 
         MinecraftClient client = MinecraftClient.getInstance();
         if(client==null||client.options.hudHidden||client.player==null) return;
