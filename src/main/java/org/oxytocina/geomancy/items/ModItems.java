@@ -127,6 +127,9 @@ public class ModItems {
     // geodes
     public static final GeodeItem STONE_GEODE = (GeodeItem) register("stone_geode",new GeodeItem(new FabricItemSettings(),ModLootTables.GEODE_STONE));
 
+    // test alien tooltip
+    public static final StellgeTooltippedItem TEST = (StellgeTooltippedItem) register("stellge_test",new StellgeTooltippedItem(new FabricItemSettings(),"test"));
+
     public static void register() {
         // initialize static fields
         // calling this method is sufficient to do that, actually

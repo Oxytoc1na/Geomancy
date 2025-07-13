@@ -137,4 +137,9 @@ public class Toolbox {
     public static double log(double base, double val){
         return Math.log(val)/Math.log(base);
     }
+
+    public static <T> T ifNotNullThenElse(T val, T def){
+        if(val==null) return def;
+        return val;
+    }
 }

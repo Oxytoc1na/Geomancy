@@ -12,6 +12,7 @@ import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.items.artifacts.ArtifactItem;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.jewelry.GemSlot;
@@ -27,6 +28,8 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
     public static final TagKey<Item> SMELLY_ITEMS = TagKey.of(RegistryKeys.ITEM, Identifier.of(Geomancy.MOD_ID, "smelly_items"));
     public static final TagKey<Item> MUSIC_DISCS = TagKey.of(RegistryKeys.ITEM, Identifier.of(Identifier.DEFAULT_NAMESPACE, "music_discs"));
     public static final TagKey<Item> JEWELRY_GEMS = TagKey.of(RegistryKeys.ITEM, Geomancy.locate("jewelry_gems"));
+    public static final TagKey<Item> STELLGE_CURIOUS = TagKey.of(RegistryKeys.ITEM, Geomancy.locate("stellge_curious"));
+    public static final TagKey<Item> OCTANGULITE = TagKey.of(RegistryKeys.ITEM, Geomancy.locate("octangulite"));
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
@@ -45,6 +48,23 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
         // jewelry gems
         for(ItemConvertible item : GemSlot.gemColorMap.keySet())
             getOrCreateTagBuilder(JEWELRY_GEMS).add(item.asItem());
+
+        // octangulite
+        var octangulite = getOrCreateTagBuilder(OCTANGULITE).setReplace(false);
+        octangulite.add(ModItems.OCTANGULITE_INGOT);
+        octangulite.add(ModItems.OCTANGULITE_NUGGET);
+        octangulite.add(ModItems.RAW_OCTANGULITE);
+        octangulite.add(ModItems.OCTANGULITE_RING);
+        octangulite.add(ModItems.OCTANGULITE_NECKLACE);
+        octangulite.add(ModItems.OCTANGULITE_PENDANT);
+        octangulite.add(ModBlocks.OCTANGULITE_BLOCK.asItem());
+        octangulite.add(ModBlocks.OCTANGULITE_ORE.asItem());
+        octangulite.add(ModBlocks.DEEPSLATE_OCTANGULITE_ORE.asItem());
+        octangulite.add(ModBlocks.RAW_OCTANGULITE_BLOCK.asItem());
+
+        // stellge curious
+        getOrCreateTagBuilder(STELLGE_CURIOUS).setReplace(false)
+                        .forceAddTag(OCTANGULITE);
 
         generateAccessoryTags();
     }

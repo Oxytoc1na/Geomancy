@@ -17,6 +17,10 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.predicate.entity.EntityPredicates;
+import net.minecraft.recipe.Ingredient;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -28,11 +32,14 @@ import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.*;
 import org.jetbrains.annotations.Nullable;
+import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.entity.goal.WanderNearHomeGoal;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
+import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.UUID;
 
-public class StellgeEngineerEntity extends HostileEntity implements Angerable, IModMob {
+public class StellgeEngineerEntity extends HostileEntity implements Angerable, IModMob, IMobWithHome {
 
     public StellgeEngineerEntity(EntityType<? extends HostileEntity> entityType, World world) {
         super(entityType,world);
@@ -69,7 +76,13 @@ public class StellgeEngineerEntity extends HostileEntity implements Angerable, I
     }
 
     protected void initCustomGoals() {
-        this.goalSelector.add(7, new WanderAroundFarGoal(this, 1.0));
+        //this.goalSelector.add(7, new WanderAroundFarGoal(this, 1.0));
+        this.goalSelector.add(7, new WanderNearHomeGoal(this, 1));
+        this.goalSelector.add(6, new WanderAroundFarGoal(this, 1));
+        this.goalSelector.add(5, new LookAroundGoal(this));
+        this.goalSelector.add(4, new LookAtEntityGoal(this, PlayerEntity.class,16));
+        this.goalSelector.add(3, new TemptGoal(this,1, Ingredient.fromTag(TagKey.of(RegistryKeys.ITEM, Geomancy.locate("stellge_curious"))),false));
+        this.goalSelector.add(2,new MeleeAttackGoal(this,1,false));
         this.targetSelector.add(1, new RevengeGoal(this).setGroupRevenge());
         this.targetSelector.add(2, new ActiveTargetGoal(this, PlayerEntity.class, 10, true, false, (livingEntity -> shouldAngerAt((LivingEntity) livingEntity))));
         this.targetSelector.add(3, new UniversalAngerGoal<>(this, true));
@@ -174,12 +187,14 @@ public class StellgeEngineerEntity extends HostileEntity implements Angerable, I
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
         this.writeAngerToNbt(nbt);
+        WriteHome(nbt,Toolbox.ifNotNullThenElse(home,getBlockPos()));
     }
 
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
         this.readAngerFromNbt(this.getWorld(), nbt);
+        setHome(ReadHome(nbt));
     }
 
     @Override
@@ -385,5 +400,16 @@ public class StellgeEngineerEntity extends HostileEntity implements Angerable, I
                             new EntityAttributeModifier("Leader bonus", this.random.nextDouble() * 3.0 + 1.0, EntityAttributeModifier.Operation.MULTIPLY_TOTAL)
                     );
         }
+    }
+
+    private BlockPos home = null;
+    @Override
+    public void setHome(BlockPos newHome) {
+        home=Toolbox.ifNotNullThenElse(newHome,getBlockPos());
+    }
+
+    @Override
+    public BlockPos getHome() {
+        return home;
     }
 }
