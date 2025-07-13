@@ -51,6 +51,7 @@ public class StellgeEngineerEntity extends HostileEntity implements Angerable, I
     private UUID angryAt;
     private static final UniformIntProvider ANGER_PASSING_COOLDOWN_RANGE = TimeHelper.betweenSeconds(4, 6);
     private int angerPassingCooldown;
+    public AnimationState idleAnimationState = new AnimationState();
 
     @Override
     public void setAngryAt(@Nullable UUID angryAt) {
@@ -155,8 +156,8 @@ public class StellgeEngineerEntity extends HostileEntity implements Angerable, I
         this.setAngerTime(ANGER_TIME_RANGE.get(this.random));
     }
 
-    public static boolean canSpawn(EntityType<ZombifiedPiglinEntity> type, WorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random) {
-        return world.getDifficulty() != Difficulty.PEACEFUL && !world.getBlockState(pos.down()).isOf(Blocks.NETHER_WART_BLOCK);
+    public static boolean canSpawn(EntityType<StellgeEngineerEntity> type, WorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random) {
+        return true;/*world.getDifficulty() != Difficulty.PEACEFUL && !world.getBlockState(pos.down()).isOf(Blocks.NETHER_WART_BLOCK);*/
     }
 
     @Override
@@ -193,12 +194,12 @@ public class StellgeEngineerEntity extends HostileEntity implements Angerable, I
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.ENTITY_ZOMBIFIED_PIGLIN_HURT;
+        return ModSoundEvents.ENTITY_STELLGE_ENGINEER_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.ENTITY_ZOMBIFIED_PIGLIN_DEATH;
+        return ModSoundEvents.ENTITY_STELLGE_ENGINEER_DEATH;
     }
 
     @Override
@@ -378,6 +379,8 @@ public class StellgeEngineerEntity extends HostileEntity implements Angerable, I
         entityData = super.initialize(world, difficulty, spawnReason, entityData, entityNbt);
         float f = difficulty.getClampedLocalDifficulty();
         this.setCanPickUpLoot(random.nextFloat() < 0.55F * f);
+
+        this.idleAnimationState.start(0);
 
         this.applyAttributeModifiers(f);
         return entityData;

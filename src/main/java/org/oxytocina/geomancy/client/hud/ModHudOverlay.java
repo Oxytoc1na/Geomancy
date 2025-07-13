@@ -10,6 +10,7 @@ import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.util.LeadUtil;
 import org.oxytocina.geomancy.util.ManaUtil;
+import org.oxytocina.geomancy.util.MadnessUtil;
 
 public class ModHudOverlay implements HudRenderCallback {
 
@@ -50,10 +51,13 @@ public class ModHudOverlay implements HudRenderCallback {
             }
         }
 
+        /*
         drawContext.drawText(MinecraftClient.getInstance().textRenderer,
                 "vpb: "+ManaUtil.getAmbientSoulsPerBlock(player.getWorld(),player.getBlockPos())+
                 " cv: "+ManaUtil.getMana(player)+"/"+ManaUtil.getMaxMana(player)
                 +" leadspeed: "+ LeadUtil.getPoisoningSpeed(player)+" lead: "+LeadUtil.getPoisoning(player)
-                +" madspeed: "+ LeadUtil.getPoisoningSpeed(player)+" mad: "+LeadUtil.getPoisoning(player),x-100,y-70,0xFFFFFFFF,true);
+                +" madspeed: "+ MadnessUtil.getMadnessSpeed(player)+" mad: "+ MadnessUtil.getMadness(player),x-100,y-70,0xFFFFFFFF,true);
+        */
+
     }
 }

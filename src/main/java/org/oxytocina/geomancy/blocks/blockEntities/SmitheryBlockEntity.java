@@ -294,7 +294,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
                 // mishaps
 
                 int[] mishapTypeWeights = {10,1,10,10,5};
-                int mishapType = Toolbox.SelectWeightedRandomIndex(mishapTypeWeights);
+                int mishapType = Toolbox.selectWeightedRandomIndex(mishapTypeWeights);
 
                 switch(mishapType){
                     // drop ingredient
@@ -368,7 +368,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
             }
         }
 
-        return Toolbox.SelectWeightedRandomIndex(weights,-1);
+        return Toolbox.selectWeightedRandomIndex(weights,-1);
     }
 
     public boolean skillcheckPassed(float skill, ItemStack hammer, LivingEntity hammerer){

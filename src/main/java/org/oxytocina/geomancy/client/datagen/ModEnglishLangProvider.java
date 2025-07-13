@@ -169,6 +169,10 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         // Misc
         add("itemGroup.MODID.main",    "Geomancy");
         add("itemGroup.MODID.jewelry", "Geomancy Jewelry");
+        add("geomancy.message.lead.tingling", "Your fingers are tingling...");
+        add("geomancy.message.lead.nausea", "You feel like throwing up...");
+        add("geomancy.message.lead.poison", "You feel a sharp pain in your head...");
+        add("geomancy.message.lead.joints", "Your joints hurt...");
 
         // Advancements
         {

@@ -2,6 +2,12 @@ package org.oxytocina.geomancy.client.entity;
 
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.MobEntityRenderer;
+import net.minecraft.client.render.entity.ZombieEntityRenderer;
+import net.minecraft.client.render.entity.animation.Animation;
+import net.minecraft.client.render.entity.animation.AnimationHelper;
+import net.minecraft.client.render.entity.animation.Keyframe;
+import net.minecraft.client.render.entity.animation.Transformation;
+import net.minecraft.client.render.entity.model.ZombieEntityModel;
 import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.entity.StellgeEngineerEntity;
@@ -17,6 +23,6 @@ public class StellgeEngineerRenderer extends MobEntityRenderer<StellgeEngineerEn
 
     @Override
     public Identifier getTexture(StellgeEngineerEntity entity) {
-        return Geomancy.locate("textures/entity/stellge_engineer/cube.png");
+        return Geomancy.locate("textures/entity/stellge_engineer/main.png");
     }
 }

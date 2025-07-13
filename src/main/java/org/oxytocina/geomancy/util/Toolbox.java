@@ -51,17 +51,18 @@ public class Toolbox {
             return itemEntity;
     }
 
-    public static int SelectWeightedRandomIndex(int[] weights){
+    public static int selectWeightedRandomIndex(int[] weights){
         Map<Integer,Integer> m = new HashMap<>();
         for (int i = 0; i < weights.length; i++) {
             m.put(i,weights[i]);
         }
 
-        return SelectWeightedRandomIndex(m,-1);
+        return selectWeightedRandomIndex(m,-1);
     }
 
 
-    public static <T> T SelectWeightedRandomIndex(Map<T,Integer> weights, T def){
+    public static <T> T selectWeightedRandomIndex(Map<T,Integer> weights, T def){
+        if(weights.isEmpty()) return def;
         int weightsum = weights.values().stream().mapToInt(a->a).sum();
         int weightpick = random.nextInt(weightsum);
         for(T key : weights.keySet()){
@@ -131,5 +132,9 @@ public class Toolbox {
 
     public static float Lerp(float value, float target, float t){
         return (value * (1.0f - t)) + (target * t);
+    }
+
+    public static double log(double base, double val){
+        return Math.log(val)/Math.log(base);
     }
 }

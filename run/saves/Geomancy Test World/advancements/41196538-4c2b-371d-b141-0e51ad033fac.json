@@ -59,12 +59,6 @@
     },
     "done": true
   },
-  "geomancy:recipes/misc/smithing_artifact_of_iron": {
-    "criteria": {
-      "has_iron_ingot": "2025-06-23 12:25:04 +0200"
-    },
-    "done": true
-  },
   "minecraft:recipes/tools/golden_axe": {
     "criteria": {
       "has_gold_ingot": "2025-06-23 12:25:04 +0200"
@@ -398,6 +392,144 @@
   "minecraft:recipes/combat/diamond_boots": {
     "criteria": {
       "has_diamond": "2025-06-23 12:25:04 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/calibrated_sculk_sensor": {
+    "criteria": {
+      "has_amethyst_shard": "2025-07-11 17:09:20 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/tinted_glass": {
+    "criteria": {
+      "has_amethyst_shard": "2025-07-11 17:09:20 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/octangulite_block_decompress_to_octangulite_ingot": {
+    "criteria": {
+      "has_octangulite_block": "2025-07-11 17:09:20 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/iron_nugget_from_smelting": {
+    "criteria": {
+      "has_iron_pickaxe": "2025-07-11 17:09:20 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/blue_dye": {
+    "criteria": {
+      "has_lapis_lazuli": "2025-07-11 17:09:20 +0200"
+    },
+    "done": true
+  },
+  "minecraft:story/iron_tools": {
+    "criteria": {
+      "iron_pickaxe": "2025-07-11 17:09:20 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/lapis_block": {
+    "criteria": {
+      "has_lapis_lazuli": "2025-07-11 17:09:20 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/flint_and_steel": {
+    "criteria": {
+      "has_obsidian": "2025-07-11 17:09:20 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/raw_octangulite_block_decompress_to_raw_octangulite": {
+    "criteria": {
+      "has_raw_octangulite_block": "2025-07-11 17:09:20 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/jewelry_titanium_pendant": {
+    "criteria": {
+      "has_ingredient": "2025-07-11 17:09:20 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/titanium_ingot_compress_to_titanium_block": {
+    "criteria": {
+      "has_titanium_ingot": "2025-07-11 17:09:20 +0200"
+    },
+    "done": true
+  },
+  "minecraft:story/form_obsidian": {
+    "criteria": {
+      "obsidian": "2025-07-11 17:09:20 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_titanium_necklace": {
+    "criteria": {
+      "default_conditions": "2025-07-11 17:09:20 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_titanium_pendant": {
+    "criteria": {
+      "default_conditions": "2025-07-11 17:09:20 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/chest": {
+    "criteria": {
+      "has_lots_of_items": "2025-07-11 17:09:20 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/emerald_block": {
+    "criteria": {
+      "has_emerald": "2025-07-11 17:09:20 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/spyglass": {
+    "criteria": {
+      "has_amethyst_shard": "2025-07-11 17:09:20 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/amethyst_block": {
+    "criteria": {
+      "has_amethyst_shard": "2025-07-11 17:09:20 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_titanium_ring": {
+    "criteria": {
+      "default_conditions": "2025-07-11 17:09:20 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/iron_nugget_from_blasting": {
+    "criteria": {
+      "has_iron_pickaxe": "2025-07-11 17:09:20 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/enchanting_table": {
+    "criteria": {
+      "has_obsidian": "2025-07-11 17:09:20 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/jewelry_iron_ring": {
+    "criteria": {
+      "has_ingredient": "2025-07-11 17:09:20 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/titanium_ingot_decompress_to_titanium_nugget": {
+    "criteria": {
+      "has_titanium_ingot": "2025-07-11 17:09:20 +0200"
     },
     "done": true
   },

@@ -6,12 +6,15 @@ import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
@@ -26,10 +29,12 @@ import org.oxytocina.geomancy.items.IManaStoringItem;
 import org.oxytocina.geomancy.items.jewelry.JewelryItem;
 import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.registries.ModBiomeTags;
+import oshi.util.tuples.Triplet;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class LeadUtil {
 
@@ -90,6 +95,7 @@ public class LeadUtil {
     }
 
     private static long clearCacheCounter = 0;
+    private static long leadEffectsCounter = 0;
     public static void tick(MinecraftServer server){
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
             LeadUtil.tickLeadPoisoning(player);
@@ -105,6 +111,65 @@ public class LeadUtil {
             cachedAmbientPoison.clear();
             clearCacheCounter=0;
         }
+
+        if(++leadEffectsCounter> 20*5){
+            for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+                LeadUtil.tryLeadEffects(player);
+            }
+            leadEffectsCounter=0;
+        }
+    }
+
+    private static void tryLeadEffects(ServerPlayerEntity player) {
+        float poison = getPoisoning(player);
+        // effect chance asymptotically approaches 100%.
+        // at 100, there is a 20% chance.
+        // at 400, there is a 50% chance.
+        float chance = poison/(poison+400);
+        if(Toolbox.random.nextFloat()>chance) return;
+
+        // effects are defined with severity, which affects at which level of poisoning they can happen,
+        // weight, if it is added to the pool, and the function that happens when it is picked
+        ArrayList<Triplet<Float,Integer, Consumer<ServerPlayerEntity>>> effects = new ArrayList<>();
+
+        // tingling fingers
+        effects.add(new Triplet<>(10f,1, p -> {
+            p.sendMessage(Text.translatable("geomancy.message.lead.tingling"),true);
+        }));
+
+        // nausea
+        effects.add(new Triplet<>(20f,1, p -> {
+            p.sendMessage(Text.translatable("geomancy.message.lead.nausea"),true);
+            p.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA,20*15));
+        }));
+
+        // poison
+        effects.add(new Triplet<>(30f,1, p -> {
+            p.sendMessage(Text.translatable("geomancy.message.lead.poison"),true);
+            p.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON,20*5));
+        }));
+
+        // joints
+        effects.add(new Triplet<>(30f,1, p -> {
+            p.sendMessage(Text.translatable("geomancy.message.lead.joints"),true);
+            p.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE,20*60*4));
+            p.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS,20*60*3));
+        }));
+
+        // add to available pool
+        HashMap<Triplet<Float,Integer, Consumer<ServerPlayerEntity>>,Integer> pickedEffects = new HashMap<>();
+        for (Triplet<Float, Integer, Consumer<ServerPlayerEntity>> t : effects) {
+            if (t.getA() < poison) {
+                pickedEffects.put(t, t.getB());
+            }
+        }
+
+        var picked = Toolbox.selectWeightedRandomIndex(pickedEffects,null);
+        if(picked!=null){
+            picked.getC().accept(player);
+            // trigger lead poisoning advancement
+        }
+
     }
 
     public static void queueRecalculatePoisoningSpeed(PlayerEntity player){
@@ -131,8 +196,9 @@ public class LeadUtil {
 
         float res = 0;
 
-        List<BlockPos> checkedBlockPos = BlockPos.stream(Box.from(new BlockBox(pos)).expand(checkRadius))
-                /*.filter(pos3 -> isPoisonous(world.getBlockState(pos3)))*/.toList();
+        List<BlockPos> checkedBlockPos = new ArrayList<>();
+        BlockPos.stream(Box.from(new BlockBox(pos)).expand(checkRadius))
+                .filter(pos3 -> isPoisonous(world.getBlockState(pos3))).forEach((blockPos -> checkedBlockPos.add(blockPos.mutableCopy())));
         for(var pos2 : checkedBlockPos)
         {
             BlockState state = world.getBlockState(pos2);
@@ -156,10 +222,16 @@ public class LeadUtil {
 
         float effectivePoisoningSpeed = playerPoisoningSpeed+ambientPoisoningSpeed;
 
-        effectivePoisoningSpeed *= 0.01f;
+        // make extreme values have less of an impact
+        final double g = 0.03;
+        effectivePoisoningSpeed = (float)Toolbox.log(1+g,effectivePoisoningSpeed*g+1);
+
+        // slow poisoning down a lot
+        effectivePoisoningSpeed *= 0.001f;
 
         // prevents poisoning from climbing endlessly
-        final float lerpPerTick = 0.001f;
+        // healing is much less effective if you're still exposed
+        final float lerpPerTick = 0.0001f / (1+effectivePoisoningSpeed);
 
         float newPoisoning = Toolbox.Lerp(prevPoisoning,0,lerpPerTick) + effectivePoisoningSpeed;
 
