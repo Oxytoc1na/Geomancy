@@ -8,17 +8,10 @@ import org.oxytocina.geomancy.entity.ModEntityTypes;
 
 public class ModEntityRenderers {
 
-    public static final EntityModelLayer MODEL_CUBE_LAYER = new EntityModelLayer(Geomancy.locate("cube"), "main");
+    public static final EntityModelLayer MODEL_STELLGE_ENGINEER_LAYER = new EntityModelLayer(Geomancy.locate("stellge_engineer"), "main");
 
     public static void register(){
-        /*
-         * Registers our Cube Entity's renderer, which provides a model and texture for the entity.
-         *
-         * Entity Renderers can also manipulate the model before it renders based on entity context (EndermanEntityRenderer#render).
-         */
-        // In 1.17, use EntityRendererRegistry.register (seen below) instead of EntityRendererRegistry.INSTANCE.register (seen above)
         EntityRendererRegistry.register(ModEntityTypes.STELLGE_ENGINEER, StellgeEngineerRenderer::new);
-
-        EntityModelLayerRegistry.registerModelLayer(MODEL_CUBE_LAYER, StellgeEngineerModel::getTexturedModelData);
+        EntityModelLayerRegistry.registerModelLayer(MODEL_STELLGE_ENGINEER_LAYER, StellgeEngineerModel::getTexturedModelData);
     }
 }

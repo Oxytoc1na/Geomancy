@@ -51,7 +51,12 @@ public class StellgeEngineerEntity extends HostileEntity implements Angerable, I
     private UUID angryAt;
     private static final UniformIntProvider ANGER_PASSING_COOLDOWN_RANGE = TimeHelper.betweenSeconds(4, 6);
     private int angerPassingCooldown;
+
     public AnimationState idleAnimationState = new AnimationState();
+
+    private void setupAnimationStates(){
+        this.idleAnimationState.startIfNotRunning(this.age);
+    }
 
     @Override
     public void setAngryAt(@Nullable UUID angryAt) {
@@ -259,6 +264,10 @@ public class StellgeEngineerEntity extends HostileEntity implements Angerable, I
 
         }
 
+        if(this.getWorld().isClient){
+            setupAnimationStates();
+        }
+
         super.tick();
     }
 
@@ -277,33 +286,33 @@ public class StellgeEngineerEntity extends HostileEntity implements Angerable, I
 
             if (livingEntity != null
                     && this.getWorld().getDifficulty() == Difficulty.HARD
-                    && this.random.nextFloat() < this.getAttributeValue(EntityAttributes.ZOMBIE_SPAWN_REINFORCEMENTS)
+                    && this.random.nextFloat() < this.getAttributeValue(ModEntityAttributes.STELLGE_SPAWN_REINFORCEMENTS)
                     && this.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_SPAWNING)) {
                 int i = MathHelper.floor(this.getX());
                 int j = MathHelper.floor(this.getY());
                 int k = MathHelper.floor(this.getZ());
-                ZombieEntity zombieEntity = new ZombieEntity(this.getWorld());
+                ZombieEntity reinforcementEntity = new ZombieEntity(this.getWorld());
 
                 for (int l = 0; l < 50; l++) {
                     int m = i + MathHelper.nextInt(this.random, 7, 40) * MathHelper.nextInt(this.random, -1, 1);
                     int n = j + MathHelper.nextInt(this.random, 7, 40) * MathHelper.nextInt(this.random, -1, 1);
                     int o = k + MathHelper.nextInt(this.random, 7, 40) * MathHelper.nextInt(this.random, -1, 1);
                     BlockPos blockPos = new BlockPos(m, n, o);
-                    EntityType<?> entityType = zombieEntity.getType();
+                    EntityType<?> entityType = reinforcementEntity.getType();
                     SpawnRestriction.Location location = SpawnRestriction.getLocation(entityType);
                     if (SpawnHelper.canSpawn(location, this.getWorld(), blockPos, entityType)
                             && SpawnRestriction.canSpawn(entityType, serverWorld, SpawnReason.REINFORCEMENT, blockPos, this.getWorld().random)) {
-                        zombieEntity.setPosition(m, n, o);
+                        reinforcementEntity.setPosition(m, n, o);
                         if (!this.getWorld().isPlayerInRange(m, n, o, 7.0)
-                                && this.getWorld().doesNotIntersectEntities(zombieEntity)
-                                && this.getWorld().isSpaceEmpty(zombieEntity)
-                                && !this.getWorld().containsFluid(zombieEntity.getBoundingBox())) {
-                            zombieEntity.setTarget(livingEntity);
-                            zombieEntity.initialize(serverWorld, this.getWorld().getLocalDifficulty(zombieEntity.getBlockPos()), SpawnReason.REINFORCEMENT, null, null);
-                            serverWorld.spawnEntityAndPassengers(zombieEntity);
-                            this.getAttributeInstance(EntityAttributes.ZOMBIE_SPAWN_REINFORCEMENTS)
+                                && this.getWorld().doesNotIntersectEntities(reinforcementEntity)
+                                && this.getWorld().isSpaceEmpty(reinforcementEntity)
+                                && !this.getWorld().containsFluid(reinforcementEntity.getBoundingBox())) {
+                            reinforcementEntity.setTarget(livingEntity);
+                            reinforcementEntity.initialize(serverWorld, this.getWorld().getLocalDifficulty(reinforcementEntity.getBlockPos()), SpawnReason.REINFORCEMENT, null, null);
+                            serverWorld.spawnEntityAndPassengers(reinforcementEntity);
+                            this.getAttributeInstance(ModEntityAttributes.STELLGE_SPAWN_REINFORCEMENTS)
                                     .addPersistentModifier(new EntityAttributeModifier("Zombie reinforcement caller charge", -0.05F, EntityAttributeModifier.Operation.ADDITION));
-                            zombieEntity.getAttributeInstance(EntityAttributes.ZOMBIE_SPAWN_REINFORCEMENTS)
+                            reinforcementEntity.getAttributeInstance(ModEntityAttributes.STELLGE_SPAWN_REINFORCEMENTS)
                                     .addPersistentModifier(new EntityAttributeModifier("Zombie reinforcement callee charge", -0.05F, EntityAttributeModifier.Operation.ADDITION));
                             break;
                         }
@@ -329,12 +338,12 @@ public class StellgeEngineerEntity extends HostileEntity implements Angerable, I
     }
 
     protected SoundEvent getStepSound() {
-        return SoundEvents.ENTITY_ZOMBIE_STEP;
+        return null;
     }
 
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(this.getStepSound(), 0.15F, 1.0F);
+        //this.playSound(this.getStepSound(), 0.15F, 1.0F);
     }
 
     @Override
@@ -345,27 +354,6 @@ public class StellgeEngineerEntity extends HostileEntity implements Angerable, I
     @Override
     public boolean onKilledOther(ServerWorld world, LivingEntity other) {
         boolean bl = super.onKilledOther(world, other);
-        if ((world.getDifficulty() == Difficulty.NORMAL || world.getDifficulty() == Difficulty.HARD) && other instanceof VillagerEntity villagerEntity) {
-            if (world.getDifficulty() != Difficulty.HARD && this.random.nextBoolean()) {
-                return bl;
-            }
-
-            ZombieVillagerEntity zombieVillagerEntity = villagerEntity.convertTo(EntityType.ZOMBIE_VILLAGER, false);
-            if (zombieVillagerEntity != null) {
-                zombieVillagerEntity.initialize(
-                        world, world.getLocalDifficulty(zombieVillagerEntity.getBlockPos()), SpawnReason.CONVERSION, new ZombieEntity.ZombieData(false, true), null
-                );
-                zombieVillagerEntity.setVillagerData(villagerEntity.getVillagerData());
-                zombieVillagerEntity.setGossipData(villagerEntity.getGossip().serialize(NbtOps.INSTANCE));
-                zombieVillagerEntity.setOfferData(villagerEntity.getOffers().toNbt());
-                zombieVillagerEntity.setXp(villagerEntity.getExperience());
-                if (!this.isSilent()) {
-                    world.syncWorldEvent(null, WorldEvents.ZOMBIE_INFECTS_VILLAGER, this.getBlockPos(), 0);
-                }
-
-                bl = false;
-            }
-        }
 
         return bl;
     }
@@ -379,8 +367,6 @@ public class StellgeEngineerEntity extends HostileEntity implements Angerable, I
         entityData = super.initialize(world, difficulty, spawnReason, entityData, entityNbt);
         float f = difficulty.getClampedLocalDifficulty();
         this.setCanPickUpLoot(random.nextFloat() < 0.55F * f);
-
-        this.idleAnimationState.start(0);
 
         this.applyAttributeModifiers(f);
         return entityData;
