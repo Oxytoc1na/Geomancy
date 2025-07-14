@@ -13,6 +13,7 @@ base {
 
 fabricApi {
     configureDataGeneration {
+        client = true
         modId = "geomancy"
     }
 }
@@ -49,7 +50,7 @@ dependencies {
 
     modImplementation "dev.emi:trinkets:${trinkets_version}"
 
-    modImplementation ("com.klikli_dev:modonomicon-${minecraft_version}-fabric:${modonomicon_version}"){transitive=false}
+    modImplementation("com.klikli_dev:modonomicon-${minecraft_version}-fabric:${modonomicon_version}") { exclude(group: "com.klikli_dev") exclude(group: "mezz.jei") }
 
 }
 
