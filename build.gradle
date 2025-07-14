@@ -13,7 +13,6 @@ base {
 
 fabricApi {
     configureDataGeneration {
-        client = true
         modId = "geomancy"
     }
 }
