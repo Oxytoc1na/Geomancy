@@ -28,6 +28,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.enchantments.ModEnchantments;
+import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.util.Toolbox;
 
 import java.text.Normalizer;
@@ -82,6 +83,10 @@ public class GemSlot {
         register(Settings.create(Items.EMERALD).setColor(0,1,0).setDifficulty(15).setProgressCost(10).withGenericTooltip(Formatting.GREEN,GemSlot::QualityRounded));
         // more xp drops
         register(Settings.create(Items.LAPIS_LAZULI).setColor(0,0,1).setDifficulty(10).setProgressCost(10).withGenericTooltip(Formatting.BLUE,GemSlot::QualityPercent));
+        register(Settings.create(ModItems.TOURMALINE).setColor(0,0,1).setDifficulty(10).setProgressCost(10).withGenericTooltip(Formatting.BLUE,GemSlot::QualityPercent).withGenericStatusEffectFunction(StatusEffects.SPEED,-1,0.01f));
+        register(Settings.create(ModItems.ORTHOCLASE).setColor(0,0,1).setDifficulty(10).setProgressCost(10).withGenericTooltip(Formatting.GRAY,GemSlot::QualityPercent));
+        register(Settings.create(ModItems.PERIDOT).setColor(0,0,1).setDifficulty(10).setProgressCost(10).withGenericTooltip(Formatting.GREEN,GemSlot::QualityPercent));
+        register(Settings.create(ModItems.AXINITE).setColor(0,0,1).setDifficulty(10).setProgressCost(10).withGenericTooltip(Formatting.BLUE,GemSlot::QualityPercent).withGenericStatusEffectFunction(StatusEffects.HASTE,-1,0.01f));
         // quicker mana charge
         register(Settings.create(Items.AMETHYST_SHARD).setColor(0x8D6ACC).setDifficulty(30).setProgressCost(30).withGenericTooltip(Formatting.DARK_PURPLE,GemSlot::QualityPercent));
         // larger mana storage

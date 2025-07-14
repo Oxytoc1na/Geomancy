@@ -111,6 +111,54 @@
         "type": "modonomicon:none"
       },
       "item": {
+        "item": "geomancy:tourmaline"
+      },
+      "text": "book.geomancy.guidebook.smithing.gems.tourmaline.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "item": {
+        "item": "geomancy:axinite"
+      },
+      "text": "book.geomancy.guidebook.smithing.gems.axinite.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "item": {
+        "item": "geomancy:orthoclase"
+      },
+      "text": "book.geomancy.guidebook.smithing.gems.orthoclase.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "item": {
+        "item": "geomancy:peridot"
+      },
+      "text": "book.geomancy.guidebook.smithing.gems.peridot.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "item": {
         "item": "minecraft:prismarine_crystals"
       },
       "text": "book.geomancy.guidebook.smithing.gems.prismarine_crystals.text",

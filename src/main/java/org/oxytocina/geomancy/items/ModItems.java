@@ -75,6 +75,13 @@ public class ModItems {
     public static final LeadItem LEAD_INGOT = (LeadItem) register("lead_ingot",new LeadItem(new FabricItemSettings().rarity(Rarity.COMMON).fireproof(),1/9f));
     public static final LeadItem LEAD_NUGGET = (LeadItem) register("lead_nugget",new LeadItem(new FabricItemSettings().rarity(Rarity.COMMON).fireproof(),1));
 
+    // gems
+    public static final Item TOURMALINE = register("tourmaline",new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof()));
+    public static final Item ORTHOCLASE = register("orthoclase",new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof()));
+    public static final Item PERIDOT = register("peridot",new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof()));
+    public static final Item AXINITE = register("axinite",new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof()));
+
+
     // guidebook and lore
     public static final GuidebookItem GUIDE_BOOK = (GuidebookItem)register("guidebook",new GuidebookItem(new FabricItemSettings()),new ExtraItemSettings());
     public static final LorebookItem LORE_BOOK_GOLDSMITH_1 = (LorebookItem)register("lorebook_goldsmith_1",new LorebookItem(new FabricItemSettings(),"lore/goldsmith_1"),new ExtraItemSettings());

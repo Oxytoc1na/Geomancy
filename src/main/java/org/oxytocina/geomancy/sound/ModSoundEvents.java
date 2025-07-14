@@ -39,7 +39,7 @@ public class ModSoundEvents {
     public static final SoundEvent ENTITY_STELLGE_ENGINEER_HURT =   register("entity_stellge_engineer_hurt",new ExtraData().count(1).prefix("geomancy:mob/stellge_engineer/hurt"));
     public static final SoundEvent ENTITY_STELLGE_ENGINEER_DEATH =  register("entity_stellge_engineer_death",new ExtraData().count(1).prefix("geomancy:mob/stellge_engineer/death"));
 
-    public static final SoundEvent WHISPERS = register("whispers");
+    public static final SoundEvent WHISPERS = register("whispers",new ExtraData().count(4).prefix("geomancy:octangulite/whispers_single"));
 
     public static void register(){
 

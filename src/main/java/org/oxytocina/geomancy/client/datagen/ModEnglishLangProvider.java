@@ -65,6 +65,12 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("item.MODID.octangulite_ingot"      , "Octangulite Ingot");
             add("item.MODID.octangulite_nugget"     , "Octangulite Nugget");
 
+            add("item.MODID.tourmaline" , "Tourmaline");
+            add("item.MODID.orthoclase" , "Orthoclase");
+            add("item.MODID.peridot"    , "Peridot");
+            add("item.MODID.axinite"    , "Axinite");
+
+
             add("item.MODID.gold_bucket"            , "Molten Gold Bucket");
             add("item.MODID.music_disc_diggy"       , "Music Disc");
             add("item.MODID.music_disc_diggy.desc"  , "Diggy");
@@ -309,10 +315,10 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                 addGemStatsText(getS("gb:sm")+"gems.heart_of_the_sea.text", Items.HEART_OF_THE_SEA,"Provides water breathing.");
                 addGemStatsText(getS("gb:sm")+"gems.ender_pearl.text", Items.ENDER_PEARL,"Provides water breathing.");
                 addGemStatsText(getS("gb:sm")+"gems.end_crystal.text", Items.END_CRYSTAL,"Lets you teleport.");
-                //addGemStatsText(getS("gb:sm")+"gems.tourmaline.text", Items.HEART_OF_THE_SEA,"Makes you move faster.");
-                //addGemStatsText(getS("gb:sm")+"gems.axinite.text", Items.HEART_OF_THE_SEA,"Makes you mine faster.");
-                //addGemStatsText(getS("gb:sm")+"gems.orthoclase.text", Items.HEART_OF_THE_SEA,"Provides debuff resistance.");
-                //addGemStatsText(getS("gb:sm")+"gems.peridot.text", Items.HEART_OF_THE_SEA,"Increases harvest yield.");
+                addGemStatsText(getS("gb:sm")+"gems.tourmaline.text", Items.HEART_OF_THE_SEA,"Makes you move faster.");
+                addGemStatsText(getS("gb:sm")+"gems.axinite.text", Items.HEART_OF_THE_SEA,"Makes you mine faster.");
+                addGemStatsText(getS("gb:sm")+"gems.orthoclase.text", Items.HEART_OF_THE_SEA,"Provides debuff resistance.");
+                addGemStatsText(getS("gb:sm")+"gems.peridot.text", Items.HEART_OF_THE_SEA,"Increases harvest yield.");
                 addGemStatsText(getS("gb:sm")+"gems.prismarine_crystals.text", Items.PRISMARINE_CRYSTALS,"Makes you swim faster.");
                 addGemStatsText(getS("gb:sm")+"gems.nether_star.text", Items.NETHER_STAR,"Effects resemble those of a beacon, but vary depending on the base material of the jewelry.");
                 addGemStatsText(getS("gb:sm")+"gems.ender_eye.text", Items.ENDER_EYE,"Lets you see entities through walls.");
@@ -446,11 +452,11 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         else if(progressCost > 15) progressText = getS("gems.progress.prolonging");
         progressText = "[#]("+Integer.toHexString(progressColor)+")"+progressText+"[#]()";
 
-        res += "\\\nDifficulty: "+ difficultyText;
+        res += "\\\n\\\nDifficulty: "+ difficultyText;
         res += "\\\nComplexity: "+ progressText;
 
         if(!Objects.equals(suffix, ""))
-            res+="\\\n"+suffix;
+            res+="\\\n\\\n"+suffix;
         add(key,res);
     }
 }

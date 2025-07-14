@@ -7,7 +7,10 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.ServerAdvancementLoader;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
@@ -16,8 +19,6 @@ import org.joml.Vector3f;
 import org.oxytocina.geomancy.Geomancy;
 
 import java.awt.*;
-import java.lang.reflect.Array;
-import java.security.Key;
 import java.util.*;
 
 public class Toolbox {
@@ -206,5 +207,9 @@ public class Toolbox {
                 this.color = col;
             }
         }
+    }
+
+    public static void playSound(SoundEvent event, World world, BlockPos pos, SoundCategory cat, float volume, float pitch){
+        world.playSound(null,pos,event,cat,volume,pitch);
     }
 }
