@@ -289,15 +289,15 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                 addShort("gems.progress.odyssey","odyssey");
 
                 addGemStatsText(getS("gb:sm")+"gems.diamond.text", Items.DIAMOND,"provides two armor points.");
-                addGemStatsText(getS("gb:sm")+"gems.emerald.text", Items.EMERALD,"???");
-                addGemStatsText(getS("gb:sm")+"gems.lapis_lazuli.text", Items.LAPIS_LAZULI,"???");
+                addGemStatsText(getS("gb:sm")+"gems.emerald.text", Items.EMERALD,"increases fortune.");
+                addGemStatsText(getS("gb:sm")+"gems.lapis_lazuli.text", Items.LAPIS_LAZULI,"increases XP drops.");
+                addGemStatsText(getS("gb:sm")+"gems.amethyst_shard.text", Items.AMETHYST_SHARD,"???");
             }
 
             add(getS("gb:oc")+"name", "Octangulite");
             {
                 addGBEntryAndInfo(getS("gb:oc")+"intro","Octangulite");
                 add(getS("gb:oc")+"intro.description"  , "");
-                add(getS("gb:oc")+"intro.info.title", "Octangulite");
                 add(getS("gb:oc")+"intro.info.text", "This... strange substance seems to shift in color when I don't look. Its hardness also doesn't seem to stay consistent. It feels out of this world. I am not quite sure what to do with it.");
                 add(getS("gb:oc")+"intro.raw_octangulite.text", "Undulating.");
             }
@@ -305,12 +305,36 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add(getS("gb:lr")+"name", "History");
             {
                 add("item.MODID.lorebook_goldsmith_1","Chronicles of the Goldsmith Pt. 1");
-                add("item.MODID.lorebook_goldsmith_1.tooltip","Notes on Minerals");
+                add("item.MODID.lorebook_goldsmith_1.tooltip","Notes from a bygone era");
                 addGBEntryAndInfo(getS("gb:lr")+"goldsmith_1","Chronicles of the Goldsmith Pt. 1");
                 add(getS("gb:lr")+"goldsmith_1.description"  , "");
-                add(getS("gb:lr")+"goldsmith_1.1.text", "");
-                add(getS("gb:lr")+"goldsmith_1.2.text", "");
-                add(getS("gb:lr")+"goldsmith_1.3.text", "");
+
+
+                add(getS("gb:lr")+"goldsmith_1.1.text",
+                        """
+                          I will be writing down notes on the different kinds of metals I have been using to make jewelry here.
+                          \\
+                          []()
+                          - [Gold](item://minecraft:gold_ingot): A classic. Can hold a good amount of gems. Relatively easy to work with. Abundant.
+                          \\
+                          []()
+                          - [Iron](item://minecraft:iron_ingot): A little odd. Pretty terrible capacity. Common.
+                          """);
+                add(getS("gb:lr")+"goldsmith_1.2.text", """
+                        - [Copper](item://minecraft:copper_ingot): Makes me itchy. Pretty terrible capacity. Abundant.
+                        \\
+                        []()
+                        - [Titanium](item://geomancy:titanium_ingot): The tough one. Great capacity. Hard to work with. Rare.
+                        \\
+                        []()
+                        - [Mithril](item://geomancy:mithril_ingot): Legendary. Great capacity. Hard to work with. Incredibly rare.
+                        """);
+                add(getS("gb:lr")+"goldsmith_1.3.text", """
+                        - [Lead](item://geomancy:lead_ingot): DO NOT USE. Workable and common, but will slowly poison anyone who touches it. Only use for people I don't like.
+                        \\
+                        []()
+                        - [Octangulite](item://geomancy:octangulite_ingot): Never used or seen it. Folklore describes it as cursed. Would like to see what the fuzz is all about some day.
+                        """);
 
             }
 
@@ -329,7 +353,11 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
     // helper function
     void add(String key, String value){
         key=key.replace("MODID", Geomancy.MOD_ID);
-        tb.add(key,value);
+        tb.add(key,value
+                /*.replace("\n","     \n")
+                .replace("\r","     \n")
+                .replace(System.lineSeparator(),"     \n")*/
+        );
     }
 
     void add(String[] keys, String value){
@@ -378,11 +406,11 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         else if(progressCost > 35) progressText = getS("gems.difficulty.molasses");
         else if(progressCost > 15) progressText = getS("gems.difficulty.prolonging");
 
-        res += "\r\rDifficulty: "+ difficultyText;
-        res += "\rComplexity: "+ progressText;
+        res += "     \n     \n     \nDifficulty: "+ difficultyText;
+        res += "     \n     \nComplexity: "+ progressText;
 
         if(!Objects.equals(suffix, ""))
-            res+="\r\r"+suffix;
+            res+="     \n     \n"+suffix;
         add(key,res);
     }
 }
