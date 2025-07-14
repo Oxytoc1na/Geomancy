@@ -16,6 +16,8 @@ import org.joml.Vector3f;
 import org.oxytocina.geomancy.Geomancy;
 
 import java.awt.*;
+import java.lang.reflect.Array;
+import java.security.Key;
 import java.util.*;
 
 public class Toolbox {
@@ -95,6 +97,10 @@ public class Toolbox {
 
     public static Identifier locate(String string){return Geomancy.locate(string);}
 
+    public static int colorFromRGB(Vector3f colVec){
+        return colorFromRGB(colVec.x,colVec.y,colVec.z);
+    }
+
     public static int colorFromRGB(float r, float g, float b){
         return colorFromRGBA(r,g,b,1);
     }
@@ -134,6 +140,20 @@ public class Toolbox {
         return (value * (1.0f - t)) + (target * t);
     }
 
+    public static int LerpColor(int col1, int col2, float t){
+        Vector3f vec1 = colorIntToVec(col1);
+        Vector3f vec2 = colorIntToVec(col2);
+        return colorFromRGB(lerpVector(vec1,vec2,t));
+    }
+
+    public static Vector3f lerpVector(Vector3f vec1, Vector3f vec2, float t){
+        return new Vector3f(
+                Lerp(vec1.x,vec2.x,t),
+                Lerp(vec1.y,vec2.y,t),
+                Lerp(vec1.z,vec2.z,t)
+        );
+    }
+
     public static double log(double base, double val){
         return Math.log(val)/Math.log(base);
     }
@@ -141,5 +161,50 @@ public class Toolbox {
     public static <T> T ifNotNullThenElse(T val, T def){
         if(val==null) return def;
         return val;
+    }
+
+    public static int sign(float f){
+        return f>0?1:f<0?-1:0;
+    }
+
+    public static GradientBuilder gradient(){return new GradientBuilder();}
+
+    public static class GradientBuilder{
+        public ArrayList<KeyFrame> keyFrames = new ArrayList<>();
+
+        public GradientBuilder(){
+
+        }
+
+        public GradientBuilder add(float p, int col){
+            keyFrames.add(new KeyFrame(p,col));
+            keyFrames.sort(((o1, o2) -> Toolbox.sign(o1.position-o2.position)));
+            return this;
+        }
+
+        public int get(float position){
+            if(keyFrames.isEmpty()) return 0x000000;
+
+            for (int i = 0; i < keyFrames.size()-1; i++) {
+                if(keyFrames.get(i).position>position){
+                    KeyFrame frame1 = keyFrames.get(i-1);
+                    KeyFrame frame2 = keyFrames.get(i);
+
+                    return LerpColor(frame1.color,frame2.color,(position-frame1.position)/(frame2.position-frame1.position));
+                }
+            }
+
+            return keyFrames.get(keyFrames.size()-1).color;
+        }
+
+        public static class KeyFrame{
+            public float position;
+            public int color;
+
+            public KeyFrame(float p, int col){
+                this.position = p;
+                this.color = col;
+            }
+        }
     }
 }

@@ -12,6 +12,7 @@ import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.event.KeyInputHandler;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.jewelry.GemSlot;
+import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.HashMap;
 import java.util.Objects;
@@ -107,10 +108,23 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("tooltip.geomancy.jewelry.nogems"   ,"No Gems");
             add("tooltip.geomancy.jewelry.pendant1" ,"Empowers other worn gems of the");
             add("tooltip.geomancy.jewelry.pendant2" ,"same type as slotted in this item");
+
             add("tooltip.geomancy.jewelry.gemeffect.diamond"        ,"provides %1$s armor");
             add("tooltip.geomancy.jewelry.gemeffect.lapis_lazuli"   ,"increases XP drops by %1$s%%");
             add("tooltip.geomancy.jewelry.gemeffect.emerald"        ,"increases your fortune by %1$s levels");
-            add("tooltip.geomancy.jewelry.gemeffect.amethyst_shard" ,"TODO, quality: %1$s");
+            add("tooltip.geomancy.jewelry.gemeffect.amethyst_shard" ,"increases soul regeneration speed of this item");
+            add("tooltip.geomancy.jewelry.gemeffect.heart_of_the_sea","provides water breathing");
+            add("tooltip.geomancy.jewelry.gemeffect.ender_pearl"    ,"Teleport up to %1$s blocks with a hotkey");
+            add("tooltip.geomancy.jewelry.gemeffect.end_crystal"    ,"provides level %1$s regeneration");
+            add("tooltip.geomancy.jewelry.gemeffect.tourmaline"     ,"makes you %1$s%% faster on land");
+            add("tooltip.geomancy.jewelry.gemeffect.axinite"        ,"makes you mine %1$s%% faster");
+            add("tooltip.geomancy.jewelry.gemeffect.orthoclase"     ,"makes you %1$s%% resistant to debuffs");
+            add("tooltip.geomancy.jewelry.gemeffect.peridot"        ,"makes your harvests more bountiful");
+            add("tooltip.geomancy.jewelry.gemeffect.prismarine_crystals","makes you %1$s%% faster in water");
+            add("tooltip.geomancy.jewelry.gemeffect.nether_star"    ,"provides effects depending on the base material");
+            add("tooltip.geomancy.jewelry.gemeffect.ender_eye"      ,"highlights mobs in a %1$s block radius");
+            add("tooltip.geomancy.jewelry.gemeffect.echo_shard"     ,"increases soul storage size of this item");
+
             add("tooltip.geomancy.jewelry.unsmith"  ,"Salvages gems");
             add("tooltip.geomancy.jewelry.quality"  ,"Quality");
 
@@ -288,10 +302,21 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                 addShort("gems.progress.molasses","molasses");
                 addShort("gems.progress.odyssey","odyssey");
 
-                addGemStatsText(getS("gb:sm")+"gems.diamond.text", Items.DIAMOND,"provides two armor points.");
-                addGemStatsText(getS("gb:sm")+"gems.emerald.text", Items.EMERALD,"increases fortune.");
-                addGemStatsText(getS("gb:sm")+"gems.lapis_lazuli.text", Items.LAPIS_LAZULI,"increases XP drops.");
-                addGemStatsText(getS("gb:sm")+"gems.amethyst_shard.text", Items.AMETHYST_SHARD,"???");
+                addGemStatsText(getS("gb:sm")+"gems.diamond.text", Items.DIAMOND,"Provides two armor points.");
+                addGemStatsText(getS("gb:sm")+"gems.emerald.text", Items.EMERALD,"Increases fortune.");
+                addGemStatsText(getS("gb:sm")+"gems.lapis_lazuli.text", Items.LAPIS_LAZULI,"Increases XP drops.");
+                addGemStatsText(getS("gb:sm")+"gems.amethyst_shard.text", Items.AMETHYST_SHARD,"Increases the items aura regeneration speed");
+                addGemStatsText(getS("gb:sm")+"gems.heart_of_the_sea.text", Items.HEART_OF_THE_SEA,"Provides water breathing.");
+                addGemStatsText(getS("gb:sm")+"gems.ender_pearl.text", Items.ENDER_PEARL,"Provides water breathing.");
+                addGemStatsText(getS("gb:sm")+"gems.end_crystal.text", Items.END_CRYSTAL,"Lets you teleport.");
+                //addGemStatsText(getS("gb:sm")+"gems.tourmaline.text", Items.HEART_OF_THE_SEA,"Makes you move faster.");
+                //addGemStatsText(getS("gb:sm")+"gems.axinite.text", Items.HEART_OF_THE_SEA,"Makes you mine faster.");
+                //addGemStatsText(getS("gb:sm")+"gems.orthoclase.text", Items.HEART_OF_THE_SEA,"Provides debuff resistance.");
+                //addGemStatsText(getS("gb:sm")+"gems.peridot.text", Items.HEART_OF_THE_SEA,"Increases harvest yield.");
+                addGemStatsText(getS("gb:sm")+"gems.prismarine_crystals.text", Items.PRISMARINE_CRYSTALS,"Makes you swim faster.");
+                addGemStatsText(getS("gb:sm")+"gems.nether_star.text", Items.NETHER_STAR,"Effects resemble those of a beacon, but vary depending on the base material of the jewelry.");
+                addGemStatsText(getS("gb:sm")+"gems.ender_eye.text", Items.ENDER_EYE,"Lets you see entities through walls.");
+                addGemStatsText(getS("gb:sm")+"gems.echo_shard.text", Items.ECHO_SHARD,"Increases the size of the items aura.");
             }
 
             add(getS("gb:oc")+"name", "Octangulite");
@@ -394,23 +419,38 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
     void addGemStatsText(String key, Item gemItem, String prefix, String suffix){
         String res = prefix;
 
-        String difficultyText = getS("gems.difficulty.negligible");
+
         float difficulty = GemSlot.getGemDifficulty(gemItem.getDefaultStack());
+        int difficultyColor = Toolbox.gradient()
+                .add(0,0x00C917)
+                .add(5,0xDAE500)
+                .add(20,0xFF1500)
+                .add(50,0xB200FF)
+                .get(difficulty) & 0x00FFFFFF;
+        String difficultyText = getS("gems.difficulty.negligible");
         if(difficulty > 50) difficultyText = getS("gems.difficulty.legendary");
         else if(difficulty > 20) difficultyText = getS("gems.difficulty.immense");
         else if(difficulty > 5) difficultyText = getS("gems.difficulty.noticeable");
+        difficultyText = "[#]("+Integer.toHexString(difficultyColor)+")"+difficultyText+"[#]()";
 
-        String progressText = getS("gems.difficulty.negligible");
         float progressCost = GemSlot.getGemProgressCost(gemItem.getDefaultStack());
-        if(progressCost > 100) progressText = getS("gems.difficulty.odyssey");
-        else if(progressCost > 35) progressText = getS("gems.difficulty.molasses");
-        else if(progressCost > 15) progressText = getS("gems.difficulty.prolonging");
+        int progressColor = Toolbox.gradient()
+                .add(0,0x00C917)
+                .add(15,0xDAE500)
+                .add(35,0xFF1500)
+                .add(100,0xB200FF)
+                .get(progressCost) & 0x00FFFFFF;
+        String progressText = getS("gems.progress.negligible");
+        if(progressCost > 100) progressText = getS("gems.progress.odyssey");
+        else if(progressCost > 35) progressText = getS("gems.progress.molasses");
+        else if(progressCost > 15) progressText = getS("gems.progress.prolonging");
+        progressText = "[#]("+Integer.toHexString(progressColor)+")"+progressText+"[#]()";
 
-        res += "     \n     \n     \nDifficulty: "+ difficultyText;
-        res += "     \n     \nComplexity: "+ progressText;
+        res += "\\\nDifficulty: "+ difficultyText;
+        res += "\\\nComplexity: "+ progressText;
 
         if(!Objects.equals(suffix, ""))
-            res+="     \n     \n"+suffix;
+            res+="\\\n"+suffix;
         add(key,res);
     }
 }
