@@ -46,11 +46,14 @@ public class SpellComponent {
         readNbt(nbt);
     }
 
-    public void run(ItemStack casterItem, ItemStack containerItem, LivingEntity casterEntity){
+    public void preRunSetup(ItemStack casterItem, ItemStack containerItem, LivingEntity casterEntity){
         this.castingItem=casterItem;
         this.spellStorageItem=containerItem;
         this.casterEntity=casterEntity;
         this.world=casterEntity.getWorld();
+    }
+
+    public void run(){
         onSpellInit();
     }
 

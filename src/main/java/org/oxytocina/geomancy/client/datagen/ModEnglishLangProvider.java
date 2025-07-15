@@ -146,7 +146,10 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.spellcomponent.empty",               "empty");
             // flow control
             add("MODID.spellcomponent.conveyor",            "conveyor");
+            add("MODID.tooltip.spellcomponent.conveyor",    "outputs its input");
             add("MODID.spellcomponent.gate",                "gate");
+            add("MODID.tooltip.spellcomponent.gate",        "outputs its input if gate is true");
+            add("MODID.spellcomponent.for",                 "for");
             // getters
             add("MODID.spellcomponent.entity_caster",       "caster");
             add("MODID.spellcomponent.vector_entitypos",    "entity position");
@@ -161,6 +164,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.spellcomponent.vector_build",        "build vector");
             // effectors
             add("MODID.spellcomponent.print",               "print");
+            add("MODID.spellcomponent.fireball",            "fireball");
 
         }
 

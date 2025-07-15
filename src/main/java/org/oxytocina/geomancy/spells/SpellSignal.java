@@ -61,7 +61,7 @@ public class SpellSignal {
     }
 
     public static SpellSignal createVector(Vec3d defaultValue) {
-        return new SpellSignal(Type.UUID,"uuid",0,"",null,defaultValue);
+        return new SpellSignal(Type.Vector,"vec",0,"",null,defaultValue);
     }
 
     public SpellSignal named(String name){

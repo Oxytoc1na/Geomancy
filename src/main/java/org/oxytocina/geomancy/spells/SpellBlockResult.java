@@ -1,6 +1,9 @@
 package org.oxytocina.geomancy.spells;
 
+import net.minecraft.util.math.Vec3d;
+
 import java.util.HashMap;
+import java.util.UUID;
 
 public class SpellBlockResult {
     public HashMap<String,SpellSignal> vars;
@@ -16,5 +19,37 @@ public class SpellBlockResult {
 
     public SpellBlockResult(SpellBlockArgs args){
         this.vars=args.vars;
+    }
+
+    public void add(SpellSignal signal){
+        vars.put(signal.name,signal);
+    }
+
+    public void add(String name, float value){
+        add(SpellSignal.createNumber(value).named(name));
+    }
+
+    public void add(String name, double value){
+        add(name,(float)value);
+    }
+
+    public void add(String name, boolean value){
+        add(SpellSignal.createBoolean(value).named(name));
+    }
+
+    public void add(String name, String value){
+        add(SpellSignal.createText(value).named(name));
+    }
+
+    public void add(String name, UUID value){
+        add(SpellSignal.createUUID(value).named(name));
+    }
+
+    public void add(String name, Vec3d value){
+        add(SpellSignal.createVector(value).named(name));
+    }
+
+    public static SpellBlockResult empty(){
+        return new SpellBlockResult();
     }
 }

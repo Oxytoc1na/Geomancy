@@ -2,7 +2,9 @@ package org.oxytocina.geomancy.spells;
 
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
@@ -36,6 +38,7 @@ public class SpellBlocks {
 
     // effectors
     public static final SpellBlock PRINT;
+    public static final SpellBlock FIREBALL;
 
     static{
 
@@ -100,7 +103,7 @@ public class SpellBlocks {
                     ,(component, args) ->
                     {
                         SpellBlockResult res = new SpellBlockResult();
-                        res=args.toRes();
+                        res.add(args.get("signal"));
                         res.iterations=args.getInt("count");
                         return res;
                     },
@@ -151,8 +154,8 @@ public class SpellBlocks {
 
             ENTITY_CASTER = register(SpellBlock.create("entity_caster",new SpellSignal[]{},new SpellBlock.Parameter[]{},
                     (component, stringSpellSignalHashMap) -> {
-                        HashMap<String,SpellSignal> res = new HashMap<>();
-                        if(component.casterEntity!=null) res.put("val",SpellSignal.createUUID(component.casterEntity.getUuid()).named("val"));return res;
+                        SpellBlockResult res = new SpellBlockResult();
+                        if(component.casterEntity!=null) res.add("val",component.casterEntity.getUuid());return res;
                     },
                     ()->SpellBlock.sidesOutput("val")));
         }
@@ -164,11 +167,11 @@ public class SpellBlocks {
                             SpellSignal.createNumber(0).named("b"),
                     }, SpellSignal.createNumber(0).named("res"),
                     ((comp,vars) -> {
-                        HashMap<String, SpellSignal> res = new HashMap<>();
-                        res.put("res", SpellSignal.createNumber(
-                                vars.get("a").getNumberValue() +
-                                        vars.get("b").getNumberValue()
-                        ));
+                        SpellBlockResult res = new SpellBlockResult();
+                        res.add(SpellSignal.createNumber(
+                                vars.getNumber("a") +
+                                        vars.getNumber("b")
+                        ).named("res"));
                         return res;
                     }),
                     ()->{
@@ -186,9 +189,9 @@ public class SpellBlocks {
                     new SpellSignal[]{SpellSignal.createVector(null).named("vector")},
                     new SpellBlock.Parameter[]{},
                     ((component, vars) -> {
-                        HashMap<String,SpellSignal> res = new HashMap<>();
+                        SpellBlockResult res = new SpellBlockResult();
                         if(!(vars.get("entity").getEntity(component.world) instanceof LivingEntity entity)) return res;
-                        res.put("vector",SpellSignal.createVector(entity.getPos()).named("vector"));
+                        res.add("vector",entity.getPos());
                         return res;
                     }),
                     (() -> {
@@ -210,9 +213,9 @@ public class SpellBlocks {
                     new SpellSignal[]{SpellSignal.createVector(null).named("vector")},
                     new SpellBlock.Parameter[]{},
                     ((component, vars) -> {
-                        HashMap<String,SpellSignal> res = new HashMap<>();
+                        SpellBlockResult res = new SpellBlockResult();
                         if(!(vars.get("entity").getEntity(component.world) instanceof LivingEntity entity)) return res;
-                        res.put("vector",SpellSignal.createVector(entity.getEyePos()).named("vector"));
+                        res.add("vector",entity.getEyePos());
                         return res;
                     }),
                     (() -> {
@@ -234,9 +237,9 @@ public class SpellBlocks {
                     new SpellSignal[]{SpellSignal.createVector(null).named("vector")},
                     new SpellBlock.Parameter[]{},
                     ((component, vars) -> {
-                        HashMap<String,SpellSignal> res = new HashMap<>();
+                        SpellBlockResult res = new SpellBlockResult();
                         if(!(vars.get("entity").getEntity(component.world) instanceof LivingEntity entity)) return res;
-                        res.put("vector",SpellSignal.createVector(entity.getRotationVector()).named("vector"));
+                        res.add("vector",entity.getRotationVector());
                         return res;
                     }),
                     (() -> {
@@ -262,11 +265,11 @@ public class SpellBlocks {
                     },
                     new SpellBlock.Parameter[]{},
                     ((component, vars) -> {
-                        HashMap<String,SpellSignal> res = new HashMap<>();
+                        SpellBlockResult res = new SpellBlockResult();
                         Vec3d vec = vars.get("vector").getVectorValue();
-                        res.put("x",SpellSignal.createNumber(vec.x).named("x"));
-                        res.put("y",SpellSignal.createNumber(vec.y).named("y"));
-                        res.put("z",SpellSignal.createNumber(vec.z).named("z"));
+                        res.add("x",vec.x);
+                        res.add("y",vec.y);
+                        res.add("z",vec.z);
                         return res;
                     }),
                     (() -> {
@@ -290,13 +293,13 @@ public class SpellBlocks {
                     new SpellSignal[]{SpellSignal.createVector(null).named("vector")},
                     new SpellBlock.Parameter[]{},
                     ((component, vars) -> {
-                        HashMap<String,SpellSignal> res = new HashMap<>();
+                        SpellBlockResult res = new SpellBlockResult();
                         Vec3d vec = new Vec3d(
                                 vars.get("x").getNumberValue(),
                                 vars.get("y").getNumberValue(),
                                 vars.get("z").getNumberValue()
                         );
-                        res.put("vector",SpellSignal.createVector(vec).named("vector"));
+                        res.add("vector",vec);
                         return res;
                     }),
                     (() -> {
@@ -330,10 +333,36 @@ public class SpellBlocks {
                             }
                         }
 
-                        return new HashMap<>();
+                        return SpellBlockResult.empty();
                     })
                     ,()->SpellBlock.sidesInput("a")
             ));
+
+            FIREBALL = register(SpellBlock.create("fireball",new SpellSignal[]{
+                            SpellSignal.createVector(null).named("pos"),
+                            SpellSignal.createVector(null).named("dir"),
+                            SpellSignal.createNumber(0).named("speed"),
+                    },
+                    ((comp,vars) -> {
+                        FireballEntity fireball = new FireballEntity(EntityType.FIREBALL,comp.world);
+                        fireball.setPosition(vars.getVector("pos"));
+                        fireball.setVelocity(vars.getVector("dir").multiply(vars.getNumber("speed")));
+                        comp.world.spawnEntity(fireball);
+
+                        return SpellBlockResult.empty();
+                    })
+                    ,()->{
+                        SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
+                        res[0] = SpellComponent.SideConfig.createInput(SpellComponent.getDir(0)).named("pos");
+                        res[1] = SpellComponent.SideConfig.createInput(SpellComponent.getDir(1)).named("dir");
+                        res[2] = SpellComponent.SideConfig.createInput(SpellComponent.getDir(2)).named("speed");
+                        res[3] = SpellComponent.SideConfig.createBlocked(SpellComponent.getDir(3));
+                        res[4] = SpellComponent.SideConfig.createBlocked(SpellComponent.getDir(4));
+                        res[5] = SpellComponent.SideConfig.createBlocked(SpellComponent.getDir(5));
+                        return res;
+                    }
+            ));
+
         }
     }
 

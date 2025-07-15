@@ -28,7 +28,9 @@ public class SpellGrid {
 
     public void run(ItemStack casterItem, ItemStack containerItem, LivingEntity casterEntity){
         for (var comp : components.values())
-            comp.run(casterItem,containerItem,casterEntity);
+            comp.preRunSetup(casterItem,containerItem,casterEntity);
+        for (var comp : components.values())
+            comp.run();
     }
 
     public boolean tryAddComponent(SpellComponent component){
