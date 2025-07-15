@@ -5,7 +5,6 @@ import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.registry.CompostingChanceRegistry;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
-import net.minecraft.datafixer.fix.MobSpawnerEntityIdentifiersFix;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -22,7 +21,6 @@ import net.minecraft.util.Rarity;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.ModToolMaterials;
 import org.oxytocina.geomancy.entity.ExtraEntitySettings;
-import org.oxytocina.geomancy.entity.ModEntityTypes;
 import org.oxytocina.geomancy.items.artifacts.ArtifactItem;
 import org.oxytocina.geomancy.items.artifacts.ArtifactSettings;
 import org.oxytocina.geomancy.items.artifacts.GoldArtifact;
@@ -30,6 +28,7 @@ import org.oxytocina.geomancy.items.artifacts.IronArtifact;
 import org.oxytocina.geomancy.items.jewelry.*;
 import org.oxytocina.geomancy.loottables.ModLootTables;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
+import org.oxytocina.geomancy.spells.SpellBlocks;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -134,7 +133,8 @@ public class ModItems {
 
     // caster items
     public static final SoulCastingItem CASTER_TEST = (SoulCastingItem) register("caster_test",new SoulCastingItem(new FabricItemSettings(),1));
-    public static final SpellStoringItem SPELLSTORAGE_TEST = (SpellStoringItem) register("spellstorage_test",new SpellStoringItem(new FabricItemSettings(),10,10));
+    public static final SpellStoringItem SPELLSTORAGE_SMALL = (SpellStoringItem) register("spellstorage_small",new SpellStoringItem(new FabricItemSettings(),10,10));
+    public static final SpellComponentStoringItem SPELLCOMPONENT = (SpellComponentStoringItem) register("spellcomponent",new SpellComponentStoringItem(new FabricItemSettings()));
 
     // geodes
     public static final GeodeItem STONE_GEODE = (GeodeItem) register("stone_geode",new GeodeItem(new FabricItemSettings(),ModLootTables.GEODE_STONE));
@@ -157,6 +157,7 @@ public class ModItems {
         // Register the groups.
         Registry.register(Registries.ITEM_GROUP, MAIN_ITEM_GROUP_KEY, MAIN_ITEM_GROUP);
         Registry.register(Registries.ITEM_GROUP, JEWELRY_ITEM_GROUP_KEY, JEWELRY_ITEM_GROUP);
+        Registry.register(Registries.ITEM_GROUP, SPELLS_ITEM_GROUP_KEY, SPELLS_ITEM_GROUP);
 
         // Register items to the custom item group.
         ItemGroupEvents.modifyEntriesEvent(MAIN_ITEM_GROUP_KEY).register(itemGroup -> {
@@ -169,7 +170,7 @@ public class ModItems {
 
     public static final RegistryKey<ItemGroup> MAIN_ITEM_GROUP_KEY = RegistryKey.of(Registries.ITEM_GROUP.getKey(), new Identifier(Geomancy.MOD_ID, "main_item_group"));
     public static final ItemGroup MAIN_ITEM_GROUP = FabricItemGroup.builder()
-            .icon(() -> new ItemStack(ModItems.GUIDE_BOOK))
+            .icon(ModItems.GUIDE_BOOK::getDefaultStack)
             .displayName(Text.translatable("itemGroup."+Geomancy.MOD_ID+".main"))
             .build();
 
@@ -177,6 +178,12 @@ public class ModItems {
     public static final ItemGroup JEWELRY_ITEM_GROUP = FabricItemGroup.builder()
             .icon(() -> IRON_RING.addSlot(new ItemStack(ModItems.IRON_RING),new GemSlot(Items.DIAMOND,1)))
             .displayName(Text.translatable("itemGroup."+Geomancy.MOD_ID+".jewelry"))
+            .build();
+
+    public static final RegistryKey<ItemGroup> SPELLS_ITEM_GROUP_KEY = RegistryKey.of(Registries.ITEM_GROUP.getKey(), new Identifier(Geomancy.MOD_ID, "spells_item_group"));
+    public static final ItemGroup SPELLS_ITEM_GROUP = FabricItemGroup.builder()
+            .icon(OCTANGULITE_INGOT::getDefaultStack)
+            .displayName(Text.translatable("itemGroup."+Geomancy.MOD_ID+".spells"))
             .build();
 
     public static Item register(String id,Item item) {

@@ -7,13 +7,11 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtElement;
-import net.minecraft.stat.Stats;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 import org.joml.Vector2i;
-import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.spells.SpellBlocks;
 import org.oxytocina.geomancy.spells.SpellComponent;
 import org.oxytocina.geomancy.spells.SpellGrid;
@@ -52,16 +50,13 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
 
         // DEBUG
         if(spellContainer.isEmpty()){
-            spellContainer = new ItemStack(ModItems.SPELLSTORAGE_TEST);
+            spellContainer = new ItemStack(ModItems.SPELLSTORAGE_SMALL);
             SpellGrid grid = new SpellGrid(10,10);
 
-            SpellComponent constant = new SpellComponent(grid,new Vector2i(0,0), SpellBlocks.CONST_NUM);
-            constant.getSideConfig("e").setMode(SpellComponent.SideConfig.Mode.Output);
-            constant.setParam("val",5);
-            grid.tryAddComponent(constant);
+            SpellComponent casterUUID = new SpellComponent(grid,new Vector2i(0,0), SpellBlocks.ENTITY_CASTER);
+            grid.tryAddComponent(casterUUID);
 
             SpellComponent print = new SpellComponent(grid,new Vector2i(1,0), SpellBlocks.PRINT);
-            print.getSideConfig("w").setMode(SpellComponent.SideConfig.Mode.Input);
             grid.tryAddComponent(print);
 
             SpellStoringItem.writeGrid(spellContainer,grid);

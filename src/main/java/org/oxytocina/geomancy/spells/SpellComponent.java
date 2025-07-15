@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.world.World;
 import org.joml.Vector2i;
 
 import java.util.ArrayList;
@@ -21,11 +22,13 @@ public class SpellComponent {
 
     public SpellBlock function;
 
-    public ItemStack castingItem;
-    public ItemStack spellStorageItem;
     public SpellGrid parent;
     public Vector2i position;
+
+    public ItemStack castingItem;
+    public ItemStack spellStorageItem;
     public LivingEntity casterEntity;
+    public World world;
 
     public SpellComponent(SpellGrid parent, Vector2i position, SpellBlock function){
         this.function=function;
@@ -47,6 +50,7 @@ public class SpellComponent {
         this.castingItem=casterItem;
         this.spellStorageItem=containerItem;
         this.casterEntity=casterEntity;
+        this.world=casterEntity.getWorld();
         onSpellInit();
     }
 
@@ -99,11 +103,11 @@ public class SpellComponent {
             args.put(paramSig.name,paramSig);
         }
 
-        var results = function.run(this,args);
-
+        var result = function.run(this,new SpellBlockArgs(args));
+        for (int i = 0; i < result.iterations; i++) {
+            pushSignals(result.vars);
+        }
         this.receivedSignals.clear();
-        pushSignals(results);
-
     }
 
     // check if all required signals have been received
@@ -135,8 +139,10 @@ public class SpellComponent {
 
     public void writeNbt(NbtCompound nbt){
         nbt.putString("func",function.identifier.toString());
-        nbt.putInt("x",position.x);
-        nbt.putInt("y",position.y);
+        if(position!=null){
+            nbt.putInt("x",position.x);
+            nbt.putInt("y",position.y);
+        }
         NbtList sidesNbt = new NbtList();
         for (var s : sideConfigs)
         {
@@ -157,10 +163,15 @@ public class SpellComponent {
 
     public void readNbt(NbtCompound nbt){
         function = SpellBlocks.get(nbt.getString("func"));
-        position = new Vector2i(
+        if(
+                nbt.contains("x",NbtElement.INT_TYPE) &&
+                nbt.contains("y",NbtElement.INT_TYPE)
+        )
+            position = new Vector2i(
                 nbt.getInt("x"),
                 nbt.getInt("y")
                 );
+        else position=null;
 
         NbtList sidesNbt = nbt.getList("sides", NbtElement.COMPOUND_TYPE);
         sideConfigs = new SideConfig[6];
@@ -257,6 +268,10 @@ public class SpellComponent {
             this.modes.addAll(Arrays.asList(modes));
         }
 
+        public static SideConfig create(Mode[] modes,String dir){
+            return new SideConfig(dir,"",modes);
+        }
+
         public static SideConfig createBlocked(String dir){
             return new SideConfig(dir,"",new Mode[]{Mode.Blocked});
         }
@@ -315,6 +330,11 @@ public class SpellComponent {
             dir = nbt.getString("dir");
             varName = nbt.getString("var");
             selectedMode = nbt.getInt("mode");
+        }
+
+        public SideConfig named(String varName){
+            this.varName=varName;
+            return this;
         }
 
         public enum Mode {

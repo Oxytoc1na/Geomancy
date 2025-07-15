@@ -52,7 +52,7 @@ public class SpellStoringItem extends Item {
     }
 
     public void cast(ItemStack caster,ItemStack spellstorage, LivingEntity user){
-        SpellGrid grid = readGrid(spellstorage);
+        SpellGrid grid = getOrCreateGrid(spellstorage);
         if(grid==null) return;
         grid.run(caster,spellstorage,user);
     }

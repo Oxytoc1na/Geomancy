@@ -19,9 +19,9 @@ public class SpellBlock {
     public Identifier identifier;
     public Supplier<SpellComponent.SideConfig[]> sideConfigGetter;
 
-    public BiFunction<SpellComponent,HashMap<String, SpellSignal>,HashMap<String, SpellSignal>> function;
+    public BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult> function;
 
-    public HashMap<String, SpellSignal> run(SpellComponent component,HashMap<String, SpellSignal> arguments){
+    public SpellBlockResult run(SpellComponent component,SpellBlockArgs arguments){
         return function.apply(component,arguments);
     }
 
@@ -30,7 +30,7 @@ public class SpellBlock {
                                     SpellSignal[] inputs,
                                     SpellSignal[] outputs,
                                     Parameter[] parameters,
-                                    BiFunction<SpellComponent,HashMap<String, SpellSignal>,HashMap<String, SpellSignal>> function,
+                                    BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult> function,
                                     Supplier<SpellComponent.SideConfig[]> sideConfigGetter)
     {
         return new SpellBlock(Geomancy.locate(identifier), Arrays.stream(inputs).toList(), Arrays.stream(outputs).toList(), Arrays.stream(parameters).toList(),function,sideConfigGetter);
@@ -40,7 +40,7 @@ public class SpellBlock {
                                     SpellSignal[] inputs,
                                     SpellSignal output,
                                     Parameter[] parameters,
-                                    BiFunction<SpellComponent,HashMap<String, SpellSignal>,HashMap<String, SpellSignal>> function,
+                                    BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult> function,
                                     Supplier<SpellComponent.SideConfig[]> sideConfigGetter)
     {
         return create(identifier,inputs,new SpellSignal[]{output},parameters,function,sideConfigGetter);
@@ -49,7 +49,7 @@ public class SpellBlock {
     public static SpellBlock create(String identifier,
                                     SpellSignal[] inputs,
                                     SpellSignal output,
-                                    BiFunction<SpellComponent,HashMap<String, SpellSignal>,HashMap<String, SpellSignal>> function,
+                                    BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult> function,
                                     Supplier<SpellComponent.SideConfig[]> sideConfigGetter)
     {
         return create(identifier,inputs,new SpellSignal[]{output},new Parameter[]{},function,sideConfigGetter);
@@ -58,7 +58,7 @@ public class SpellBlock {
     public static SpellBlock create(String identifier,
                                     SpellSignal[] inputs,
                                     Parameter[] parameters,
-                                    BiFunction<SpellComponent,HashMap<String, SpellSignal>,HashMap<String, SpellSignal>> function,
+                                    BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult> function,
                                     Supplier<SpellComponent.SideConfig[]> sideConfigGetter)
     {
         return create(identifier,inputs,new SpellSignal[]{},parameters,function,sideConfigGetter);
@@ -66,7 +66,7 @@ public class SpellBlock {
 
     public static SpellBlock create(String identifier,
                                     SpellSignal[] inputs,
-                                    BiFunction<SpellComponent,HashMap<String, SpellSignal>,HashMap<String, SpellSignal>> function,
+                                    BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult> function,
                                     Supplier<SpellComponent.SideConfig[]> sideConfigGetter)
     {
         return create(identifier,inputs,new SpellSignal[]{},new Parameter[]{},function,sideConfigGetter);
@@ -76,7 +76,7 @@ public class SpellBlock {
                       List<SpellSignal> inputs,
                       List<SpellSignal> outputs,
                       List<Parameter> parameters,
-                      BiFunction<SpellComponent,HashMap<String, SpellSignal>,HashMap<String, SpellSignal>> function,
+                      BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult> function,
                       Supplier<SpellComponent.SideConfig[]> sideConfigGetter){
         this.identifier=identifier;
         this.inputs = new HashMap<>();
@@ -172,7 +172,7 @@ public class SpellBlock {
         public enum Type{
             ConstantNumber,
             ConstantText,
-            ConstantBoolean
+            ConstantBoolean,
         }
     }
 }

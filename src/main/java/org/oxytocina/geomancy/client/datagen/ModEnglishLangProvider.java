@@ -138,6 +138,30 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("tooltip.MODID.geodes"              , "Can be hammered open...if you're careful.");
             add("item.MODID.explorers_map.ancient_hall", "Directions home");
 
+            add("item.MODID.spellstorage_small",        "Minute Spellcradle");
+            add("item.MODID.spellstorage_medium",       "Mundane Spellcradle");
+            add("item.MODID.spellstorage_large",        "Spacious Spellcradle");
+            add("item.MODID.spellcomponent",            "Spell Component");
+
+            add("MODID.spellcomponent.empty",               "empty");
+            // flow control
+            add("MODID.spellcomponent.conveyor",            "conveyor");
+            add("MODID.spellcomponent.gate",                "gate");
+            // getters
+            add("MODID.spellcomponent.entity_caster",       "caster");
+            add("MODID.spellcomponent.vector_entitypos",    "entity position");
+            add("MODID.spellcomponent.vector_entityeyepos", "entity eye position");
+            add("MODID.spellcomponent.vector_entitydir",    "entity direction");
+            add("MODID.spellcomponent.constant_boolean",    "constant truth");
+            add("MODID.spellcomponent.constant_text",       "constant text");
+            add("MODID.spellcomponent.constant_number",     "constant number");
+            // arithmetic
+            add("MODID.spellcomponent.sum",                 "sum");
+            add("MODID.spellcomponent.vector_split",        "split vector");
+            add("MODID.spellcomponent.vector_build",        "build vector");
+            // effectors
+            add("MODID.spellcomponent.print",               "print");
+
         }
 
         // Blocks
@@ -188,8 +212,9 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         add("death.attack.geomancy.molten_gold", "%1$s fell into King Midas' bathtub");
 
         // Misc
-        add("itemGroup.MODID.main",    "Geomancy");
-        add("itemGroup.MODID.jewelry", "Geomancy Jewelry");
+        add("itemGroup.MODID.main",     "Geomancy");
+        add("itemGroup.MODID.jewelry",  "Geomancy Jewelry");
+        add("itemGroup.MODID.spells",   "Geomancy Spells");
         add("geomancy.message.lead.tingling", "Your fingers are tingling...");
         add("geomancy.message.lead.nausea", "You feel like throwing up...");
         add("geomancy.message.lead.poison", "You feel a sharp pain in your head...");

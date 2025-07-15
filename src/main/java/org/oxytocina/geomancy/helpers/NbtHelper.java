@@ -3,7 +3,9 @@ package org.oxytocina.geomancy.helpers;
 import com.google.gson.*;
 import com.mojang.brigadier.exceptions.*;
 import net.minecraft.nbt.*;
+import net.minecraft.util.math.Vec3d;
 import org.apache.commons.lang3.math.*;
+import org.joml.Vector3f;
 
 import java.math.*;
 import java.util.*;
@@ -262,5 +264,20 @@ public class NbtHelper {
                 }
             });
         }
+    }
+
+    public static Vec3d vectorFromNbt(NbtCompound nbt){
+        double x = nbt.getDouble("x");
+        double y = nbt.getDouble("y");
+        double z = nbt.getDouble("z");
+        return new Vec3d(x,y,z);
+    }
+
+    public static NbtCompound vectorToNbt(Vec3d vec){
+        NbtCompound nbt = new NbtCompound();
+        nbt.putDouble("x",vec.x);
+        nbt.putDouble("y",vec.y);
+        nbt.putDouble("z",vec.z);
+        return nbt;
     }
 }
