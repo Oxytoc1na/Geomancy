@@ -32,10 +32,10 @@ public class ModBlocks {
 
 
     // ores
-    public static final ExperienceDroppingBlock MITHRIL_ORE = (ExperienceDroppingBlock) register("mithril_ore", (AbstractBlock.Settings s) -> new ExperienceDroppingBlock(s, UniformIntProvider.create(9,13)),
+    public static final OctanguliteExperienceDroppingBlock MITHRIL_ORE = (OctanguliteExperienceDroppingBlock) register("mithril_ore", (AbstractBlock.Settings s) -> new OctanguliteExperienceDroppingBlock(s, UniformIntProvider.create(9,13),1),
         AbstractBlock.Settings.create().mapColor(MapColor.STONE_GRAY).instrument(Instrument.BASEDRUM).requiresTool().strength(3.0F, 3.0F).sounds(BlockSoundGroup.STONE),
         ExtraBlockSettings.create().mineableByPickaxe().miningLevel(3).notRegularDrop(),new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof());
-    public static final ExperienceDroppingBlock DEEPSLATE_MITHRIL_ORE = (ExperienceDroppingBlock) register("deepslate_mithril_ore", (AbstractBlock.Settings s) -> new ExperienceDroppingBlock(s, UniformIntProvider.create(9,13)),
+    public static final OctanguliteExperienceDroppingBlock DEEPSLATE_MITHRIL_ORE = (OctanguliteExperienceDroppingBlock) register("deepslate_mithril_ore", (AbstractBlock.Settings s) -> new OctanguliteExperienceDroppingBlock(s, UniformIntProvider.create(9,13),1),
         AbstractBlock.Settings.copy(MITHRIL_ORE).mapColor(MapColor.DEEPSLATE_GRAY).strength(4.5F, 3.0F).sounds(BlockSoundGroup.DEEPSLATE),
         ExtraBlockSettings.create().mineableByPickaxe().miningLevel(3).notRegularDrop(),new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof());
 
@@ -91,6 +91,7 @@ public class ModBlocks {
 
     // block entities
     public static final SmitheryBlock SMITHERY = (SmitheryBlock) register("smithery_block", SmitheryBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe());
+    public static final SpellmakerBlock SPELLMAKER = (SpellmakerBlock) register("spellmaker_block", SpellmakerBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe());
 
     // fluids
     private static AbstractBlock.Settings fluid(MapColor mapColor) {

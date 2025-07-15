@@ -18,6 +18,7 @@ public class SpellBlock {
     public SpellSignal output;
     public Identifier identifier;
     public Supplier<SpellComponent.SideConfig[]> sideConfigGetter;
+    public Category category;
 
     public BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult> function;
 
@@ -93,6 +94,11 @@ public class SpellBlock {
 
         this.singleOutput=outputs.size()==1;
         if(singleOutput) output=outputs.get(0);
+    }
+
+    public SpellBlock category(Category category){
+        this.category=category;
+        return this;
     }
 
     public SpellComponent.SideConfig[] getDefaultSideConfigs(){
@@ -174,5 +180,12 @@ public class SpellBlock {
             ConstantText,
             ConstantBoolean,
         }
+    }
+
+    public enum Category{
+        FlowControl,
+        Provider,
+        Arithmetic,
+        Effector
     }
 }

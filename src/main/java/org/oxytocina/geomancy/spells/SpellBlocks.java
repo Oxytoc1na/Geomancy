@@ -43,9 +43,10 @@ public class SpellBlocks {
     static{
 
         // flow control
+        SpellBlock.Category cat = SpellBlock.Category.FlowControl;
         {
             CONVEYOR = register(SpellBlock.create("conveyor",new SpellSignal[]{
-                    SpellSignal.createAny().named("val")},SpellSignal.createAny().named("val"),SpellBlocks::mirrorInToOut, ()->freeformSideConfigs("val")));
+                    SpellSignal.createAny().named("val")},SpellSignal.createAny().named("val"),SpellBlocks::mirrorInToOut, ()->freeformSideConfigs("val")).category(cat));
 
             GATE = register(SpellBlock.create("gate",
                     new SpellSignal[]{
@@ -90,7 +91,7 @@ public class SpellBlocks {
 
                         return res;
                     }
-            ));
+            ).category(cat));
 
             FOR = register(SpellBlock.create("for",
                     new SpellSignal[]{
@@ -136,42 +137,50 @@ public class SpellBlocks {
 
                         return res;
                     }
-            ));
+            ).category(cat));
         }
 
         // getters
+        cat = SpellBlock.Category.Provider;
         {
             CONST_NUM = register(SpellBlock.create("constant_number",new SpellSignal[]{},
-                    new SpellBlock.Parameter[]{SpellBlock.Parameter.createNumber("val",1,-1000,1000)},SpellBlocks::mirrorInToOut,()->SpellBlock.sidesOutput("val")));
+                    new SpellSignal[]{SpellSignal.createNumber(0).named("val")},
+                    new SpellBlock.Parameter[]{SpellBlock.Parameter.createNumber("val",1,-1000,1000)}
+                    ,SpellBlocks::mirrorInToOut,()->SpellBlock.sidesOutput("val")).category(cat));
 
             CONST_TEXT = register(SpellBlock.create("constant_text",new SpellSignal[]{},
-                    new SpellBlock.Parameter[]{SpellBlock.Parameter.createText("val","")}, SpellBlocks::mirrorInToOut,()->SpellBlock.sidesOutput("val")));
+                    new SpellSignal[]{SpellSignal.createText("").named("val")},
+                    new SpellBlock.Parameter[]{SpellBlock.Parameter.createText("val","")}, SpellBlocks::mirrorInToOut,()->SpellBlock.sidesOutput("val")).category(cat));
 
             CONST_BOOLEAN = register(SpellBlock.create("constant_boolean",new SpellSignal[]{},
-                    new SpellBlock.Parameter[]{SpellBlock.Parameter.createBoolean("val",true)}, SpellBlocks::mirrorInToOut,()->SpellBlock.sidesOutput("val")));
+                    new SpellSignal[]{SpellSignal.createBoolean(true).named("val")},
+                    new SpellBlock.Parameter[]{SpellBlock.Parameter.createBoolean("val",true)}, SpellBlocks::mirrorInToOut,()->SpellBlock.sidesOutput("val")).category(cat));
 
 
 
-            ENTITY_CASTER = register(SpellBlock.create("entity_caster",new SpellSignal[]{},new SpellBlock.Parameter[]{},
+            ENTITY_CASTER = register(SpellBlock.create("entity_caster",new SpellSignal[]{},
+                    new SpellSignal[]{SpellSignal.createUUID(null).named("caster")},
+                    new SpellBlock.Parameter[]{},
                     (component, stringSpellSignalHashMap) -> {
                         SpellBlockResult res = new SpellBlockResult();
-                        if(component.casterEntity!=null) res.add("val",component.casterEntity.getUuid());return res;
+                        if(component.casterEntity!=null) res.add("caster",component.casterEntity.getUuid());return res;
                     },
-                    ()->SpellBlock.sidesOutput("val")));
+                    ()->SpellBlock.sidesOutput("caster")).category(cat));
         }
 
         // arithmetic
+        cat = SpellBlock.Category.Arithmetic;
         {
             SUM = register(SpellBlock.create("sum",new SpellSignal[]{
                             SpellSignal.createNumber(0).named("a"),
                             SpellSignal.createNumber(0).named("b"),
-                    }, SpellSignal.createNumber(0).named("res"),
+                    }, SpellSignal.createNumber(0).named("sum"),
                     ((comp,vars) -> {
                         SpellBlockResult res = new SpellBlockResult();
                         res.add(SpellSignal.createNumber(
                                 vars.getNumber("a") +
                                         vars.getNumber("b")
-                        ).named("res"));
+                        ).named("sum"));
                         return res;
                     }),
                     ()->{
@@ -182,16 +191,16 @@ public class SpellBlocks {
                         res[5] = SpellComponent.SideConfig.createSingle(SpellComponent.SideConfig.Mode.Output,SpellComponent.directions[5]);
                         return res;
                     }
-            ));
+            ).category(cat));
 
             VECTOR_ENTITYPOS = register(SpellBlock.create("vector_entitypos",
                     new SpellSignal[]{SpellSignal.createUUID(null).named("entity")},
-                    new SpellSignal[]{SpellSignal.createVector(null).named("vector")},
+                    new SpellSignal[]{SpellSignal.createVector(null).named("position")},
                     new SpellBlock.Parameter[]{},
                     ((component, vars) -> {
                         SpellBlockResult res = new SpellBlockResult();
                         if(!(vars.get("entity").getEntity(component.world) instanceof LivingEntity entity)) return res;
-                        res.add("vector",entity.getPos());
+                        res.add("position",entity.getPos());
                         return res;
                     }),
                     (() -> {
@@ -202,20 +211,20 @@ public class SpellBlocks {
                         }
                         for (int i = 3; i < 6; i++) {
                             res[i] = SpellComponent.SideConfig.createSingle(SpellComponent.SideConfig.Mode.Output,SpellComponent.directions[i]);
-                            res[i].varName="vector";
+                            res[i].varName="position";
                         }
                         return res;
                     })
-                    ));
+                    ).category(cat));
 
             VECTOR_ENTITYEYEPOS = register(SpellBlock.create("vector_entityeyepos",
                     new SpellSignal[]{SpellSignal.createUUID(null).named("entity")},
-                    new SpellSignal[]{SpellSignal.createVector(null).named("vector")},
+                    new SpellSignal[]{SpellSignal.createVector(null).named("eye position")},
                     new SpellBlock.Parameter[]{},
                     ((component, vars) -> {
                         SpellBlockResult res = new SpellBlockResult();
                         if(!(vars.get("entity").getEntity(component.world) instanceof LivingEntity entity)) return res;
-                        res.add("vector",entity.getEyePos());
+                        res.add("eye position",entity.getEyePos());
                         return res;
                     }),
                     (() -> {
@@ -226,20 +235,20 @@ public class SpellBlocks {
                         }
                         for (int i = 3; i < 6; i++) {
                             res[i] = SpellComponent.SideConfig.createSingle(SpellComponent.SideConfig.Mode.Output,SpellComponent.directions[i]);
-                            res[i].varName="vector";
+                            res[i].varName="eye position";
                         }
                         return res;
                     })
-            ));
+            ).category(cat));
 
             VECTOR_ENTITYDIR = register(SpellBlock.create("vector_entitydir",
                     new SpellSignal[]{SpellSignal.createUUID(null).named("entity")},
-                    new SpellSignal[]{SpellSignal.createVector(null).named("vector")},
+                    new SpellSignal[]{SpellSignal.createVector(null).named("direction")},
                     new SpellBlock.Parameter[]{},
                     ((component, vars) -> {
                         SpellBlockResult res = new SpellBlockResult();
                         if(!(vars.get("entity").getEntity(component.world) instanceof LivingEntity entity)) return res;
-                        res.add("vector",entity.getRotationVector());
+                        res.add("direction",entity.getRotationVector());
                         return res;
                     }),
                     (() -> {
@@ -250,18 +259,18 @@ public class SpellBlocks {
                         }
                         for (int i = 3; i < 6; i++) {
                             res[i] = SpellComponent.SideConfig.createSingle(SpellComponent.SideConfig.Mode.Output,SpellComponent.directions[i]);
-                            res[i].varName="vector";
+                            res[i].varName="direction";
                         }
                         return res;
                     })
-            ));
+            ).category(cat));
 
             VECTOR_SPLIT = register(SpellBlock.create("vector_split",
                     new SpellSignal[]{SpellSignal.createVector(null).named("vector")},
                     new SpellSignal[]{
-                            SpellSignal.createVector(null).named("x"),
-                            SpellSignal.createVector(null).named("y"),
-                            SpellSignal.createVector(null).named("z"),
+                            SpellSignal.createNumber(0).named("x"),
+                            SpellSignal.createNumber(0).named("y"),
+                            SpellSignal.createNumber(0).named("z"),
                     },
                     new SpellBlock.Parameter[]{},
                     ((component, vars) -> {
@@ -282,13 +291,13 @@ public class SpellBlocks {
                         res[5] = SpellComponent.SideConfig.createSingle(SpellComponent.SideConfig.Mode.Output,SpellComponent.directions[5]).named("z");
                         return res;
                     })
-            ));
+            ).category(cat));
 
             VECTOR_BUILD = register(SpellBlock.create("vector_build",
                     new SpellSignal[]{
-                            SpellSignal.createVector(null).named("x"),
-                            SpellSignal.createVector(null).named("y"),
-                            SpellSignal.createVector(null).named("z"),
+                            SpellSignal.createNumber(0).named("x"),
+                            SpellSignal.createNumber(0).named("y"),
+                            SpellSignal.createNumber(0).named("z"),
                     },
                     new SpellSignal[]{SpellSignal.createVector(null).named("vector")},
                     new SpellBlock.Parameter[]{},
@@ -312,56 +321,57 @@ public class SpellBlocks {
                         res[5] = SpellComponent.SideConfig.createSingle(SpellComponent.SideConfig.Mode.Output,SpellComponent.directions[5]).named("z");
                         return res;
                     })
-            ));
+            ).category(cat));
         }
 
         // effectors
+        cat = SpellBlock.Category.Effector;
         {
             PRINT = register(SpellBlock.create("print",new SpellSignal[]{
-                            SpellSignal.createAny().named("a"),},
+                            SpellSignal.createAny().named("val"),},
                     ((comp,vars) -> {
                         if(comp.casterEntity != null)
                         {
                             World world = comp.casterEntity.getWorld();
                             if(world instanceof ServerWorld serverWorld){
                                 if(comp.casterEntity instanceof ServerPlayerEntity player)
-                                    player.sendMessage(Text.literal(vars.get("a").toString()));
+                                    player.sendMessage(Text.literal(vars.get("val").toString()));
                             }
                             else if(world instanceof ClientWorld clientWorld){
                                 if(comp.casterEntity instanceof ClientPlayerEntity player)
-                                    player.sendMessage(Text.literal(vars.get("a").toString()));
+                                    player.sendMessage(Text.literal(vars.get("val").toString()));
                             }
                         }
 
                         return SpellBlockResult.empty();
                     })
-                    ,()->SpellBlock.sidesInput("a")
-            ));
+                    ,()->SpellBlock.sidesInput("val")
+            ).category(cat));
 
             FIREBALL = register(SpellBlock.create("fireball",new SpellSignal[]{
-                            SpellSignal.createVector(null).named("pos"),
-                            SpellSignal.createVector(null).named("dir"),
+                            SpellSignal.createVector(null).named("position"),
+                            SpellSignal.createVector(null).named("direction"),
                             SpellSignal.createNumber(0).named("speed"),
                     },
                     ((comp,vars) -> {
                         FireballEntity fireball = new FireballEntity(EntityType.FIREBALL,comp.world);
-                        fireball.setPosition(vars.getVector("pos"));
-                        fireball.setVelocity(vars.getVector("dir").multiply(vars.getNumber("speed")));
+                        fireball.setPosition(vars.getVector("position"));
+                        fireball.setVelocity(vars.getVector("direction").multiply(vars.getNumber("speed")));
                         comp.world.spawnEntity(fireball);
 
                         return SpellBlockResult.empty();
                     })
                     ,()->{
                         SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
-                        res[0] = SpellComponent.SideConfig.createInput(SpellComponent.getDir(0)).named("pos");
-                        res[1] = SpellComponent.SideConfig.createInput(SpellComponent.getDir(1)).named("dir");
+                        res[0] = SpellComponent.SideConfig.createInput(SpellComponent.getDir(0)).named("position");
+                        res[1] = SpellComponent.SideConfig.createInput(SpellComponent.getDir(1)).named("direction");
                         res[2] = SpellComponent.SideConfig.createInput(SpellComponent.getDir(2)).named("speed");
                         res[3] = SpellComponent.SideConfig.createBlocked(SpellComponent.getDir(3));
                         res[4] = SpellComponent.SideConfig.createBlocked(SpellComponent.getDir(4));
                         res[5] = SpellComponent.SideConfig.createBlocked(SpellComponent.getDir(5));
                         return res;
                     }
-            ));
+            ).category(cat));
 
         }
     }

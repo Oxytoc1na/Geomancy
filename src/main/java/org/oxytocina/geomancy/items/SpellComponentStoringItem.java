@@ -18,6 +18,7 @@ import org.oxytocina.geomancy.spells.SpellBlocks;
 import org.oxytocina.geomancy.spells.SpellComponent;
 import org.oxytocina.geomancy.spells.SpellGrid;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,14 +66,16 @@ public class SpellComponentStoringItem extends Item {
         var comp = readComponent(stack);
         if(comp==null) return;
 
-        tooltip.add(Text.translatable("geomancy.tooltip.spellcomponent."+comp.function.identifier.getPath()));
+        tooltip.add(Text.translatable("geomancy.spellcomponent.category."+comp.function.category.toString().toLowerCase()).formatted(Formatting.BLUE));
+        tooltip.add(Text.translatable("geomancy.tooltip.spellcomponent."+comp.function.identifier.getPath()).formatted(Formatting.GRAY));
+        tooltip.add(Text.empty());
 
         for(var input : comp.function.inputs.values()){
-            tooltip.add(Text.literal(input.type.toString()+" "+input.name));
+            tooltip.add(input.toText());
         }
-        tooltip.add(Text.literal(("->")));
+        tooltip.add(Text.literal("->").formatted(Formatting.GRAY));
         for(var output : comp.function.outputs.values()){
-            tooltip.add(Text.literal(output.type.toString()+" "+output.name));
+            tooltip.add(output.toText());
         }
     }
 

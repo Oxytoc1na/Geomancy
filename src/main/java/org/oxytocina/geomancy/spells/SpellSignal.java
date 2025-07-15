@@ -3,6 +3,8 @@ package org.oxytocina.geomancy.spells;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.joml.Vector3f;
@@ -114,6 +116,10 @@ public class SpellSignal {
     @Override
     public String toString() {
         return type.toString()+":"+getTextValue();
+    }
+
+    public Text toText(){
+        return Text.literal(type.toString()+" ").formatted(Formatting.DARK_AQUA).append(Text.literal(name).formatted(Formatting.GRAY));
     }
 
     public enum Type{

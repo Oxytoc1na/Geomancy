@@ -54,11 +54,6 @@ public class SpellComponent {
     }
 
     public void run(){
-        onSpellInit();
-    }
-
-    // used for constant providers and data getters
-    public void onSpellInit(){
         tryExecute();
     }
 
