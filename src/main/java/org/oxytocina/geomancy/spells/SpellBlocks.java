@@ -24,7 +24,15 @@ public class SpellBlocks {
                         vars.get("b").getNumberValue()
                 ));
                 return res;
-            })
+            }),
+            ()->{
+                SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
+                for (int i = 0; i < 5; i++) {
+                    res[i] = SpellComponent.SideConfig.createSingle(SpellComponent.SideConfig.Mode.Input,SpellComponent.directions[i]);
+                }
+                res[5] = SpellComponent.SideConfig.createSingle(SpellComponent.SideConfig.Mode.Output,SpellComponent.directions[5]);
+                return res;
+            }
     ));
 
     public static SpellBlock PRINT = register(SpellBlock.create("print",new SpellSignal[]{
@@ -45,6 +53,7 @@ public class SpellBlocks {
 
                 return new HashMap<>();
             })
+            ,()->SpellBlock.sidesInput("a")
     ));
 
     public static SpellBlock CONST_NUM = register(SpellBlock.create("constant_number",new SpellSignal[]{},
@@ -56,6 +65,7 @@ public class SpellBlocks {
                 res.put("val",vars.get("val"));
                 return res;
             })
+            ,()->SpellBlock.sidesOutput("val")
     ));
 
     public static void register(){
@@ -65,5 +75,14 @@ public class SpellBlocks {
     public static SpellBlock register(SpellBlock function){
         functions.put(function.identifier,function);
         return function;
+    }
+
+    public static SpellBlock get(String func) {
+        return get(Identifier.tryParse(func));
+    }
+
+    public static SpellBlock get(Identifier id){
+        if(functions.containsKey(id)) return functions.get(id);
+        return PRINT;
     }
 }

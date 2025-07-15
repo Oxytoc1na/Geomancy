@@ -5,8 +5,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
 
 public interface ICastingItem {
-    Inventory getInventory();
-    void saveInventory();
+    DefaultedList<ItemStack> readInventoryFromNbt(ItemStack stack);
+    void saveInventoryToNbt(ItemStack stack);
 
+    DefaultedList<ItemStack> getItems(ItemStack stack);
 
 }

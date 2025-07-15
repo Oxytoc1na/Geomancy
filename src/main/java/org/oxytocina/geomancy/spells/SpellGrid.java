@@ -3,6 +3,7 @@ package org.oxytocina.geomancy.spells;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import org.joml.Vector2i;
 
@@ -13,6 +14,17 @@ public class SpellGrid {
     public int width;
     public int height;
     public HashMap<Vector2i,SpellComponent> components;
+
+    public SpellGrid(NbtCompound nbt){
+        this.components=new HashMap<>();
+        readNbt(nbt);
+    }
+
+    public SpellGrid(int width, int height){
+        this.width=width;
+        this.height=height;
+        this.components=new HashMap<>();
+    }
 
     public void run(ItemStack casterItem, ItemStack containerItem, LivingEntity casterEntity){
         for (var comp : components.values())
@@ -56,19 +68,19 @@ public class SpellGrid {
 
         /*
 
-          o   o   o
-            o   o   o
-          o   o   o
+          o   6   1
+            5   o   2
+          o   4   3
          */
 
-        res.add(new Vector2i(pos.x-1+ySkew,pos.y-1));
         res.add(new Vector2i(pos.x+ySkew,pos.y-1));
-
-        res.add(new Vector2i(pos.x-1,pos.y));
         res.add(new Vector2i(pos.x+1,pos.y));
 
-        res.add(new Vector2i(pos.x-1+ySkew,pos.y+1));
         res.add(new Vector2i(pos.x+ySkew,pos.y+1));
+        res.add(new Vector2i(pos.x-1+ySkew,pos.y+1));
+
+        res.add(new Vector2i(pos.x-1,pos.y));
+        res.add(new Vector2i(pos.x-1+ySkew,pos.y-1));
 
         return res;
     }
@@ -91,14 +103,15 @@ public class SpellGrid {
     }
 
     public void readNbt(NbtCompound nbt){
-        nbt.putInt("width",width);
-        nbt.putInt("height",height);
-        NbtList compsNbt = new NbtList();
-        for (var c:components.values())
+        width=nbt.getInt("width");
+        height=nbt.getInt("height");
+        NbtList compsNbt = nbt.getList("components", NbtElement.COMPOUND_TYPE);
+        for (var c:compsNbt)
         {
-            NbtCompound cComp = new NbtCompound();
-            c.writeNbt(cComp);
-            compsNbt.add(cComp);
+            if(!(c instanceof NbtCompound nbtComp)) continue;
+
+            SpellComponent comp = new SpellComponent(this,nbtComp);
+            tryAddComponent(comp);
         }
         nbt.put("components",compsNbt);
     }

@@ -37,7 +37,7 @@ public class ManaStoringItemData {
     public ManaStoringItemData(UUID uuid, ItemStack base){
         this.uuid=uuid;
         mana=0;
-        maxMana = ((IManaStoringItem)base.getItem()).getBaseCapacity(base);
+        maxMana = ((IManaStoringItem)base.getItem()).getBaseSoulCapacity(base);
     }
 
     public static ManaStoringItemData fromNbt(NbtCompound nbt){

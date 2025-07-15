@@ -63,5 +63,5 @@ public interface IManaStoringItem {
         return ModColorizationHandler.octanguliteItemBarNoise(progress);
     }
 
-    float getBaseCapacity(ItemStack stack);
+    float getBaseSoulCapacity(ItemStack stack);
 }

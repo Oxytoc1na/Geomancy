@@ -29,7 +29,7 @@ public class OctanguliteJewelryItem extends JewelryItem implements IManaStoringI
     }
 
     @Override
-    public float getBaseCapacity(ItemStack stack) {
+    public float getBaseSoulCapacity(ItemStack stack) {
         return baseSoulCapacity;
     }
 

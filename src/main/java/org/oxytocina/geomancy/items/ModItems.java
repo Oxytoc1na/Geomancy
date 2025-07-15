@@ -132,6 +132,10 @@ public class ModItems {
             ToolMaterials.DIAMOND, TagKey.of(RegistryKeys.BLOCK,new Identifier(Geomancy.MOD_ID,"hammer_mineable")),new FabricItemSettings(),
             1000,100,50,10),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Handheld));
 
+    // caster items
+    public static final SoulCastingItem CASTER_TEST = (SoulCastingItem) register("caster_test",new SoulCastingItem(new FabricItemSettings(),1));
+    public static final SpellStoringItem SPELLSTORAGE_TEST = (SpellStoringItem) register("spellstorage_test",new SpellStoringItem(new FabricItemSettings(),10,10));
+
     // geodes
     public static final GeodeItem STONE_GEODE = (GeodeItem) register("stone_geode",new GeodeItem(new FabricItemSettings(),ModLootTables.GEODE_STONE));
 
