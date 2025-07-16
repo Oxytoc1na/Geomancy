@@ -49,20 +49,10 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
         ItemStack spellContainer = getStack(key,index);
 
         // DEBUG
+        // TODO: remove
         if(spellContainer.isEmpty()){
             spellContainer = new ItemStack(ModItems.SPELLSTORAGE_SMALL);
-            SpellGrid grid = new SpellGrid(10,10);
-
-            SpellComponent casterUUID = new SpellComponent(grid,new Vector2i(1,0), SpellBlocks.ENTITY_CASTER);
-            grid.tryAddComponent(casterUUID);
-
-            SpellComponent entityPos = new SpellComponent(grid,new Vector2i(0,1), SpellBlocks.VECTOR_ENTITYPOS);
-            grid.tryAddComponent(entityPos);
-
-            SpellComponent print = new SpellComponent(grid,new Vector2i(0,0), SpellBlocks.PRINT);
-            grid.tryAddComponent(print);
-
-            SpellStoringItem.writeGrid(spellContainer,grid);
+            SpellStoringItem.getOrCreateGrid(spellContainer);
             insertSpellStorage(key,spellContainer);
         }
 

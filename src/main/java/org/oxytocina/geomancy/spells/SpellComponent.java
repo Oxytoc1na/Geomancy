@@ -1,12 +1,16 @@
 package org.oxytocina.geomancy.spells;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import org.joml.Vector2i;
+import org.oxytocina.geomancy.Geomancy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,11 +34,19 @@ public class SpellComponent {
     public LivingEntity casterEntity;
     public World world;
 
+    public SpellComponent(SpellGrid parent, Vector2i position, SpellBlock function,SideConfig[] sideConfigs,HashMap<String,ConfiguredParameter> configuredParameters){
+        this.parent=parent;
+        this.position=position;
+        this.function=function;
+        this.sideConfigs=sideConfigs;
+        this.configuredParameters=configuredParameters;
+    }
+
     public SpellComponent(SpellGrid parent, Vector2i position, SpellBlock function){
         this.function=function;
         this.parent=parent;
         this.position=position;
-        sideConfigs = function.getDefaultSideConfigs();
+        sideConfigs = function.getDefaultSideConfigs(this);
 
         for(var p : function.parameters.keySet()){
             configuredParameters.put(p,new ConfiguredParameter(function.parameters.get(p)));
@@ -103,6 +115,7 @@ public class SpellComponent {
 
         var result = function.run(this,new SpellBlockArgs(args));
         for (int i = 0; i < result.iterations; i++) {
+            var iterationResult = result.clone();
             pushSignals(result.vars);
         }
         this.receivedSignals.clear();
@@ -175,7 +188,7 @@ public class SpellComponent {
         sideConfigs = new SideConfig[6];
         for (int i = 0; i < 6; i++) {
             if(!(sidesNbt.get(i) instanceof NbtCompound comp)) {
-                sideConfigs[i] = function.getDefaultSideConfigs()[i];
+                sideConfigs[i] = function.getDefaultSideConfigs(this)[i];
                 continue;
             }
             sideConfigs[i] = SideConfig.createFromNbt(this,comp);
@@ -248,42 +261,49 @@ public class SpellComponent {
         return receivedSignals.containsKey(name);
     }
 
+    public Identifier getHexTexture(){
+        return function.getHexTexture();
+    }
+
     public static class SideConfig{
         public String dir;
         public String varName;
         public int selectedMode = 0;
         public ArrayList<Mode> modes;
+        public SpellComponent parent;
 
         private SideConfig(SpellComponent parent, NbtCompound nbt){
             readNbt(nbt);
-            modes = parent.function.getDefaultSideConfigs()[getDirIndex(dir)].modes;
+            this.parent=parent;
+            modes = parent.function.getDefaultSideConfigs(parent)[getDirIndex(dir)].modes;
         }
 
-        public SideConfig(String dir, String varName, Mode[] modes){
+        public SideConfig(SpellComponent parent,String dir, String varName, Mode[] modes){
+            this.parent=parent;
             this.dir=dir;
             this.varName=varName;
             this.modes=new ArrayList<>();
             this.modes.addAll(Arrays.asList(modes));
         }
 
-        public static SideConfig create(Mode[] modes,String dir){
-            return new SideConfig(dir,"",modes);
+        public static SideConfig create(SpellComponent parent, Mode[] modes,String dir){
+            return new SideConfig(parent,dir,"",modes);
         }
 
-        public static SideConfig createBlocked(String dir){
-            return new SideConfig(dir,"",new Mode[]{Mode.Blocked});
+        public static SideConfig createBlocked(SpellComponent parent, String dir){
+            return new SideConfig(parent,dir,"",new Mode[]{Mode.Blocked});
         }
 
-        public static SideConfig createOutput(String dir){
-            return new SideConfig(dir,"",new Mode[]{Mode.Output});
+        public static SideConfig createOutput(SpellComponent parent, String dir){
+            return new SideConfig(parent,dir,"",new Mode[]{Mode.Output});
         }
 
-        public static SideConfig createInput(String dir){
-            return new SideConfig(dir,"",new Mode[]{Mode.Input});
+        public static SideConfig createInput(SpellComponent parent, String dir){
+            return new SideConfig(parent,dir,"",new Mode[]{Mode.Input});
         }
 
-        public static SideConfig createSingle(Mode mode, String dir){
-            return new SideConfig(dir,"",new Mode[]{mode});
+        public static SideConfig createSingle(SpellComponent parent, Mode mode, String dir){
+            return new SideConfig(parent,dir,"",new Mode[]{mode});
         }
 
         public static SideConfig createFromNbt(SpellComponent parent, NbtCompound nbt) {
@@ -299,7 +319,18 @@ public class SpellComponent {
         }
 
         public void setMode(Mode mode){
-            if(modes.contains(mode)) selectedMode = modes.indexOf(mode);
+            setMode(modes.indexOf(mode));
+        }
+
+        public void setMode(int index){
+            if(selectedMode==index) return;
+            selectedMode=index;
+            // set variable to fitting one
+            switch(activeMode()){
+                case Input: varName = parent.function.inputs.isEmpty()?"":parent.function.inputs.keySet().stream().findFirst().get(); break;
+                case Output: varName = parent.function.outputs.isEmpty()?"":parent.function.outputs.keySet().stream().findFirst().get(); break;
+                case Blocked: varName = ""; break;
+            }
         }
 
         public Mode activeMode(){
@@ -333,6 +364,33 @@ public class SpellComponent {
         public SideConfig named(String varName){
             this.varName=varName;
             return this;
+        }
+
+        public Identifier getTexture(){
+            if(activeMode()==Mode.Blocked) return null;
+            return Geomancy.locate("textures/gui/spells/"+(activeMode()==Mode.Input?"in":"out")+"_"+dir+".png");
+        }
+
+        public SpellSignal getSignal(SpellComponent component){
+            return switch (activeMode()) {
+                case Blocked -> SpellSignal.createNone();
+                case Input -> component.function.inputs.get(varName);
+                case Output -> component.function.outputs.get(varName);
+            };
+        }
+
+        public void setVar(String newVar){
+            varName=newVar;
+        }
+
+        public void setShaderColor(){
+            switch(activeMode())
+            {
+                case Input:
+                    RenderSystem.setShaderColor(0,1,0,1); break;
+                case Output:
+                    RenderSystem.setShaderColor(1,0,0,1); break;
+            }
         }
 
         public enum Mode {
@@ -384,5 +442,9 @@ public class SpellComponent {
             this.parameter = parent.getParameter(nbt.getString("param"));
             setSignal(SpellSignal.fromNBT(nbt.getCompound("signal")));
         }
+    }
+
+    public SpellComponent clone(){
+        return new SpellComponent(parent,position,function,sideConfigs,configuredParameters);
     }
 }

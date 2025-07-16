@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class SpellBlock {
@@ -17,7 +18,8 @@ public class SpellBlock {
     public boolean singleOutput;
     public SpellSignal output;
     public Identifier identifier;
-    public Supplier<SpellComponent.SideConfig[]> sideConfigGetter;
+    public Identifier hexTexture;
+    public Function<SpellComponent,SpellComponent.SideConfig[]> sideConfigGetter;
     public Category category;
 
     public BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult> function;
@@ -32,7 +34,7 @@ public class SpellBlock {
                                     SpellSignal[] outputs,
                                     Parameter[] parameters,
                                     BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult> function,
-                                    Supplier<SpellComponent.SideConfig[]> sideConfigGetter)
+                                    Function<SpellComponent,SpellComponent.SideConfig[]> sideConfigGetter)
     {
         return new SpellBlock(Geomancy.locate(identifier), Arrays.stream(inputs).toList(), Arrays.stream(outputs).toList(), Arrays.stream(parameters).toList(),function,sideConfigGetter);
     }
@@ -42,7 +44,7 @@ public class SpellBlock {
                                     SpellSignal output,
                                     Parameter[] parameters,
                                     BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult> function,
-                                    Supplier<SpellComponent.SideConfig[]> sideConfigGetter)
+                                    Function<SpellComponent,SpellComponent.SideConfig[]> sideConfigGetter)
     {
         return create(identifier,inputs,new SpellSignal[]{output},parameters,function,sideConfigGetter);
     }
@@ -51,7 +53,7 @@ public class SpellBlock {
                                     SpellSignal[] inputs,
                                     SpellSignal output,
                                     BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult> function,
-                                    Supplier<SpellComponent.SideConfig[]> sideConfigGetter)
+                                    Function<SpellComponent,SpellComponent.SideConfig[]> sideConfigGetter)
     {
         return create(identifier,inputs,new SpellSignal[]{output},new Parameter[]{},function,sideConfigGetter);
     }
@@ -60,7 +62,7 @@ public class SpellBlock {
                                     SpellSignal[] inputs,
                                     Parameter[] parameters,
                                     BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult> function,
-                                    Supplier<SpellComponent.SideConfig[]> sideConfigGetter)
+                                    Function<SpellComponent,SpellComponent.SideConfig[]> sideConfigGetter)
     {
         return create(identifier,inputs,new SpellSignal[]{},parameters,function,sideConfigGetter);
     }
@@ -68,7 +70,7 @@ public class SpellBlock {
     public static SpellBlock create(String identifier,
                                     SpellSignal[] inputs,
                                     BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult> function,
-                                    Supplier<SpellComponent.SideConfig[]> sideConfigGetter)
+                                    Function<SpellComponent,SpellComponent.SideConfig[]> sideConfigGetter)
     {
         return create(identifier,inputs,new SpellSignal[]{},new Parameter[]{},function,sideConfigGetter);
     }
@@ -78,12 +80,13 @@ public class SpellBlock {
                       List<SpellSignal> outputs,
                       List<Parameter> parameters,
                       BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult> function,
-                      Supplier<SpellComponent.SideConfig[]> sideConfigGetter){
+                      Function<SpellComponent,SpellComponent.SideConfig[]> sideConfigGetter){
         this.identifier=identifier;
         this.inputs = new HashMap<>();
         this.outputs = new HashMap<>();
         this.variables = new HashMap<>();
         this.parameters = new HashMap<>();
+        this.hexTexture = Geomancy.locate("textures/gui/spells/"+identifier.getPath()+".png");
 
         this.function=function;
         this.sideConfigGetter = sideConfigGetter;
@@ -101,34 +104,43 @@ public class SpellBlock {
         return this;
     }
 
-    public SpellComponent.SideConfig[] getDefaultSideConfigs(){
-        return sideConfigGetter.get();
+    public SpellBlock hexTex(String texture){
+        this.hexTexture=Geomancy.locate(texture);
+        return this;
     }
 
-    public static SpellComponent.SideConfig[] sidesUniform(SpellComponent.SideConfig.Mode mode,String varName){
+    public SpellComponent.SideConfig[] getDefaultSideConfigs(SpellComponent component){
+        return sideConfigGetter.apply(component);
+    }
+
+    public static SpellComponent.SideConfig[] sidesUniform(SpellComponent parent, SpellComponent.SideConfig.Mode mode,String varName){
         SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
         for (int i = 0; i < 6; i++) {
-            res[i] = SpellComponent.SideConfig.createSingle(mode,SpellComponent.directions[i]);
+            res[i] = SpellComponent.SideConfig.createSingle(parent,mode,SpellComponent.directions[i]);
             res[i].varName = varName;
         }
         return res;
     }
 
-    public static SpellComponent.SideConfig[] sidesBlocked(){
-        return sidesUniform(SpellComponent.SideConfig.Mode.Blocked,"");
+    public static SpellComponent.SideConfig[] sidesBlocked(SpellComponent parent){
+        return sidesUniform(parent,SpellComponent.SideConfig.Mode.Blocked,"");
     }
 
-    public static SpellComponent.SideConfig[] sidesInput(String varName){
-        return sidesUniform(SpellComponent.SideConfig.Mode.Input,varName);
+    public static SpellComponent.SideConfig[] sidesInput(SpellComponent parent,String varName){
+        return sidesUniform(parent,SpellComponent.SideConfig.Mode.Input,varName);
     }
 
-    public static SpellComponent.SideConfig[] sidesOutput(String varName){
-        return sidesUniform(SpellComponent.SideConfig.Mode.Output,varName);
+    public static SpellComponent.SideConfig[] sidesOutput(SpellComponent parent,String varName){
+        return sidesUniform(parent,SpellComponent.SideConfig.Mode.Output,varName);
     }
 
     public Parameter getParameter(String param) {
         if(parameters.containsKey(param)) return parameters.get(param);
         return null;
+    }
+
+    public Identifier getHexTexture(){
+        return hexTexture;
     }
 
     public static class Parameter{

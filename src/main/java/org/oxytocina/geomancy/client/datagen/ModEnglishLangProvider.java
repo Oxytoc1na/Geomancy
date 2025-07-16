@@ -144,6 +144,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("item.MODID.spellcomponent",            "Spell Component");
 
             add("MODID.spellcomponent.empty",               "empty");
+            add("MODID.spellstorage.empty",                 "empty");
+            add("MODID.spellstorage.unnamed",               "unnamed");
 
             add("MODID.spellcomponent.category.flowcontrol",    "flow control");
             add("MODID.spellcomponent.category.provider",       "provider");
@@ -200,11 +202,31 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("block.MODID.mithril_anvil"         , "Mithril Anvil");
             add("block.MODID.gilded_deepslate"      , "Gilded Deepslate");
             add("block.MODID.decorated_gilded_deepslate", "Decorated Gilded Deepslate");
+
             add("block.MODID.smithery_block"            , "Smithery");
             add("container.MODID.smithery_block"        , "Smithery");
             add("message.MODID.smithery.fail.break"     ,"that didn't sound good...");
+
             add("block.MODID.spellmaker_block"            , "Spellmaker");
             add("container.MODID.spellmaker_block"        , "Spellmaker");
+            add("MODID.spellmaker.dir.ne",  "Northeast");
+            add("MODID.spellmaker.dir.e",   "East");
+            add("MODID.spellmaker.dir.se",  "Southeast");
+            add("MODID.spellmaker.dir.sw",  "Southwest");
+            add("MODID.spellmaker.dir.w",   "West");
+            add("MODID.spellmaker.dir.nw",  "Northwest");
+            add("MODID.spellmaker.mode",    "Mode");
+            add("MODID.spellmaker.modes.blocked",   "Blocked");
+            add("MODID.spellmaker.modes.input",     "Input");
+            add("MODID.spellmaker.modes.output",    "Output");
+            add("MODID.spellmaker.type",            "Type");
+            add("MODID.spellmaker.types.number",    "Number");
+            add("MODID.spellmaker.types.any",       "Any");
+            add("MODID.spellmaker.types.none",      "None");
+            add("MODID.spellmaker.types.boolean",   "Boolean");
+            add("MODID.spellmaker.types.text",      "Text");
+            add("MODID.spellmaker.types.uuid",      "Entity");
+            add("MODID.spellmaker.types.vector",    "Vector");
 
             add("block.MODID.octangulite_ore"           , "Octangulite Ore");
             add("block.MODID.deepslate_octangulite_ore" , "Deepslate Octangulite Ore");

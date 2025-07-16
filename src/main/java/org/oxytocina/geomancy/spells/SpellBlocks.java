@@ -46,7 +46,7 @@ public class SpellBlocks {
         SpellBlock.Category cat = SpellBlock.Category.FlowControl;
         {
             CONVEYOR = register(SpellBlock.create("conveyor",new SpellSignal[]{
-                    SpellSignal.createAny().named("val")},SpellSignal.createAny().named("val"),SpellBlocks::mirrorInToOut, ()->freeformSideConfigs("val")).category(cat));
+                    SpellSignal.createAny().named("val")},SpellSignal.createAny().named("val"),SpellBlocks::mirrorInToOut, (c)->freeformSideConfigs(c,"val")).category(cat));
 
             GATE = register(SpellBlock.create("gate",
                     new SpellSignal[]{
@@ -62,10 +62,10 @@ public class SpellBlocks {
                         if(!args.vars.get("gate").getBooleanValue()) return res;
                         return args.toRes();
                     },
-                    ()->{
+                    (comp)->{
                         SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
                         for (int i = 0; i < 2; i++) {
-                            res[i] = SpellComponent.SideConfig.create(
+                            res[i] = SpellComponent.SideConfig.create(comp,
                                     new SpellComponent.SideConfig.Mode[]{
                                             SpellComponent.SideConfig.Mode.Input,
                                             SpellComponent.SideConfig.Mode.Blocked
@@ -76,7 +76,7 @@ public class SpellBlocks {
                         res[1].varName="gate";
 
                         for (int i = 2; i < 6; i++) {
-                            res[i] = SpellComponent.SideConfig.create(
+                            res[i] = SpellComponent.SideConfig.create(comp,
                                     new SpellComponent.SideConfig.Mode[]{
                                             SpellComponent.SideConfig.Mode.Output,
                                             SpellComponent.SideConfig.Mode.Blocked
@@ -108,21 +108,21 @@ public class SpellBlocks {
                         res.iterations=args.getInt("count");
                         return res;
                     },
-                    ()->{
+                    (comp)->{
                         SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
                         for (int i = 0; i < 2; i++) {
-                            res[i] = SpellComponent.SideConfig.create(
+                            res[i] = SpellComponent.SideConfig.create(comp,
                                     new SpellComponent.SideConfig.Mode[]{
                                             SpellComponent.SideConfig.Mode.Input,
                                             SpellComponent.SideConfig.Mode.Blocked
                                     }
                                     ,SpellComponent.directions[i]);
                         }
-                        res[0].varName="val";
+                        res[0].varName="signal";
                         res[1].varName="gate";
 
                         for (int i = 2; i < 6; i++) {
-                            res[i] = SpellComponent.SideConfig.create(
+                            res[i] = SpellComponent.SideConfig.create(comp,
                                     new SpellComponent.SideConfig.Mode[]{
                                             SpellComponent.SideConfig.Mode.Output,
                                             SpellComponent.SideConfig.Mode.Blocked
@@ -146,15 +146,15 @@ public class SpellBlocks {
             CONST_NUM = register(SpellBlock.create("constant_number",new SpellSignal[]{},
                     new SpellSignal[]{SpellSignal.createNumber(0).named("val")},
                     new SpellBlock.Parameter[]{SpellBlock.Parameter.createNumber("val",1,-1000,1000)}
-                    ,SpellBlocks::mirrorInToOut,()->SpellBlock.sidesOutput("val")).category(cat));
+                    ,SpellBlocks::mirrorInToOut,(c)->SpellBlock.sidesOutput(c,"val")).category(cat));
 
             CONST_TEXT = register(SpellBlock.create("constant_text",new SpellSignal[]{},
                     new SpellSignal[]{SpellSignal.createText("").named("val")},
-                    new SpellBlock.Parameter[]{SpellBlock.Parameter.createText("val","")}, SpellBlocks::mirrorInToOut,()->SpellBlock.sidesOutput("val")).category(cat));
+                    new SpellBlock.Parameter[]{SpellBlock.Parameter.createText("val","")}, SpellBlocks::mirrorInToOut,(c)->SpellBlock.sidesOutput(c,"val")).category(cat));
 
             CONST_BOOLEAN = register(SpellBlock.create("constant_boolean",new SpellSignal[]{},
                     new SpellSignal[]{SpellSignal.createBoolean(true).named("val")},
-                    new SpellBlock.Parameter[]{SpellBlock.Parameter.createBoolean("val",true)}, SpellBlocks::mirrorInToOut,()->SpellBlock.sidesOutput("val")).category(cat));
+                    new SpellBlock.Parameter[]{SpellBlock.Parameter.createBoolean("val",true)}, SpellBlocks::mirrorInToOut,(c)->SpellBlock.sidesOutput(c,"val")).category(cat));
 
 
 
@@ -165,7 +165,7 @@ public class SpellBlocks {
                         SpellBlockResult res = new SpellBlockResult();
                         if(component.casterEntity!=null) res.add("caster",component.casterEntity.getUuid());return res;
                     },
-                    ()->SpellBlock.sidesOutput("caster")).category(cat));
+                    (c)->SpellBlock.sidesOutput(c,"caster")).category(cat));
         }
 
         // arithmetic
@@ -183,12 +183,12 @@ public class SpellBlocks {
                         ).named("sum"));
                         return res;
                     }),
-                    ()->{
+                    (comp)->{
                         SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
                         for (int i = 0; i < 5; i++) {
-                            res[i] = SpellComponent.SideConfig.createSingle(SpellComponent.SideConfig.Mode.Input,SpellComponent.directions[i]);
+                            res[i] = SpellComponent.SideConfig.createSingle(comp,SpellComponent.SideConfig.Mode.Input,SpellComponent.directions[i]);
                         }
-                        res[5] = SpellComponent.SideConfig.createSingle(SpellComponent.SideConfig.Mode.Output,SpellComponent.directions[5]);
+                        res[5] = SpellComponent.SideConfig.createSingle(comp,SpellComponent.SideConfig.Mode.Output,SpellComponent.directions[5]);
                         return res;
                     }
             ).category(cat));
@@ -203,14 +203,14 @@ public class SpellBlocks {
                         res.add("position",entity.getPos());
                         return res;
                     }),
-                    (() -> {
+                    ((comp) -> {
                         SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
                         for (int i = 0; i < 3; i++) {
-                            res[i] = SpellComponent.SideConfig.createSingle(SpellComponent.SideConfig.Mode.Input,SpellComponent.directions[i]);
+                            res[i] = SpellComponent.SideConfig.createSingle(comp,SpellComponent.SideConfig.Mode.Input,SpellComponent.directions[i]);
                             res[i].varName="entity";
                         }
                         for (int i = 3; i < 6; i++) {
-                            res[i] = SpellComponent.SideConfig.createSingle(SpellComponent.SideConfig.Mode.Output,SpellComponent.directions[i]);
+                            res[i] = SpellComponent.SideConfig.createSingle(comp,SpellComponent.SideConfig.Mode.Output,SpellComponent.directions[i]);
                             res[i].varName="position";
                         }
                         return res;
@@ -227,14 +227,14 @@ public class SpellBlocks {
                         res.add("eye position",entity.getEyePos());
                         return res;
                     }),
-                    (() -> {
+                    ((comp) -> {
                         SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
                         for (int i = 0; i < 3; i++) {
-                            res[i] = SpellComponent.SideConfig.createSingle(SpellComponent.SideConfig.Mode.Input,SpellComponent.directions[i]);
+                            res[i] = SpellComponent.SideConfig.createSingle(comp,SpellComponent.SideConfig.Mode.Input,SpellComponent.directions[i]);
                             res[i].varName="entity";
                         }
                         for (int i = 3; i < 6; i++) {
-                            res[i] = SpellComponent.SideConfig.createSingle(SpellComponent.SideConfig.Mode.Output,SpellComponent.directions[i]);
+                            res[i] = SpellComponent.SideConfig.createSingle(comp,SpellComponent.SideConfig.Mode.Output,SpellComponent.directions[i]);
                             res[i].varName="eye position";
                         }
                         return res;
@@ -251,14 +251,14 @@ public class SpellBlocks {
                         res.add("direction",entity.getRotationVector());
                         return res;
                     }),
-                    (() -> {
+                    ((comp) -> {
                         SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
                         for (int i = 0; i < 3; i++) {
-                            res[i] = SpellComponent.SideConfig.createSingle(SpellComponent.SideConfig.Mode.Input,SpellComponent.directions[i]);
+                            res[i] = SpellComponent.SideConfig.createSingle(comp,SpellComponent.SideConfig.Mode.Input,SpellComponent.directions[i]);
                             res[i].varName="entity";
                         }
                         for (int i = 3; i < 6; i++) {
-                            res[i] = SpellComponent.SideConfig.createSingle(SpellComponent.SideConfig.Mode.Output,SpellComponent.directions[i]);
+                            res[i] = SpellComponent.SideConfig.createSingle(comp,SpellComponent.SideConfig.Mode.Output,SpellComponent.directions[i]);
                             res[i].varName="direction";
                         }
                         return res;
@@ -281,14 +281,14 @@ public class SpellBlocks {
                         res.add("z",vec.z);
                         return res;
                     }),
-                    (() -> {
+                    ((comp) -> {
                         SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
                         for (int i = 0; i < 3; i++) {
-                            res[i] = SpellComponent.SideConfig.createSingle(SpellComponent.SideConfig.Mode.Input,SpellComponent.directions[i]).named("vector");
+                            res[i] = SpellComponent.SideConfig.createSingle(comp,SpellComponent.SideConfig.Mode.Input,SpellComponent.directions[i]).named("vector");
                         }
-                        res[3] = SpellComponent.SideConfig.createSingle(SpellComponent.SideConfig.Mode.Output,SpellComponent.directions[3]).named("x");
-                        res[4] = SpellComponent.SideConfig.createSingle(SpellComponent.SideConfig.Mode.Output,SpellComponent.directions[4]).named("y");
-                        res[5] = SpellComponent.SideConfig.createSingle(SpellComponent.SideConfig.Mode.Output,SpellComponent.directions[5]).named("z");
+                        res[3] = SpellComponent.SideConfig.createSingle(comp,SpellComponent.SideConfig.Mode.Output,SpellComponent.directions[3]).named("x");
+                        res[4] = SpellComponent.SideConfig.createSingle(comp,SpellComponent.SideConfig.Mode.Output,SpellComponent.directions[4]).named("y");
+                        res[5] = SpellComponent.SideConfig.createSingle(comp,SpellComponent.SideConfig.Mode.Output,SpellComponent.directions[5]).named("z");
                         return res;
                     })
             ).category(cat));
@@ -311,14 +311,14 @@ public class SpellBlocks {
                         res.add("vector",vec);
                         return res;
                     }),
-                    (() -> {
+                    ((comp) -> {
                         SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
                         for (int i = 0; i < 3; i++) {
-                            res[i] = SpellComponent.SideConfig.createSingle(SpellComponent.SideConfig.Mode.Input,SpellComponent.directions[i]).named("vector");
+                            res[i] = SpellComponent.SideConfig.createSingle(comp,SpellComponent.SideConfig.Mode.Input,SpellComponent.directions[i]).named("vector");
                         }
-                        res[3] = SpellComponent.SideConfig.createSingle(SpellComponent.SideConfig.Mode.Output,SpellComponent.directions[3]).named("x");
-                        res[4] = SpellComponent.SideConfig.createSingle(SpellComponent.SideConfig.Mode.Output,SpellComponent.directions[4]).named("y");
-                        res[5] = SpellComponent.SideConfig.createSingle(SpellComponent.SideConfig.Mode.Output,SpellComponent.directions[5]).named("z");
+                        res[3] = SpellComponent.SideConfig.createSingle(comp,SpellComponent.SideConfig.Mode.Output,SpellComponent.directions[3]).named("x");
+                        res[4] = SpellComponent.SideConfig.createSingle(comp,SpellComponent.SideConfig.Mode.Output,SpellComponent.directions[4]).named("y");
+                        res[5] = SpellComponent.SideConfig.createSingle(comp,SpellComponent.SideConfig.Mode.Output,SpellComponent.directions[5]).named("z");
                         return res;
                     })
             ).category(cat));
@@ -345,7 +345,7 @@ public class SpellBlocks {
 
                         return SpellBlockResult.empty();
                     })
-                    ,()->SpellBlock.sidesInput("val")
+                    ,(c)->SpellBlock.sidesInput(c,"val")
             ).category(cat));
 
             FIREBALL = register(SpellBlock.create("fireball",new SpellSignal[]{
@@ -361,14 +361,14 @@ public class SpellBlocks {
 
                         return SpellBlockResult.empty();
                     })
-                    ,()->{
+                    ,(comp)->{
                         SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
-                        res[0] = SpellComponent.SideConfig.createInput(SpellComponent.getDir(0)).named("position");
-                        res[1] = SpellComponent.SideConfig.createInput(SpellComponent.getDir(1)).named("direction");
-                        res[2] = SpellComponent.SideConfig.createInput(SpellComponent.getDir(2)).named("speed");
-                        res[3] = SpellComponent.SideConfig.createBlocked(SpellComponent.getDir(3));
-                        res[4] = SpellComponent.SideConfig.createBlocked(SpellComponent.getDir(4));
-                        res[5] = SpellComponent.SideConfig.createBlocked(SpellComponent.getDir(5));
+                        res[0] = SpellComponent.SideConfig.createInput(comp,SpellComponent.getDir(0)).named("position");
+                        res[1] = SpellComponent.SideConfig.createInput(comp,SpellComponent.getDir(1)).named("direction");
+                        res[2] = SpellComponent.SideConfig.createInput(comp,SpellComponent.getDir(2)).named("speed");
+                        res[3] = SpellComponent.SideConfig.createInput(comp,SpellComponent.getDir(3));
+                        res[4] = SpellComponent.SideConfig.createInput(comp,SpellComponent.getDir(4));
+                        res[5] = SpellComponent.SideConfig.createInput(comp,SpellComponent.getDir(5));
                         return res;
                     }
             ).category(cat));
@@ -399,10 +399,10 @@ public class SpellBlocks {
         return new SpellBlockResult(vars);
     }
 
-    public static SpellComponent.SideConfig[] freeformSideConfigs(String var){
+    public static SpellComponent.SideConfig[] freeformSideConfigs(SpellComponent comp,String var){
         SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
         for (int i = 0; i < 6; i++) {
-            res[i] = SpellComponent.SideConfig.create(
+            res[i] = SpellComponent.SideConfig.create(comp,
                     new SpellComponent.SideConfig.Mode[]{
                             SpellComponent.SideConfig.Mode.Blocked,
                             SpellComponent.SideConfig.Mode.Input,

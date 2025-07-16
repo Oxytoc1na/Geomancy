@@ -15,6 +15,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.oxytocina.geomancy.Geomancy;
 
@@ -211,5 +212,12 @@ public class Toolbox {
 
     public static void playSound(SoundEvent event, World world, BlockPos pos, SoundCategory cat, float volume, float pitch){
         world.playSound(null,pos,event,cat,volume,pitch);
+    }
+
+    public static Vector2f rotateVector(Vector2f v1, double a){
+        return new Vector2f(
+                (float)(Math.cos(a)*v1.x-Math.sin(a)*v1.y),
+                (float)(Math.sin(a)*v1.x-Math.cos(a)*v1.y)
+                );
     }
 }

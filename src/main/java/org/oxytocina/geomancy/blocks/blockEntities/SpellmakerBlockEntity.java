@@ -27,6 +27,7 @@ import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.inventories.AutoCraftingInventory;
 import org.oxytocina.geomancy.inventories.ImplementedInventory;
 import org.oxytocina.geomancy.items.SpellComponentStoringItem;
+import org.oxytocina.geomancy.items.SpellStoringItem;
 import org.oxytocina.geomancy.spells.SpellBlock;
 
 import java.util.ArrayList;
@@ -186,6 +187,17 @@ public class SpellmakerBlockEntity extends BlockEntity implements ExtendedScreen
 
     @Override
     public void setStack(int slot, ItemStack stack) {
+        // ensure there's a grid in the storage item
+        if(slot == OUTPUT_SLOT){
+            if(stack.getItem() instanceof SpellStoringItem storer)
+            {
+                SpellStoringItem.getOrCreateGrid(stack);
+            }
+        }
         ImplementedInventory.super.setStack(slot, stack);
+    }
+
+    public ItemStack getOutput(){
+        return getStack(SpellmakerBlockEntity.OUTPUT_SLOT);
     }
 }

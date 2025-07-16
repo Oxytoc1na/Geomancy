@@ -13,6 +13,7 @@ import java.util.HashMap;
 public class SpellGrid {
     public int width;
     public int height;
+    public String name;
     public HashMap<Vector2i,SpellComponent> components;
 
     public SpellGrid(NbtCompound nbt){
@@ -23,6 +24,7 @@ public class SpellGrid {
     public SpellGrid(int width, int height){
         this.width=width;
         this.height=height;
+        this.name="";
         this.components=new HashMap<>();
     }
 
@@ -37,6 +39,7 @@ public class SpellGrid {
         if(components.containsKey(component.position)) return false; // occupied
         if(!inBounds(component.position)) return false; // out of bounds
 
+        component.parent=this;
         components.put(component.position,component);
         recalculateNeighbors(component.position);
 
@@ -94,6 +97,7 @@ public class SpellGrid {
     public void writeNbt(NbtCompound nbt){
         nbt.putInt("width",width);
         nbt.putInt("height",height);
+        nbt.putString("name",name);
         NbtList compsNbt = new NbtList();
         for (var c:components.values())
         {
@@ -107,6 +111,7 @@ public class SpellGrid {
     public void readNbt(NbtCompound nbt){
         width=nbt.getInt("width");
         height=nbt.getInt("height");
+        name=nbt.getString("name");
         NbtList compsNbt = nbt.getList("components", NbtElement.COMPOUND_TYPE);
         for (var c:compsNbt)
         {
@@ -115,6 +120,5 @@ public class SpellGrid {
             SpellComponent comp = new SpellComponent(this,nbtComp);
             tryAddComponent(comp);
         }
-        nbt.put("components",compsNbt);
     }
 }

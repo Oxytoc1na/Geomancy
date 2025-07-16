@@ -119,7 +119,7 @@ public class SpellSignal {
     }
 
     public Text toText(){
-        return Text.literal(type.toString()+" ").formatted(Formatting.DARK_AQUA).append(Text.literal(name).formatted(Formatting.GRAY));
+        return Text.translatable("geomancy.spellmaker.types."+type.toString().toLowerCase()).formatted(Formatting.DARK_AQUA).append(Text.literal(" "+name).formatted(Formatting.GRAY));
     }
 
     public enum Type{
