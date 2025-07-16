@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class SpellBlock {
     public HashMap<String, SpellSignal> variables;
@@ -18,7 +17,8 @@ public class SpellBlock {
     public boolean singleOutput;
     public SpellSignal output;
     public Identifier identifier;
-    public Identifier hexTexture;
+    public Identifier hexFrontTexture;
+    public Identifier hexBackTexture;
     public Function<SpellComponent,SpellComponent.SideConfig[]> sideConfigGetter;
     public Category category;
 
@@ -86,7 +86,8 @@ public class SpellBlock {
         this.outputs = new HashMap<>();
         this.variables = new HashMap<>();
         this.parameters = new HashMap<>();
-        this.hexTexture = Geomancy.locate("textures/gui/spells/"+identifier.getPath()+".png");
+        this.hexFrontTexture = Geomancy.locate("textures/gui/spells/"+identifier.getPath()+".png");
+        this.hexBackTexture = Geomancy.locate("textures/gui/spellmaker_hex_bg_arithmetic.png");
 
         this.function=function;
         this.sideConfigGetter = sideConfigGetter;
@@ -101,11 +102,12 @@ public class SpellBlock {
 
     public SpellBlock category(Category category){
         this.category=category;
+        this.hexBackTexture = Geomancy.locate("textures/gui/spellmaker_hex_bg_"+category.toString().toLowerCase()+".png");
         return this;
     }
 
     public SpellBlock hexTex(String texture){
-        this.hexTexture=Geomancy.locate(texture);
+        this.hexFrontTexture =Geomancy.locate(texture);
         return this;
     }
 
@@ -113,25 +115,28 @@ public class SpellBlock {
         return sideConfigGetter.apply(component);
     }
 
-    public static SpellComponent.SideConfig[] sidesUniform(SpellComponent parent, SpellComponent.SideConfig.Mode mode,String varName){
+    public static SpellComponent.SideConfig[] sidesUniform(SpellComponent parent, SpellComponent.SideConfig.Mode[] modes,String varName){
         SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
         for (int i = 0; i < 6; i++) {
-            res[i] = SpellComponent.SideConfig.createSingle(parent,mode,SpellComponent.directions[i]);
+            res[i] = SpellComponent.SideConfig.create(parent,modes,SpellComponent.directions[i]);
             res[i].varName = varName;
         }
         return res;
     }
 
     public static SpellComponent.SideConfig[] sidesBlocked(SpellComponent parent){
-        return sidesUniform(parent,SpellComponent.SideConfig.Mode.Blocked,"");
+        return sidesUniform(parent,new SpellComponent.SideConfig.Mode[]{
+                SpellComponent.SideConfig.Mode.Blocked},"");
     }
 
     public static SpellComponent.SideConfig[] sidesInput(SpellComponent parent,String varName){
-        return sidesUniform(parent,SpellComponent.SideConfig.Mode.Input,varName);
+        return sidesUniform(parent,new SpellComponent.SideConfig.Mode[]{
+                SpellComponent.SideConfig.Mode.Input,SpellComponent.SideConfig.Mode.Blocked},varName);
     }
 
     public static SpellComponent.SideConfig[] sidesOutput(SpellComponent parent,String varName){
-        return sidesUniform(parent,SpellComponent.SideConfig.Mode.Output,varName);
+        return sidesUniform(parent,new SpellComponent.SideConfig.Mode[]{
+                SpellComponent.SideConfig.Mode.Output,SpellComponent.SideConfig.Mode.Blocked},varName);
     }
 
     public Parameter getParameter(String param) {
@@ -139,8 +144,12 @@ public class SpellBlock {
         return null;
     }
 
-    public Identifier getHexTexture(){
-        return hexTexture;
+    public Identifier getHexFrontTexture(){
+        return hexFrontTexture;
+    }
+
+    public Identifier getHexBackTexture(){
+        return hexBackTexture;
     }
 
     public static class Parameter{

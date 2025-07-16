@@ -46,17 +46,6 @@ public class SpellStoringItem extends Item {
 
         SpellGrid grid = new SpellGrid(storage.getWidth(),storage.getHeight());
 
-        // DEBUG
-        // TODO: remove
-        SpellComponent casterUUID = new SpellComponent(grid,new Vector2i(1,0), SpellBlocks.ENTITY_CASTER);
-        grid.tryAddComponent(casterUUID);
-
-        SpellComponent entityPos = new SpellComponent(grid,new Vector2i(0,1), SpellBlocks.VECTOR_ENTITYPOS);
-        grid.tryAddComponent(entityPos);
-
-        SpellComponent print = new SpellComponent(grid,new Vector2i(0,0), SpellBlocks.PRINT);
-        grid.tryAddComponent(print);
-
         writeGrid(stack,grid);
         return grid;
     }

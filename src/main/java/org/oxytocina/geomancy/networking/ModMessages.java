@@ -26,14 +26,18 @@ public class ModMessages {
     // client to server
     public static final Identifier CLIENT_JOINED = Geomancy.locate("client_joined");
     public static final Identifier SPELLMAKER_TRY_ADD_COMPONENT = Geomancy.locate("spellmaker_try_add_component");
+    public static final Identifier SPELLMAKER_TRY_REMOVE_COMPONENT = Geomancy.locate("spellmaker_try_remove_component");
     public static final Identifier SPELLMAKER_TRY_CHANGE_TYPE = Geomancy.locate("spellmaker_try_change_type");
     public static final Identifier SPELLMAKER_TRY_CHANGE_VAR = Geomancy.locate("spellmaker_try_change_var");
+    public static final Identifier SPELLMAKER_TRY_ROTATE_COMPONENT = Geomancy.locate("spellmaker_try_rotate_component");
 
     public static void registerC2SPackets(){
         ServerPlayNetworking.registerGlobalReceiver(CLIENT_JOINED, ClientJoinedC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(SPELLMAKER_TRY_ADD_COMPONENT, SpellmakerTryAddComponentC2SPacket::receive);
+        ServerPlayNetworking.registerGlobalReceiver(SPELLMAKER_TRY_REMOVE_COMPONENT, SpellmakerTryRemoveComponentC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(SPELLMAKER_TRY_CHANGE_TYPE, SpellmakerTryChangeModeC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(SPELLMAKER_TRY_CHANGE_VAR, SpellmakerTryChangeVarC2SPacket::receive);
+        ServerPlayNetworking.registerGlobalReceiver(SPELLMAKER_TRY_ROTATE_COMPONENT, SpellmakerTryRotateComponentC2SPacket::receive);
 
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
             server.execute(() -> {

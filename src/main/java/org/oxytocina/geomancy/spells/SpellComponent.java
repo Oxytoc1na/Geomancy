@@ -6,7 +6,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import org.joml.Vector2i;
@@ -33,6 +32,8 @@ public class SpellComponent {
     public ItemStack spellStorageItem;
     public LivingEntity casterEntity;
     public World world;
+
+    public int rotation = 0;
 
     public SpellComponent(SpellGrid parent, Vector2i position, SpellBlock function,SideConfig[] sideConfigs,HashMap<String,ConfiguredParameter> configuredParameters){
         this.parent=parent;
@@ -116,7 +117,8 @@ public class SpellComponent {
         var result = function.run(this,new SpellBlockArgs(args));
         for (int i = 0; i < result.iterations; i++) {
             var iterationResult = result.clone();
-            pushSignals(result.vars);
+            iterationResult.add(result.iterationVarName,i);
+            pushSignals(iterationResult.vars);
         }
         this.receivedSignals.clear();
     }
@@ -149,6 +151,7 @@ public class SpellComponent {
     }
 
     public void writeNbt(NbtCompound nbt){
+        nbt.putInt("rotation",rotation);
         nbt.putString("func",function.identifier.toString());
         if(position!=null){
             nbt.putInt("x",position.x);
@@ -173,6 +176,7 @@ public class SpellComponent {
     }
 
     public void readNbt(NbtCompound nbt){
+        rotation = nbt.getInt("rotation");
         function = SpellBlocks.get(nbt.getString("func"));
         if(
                 nbt.contains("x",NbtElement.INT_TYPE) &&
@@ -261,8 +265,25 @@ public class SpellComponent {
         return receivedSignals.containsKey(name);
     }
 
-    public Identifier getHexTexture(){
-        return function.getHexTexture();
+    public Identifier getHexFrontTexture(){
+        return function.getHexFrontTexture();
+    }
+
+    public Identifier getHexBackTexture(){
+        return function.getHexBackTexture();
+    }
+
+    /// rotates side configs clockwise by specified amount
+    public void rotate(int amount){
+        rotation = (rotation-(amount%6)+6)%6;
+
+        SideConfig[] newConfigs = new SideConfig[6];
+        for(int i = 0; i < 6; i++)
+        {
+            newConfigs[i] = sideConfigs[(i-(amount%6)+6)%6];
+            newConfigs[i].dir = getDir(i);
+        }
+        sideConfigs = newConfigs;
     }
 
     public static class SideConfig{
@@ -273,9 +294,12 @@ public class SpellComponent {
         public SpellComponent parent;
 
         private SideConfig(SpellComponent parent, NbtCompound nbt){
-            readNbt(nbt);
             this.parent=parent;
-            modes = parent.function.getDefaultSideConfigs(parent)[getDirIndex(dir)].modes;
+            readNbt(nbt);
+            modes = parent.function.getDefaultSideConfigs(parent)[
+                    (getDirIndex(dir)+parent.rotation+6)%6
+                    ].modes;
+            sanityCheckVarName();
         }
 
         public SideConfig(SpellComponent parent,String dir, String varName, Mode[] modes){
@@ -298,8 +322,20 @@ public class SpellComponent {
             return new SideConfig(parent,dir,"",new Mode[]{Mode.Output});
         }
 
+        public static SideConfig createToggleableOutput(SpellComponent parent, String dir){
+            return new SideConfig(parent,dir,"",new Mode[]{Mode.Output,Mode.Blocked});
+        }
+
         public static SideConfig createInput(SpellComponent parent, String dir){
             return new SideConfig(parent,dir,"",new Mode[]{Mode.Input});
+        }
+
+        public static SideConfig createToggleableInput(SpellComponent parent, String dir){
+            return new SideConfig(parent,dir,"",new Mode[]{Mode.Input,Mode.Blocked});
+        }
+
+        public static SideConfig createFreeform(SpellComponent parent, String dir){
+            return new SideConfig(parent,dir,"",new Mode[]{Mode.Input,Mode.Output,Mode.Blocked});
         }
 
         public static SideConfig createSingle(SpellComponent parent, Mode mode, String dir){
@@ -326,11 +362,7 @@ public class SpellComponent {
             if(selectedMode==index) return;
             selectedMode=index;
             // set variable to fitting one
-            switch(activeMode()){
-                case Input: varName = parent.function.inputs.isEmpty()?"":parent.function.inputs.keySet().stream().findFirst().get(); break;
-                case Output: varName = parent.function.outputs.isEmpty()?"":parent.function.outputs.keySet().stream().findFirst().get(); break;
-                case Blocked: varName = ""; break;
-            }
+            sanityCheckVarName();
         }
 
         public Mode activeMode(){
@@ -366,6 +398,11 @@ public class SpellComponent {
             return this;
         }
 
+        public SideConfig disabled(){
+            setMode(Mode.Blocked);
+            return this;
+        }
+
         public Identifier getTexture(){
             if(activeMode()==Mode.Blocked) return null;
             return Geomancy.locate("textures/gui/spells/"+(activeMode()==Mode.Input?"in":"out")+"_"+dir+".png");
@@ -377,6 +414,22 @@ public class SpellComponent {
                 case Input -> component.function.inputs.get(varName);
                 case Output -> component.function.outputs.get(varName);
             };
+        }
+
+        private void sanityCheckVarName() {
+            switch(activeMode()){
+                case Input:
+                    if(parent.function.inputs.containsKey(varName)) return;
+                    Geomancy.logError("variable name sanity check failed! in: "+varName+", parent: "+parent.function.identifier.toString()+", side: "+dir);
+                    setVar(parent.function.inputs.keySet().stream().findFirst().get());
+                    return;
+                case Output:
+                    if(parent.function.outputs.containsKey(varName)) return;
+                    Geomancy.logError("variable name sanity check failed! out: "+varName+", parent: "+parent.function.identifier.toString()+", side: "+dir);
+                    setVar(parent.function.outputs.keySet().stream().findFirst().get());
+                    return;
+                case Blocked: varName="";return;
+            }
         }
 
         public void setVar(String newVar){

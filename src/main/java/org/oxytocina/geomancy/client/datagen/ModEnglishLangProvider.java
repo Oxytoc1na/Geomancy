@@ -162,12 +162,6 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             // getters
             add("MODID.spellcomponent.entity_caster",               "caster");
             add("MODID.tooltip.spellcomponent.entity_caster",       "returns the caster entity");
-            add("MODID.spellcomponent.vector_entitypos",            "entity position");
-            add("MODID.tooltip.spellcomponent.vector_entitypos",    "returns the position of the entity");
-            add("MODID.spellcomponent.vector_entityeyepos",         "entity eye position");
-            add("MODID.tooltip.spellcomponent.vector_entityeyepos", "returns the position of the eyes of the entity");
-            add("MODID.spellcomponent.vector_entitydir",            "entity direction");
-            add("MODID.tooltip.spellcomponent.vector_entitydir",    "returns the direction the entity is looking in");
             add("MODID.spellcomponent.constant_boolean",            "constant truth");
             add("MODID.tooltip.spellcomponent.constant_boolean",    "returns a configurable boolean");
             add("MODID.spellcomponent.constant_text",               "constant text");
@@ -175,6 +169,12 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.spellcomponent.constant_number",             "constant number");
             add("MODID.tooltip.spellcomponent.constant_number",     "returns a configurable number");
             // arithmetic
+            add("MODID.spellcomponent.vector_entitypos",            "entity position");
+            add("MODID.tooltip.spellcomponent.vector_entitypos",    "returns the position of the entity");
+            add("MODID.spellcomponent.vector_entityeyepos",         "entity eye position");
+            add("MODID.tooltip.spellcomponent.vector_entityeyepos", "returns the position of the eyes of the entity");
+            add("MODID.spellcomponent.vector_entitydir",            "entity direction");
+            add("MODID.tooltip.spellcomponent.vector_entitydir",    "returns the direction the entity is looking in");
             add("MODID.spellcomponent.sum",                         "sum");
             add("MODID.tooltip.spellcomponent.sum",                 "adds two numbers and returns the sum");
             add("MODID.spellcomponent.vector_split",                "split vector");
@@ -209,6 +209,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
             add("block.MODID.spellmaker_block"            , "Spellmaker");
             add("container.MODID.spellmaker_block"        , "Spellmaker");
+            add("MODID.spellmaker.delete",  "remove");
+            add("MODID.spellmaker.rotate",  "rotate");
             add("MODID.spellmaker.dir.ne",  "Northeast");
             add("MODID.spellmaker.dir.e",   "East");
             add("MODID.spellmaker.dir.se",  "Southeast");

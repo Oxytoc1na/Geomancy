@@ -8,6 +8,7 @@ import java.util.UUID;
 public class SpellBlockResult {
     public HashMap<String,SpellSignal> vars;
     public int iterations = 1;
+    public String iterationVarName = "i";
 
     public SpellBlockResult(){
         vars = new HashMap<>();
@@ -18,7 +19,8 @@ public class SpellBlockResult {
     }
 
     public SpellBlockResult(SpellBlockArgs args){
-        this.vars=args.vars;
+        this.vars = new HashMap<>();
+        vars.putAll(args.vars);
     }
 
     public void add(SpellSignal signal){
@@ -51,5 +53,12 @@ public class SpellBlockResult {
 
     public static SpellBlockResult empty(){
         return new SpellBlockResult();
+    }
+
+    public SpellBlockResult clone(){
+        SpellBlockResult res = new SpellBlockResult();
+        res.vars.putAll(vars);
+        res.iterationVarName=iterationVarName;
+        return res;
     }
 }

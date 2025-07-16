@@ -58,104 +58,6 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
         clearChildren();
         // instantiate buttons
         if(inspecting){
-            /*
-            // render selected component
-            if(selectedComponent!=null){
-                RenderSystem.setShaderColor(1,1,1,1);
-
-
-                var component = selectedComponent;
-                final float previewScale = 2;
-                final int previewWidth = Math.round(hexWidth * previewScale);
-                final int previewHeight = Math.round(hexBGTextureSize * previewScale);
-
-                // render component
-                {
-                    var bgTexture = component.getHexTexture();
-                    RenderSystem.setShaderColor(1,1,1,1);
-
-                    context.drawTexture(bgTexture,
-                            infoPosX,
-                            infoPosY,
-                            previewWidth,
-                            previewHeight,
-                            (hexBGTextureSize-hexWidth)/2f,
-                            0,
-                            hexWidth,
-                            hexBGTextureSize,
-                            hexBGTextureSize,
-                            hexBGTextureSize
-                    );
-
-                    // render side configs
-                    for (var conf : component.sideConfigs){
-                        var tex = conf.getTexture();
-                        if(tex!=null){
-                            conf.setShaderColor();
-                            context.drawTexture(
-                                    tex,
-                                    infoPosX,
-                                    infoPosY,
-                                    Math.round(hexWidth*previewScale),
-                                    Math.round(hexBGTextureSize*previewScale),
-                                    (hexBGTextureSize-hexWidth)/2f,
-                                    0,
-                                    hexWidth,
-                                    hexBGTextureSize,
-                                    hexBGTextureSize,
-                                    hexBGTextureSize);
-                        }
-
-
-                    }
-                }
-
-                // render side configs
-                final int sideConfigsOffset = 100;
-                RenderSystem.setShaderColor(1,1,1,1);
-                for (int i = 0; i < component.sideConfigs.length; i++) {
-                    var conf = component.sideConfigs[i];
-
-                    Vector2f offset = Toolbox.rotateVector(new Vector2f(previewWidth/2f,0),Math.PI*2*(i-1)/6f);
-
-                    final float startX = infoPosX+previewWidth/2f+offset.x;
-                    final float startY = infoPosY+previewHeight/2f+offset.y;
-                    final int endX = infoPosX+sideConfigsOffset;
-                    final int endY = infoPosY+i*30;
-
-                    drawLine(context,startX,startY,endX,endY,0.5f,Toolbox.colorFromRGBA(0.8f,1,1,0.3f));
-
-                    // draw conf info
-                    context.drawText(MinecraftClient.getInstance().textRenderer, Text.translatable("geomancy.spellmaker.dir."+conf.dir),endX,endY,0xFFFFFFFF,true);
-                    switch(conf.activeMode()){
-                        case Input:
-                            context.drawText(MinecraftClient.getInstance().textRenderer,
-                                    Text.literal("-> ").formatted(Formatting.GRAY)
-                                            .append(Text.translatable("geomancy.spellmaker.types."+conf.getSignal(component).type.toString().toLowerCase()).formatted(Formatting.DARK_AQUA))
-                                            .append(Text.literal(" "+conf.varName).formatted(Formatting.GRAY)),endX,endY+10,0xFFFFFFFF,true);
-                            break;
-                        case Output:
-                            context.drawText(MinecraftClient.getInstance().textRenderer,
-                                    Text.literal("<- ").formatted(Formatting.GRAY)
-                                            .append(Text.translatable("geomancy.spellmaker.types."+conf.getSignal(component).type.toString().toLowerCase()).formatted(Formatting.DARK_AQUA))
-                                            .append(Text.literal(" "+conf.varName).formatted(Formatting.GRAY)),endX,endY+10,0xFFFFFFFF,true);
-                            break;
-                        case Blocked:
-                            context.drawText(MinecraftClient.getInstance().textRenderer, Text.literal("x").formatted(Formatting.GRAY),endX,endY+10,0xFFFFFFFF,true);
-                            break;
-                    }
-                }
-
-                // render i/o info
-                var ioInfo = SpellComponentStoringItem.componentTooltip(component,true);
-
-                for (int i = 0; i < ioInfo.size(); i++) {
-                    var t = ioInfo.get(i);
-                    context.drawText(MinecraftClient.getInstance().textRenderer, t,infoPosX+10,infoPosY+previewHeight+20+i*10,0xFFFFFFFF,true);
-                }
-
-            }*/
-
             if(handler.selectedComponent!=null){
                 int bgPosX = (width-getBackgroundWidth())/2;
                 int bgPosY = (height-getBackgroundHeight())/2;
@@ -172,7 +74,7 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
                     final float startX = infoPosX+SpellmakerScreenHandler.previewWidth/2f+offset.x;
                     final float startY = infoPosY+SpellmakerScreenHandler.previewHeight/2f+offset.y;
                     final int endX = infoPosX+SpellmakerScreenHandler.sideConfigsOffset;
-                    final int endY = infoPosY+i*30;
+                    final int endY = infoPosY+i*SpellmakerScreenHandler.spacePerSideConfigButtons;
 
                     // change type
                     String typeButtonText = switch(conf.activeMode()){
@@ -197,7 +99,7 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
                     typeBtn.active = conf.modes.size()>1;
                     addDrawableChild(typeBtn);
 
-                    // change type
+                    // change variable
                     String nextVar = "";
                     switch(conf.activeMode())
                     {
@@ -226,7 +128,7 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
                                 if(Objects.equals(name, conf.varName))
                                     nextIsRes = true;
                             }
-                            if(nextVar==null)nextVar=first;
+                            if(nextVar==null||nextVar=="")nextVar=first;
                             break;
                         }
                     }
@@ -252,13 +154,36 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
                             : conf.isOutput() && component.function.outputs.size() > 1;
                     addDrawableChild(varBtn);
                 }
+
+                // delete button
+                SpellmakerButton removeBtn = new SpellmakerButton(this,infoPosX,infoPosY+SpellmakerScreenHandler.previewHeight+10,0,0,35,15,Text.translatable("geomancy.spellmaker.delete"),button -> {
+                    // send packet to server
+                    PacketByteBuf data = PacketByteBufs.create();
+                    var nbt = new NbtCompound();
+                    component.writeNbt(nbt);
+                    data.writeNbt(nbt);
+                    data.writeBlockPos(handler.blockEntity.getPos());
+                    ClientPlayNetworking.send(ModMessages.SPELLMAKER_TRY_REMOVE_COMPONENT, data);
+
+                    handler.selectedComponentIndex = -1;
+                    handler.selectedComponentChanged();
+
+                });
+                addDrawableChild(removeBtn);
+
+                // rotate button
+                SpellmakerButton rotateBtn = new SpellmakerButton(this,infoPosX+35,infoPosY+SpellmakerScreenHandler.previewHeight+10,0,0,35,15,Text.translatable("geomancy.spellmaker.rotate"),button -> {
+                    // send packet to server
+                    PacketByteBuf data = PacketByteBufs.create();
+                    var nbt = new NbtCompound();
+                    component.writeNbt(nbt);
+                    data.writeNbt(nbt);
+                    data.writeBlockPos(handler.blockEntity.getPos());
+                    data.writeInt(1);
+                    ClientPlayNetworking.send(ModMessages.SPELLMAKER_TRY_ROTATE_COMPONENT, data);
+                });
+                addDrawableChild(rotateBtn);
             }
-
-            SpellmakerButton test = new SpellmakerButton(this,bgWidth,0,0,0,50,50,Text.literal("test!"),button -> {
-                MinecraftClient.getInstance().player.sendMessage(Text.literal("test!"));
-            });
-
-            addDrawableChild(test);
         }
 
     }
@@ -291,6 +216,12 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         handler.mouseClicked(mouseX, mouseY, button);
         return super.mouseClicked(mouseX, mouseY, button);
+    }
+
+    @Override
+    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+        handler.mouseReleased(mouseX, mouseY, button);
+        return super.mouseReleased(mouseX, mouseY, button);
     }
 
     @Override

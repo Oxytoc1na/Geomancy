@@ -35,6 +35,12 @@ public class SpellGrid {
             comp.run();
     }
 
+    public boolean tryRemoveComponent(Vector2i position){
+        if(!components.containsKey(position)) return false;
+        components.remove(position);
+        return true;
+    }
+
     public boolean tryAddComponent(SpellComponent component){
         if(components.containsKey(component.position)) return false; // occupied
         if(!inBounds(component.position)) return false; // out of bounds

@@ -44,12 +44,22 @@ public class SpellmakerTryAddComponentC2SPacket {
 
                 if(canAfford){
                     ItemStack storageStack = spellmaker.getOutput();
-                    if(storageStack.getItem() instanceof SpellStoringItem storer){
+                    if(storageStack.getItem() instanceof SpellStoringItem){
                         var grid = SpellStoringItem.getOrCreateGrid(storageStack);
                         if(grid.tryAddComponent(component)){
 
                             // successfully added to grid!!
                             SpellStoringItem.writeGrid(storageStack,grid);
+
+                            // remove ingredient from player
+                            for (int i = 0; i < player.getInventory().size(); i++) {
+                                var stack = player.getInventory().getStack(i);
+                                if(!(stack.getItem() instanceof SpellComponentStoringItem)) continue;
+                                var contenderComp = SpellComponentStoringItem.readComponent(stack);
+                                if(contenderComp.function!=function) continue;
+                                stack.decrement(1);
+                                break;
+                            }
                         }
                     }
                 }

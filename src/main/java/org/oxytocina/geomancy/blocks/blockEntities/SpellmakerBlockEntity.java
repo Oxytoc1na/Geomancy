@@ -24,6 +24,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.client.screen.SpellmakerScreenHandler;
 import org.oxytocina.geomancy.inventories.AutoCraftingInventory;
 import org.oxytocina.geomancy.inventories.ImplementedInventory;
 import org.oxytocina.geomancy.items.SpellComponentStoringItem;
@@ -130,8 +131,13 @@ public class SpellmakerBlockEntity extends BlockEntity implements ExtendedScreen
             else stacks.put(block, contender.copy());
         }
 
-        DefaultedList<ItemStack> stacksComposed = DefaultedList.ofSize(stacks.size());
-        stacksComposed.addAll(stacks.values());
+        DefaultedList<ItemStack> stacksComposed = DefaultedList.ofSize(SpellmakerScreenHandler.NEW_COMPONENTS_SLOT_COUNT,ItemStack.EMPTY);
+        int i = 0;
+        for(var stack : stacks.values())
+        {
+            if(i>=stacksComposed.size()) break;
+                stacksComposed.set(i++,stack);
+        }
         return ImplementedInventory.of(stacksComposed);
     }
 

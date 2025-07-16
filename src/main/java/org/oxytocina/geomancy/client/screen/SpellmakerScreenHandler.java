@@ -3,7 +3,6 @@ package org.oxytocina.geomancy.client.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -19,18 +18,13 @@ import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ColorHelper;
-import net.minecraft.util.math.MathHelper;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
 import org.oxytocina.geomancy.Geomancy;
-import org.oxytocina.geomancy.blocks.blockEntities.SmitheryBlockEntity;
 import org.oxytocina.geomancy.blocks.blockEntities.SpellmakerBlockEntity;
-import org.oxytocina.geomancy.event.ScrollTracker;
 import org.oxytocina.geomancy.items.SpellComponentStoringItem;
 import org.oxytocina.geomancy.items.SpellStoringItem;
 import org.oxytocina.geomancy.networking.ModMessages;
@@ -38,7 +32,6 @@ import org.oxytocina.geomancy.spells.SpellComponent;
 import org.oxytocina.geomancy.spells.SpellGrid;
 import org.oxytocina.geomancy.util.Toolbox;
 
-import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +42,13 @@ public class SpellmakerScreenHandler extends ScreenHandler {
     public final SpellmakerBlockEntity blockEntity;
     public final PlayerEntity player;
 
+    public List<SpellComponentSelectionSlot> availableComponentSlots;
+
     public SpellmakerScreen screen;
+
+    private boolean dragging = false;
+    private double draggedX = 0;
+    private double draggedY = 0;
 
     public double fieldDrawOffsetX = 0;
     public double fieldDrawOffsetY = 0;
@@ -84,8 +83,8 @@ public class SpellmakerScreenHandler extends ScreenHandler {
         this.blockEntity = (SpellmakerBlockEntity) blockEntity;
 
         availableComponents = this.blockEntity.getComponentItems(playerInventory);
-
-        addInventory(availableComponents,0,NEW_COMPONENTS_SLOT_COUNT,NEW_COMPONENTS_WIDTH,NEW_COMPONENTS_X,NEW_COMPONENTS_Y);
+        availableComponentSlots = addInventory(availableComponents,0,NEW_COMPONENTS_SLOT_COUNT,NEW_COMPONENTS_WIDTH,NEW_COMPONENTS_X,NEW_COMPONENTS_Y);
+        updateAvailableComponents();
 
         this.addSlot(new Slot(inventory,SpellmakerBlockEntity.OUTPUT_SLOT,152,142));
 
@@ -101,6 +100,15 @@ public class SpellmakerScreenHandler extends ScreenHandler {
     public void rebuild(){
         currentGrid = SpellStoringItem.getOrCreateGrid(getOutput());
         selectedComponentChanged();
+        updateAvailableComponents();
+    }
+
+    public void updateAvailableComponents(){
+        availableComponents.clear();
+        var from = this.blockEntity.getComponentItems(player.getInventory());
+        for (int i = 0; i < from.size(); i++) {
+            availableComponents.setStack(i,from.getStack(i));
+        }
     }
 
     public ItemStack getOutput(){
@@ -110,16 +118,15 @@ public class SpellmakerScreenHandler extends ScreenHandler {
     @Override
     public void onSlotClick(int slotIndex, int button, SlotActionType actionType, PlayerEntity player) {
 
-
         if(slotIndex < availableComponents.size() && slotIndex >-1){
             if(selectedNewComponentIndex==slotIndex){
                 // deselect
                 selectedNewComponentIndex = -1;
-                selectedNewComponent = null;
+                selectedNewComponentChanged();
             }
             else{
                 selectedNewComponentIndex = slotIndex;
-                selectedNewComponent = SpellComponentStoringItem.readComponent(availableComponents.getStack(selectedNewComponentIndex));
+                selectedNewComponentChanged();
             }
 
         }
@@ -171,21 +178,33 @@ public class SpellmakerScreenHandler extends ScreenHandler {
         }
     }
 
-    private void addInventory(Inventory inventory, int slotIndexOffset, int count, int width, int x, int y) {
+    private List<SpellComponentSelectionSlot> addInventory(Inventory inventory, int slotIndexOffset, int count, int width, int x, int y) {
+        List<SpellComponentSelectionSlot> res =new ArrayList<>();
         for (int i = 0; i < count; ++i) {
-            if(i>= inventory.size()) return;
-            this.addSlot(new SpellComponentSelectionSlot(inventory, slotIndexOffset+i, x + (i%width) * 18, y + (i/width)*18,this));
+            if(i>= inventory.size()) return res;
+            res.add((SpellComponentSelectionSlot)this.addSlot(new SpellComponentSelectionSlot(inventory, slotIndexOffset+i, x + (i%width) * 18, y + (i/width)*18,this)));
         }
+        return res;
     }
 
 
 
     public void mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+        if(!mouseInField(mouseX,mouseY)) return;
+
+        draggedX+=deltaX;
+        draggedY+=deltaY;
+
+        if(Math.abs(draggedX) + Math.abs(draggedY) > 2)
+            dragging = true;
+
         fieldDrawOffsetX += deltaX/fieldDrawScale;
         fieldDrawOffsetY += deltaY/fieldDrawScale;
     }
 
     public void mouseScrolled(double mouseX, double mouseY, double amount) {
+        if(!mouseInField(mouseX,mouseY)) return;
+
         if(amount!=0){
             // scrolling
             fieldDrawScale *= 1+0.2f*(float)amount;
@@ -194,19 +213,31 @@ public class SpellmakerScreenHandler extends ScreenHandler {
     }
 
     public void mouseClicked(double mouseX, double mouseY, int button) {
-        int bgPosX = (screen.width-screen.getBackgroundWidth())/2;
-        int bgPosY = (screen.height-screen.getBackgroundHeight())/2;
 
+    }
+
+    public void mouseReleased(double mouseX, double mouseY, int button){
         // was it inside the field?
         if(
                 hasGrid() &&
-                mouseX > bgPosX+fieldPosX &&
-                mouseY > bgPosY+fieldPosY &&
-                mouseX < bgPosX+fieldPosX+fieldWidth &&
-                mouseY < bgPosY+fieldPosY+fieldHeight
+                        mouseInField(mouseX,mouseY)
         ){
-            hexClicked();
+            if(!dragging) hexClicked();
         }
+
+        dragging = false;
+        draggedX = 0;
+        draggedY=0;
+    }
+
+    public boolean mouseInField(double x, double y){
+        int bgPosX = (screen.width-screen.getBackgroundWidth())/2;
+        int bgPosY = (screen.height-screen.getBackgroundHeight())/2;
+
+        return  x > bgPosX+fieldPosX &&
+                y > bgPosY+fieldPosY &&
+                x < bgPosX+fieldPosX+fieldWidth &&
+                y < bgPosY+fieldPosY+fieldHeight;
     }
 
     private void hexClicked(){
@@ -216,38 +247,46 @@ public class SpellmakerScreenHandler extends ScreenHandler {
         // place a new component down
         if(selectedNewComponent!=null)
         {
-            // check if can still afford
-            // TODO
-            boolean canAfford = true;
+            if(!currentGrid.components.containsKey(componentPosition))
+            {
+                // check if can still afford
+                // TODO
+                boolean canAfford = true;
 
-            if(canAfford){
-                SpellComponent componentToBePlaced = selectedNewComponent.clone();
-                componentToBePlaced.position = componentPosition;
+                if(canAfford){
+                    SpellComponent componentToBePlaced = selectedNewComponent.clone();
+                    componentToBePlaced.position = componentPosition;
 
-                // send packet to server
-                PacketByteBuf data = PacketByteBufs.create();
-                var nbt = new NbtCompound();
-                componentToBePlaced.writeNbt(nbt);
-                data.writeNbt(nbt);
-                data.writeBlockPos(blockEntity.getPos());
-                ClientPlayNetworking.send(ModMessages.SPELLMAKER_TRY_ADD_COMPONENT, data);
+                    // send packet to server
+                    PacketByteBuf data = PacketByteBufs.create();
+                    var nbt = new NbtCompound();
+                    componentToBePlaced.writeNbt(nbt);
+                    data.writeNbt(nbt);
+                    data.writeBlockPos(blockEntity.getPos());
+                    ClientPlayNetworking.send(ModMessages.SPELLMAKER_TRY_ADD_COMPONENT, data);
+
+                    // deselect
+                    selectedNewComponentIndex = -1;
+                    selectedNewComponentChanged();
+                }
+                else{
+                    // error
+                    selectedNewComponentIndex = -1;
+                    selectedNewComponentChanged();
+                }
             }
-            else{
-                // error
-                selectedNewComponentIndex = -1;
-                selectedNewComponent = null;
-            }
-
         }
         else
         {
             if(selectedComponentIndex==hoveredOverHexagon){
                 // deselect
                 selectedComponentIndex=-1;
+                selectedComponentChanged();
             }
             else{
-                // select
-                selectedComponentIndex = hoveredOverHexagon;
+                // select if something there
+                selectedComponentIndex = currentGrid.components.containsKey(componentPosition) ? hoveredOverHexagon : -1;
+                selectedComponentChanged();
             }
             selectedComponentChanged();
         }
@@ -255,7 +294,11 @@ public class SpellmakerScreenHandler extends ScreenHandler {
 
     }
 
-    private void selectedComponentChanged(){
+    public void selectedNewComponentChanged(){
+        selectedNewComponent = selectedNewComponentIndex<0?null:SpellComponentStoringItem.readComponent(availableComponents.getStack(selectedNewComponentIndex));
+    }
+
+    public void selectedComponentChanged(){
         selectedComponent = getComponentFromIndex(selectedComponentIndex);
         screen.setComponentInspected(selectedComponent!=null);
     }
@@ -286,7 +329,9 @@ public class SpellmakerScreenHandler extends ScreenHandler {
     public static final float previewScale = 2;
     public static final int previewWidth = Math.round(hexWidth * previewScale);
     public static final int previewHeight = Math.round(hexBGTextureSize * previewScale);
-    public static final int sideConfigsOffset = 100;
+    public static final int sideConfigsOffset = 85;
+    public static final int spacePerSideConfigButtons = 15;
+    public static final int componentInfoYOffset = 30;
 
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         int bgPosX = (screen.width-screen.getBackgroundWidth())/2;
@@ -311,7 +356,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
         if(selectedNewComponentIndex>-1){
             context.drawTexture(spellmakerGuiTexture,
                     bgPosX+NEW_COMPONENTS_X-4+(selectedNewComponentIndex%NEW_COMPONENTS_WIDTH)*18,
-                    bgPosX+NEW_COMPONENTS_Y-4+(selectedNewComponentIndex/NEW_COMPONENTS_WIDTH)*18,
+                    bgPosY+NEW_COMPONENTS_Y-4+(selectedNewComponentIndex/NEW_COMPONENTS_WIDTH)*18,
                     176,0,24,24);
         }
 
@@ -334,19 +379,22 @@ public class SpellmakerScreenHandler extends ScreenHandler {
 
         // calculate selected hexagon
         int selectedHexagon = -1;
-        float minDist = 10000000;
-        for (int i = 0; i < drawPositions.size(); i++) {
-            float dist = Vector2f.distance(
-                    mouseX,
-                    mouseY,
-                    drawPositions.get(i).x+scaledHexWidth/2,
-                    drawPositions.get(i).y+scaledHexHeight/2
-            );
-            if(dist>= minDist)continue;
-            minDist=dist;
-            selectedHexagon=i;
+        if(mouseInField(mouseX,mouseY)){
+            float minDist = 10000000;
+            for (int i = 0; i < drawPositions.size(); i++) {
+                float dist = Vector2f.distance(
+                        mouseX,
+                        mouseY,
+                        drawPositions.get(i).x+scaledHexWidth/2,
+                        drawPositions.get(i).y+scaledHexHeight/2
+                );
+                if(dist>= minDist)continue;
+                minDist=dist;
+                selectedHexagon=i;
 
+            }
         }
+
         hoveredOverHexagon=selectedHexagon;
 
         // render grid
@@ -357,10 +405,24 @@ public class SpellmakerScreenHandler extends ScreenHandler {
             // render component
             var component = currentGrid.getComponent(new Vector2i(x,y));
             if(component!=null){
-                var texture = component.getHexTexture();
+                var fgTexture = component.getHexFrontTexture();
+                var bgTexture = component.getHexBackTexture();
                 RenderSystem.setShaderColor(1,1,1,1);
 
-                context.drawTexture(texture,
+                context.drawTexture(bgTexture,
+                        Math.round(drawPositions.get(i).x),
+                        Math.round(drawPositions.get(i).y),
+                        Math.round(scaledHexWidth),
+                        Math.round(scaledHexHeight),
+                        (hexBGTextureSize-hexWidth)/2f,
+                        0,
+                        hexWidth,
+                        hexBGTextureSize,
+                        hexBGTextureSize,
+                        hexBGTextureSize
+                );
+
+                context.drawTexture(fgTexture,
                         Math.round(drawPositions.get(i).x),
                         Math.round(drawPositions.get(i).y),
                         Math.round(scaledHexWidth),
@@ -400,10 +462,24 @@ public class SpellmakerScreenHandler extends ScreenHandler {
                 // render new component
                 if(selectedNewComponent!=null && i==selectedHexagon){
                     component = selectedNewComponent;
-                    var texture = component.getHexTexture();
+                    var fgTexture = component.getHexFrontTexture();
+                    var bgTexture = component.getHexBackTexture();
                     RenderSystem.setShaderColor(1,1,1,1);
 
-                    context.drawTexture(texture,
+                    context.drawTexture(bgTexture,
+                            Math.round(drawPositions.get(i).x),
+                            Math.round(drawPositions.get(i).y),
+                            Math.round(scaledHexWidth),
+                            Math.round(scaledHexHeight),
+                            (hexBGTextureSize-hexWidth)/2f,
+                            0,
+                            hexWidth,
+                            hexBGTextureSize,
+                            hexBGTextureSize,
+                            hexBGTextureSize
+                    );
+
+                    context.drawTexture(fgTexture,
                             Math.round(drawPositions.get(i).x),
                             Math.round(drawPositions.get(i).y),
                             Math.round(scaledHexWidth),
@@ -478,10 +554,24 @@ public class SpellmakerScreenHandler extends ScreenHandler {
 
             // render component
             {
-                var bgTexture = component.getHexTexture();
+                var fgTexture = component.getHexFrontTexture();
+                var bgTexture = component.getHexBackTexture();
                 RenderSystem.setShaderColor(1,1,1,1);
 
                 context.drawTexture(bgTexture,
+                        infoPosX,
+                        infoPosY,
+                        previewWidth,
+                        previewHeight,
+                        (hexBGTextureSize-hexWidth)/2f,
+                        0,
+                        hexWidth,
+                        hexBGTextureSize,
+                        hexBGTextureSize,
+                        hexBGTextureSize
+                );
+
+                context.drawTexture(fgTexture,
                         infoPosX,
                         infoPosY,
                         previewWidth,
@@ -527,29 +617,10 @@ public class SpellmakerScreenHandler extends ScreenHandler {
                 final float startX = infoPosX+previewWidth/2f+offset.x;
                 final float startY = infoPosY+previewHeight/2f+offset.y;
                 final int endX = infoPosX+sideConfigsOffset;
-                final int endY = infoPosY+i*30;
+                final int endY = infoPosY+i*spacePerSideConfigButtons;
 
                 drawLine(context,startX,startY,endX,endY,0.5f,Toolbox.colorFromRGBA(0.8f,1,1,0.3f));
 
-                // draw conf info
-                //context.drawText(MinecraftClient.getInstance().textRenderer, Text.translatable("geomancy.spellmaker.dir."+conf.dir),endX,endY,0xFFFFFFFF,true);
-                //switch(conf.activeMode()){
-                //    case Input:
-                //        context.drawText(MinecraftClient.getInstance().textRenderer,
-                //                Text.literal("-> ").formatted(Formatting.GRAY)
-                //                .append(Text.translatable("geomancy.spellmaker.types."+conf.getSignal(component).type.toString().toLowerCase()).formatted(Formatting.DARK_AQUA))
-                //                .append(Text.literal(" "+conf.varName).formatted(Formatting.GRAY)),endX,endY+10,0xFFFFFFFF,true);
-                //        break;
-                //    case Output:
-                //        context.drawText(MinecraftClient.getInstance().textRenderer,
-                //                Text.literal("<- ").formatted(Formatting.GRAY)
-                //                .append(Text.translatable("geomancy.spellmaker.types."+conf.getSignal(component).type.toString().toLowerCase()).formatted(Formatting.DARK_AQUA))
-                //                .append(Text.literal(" "+conf.varName).formatted(Formatting.GRAY)),endX,endY+10,0xFFFFFFFF,true);
-                //        break;
-                //    case Blocked:
-                //        context.drawText(MinecraftClient.getInstance().textRenderer, Text.literal("x").formatted(Formatting.GRAY),endX,endY+10,0xFFFFFFFF,true);
-                //        break;
-                //}
             }
 
             // render i/o info
@@ -557,7 +628,8 @@ public class SpellmakerScreenHandler extends ScreenHandler {
 
             for (int i = 0; i < ioInfo.size(); i++) {
                 var t = ioInfo.get(i);
-                context.drawText(MinecraftClient.getInstance().textRenderer, t,infoPosX+10,infoPosY+previewHeight+20+i*10,0xFFFFFFFF,true);
+                // leave room for control buttons
+                context.drawText(MinecraftClient.getInstance().textRenderer, t,infoPosX,infoPosY+previewHeight+componentInfoYOffset+i*10,0xFFFFFFFF,true);
             }
 
         }
