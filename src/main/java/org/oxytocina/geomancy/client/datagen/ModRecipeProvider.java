@@ -161,6 +161,10 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     conditionsFromItem(ModItems.EMPTY_ARTIFACT));
         }
 
+        // decorative blocks
+        offerStonecuttingRecipe(exporter,RecipeCategory.BUILDING_BLOCKS,ModBlocks.CUT_TITANIUM,ModBlocks.TITANIUM_BLOCK,8);
+        ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, ModBlocks.MOSSY_CUT_TITANIUM, 1).input(ModBlocks.CUT_TITANIUM).input(Items.VINE).group("mossify").criterion(hasItem(ModBlocks.CUT_TITANIUM), conditionsFromItem(ModBlocks.CUT_TITANIUM)).offerTo(exporter, convertBetween(ModBlocks.MOSSY_CUT_TITANIUM, ModBlocks.CUT_TITANIUM));
+
 
         this.exporter=null;
     }

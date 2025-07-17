@@ -58,6 +58,8 @@ public class SpellBlocks {
     public static final SpellBlock LIGHTNING;
 
     // reference
+    public static final SpellBlock ACTION;
+    //public static final SpellBlock FUNCTION;
 
     private static SpellBlock.Category cat;
     static{
@@ -594,7 +596,17 @@ public class SpellBlocks {
         // reference
         cat = SpellBlock.Category.Reference;
         {
+            ACTION = register(SpellBlock.Builder.create("action")
+                    .inputs(SpellSignal.createAny().named("trigger"))
+                    .outputs()
+                    .parameters()
+                    .func((comp,vars) -> {
+                        // TODO
 
+                        return SpellBlockResult.empty();
+                    })
+                    .sideConfigGetter((c)->SpellBlock.SideUtil.sidesInput(c,"trigger"))
+                    .category(cat).build());
         }
     }
     // sin, cos, tan

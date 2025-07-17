@@ -101,5 +101,167 @@
     },
     "done": true
   },
+  "minecraft:recipes/redstone/calibrated_sculk_sensor": {
+    "criteria": {
+      "has_amethyst_shard": "2025-07-15 22:43:51 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/tinted_glass": {
+    "criteria": {
+      "has_amethyst_shard": "2025-07-15 22:43:51 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/diamond_leggings": {
+    "criteria": {
+      "has_diamond": "2025-07-15 22:43:51 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/octangulite_block_decompress_to_octangulite_ingot": {
+    "criteria": {
+      "has_octangulite_block": "2025-07-15 22:43:51 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/blue_dye": {
+    "criteria": {
+      "has_lapis_lazuli": "2025-07-15 22:43:51 +0200"
+    },
+    "done": true
+  },
+  "minecraft:story/iron_tools": {
+    "criteria": {
+      "iron_pickaxe": "2025-07-15 22:43:51 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/lapis_block": {
+    "criteria": {
+      "has_lapis_lazuli": "2025-07-15 22:43:51 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/diamond_sword": {
+    "criteria": {
+      "has_diamond": "2025-07-15 22:43:51 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/jukebox": {
+    "criteria": {
+      "has_diamond": "2025-07-15 22:43:51 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/diamond_chestplate": {
+    "criteria": {
+      "has_diamond": "2025-07-15 22:43:51 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/diamond_helmet": {
+    "criteria": {
+      "has_diamond": "2025-07-15 22:43:51 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/titanium_ingot_compress_to_titanium_block": {
+    "criteria": {
+      "has_titanium_ingot": "2025-07-15 22:43:51 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_titanium_necklace": {
+    "criteria": {
+      "default_conditions": "2025-07-15 22:43:51 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_titanium_pendant": {
+    "criteria": {
+      "default_conditions": "2025-07-15 22:43:51 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/emerald_block": {
+    "criteria": {
+      "has_emerald": "2025-07-15 22:43:51 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/spyglass": {
+    "criteria": {
+      "has_amethyst_shard": "2025-07-15 22:43:51 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/diamond_pickaxe": {
+    "criteria": {
+      "has_diamond": "2025-07-15 22:43:51 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/amethyst_block": {
+    "criteria": {
+      "has_amethyst_shard": "2025-07-15 22:43:51 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_titanium_ring": {
+    "criteria": {
+      "default_conditions": "2025-07-15 22:43:51 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/diamond_block": {
+    "criteria": {
+      "has_diamond": "2025-07-15 22:43:51 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/diamond_hoe": {
+    "criteria": {
+      "has_diamond": "2025-07-15 22:43:51 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/diamond_shovel": {
+    "criteria": {
+      "has_diamond": "2025-07-15 22:43:51 +0200"
+    },
+    "done": true
+  },
+  "minecraft:story/mine_diamond": {
+    "criteria": {
+      "diamond": "2025-07-15 22:43:51 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/diamond_axe": {
+    "criteria": {
+      "has_diamond": "2025-07-15 22:43:51 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/jewelry_iron_ring": {
+    "criteria": {
+      "has_ingredient": "2025-07-15 22:43:51 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/titanium_ingot_decompress_to_titanium_nugget": {
+    "criteria": {
+      "has_titanium_ingot": "2025-07-15 22:43:51 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/diamond_boots": {
+    "criteria": {
+      "has_diamond": "2025-07-15 22:43:51 +0200"
+    },
+    "done": true
+  },
   "DataVersion": 3465
 }

@@ -11,6 +11,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -18,9 +20,11 @@ import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 import org.oxytocina.geomancy.items.ModItems;
+import org.oxytocina.geomancy.items.SpellComponentStoringItem;
 import org.oxytocina.geomancy.progression.advancement.LocationCriterion;
 import org.oxytocina.geomancy.progression.advancement.ModAdvancementCriterion;
 import org.oxytocina.geomancy.progression.advancement.SimpleCriterion;
+import org.oxytocina.geomancy.spells.SpellBlocks;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,6 +72,15 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
 
         // structures visited
         Advancement structure_ancient_hall = AddLocationAdvancement("ancient_hall","ancient_hall",Items.GILDED_BLACKSTONE,main);
+
+        // obtained spell component advancements
+        for (var id : SpellBlocks.functions.keySet()){
+            NbtCompound nbt = new NbtCompound();
+            NbtCompound component = new NbtCompound();
+            component.putString("func",id.toString());
+            nbt.put("component",component);
+            AddGetItemWithNbtAdvancement(ModItems.SPELLCOMPONENT,nbt,id.getPath(),"spellcomponents");
+        }
     }
     private Advancement AddGetItemAdvancement(ItemConvertible item,String name, ItemConvertible conditionItem, String category, AdvancementFrame frame, boolean announce, boolean hidden, Advancement parent){
         return AddGetItemAdvancement(item,name,new Item[]{conditionItem.asItem()},category,frame,announce,hidden,parent);
@@ -89,6 +102,20 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                 )
                 .criterion("got_"+name, InventoryChangedCriterion.Conditions.items(conditionItems))
                 .parent(parent)
+                .build(consumer, Geomancy.MOD_ID + ":"+category+"/get_"+name);
+
+        return res;
+    }
+
+    private Advancement AddGetItemWithNbtAdvancement(ItemConvertible item, NbtCompound nbt, String name, String category)
+    {
+
+        Advancement res = Advancement.Builder.create()
+                .criterion("got_"+name, InventoryChangedCriterion.Conditions.items(ItemPredicate.Builder.create()
+                                .items(item)
+                                .nbt(nbt)
+                        .build()
+                ))
                 .build(consumer, Geomancy.MOD_ID + ":"+category+"/get_"+name);
 
         return res;
@@ -177,4 +204,5 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
 
         return builder.build(consumer, advancementName);
     }
+
 }

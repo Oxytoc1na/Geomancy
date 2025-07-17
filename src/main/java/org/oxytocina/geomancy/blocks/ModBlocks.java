@@ -88,6 +88,8 @@ public class ModBlocks {
     // decorative
     public static final Block GILDED_DEEPSLATE = register("gilded_deepslate", Block::new,AbstractBlock.Settings.create().mapColor(MapColor.DEEPSLATE_GRAY).instrument(Instrument.BASEDRUM).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.POLISHED_DEEPSLATE),ExtraBlockSettings.create().mineableByPickaxe(),new FabricItemSettings());
     public static final Block DECORATED_GILDED_DEEPSLATE = register("decorated_gilded_deepslate", Block::new,AbstractBlock.Settings.create().mapColor(MapColor.DEEPSLATE_GRAY).instrument(Instrument.BASEDRUM).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.POLISHED_DEEPSLATE),ExtraBlockSettings.create().mineableByPickaxe().hasTextureVariants(4),new FabricItemSettings());
+    public static final Block CUT_TITANIUM = register("cut_titanium", Block::new, AbstractBlock.Settings.create().mapColor(MapColor.WHITE_GRAY).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.METAL).instrument(Instrument.BELL).requiresTool(),ExtraBlockSettings.create().mineableByPickaxe(),new FabricItemSettings());
+    public static final Block MOSSY_CUT_TITANIUM = register("mossy_cut_titanium", Block::new, AbstractBlock.Settings.copy(CUT_TITANIUM).mapColor(MapColor.PALE_GREEN),ExtraBlockSettings.create().mineableByPickaxe(),new FabricItemSettings());
 
     // block entities
     public static final SmitheryBlock SMITHERY = (SmitheryBlock) register("smithery_block", SmitheryBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe());
