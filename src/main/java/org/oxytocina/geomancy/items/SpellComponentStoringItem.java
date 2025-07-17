@@ -107,4 +107,12 @@ public class SpellComponentStoringItem extends Item {
             }
         });
     }
+
+    public float getSpellPredicate(ItemStack stack){
+        var comp = readComponent(stack);
+        if(comp==null) return 0;
+        return
+                (float)(SpellBlocks.functionOrder.get(comp.function.identifier)) /
+                        SpellBlocks.functionOrder.size();
+    }
 }

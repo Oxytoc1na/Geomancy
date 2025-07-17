@@ -60,7 +60,7 @@ public class SpellmakerTryAddComponentC2SPacket {
                                 var stack = player.getInventory().getStack(i);
                                 if(!(stack.getItem() instanceof SpellComponentStoringItem)) continue;
                                 var contenderComp = SpellComponentStoringItem.readComponent(stack);
-                                if(contenderComp.function!=function) continue;
+                                if(contenderComp==null || contenderComp.function!=function) continue;
                                 stack.decrement(1);
                                 break;
                             }

@@ -19,6 +19,8 @@ import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 import org.oxytocina.geomancy.items.ExtraItemSettings;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.jewelry.JewelryItem;
+import org.oxytocina.geomancy.spells.SpellBlock;
+import org.oxytocina.geomancy.spells.SpellBlocks;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -104,6 +106,8 @@ public class ModModelProvider extends FabricModelProvider {
         for(var ent : ModItems.spawnEggs.entrySet()){
             registerSpawnEgg(ent.getValue());
         }
+
+        registerSpellComponentItemModels();
     }
 
     private void registerJewelryItemModels(JewelryItem item){
@@ -149,6 +153,44 @@ public class ModModelProvider extends FabricModelProvider {
 
         jsonObject.add("overrides", overrides);
         return jsonObject;
+    }
+
+    private void registerSpellComponentItemModels(){
+
+        String itemPath = Registries.ITEM.getId(ModItems.SPELLCOMPONENT).getPath();
+
+        // TODO: generate base model
+        Model baseModel = new Model(Optional.of(new Identifier("item/generated")),Optional.empty(),TextureKey.LAYER0);
+        baseModel.upload(ModelIds.getItemModelId(ModItems.SPELLCOMPONENT), TextureMap.layer0(Geomancy.locate("item/spells/bg_arithmetic")), itemModelGenerator.writer,(id, textures) -> {
+            JsonObject jsonObject = Models.GENERATED.createJson(id, textures);
+                JsonArray overrides = new JsonArray();
+
+                for(var spellID : SpellBlocks.functionOrder.keySet())
+                {
+                    var comp = SpellBlocks.functions.get(spellID);
+                    JsonObject override = new JsonObject();
+                    JsonObject predicate = new JsonObject();
+                    predicate.addProperty("geomancy:spell" , (SpellBlocks.functionOrder.get(spellID)-0.5f)/SpellBlocks.functionOrder.size());
+                    predicate.addProperty("geomancy:has_spell" , 1);
+                    override.add("predicate", predicate);
+                    override.addProperty("model", Geomancy.locate("item/spells/"+comp.identifier.getPath()).toString());
+                    overrides.add(override);
+                }
+
+                jsonObject.add("overrides", overrides);
+                return jsonObject;
+        });
+
+        for(var compID : SpellBlocks.functions.keySet()){
+            var comp = SpellBlocks.functions.get(compID);
+            // base layer ID
+            Identifier bgLayerTexture = Geomancy.locate("item/spells/bg_"+comp.category.toString().toLowerCase());
+            Identifier fgLayerTexture = Geomancy.locate("item/spells/"+comp.identifier.getPath());
+
+            // generate component model
+            Model compModel = new Model(Optional.of(new Identifier("item/generated")),Optional.empty(),TextureKey.LAYER0,TextureKey.LAYER1);
+            compModel.upload(Geomancy.locate("item/spells/"+comp.identifier.getPath()), TextureMap.layered(bgLayerTexture,fgLayerTexture), itemModelGenerator.writer);
+        }
     }
 
     private static Identifier jewelryGemmedVariantModelID(JewelryItem item, int index){

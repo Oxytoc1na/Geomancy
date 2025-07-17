@@ -16,10 +16,13 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.TreeMap;
 import java.util.function.Function;
 
 public class SpellBlocks {
-    public static HashMap<Identifier, SpellBlock> functions = new HashMap<>();
+    public static LinkedHashMap<Identifier, SpellBlock> functions = new LinkedHashMap<>();
+    public static LinkedHashMap<Identifier, Integer> functionOrder = new LinkedHashMap<>();
 
     // flow control
     public static final SpellBlock CONVEYOR;
@@ -693,6 +696,7 @@ public class SpellBlocks {
 
     public static SpellBlock register(SpellBlock function){
         functions.put(function.identifier,function);
+        functionOrder.put(function.identifier,functionOrder.size());
         return function;
     }
 

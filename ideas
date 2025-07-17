@@ -156,14 +156,14 @@ PREMADE SPELLS
 - hello world
 
 EFFECT BLOCKS
-i lightning
+ti lightning
 - status effects
-il- fireball
+til- fireball
 l- teleport
 l- dimhop
 - place blocks
 - break blocks
 - taming entities
 il- player spawn point
-il- sin, cos, tan, exp, log
+til- sin, cos, tan, exp, log
 - other installed spells (simple: 1 input argument, 1 output argument)

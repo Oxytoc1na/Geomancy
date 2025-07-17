@@ -181,6 +181,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             // effectors
             addSpell("print","Print","outputs a value to the casters chat");
             addSpell("fireball","Fireball","summons a fireball");
+            addSpell("lightning","Lightning","summons a lightning bolt");
             addSpell("debug","Debug","enables debug mode if placed somewhere in the grid");
             addSpell("teleport","Teleport","teleports an entity to a specified position");
             addSpell("dimhop","Dimhop","teleports an entity to a specified dimension");

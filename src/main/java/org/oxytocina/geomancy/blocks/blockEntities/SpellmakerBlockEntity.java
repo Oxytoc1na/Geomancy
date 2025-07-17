@@ -126,6 +126,7 @@ public class SpellmakerBlockEntity extends BlockEntity implements ExtendedScreen
             if(contender.isEmpty()) continue;
             if(!(contender.getItem() instanceof SpellComponentStoringItem storer)) continue;
             var component = SpellComponentStoringItem.readComponent(contender);
+            if(component==null) continue;
             var block = component.function;
             if(stacks.containsKey(block)) stacks.get(block).increment(contender.getCount());
             else stacks.put(block, contender.copy());

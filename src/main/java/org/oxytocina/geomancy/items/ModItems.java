@@ -134,7 +134,7 @@ public class ModItems {
     // caster items
     public static final SoulCastingItem CASTER_TEST = (SoulCastingItem) register("caster_test",new SoulCastingItem(new FabricItemSettings(),1));
     public static final SpellStoringItem SPELLSTORAGE_SMALL = (SpellStoringItem) register("spellstorage_small",new SpellStoringItem(new FabricItemSettings(),10,10));
-    public static final SpellComponentStoringItem SPELLCOMPONENT = (SpellComponentStoringItem) register("spellcomponent",new SpellComponentStoringItem(new FabricItemSettings()));
+    public static final SpellComponentStoringItem SPELLCOMPONENT = (SpellComponentStoringItem) register("spellcomponent",new SpellComponentStoringItem(new FabricItemSettings()),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
 
     // geodes
     public static final GeodeItem STONE_GEODE = (GeodeItem) register("stone_geode",new GeodeItem(new FabricItemSettings(),ModLootTables.GEODE_STONE));
