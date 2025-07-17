@@ -1,6 +1,8 @@
 package org.oxytocina.geomancy.networking.packet;
 
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -12,6 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import org.oxytocina.geomancy.blocks.blockEntities.SpellmakerBlockEntity;
 import org.oxytocina.geomancy.items.SpellComponentStoringItem;
 import org.oxytocina.geomancy.items.SpellStoringItem;
+import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.spells.SpellComponent;
 
 public class SpellmakerTryRemoveComponentC2SPacket {
@@ -36,6 +39,11 @@ public class SpellmakerTryRemoveComponentC2SPacket {
                         SpellStoringItem.writeGrid(storageStack,grid);
 
                         // TODO: give the player the ingredient back?
+
+                        // send update package to client
+                        PacketByteBuf data = PacketByteBufs.create();
+                        data.writeBlockPos(blockEntityPos);
+                        ServerPlayNetworking.send(player, ModMessages.SPELLMAKER_REFRESH, data);
                     }
                 }
             }

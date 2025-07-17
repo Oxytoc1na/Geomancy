@@ -147,45 +147,48 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.spellstorage.empty",                 "empty");
             add("MODID.spellstorage.unnamed",               "unnamed");
 
-            add("MODID.spellcomponent.category.flowcontrol",    "flow control");
-            add("MODID.spellcomponent.category.provider",       "provider");
-            add("MODID.spellcomponent.category.arithmetic",     "arithmetic");
-            add("MODID.spellcomponent.category.effector",       "effector");
+            add("MODID.spellcomponent.category.flowcontrol",    "Flow control");
+            add("MODID.spellcomponent.category.provider",       "Provider");
+            add("MODID.spellcomponent.category.arithmetic",     "Arithmetic");
+            add("MODID.spellcomponent.category.effector",       "Effector");
+            add("MODID.spellcomponent.category.reference",      "Reference");
 
             // flow control
-            add("MODID.spellcomponent.conveyor",            "conveyor");
-            add("MODID.tooltip.spellcomponent.conveyor",    "outputs its input");
-            add("MODID.spellcomponent.gate",                "gate");
-            add("MODID.tooltip.spellcomponent.gate",        "outputs its input if gate is true");
-            add("MODID.spellcomponent.for",                 "for");
-            add("MODID.tooltip.spellcomponent.for",         "repeats signals");
+            addSpell("conveyor","Conveyor","outputs its input");
+            addSpell("gate","Gate","outputs its input if gate is true");
+            addSpell("for","For","repeats signals");
             // getters
-            add("MODID.spellcomponent.entity_caster",               "caster");
-            add("MODID.tooltip.spellcomponent.entity_caster",       "returns the caster entity");
-            add("MODID.spellcomponent.constant_boolean",            "constant truth");
-            add("MODID.tooltip.spellcomponent.constant_boolean",    "returns a configurable boolean");
-            add("MODID.spellcomponent.constant_text",               "constant text");
-            add("MODID.tooltip.spellcomponent.constant_text",       "returns a configurable text");
-            add("MODID.spellcomponent.constant_number",             "constant number");
-            add("MODID.tooltip.spellcomponent.constant_number",     "returns a configurable number");
+            addSpell("entity_caster","Caster","returns the caster entity");
+            addSpell("constant_boolean","Constant Truth","returns a configurable boolean");
+            addSpell("constant_text","Constant Text","returns a configurable text");
+            addSpell("constant_number","Constant Number","returns a configurable number");
+            addSpell("constant_vector","Constant Vector","returns a configurable vector");
             // arithmetic
-            add("MODID.spellcomponent.vector_entitypos",            "entity position");
-            add("MODID.tooltip.spellcomponent.vector_entitypos",    "returns the position of the entity");
-            add("MODID.spellcomponent.vector_entityeyepos",         "entity eye position");
-            add("MODID.tooltip.spellcomponent.vector_entityeyepos", "returns the position of the eyes of the entity");
-            add("MODID.spellcomponent.vector_entitydir",            "entity direction");
-            add("MODID.tooltip.spellcomponent.vector_entitydir",    "returns the direction the entity is looking in");
-            add("MODID.spellcomponent.sum",                         "sum");
-            add("MODID.tooltip.spellcomponent.sum",                 "adds two numbers and returns the sum");
-            add("MODID.spellcomponent.vector_split",                "split vector");
-            add("MODID.tooltip.spellcomponent.vector_split",        "returns a vectors components");
-            add("MODID.spellcomponent.vector_build",                "build vector");
-            add("MODID.tooltip.spellcomponent.vector_build",        "constructs a vector from three numbers");
+            addSpell("vector_entityspawn","Entity Spawn","if the entity is a player, returns the spawn point of the entity");
+            addSpell("vector_entitypos","Entity Pos.","returns the position of the entity");
+            addSpell("vector_entityeyepos","Entity Eye Pos.","returns the position of the eyes of the entity");
+            addSpell("vector_entitydir","Entity Dir.","returns the direction the entity is looking in");
+            addSpell("vector_split","Split Vec.","returns a vectors components");
+            addSpell("vector_build","Build Vec.","constructs a vector from three numbers");
+            addSpell("sum","Sum","adds two numbers or vectors and returns the sum");
+            addSpell("subtract","Subtract","subtracts two numbers or vectors and returns the sum");
+            addSpell("multiply","Multiply","multiplies two numbers or vectors");
+            addSpell("divide","Divide","divides two numbers or vectors");
+            addSpell("sin","Sine","returns the sine of the input");
+            addSpell("cos","Cosine","returns the cosine of the input");
+            addSpell("tan","Tangent","returns the tangent of the input");
+            addSpell("exp","Exponent","returns a number to the power of another number");
             // effectors
-            add("MODID.spellcomponent.print",                       "print");
-            add("MODID.tooltip.spellcomponent.print",               "outputs a value to the casters chat");
-            add("MODID.spellcomponent.fireball",                    "fireball");
-            add("MODID.tooltip.spellcomponent.fireball",            "summons a fireball");
+            addSpell("print","Print","outputs a value to the casters chat");
+            addSpell("fireball","Fireball","summons a fireball");
+            addSpell("debug","Debug","enables debug mode if placed somewhere in the grid");
+            addSpell("teleport","Teleport","teleports an entity to a specified position");
+            addSpell("dimhop","Dimhop","teleports an entity to a specified dimension");
+            addSpell("break","Break","attempts to destroy a block at a position");
+
+            add("MODID.spells.debug.error","Error in spell component %1$s: %2$s");
+            add("MODID.spells.debug.broke","Couldn't afford spell. Cost: %1$f, available: %2$f");
+            add("MODID.spells.debug.wrongsignal","Component %1$s received wrong signal type. Got: %2$s, expected: %3$s");
 
         }
 
@@ -218,6 +221,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.spellmaker.dir.w",   "West");
             add("MODID.spellmaker.dir.nw",  "Northwest");
             add("MODID.spellmaker.mode",    "Mode");
+            add("MODID.spellmaker.parameter","Parameter");
+            add("MODID.spellmaker.parameters","Parameters");
             add("MODID.spellmaker.modes.blocked",   "Blocked");
             add("MODID.spellmaker.modes.input",     "Input");
             add("MODID.spellmaker.modes.output",    "Output");
@@ -532,5 +537,10 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         if(!Objects.equals(suffix, ""))
             res+="\\\n\\\n"+suffix;
         add(key,res);
+    }
+
+    void addSpell(String spell, String name, String description){
+        add("MODID.spellcomponent."+spell,name);
+        add("MODID.tooltip.spellcomponent."+spell,description);
     }
 }

@@ -18,6 +18,9 @@ import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ColorHelper;
 import org.joml.Matrix4f;
@@ -25,6 +28,7 @@ import org.joml.Vector2f;
 import org.joml.Vector2i;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.blockEntities.SpellmakerBlockEntity;
+import org.oxytocina.geomancy.client.screen.widgets.SpellmakerTextInput;
 import org.oxytocina.geomancy.items.SpellComponentStoringItem;
 import org.oxytocina.geomancy.items.SpellStoringItem;
 import org.oxytocina.geomancy.networking.ModMessages;
@@ -36,6 +40,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SpellmakerScreenHandler extends ScreenHandler {
+    public static SpellmakerScreenHandler current;
+
     private final Inventory inventory;
     private Inventory availableComponents;
     private final PropertyDelegate propertyDelegate;
@@ -43,6 +49,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
     public final PlayerEntity player;
 
     public List<SpellComponentSelectionSlot> availableComponentSlots;
+
 
     public SpellmakerScreen screen;
 
@@ -75,6 +82,8 @@ public class SpellmakerScreenHandler extends ScreenHandler {
 
     public SpellmakerScreenHandler(int syncID, PlayerInventory playerInventory, BlockEntity blockEntity, PropertyDelegate arrayPropertyDelegate) {
         super(ModScreenHandlers.SPELLMAKER_SCREEN_HANDLER,syncID);
+
+        current = this;
         checkSize((Inventory)blockEntity,SpellmakerBlockEntity.SLOT_COUNT);
         this.player = playerInventory.player;;
         this.inventory = (Inventory) blockEntity;
@@ -91,6 +100,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
         addPlayerHotbar(playerInventory);
 
         addProperties(arrayPropertyDelegate);
+
     }
 
     public void outputItemChanged(){
@@ -187,6 +197,9 @@ public class SpellmakerScreenHandler extends ScreenHandler {
         return res;
     }
 
+    public void tick(){
+
+    }
 
 
     public void mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
@@ -332,6 +345,8 @@ public class SpellmakerScreenHandler extends ScreenHandler {
     public static final int sideConfigsOffset = 85;
     public static final int spacePerSideConfigButtons = 15;
     public static final int componentInfoYOffset = 30;
+    public static final int parametersYOffset = 10;
+    public static final int parameterEditsYOffset = 15;
 
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         int bgPosX = (screen.width-screen.getBackgroundWidth())/2;
@@ -625,13 +640,45 @@ public class SpellmakerScreenHandler extends ScreenHandler {
 
             // render i/o info
             var ioInfo = SpellComponentStoringItem.componentTooltip(component,true);
-
             for (int i = 0; i < ioInfo.size(); i++) {
                 var t = ioInfo.get(i);
                 // leave room for control buttons
                 context.drawText(MinecraftClient.getInstance().textRenderer, t,infoPosX,infoPosY+previewHeight+componentInfoYOffset+i*10,0xFFFFFFFF,true);
             }
 
+            // render parameters
+            List<String> paramNames = component.function.parameters.keySet().stream().toList();
+            if(!paramNames.isEmpty()){
+                final int posX = infoPosX+SpellmakerScreenHandler.sideConfigsOffset;
+
+                final int headlinePosY = infoPosY+6*SpellmakerScreenHandler.spacePerSideConfigButtons+SpellmakerScreenHandler.parametersYOffset;
+                context.drawText(MinecraftClient.getInstance().textRenderer, Text.translatable("geomancy.spellmaker.parameter"+(paramNames.size()>1?"s":"")).formatted(Formatting.UNDERLINE),posX,headlinePosY,0xFFFFFFFF,true);
+
+                int height = 0;
+                for(int i = 0; i < paramNames.size();i++){
+                    final String paramName = paramNames.get(i);
+                    final var param = component.function.parameters.get(paramName);
+                    final var configuredParam = component.getParam(paramName);
+
+                    final int posY = infoPosY
+                            +6*SpellmakerScreenHandler.spacePerSideConfigButtons
+                            +height
+                            +SpellmakerScreenHandler.parametersYOffset
+                            +SpellmakerScreenHandler.parameterEditsYOffset;
+
+                    switch(param.type){
+                        case ConstantBoolean:
+                            i+=15;
+                            break;
+                        default:
+                            context.drawText(MinecraftClient.getInstance().textRenderer, Text.literal(paramName),posX,posY,0xFFFFFFFF,true);
+                            i+=25;
+                            break;
+                    }
+
+
+                }
+            }
         }
 
 

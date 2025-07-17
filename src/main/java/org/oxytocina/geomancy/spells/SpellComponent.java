@@ -28,10 +28,7 @@ public class SpellComponent {
     public SpellGrid parent;
     public Vector2i position;
 
-    public ItemStack castingItem;
-    public ItemStack spellStorageItem;
-    public LivingEntity casterEntity;
-    public World world;
+    public SpellContext context;
 
     public int rotation = 0;
 
@@ -41,6 +38,14 @@ public class SpellComponent {
         this.function=function;
         this.sideConfigs=sideConfigs;
         this.configuredParameters=configuredParameters;
+    }
+
+    public World world(){
+        return context.caster.getWorld();
+    }
+
+    public LivingEntity caster(){
+        return context.caster;
     }
 
     public SpellComponent(SpellGrid parent, Vector2i position, SpellBlock function){
@@ -59,11 +64,9 @@ public class SpellComponent {
         readNbt(nbt);
     }
 
-    public void preRunSetup(ItemStack casterItem, ItemStack containerItem, LivingEntity casterEntity){
-        this.castingItem=casterItem;
-        this.spellStorageItem=containerItem;
-        this.casterEntity=casterEntity;
-        this.world=casterEntity.getWorld();
+    public void preRunSetup(SpellContext context){
+        this.context = context;
+        function.initRun(this);
     }
 
     public void run(){
@@ -76,7 +79,10 @@ public class SpellComponent {
         if(!conf.isInput()) return false;
 
         // check types
-        if(!conf.canReceiveSignalOfType(function,signal.type)) return false;
+        if(!conf.canReceiveSignalOfType(function,signal.type)) {
+            SpellBlocks.tryLogDebugWrongSignal(this,signal.type,conf.getSignalType(this.function));
+            return false;
+        }
 
         receiveSignal(signal.clone().named(conf.varName));
         return true;
@@ -114,9 +120,19 @@ public class SpellComponent {
             args.put(paramSig.name,paramSig);
         }
 
-        var result = function.run(this,new SpellBlockArgs(args));
+        var blockArgs = new SpellBlockArgs(args);
+        var result = function.run(this,blockArgs);
+        result.depth = blockArgs.depth+1;
+
         for (int i = 0; i < result.iterations; i++) {
             var iterationResult = result.clone();
+            iterationResult.depth+=i;
+
+            if(iterationResult.depth > context.depthLimit){
+                context.depthLimitReached = true;
+                break;
+            }
+
             iterationResult.add(result.iterationVarName,i);
             pushSignals(iterationResult.vars);
         }
@@ -286,6 +302,14 @@ public class SpellComponent {
         sideConfigs = newConfigs;
     }
 
+    public boolean canAcceptParam(String paramName, String val){
+        return getParam(paramName).canAccept(val);
+    }
+
+    public void setAndParseParam(String paramName, String val){
+        getParam(paramName).setParsed(val);
+    }
+
     public static class SideConfig{
         public String dir;
         public String varName;
@@ -421,12 +445,13 @@ public class SpellComponent {
                 case Input:
                     if(parent.function.inputs.containsKey(varName)) return;
                     Geomancy.logError("variable name sanity check failed! in: "+varName+", parent: "+parent.function.identifier.toString()+", side: "+dir);
-                    setVar(parent.function.inputs.keySet().stream().findFirst().get());
+                    setVar(
+                            parent.function.inputs.keySet().stream().findFirst().orElse(""));
                     return;
                 case Output:
                     if(parent.function.outputs.containsKey(varName)) return;
                     Geomancy.logError("variable name sanity check failed! out: "+varName+", parent: "+parent.function.identifier.toString()+", side: "+dir);
-                    setVar(parent.function.outputs.keySet().stream().findFirst().get());
+                    setVar(parent.function.outputs.keySet().stream().findFirst().orElse(""));
                     return;
                 case Blocked: varName="";return;
             }
@@ -494,6 +519,37 @@ public class SpellComponent {
         public void readNbt(SpellBlock parent, NbtCompound nbt){
             this.parameter = parent.getParameter(nbt.getString("param"));
             setSignal(SpellSignal.fromNBT(nbt.getCompound("signal")));
+        }
+
+        public boolean canAccept(String val){
+            switch(parameter.type){
+                case ConstantText: return true;
+                case ConstantNumber:
+                case ConstantBoolean:
+                    try{
+                        Float.parseFloat(val);
+                        return true;
+                    }
+                    catch(Exception e){
+                        return false;
+                    }
+            }
+            return false;
+        }
+
+        public void setParsed(String val){
+            switch(parameter.type){
+                case ConstantText: setValue(val); break;
+                case ConstantNumber:
+                case ConstantBoolean:
+                    try{
+                        setValue(Float.parseFloat(val));
+                    }
+                    catch(Exception ignored){
+
+                    }
+                    break;
+            }
         }
     }
 

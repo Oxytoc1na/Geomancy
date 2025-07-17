@@ -1,14 +1,11 @@
-package org.oxytocina.geomancy.client.screen;
+package org.oxytocina.geomancy.client.screen.widgets;
 
-import com.klikli_dev.modonomicon.client.gui.book.BookContentScreen;
-import com.klikli_dev.modonomicon.client.gui.book.BookScreenWithButtons;
-import com.mojang.blaze3d.systems.RenderSystem;
 import java.util.List;
 import java.util.function.Supplier;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.render.GameRenderer;
 import net.minecraft.text.Text;
+import org.oxytocina.geomancy.client.screen.SpellmakerScreen;
 
 public class SpellmakerButton extends ButtonWidget {
 

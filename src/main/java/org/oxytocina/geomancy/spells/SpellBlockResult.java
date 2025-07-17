@@ -10,6 +10,9 @@ public class SpellBlockResult {
     public int iterations = 1;
     public String iterationVarName = "i";
 
+    /// increases by 1 every time signals are pushed after block execution
+    public int depth = 0;
+
     public SpellBlockResult(){
         vars = new HashMap<>();
     }

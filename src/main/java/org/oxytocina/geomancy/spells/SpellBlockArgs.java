@@ -9,6 +9,8 @@ public class SpellBlockArgs {
     public HashMap<String,SpellSignal> vars;
     public int iterations = 1;
 
+    public int depth = 0;
+
     public SpellBlockArgs(){
         vars = new HashMap<>();
     }

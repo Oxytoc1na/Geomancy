@@ -22,6 +22,7 @@ public class ModMessages {
     public static final Identifier MADNESS_SYNC = Geomancy.locate("madness_sync");
     public static final Identifier ITEM_MANA_SYNC = Geomancy.locate("item_mana_sync");
     public static final Identifier INITIAL_SYNC = Geomancy.locate("initial_sync");
+    public static final Identifier SPELLMAKER_REFRESH = Geomancy.locate("spellmaker_refresh");
 
     // client to server
     public static final Identifier CLIENT_JOINED = Geomancy.locate("client_joined");
@@ -29,6 +30,7 @@ public class ModMessages {
     public static final Identifier SPELLMAKER_TRY_REMOVE_COMPONENT = Geomancy.locate("spellmaker_try_remove_component");
     public static final Identifier SPELLMAKER_TRY_CHANGE_TYPE = Geomancy.locate("spellmaker_try_change_type");
     public static final Identifier SPELLMAKER_TRY_CHANGE_VAR = Geomancy.locate("spellmaker_try_change_var");
+    public static final Identifier SPELLMAKER_TRY_CHANGE_PARAM = Geomancy.locate("spellmaker_try_change_param");
     public static final Identifier SPELLMAKER_TRY_ROTATE_COMPONENT = Geomancy.locate("spellmaker_try_rotate_component");
 
     public static void registerC2SPackets(){
@@ -37,6 +39,7 @@ public class ModMessages {
         ServerPlayNetworking.registerGlobalReceiver(SPELLMAKER_TRY_REMOVE_COMPONENT, SpellmakerTryRemoveComponentC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(SPELLMAKER_TRY_CHANGE_TYPE, SpellmakerTryChangeModeC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(SPELLMAKER_TRY_CHANGE_VAR, SpellmakerTryChangeVarC2SPacket::receive);
+        ServerPlayNetworking.registerGlobalReceiver(SPELLMAKER_TRY_CHANGE_PARAM, SpellmakerTryChangeParamC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(SPELLMAKER_TRY_ROTATE_COMPONENT, SpellmakerTryRotateComponentC2SPacket::receive);
 
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
@@ -60,6 +63,7 @@ public class ModMessages {
         ClientPlayNetworking.registerGlobalReceiver(MADNESS_SYNC, MadnessSyncS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(ITEM_MANA_SYNC, ItemManaSyncS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(INITIAL_SYNC, InitialSyncS2CPacket::receive);
+        ClientPlayNetworking.registerGlobalReceiver(SPELLMAKER_REFRESH, SpellmakerRefreshS2CPacket::receive);
     }
 
     public static void sendToAllClients(MinecraftServer server, Identifier id, PacketByteBuf buf){

@@ -29,8 +29,12 @@ public class SpellGrid {
     }
 
     public void run(ItemStack casterItem, ItemStack containerItem, LivingEntity casterEntity){
+        SpellContext context = new SpellContext(casterEntity,casterItem,containerItem,0);
+        context.refreshAvailableSoul();
         for (var comp : components.values())
-            comp.preRunSetup(casterItem,containerItem,casterEntity);
+            comp.preRunSetup(context);
+
+        context.stage = SpellContext.Stage.Run;
         for (var comp : components.values())
             comp.run();
     }

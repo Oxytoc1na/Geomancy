@@ -1,6 +1,9 @@
 package org.oxytocina.geomancy.networking.packet;
 
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -13,6 +16,7 @@ import org.oxytocina.geomancy.blocks.blockEntities.SpellmakerBlockEntity;
 import org.oxytocina.geomancy.client.screen.SpellmakerScreen;
 import org.oxytocina.geomancy.items.SpellComponentStoringItem;
 import org.oxytocina.geomancy.items.SpellStoringItem;
+import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.spells.SpellComponent;
 
 public class SpellmakerTryAddComponentC2SPacket {
@@ -60,6 +64,11 @@ public class SpellmakerTryAddComponentC2SPacket {
                                 stack.decrement(1);
                                 break;
                             }
+
+                            // send update package to client
+                            PacketByteBuf data = PacketByteBufs.create();
+                            data.writeBlockPos(blockEntityPos);
+                            ServerPlayNetworking.send(player,ModMessages.SPELLMAKER_REFRESH, data);
                         }
                     }
                 }
