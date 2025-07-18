@@ -28,6 +28,21 @@ public class SpellGrid {
         this.components=new HashMap<>();
     }
 
+    public SpellBlockResult runReferenced(SpellContext parent,SpellComponent casterComp,SpellBlockArgs args){
+        SpellContext context = parent.createReferenced(casterComp);
+        context.internalVars = args;
+
+        context.refreshAvailableSoul();
+        for (var comp : components.values())
+            comp.preRunSetup(context);
+
+        context.stage = SpellContext.Stage.Run;
+        for (var comp : components.values())
+            comp.run();
+
+        return context.referenceResult;
+    }
+
     public void run(ItemStack casterItem, ItemStack containerItem, LivingEntity casterEntity){
         SpellContext context = new SpellContext(casterEntity,casterItem,containerItem,0);
         context.refreshAvailableSoul();

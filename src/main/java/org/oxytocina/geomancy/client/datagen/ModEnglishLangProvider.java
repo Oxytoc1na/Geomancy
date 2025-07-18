@@ -164,14 +164,14 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("constant_number","Constant Number","returns a configurable number");
             addSpell("constant_vector","Constant Vector","returns a configurable vector");
             // arithmetic
-            addSpell("vector_entityspawn","Entity Spawn","if the entity is a player, returns the spawn point of the entity");
+            addSpell("vector_entityspawn","Entity Spawn","returns the respawn point of the entity");
             addSpell("vector_entitypos","Entity Pos.","returns the position of the entity");
             addSpell("vector_entityeyepos","Entity Eye Pos.","returns the position of the eyes of the entity");
             addSpell("vector_entitydir","Entity Dir.","returns the direction the entity is looking in");
             addSpell("vector_split","Split Vec.","returns a vectors components");
             addSpell("vector_build","Build Vec.","constructs a vector from three numbers");
-            addSpell("sum","Sum","adds two numbers or vectors and returns the sum");
-            addSpell("subtract","Subtract","subtracts two numbers or vectors and returns the sum");
+            addSpell("sum","Sum","adds two numbers or vectors");
+            addSpell("subtract","Subtract","subtracts two numbers or vectors");
             addSpell("multiply","Multiply","multiplies two numbers or vectors");
             addSpell("divide","Divide","divides two numbers or vectors");
             addSpell("sin","Sine","returns the sine of the input");
@@ -186,9 +186,14 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("teleport","Teleport","teleports an entity to a specified position");
             addSpell("dimhop","Dimhop","teleports an entity to a specified dimension");
             addSpell("break","Break","attempts to destroy a block at a position");
+            // reference
+            addSpell("action","Action","calls another installed spell");
+            addSpell("ref_output","Ref. Output","gets a variable from the reference arguments");
+            addSpell("ref_input","Ref. Input","sets a call result variable");
+
 
             add("MODID.spells.debug.error","Error in spell component %1$s: %2$s");
-            add("MODID.spells.debug.broke","Couldn't afford spell. Cost: %1$f, available: %2$f");
+            add("MODID.spells.debug.broke","Couldn't afford spell %1$s. Cost: %2$f, available: %3$f");
             add("MODID.spells.debug.wrongsignal","Component %1$s received wrong signal type. Got: %2$s, expected: %3$s");
 
         }

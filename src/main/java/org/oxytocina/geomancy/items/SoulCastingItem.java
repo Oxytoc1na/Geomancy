@@ -1,33 +1,42 @@
 package org.oxytocina.geomancy.items;
 
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
+import org.oxytocina.geomancy.client.screen.SpellstorerScreenHandler;
 import org.oxytocina.geomancy.spells.SpellBlocks;
 import org.oxytocina.geomancy.spells.SpellComponent;
 import org.oxytocina.geomancy.spells.SpellGrid;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class SoulCastingItem extends Item implements IManaStoringItem, ICastingItem {
 
     public static final HashMap<ItemStack,DefaultedList<ItemStack>> inventories = new HashMap<>();
 
-    public int spellStorageSize = 1;
+    public int spellStorageSize = SpellstorerScreenHandler.STORAGE_DISPLAY_SLOTS;
 
     public SoulCastingItem(Settings settings, int spellStorageSize) {
         super(settings);
         this.spellStorageSize=spellStorageSize;
+
+        // TODO
+        this.spellStorageSize = SpellstorerScreenHandler.STORAGE_DISPLAY_SLOTS;
     }
 
     @Override
@@ -48,19 +57,20 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
         int index = getSelectedSpellIndex(key);
         ItemStack spellContainer = getStack(key,index);
 
-        // DEBUG
-        // TODO: remove
-        if(spellContainer.isEmpty()){
-            spellContainer = new ItemStack(ModItems.SPELLSTORAGE_SMALL);
-            SpellStoringItem.getOrCreateGrid(spellContainer);
-            insertSpellStorage(key,spellContainer);
-        }
-
         if(!(spellContainer.getItem() instanceof SpellStoringItem storer)) return;
 
         storer.cast(key,spellContainer,user);
     }
 
+    @Override
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
+
+        for (int i = 0; i < getSize(stack); i++) {
+            var spell = getStack(stack,i);
+            tooltip.add(Text.literal(spell.getCount()+"x ").append(Text.translatable(spell.getTranslationKey())));
+        }
+    }
 
     @Override
     public float getBaseSoulCapacity(ItemStack stack) {
@@ -76,7 +86,19 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
 
     @Override
     public void saveInventoryToNbt(ItemStack stack) {
+        stack.getOrCreateNbt().remove("Items");
         Inventories.writeNbt(stack.getOrCreateNbt(),getItems(stack));
+        clearCache(stack);
+    }
+
+    public void clearCache(ItemStack stack){
+        inventories.remove(stack);
+    }
+
+    public void setInventory(ItemStack stack, NbtCompound nbt){
+        clearCache(stack);
+        stack.setSubNbt("Items",nbt.getList("Items",NbtElement.COMPOUND_TYPE));
+        clearCache(stack);
     }
 
     public int getSelectedSpellIndex(ItemStack stack){
@@ -88,7 +110,25 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
         stack.getOrCreateNbt().putInt("selected",index);
     }
 
+    public static SpellGrid getSpell(ItemStack casterItem,String name){
+        if(!(casterItem.getItem() instanceof  SoulCastingItem caster)) return null;
+
+        for (int i = 0; i < caster.getSize(casterItem); i++) {
+            var contender = caster.getStack(casterItem,i);
+            if(!(contender.getItem() instanceof SpellStoringItem storer)) continue;
+            var grid = SpellStoringItem.readGrid(contender);
+            if(grid==null) continue;
+            if(Objects.equals(grid.name, name)) return grid;
+        }
+
+        return null;
+    }
+
     // Inventory
+
+    public int getSize(ItemStack stack){
+        return getItems(stack).size();
+    }
 
     @Override
     public DefaultedList<ItemStack> getItems(ItemStack stack) {

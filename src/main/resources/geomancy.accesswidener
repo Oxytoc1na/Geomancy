@@ -9,3 +9,6 @@ accessible method net/minecraft/client/particle/BlockLeakParticle$ContinuousFall
 accessible method net/minecraft/client/particle/BlockLeakParticle$Dripping <init> (Lnet/minecraft/client/world/ClientWorld;DDDLnet/minecraft/fluid/Fluid;Lnet/minecraft/particle/ParticleEffect;)V
 
 accessible class net/minecraft/loot/function/ApplyBonusLootFunction$Formula
+
+accessible field net/minecraft/screen/ScreenHandler trackedStacks Lnet/minecraft/util/collection/DefaultedList;
+accessible field net/minecraft/screen/ScreenHandler previousTrackedStacks Lnet/minecraft/util/collection/DefaultedList;

@@ -16,6 +16,12 @@ public class SpellContext {
     public boolean depthLimitReached = false;
     public boolean couldntAffordSomething = false;
 
+    // reference calls
+    public SpellContext parentCall;
+    public SpellComponent referenceCallingFrom;
+    public SpellBlockResult referenceResult;
+    public SpellBlockArgs internalVars;
+
     public SpellContext(LivingEntity caster, ItemStack casterItem, ItemStack spellStorage, float availableSoul){
         this.caster = caster;
         this.casterItem=casterItem;
@@ -54,6 +60,23 @@ public class SpellContext {
 
         // TODO: livingentity mana
         return;
+    }
+
+    public SpellContext createReferenced(SpellComponent comp){
+        SpellContext res = new SpellContext(caster,casterItem,spellStorage,availableSoul);
+        res.parentCall = this;
+        res.referenceCallingFrom = comp;
+        res.internalVars=new SpellBlockArgs();
+        return res;
+    }
+
+    public boolean isChild(){
+        return parentCall!=null;
+    }
+
+    public SpellSignal getParentVar(String varName){
+        if(!isChild()) return null;
+        return internalVars.get(varName) ;
     }
 
     public static enum Stage{

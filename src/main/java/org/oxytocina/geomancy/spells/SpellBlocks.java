@@ -14,6 +14,8 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.oxytocina.geomancy.items.SoulCastingItem;
+import org.oxytocina.geomancy.items.SpellStoringItem;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -59,6 +61,8 @@ public class SpellBlocks {
 
     // reference
     public static final SpellBlock ACTION;
+    public static final SpellBlock REF_OUTPUT;
+    public static final SpellBlock REF_INPUT;
     //public static final SpellBlock FUNCTION;
 
     private static SpellBlock.Category cat;
@@ -599,13 +603,46 @@ public class SpellBlocks {
             ACTION = register(SpellBlock.Builder.create("action")
                     .inputs(SpellSignal.createAny().named("trigger"))
                     .outputs()
-                    .parameters()
+                    .parameters(SpellBlock.Parameter.createText("function","helloworld"))
                     .func((comp,vars) -> {
-                        // TODO
+                        if(!(comp.context.casterItem.getItem() instanceof SoulCastingItem)) return SpellBlockResult.empty();
 
-                        return SpellBlockResult.empty();
+                        // check if specified function exists
+                        var refSpell = SoulCastingItem.getSpell(comp.context.casterItem,vars.getText("function"));
+                        if(refSpell==null) return SpellBlockResult.empty();
+
+                        // run referenced
+                        return refSpell.runReferenced(comp.context,comp,vars);
                     })
                     .sideConfigGetter((c)->SpellBlock.SideUtil.sidesInput(c,"trigger"))
+                    .category(cat).build());
+
+            // outputs an internal variable from the parent call
+            REF_OUTPUT = register(SpellBlock.Builder.create("ref_output")
+                    .inputs()
+                    .outputs(SpellSignal.createAny().named("var"))
+                    .parameters(SpellBlock.Parameter.createText("var","a"))
+                    .func((comp,vars) -> {
+                        var parentVar = comp.context.getParentVar(vars.getText("var"));
+                        if(parentVar==null) return SpellBlockResult.empty();
+                        SpellBlockResult res = new SpellBlockResult();
+                        res.add(parentVar);
+                        return res;
+                    })
+                    .sideConfigGetter((c)->SpellBlock.SideUtil.sidesOutput(c,"var"))
+                    .category(cat).build());
+
+            // inputs a variable into the reference call result
+            REF_INPUT = register(SpellBlock.Builder.create("ref_input")
+                    .inputs(SpellSignal.createAny().named("var"))
+                    .outputs()
+                    .parameters(SpellBlock.Parameter.createText("varName","a"))
+                    .func((comp,vars) -> {
+                        if(!comp.context.isChild()) return SpellBlockResult.empty();
+                        comp.context.referenceResult.add(vars.get("var").clone().named(vars.getText("varName")));
+                        return SpellBlockResult.empty();
+                    })
+                    .sideConfigGetter((c)->SpellBlock.SideUtil.sidesInput(c,"var"))
                     .category(cat).build());
         }
     }
@@ -669,7 +706,9 @@ public class SpellBlocks {
     private static void tryLogDebugBroke(SpellComponent comp,float cost){
         if(!comp.context.debugging) return;
 
-        var msg = Text.translatable("geomancy.spells.debug.broke",cost,comp.context.availableSoul);
+        var msg = Text.translatable("geomancy.spells.debug.broke",
+                Text.translatable("geomancy.spellcomponent."+comp.function.identifier.getPath()).formatted(Formatting.DARK_AQUA)
+                ,cost,comp.context.availableSoul);
 
         if(comp.context.caster != null)
         {

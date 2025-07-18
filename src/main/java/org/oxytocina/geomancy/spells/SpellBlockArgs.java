@@ -22,6 +22,7 @@ public class SpellBlockArgs {
     public SpellBlockResult toRes(){return new SpellBlockResult(this);}
 
     public SpellSignal get(String name){
+        if(!vars.containsKey(name)) return null;
         return vars.get(name);
     }
 

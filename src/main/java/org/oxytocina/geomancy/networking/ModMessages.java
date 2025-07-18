@@ -32,6 +32,7 @@ public class ModMessages {
     public static final Identifier SPELLMAKER_TRY_CHANGE_VAR = Geomancy.locate("spellmaker_try_change_var");
     public static final Identifier SPELLMAKER_TRY_CHANGE_PARAM = Geomancy.locate("spellmaker_try_change_param");
     public static final Identifier SPELLMAKER_TRY_ROTATE_COMPONENT = Geomancy.locate("spellmaker_try_rotate_component");
+    public static final Identifier SPELLSTORER_TRY_UPDATE_CASTER = Geomancy.locate("spellstorer_try_update_caster");
 
     public static void registerC2SPackets(){
         ServerPlayNetworking.registerGlobalReceiver(CLIENT_JOINED, ClientJoinedC2SPacket::receive);
@@ -41,6 +42,7 @@ public class ModMessages {
         ServerPlayNetworking.registerGlobalReceiver(SPELLMAKER_TRY_CHANGE_VAR, SpellmakerTryChangeVarC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(SPELLMAKER_TRY_CHANGE_PARAM, SpellmakerTryChangeParamC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(SPELLMAKER_TRY_ROTATE_COMPONENT, SpellmakerTryRotateComponentC2SPacket::receive);
+        ServerPlayNetworking.registerGlobalReceiver(SPELLSTORER_TRY_UPDATE_CASTER, SpellstorerTryUpdateCasterC2SPacket::receive);
 
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
             server.execute(() -> {
