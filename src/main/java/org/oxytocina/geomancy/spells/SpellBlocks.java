@@ -61,6 +61,7 @@ public class SpellBlocks {
 
     // reference
     public static final SpellBlock ACTION;
+    public static final SpellBlock FUNCTION;
     public static final SpellBlock REF_OUTPUT;
     public static final SpellBlock REF_INPUT;
     //public static final SpellBlock FUNCTION;
@@ -606,10 +607,14 @@ public class SpellBlocks {
                     .parameters(SpellBlock.Parameter.createText("function","helloworld"))
                     .func((comp,vars) -> {
                         if(!(comp.context.casterItem.getItem() instanceof SoulCastingItem)) return SpellBlockResult.empty();
-
+                        var funcName = vars.getText("function");
                         // check if specified function exists
-                        var refSpell = SoulCastingItem.getSpell(comp.context.casterItem,vars.getText("function"));
-                        if(refSpell==null) return SpellBlockResult.empty();
+                        var refSpell = SoulCastingItem.getSpell(comp.context.casterItem,funcName);
+                        if(refSpell==null)
+                        {
+                            tryLogDebugNoSuchFunction(comp,funcName);
+                            return SpellBlockResult.empty();
+                        }
 
                         // run referenced
                         return refSpell.runReferenced(comp.context,comp,vars);
@@ -617,13 +622,34 @@ public class SpellBlocks {
                     .sideConfigGetter((c)->SpellBlock.SideUtil.sidesInput(c,"trigger"))
                     .category(cat).build());
 
+            FUNCTION = register(SpellBlock.Builder.create("function")
+                    .inputs(SpellSignal.createAny().named("arg"))
+                    .outputs(SpellSignal.createAny().named("res"))
+                    .parameters(SpellBlock.Parameter.createText("spell","helloworld"))
+                    .func((comp,vars) -> {
+                        if(!(comp.context.casterItem.getItem() instanceof SoulCastingItem)) return SpellBlockResult.empty();
+                        var funcName = vars.getText("spell");
+                        // check if specified function exists
+                        var refSpell = SoulCastingItem.getSpell(comp.context.casterItem,funcName);
+                        if(refSpell==null)
+                        {
+                            tryLogDebugNoSuchFunction(comp,funcName);
+                            return SpellBlockResult.empty();
+                        }
+
+                        // run referenced
+                        return refSpell.runReferenced(comp.context,comp,vars);
+                    })
+                    .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
+                    .category(cat).build());
+
             // outputs an internal variable from the parent call
             REF_OUTPUT = register(SpellBlock.Builder.create("ref_output")
                     .inputs()
                     .outputs(SpellSignal.createAny().named("var"))
-                    .parameters(SpellBlock.Parameter.createText("var","a"))
+                    .parameters(SpellBlock.Parameter.createText("varName","a"))
                     .func((comp,vars) -> {
-                        var parentVar = comp.context.getParentVar(vars.getText("var"));
+                        var parentVar = comp.context.getParentVar(vars.getText("varName"));
                         if(parentVar==null) return SpellBlockResult.empty();
                         SpellBlockResult res = new SpellBlockResult();
                         res.add(parentVar);
@@ -709,6 +735,27 @@ public class SpellBlocks {
         var msg = Text.translatable("geomancy.spells.debug.broke",
                 Text.translatable("geomancy.spellcomponent."+comp.function.identifier.getPath()).formatted(Formatting.DARK_AQUA)
                 ,cost,comp.context.availableSoul);
+
+        if(comp.context.caster != null)
+        {
+            World world = comp.context.caster.getWorld();
+            if(world instanceof ServerWorld){
+                if(comp.context.caster instanceof ServerPlayerEntity player)
+                    player.sendMessage(msg);
+            }
+            else if(world instanceof ClientWorld){
+                if(comp.context.caster instanceof ClientPlayerEntity player)
+                    player.sendMessage(msg);
+            }
+        }
+    }
+
+    private static void tryLogDebugNoSuchFunction(SpellComponent comp, String spellname){
+        if(!comp.context.debugging) return;
+
+        var msg = Text.translatable("geomancy.spells.debug.nosuchfunction",
+                Text.translatable("geomancy.spellcomponent."+comp.function.identifier.getPath()).formatted(Formatting.DARK_AQUA)
+                ,spellname);
 
         if(comp.context.caster != null)
         {

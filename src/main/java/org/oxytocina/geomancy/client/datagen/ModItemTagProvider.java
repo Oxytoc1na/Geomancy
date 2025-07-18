@@ -11,12 +11,12 @@ import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
-import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.items.artifacts.ArtifactItem;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.jewelry.GemSlot;
 import org.oxytocina.geomancy.items.jewelry.JewelryItem;
+import static org.oxytocina.geomancy.registries.ModItemTags.*;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -25,11 +25,6 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
         super(output, RegistryKeys.ITEM, registriesFuture);
     }
 
-    public static final TagKey<Item> SMELLY_ITEMS = TagKey.of(RegistryKeys.ITEM, Identifier.of(Geomancy.MOD_ID, "smelly_items"));
-    public static final TagKey<Item> MUSIC_DISCS = TagKey.of(RegistryKeys.ITEM, Identifier.of(Identifier.DEFAULT_NAMESPACE, "music_discs"));
-    public static final TagKey<Item> JEWELRY_GEMS = TagKey.of(RegistryKeys.ITEM, Geomancy.locate("jewelry_gems"));
-    public static final TagKey<Item> STELLGE_CURIOUS = TagKey.of(RegistryKeys.ITEM, Geomancy.locate("stellge_curious"));
-    public static final TagKey<Item> OCTANGULITE = TagKey.of(RegistryKeys.ITEM, Geomancy.locate("octangulite"));
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
@@ -65,6 +60,15 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
         // stellge curious
         getOrCreateTagBuilder(STELLGE_CURIOUS).setReplace(false)
                         .forceAddTag(OCTANGULITE);
+
+        // spell storing
+        getOrCreateTagBuilder(SPELL_STORING).setReplace(false)
+                .add(ModItems.SPELLSTORAGE_SMALL);
+
+        // spell casters
+        getOrCreateTagBuilder(CASTING_ITEM).setReplace(false)
+                .add(ModItems.CASTER_TEST);
+
 
         generateAccessoryTags();
     }

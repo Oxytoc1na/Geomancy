@@ -190,11 +190,13 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("action","Action","calls another installed spell");
             addSpell("ref_output","Ref. Output","gets a variable from the reference arguments");
             addSpell("ref_input","Ref. Input","sets a call result variable");
+            addSpell("function","Function","calls a spell and returns a result");
 
 
             add("MODID.spells.debug.error","Error in spell component %1$s: %2$s");
             add("MODID.spells.debug.broke","Couldn't afford spell %1$s. Cost: %2$f, available: %3$f");
             add("MODID.spells.debug.wrongsignal","Component %1$s received wrong signal type. Got: %2$s, expected: %3$s");
+            add("MODID.spells.debug.nosuchfunction","Component %1$s referenced non-existing spell %2$s");
 
         }
 
@@ -220,6 +222,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("container.MODID.spellmaker_block"        , "Spellmaker");
             add("MODID.spellmaker.delete",  "remove");
             add("MODID.spellmaker.rotate",  "rotate");
+            add("MODID.spellmaker.grid.name","Spell name");
             add("MODID.spellmaker.dir.ne",  "Northeast");
             add("MODID.spellmaker.dir.e",   "East");
             add("MODID.spellmaker.dir.se",  "Southeast");

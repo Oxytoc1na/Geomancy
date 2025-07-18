@@ -224,7 +224,7 @@ public class SpellComponent {
             }
             var param = ConfiguredParameter.fromNbt(function,comp);
             // ignore unwanted parameters
-            if(!params.containsKey(param.parameter.name)) continue;
+            if(param.parameter==null||!params.containsKey(param.parameter.name)) continue;
             configuredParameters.put(param.parameter.name,param);
         }
         // fill in missing parameters

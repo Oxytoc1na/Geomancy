@@ -41,8 +41,8 @@ public class SpellstorerBlockEntity extends BlockEntity implements ExtendedScree
     protected final PropertyDelegate propertyDelegate;
     private boolean initialized = false;
 
-    public static final int SLOT_COUNT = 10;
-    public static final int OUTPUT_SLOT = 9;
+    public static final int SLOT_COUNT = 1;
+    public static final int OUTPUT_SLOT = 0;
 
     public SpellstorerBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.SPELLSTORER_BLOCK_ENTITY, pos, state);

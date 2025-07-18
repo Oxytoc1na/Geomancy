@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.collection.DefaultedList;
@@ -21,6 +22,7 @@ import org.oxytocina.geomancy.spells.SpellBlocks;
 import org.oxytocina.geomancy.spells.SpellComponent;
 import org.oxytocina.geomancy.spells.SpellGrid;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -66,10 +68,34 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         super.appendTooltip(stack, world, tooltip, context);
 
+        var selectedSpellIndex = getSelectedSpellIndex(stack);
+        var spells = getSpellItems(stack);
+        if(!spells.isEmpty())
+            selectedSpellIndex = selectedSpellIndex%spells.size();
+        for (int i = 0; i < spells.size(); i++) {
+            var spell = spells.get(i);
+            var grid = SpellStoringItem.readGrid(spell);
+            String selectedString = "  ";
+            if(selectedSpellIndex == i) selectedString = "> ";
+            tooltip.add(
+                    Text.literal(selectedString).formatted(Formatting.DARK_AQUA).append(
+                            grid==null?Text.translatable("geomancy.spellstorage.empty").formatted(Formatting.DARK_GRAY)
+                                    :grid.name==""?Text.translatable("geomancy.spellstorage.unnamed").formatted(Formatting.GRAY)
+                            : Text.literal(grid.name).formatted(Formatting.GRAY)));
+
+        }
+    }
+
+    public ArrayList<ItemStack> getSpellItems(ItemStack stack){
+        if(!(stack.getItem() instanceof  SoulCastingItem)) return null;
+
+        ArrayList<ItemStack> res = new ArrayList<>();
         for (int i = 0; i < getSize(stack); i++) {
             var spell = getStack(stack,i);
-            tooltip.add(Text.literal(spell.getCount()+"x ").append(Text.translatable(spell.getTranslationKey())));
+            if(!(spell.getItem() instanceof SpellStoringItem)) continue;
+            res.add(spell);
         }
+        return res;
     }
 
     @Override

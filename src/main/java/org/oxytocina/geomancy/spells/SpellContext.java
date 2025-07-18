@@ -19,7 +19,7 @@ public class SpellContext {
     // reference calls
     public SpellContext parentCall;
     public SpellComponent referenceCallingFrom;
-    public SpellBlockResult referenceResult;
+    public SpellBlockResult referenceResult = SpellBlockResult.empty();
     public SpellBlockArgs internalVars;
 
     public SpellContext(LivingEntity caster, ItemStack casterItem, ItemStack spellStorage, float availableSoul){

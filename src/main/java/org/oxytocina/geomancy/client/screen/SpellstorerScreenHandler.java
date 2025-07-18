@@ -9,10 +9,8 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.screen.PropertyDelegate;
@@ -25,9 +23,14 @@ import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.blockEntities.SpellstorerBlockEntity;
+import org.oxytocina.geomancy.client.screen.slots.SpellstorerSpellSlot;
+import org.oxytocina.geomancy.client.screen.slots.StackFilterSlot;
+import org.oxytocina.geomancy.client.screen.slots.TagFilterSlot;
 import org.oxytocina.geomancy.inventories.ImplementedInventory;
+import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.SoulCastingItem;
 import org.oxytocina.geomancy.networking.ModMessages;
+import org.oxytocina.geomancy.registries.ModItemTags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,10 +83,10 @@ public class SpellstorerScreenHandler extends ScreenHandler {
         this.propertyDelegate = arrayPropertyDelegate;
         this.blockEntity = (SpellstorerBlockEntity) blockEntity;
 
-        outputSlot = this.addSlot(new Slot(inventory,SpellstorerBlockEntity.OUTPUT_SLOT,OUTPUT_DISPLAY_X,OUTPUT_DISPLAY_Y));
-
         addPlayerHotbar(playerInventory);
         addPlayerInventory(playerInventory);
+
+        outputSlot = this.addSlot(new TagFilterSlot(inventory,SpellstorerBlockEntity.OUTPUT_SLOT,OUTPUT_DISPLAY_X,OUTPUT_DISPLAY_Y, ModItemTags.CASTING_ITEM));
 
         addProperties(arrayPropertyDelegate);
 
@@ -154,11 +157,26 @@ public class SpellstorerScreenHandler extends ScreenHandler {
         if (slot != null && slot.hasStack()) {
             ItemStack originalStack = slot.getStack();
             newStack = originalStack.copy();
-            if (invSlot < this.inventory.size()) {
-                if (!this.insertItem(originalStack, this.inventory.size(), this.slots.size(), true)) {
+
+            // transfer from main inventory
+            if (invSlot < 9*4) {
+                // insert into output slot
+                if (!this.insertItem(originalStack, 9*4, 9*4+1, true)) {
+
+                    var newOutput = getOutput();
+                    if(currentOutput!=newOutput){
+                        outputItemChanged();
+                    }
+                    currentOutput = newOutput;
+
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.insertItem(originalStack, 0, this.inventory.size(), false)) {
+
+                // TODO: fix inserting into spell slots
+            }
+            // transfer from slot to main inventory
+            else if (!this.insertItem(originalStack, 0, 9*4-1, false)) {
+
                 return ItemStack.EMPTY;
             }
 

@@ -11,6 +11,7 @@ import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import org.oxytocina.geomancy.blocks.blockEntities.SmitheryBlockEntity;
+import org.oxytocina.geomancy.client.screen.slots.SmitheryPreviewSlot;
 
 public class SmitheryScreenHandler extends ScreenHandler {
     private final Inventory inventory;

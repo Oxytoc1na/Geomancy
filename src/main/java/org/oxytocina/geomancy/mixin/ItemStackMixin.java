@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ClickType;
-import org.oxytocina.geomancy.client.screen.SlotWithOnClickAction;
+import org.oxytocina.geomancy.client.screen.slots.SlotWithOnClickAction;
 import org.oxytocina.geomancy.util.LeadUtil;
 import org.oxytocina.geomancy.util.ManaUtil;
 import org.spongepowered.asm.mixin.*;

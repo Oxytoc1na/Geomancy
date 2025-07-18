@@ -41,18 +41,6 @@
     },
     "done": true
   },
-  "minecraft:recipes/misc/iron_nugget_from_smelting": {
-    "criteria": {
-      "has_iron_axe": "2025-06-23 11:46:33 +0200"
-    },
-    "done": true
-  },
-  "geomancy:recipes/misc/smithing_artifact_of_iron": {
-    "criteria": {
-      "has_iron_ingot": "2025-06-23 11:46:00 +0200"
-    },
-    "done": true
-  },
   "minecraft:recipes/tools/golden_axe": {
     "criteria": {
       "has_gold_ingot": "2025-06-23 11:46:00 +0200"
@@ -245,12 +233,6 @@
     },
     "done": true
   },
-  "minecraft:recipes/misc/iron_nugget_from_blasting": {
-    "criteria": {
-      "has_iron_axe": "2025-06-23 11:46:33 +0200"
-    },
-    "done": true
-  },
   "geomancy:recipes/tools/iron_hammer": {
     "criteria": {
       "has_iron_ingot": "2025-06-23 11:46:00 +0200"
@@ -326,6 +308,18 @@
   "minecraft:recipes/combat/diamond_boots": {
     "criteria": {
       "has_diamond": "2025-06-23 11:46:00 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/iron_nugget_from_smelting": {
+    "criteria": {
+      "has_iron_axe": "2025-06-23 11:46:33 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/iron_nugget_from_blasting": {
+    "criteria": {
+      "has_iron_axe": "2025-06-23 11:46:33 +0200"
     },
     "done": true
   },

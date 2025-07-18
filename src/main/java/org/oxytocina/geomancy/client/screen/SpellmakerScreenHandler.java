@@ -18,7 +18,6 @@ import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
-import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
@@ -28,7 +27,7 @@ import org.joml.Vector2f;
 import org.joml.Vector2i;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.blockEntities.SpellmakerBlockEntity;
-import org.oxytocina.geomancy.client.screen.widgets.SpellmakerTextInput;
+import org.oxytocina.geomancy.client.screen.slots.SpellComponentSelectionSlot;
 import org.oxytocina.geomancy.items.SpellComponentStoringItem;
 import org.oxytocina.geomancy.items.SpellStoringItem;
 import org.oxytocina.geomancy.networking.ModMessages;
@@ -347,6 +346,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
     public static final int componentInfoYOffset = 30;
     public static final int parametersYOffset = 10;
     public static final int parameterEditsYOffset = 15;
+    public static final int gridPropXOffset = -100;
 
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         int bgPosX = (screen.width-screen.getBackgroundWidth())/2;
@@ -680,7 +680,14 @@ public class SpellmakerScreenHandler extends ScreenHandler {
                 }
             }
         }
+        // render grid info
+        else if(hasGrid()){
+            final int infoPosX = bgPosX+SpellmakerScreen.bgWidth+10;
+            final int infoPosY = bgPosY+10;
+            RenderSystem.setShaderColor(1,1,1,1);
+            context.drawText(MinecraftClient.getInstance().textRenderer, Text.translatable("geomancy.spellmaker.grid.name"),infoPosX,infoPosY,0xFFFFFFFF,true);
 
+        }
 
         RenderSystem.setShaderColor(1,1,1,1);
 

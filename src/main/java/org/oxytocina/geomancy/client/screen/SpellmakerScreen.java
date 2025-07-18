@@ -101,7 +101,7 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
     protected void init() {
         ensureTextEditFinish();
 
-        this.backgroundWidth = bgWidth + (inspecting?200:0);
+        this.backgroundWidth = bgWidth + (handler.hasGrid()?200:0);
         this.backgroundHeight = bgHeight;
 
         //titleX = 0;
@@ -112,6 +112,34 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
         super.init();
 
         clearChildren();
+
+        // naming the grid
+        if(!inspecting && handler.hasGrid()){
+            int bgPosX = (width-getBackgroundWidth())/2;
+            int bgPosY = (height-getBackgroundHeight())/2;
+            final int infoPosX = bgPosX+SpellmakerScreen.bgWidth+10;
+            final int infoPosY = bgPosY+10+10;
+
+            SpellmakerTextInput textInput = new SpellmakerTextInput(this, MinecraftClient.getInstance().textRenderer,infoPosX,infoPosY,100,15,Text.literal(handler.currentGrid.name));
+            textInput.setText(handler.currentGrid.name);
+            textInput.setChangedListener(s -> {
+                //textInput.validInput = configuredParam.canAccept(s);
+            });
+            textInput.onEditFinished = (s -> {
+
+                // set value
+                // send packet to server
+                PacketByteBuf data = PacketByteBufs.create();
+                data.writeBlockPos(handler.blockEntity.getPos());
+                data.writeString(s);
+                ClientPlayNetworking.send(ModMessages.SPELLMAKER_TRY_CHANGE_GRIDNAME, data);
+                textInput.validInput=true;
+
+            });
+            textInputs.add(textInput);
+            addDrawableChild(textInput);
+        }
+
         // instantiate buttons
         if(inspecting){
             if(handler.selectedComponent!=null){
@@ -319,6 +347,7 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
                 addDrawableChild(rotateBtn);
             }
         }
+
 
     }
 
