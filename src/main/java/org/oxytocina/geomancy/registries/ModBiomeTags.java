@@ -11,6 +11,7 @@ import org.oxytocina.geomancy.Geomancy;
 public class ModBiomeTags {
 
     public static final TagKey<Biome> HAS_DWARVEN_REMNANTS = of( "has_dwarven_remnants");
+    public static final TagKey<Biome> HAS_OCTANGULA = of( "has_octangula");
     public static final TagKey<Biome> VPB_LOW = of( "vpb_low");
     public static final TagKey<Biome> VPB_LOWER = of( "vpb_lower");
     public static final TagKey<Biome> VPB_LOWEST = of( "vpb_lowest");

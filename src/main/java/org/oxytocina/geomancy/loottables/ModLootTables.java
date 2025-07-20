@@ -8,9 +8,12 @@ import net.minecraft.item.map.MapIcon;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.LootTables;
+import net.minecraft.loot.condition.LootCondition;
+import net.minecraft.loot.condition.LootConditionTypes;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.function.*;
 import net.minecraft.loot.provider.number.UniformLootNumberProvider;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.Potions;
 import net.minecraft.registry.RegistryKeys;
@@ -21,6 +24,8 @@ import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 import org.oxytocina.geomancy.items.ModItems;
+import org.oxytocina.geomancy.items.SpellComponentStoringItem;
+import org.oxytocina.geomancy.spells.SpellBlocks;
 
 import java.util.HashMap;
 import java.util.Set;
@@ -37,6 +42,8 @@ public class ModLootTables {
     public static final LootTable ANCIENT_HALL_KITCHEN_CHEST;
     public static final LootTable ANCIENT_HALL_FOOD_CHEST;
     public static final LootTable ANCIENT_HALL_BARRACKS_CHEST;
+
+    public static final LootTable OCTANGULA_HALL_CHEST;
 
     static {
         // DWARVEN_REMNANTS_CHEST
@@ -461,6 +468,50 @@ public class ModLootTables {
             );
         }
 
+        // OCTANGULA_HALL_CHEST
+        {
+            OCTANGULA_HALL_CHEST = register("chests/octangula_hall", LootTable.builder()
+                    .pool(LootPool.builder()
+                            .rolls(UniformLootNumberProvider.create(1.0F, 3.0F))
+                            .with(ItemEntry.builder(
+                                            ModItems.RAW_OCTANGULITE)
+                                    .weight(20)
+                                    .apply(SetCountLootFunction.builder(
+                                            UniformLootNumberProvider.create(1.0F, 4.0F))))
+                            .with(ItemEntry.builder(
+                                            ModItems.OCTANGULITE_INGOT)
+                                    .weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 2.0F))))
+                            .with(ItemEntry.builder(
+                                            ModItems.OCTANGULITE_NUGGET)
+                                    .weight(10)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(5.0F, 16.0F)))))
+                    .pool(LootPool.builder()
+                            .rolls(UniformLootNumberProvider.create(2.0F, 4.0F))
+                            .with(ItemEntry.builder(
+                                            ModBlocks.CUT_TITANIUM)
+                                    .apply(SetCountLootFunction.builder(
+                                            UniformLootNumberProvider.create(3.0F, 8.0F)))))
+                    .pool(LootPool.builder()
+                            .rolls(UniformLootNumberProvider.create(3.0F, 7.0F))
+                            .with(ItemEntry.builder(
+                                            Items.EMERALD)
+                                    .weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(4.0F, 8.0F))))
+                            .with(ItemEntry.builder(
+                                            Items.DIAMOND)
+                                    .weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 2.0F))))
+                            .with(ItemEntry.builder(
+                                            Items.GOLD_INGOT)
+                                    .weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(3.0F, 8.0F)))))
+                    .pool(spellComponentsBuilder()
+                            .rolls(UniformLootNumberProvider.create(2.0F, 4.0F))
+                    )
+                    .randomSequenceId(Geomancy.locate("chests/dwarven_remnants"))
+            );
+        }
     }
 
     private static LootTable register(String id,LootTable.Builder builder) {
@@ -477,5 +528,19 @@ public class ModLootTables {
 
     public static void register() {
 
+    }
+
+    private static LootPool.Builder spellComponentsBuilder(){
+        var res = LootPool.builder();
+
+        for(var spell : SpellBlocks.functions.values()){
+            NbtCompound nbt = new NbtCompound();
+            nbt.put("component",SpellComponentStoringItem.getNbtFor(spell));
+            res.with(ItemEntry.builder(ModItems.SPELLCOMPONENT)
+                    .weight(spell.defaultLootWeight)
+                    .apply(SetNbtLootFunction.builder(nbt)));
+        }
+
+        return res;
     }
 }

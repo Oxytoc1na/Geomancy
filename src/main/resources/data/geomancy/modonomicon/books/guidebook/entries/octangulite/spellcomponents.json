@@ -1,0 +1,471 @@
+{
+  "background_u_index": 1,
+  "background_v_index": 0,
+  "category": "geomancy:octangulite",
+  "condition": {
+    "type": "modonomicon:advancement",
+    "advancement_id": "geomancy:octangulite/get_spellcomponent"
+  },
+  "description": "book.geomancy.guidebook.octangulite.spellcomponents.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "geomancy:spellcomponent"
+  },
+  "name": "book.geomancy.guidebook.octangulite.spellcomponents.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.0.text",
+      "title": "title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.1.text",
+      "title": "",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:spellcomponents/get_conveyor"
+      },
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.conveyor.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:spellcomponents/get_gate"
+      },
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.gate.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:spellcomponents/get_for"
+      },
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.for.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:spellcomponents/get_entity_caster"
+      },
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.entity_caster.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:spellcomponents/get_constant_boolean"
+      },
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.constant_boolean.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:spellcomponents/get_constant_text"
+      },
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.constant_text.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:spellcomponents/get_constant_number"
+      },
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.constant_number.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:spellcomponents/get_constant_vector"
+      },
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.constant_vector.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:spellcomponents/get_vector_entityspawn"
+      },
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.vector_entityspawn.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:spellcomponents/get_vector_entitypos"
+      },
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.vector_entitypos.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:spellcomponents/get_vector_entityeyepos"
+      },
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.vector_entityeyepos.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:spellcomponents/get_vector_entitydir"
+      },
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.vector_entitydir.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:spellcomponents/get_vector_split"
+      },
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.vector_split.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:spellcomponents/get_vector_build"
+      },
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.vector_build.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:spellcomponents/get_sum"
+      },
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.sum.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:spellcomponents/get_subtract"
+      },
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.subtract.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:spellcomponents/get_multiply"
+      },
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.multiply.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:spellcomponents/get_divide"
+      },
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.divide.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:spellcomponents/get_sin"
+      },
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.sin.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:spellcomponents/get_cos"
+      },
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.cos.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:spellcomponents/get_tan"
+      },
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.tan.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:spellcomponents/get_exp"
+      },
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.exp.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:spellcomponents/get_print"
+      },
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.print.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:spellcomponents/get_fireball"
+      },
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.fireball.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:spellcomponents/get_lightning"
+      },
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.lightning.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:spellcomponents/get_debug"
+      },
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.debug.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:spellcomponents/get_teleport"
+      },
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.teleport.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:spellcomponents/get_dimhop"
+      },
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.dimhop.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:spellcomponents/get_break"
+      },
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.break.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:spellcomponents/get_action"
+      },
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.action.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:spellcomponents/get_ref_output"
+      },
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.ref_output.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:spellcomponents/get_ref_input"
+      },
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.ref_input.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:spellcomponents/get_function"
+      },
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.function.text",
+      "title": ""
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "x": -10,
+  "y": 1
+}

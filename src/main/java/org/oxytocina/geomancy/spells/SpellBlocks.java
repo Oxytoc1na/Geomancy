@@ -64,7 +64,6 @@ public class SpellBlocks {
     public static final SpellBlock FUNCTION;
     public static final SpellBlock REF_OUTPUT;
     public static final SpellBlock REF_INPUT;
-    //public static final SpellBlock FUNCTION;
 
     private static SpellBlock.Category cat;
     static{
@@ -652,7 +651,7 @@ public class SpellBlocks {
                         var parentVar = comp.context.getParentVar(vars.getText("varName"));
                         if(parentVar==null) return SpellBlockResult.empty();
                         SpellBlockResult res = new SpellBlockResult();
-                        res.add(parentVar);
+                        res.add(parentVar.clone().named("var"));
                         return res;
                     })
                     .sideConfigGetter((c)->SpellBlock.SideUtil.sidesOutput(c,"var"))

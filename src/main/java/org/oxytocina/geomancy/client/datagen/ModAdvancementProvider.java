@@ -74,6 +74,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         Advancement structure_ancient_hall = AddLocationAdvancement("ancient_hall","ancient_hall",Items.GILDED_BLACKSTONE,main);
 
         // obtained spell component advancements
+        Advancement got_spellcomponent = AddGetItemAdvancement(ModItems.SPELLCOMPONENT,"spellcomponent",ModItems.SPELLCOMPONENT,"octangulite",AdvancementFrame.TASK,true,false,main);
         for (var id : SpellBlocks.functions.keySet()){
             NbtCompound nbt = new NbtCompound();
             NbtCompound component = new NbtCompound();

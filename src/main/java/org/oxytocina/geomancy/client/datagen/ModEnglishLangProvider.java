@@ -40,6 +40,84 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         add(KeyInputHandler.LANG_CATEGORY_GEOMANCY,"Geomancy");
         add(KeyInputHandler.LANG_OPEN_SKILLTREE,"Skills");
 
+        // Spells
+        {
+            add("MODID.spellmaker.delete",  "remove");
+            add("MODID.spellmaker.rotate",  "rotate");
+            add("MODID.spellmaker.grid.name","Spell name");
+            add("MODID.spellmaker.dir.ne",  "Northeast");
+            add("MODID.spellmaker.dir.e",   "East");
+            add("MODID.spellmaker.dir.se",  "Southeast");
+            add("MODID.spellmaker.dir.sw",  "Southwest");
+            add("MODID.spellmaker.dir.w",   "West");
+            add("MODID.spellmaker.dir.nw",  "Northwest");
+            add("MODID.spellmaker.mode",    "Mode");
+            add("MODID.spellmaker.parameter","Parameter");
+            add("MODID.spellmaker.parameters","Parameters");
+            add("MODID.spellmaker.modes.blocked",   "Blocked");
+            add("MODID.spellmaker.modes.input",     "Input");
+            add("MODID.spellmaker.modes.output",    "Output");
+            add("MODID.spellmaker.type",            "Type");
+            add("MODID.spellmaker.types.number",    "Number");
+            add("MODID.spellmaker.types.any",       "Any");
+            add("MODID.spellmaker.types.none",      "None");
+            add("MODID.spellmaker.types.boolean",   "Boolean");
+            add("MODID.spellmaker.types.text",      "Text");
+            add("MODID.spellmaker.types.uuid",      "Entity");
+            add("MODID.spellmaker.types.vector",    "Vector");
+
+            add("MODID.spellcomponent.category.flowcontrol",    "Flow control");
+            add("MODID.spellcomponent.category.provider",       "Provider");
+            add("MODID.spellcomponent.category.arithmetic",     "Arithmetic");
+            add("MODID.spellcomponent.category.effector",       "Effector");
+            add("MODID.spellcomponent.category.reference",      "Reference");
+
+            // flow control
+            addSpell("conveyor","Conveyor","outputs its input");
+            addSpell("gate","Gate","outputs its input if gate is true");
+            addSpell("for","For","repeats signals");
+            // getters
+            addSpell("entity_caster","Caster","returns the caster entity");
+            addSpell("constant_boolean","Constant Truth","returns a configurable boolean");
+            addSpell("constant_text","Constant Text","returns a configurable text");
+            addSpell("constant_number","Constant Number","returns a configurable number");
+            addSpell("constant_vector","Constant Vector","returns a configurable vector");
+            // arithmetic
+            addSpell("vector_entityspawn","Entity Spawn","returns the respawn point of the entity");
+            addSpell("vector_entitypos","Entity Pos.","returns the position of the entity");
+            addSpell("vector_entityeyepos","Entity Eye Pos.","returns the position of the eyes of the entity");
+            addSpell("vector_entitydir","Entity Dir.","returns the direction the entity is looking in");
+            addSpell("vector_split","Split Vec.","returns a vectors components");
+            addSpell("vector_build","Build Vec.","constructs a vector from three numbers");
+            addSpell("sum","Sum","adds two numbers or vectors");
+            addSpell("subtract","Subtract","subtracts two numbers or vectors");
+            addSpell("multiply","Multiply","multiplies two numbers or vectors");
+            addSpell("divide","Divide","divides two numbers or vectors");
+            addSpell("sin","Sine","returns the sine of the input");
+            addSpell("cos","Cosine","returns the cosine of the input");
+            addSpell("tan","Tangent","returns the tangent of the input");
+            addSpell("exp","Exponent","returns a number to the power of another number");
+            // effectors
+            addSpell("print","Print","outputs a value to the casters chat");
+            addSpell("fireball","Fireball","summons a fireball");
+            addSpell("lightning","Lightning","summons a lightning bolt");
+            addSpell("debug","Debug","enables debug mode if placed somewhere in the grid");
+            addSpell("teleport","Teleport","teleports an entity to a specified position");
+            addSpell("dimhop","Dimhop","teleports an entity to a specified dimension");
+            addSpell("break","Break","attempts to destroy a block at a position");
+            // reference
+            addSpell("action","Action","calls another installed spell");
+            addSpell("ref_output","Ref. Output","gets a variable from the reference arguments");
+            addSpell("ref_input","Ref. Input","sets a call result variable");
+            addSpell("function","Function","calls a spell and returns a result");
+
+
+            add("MODID.spells.debug.error","Error in spell component %1$s: %2$s");
+            add("MODID.spells.debug.broke","Couldn't afford spell %1$s. Cost: %2$f, available: %3$f");
+            add("MODID.spells.debug.wrongsignal","Component %1$s received wrong signal type. Got: %2$s, expected: %3$s");
+            add("MODID.spells.debug.nosuchfunction","Component %1$s referenced non-existing spell %2$s");
+        }
+
         // Items
         {
             add("item.MODID.suspicious_substance"   , "Suspicious Substance");
@@ -147,57 +225,6 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.spellstorage.empty",                 "empty");
             add("MODID.spellstorage.unnamed",               "unnamed");
 
-            add("MODID.spellcomponent.category.flowcontrol",    "Flow control");
-            add("MODID.spellcomponent.category.provider",       "Provider");
-            add("MODID.spellcomponent.category.arithmetic",     "Arithmetic");
-            add("MODID.spellcomponent.category.effector",       "Effector");
-            add("MODID.spellcomponent.category.reference",      "Reference");
-
-            // flow control
-            addSpell("conveyor","Conveyor","outputs its input");
-            addSpell("gate","Gate","outputs its input if gate is true");
-            addSpell("for","For","repeats signals");
-            // getters
-            addSpell("entity_caster","Caster","returns the caster entity");
-            addSpell("constant_boolean","Constant Truth","returns a configurable boolean");
-            addSpell("constant_text","Constant Text","returns a configurable text");
-            addSpell("constant_number","Constant Number","returns a configurable number");
-            addSpell("constant_vector","Constant Vector","returns a configurable vector");
-            // arithmetic
-            addSpell("vector_entityspawn","Entity Spawn","returns the respawn point of the entity");
-            addSpell("vector_entitypos","Entity Pos.","returns the position of the entity");
-            addSpell("vector_entityeyepos","Entity Eye Pos.","returns the position of the eyes of the entity");
-            addSpell("vector_entitydir","Entity Dir.","returns the direction the entity is looking in");
-            addSpell("vector_split","Split Vec.","returns a vectors components");
-            addSpell("vector_build","Build Vec.","constructs a vector from three numbers");
-            addSpell("sum","Sum","adds two numbers or vectors");
-            addSpell("subtract","Subtract","subtracts two numbers or vectors");
-            addSpell("multiply","Multiply","multiplies two numbers or vectors");
-            addSpell("divide","Divide","divides two numbers or vectors");
-            addSpell("sin","Sine","returns the sine of the input");
-            addSpell("cos","Cosine","returns the cosine of the input");
-            addSpell("tan","Tangent","returns the tangent of the input");
-            addSpell("exp","Exponent","returns a number to the power of another number");
-            // effectors
-            addSpell("print","Print","outputs a value to the casters chat");
-            addSpell("fireball","Fireball","summons a fireball");
-            addSpell("lightning","Lightning","summons a lightning bolt");
-            addSpell("debug","Debug","enables debug mode if placed somewhere in the grid");
-            addSpell("teleport","Teleport","teleports an entity to a specified position");
-            addSpell("dimhop","Dimhop","teleports an entity to a specified dimension");
-            addSpell("break","Break","attempts to destroy a block at a position");
-            // reference
-            addSpell("action","Action","calls another installed spell");
-            addSpell("ref_output","Ref. Output","gets a variable from the reference arguments");
-            addSpell("ref_input","Ref. Input","sets a call result variable");
-            addSpell("function","Function","calls a spell and returns a result");
-
-
-            add("MODID.spells.debug.error","Error in spell component %1$s: %2$s");
-            add("MODID.spells.debug.broke","Couldn't afford spell %1$s. Cost: %2$f, available: %3$f");
-            add("MODID.spells.debug.wrongsignal","Component %1$s received wrong signal type. Got: %2$s, expected: %3$s");
-            add("MODID.spells.debug.nosuchfunction","Component %1$s referenced non-existing spell %2$s");
-
         }
 
         // Blocks
@@ -220,29 +247,6 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
             add("block.MODID.spellmaker_block"            , "Spellmaker");
             add("container.MODID.spellmaker_block"        , "Spellmaker");
-            add("MODID.spellmaker.delete",  "remove");
-            add("MODID.spellmaker.rotate",  "rotate");
-            add("MODID.spellmaker.grid.name","Spell name");
-            add("MODID.spellmaker.dir.ne",  "Northeast");
-            add("MODID.spellmaker.dir.e",   "East");
-            add("MODID.spellmaker.dir.se",  "Southeast");
-            add("MODID.spellmaker.dir.sw",  "Southwest");
-            add("MODID.spellmaker.dir.w",   "West");
-            add("MODID.spellmaker.dir.nw",  "Northwest");
-            add("MODID.spellmaker.mode",    "Mode");
-            add("MODID.spellmaker.parameter","Parameter");
-            add("MODID.spellmaker.parameters","Parameters");
-            add("MODID.spellmaker.modes.blocked",   "Blocked");
-            add("MODID.spellmaker.modes.input",     "Input");
-            add("MODID.spellmaker.modes.output",    "Output");
-            add("MODID.spellmaker.type",            "Type");
-            add("MODID.spellmaker.types.number",    "Number");
-            add("MODID.spellmaker.types.any",       "Any");
-            add("MODID.spellmaker.types.none",      "None");
-            add("MODID.spellmaker.types.boolean",   "Boolean");
-            add("MODID.spellmaker.types.text",      "Text");
-            add("MODID.spellmaker.types.uuid",      "Entity");
-            add("MODID.spellmaker.types.vector",    "Vector");
 
             add("block.MODID.octangulite_ore"           , "Octangulite Ore");
             add("block.MODID.deepslate_octangulite_ore" , "Deepslate Octangulite Ore");
@@ -258,6 +262,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("block.MODID.deepslate_titanium_ore" , "Deepslate Titanium Ore");
             add("block.MODID.raw_titanium_block"     , "Block of raw Titanium");
             add("block.MODID.titanium_block"         , "Block of Titanium");
+            add("block.MODID.cut_titanium"           , "Cut Titanium");
+            add("block.MODID.mossy_cut_titanium"     , "Mossy Cut Titanium");
 
             add("block.MODID.lead_ore"           , "Lead Ore");
             add("block.MODID.deepslate_lead_ore" , "Deepslate Lead Ore");
@@ -285,41 +291,23 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
         // Advancements
         {
-            add("advancement.MODID.main.name"                               , "Geomancy");
-            add("advancement.MODID.main.description"                        , "A world of buried treasures and wonders");
+            addAdvancement(".main","Geomancy","A world of buried treasures and wonders");
+            addAdvancement(".main.get_mithril","Precious","Discover Raw Mithril");
+            addAdvancement(".main.get_octangulite","Otherworldy","Discover something strange");
+            addAdvancement(".main.get_titanium","Indestructible","Discover something really tough");
+            addAdvancement(".main.get_lead","Heavy","Discover something heavy and soft");
+            addAdvancement(".main.get_molybdenum","Eccentric","Discover something quirky");
+            addAdvancement(".main.get_molten_gold","Greedy","Discover Molten Gold");
+            addAdvancement(".main.get_gilded_deepslate","Adorned","Discover Gilded Deepslate");
+            addAdvancement(".main.simple_duplicate_trinkets","Hubris","Try and fail to equip two artifacts of the same type at once");
+            addAdvancement(".main.simple_tried_to_take_smithery_result","You've gotta hammer it!","You need to smack the smithery with a hammer to start crafting");
 
-            add("advancement.MODID.main.get_mithril.name"                   , "Precious");
-            add("advancement.MODID.main.get_mithril.description"            , "Discover Raw Mithril");
+            addAdvancement(":milestones/milestone_smithery","The Craft of the Ancients","Obtain the smithery");
 
-            add("advancement.MODID.main.get_octangulite.name"               , "Otherworldy");
-            add("advancement.MODID.main.get_octangulite.description"        , "Discover something strange");
+            addAdvancement(":location/ancient_hall","Ancient","Discover the once prosperous remains of the ancients");
+            addAdvancement(":location/octangula","Geometric","Discover the discarded remains of something else");
 
-            add("advancement.MODID.main.get_titanium.name"               , "Indestructible");
-            add("advancement.MODID.main.get_titanium.description"        , "Discover something really tough");
-
-            add("advancement.MODID.main.get_lead.name"               , "Heavy");
-            add("advancement.MODID.main.get_lead.description"        , "Discover something heavy and soft");
-
-            add("advancement.MODID.main.get_molybdenum.name"               , "Eccentric");
-            add("advancement.MODID.main.get_molybdenum.description"        , "Discover something quirky");
-
-            add("advancement.MODID.main.get_molten_gold.name"               , "Greedy");
-            add("advancement.MODID.main.get_molten_gold.description"        , "Discover Molten Gold");
-
-            add("advancement.MODID.main.get_gilded_deepslate.name"          , "Adorned");
-            add("advancement.MODID.main.get_gilded_deepslate.description"   , "Discover Gilded Deepslate");
-
-            add("advancement.MODID.main.simple_duplicate_trinkets.name"         , "Hubris");
-            add("advancement.MODID.main.simple_duplicate_trinkets.description"  , "Try and fail to equip two artifacts of the same type at once");
-
-            add("advancement.MODID.main.simple_tried_to_take_smithery_result.name"          , "You've gotta hammer it!");
-            add("advancement.MODID.main.simple_tried_to_take_smithery_result.description"   , "You need to smack the smithery with a hammer to start crafting");
-
-            add("advancement.MODID:milestones/milestone_smithery.name", "The Craft of the Ancients");
-            add("advancement.MODID:milestones/milestone_smithery.description", "Obtain the smithery");
-
-            add("advancement.MODID:location/ancient_hall.name", "Ancient");
-            add("advancement.MODID:location/ancient_hall.description", "Discover the once prosperous remains of the ancients");
+            addAdvancement(".octangulite.get_spellcomponent","Building Blocks","Discover the foundation of soulcasting");
         }
 
         // Guidebook
@@ -419,27 +407,34 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                 add(getS("gb:oc")+"intro.description"  , "");
                 add(getS("gb:oc")+"intro.info.text", "This... strange substance seems to shift in color when I don't look. Its hardness also doesn't seem to stay consistent. It feels out of this world. I am not quite sure what to do with it.");
                 add(getS("gb:oc")+"intro.raw_octangulite.text", "Undulating.");
+
+                addGBEntryAndInfo(getS("gb:oc")+"spellcomponents","Spell Components");
+                add(getS("gb:oc")+"spellcomponents.0.text"  , "");
+                add(getS("gb:oc")+"spellcomponents.1.text"  , "");
             }
 
             add(getS("gb:lr")+"name", "History");
             {
-                add("item.MODID.lorebook_goldsmith_1","Chronicles of the Goldsmith Pt. 1");
-                add("item.MODID.lorebook_goldsmith_1.tooltip","Notes from a bygone era");
-                addGBEntryAndInfo(getS("gb:lr")+"goldsmith_1","Chronicles of the Goldsmith Pt. 1");
-                add(getS("gb:lr")+"goldsmith_1.description"  , "");
+                // goldsmith
+                {
+                    addShort("goldsmith_lover","SEXY DWARF");
 
+                    add("item.MODID.lorebook_goldsmith_1","Chronicles of the Goldsmith Pt. 1");
+                    add("item.MODID.lorebook_goldsmith_1.tooltip","Notes from a bygone era");
 
-                add(getS("gb:lr")+"goldsmith_1.1.text",
-                        """
-                          I will be writing down notes on the different kinds of metals I have been using to make jewelry here.
-                          \\
-                          []()
-                          - [Gold](item://minecraft:gold_ingot): A classic. Can hold a good amount of gems. Relatively easy to work with. Abundant.
-                          \\
-                          []()
-                          - [Iron](item://minecraft:iron_ingot): A little odd. Pretty terrible capacity. Common.
-                          """);
-                add(getS("gb:lr")+"goldsmith_1.2.text", """
+                    addGBEntryAndInfo(getS("gb:lr")+"goldsmith_1","Chronicles of the Goldsmith Pt. 1");
+                    add(getS("gb:lr")+"goldsmith_1.description"  , "Notes from a bygone era");
+                    add(getS("gb:lr")+"goldsmith_1.1.text",
+                            """
+                              I will be writing down notes on the different kinds of metals I have been using to make jewelry here.
+                              \\
+                              []()
+                              - [Gold](item://minecraft:gold_ingot): A classic. Can hold a good amount of gems. Relatively easy to work with. Abundant.
+                              \\
+                              []()
+                              - [Iron](item://minecraft:iron_ingot): A little odd. Pretty terrible capacity. Common.
+                              """);
+                    add(getS("gb:lr")+"goldsmith_1.2.text", """
                         - [Copper](item://minecraft:copper_ingot): Makes me itchy. Pretty terrible capacity. Abundant.
                         \\
                         []()
@@ -448,12 +443,32 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                         []()
                         - [Mithril](item://geomancy:mithril_ingot): Legendary. Great capacity. Hard to work with. Incredibly rare.
                         """);
-                add(getS("gb:lr")+"goldsmith_1.3.text", """
+                    add(getS("gb:lr")+"goldsmith_1.3.text", """
                         - [Lead](item://geomancy:lead_ingot): DO NOT USE. Workable and common, but will slowly poison anyone who touches it. Only use for people I don't like.
                         \\
                         []()
                         - [Octangulite](item://geomancy:octangulite_ingot): Never used or seen it. Folklore describes it as cursed. Would like to see what the fuzz is all about some day.
                         """);
+
+                    add("item.MODID.lorebook_goldsmith_2","Chronicles of the Goldsmith Pt. 2");
+                    add("item.MODID.lorebook_goldsmith_2.tooltip","On loss");
+
+                    addGBEntryAndInfo(getS("gb:lr")+"goldsmith_2","Chronicles of the Goldsmith Pt. 2");
+                    add(getS("gb:lr")+"goldsmith_2.description"  , "On loss");
+                    add(getS("gb:lr")+"goldsmith_2.1.text", """
+                        There was an accident in the deep today. A support broke and a section got filled with molten rock.
+                        {lover} didn't make it out in time. The charred remains were retrieved after the flow was stopped.\\
+                        I've been mourning for days now, but perhaps there is a way to get them back.\\
+                        There exist legends, myths, stories and cautionary tales of a certain mineral that allows those thought lost to speak with the living.\\
+                        Maybe, just maybe, I can get them to talk to me again.\\
+                        That is all I ask.
+                        """.replace("{lover}",getS("goldsmith_lover")));
+                    add(getS("gb:lr")+"goldsmith_2.2.text", """
+                         """);
+                    add(getS("gb:lr")+"goldsmith_2.3.text", """
+                         """);
+                }
+
 
             }
 
@@ -549,7 +564,18 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
     }
 
     void addSpell(String spell, String name, String description){
+        addSpell(spell,name,description,description);
+    }
+
+    void addSpell(String spell, String name, String description,String modonomiconDescription){
         add("MODID.spellcomponent."+spell,name);
         add("MODID.tooltip.spellcomponent."+spell,description);
+
+        add(getS("gb:oc")+"spellcomponents."+spell+".text"  , modonomiconDescription);
+    }
+
+    void addAdvancement(String advancement, String name, String description){
+        add("advancement.MODID"+advancement+".name"       , name);
+        add("advancement.MODID"+advancement+".description", description);
     }
 }

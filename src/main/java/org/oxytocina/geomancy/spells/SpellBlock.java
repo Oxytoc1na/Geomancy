@@ -22,6 +22,7 @@ public class SpellBlock {
     public Identifier hexBackTexture;
     public Function<SpellComponent,SpellComponent.SideConfig[]> sideConfigGetter;
     public Category category;
+    public int defaultLootWeight;
 
     public BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult> function;
     public Consumer<SpellComponent> initFunction;
@@ -41,7 +42,8 @@ public class SpellBlock {
                       BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult> function,
                       Function<SpellComponent,SpellComponent.SideConfig[]> sideConfigGetter,
                       Consumer<SpellComponent> initFunction,
-                         Category category){
+                         Category category,
+                         int defaultLootWeight){
         this.identifier=identifier;
         this.inputs = new HashMap<>();
         this.outputs = new HashMap<>();
@@ -50,6 +52,7 @@ public class SpellBlock {
         this.category=category;
         this.hexFrontTexture = Geomancy.locate("textures/gui/spells/"+identifier.getPath()+".png");
         this.hexBackTexture = Geomancy.locate("textures/gui/spellmaker_hex_bg_"+category.toString().toLowerCase()+".png");
+        this.defaultLootWeight=defaultLootWeight;
 
         this.function=function;
         this.sideConfigGetter = sideConfigGetter;
@@ -92,6 +95,7 @@ public class SpellBlock {
         SpellSignal[] inputs;
         SpellSignal[] outputs;
         Parameter[] parameters;
+        int defaultLootWeight = 100;
 
         public Function<SpellComponent,SpellComponent.SideConfig[]> sideConfigGetter;
         public BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult> function;
@@ -123,12 +127,18 @@ public class SpellBlock {
                     function,
                     sideConfigGetter,
                     initFunction,
-                    category
+                    category,
+                    defaultLootWeight
             );
         }
 
         public Builder category(Category category){
             this.category=category;
+            return this;
+        }
+
+        public Builder defaultLootWeight(int defaultLootWeight){
+            this.defaultLootWeight=defaultLootWeight;
             return this;
         }
 

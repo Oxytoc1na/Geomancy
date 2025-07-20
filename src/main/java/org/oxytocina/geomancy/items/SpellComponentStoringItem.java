@@ -115,4 +115,11 @@ public class SpellComponentStoringItem extends Item {
                 (float)(SpellBlocks.functionOrder.get(comp.function.identifier)) /
                         SpellBlocks.functionOrder.size();
     }
+
+    public static NbtCompound getNbtFor(SpellBlock block){
+        SpellComponent component = new SpellComponent(null,null, block);
+        NbtCompound componentCompound = new NbtCompound();
+        component.writeNbt(componentCompound);
+        return componentCompound;
+    }
 }
