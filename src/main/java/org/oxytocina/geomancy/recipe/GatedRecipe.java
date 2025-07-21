@@ -10,6 +10,7 @@ import net.minecraft.recipe.*;
 import net.minecraft.text.*;
 import net.minecraft.util.*;
 import org.jetbrains.annotations.*;
+import org.oxytocina.geomancy.util.AdvancementHelper;
 
 public interface GatedRecipe<C extends Inventory> extends Recipe<C> {
 

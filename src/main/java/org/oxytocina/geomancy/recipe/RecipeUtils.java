@@ -39,4 +39,17 @@ public class RecipeUtils {
         }
     }
 
+    public static JsonObject itemStackWithNbtToJson(ItemStack stack) {
+        Item item = stack.getItem();
+        JsonObject json = new JsonObject();
+
+        json.addProperty("item",Registries.ITEM.getId(item).toString());
+        json.addProperty("count",stack.getCount());
+        if(stack.hasNbt()){
+            json.add("nbt",NbtHelper.toJson(stack.getNbt()));
+        }
+
+        return json;
+    }
+
 }

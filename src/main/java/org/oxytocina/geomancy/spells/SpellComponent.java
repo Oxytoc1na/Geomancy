@@ -205,13 +205,13 @@ public class SpellComponent {
         else position=null;
 
         NbtList sidesNbt = nbt.getList("sides", NbtElement.COMPOUND_TYPE);
-        sideConfigs = new SideConfig[6];
-        for (int i = 0; i < 6; i++) {
+        sideConfigs = function.getDefaultSideConfigs(this);
+        for (int i = 0; i < sidesNbt.size(); i++) {
             if(!(sidesNbt.get(i) instanceof NbtCompound comp)) {
-                sideConfigs[i] = function.getDefaultSideConfigs(this)[i];
                 continue;
             }
-            sideConfigs[i] = SideConfig.createFromNbt(this,comp);
+            var conf = SideConfig.createFromNbt(this,comp);
+            sideConfigs[getDirIndex(conf.dir)] = conf;
         }
 
         // read configured parameters

@@ -23,6 +23,8 @@ public class SpellBlock {
     public Function<SpellComponent,SpellComponent.SideConfig[]> sideConfigGetter;
     public Category category;
     public int defaultLootWeight;
+    public int recipeRequiredProgress;
+    public int recipeDifficulty;
 
     public BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult> function;
     public Consumer<SpellComponent> initFunction;
@@ -36,14 +38,16 @@ public class SpellBlock {
     }
 
     protected SpellBlock(Identifier identifier,
-                      List<SpellSignal> inputs,
-                      List<SpellSignal> outputs,
-                      List<Parameter> parameters,
-                      BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult> function,
-                      Function<SpellComponent,SpellComponent.SideConfig[]> sideConfigGetter,
-                      Consumer<SpellComponent> initFunction,
-                         Category category,
-                         int defaultLootWeight){
+                  List<SpellSignal> inputs,
+                  List<SpellSignal> outputs,
+                  List<Parameter> parameters,
+                  BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult> function,
+                  Function<SpellComponent,SpellComponent.SideConfig[]> sideConfigGetter,
+                  Consumer<SpellComponent> initFunction,
+                  Category category,
+                  int defaultLootWeight,
+                  int recipeRequiredProgress,
+                  int recipeDifficulty){
         this.identifier=identifier;
         this.inputs = new HashMap<>();
         this.outputs = new HashMap<>();
@@ -53,6 +57,8 @@ public class SpellBlock {
         this.hexFrontTexture = Geomancy.locate("textures/gui/spells/"+identifier.getPath()+".png");
         this.hexBackTexture = Geomancy.locate("textures/gui/spellmaker_hex_bg_"+category.toString().toLowerCase()+".png");
         this.defaultLootWeight=defaultLootWeight;
+        this.recipeRequiredProgress=recipeRequiredProgress;
+        this.recipeDifficulty=recipeDifficulty;
 
         this.function=function;
         this.sideConfigGetter = sideConfigGetter;
@@ -96,6 +102,8 @@ public class SpellBlock {
         SpellSignal[] outputs;
         Parameter[] parameters;
         int defaultLootWeight = 100;
+        public int recipeRequiredProgress = 100;
+        public int recipeDifficulty = 20;
 
         public Function<SpellComponent,SpellComponent.SideConfig[]> sideConfigGetter;
         public BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult> function;
@@ -128,7 +136,9 @@ public class SpellBlock {
                     sideConfigGetter,
                     initFunction,
                     category,
-                    defaultLootWeight
+                    defaultLootWeight,
+                    recipeRequiredProgress,
+                    recipeDifficulty
             );
         }
 
@@ -139,6 +149,16 @@ public class SpellBlock {
 
         public Builder defaultLootWeight(int defaultLootWeight){
             this.defaultLootWeight=defaultLootWeight;
+            return this;
+        }
+
+        public Builder recipeRequiredProgress(int recipeRequiredProgress){
+            this.recipeRequiredProgress=recipeRequiredProgress;
+            return this;
+        }
+
+        public Builder recipeDifficulty(int recipeDifficulty){
+            this.recipeDifficulty=recipeDifficulty;
             return this;
         }
 

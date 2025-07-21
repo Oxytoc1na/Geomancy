@@ -9,6 +9,8 @@ import net.minecraft.advancement.criterion.RecipeUnlockedCriterion;
 import net.minecraft.data.server.recipe.CraftingRecipeJsonBuilder;
 import net.minecraft.data.server.recipe.RecipeJsonProvider;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.Registries;
@@ -16,6 +18,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.recipe.CountIngredient;
+import org.oxytocina.geomancy.recipe.RecipeUtils;
 import org.oxytocina.geomancy.recipe.smithery.SmithingIngredient;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
 
@@ -24,7 +27,7 @@ import java.util.function.Consumer;
 public class SmitheryRecipeJsonBuilder {
     private final RecipeCategory category;
     private final DefaultedList<SmithingIngredient> inputs;
-    private final Item output;
+    private final ItemStack output;
     private final int count;
     private final int progressRequired;
     private final int difficulty;
@@ -32,7 +35,7 @@ public class SmitheryRecipeJsonBuilder {
     private final Advancement.Builder advancement = Advancement.Builder.createUntelemetered();
     private final RecipeSerializer<?> serializer;
 
-    public SmitheryRecipeJsonBuilder(RecipeSerializer<?> serializer, RecipeCategory category, DefaultedList<SmithingIngredient> inputs, Item output, int count, int progressRequired, int difficulty, boolean shapeless) {
+    public SmitheryRecipeJsonBuilder(RecipeSerializer<?> serializer, RecipeCategory category, DefaultedList<SmithingIngredient> inputs, ItemStack output, int count, int progressRequired, int difficulty, boolean shapeless) {
         this.category = category;
         this.serializer = serializer;
         this.inputs = inputs;
@@ -44,6 +47,11 @@ public class SmitheryRecipeJsonBuilder {
     }
 
     public static SmitheryRecipeJsonBuilder create(DefaultedList<SmithingIngredient> inputs, Item output,int count, int progressRequired, int difficulty, boolean shapeless, RecipeCategory category) {
+        return new SmitheryRecipeJsonBuilder(ModRecipeTypes.SMITHING_SERIALIZER, category, inputs, new ItemStack(output),
+                count,progressRequired, difficulty, shapeless);
+    }
+
+    public static SmitheryRecipeJsonBuilder create(DefaultedList<SmithingIngredient> inputs, ItemStack output, int count, int progressRequired, int difficulty, boolean shapeless, RecipeCategory category) {
         return new SmitheryRecipeJsonBuilder(ModRecipeTypes.SMITHING_SERIALIZER, category, inputs, output,
                 count,progressRequired, difficulty, shapeless);
     }
@@ -69,7 +77,7 @@ public class SmitheryRecipeJsonBuilder {
     }
 
     public static record Provider(Identifier id, RecipeSerializer<?> type, DefaultedList<SmithingIngredient> inputs,
-                                  Item output, int count,int progressRequired,int difficulty,boolean shapeless,
+                                  ItemStack output, int count,int progressRequired,int difficulty,boolean shapeless,
                                   Advancement.Builder advancement, Identifier advancementId) implements RecipeJsonProvider {
         public void serialize(JsonObject json) {
             //if (!this.group.isEmpty()) {
@@ -86,10 +94,7 @@ public class SmitheryRecipeJsonBuilder {
 
             json.add("ingredients", ingredientsArray);
             JsonObject resultObject = new JsonObject();
-            resultObject.addProperty("item", Registries.ITEM.getId(this.output).toString());
-            if (this.count > 1) {
-                resultObject.addProperty("count", this.count);
-            }
+            resultObject.add("item", RecipeUtils.itemStackWithNbtToJson(output));
             json.addProperty("progressRequired",this.progressRequired);
             json.addProperty("difficulty",this.difficulty);
             json.addProperty("shapeless",this.shapeless);

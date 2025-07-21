@@ -35,7 +35,7 @@ public class SmitheryRecipeSerializer<R extends SmitheryRecipe> implements Gated
             SmithingIngredient ingredient = SmithingIngredient.fromJson(ingredientElement);
             ingredients.add(ingredient);
         }
-        ItemStack outputItemStack = RecipeUtils.itemStackWithNbtFromJson(JsonHelper.getObject(jsonObject, "result"));
+        ItemStack outputItemStack = RecipeUtils.itemStackWithNbtFromJson(JsonHelper.getObject(JsonHelper.getObject(jsonObject, "result"),"item"));
 
         int progressRequired = jsonObject.get("progressRequired").getAsInt();
         int difficulty = jsonObject.get("difficulty").getAsInt();

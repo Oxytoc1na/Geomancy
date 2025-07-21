@@ -142,6 +142,19 @@ public class NbtHelper {
         throw new UnsupportedOperationException("Unknown JSON NBT element type");
     }
 
+    public static JsonElement toJson(NbtElement element) {
+        if (element == null)
+            throw new UnsupportedOperationException("Null JSON NBT element");
+        if (element.getType() == NbtElement.COMPOUND_TYPE)
+            return toJsonObject((NbtCompound) element);
+        if (element.getType() == NbtElement.LIST_TYPE)
+            return toJsonArray((NbtList) element);
+        if (true)
+            return toJsonPrimitive(element);
+
+        throw new UnsupportedOperationException("Unknown JSON NBT element type");
+    }
+
     public static NbtCompound fromJsonObject(JsonObject object) {
         if (object == null) {
             throw new UnsupportedOperationException("Null JSON NBT element");
@@ -154,6 +167,31 @@ public class NbtHelper {
             JsonElement element = entry.getValue();
             if (element != null) {
                 result.put(name, fromJson(element));
+            }
+        });
+
+        return result;
+    }
+
+    public static JsonArray toJsonArray(NbtList array) {
+        JsonArray res = new JsonArray();
+        for (int i = 0; i < array.size(); i++) {
+            res.add(toJson(array.get(i)));
+        }
+        return res;
+    }
+
+    public static JsonObject toJsonObject(NbtCompound nbt) {
+        if (nbt == null) {
+            throw new UnsupportedOperationException("Null NBT element");
+        }
+
+        JsonObject result = new JsonObject();
+
+        nbt.getKeys().forEach(name -> {
+            NbtElement element = nbt.get(name);
+            if (element != null) {
+                result.add(name, toJson(element));
             }
         });
 
@@ -230,6 +268,19 @@ public class NbtHelper {
             }
 
             return NbtString.of(string);
+        }
+
+        throw new UnsupportedOperationException("Unknown JSON NBT primitive type");
+    }
+
+    public static JsonElement toJsonPrimitive(NbtElement primitive) {
+        switch(primitive.getType()){
+            case NbtElement.INT_TYPE -> {return new JsonPrimitive(((AbstractNbtNumber)primitive).intValue());}
+            case NbtElement.FLOAT_TYPE -> {return new JsonPrimitive(((AbstractNbtNumber)primitive).floatValue());}
+            case NbtElement.DOUBLE_TYPE -> {return new JsonPrimitive(((AbstractNbtNumber)primitive).doubleValue());}
+            case NbtElement.SHORT_TYPE -> {return new JsonPrimitive(((AbstractNbtNumber)primitive).shortValue());}
+            case NbtElement.BYTE_TYPE -> {return new JsonPrimitive(((AbstractNbtNumber)primitive).byteValue());}
+            case NbtElement.STRING_TYPE -> {return new JsonPrimitive(primitive.asString());}
         }
 
         throw new UnsupportedOperationException("Unknown JSON NBT primitive type");
