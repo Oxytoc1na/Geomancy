@@ -40,6 +40,10 @@ public class SpellGrid {
         for (var comp : components.values())
             comp.run();
 
+        context.refreshAvailableSoul();
+        for (var comp : components.values())
+            comp.postRun();
+
         return context.referenceResult;
     }
 
@@ -52,6 +56,9 @@ public class SpellGrid {
         context.stage = SpellContext.Stage.Run;
         for (var comp : components.values())
             comp.run();
+
+        for (var comp : components.values())
+            comp.postRun();
     }
 
     public boolean tryRemoveComponent(Vector2i position){

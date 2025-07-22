@@ -88,6 +88,18 @@ public class ModItems {
     public static final LorebookItem LORE_BOOK_GOLDSMITH_3 = (LorebookItem)register("lorebook_goldsmith_3",new LorebookItem(new FabricItemSettings(),"lore/goldsmith_3"),new ExtraItemSettings());
     public static final LorebookItem LORE_BOOK_GOLDSMITH_4 = (LorebookItem)register("lorebook_goldsmith_4",new LorebookItem(new FabricItemSettings(),"lore/goldsmith_4"),new ExtraItemSettings());
 
+    public static final LorebookItem LORE_BOOK_WAR_1 = (LorebookItem)register("lorebook_war_1",new LorebookItem(new FabricItemSettings(),"lore/war_1"),new ExtraItemSettings());
+    public static final LorebookItem LORE_BOOK_WAR_2 = (LorebookItem)register("lorebook_war_2",new LorebookItem(new FabricItemSettings(),"lore/war_2"),new ExtraItemSettings());
+    public static final LorebookItem LORE_BOOK_WAR_3 = (LorebookItem)register("lorebook_war_3",new LorebookItem(new FabricItemSettings(),"lore/war_3"),new ExtraItemSettings());
+    public static final LorebookItem LORE_BOOK_WAR_4 = (LorebookItem)register("lorebook_war_4",new LorebookItem(new FabricItemSettings(),"lore/war_4"),new ExtraItemSettings());
+
+    public static final LorebookItem LORE_LOG_EXPEDITION_1 = (LorebookItem)register("lorelog_expedition_1",new LorebookItem(new FabricItemSettings(),"lore/expedition_1"),new ExtraItemSettings());
+    public static final LorebookItem LORE_LOG_EXPEDITION_2 = (LorebookItem)register("lorelog_expedition_2",new LorebookItem(new FabricItemSettings(),"lore/expedition_2"),new ExtraItemSettings());
+    public static final LorebookItem LORE_LOG_EXPEDITION_3 = (LorebookItem)register("lorelog_expedition_3",new LorebookItem(new FabricItemSettings(),"lore/expedition_3"),new ExtraItemSettings());
+    public static final LorebookItem LORE_LOG_EXPEDITION_4 = (LorebookItem)register("lorelog_expedition_4",new LorebookItem(new FabricItemSettings(),"lore/expedition_4"),new ExtraItemSettings());
+    public static final LorebookItem LORE_LOG_EXPEDITION_5 = (LorebookItem)register("lorelog_expedition_5",new LorebookItem(new FabricItemSettings(),"lore/expedition_5"),new ExtraItemSettings());
+
+
     // music discs
     public static final Item MUSIC_DISC_DIGGY = register("music_disc_diggy",new MusicDiscItem(15, ModSoundEvents.MUSIC_DISC_DIGGY, (new Item.Settings()).maxCount(1).rarity(Rarity.RARE), 235));
 

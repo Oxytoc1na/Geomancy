@@ -173,7 +173,7 @@ public class SmitheryRecipe extends GatedModRecipe<Inventory> implements Smither
 
     @Override
     public boolean hasBaseStack() {
-        return !getShapeless();
+        return !isShapeless();
     }
 
     @Override
@@ -183,7 +183,9 @@ public class SmitheryRecipe extends GatedModRecipe<Inventory> implements Smither
 
     @Override
     public int getDifficulty(Inventory inv,ItemStack hammer, LivingEntity hammerer) {return difficulty;}
-    public boolean getShapeless() {return shapeless;}
+
+    @Override
+    public boolean isShapeless() {return shapeless;}
 
     @Override
     public ItemStack createIcon() {
@@ -199,6 +201,7 @@ public class SmitheryRecipe extends GatedModRecipe<Inventory> implements Smither
     public RecipeType<?> getType() {
         return ModRecipeTypes.SMITHING;
     }
+
 
     @Override
     public Identifier getRecipeTypeUnlockIdentifier() {

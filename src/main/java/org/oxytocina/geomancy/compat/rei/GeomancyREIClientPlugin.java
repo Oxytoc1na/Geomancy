@@ -1,4 +1,4 @@
-package org.oxytocina.geomancy.compat;
+package org.oxytocina.geomancy.compat.rei;
 
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;

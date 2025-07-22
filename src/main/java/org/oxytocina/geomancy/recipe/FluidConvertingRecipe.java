@@ -47,4 +47,8 @@ public abstract class FluidConvertingRecipe extends GatedModRecipe<Inventory> {
         return defaultedList;
     }
 
+    @Override
+    public boolean isShapeless() {
+        return true;
+    }
 }

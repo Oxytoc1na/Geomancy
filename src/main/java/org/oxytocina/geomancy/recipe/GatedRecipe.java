@@ -15,6 +15,7 @@ import org.oxytocina.geomancy.util.AdvancementHelper;
 public interface GatedRecipe<C extends Inventory> extends Recipe<C> {
 
     boolean isSecret();
+    boolean isShapeless();
     Identifier getRequiredAdvancementIdentifier();
     Identifier getRecipeTypeUnlockIdentifier();
 

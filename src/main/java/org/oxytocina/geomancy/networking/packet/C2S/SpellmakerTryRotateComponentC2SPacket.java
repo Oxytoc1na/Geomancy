@@ -1,4 +1,4 @@
-package org.oxytocina.geomancy.networking.packet;
+package org.oxytocina.geomancy.networking.packet.C2S;
 
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.block.entity.BlockEntity;
@@ -13,18 +13,12 @@ import org.oxytocina.geomancy.items.SpellStoringItem;
 import org.oxytocina.geomancy.spells.SpellComponent;
 import org.oxytocina.geomancy.spells.SpellGrid;
 
-import java.util.Objects;
-
-public class SpellmakerTryChangeParamC2SPacket {
+public class SpellmakerTryRotateComponentC2SPacket {
 
     public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender){
         NbtCompound nbt = buf.readNbt();
         BlockPos blockEntityPos = buf.readBlockPos();
-        String paramName = buf.readString();
-        String nextVal = buf.readString();
-
-        // invalid variable
-        if(nextVal==null||Objects.equals(nextVal, "")) return;
+        int amount = buf.readInt();
 
         server.execute(()->{
             if(player==null||player.getWorld()==null) return;
@@ -38,19 +32,17 @@ public class SpellmakerTryChangeParamC2SPacket {
                         SpellComponent component = new SpellComponent(null,nbt);
                         var presentComponent = grid.getComponent(component.position);
                         if(presentComponent!=null){
-                            // does a param with this name exist?
-                            if(presentComponent.function.parameters.containsKey(paramName)){
-                                // is the value parseable?
-                                if(presentComponent.canAcceptParam(paramName,nextVal)){
-                                    // success!!
-                                    presentComponent.setAndParseParam(paramName,nextVal);
-                                    SpellStoringItem.writeGrid(output,grid);
-                                }
-                            }
+                            // rotate
+                            presentComponent.rotate(amount);
+                            SpellStoringItem.writeGrid(output,grid);
+
                         }
                     }
                 }
+
             }
         });
+
+
     }
 }

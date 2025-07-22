@@ -1,11 +1,10 @@
-package org.oxytocina.geomancy.networking.packet;
+package org.oxytocina.geomancy.networking.packet.S2C;
 
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.PacketByteBuf;
 import org.oxytocina.geomancy.entity.ManaStoringItemData;
-import org.oxytocina.geomancy.util.ManaUtil;
 
 public class ItemManaSyncS2CPacket {
 

@@ -1,6 +1,5 @@
-package org.oxytocina.geomancy.networking.packet;
+package org.oxytocina.geomancy.networking.packet.C2S;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -13,7 +12,6 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import org.oxytocina.geomancy.blocks.blockEntities.SpellmakerBlockEntity;
-import org.oxytocina.geomancy.client.screen.SpellmakerScreen;
 import org.oxytocina.geomancy.items.SpellComponentStoringItem;
 import org.oxytocina.geomancy.items.SpellStoringItem;
 import org.oxytocina.geomancy.networking.ModMessages;

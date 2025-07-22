@@ -1,4 +1,4 @@
-package org.oxytocina.geomancy.networking.packet;
+package org.oxytocina.geomancy.networking.packet.C2S;
 
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.block.entity.BlockEntity;
@@ -9,29 +9,41 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import org.oxytocina.geomancy.blocks.blockEntities.SpellmakerBlockEntity;
-import org.oxytocina.geomancy.blocks.blockEntities.SpellstorerBlockEntity;
-import org.oxytocina.geomancy.items.SoulCastingItem;
 import org.oxytocina.geomancy.items.SpellStoringItem;
 import org.oxytocina.geomancy.spells.SpellComponent;
 import org.oxytocina.geomancy.spells.SpellGrid;
 
 import java.util.Objects;
 
-public class SpellstorerTryUpdateCasterC2SPacket {
+public class SpellmakerTryChangeVarC2SPacket {
 
     public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender){
+        NbtCompound nbt = buf.readNbt();
         BlockPos blockEntityPos = buf.readBlockPos();
-        var nbt = buf.readNbt();
+        int sideIndex = buf.readInt();
+        String nextVar = buf.readString();
+
+        // invalid variable
+        if(nextVar==null||Objects.equals(nextVar, "")) return;
 
         server.execute(()->{
             if(player==null||player.getWorld()==null) return;
 
             BlockEntity blockEntity = player.getWorld().getBlockEntity(blockEntityPos);
-            if(blockEntity instanceof SpellstorerBlockEntity spellstorer){
-                var output = spellstorer.getSlottedCasterItem();
-                if(output!=null && output.getItem() instanceof SoulCastingItem caster){
-                    // TODO: server authoritative checks!!
-                    caster.setInventory(output,nbt);
+            if(blockEntity instanceof SpellmakerBlockEntity spellmaker){
+                var output = spellmaker.getOutput();
+                if(output.getItem() instanceof SpellStoringItem){
+                    SpellGrid grid =SpellStoringItem.readGrid(output);
+                    if(grid!=null){
+                        SpellComponent component = new SpellComponent(null,nbt);
+                        var presentComponent = grid.getComponent(component.position);
+                        if(presentComponent!=null){
+                            // success!!
+                            presentComponent.sideConfigs[sideIndex].setVar(nextVar);
+                            SpellStoringItem.writeGrid(output,grid);
+
+                        }
+                    }
                 }
 
             }

@@ -13,6 +13,9 @@ import org.oxytocina.geomancy.Geomancy;
 public class AdvancementHelper {
 
     public static boolean hasAdvancement(PlayerEntity player, Identifier advancementIdentifier){
+        // TODO
+        if(player instanceof ClientPlayerEntity clientPlayer) return true;
+
         if(!(player instanceof ServerPlayerEntity serverPlayerEntity)) return false;
 
         if(serverPlayerEntity.getServer()==null) return false;

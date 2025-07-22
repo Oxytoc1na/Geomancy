@@ -20,7 +20,10 @@
       "org.oxytocina.geomancy.Geomancy"
     ],
     "rei_client": [
-      "org.oxytocina.geomancy.compat.GeomancyREIClientPlugin"
+      "org.oxytocina.geomancy.compat.rei.GeomancyREIClientPlugin"
+    ],
+    "emi": [
+      "org.oxytocina.geomancy.compat.emi.ModEMIPlugin"
     ]
   },
   "accessWidener": "geomancy.accesswidener",

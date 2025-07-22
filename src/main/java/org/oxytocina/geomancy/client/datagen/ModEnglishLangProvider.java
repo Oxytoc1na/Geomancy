@@ -76,6 +76,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("conveyor","Conveyor","outputs its input");
             addSpell("gate","Gate","outputs its input if gate is true");
             addSpell("for","For","repeats signals");
+            addSpell("not","Not","outputs true if it didn't receive a signal");
             // getters
             addSpell("entity_caster","Caster","returns the caster entity");
             addSpell("constant_boolean","Constant Truth","returns a configurable boolean");
@@ -527,6 +528,97 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                          """);
                 }
 
+                // war
+                {
+                    add("item.MODID.lorebook_war_1","War Plans Pt. 1");
+                    add("item.MODID.lorebook_war_1.tooltip","Report 78S-1");
+
+                    addGBEntryAndInfo(getS("gb:lr")+"war_1","War Plans Pt. 1");
+                    add(getS("gb:lr")+"war_1.description"  , "Report 78S-1");
+                    add(getS("gb:lr")+"war_1.1.text","""
+                        Dwarven High Regal Defense Department (DHRDD)
+                        \\
+                        Report 78S-1
+                        \\
+                        \\
+                        Several large floating vessels of metal of unknown origin have landed near the Swamp of Shorg.
+                        \\
+                        Their captains are rigid yet in motion. They levitate akin to their vessels. Their forms are foreign to all other living beings.
+                        \\
+                        Their motives are as of yet unknown.
+                        """);
+                    add(getS("gb:lr")+"war_1.2.text", """
+                        """);
+                    add(getS("gb:lr")+"war_1.3.text", """
+                        """);
+
+                    add("item.MODID.lorebook_war_2","War Plans Pt. 2");
+                    add("item.MODID.lorebook_war_2.tooltip","Report 78S-5");
+
+                    addGBEntryAndInfo(getS("gb:lr")+"war_2","War Plans Pt. 2");
+                    add(getS("gb:lr")+"war_2.description"  , "Report 78S-5");
+                    add(getS("gb:lr")+"war_2.1.text","""
+                        Dwarven High Regal Defense Department (DHRDD)
+                        \\
+                        Report 78S-5
+                        \\
+                        \\
+                        The Invaders have begun what appears to be a mining operation in the Swamp of Shorg and the Jungle of Yharin.
+                        \\
+                        According to our scouts, they are solely extracting octangulite, while discarding precious metals and gemstones.
+                        """);
+                    add(getS("gb:lr")+"war_2.2.text", """
+                        """);
+                    add(getS("gb:lr")+"war_2.3.text", """
+                        """);
+
+                    add("item.MODID.lorebook_war_3","War Plans Pt. 3");
+                    add("item.MODID.lorebook_war_3.tooltip","Order 78S-W1");
+
+                    addGBEntryAndInfo(getS("gb:lr")+"war_3","War Plans Pt. 3");
+                    add(getS("gb:lr")+"war_3.description"  , "Order 78S-W1");
+                    add(getS("gb:lr")+"war_3.1.text","""
+                        Dwarven High Regal Defense Department (DHRDD)
+                        \\
+                        Order 78S-W1
+                        \\
+                        \\
+                        The Invaders' hostile actions and sacrilegious disturbance of the dead warrants vengeance.
+                        \\
+                        By next sunrise, we shall launch operation Octangula.
+                        \\
+                        Gather the armies. We strike at dawn.
+                        """);
+                    add(getS("gb:lr")+"war_3.2.text", """
+                        """);
+                    add(getS("gb:lr")+"war_3.3.text", """
+                        """);
+                }
+
+                // expedition
+                {
+                    add("item.MODID.lorelog_expedition_1","SOL III EXPEDITION ORDER");
+                    add("item.MODID.lorelog_expedition_1.tooltip","INITIATION");
+
+                    addGBEntryAndInfo(getS("gb:lr")+"expedition_1","SOL III EXPEDITION ORDER");
+                    add(getS("gb:lr")+"expedition_1.description"  , "INITIATION");
+                    add(getS("gb:lr")+"expedition_1.1.text","""
+                        Dwarven High Regal Defense Department (DHRDD)
+                        \\
+                        Report 78S-1
+                        \\
+                        \\
+                        Several large floating vessels of metal of unknown origin have landed near the Swamp of Shorg.
+                        \\
+                        Their captains are rigid yet in motion. They levitate akin to their vessels. Their forms are foreign to all other living beings.
+                        \\
+                        Their motives are as of yet unknown.
+                        """);
+                    add(getS("gb:lr")+"expedition_1.2.text", """
+                        """);
+                    add(getS("gb:lr")+"expedition_1.3.text", """
+                        """);
+                }
 
             }
 
@@ -537,6 +629,11 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         {
             add("entity.MODID.stellge_engineer"         , "Stellge Engineer");
             add("item.MODID.stellge_engineer_spawn_egg" , "Stellge Engineer Spawn Egg");
+        }
+
+        // REI, EMI
+        {
+            add("container.MODID.rei.smithing.title","Smithing");
         }
 
         tb=null;

@@ -32,6 +32,8 @@ public class SpellComponent {
 
     public int rotation = 0;
 
+    public HashMap<String,String> castClearedData = new HashMap<>();
+
     public SpellComponent(SpellGrid parent, Vector2i position, SpellBlock function,SideConfig[] sideConfigs,HashMap<String,ConfiguredParameter> configuredParameters){
         this.parent=parent;
         this.position=position;
@@ -66,11 +68,16 @@ public class SpellComponent {
 
     public void preRunSetup(SpellContext context){
         this.context = context;
+        castClearedData.clear();
         function.initRun(this);
     }
 
     public void run(){
         tryExecute();
+    }
+
+    public void postRun(){
+        function.postRun(this);
     }
 
     public boolean tryAcceptSignalFrom(String dir, SpellSignal signal){

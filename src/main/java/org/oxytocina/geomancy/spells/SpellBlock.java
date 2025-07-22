@@ -28,6 +28,7 @@ public class SpellBlock {
 
     public BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult> function;
     public Consumer<SpellComponent> initFunction;
+    public Consumer<SpellComponent> postFunction;
 
     public SpellBlockResult run(SpellComponent component,SpellBlockArgs arguments){
         return function.apply(component,arguments);
@@ -37,13 +38,18 @@ public class SpellBlock {
         if(initFunction!=null) initFunction.accept(component);
     }
 
+    public void postRun(SpellComponent component){
+        if(postFunction!=null) postFunction.accept(component);
+    }
+
     protected SpellBlock(Identifier identifier,
                   List<SpellSignal> inputs,
                   List<SpellSignal> outputs,
                   List<Parameter> parameters,
                   BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult> function,
                   Function<SpellComponent,SpellComponent.SideConfig[]> sideConfigGetter,
-                  Consumer<SpellComponent> initFunction,
+                         Consumer<SpellComponent> initFunction,
+                         Consumer<SpellComponent> postFunction,
                   Category category,
                   int defaultLootWeight,
                   int recipeRequiredProgress,
@@ -63,6 +69,7 @@ public class SpellBlock {
         this.function=function;
         this.sideConfigGetter = sideConfigGetter;
         this.initFunction = initFunction;
+        this.postFunction=postFunction;
 
         for(var v : inputs) {this.inputs.put(v.name,v);this.variables.put(v.name,v);}
         for(var v : outputs) {this.outputs.put(v.name,v);this.variables.put(v.name,v);}
@@ -108,6 +115,7 @@ public class SpellBlock {
         public Function<SpellComponent,SpellComponent.SideConfig[]> sideConfigGetter;
         public BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult> function;
         public Consumer<SpellComponent> initFunction;
+        public Consumer<SpellComponent> postFunction;
 
         private Builder(Identifier identifier){
             this.identifier=identifier;
@@ -135,6 +143,7 @@ public class SpellBlock {
                     function,
                     sideConfigGetter,
                     initFunction,
+                    postFunction,
                     category,
                     defaultLootWeight,
                     recipeRequiredProgress,
@@ -184,6 +193,11 @@ public class SpellBlock {
 
         public Builder func(BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult> func){
             this.function=func;
+            return this;
+        }
+
+        public Builder post(Consumer<SpellComponent> postFunction){
+            this.postFunction=postFunction;
             return this;
         }
 

@@ -162,6 +162,11 @@ public class GeodeRecipe extends GatedModRecipe<Inventory> implements SmitheryRe
     }
 
     @Override
+    public boolean isShapeless() {
+        return true;
+    }
+
+    @Override
     public Identifier getRecipeTypeUnlockIdentifier() {
         Geomancy.logError("getRecipeTypeUnlockIdentifier returning null");
         return null; //UNLOCK_IDENTIFIER;

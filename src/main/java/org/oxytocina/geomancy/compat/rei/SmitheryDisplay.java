@@ -1,4 +1,4 @@
-package org.oxytocina.geomancy.compat;
+package org.oxytocina.geomancy.compat.rei;
 
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.basic.BasicDisplay;
@@ -6,7 +6,6 @@ import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.Recipe;
 import org.oxytocina.geomancy.recipe.smithery.SmitheryRecipe;
 
 import java.util.ArrayList;
@@ -29,7 +28,7 @@ public class SmitheryDisplay extends BasicDisplay {
 
         var ingredients = recipe.getSmithingIngredients();
 
-        if(recipe.getShapeless()){
+        if(recipe.isShapeless()){
             // shapeless
             for(var ing : ingredients){
                 list.add(EntryIngredients.ofIngredient(ing.ingredient));

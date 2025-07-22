@@ -253,6 +253,11 @@ public class JewelryRecipe extends GatedModRecipe<Inventory> implements Smithery
     }
 
     @Override
+    public boolean isShapeless() {
+        return true;
+    }
+
+    @Override
     public Identifier getRecipeTypeUnlockIdentifier() {
         Geomancy.logError("getRecipeTypeUnlockIdentifier returning null");
         return null; //UNLOCK_IDENTIFIER;

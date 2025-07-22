@@ -1,4 +1,4 @@
-package org.oxytocina.geomancy.networking.packet;
+package org.oxytocina.geomancy.networking.packet.C2S;
 
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.block.entity.BlockEntity;
@@ -13,14 +13,13 @@ import org.oxytocina.geomancy.items.SpellStoringItem;
 import org.oxytocina.geomancy.spells.SpellComponent;
 import org.oxytocina.geomancy.spells.SpellGrid;
 
-import java.util.Objects;
-
-public class SpellmakerTryRotateComponentC2SPacket {
+public class SpellmakerTryChangeModeC2SPacket {
 
     public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender){
         NbtCompound nbt = buf.readNbt();
         BlockPos blockEntityPos = buf.readBlockPos();
-        int amount = buf.readInt();
+        int sideIndex = buf.readInt();
+        int nextMode = buf.readInt();
 
         server.execute(()->{
             if(player==null||player.getWorld()==null) return;
@@ -34,8 +33,8 @@ public class SpellmakerTryRotateComponentC2SPacket {
                         SpellComponent component = new SpellComponent(null,nbt);
                         var presentComponent = grid.getComponent(component.position);
                         if(presentComponent!=null){
-                            // rotate
-                            presentComponent.rotate(amount);
+                            // success!!
+                            presentComponent.sideConfigs[sideIndex].setMode(nextMode);
                             SpellStoringItem.writeGrid(output,grid);
 
                         }

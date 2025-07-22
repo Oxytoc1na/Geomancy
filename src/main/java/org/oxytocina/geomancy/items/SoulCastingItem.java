@@ -21,13 +21,14 @@ import org.oxytocina.geomancy.client.screen.SpellstorerScreenHandler;
 import org.oxytocina.geomancy.spells.SpellBlocks;
 import org.oxytocina.geomancy.spells.SpellComponent;
 import org.oxytocina.geomancy.spells.SpellGrid;
+import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-public class SoulCastingItem extends Item implements IManaStoringItem, ICastingItem {
+public class SoulCastingItem extends Item implements IManaStoringItem, ICastingItem, IScrollListenerItem {
 
     public static final HashMap<ItemStack,DefaultedList<ItemStack>> inventories = new HashMap<>();
 
@@ -133,6 +134,7 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
     }
 
     public void setSelectedSpellIndex(ItemStack stack,int index){
+        index = ((index%spellStorageSize)+spellStorageSize)%spellStorageSize;
         stack.getOrCreateNbt().putInt("selected",index);
     }
 
@@ -270,5 +272,25 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
     public void markDirty(ItemStack key) {
         // Override if you want behavior.
         saveInventoryToNbt(key);
+    }
+
+
+
+    @Override
+    public boolean onScrolled(ItemStack stack, float delta,PlayerEntity player) {
+        if(!player.isSneaking()) return false;
+
+        int dir = Toolbox.sign(delta);
+        setSelectedSpellIndex(stack,getSelectedSpellIndex(stack)+dir);
+
+        // TODO: sync to server
+
+        return true;
+    }
+
+    @Override
+    public boolean shouldBlockScrolling(ItemStack stack, PlayerEntity player) {
+        if(player.isSneaking()) return true;
+        return false;
     }
 }

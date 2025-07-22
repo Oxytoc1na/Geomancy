@@ -30,6 +30,7 @@ public class SpellBlocks {
     public static final SpellBlock CONVEYOR;
     public static final SpellBlock GATE;
     public static final SpellBlock FOR;
+    public static final SpellBlock NOT;
 
     // getters
     public static final SpellBlock CONST_NUM;
@@ -141,6 +142,37 @@ public class SpellBlocks {
                         res[4].varName="i";
                         res[5].varName="i";
 
+                        return res;
+                    })
+                    .category(cat)
+                    .build());
+
+            NOT = register(SpellBlock.Builder.create("not")
+                    .inputs(SpellSignal.createAny().named("prevent"))
+                    .outputs(SpellSignal.createBoolean(false).named("signal"))
+                    .func((component, args) ->
+                    {
+                        component.castClearedData.put("prevent","1");
+                        return SpellBlockResult.empty();
+                    })
+                    .post((component) ->
+                    {
+                        if(!component.castClearedData.containsKey("prevent")) return;
+
+                        SpellBlockResult res = new SpellBlockResult();
+                        res.add(SpellSignal.createBoolean(true).named("signal"));
+                        component.pushSignals(res.vars);
+                    })
+                    .sideConfigGetter((comp)->{
+                        SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
+                        for (int i = 0; i < 3; i++) {
+                            res[i] = SpellComponent.SideConfig.createToggleableInput(comp
+                                    ,SpellComponent.directions[i]);
+                        }
+                        for (int i = 3; i < 6; i++) {
+                            res[i] = SpellComponent.SideConfig.createToggleableOutput(comp
+                                    ,SpellComponent.directions[i]);
+                        }
                         return res;
                     })
                     .category(cat)

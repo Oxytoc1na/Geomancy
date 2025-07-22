@@ -1,4 +1,4 @@
-package org.oxytocina.geomancy.compat;
+package org.oxytocina.geomancy.compat.rei;
 
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
@@ -9,7 +9,6 @@ import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.basic.BasicDisplay;
 import me.shedaniel.rei.api.common.util.EntryStacks;
-import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
@@ -33,7 +32,7 @@ public class SmithingCategory implements DisplayCategory<BasicDisplay> {
 
     @Override
     public Text getTitle() {
-        return Text.literal("Smithing");
+        return Text.translatable("container.geomancy.rei.smithing.title");
     }
 
     @Override

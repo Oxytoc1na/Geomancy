@@ -1,8 +1,7 @@
-package org.oxytocina.geomancy.networking.packet;
+package org.oxytocina.geomancy.networking.packet.C2S;
 
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
@@ -10,18 +9,22 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import org.oxytocina.geomancy.blocks.blockEntities.SpellmakerBlockEntity;
-import org.oxytocina.geomancy.items.SpellComponentStoringItem;
 import org.oxytocina.geomancy.items.SpellStoringItem;
 import org.oxytocina.geomancy.spells.SpellComponent;
 import org.oxytocina.geomancy.spells.SpellGrid;
 
-public class SpellmakerTryChangeModeC2SPacket {
+import java.util.Objects;
+
+public class SpellmakerTryChangeParamC2SPacket {
 
     public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender){
         NbtCompound nbt = buf.readNbt();
         BlockPos blockEntityPos = buf.readBlockPos();
-        int sideIndex = buf.readInt();
-        int nextMode = buf.readInt();
+        String paramName = buf.readString();
+        String nextVal = buf.readString();
+
+        // invalid variable
+        if(nextVal==null||Objects.equals(nextVal, "")) return;
 
         server.execute(()->{
             if(player==null||player.getWorld()==null) return;
@@ -35,17 +38,19 @@ public class SpellmakerTryChangeModeC2SPacket {
                         SpellComponent component = new SpellComponent(null,nbt);
                         var presentComponent = grid.getComponent(component.position);
                         if(presentComponent!=null){
-                            // success!!
-                            presentComponent.sideConfigs[sideIndex].setMode(nextMode);
-                            SpellStoringItem.writeGrid(output,grid);
-
+                            // does a param with this name exist?
+                            if(presentComponent.function.parameters.containsKey(paramName)){
+                                // is the value parseable?
+                                if(presentComponent.canAcceptParam(paramName,nextVal)){
+                                    // success!!
+                                    presentComponent.setAndParseParam(paramName,nextVal);
+                                    SpellStoringItem.writeGrid(output,grid);
+                                }
+                            }
                         }
                     }
                 }
-
             }
         });
-
-
     }
 }

@@ -6,13 +6,12 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.PlayerManager;
-import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.entity.PlayerData;
 import org.oxytocina.geomancy.entity.StateSaverAndLoader;
-import org.oxytocina.geomancy.networking.packet.*;
+import org.oxytocina.geomancy.networking.packet.C2S.*;
+import org.oxytocina.geomancy.networking.packet.S2C.*;
 
 public class ModMessages {
 
@@ -34,6 +33,7 @@ public class ModMessages {
     public static final Identifier SPELLMAKER_TRY_CHANGE_GRIDNAME = Geomancy.locate("spellmaker_try_change_gridname");
     public static final Identifier SPELLMAKER_TRY_ROTATE_COMPONENT = Geomancy.locate("spellmaker_try_rotate_component");
     public static final Identifier SPELLSTORER_TRY_UPDATE_CASTER = Geomancy.locate("spellstorer_try_update_caster");
+    public static final Identifier CASTER_CHANGE_SELECTED_SPELL = Geomancy.locate("caster_change_selected_spell");
 
     public static void registerC2SPackets(){
         ServerPlayNetworking.registerGlobalReceiver(CLIENT_JOINED, ClientJoinedC2SPacket::receive);
@@ -45,6 +45,7 @@ public class ModMessages {
         ServerPlayNetworking.registerGlobalReceiver(SPELLMAKER_TRY_CHANGE_GRIDNAME, SpellmakerTryChangeGridnameC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(SPELLMAKER_TRY_ROTATE_COMPONENT, SpellmakerTryRotateComponentC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(SPELLSTORER_TRY_UPDATE_CASTER, SpellstorerTryUpdateCasterC2SPacket::receive);
+        ServerPlayNetworking.registerGlobalReceiver(CASTER_CHANGE_SELECTED_SPELL, CasterChangeSelectedSpellC2S::receive);
 
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
             server.execute(() -> {

@@ -39,6 +39,7 @@ repositories {
     }
     // REI
     maven { url "https://maven.shedaniel.me" }
+    maven { url = "https://maven.terraformersmc.com/" } // Modmenu, EMI
 }
 
 dependencies {
@@ -55,6 +56,9 @@ dependencies {
 
     // REI
     modCompileOnly("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}")
+
+    // EMI
+    modCompileOnly("dev.emi:emi-fabric:${emi_version}") // https://github.com/emilyploszaj/emi
 }
 
 processResources {
