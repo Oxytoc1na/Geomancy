@@ -8,6 +8,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.World;
 import org.oxytocina.geomancy.items.IMaddeningItem;
 import org.oxytocina.geomancy.items.IManaStoringItem;
+import org.oxytocina.geomancy.util.MadnessUtil;
 import org.oxytocina.geomancy.util.ManaUtil;
 
 public class OctanguliteJewelryItem extends JewelryItem implements IManaStoringItem, IMaddeningItem {
@@ -38,7 +39,10 @@ public class OctanguliteJewelryItem extends JewelryItem implements IManaStoringI
         super.onEquip(stack, slot, entity);
 
         if(entity instanceof ServerPlayerEntity player)
+        {
             ManaUtil.queueRecalculateMana(player);
+            MadnessUtil.queueRecalculateMadnessSpeed(player);
+        }
     }
 
     @Override
@@ -46,7 +50,10 @@ public class OctanguliteJewelryItem extends JewelryItem implements IManaStoringI
         super.onUnequip(stack, slot, entity);
 
         if(entity instanceof ServerPlayerEntity player)
+        {
             ManaUtil.queueRecalculateMana(player);
+            MadnessUtil.queueRecalculateMadnessSpeed(player);
+        }
     }
 
     @Override

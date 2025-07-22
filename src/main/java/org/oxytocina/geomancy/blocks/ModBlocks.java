@@ -20,6 +20,7 @@ import org.oxytocina.geomancy.blocks.fluids.GoldFluidBlock;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 import org.oxytocina.geomancy.items.LeadBlockItem;
 import org.oxytocina.geomancy.items.ModItems;
+import org.oxytocina.geomancy.items.OctanguliteBlockItem;
 import org.oxytocina.geomancy.sound.ModBlockSoundGroups;
 
 import java.util.*;
@@ -32,17 +33,17 @@ public class ModBlocks {
 
 
     // ores
-    public static final OctanguliteExperienceDroppingBlock MITHRIL_ORE = (OctanguliteExperienceDroppingBlock) register("mithril_ore", (AbstractBlock.Settings s) -> new OctanguliteExperienceDroppingBlock(s, UniformIntProvider.create(9,13),1),
+    public static final ExperienceDroppingBlock MITHRIL_ORE = (ExperienceDroppingBlock) register("mithril_ore", (AbstractBlock.Settings s) -> new ExperienceDroppingBlock(s, UniformIntProvider.create(9,13)),
         AbstractBlock.Settings.create().mapColor(MapColor.STONE_GRAY).instrument(Instrument.BASEDRUM).requiresTool().strength(3.0F, 3.0F).sounds(BlockSoundGroup.STONE),
         ExtraBlockSettings.create().mineableByPickaxe().miningLevel(3).notRegularDrop(),new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof());
-    public static final OctanguliteExperienceDroppingBlock DEEPSLATE_MITHRIL_ORE = (OctanguliteExperienceDroppingBlock) register("deepslate_mithril_ore", (AbstractBlock.Settings s) -> new OctanguliteExperienceDroppingBlock(s, UniformIntProvider.create(9,13),1),
+    public static final ExperienceDroppingBlock DEEPSLATE_MITHRIL_ORE = (ExperienceDroppingBlock) register("deepslate_mithril_ore", (AbstractBlock.Settings s) -> new ExperienceDroppingBlock(s, UniformIntProvider.create(9,13)),
         AbstractBlock.Settings.copy(MITHRIL_ORE).mapColor(MapColor.DEEPSLATE_GRAY).strength(4.5F, 3.0F).sounds(BlockSoundGroup.DEEPSLATE),
         ExtraBlockSettings.create().mineableByPickaxe().miningLevel(3).notRegularDrop(),new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof());
 
-    public static final ExperienceDroppingBlock OCTANGULITE_ORE = (ExperienceDroppingBlock) register("octangulite_ore", (AbstractBlock.Settings s) -> new ExperienceDroppingBlock(s, UniformIntProvider.create(9,13)),
+    public static final OctanguliteExperienceDroppingBlock OCTANGULITE_ORE = (OctanguliteExperienceDroppingBlock) register("octangulite_ore", (AbstractBlock.Settings s) -> new OctanguliteExperienceDroppingBlock(s, UniformIntProvider.create(9,13),1),
             AbstractBlock.Settings.create().mapColor(MapColor.STONE_GRAY).instrument(Instrument.BASEDRUM).requiresTool().strength(3.0F, 3.0F).sounds(ModBlockSoundGroups.STONE_WHISPERS),
             ExtraBlockSettings.create().mineableByPickaxe().miningLevel(3).notSimpleCube().notRegularDrop(),new FabricItemSettings().rarity(Rarity.RARE));
-    public static final ExperienceDroppingBlock DEEPSLATE_OCTANGULITE_ORE = (ExperienceDroppingBlock) register("deepslate_octangulite_ore", (AbstractBlock.Settings s) -> new ExperienceDroppingBlock(s, UniformIntProvider.create(9,13)),
+    public static final OctanguliteExperienceDroppingBlock DEEPSLATE_OCTANGULITE_ORE = (OctanguliteExperienceDroppingBlock) register("deepslate_octangulite_ore", (AbstractBlock.Settings s) -> new OctanguliteExperienceDroppingBlock(s, UniformIntProvider.create(9,13),1),
             AbstractBlock.Settings.copy(OCTANGULITE_ORE).mapColor(MapColor.DEEPSLATE_GRAY).strength(4.5F, 3.0F).sounds(ModBlockSoundGroups.DEEPSLATE_WHISPERS),
             ExtraBlockSettings.create().mineableByPickaxe().miningLevel(3).notSimpleCube().notRegularDrop(),new FabricItemSettings().rarity(Rarity.RARE));
 
@@ -135,6 +136,10 @@ public class ModBlocks {
 
             if(block instanceof ILeadPoisoningBlock leadBlock){
                 LeadBlockItem blockItem = new LeadBlockItem(block, itemSettings,leadBlock.getInventoryPoisoningSpeed());
+                Registry.register(Registries.ITEM, itemKey, blockItem);
+            }
+            else if(block instanceof IOctanguliteBlock octanguliteBlock){
+                OctanguliteBlockItem blockItem = new OctanguliteBlockItem(block, itemSettings,octanguliteBlock.getInventoryMaddeningSpeed());
                 Registry.register(Registries.ITEM, itemKey, blockItem);
             }
             else{

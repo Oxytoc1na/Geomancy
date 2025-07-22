@@ -225,6 +225,9 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.spellstorage.empty",                 "empty");
             add("MODID.spellstorage.unnamed",               "unnamed");
 
+            add("item.MODID.spellglove",        "Spellglove");
+
+
         }
 
         // Blocks
@@ -457,15 +460,70 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                     add(getS("gb:lr")+"goldsmith_2.description"  , "On loss");
                     add(getS("gb:lr")+"goldsmith_2.1.text", """
                         There was an accident in the deep today. A support broke and a section got filled with molten rock.
-                        {lover} didn't make it out in time. The charred remains were retrieved after the flow was stopped.\\
-                        I've been mourning for days now, but perhaps there is a way to get them back.\\
-                        There exist legends, myths, stories and cautionary tales of a certain mineral that allows those thought lost to speak with the living.\\
-                        Maybe, just maybe, I can get them to talk to me again.\\
-                        That is all I ask.
+                        \\
+                        {lover} didn't make it out in time. The charred remains were retrieved after the flow was stopped.
+                        \\
+                        I've been mourning for days now, but perhaps there is a way to get them back.
                         """.replace("{lover}",getS("goldsmith_lover")));
                     add(getS("gb:lr")+"goldsmith_2.2.text", """
+                         There exist legends, myths, stories and cautionary tales of a certain mineral that allows those thought lost to speak with the living.
+                         \\
+                         Maybe, just maybe, I can get them to talk to me again.
+                         \\
+                         That is all I ask.
                          """);
                     add(getS("gb:lr")+"goldsmith_2.3.text", """
+                         """);
+
+
+                    add("item.MODID.lorebook_goldsmith_3","Chronicles of the Goldsmith Pt. 3");
+                    add("item.MODID.lorebook_goldsmith_3.tooltip","Channeling");
+
+                    addGBEntryAndInfo(getS("gb:lr")+"goldsmith_3","Chronicles of the Goldsmith Pt. 3");
+                    add(getS("gb:lr")+"goldsmith_3.description"  , "Channeling");
+                    add(getS("gb:lr")+"goldsmith_3.1.text", """
+                        I've done it! {lover} came back to me, and they're in this crystal I picked for them.
+                        \\
+                        It looks like an ordinary amethyst, but they can speak to me through it.
+                        \\
+                        It's a miracle!
+                        """.replace("{lover}",getS("goldsmith_lover")));
+                    add(getS("gb:lr")+"goldsmith_3.2.text", """
+                         It is difficult to make out their words though, but I believe I know the solution.
+                         \\
+                         I will slot their gem into a ring made of octangulite.
+                         \\
+                         The legends say it makes the dead talk. I am certain that it will allow {lover} to hold conversations with me!
+                         """.replace("{lover}",getS("goldsmith_lover")));
+                    add(getS("gb:lr")+"goldsmith_3.3.text", """
+                         """);
+
+                    add("item.MODID.lorebook_goldsmith_4","Chronicles of the Goldsmith Pt. 4");
+                    add("item.MODID.lorebook_goldsmith_4.tooltip","Madness");
+
+                    addGBEntryAndInfo(getS("gb:lr")+"goldsmith_4","Chronicles of the Goldsmith Pt. 4");
+                    add(getS("gb:lr")+"goldsmith_4.description"  , "Madness");
+                    add(getS("gb:lr")+"goldsmith_4.1.text", """
+                        My ring is a success.
+                        \\
+                        They don't stop talking.
+                        \\
+                        The whispers are unending.
+                        \\
+                        It is beautiful.
+                        """.replace("{lover}",getS("goldsmith_lover")));
+                    add(getS("gb:lr")+"goldsmith_4.2.text", """
+                         {lover} often speaks of their perspective.
+                         \\
+                         They make it sound wonderful.
+                         \\
+                         They have so many friends now.
+                         \\
+                         I envy them.
+                         \\
+                         I want to be with them.
+                         """.replace("{lover}",getS("goldsmith_lover")));
+                    add(getS("gb:lr")+"goldsmith_4.3.text", """
                          """);
                 }
 

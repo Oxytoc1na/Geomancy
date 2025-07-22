@@ -205,5 +205,4 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
 
         return builder.build(consumer, advancementName);
     }
-
 }

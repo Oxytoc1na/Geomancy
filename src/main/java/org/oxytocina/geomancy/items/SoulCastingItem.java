@@ -47,12 +47,12 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
 
             cast(user.getStackInHand(hand),user);
 
-            return TypedActionResult.success(user.getStackInHand(hand));
+            return TypedActionResult.consume(user.getStackInHand(hand));
         } else {
 
         }
 
-        return TypedActionResult.success(user.getStackInHand(hand));
+        return TypedActionResult.pass(user.getStackInHand(hand));
     }
 
     public void cast(ItemStack key, LivingEntity user){

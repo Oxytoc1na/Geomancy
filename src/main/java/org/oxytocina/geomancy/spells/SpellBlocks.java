@@ -238,7 +238,7 @@ public class SpellBlocks {
                         .inputs(SpellSignal.createAny().named("a"),
                                 SpellSignal.createAny().named("b"))
                         .outputs(SpellSignal.createAny().named("product"),
-                                SpellSignal.createVector(null).named("dotproduct"),
+                                SpellSignal.createNumber(0).named("dotproduct"),
                                 SpellSignal.createVector(null).named("crossproduct")
                                 )
                         .parameters()

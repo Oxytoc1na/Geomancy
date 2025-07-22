@@ -6,13 +6,20 @@ import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.text.Text;
+import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
+import org.oxytocina.geomancy.blocks.ILeadPoisoningBlock;
 import org.oxytocina.geomancy.blocks.IOctanguliteBlock;
 import org.oxytocina.geomancy.entity.PlayerData;
 import org.oxytocina.geomancy.items.ILeadPoisoningItem;
@@ -22,8 +29,11 @@ import org.oxytocina.geomancy.networking.ModMessages;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Consumer;
 
+import org.oxytocina.geomancy.sound.ModSoundEvents;
 import org.oxytocina.geomancy.util.LeadUtil.HeldInfluenceItem;
+import oshi.util.tuples.Triplet;
 
 public class MadnessUtil {
 
@@ -69,12 +79,12 @@ public class MadnessUtil {
 
         var items = getAllMaddeningItems(player);
         for(var item : items){
-            if(item.stack.getItem() instanceof ILeadPoisoningItem poisoner){
+            if(item.stack.getItem() instanceof IMaddeningItem maddener){
                 if(item.inHand)
-                    speed += poisoner.getInHandPoisoningSpeed()*item.stack.getCount();
+                    speed += maddener.getInHandMaddeningSpeed()*item.stack.getCount();
                 else if(item.worn)
-                    speed += poisoner.getWornPoisoningSpeed()*item.stack.getCount();
-                else speed += poisoner.getInInventoryPoisoningSpeed()*item.stack.getCount();
+                    speed += maddener.getWornMaddeningSpeed()*item.stack.getCount();
+                else speed += maddener.getInInventoryMaddeningSpeed()*item.stack.getCount();
             }
         }
 
@@ -84,6 +94,8 @@ public class MadnessUtil {
     }
 
     private static long clearCacheCounter = 0;
+    private static long madnessEffectsCounter = 0;
+    private static long whisperCounter = 0;
     public static void tick(MinecraftServer server){
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
             MadnessUtil.tickMadness(player);
@@ -99,6 +111,66 @@ public class MadnessUtil {
             cachedAmbientMadness.clear();
             clearCacheCounter=0;
         }
+
+        if(++madnessEffectsCounter > 20*60){
+            for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+                tryMadnessEffects(player);
+            }
+            madnessEffectsCounter =0;
+        }
+
+        if(++whisperCounter > 20*2){
+            for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+                tryWhisper(player);
+            }
+            whisperCounter =0;
+        }
+    }
+
+    private static void tryWhisper(ServerPlayerEntity player) {
+        float madness = getMadness(player);
+        float ambientMadness = getAmbientMadness(player);
+
+        float combined = madness+ambientMadness;
+
+        float chance = combined/(combined+400);
+        if(Toolbox.random.nextFloat()>chance) return;
+
+        Toolbox.playSound(ModSoundEvents.WHISPERS,player.getWorld(),player.getBlockPos(), SoundCategory.AMBIENT,chance,0.8f+Toolbox.random.nextFloat()*0.4f);
+
+    }
+
+    private static void tryMadnessEffects(ServerPlayerEntity player) {
+        float madness = getMadness(player);
+        // effect chance asymptotically approaches 100%.
+        // at 100, there is a 20% chance.
+        // at 400, there is a 50% chance.
+        float chance = madness/(madness+400);
+        if(Toolbox.random.nextFloat()>chance) return;
+
+        // effects are defined with severity, which affects at which level of poisoning they can happen,
+        // weight, if it is added to the pool, and the function that happens when it is picked
+        ArrayList<Triplet<Float,Integer, Consumer<ServerPlayerEntity>>> effects = new ArrayList<>();
+
+        // whispers
+        //effects.add(new Triplet<>(10f,1, p -> {
+        //    p.sendMessage(Text.translatable("geomancy.message.lead.tingling"),true);
+        //}));
+
+        // add to available pool
+        HashMap<Triplet<Float,Integer, Consumer<ServerPlayerEntity>>,Integer> pickedEffects = new HashMap<>();
+        for (Triplet<Float, Integer, Consumer<ServerPlayerEntity>> t : effects) {
+            if (t.getA() < madness) {
+                pickedEffects.put(t, t.getB());
+            }
+        }
+
+        var picked = Toolbox.selectWeightedRandomIndex(pickedEffects,null);
+        if(picked!=null){
+            picked.getC().accept(player);
+            // trigger lead poisoning advancement
+        }
+
     }
 
     public static void queueRecalculateMadnessSpeed(PlayerEntity player){
@@ -121,7 +193,22 @@ public class MadnessUtil {
     public static float getAmbientMadness(World world, BlockPos pos){
         if(cachedAmbientMadness.containsKey(pos)) return cachedAmbientMadness.get(pos);
 
+        final float checkRadius = 4;
+
         float res = 0;
+
+        List<BlockPos> checkedBlockPos = new ArrayList<>();
+        BlockPos.stream(Box.from(new BlockBox(pos)).expand(checkRadius))
+                .filter(pos3 -> isMaddening(world.getBlockState(pos3))).forEach((blockPos -> checkedBlockPos.add(blockPos.mutableCopy())));
+        for(var pos2 : checkedBlockPos)
+        {
+            BlockState state = world.getBlockState(pos2);
+            if(state.getBlock() instanceof IOctanguliteBlock maddeningBlock){
+                float maddeningness = maddeningBlock.getAmbientMaddeningSpeed();
+                double dist = pos.getSquaredDistance(pos2);
+                res+=maddeningness/Math.max(1,(float)(Math.sqrt(dist)));
+            }
+        }
 
         cachedAmbientMadness.put(pos,res);
         return res;
@@ -130,22 +217,28 @@ public class MadnessUtil {
     private static boolean tickMadness(ServerPlayerEntity player){
         boolean changed = false;
 
-        float prevPoisoning = getMadness(player);
-        float playerPoisoningSpeed = getMadnessSpeed(player);
-        float ambientPoisoningSpeed = getAmbientMadness(player);
+        float prevMadness = getMadness(player);
+        float playerMaddeningSpeed = getMadnessSpeed(player);
+        float ambientMaddeningSpeed = getAmbientMadness(player);
 
-        float effectivePoisoningSpeed = playerPoisoningSpeed+ambientPoisoningSpeed;
+        float effectiveMaddeningSpeed = playerMaddeningSpeed+ambientMaddeningSpeed;
 
-        effectivePoisoningSpeed *= 0.01f;
+        // make extreme values have less of an impact
+        final double g = 0.03;
+        effectiveMaddeningSpeed = (float)Toolbox.log(1+g,effectiveMaddeningSpeed*g+1);
+
+        // slow poisoning down a lot
+        effectiveMaddeningSpeed *= 0.001f;
 
         // prevents poisoning from climbing endlessly
-        final float lerpPerTick = 0.001f;
+        // healing is much less effective if you're still exposed
+        final float lerpPerTick = 0.0001f / (1+effectiveMaddeningSpeed);
 
-        float newPoisoning = Toolbox.Lerp(prevPoisoning,0,lerpPerTick) + effectivePoisoningSpeed;
+        float newMadness = Toolbox.Lerp(prevMadness,0,lerpPerTick) + effectiveMaddeningSpeed;
 
-        if(newPoisoning!=prevPoisoning){
+        if(newMadness!=prevMadness){
             changed=true;
-            setMadness(player,newPoisoning);
+            setMadness(player,newMadness);
         }
 
         if(changed) syncMadness(player);

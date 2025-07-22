@@ -9,6 +9,7 @@ import net.minecraft.world.World;
 import org.oxytocina.geomancy.items.ILeadPoisoningItem;
 import org.oxytocina.geomancy.items.IManaStoringItem;
 import org.oxytocina.geomancy.util.LeadUtil;
+import org.oxytocina.geomancy.util.MadnessUtil;
 
 public class LeadJewelryItem extends JewelryItem implements ILeadPoisoningItem {
 
@@ -26,7 +27,9 @@ public class LeadJewelryItem extends JewelryItem implements ILeadPoisoningItem {
         super.onEquip(stack, slot, entity);
 
         if(entity instanceof ServerPlayerEntity player)
+        {
             LeadUtil.queueRecalculatePoisoningSpeed(player);
+        }
     }
 
     @Override
@@ -34,7 +37,9 @@ public class LeadJewelryItem extends JewelryItem implements ILeadPoisoningItem {
         super.onUnequip(stack, slot, entity);
 
         if(entity instanceof ServerPlayerEntity player)
+        {
             LeadUtil.queueRecalculatePoisoningSpeed(player);
+        }
     }
 
     @Override

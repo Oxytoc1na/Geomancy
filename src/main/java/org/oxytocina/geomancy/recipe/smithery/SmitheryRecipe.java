@@ -159,6 +159,10 @@ public class SmitheryRecipe extends GatedModRecipe<Inventory> implements Smither
         return res;
     }
 
+    public DefaultedList<SmithingIngredient> getSmithingIngredients() {
+        return inputs;
+    }
+
     @Override
     public int getProgressRequired(Inventory inv) {return progressRequired;}
 

@@ -55,9 +55,9 @@ public class ModItems {
     public static final Item MITHRIL_NUGGET = register("mithril_nugget",new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof()));
 
     // octangulite
-    public static final Item RAW_OCTANGULITE = register("raw_octangulite",new Item(new FabricItemSettings().rarity(Rarity.RARE).fireproof()));
-    public static final Item OCTANGULITE_INGOT = register("octangulite_ingot",new Item(new FabricItemSettings().rarity(Rarity.RARE).fireproof()));
-    public static final Item OCTANGULITE_NUGGET = register("octangulite_nugget",new Item(new FabricItemSettings().rarity(Rarity.RARE).fireproof()));
+    public static final OctanguliteItem RAW_OCTANGULITE = (OctanguliteItem)register("raw_octangulite",new OctanguliteItem(new FabricItemSettings().rarity(Rarity.RARE).fireproof(),1));
+    public static final OctanguliteItem OCTANGULITE_INGOT = (OctanguliteItem)register("octangulite_ingot",new OctanguliteItem(new FabricItemSettings().rarity(Rarity.RARE).fireproof(),1));
+    public static final OctanguliteItem OCTANGULITE_NUGGET = (OctanguliteItem)register("octangulite_nugget",new OctanguliteItem(new FabricItemSettings().rarity(Rarity.RARE).fireproof(),1/9f));
 
     // molybdenum
     public static final Item RAW_MOLYBDENUM = register("raw_molybdenum",new Item(new FabricItemSettings().rarity(Rarity.COMMON).fireproof()));
@@ -71,8 +71,8 @@ public class ModItems {
 
     // lead
     public static final LeadItem RAW_LEAD = (LeadItem) register("raw_lead",new LeadItem(new FabricItemSettings().rarity(Rarity.COMMON).fireproof(),1));
-    public static final LeadItem LEAD_INGOT = (LeadItem) register("lead_ingot",new LeadItem(new FabricItemSettings().rarity(Rarity.COMMON).fireproof(),1/9f));
-    public static final LeadItem LEAD_NUGGET = (LeadItem) register("lead_nugget",new LeadItem(new FabricItemSettings().rarity(Rarity.COMMON).fireproof(),1));
+    public static final LeadItem LEAD_INGOT = (LeadItem) register("lead_ingot",new LeadItem(new FabricItemSettings().rarity(Rarity.COMMON).fireproof(),1));
+    public static final LeadItem LEAD_NUGGET = (LeadItem) register("lead_nugget",new LeadItem(new FabricItemSettings().rarity(Rarity.COMMON).fireproof(),1/9f));
 
     // gems
     public static final Item TOURMALINE = register("tourmaline",new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof()));
@@ -84,6 +84,9 @@ public class ModItems {
     // guidebook and lore
     public static final GuidebookItem GUIDE_BOOK = (GuidebookItem)register("guidebook",new GuidebookItem(new FabricItemSettings()),new ExtraItemSettings());
     public static final LorebookItem LORE_BOOK_GOLDSMITH_1 = (LorebookItem)register("lorebook_goldsmith_1",new LorebookItem(new FabricItemSettings(),"lore/goldsmith_1"),new ExtraItemSettings());
+    public static final LorebookItem LORE_BOOK_GOLDSMITH_2 = (LorebookItem)register("lorebook_goldsmith_2",new LorebookItem(new FabricItemSettings(),"lore/goldsmith_2"),new ExtraItemSettings());
+    public static final LorebookItem LORE_BOOK_GOLDSMITH_3 = (LorebookItem)register("lorebook_goldsmith_3",new LorebookItem(new FabricItemSettings(),"lore/goldsmith_3"),new ExtraItemSettings());
+    public static final LorebookItem LORE_BOOK_GOLDSMITH_4 = (LorebookItem)register("lorebook_goldsmith_4",new LorebookItem(new FabricItemSettings(),"lore/goldsmith_4"),new ExtraItemSettings());
 
     // music discs
     public static final Item MUSIC_DISC_DIGGY = register("music_disc_diggy",new MusicDiscItem(15, ModSoundEvents.MUSIC_DISC_DIGGY, (new Item.Settings()).maxCount(1).rarity(Rarity.RARE), 235));
@@ -133,6 +136,7 @@ public class ModItems {
 
     // caster items
     public static final SoulCastingItem CASTER_TEST = (SoulCastingItem) register("caster_test",new SoulCastingItem(new FabricItemSettings(),1));
+    public static final SoulCastingItem SPELLGLOVE = (SoulCastingItem) register("spellglove",new SoulCastingItem(new FabricItemSettings(),3),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
     public static final SpellStoringItem SPELLSTORAGE_SMALL = (SpellStoringItem) register("spellstorage_small",new SpellStoringItem(new FabricItemSettings(),10,10));
     public static final SpellComponentStoringItem SPELLCOMPONENT = (SpellComponentStoringItem) register("spellcomponent",new SpellComponentStoringItem(new FabricItemSettings()),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
 

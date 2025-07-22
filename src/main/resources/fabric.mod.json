@@ -18,6 +18,9 @@
     ],
     "main": [
       "org.oxytocina.geomancy.Geomancy"
+    ],
+    "rei_client": [
+      "org.oxytocina.geomancy.compat.GeomancyREIClientPlugin"
     ]
   },
   "accessWidener": "geomancy.accesswidener",

@@ -112,7 +112,7 @@ public class LeadUtil {
             clearCacheCounter=0;
         }
 
-        if(++leadEffectsCounter> 20*5){
+        if(++leadEffectsCounter> 20*60){
             for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
                 LeadUtil.tryLeadEffects(player);
             }

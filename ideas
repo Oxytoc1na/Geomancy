@@ -164,6 +164,7 @@ l- dimhop
 - place blocks
 - break blocks
 - taming entities
+- bonemeal spell
 il- player spawn point
 til- sin, cos, tan, exp, log
 - other installed spells (simple: 1 input argument, 1 output argument)

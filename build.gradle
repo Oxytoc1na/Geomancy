@@ -37,6 +37,8 @@ repositories {
         name = "Ladysnake Libs"
         url = 'https://maven.ladysnake.org/releases'
     }
+    // REI
+    maven { url "https://maven.shedaniel.me" }
 }
 
 dependencies {
@@ -51,6 +53,8 @@ dependencies {
 
     modImplementation("com.klikli_dev:modonomicon-${minecraft_version}-fabric:${modonomicon_version}") { exclude(group: "com.klikli_dev") exclude(group: "mezz.jei") }
 
+    // REI
+    modCompileOnly("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}")
 }
 
 processResources {

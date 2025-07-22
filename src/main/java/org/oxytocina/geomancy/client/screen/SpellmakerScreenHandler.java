@@ -28,9 +28,11 @@ import org.joml.Vector2i;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.blockEntities.SpellmakerBlockEntity;
 import org.oxytocina.geomancy.client.screen.slots.SpellComponentSelectionSlot;
+import org.oxytocina.geomancy.client.screen.slots.TagFilterSlot;
 import org.oxytocina.geomancy.items.SpellComponentStoringItem;
 import org.oxytocina.geomancy.items.SpellStoringItem;
 import org.oxytocina.geomancy.networking.ModMessages;
+import org.oxytocina.geomancy.registries.ModItemTags;
 import org.oxytocina.geomancy.spells.SpellComponent;
 import org.oxytocina.geomancy.spells.SpellGrid;
 import org.oxytocina.geomancy.util.Toolbox;
@@ -94,7 +96,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
         availableComponentSlots = addInventory(availableComponents,0,NEW_COMPONENTS_SLOT_COUNT,NEW_COMPONENTS_WIDTH,NEW_COMPONENTS_X,NEW_COMPONENTS_Y);
         updateAvailableComponents();
 
-        this.addSlot(new Slot(inventory,SpellmakerBlockEntity.OUTPUT_SLOT,152,142));
+        this.addSlot(new TagFilterSlot(inventory,SpellmakerBlockEntity.OUTPUT_SLOT,152,142, ModItemTags.SPELL_STORING));
 
         addPlayerHotbar(playerInventory);
 

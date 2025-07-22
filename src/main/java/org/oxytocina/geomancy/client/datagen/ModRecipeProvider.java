@@ -232,20 +232,56 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
                             SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,ModItems.LEAD_INGOT),
-                            SmithingIngredient.ofItems(1,1,Items.SNOWBALL),
+                            SmithingIngredient.ofItems(1,1,Items.OAK_STAIRS),
                     }).toList(),SpellBlocks.SIN,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
                             SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,ModItems.LEAD_INGOT),
-                            SmithingIngredient.ofItems(1,1,Items.SLIME_BALL),
+                            SmithingIngredient.ofItems(1,1,Items.COBBLESTONE_STAIRS),
                     }).toList(),SpellBlocks.COS,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
                             SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,ModItems.LEAD_INGOT),
-                            SmithingIngredient.ofItems(1,1,Items.FIRE_CHARGE),
+                            SmithingIngredient.ofItems(1,1,Items.STONE_STAIRS),
                     }).toList(),SpellBlocks.TAN,true);
+
+                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,ModItems.LEAD_INGOT),
+                            SmithingIngredient.ofItems(1,1,Items.CRAFTING_TABLE),
+                    }).toList(),SpellBlocks.VECTOR_BUILD,true);
+
+                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,ModItems.LEAD_INGOT),
+                            SmithingIngredient.ofItems(1,1,Items.STONE_PRESSURE_PLATE),
+                    }).toList(),SpellBlocks.VECTOR_ENTITYPOS,true);
+
+                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,ModItems.LEAD_INGOT),
+                            SmithingIngredient.ofItems(1,1,Items.SPIDER_EYE),
+                    }).toList(),SpellBlocks.VECTOR_ENTITYEYEPOS,true);
+
+                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,ModItems.LEAD_INGOT),
+                            SmithingIngredient.ofItems(1,1,Items.ARROW),
+                    }).toList(),SpellBlocks.VECTOR_ENTITYDIR,true);
+
+                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,ModItems.LEAD_INGOT),
+                            SmithingIngredient.ofItems(1,1,Items.WOODEN_AXE),
+                    }).toList(),SpellBlocks.VECTOR_SPLIT,true);
+
+                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,ModItems.LEAD_INGOT),
+                            SmithingIngredient.ofItems(1,1,Items.RED_BED),
+                    }).toList(),SpellBlocks.VECTOR_ENTITYSPAWN,true);
                 }
 
                 // effectors

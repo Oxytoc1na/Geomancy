@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.oxytocina.geomancy.util.LeadUtil;
+import org.oxytocina.geomancy.util.MadnessUtil;
 import org.oxytocina.geomancy.util.ManaUtil;
 
 public class PlayerTickHandler implements ServerTickEvents.StartTick {
@@ -11,5 +12,6 @@ public class PlayerTickHandler implements ServerTickEvents.StartTick {
     public void onStartTick(MinecraftServer server) {
         ManaUtil.tick(server);
         LeadUtil.tick(server);
+        MadnessUtil.tick(server);
     }
 }
