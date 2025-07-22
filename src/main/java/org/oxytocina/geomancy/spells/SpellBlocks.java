@@ -2,11 +2,13 @@ package org.oxytocina.geomancy.spells;
 
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FireballEntity;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
@@ -65,6 +67,9 @@ public class SpellBlocks {
     public static final SpellBlock FUNCTION;
     public static final SpellBlock REF_OUTPUT;
     public static final SpellBlock REF_INPUT;
+    public static final SpellBlock TELEPORT;
+    public static final SpellBlock DIMHOP;
+    public static final SpellBlock PUSH;
 
     private static SpellBlock.Category cat;
     static{
@@ -623,6 +628,113 @@ public class SpellBlocks {
                         SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
                         res[0] = SpellComponent.SideConfig.createToggleableInput(comp,SpellComponent.getDir(0)).named("position");
                         for(int i = 1; i <6; i++) res[i] = SpellComponent.SideConfig.createToggleableInput(comp,SpellComponent.getDir(i)).disabled();
+                        return res;
+                    })
+                    .category(cat).build());
+
+            TELEPORT = register(SpellBlock.Builder.create("teleport")
+                    .inputs(
+                            SpellSignal.createUUID(null).named("entity"),
+                            SpellSignal.createVector(null).named("position")
+                    )
+                    .outputs()
+                    .parameters()
+                    .func((comp,vars) -> {
+                        var uuid = vars.getUUID("entity");
+                        var pos = vars.getVector("position");
+                        Entity ent = comp.world() instanceof ServerWorld sw ? sw.getEntity(uuid) : null;
+                        if(ent==null) return SpellBlockResult.empty();
+
+                        float manaCost = 0
+                                +castOffsetSoulCost(comp,pos,0.1f);
+
+                        if(trySpendSoul(comp,manaCost)){
+                            ent.setPosition(pos);
+                        }
+                        else{
+                            // too broke
+                            tryLogDebugBroke(comp,manaCost);
+                        }
+
+                        return SpellBlockResult.empty();
+                    })
+                    .sideConfigGetter((comp)->{
+                        SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
+                        for(int i = 0; i <6; i++) res[i] = SpellComponent.SideConfig.createToggleableInput(comp,SpellComponent.getDir(i)).named(i%2==0?"position":"entity");
+                        return res;
+                    })
+                    .category(cat).build());
+
+            DIMHOP = register(SpellBlock.Builder.create("dimhop")
+                    .inputs(
+                            SpellSignal.createUUID(null).named("entity"),
+                            SpellSignal.createNumber(0).named("dimension")
+                    )
+                    .outputs()
+                    .parameters()
+                    .func((comp,vars) -> {
+                        var uuid = vars.getUUID("entity");
+                        var dim = vars.getNumber("dimension");
+                        Entity ent = comp.world() instanceof ServerWorld sw ? sw.getEntity(uuid) : null;
+                        if(ent==null) return SpellBlockResult.empty();
+
+                        float manaCost = 100;
+
+                        if(trySpendSoul(comp,manaCost)){
+
+                            if(!(comp.world() instanceof ServerWorld sw)) return SpellBlockResult.empty();
+
+                            ServerWorld destination = switch (Math.round(dim)) {
+                                case 0 -> sw.getServer().getOverworld();
+                                case 1 -> sw.getServer().getWorld(World.END);
+                                case -1 -> sw.getServer().getWorld(World.NETHER);
+                                default -> null;
+                            };
+
+                            if(destination==null) return SpellBlockResult.empty();
+                            ent.moveToWorld(destination);
+                        }
+                        else{
+                            // too broke
+                            tryLogDebugBroke(comp,manaCost);
+                        }
+
+                        return SpellBlockResult.empty();
+                    })
+                    .sideConfigGetter((comp)->{
+                        SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
+                        for(int i = 0; i <6; i++) res[i] = SpellComponent.SideConfig.createToggleableInput(comp,SpellComponent.getDir(i)).named(i%2==0?"dimension":"entity");
+                        return res;
+                    })
+                    .category(cat).build());
+
+            PUSH = register(SpellBlock.Builder.create("push")
+                    .inputs(
+                            SpellSignal.createUUID(null).named("entity"),
+                            SpellSignal.createVector(null).named("velocity")
+                    )
+                    .outputs()
+                    .parameters()
+                    .func((comp,vars) -> {
+                        var uuid = vars.getUUID("entity");
+                        var vel = vars.getVector("velocity");
+
+                        float manaCost = 0
+                                +(float)vel.length()*1;
+
+                        if(trySpendSoul(comp,manaCost)){
+                            comp.caster().setVelocity(vel);
+                        }
+                        else{
+                            // too broke
+                            tryLogDebugBroke(comp,manaCost);
+                        }
+
+                        return SpellBlockResult.empty();
+                    })
+                    .sideConfigGetter((comp)->{
+                        SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
+                        for(int i = 0; i <6; i++) res[i] = SpellComponent.SideConfig.createToggleableInput(comp,SpellComponent.getDir(i)).named(i%2==0?"velocity":"entity");
                         return res;
                     })
                     .category(cat).build());
