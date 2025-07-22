@@ -2,6 +2,7 @@ package org.oxytocina.geomancy.networking.packet.C2S;
 
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -14,22 +15,18 @@ public class CasterChangeSelectedSpellC2S {
 
     public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender){
 
-        var nbt = buf.readNbt();
+        ItemStack stack = buf.readItemStack();
+        int slot = buf.readInt();
+        int selected = buf.readInt();
 
         server.execute(()->{
             if(player==null||player.getWorld()==null) return;
 
-            player.getInventory().getStack()
+            var serverStack = player.getInventory().getStack(slot);
+            if(serverStack.getItem()!=stack.getItem()) return; // mismatching stacks
+            if(!(serverStack.getItem() instanceof SoulCastingItem caster)) return; // not a caster
 
-            BlockEntity blockEntity = player.getWorld().getBlockEntity(blockEntityPos);
-            if(blockEntity instanceof SpellstorerBlockEntity spellstorer){
-                var output = spellstorer.getSlottedCasterItem();
-                if(output!=null && output.getItem() instanceof SoulCastingItem caster){
-                    // TODO: server authoritative checks!!
-                    caster.setInventory(output,nbt);
-                }
-
-            }
+            caster.setSelectedSpellIndex(serverStack,selected);
         });
 
 

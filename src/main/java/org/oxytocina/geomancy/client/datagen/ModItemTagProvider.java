@@ -67,7 +67,10 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
 
         // spell casters
         getOrCreateTagBuilder(CASTING_ITEM).setReplace(false)
-                .add(ModItems.CASTER_TEST);
+                .add(
+                        ModItems.CASTER_TEST,
+                        ModItems.SPELLGLOVE
+                        );
 
 
         generateAccessoryTags();

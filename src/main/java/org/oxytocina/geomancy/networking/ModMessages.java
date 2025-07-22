@@ -24,6 +24,16 @@ public class ModMessages {
     public static final Identifier SPELLMAKER_REFRESH = Geomancy.locate("spellmaker_refresh");
 
     // client to server
+
+    /*
+    // send packet to server
+    PacketByteBuf data = PacketByteBufs.create();
+
+        data.writeItemStack(stack);
+        data.writeInt(player.getInventory().indexOf(stack));
+        data.writeInt(nextIndex);
+        ClientPlayNetworking.send(ModMessages.SPELLSTORER_TRY_UPDATE_CASTER, data);
+    */
     public static final Identifier CLIENT_JOINED = Geomancy.locate("client_joined");
     public static final Identifier SPELLMAKER_TRY_ADD_COMPONENT = Geomancy.locate("spellmaker_try_add_component");
     public static final Identifier SPELLMAKER_TRY_REMOVE_COMPONENT = Geomancy.locate("spellmaker_try_remove_component");
@@ -73,7 +83,7 @@ public class ModMessages {
 
     public static void sendToAllClients(MinecraftServer server, Identifier id, PacketByteBuf buf){
         for(var player : server.getPlayerManager().getPlayerList()){
-            ServerPlayNetworking.send(player,ModMessages.ITEM_MANA_SYNC,buf);
+            ServerPlayNetworking.send(player,id,buf);
         }
     }
 

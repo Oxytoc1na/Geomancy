@@ -1,5 +1,7 @@
 package org.oxytocina.geomancy.items;
 
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -9,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
@@ -18,6 +21,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
 import org.oxytocina.geomancy.client.screen.SpellstorerScreenHandler;
+import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.spells.SpellBlocks;
 import org.oxytocina.geomancy.spells.SpellComponent;
 import org.oxytocina.geomancy.spells.SpellGrid;
@@ -130,7 +134,9 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
 
     public int getSelectedSpellIndex(ItemStack stack){
         if(!stack.getOrCreateNbt().contains("selected", NbtElement.INT_TYPE)) return 0;
-        return stack.getNbt().getInt("selected");
+        int res = stack.getNbt().getInt("selected");
+        res = ((res%spellStorageSize)+spellStorageSize)%spellStorageSize;
+        return res;
     }
 
     public void setSelectedSpellIndex(ItemStack stack,int index){
@@ -281,9 +287,17 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
         if(!player.isSneaking()) return false;
 
         int dir = Toolbox.sign(delta);
-        setSelectedSpellIndex(stack,getSelectedSpellIndex(stack)+dir);
 
-        // TODO: sync to server
+        int nextIndex = getSelectedSpellIndex(stack)+dir;
+        setSelectedSpellIndex(stack,nextIndex);
+
+        // send packet to server
+        PacketByteBuf data = PacketByteBufs.create();
+
+        data.writeItemStack(stack);
+        data.writeInt(player.getInventory().indexOf(stack));
+        data.writeInt(getSelectedSpellIndex(stack));
+        ClientPlayNetworking.send(ModMessages.CASTER_CHANGE_SELECTED_SPELL, data);
 
         return true;
     }

@@ -21,6 +21,7 @@ import org.oxytocina.geomancy.client.screen.SmitheryScreen;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 import org.oxytocina.geomancy.client.screen.SpellmakerScreen;
 import org.oxytocina.geomancy.client.screen.SpellstorerScreen;
+import org.oxytocina.geomancy.compat.GeomancyIntegrationPacks;
 import org.oxytocina.geomancy.event.KeyInputHandler;
 import org.oxytocina.geomancy.networking.ModMessages;
 
@@ -39,6 +40,7 @@ public class GeomancyClient implements ClientModInitializer {
         ModMessages.registerS2CPackets();
         ModFluids.registerClient();
         ModEntityRenderers.register();
+        GeomancyIntegrationPacks.registerClient();
 
         ClientTickEvents.START_CLIENT_TICK.register(new ClientPlayerTickHandler());
 

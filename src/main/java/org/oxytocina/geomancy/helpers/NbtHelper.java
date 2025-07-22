@@ -2,10 +2,15 @@ package org.oxytocina.geomancy.helpers;
 
 import com.google.gson.*;
 import com.mojang.brigadier.exceptions.*;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.*;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import org.apache.commons.lang3.math.*;
 import org.joml.Vector3f;
+import org.oxytocina.geomancy.Geomancy;
 
 import java.math.*;
 import java.util.*;
@@ -140,6 +145,26 @@ public class NbtHelper {
             return fromJsonPrimitive(element.getAsJsonPrimitive());
 
         throw new UnsupportedOperationException("Unknown JSON NBT element type");
+    }
+
+    public static ItemStack stackFromJson(JsonElement element){
+        var jsonObj = element.getAsJsonObject();
+        if(!jsonObj.has("item")) return ItemStack.EMPTY;
+        Identifier id = Identifier.tryParse(jsonObj.get("item").getAsString());
+        int count = jsonObj.has("count") ? jsonObj.get("count").getAsInt() : 1;
+
+        ItemStack res = new ItemStack(Registries.ITEM.get(id),count);
+
+        if(jsonObj.has("nbt")){
+            String nbt = jsonObj.get("nbt").getAsString();
+            try {
+                res.setNbt(net.minecraft.nbt.NbtHelper.fromNbtProviderString(nbt));
+            } catch (CommandSyntaxException ignored) {
+                Geomancy.logError("parsing NBT fr item stack failed: "+nbt);
+            }
+        }
+
+        return res;
     }
 
     public static JsonElement toJson(NbtElement element) {

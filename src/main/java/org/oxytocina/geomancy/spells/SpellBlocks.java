@@ -167,11 +167,11 @@ public class SpellBlocks {
                         SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
                         for (int i = 0; i < 3; i++) {
                             res[i] = SpellComponent.SideConfig.createToggleableInput(comp
-                                    ,SpellComponent.directions[i]);
+                                    ,SpellComponent.directions[i]).named("prevent");
                         }
                         for (int i = 3; i < 6; i++) {
                             res[i] = SpellComponent.SideConfig.createToggleableOutput(comp
-                                    ,SpellComponent.directions[i]);
+                                    ,SpellComponent.directions[i]).named("signal");
                         }
                         return res;
                     })
