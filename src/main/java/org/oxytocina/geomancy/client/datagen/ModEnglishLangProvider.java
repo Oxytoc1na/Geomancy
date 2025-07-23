@@ -117,6 +117,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.spells.debug.broke","Couldn't afford spell %1$s. Cost: %2$f, available: %3$f");
             add("MODID.spells.debug.wrongsignal","Component %1$s received wrong signal type. Got: %2$s, expected: %3$s");
             add("MODID.spells.debug.nosuchfunction","Component %1$s referenced non-existing spell %2$s");
+            add("MODID.caster.nospells","No spells installed");
         }
 
         // Items

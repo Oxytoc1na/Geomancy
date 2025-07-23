@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
@@ -135,13 +136,21 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
     public int getSelectedSpellIndex(ItemStack stack){
         if(!stack.getOrCreateNbt().contains("selected", NbtElement.INT_TYPE)) return 0;
         int res = stack.getNbt().getInt("selected");
-        res = ((res%spellStorageSize)+spellStorageSize)%spellStorageSize;
+        int installed = getInstalledSpellsCount(stack);
+        if(installed<=0)return 0;
+        res = ((res%installed)+installed)%installed;
         return res;
     }
 
     public void setSelectedSpellIndex(ItemStack stack,int index){
-        index = ((index%spellStorageSize)+spellStorageSize)%spellStorageSize;
+        int installed = getInstalledSpellsCount(stack);
+        if(installed<=0)index=0;
+        else index = ((index%installed)+installed)%installed;
         stack.getOrCreateNbt().putInt("selected",index);
+    }
+
+    public int getInstalledSpellsCount(ItemStack stack){
+        return getSpellItems(stack).size();
     }
 
     public static SpellGrid getSpell(ItemStack casterItem,String name){
@@ -281,6 +290,32 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
     }
 
 
+    @Override
+    public Text getName(ItemStack stack) {
+        var spells = getSpellItems(stack);
+        MutableText spellText = null;
+        if(spells.isEmpty()){
+            spellText = Text.translatable("geomancy.caster.nospells").formatted(Formatting.RED);
+        }
+        else{
+            var nextIndex=getSelectedSpellIndex(stack);
+            var spellItem = spells.get(nextIndex);
+            var grid = SpellStoringItem.readGrid(spellItem);
+            MutableText indexText = Text.literal((nextIndex+1)+"/"+spells.size()+"/"+spellStorageSize+": ").formatted(Formatting.GRAY);
+            if(grid==null)
+            {
+                spellText = indexText.append(Text.translatable("geomancy.spellstorage.empty").formatted(Formatting.GRAY));
+            }
+            else{
+                spellText = indexText.append(grid.getName().formatted(Formatting.DARK_AQUA));
+            }
+        }
+
+        return Text.translatable(this.getTranslationKey(stack)).append(Text.literal(" [").append(
+                spellText
+                ).append("]").formatted(Formatting.GRAY));
+    }
+
 
     @Override
     public boolean onScrolled(ItemStack stack, float delta,PlayerEntity player) {
@@ -290,13 +325,32 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
 
         int nextIndex = getSelectedSpellIndex(stack)+dir;
         setSelectedSpellIndex(stack,nextIndex);
+        nextIndex=getSelectedSpellIndex(stack);
+
+        // display selected spell
+        var spells = getSpellItems(stack);
+        if(spells.isEmpty()){
+            player.sendMessage(Text.translatable("geomancy.caster.nospells").formatted(Formatting.RED),true);
+        }
+        else{
+            var spellItem = spells.get(nextIndex);
+            var grid = SpellStoringItem.readGrid(spellItem);
+            MutableText indexText = Text.literal((nextIndex+1)+"/"+spells.size()+"/"+spellStorageSize+": ").formatted(Formatting.GRAY);
+            if(grid==null)
+            {
+                player.sendMessage(indexText.append(Text.translatable("geomancy.spellstorage.empty").formatted(Formatting.GRAY)),true);
+            }
+            else{
+                player.sendMessage(indexText.append(grid.getName().formatted(Formatting.DARK_AQUA)),true);
+            }
+        }
 
         // send packet to server
         PacketByteBuf data = PacketByteBufs.create();
 
         data.writeItemStack(stack);
         data.writeInt(player.getInventory().indexOf(stack));
-        data.writeInt(getSelectedSpellIndex(stack));
+        data.writeInt(nextIndex);
         ClientPlayNetworking.send(ModMessages.CASTER_CHANGE_SELECTED_SPELL, data);
 
         return true;
@@ -304,7 +358,6 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
 
     @Override
     public boolean shouldBlockScrolling(ItemStack stack, PlayerEntity player) {
-        if(player.isSneaking()) return true;
-        return false;
+        return player.isSneaking();
     }
 }

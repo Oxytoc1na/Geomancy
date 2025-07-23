@@ -168,6 +168,18 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         conditionsFromItem(ModItems.EMPTY_ARTIFACT));
             }
 
+            // spell storage
+            AddShapedSmitheryRecipe(new String[]{
+                            " m ",
+                            " o ",
+                            " m "}
+                    ,new SPatKey[]{
+                            new SPatKey("m",SmithingIngredient.ofItems(1,1,ModItems.MITHRIL_INGOT)),
+                            new SPatKey("o",SmithingIngredient.ofItems(1,1,ModItems.OCTANGULITE_INGOT)),
+                    },
+                    ModItems.SPELLSTORAGE_SMALL,1,100,12,conditionsFromItem(ModItems.MITHRIL_INGOT));
+
+
             // spellcomponents
             {
                 // flow control

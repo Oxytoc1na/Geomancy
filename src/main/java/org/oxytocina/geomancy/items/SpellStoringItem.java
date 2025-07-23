@@ -66,22 +66,6 @@ public class SpellStoringItem extends Item {
         stack.setSubNbt("spell",spellCompound);
     }
 
-    // DEBUG
-    // TODO: remove
-    @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (!world.isClient) {
-
-            cast(user.getStackInHand(hand),user.getStackInHand(hand),user);
-
-            return TypedActionResult.success(user.getStackInHand(hand));
-        } else {
-
-        }
-
-        return TypedActionResult.success(user.getStackInHand(hand));
-    }
-
     public void cast(ItemStack caster,ItemStack spellstorage, LivingEntity user){
         SpellGrid grid = getOrCreateGrid(spellstorage);
         if(grid==null) return;

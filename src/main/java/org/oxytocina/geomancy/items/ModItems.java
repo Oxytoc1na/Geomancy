@@ -149,7 +149,9 @@ public class ModItems {
     // caster items
     public static final SoulCastingItem CASTER_TEST = (SoulCastingItem) register("caster_test",new SoulCastingItem(new FabricItemSettings(),1));
     public static final SoulCastingItem SPELLGLOVE = (SoulCastingItem) register("spellglove",new SoulCastingItem(new FabricItemSettings(),3),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
-    public static final SpellStoringItem SPELLSTORAGE_SMALL = (SpellStoringItem) register("spellstorage_small",new SpellStoringItem(new FabricItemSettings(),10,10));
+    public static final SpellStoringItem SPELLSTORAGE_SMALL = (SpellStoringItem) register("spellstorage_small",new SpellStoringItem(new FabricItemSettings(),3,3));
+    public static final SpellStoringItem SPELLSTORAGE_MEDIUM = (SpellStoringItem) register("spellstorage_medium",new SpellStoringItem(new FabricItemSettings(),5,5));
+    public static final SpellStoringItem SPELLSTORAGE_LARGE = (SpellStoringItem) register("spellstorage_large",new SpellStoringItem(new FabricItemSettings(),7,7));
     public static final SpellComponentStoringItem SPELLCOMPONENT = (SpellComponentStoringItem) register("spellcomponent",new SpellComponentStoringItem(new FabricItemSettings()),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
 
     // geodes

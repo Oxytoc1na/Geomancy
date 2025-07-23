@@ -384,9 +384,12 @@ public class SpellmakerScreenHandler extends ScreenHandler {
 
         List<Vector2f> drawPositions = new ArrayList<>();
 
+        // render grid
         for (int y = 0; y < currentGrid.height; y++) {
             int yskew = y%2;
             for (int x = 0; x < currentGrid.width; x++) {
+                if(!SpellGrid.positionIsInGrid(x,y,currentGrid.width,currentGrid.height)) continue;
+                if(!currentGrid.inBounds(new Vector2i(x,y))) continue;
                 drawPositions.add(new Vector2f(
                         bgPosX+fieldPosX+(fieldDrawScale * (Math.round(fieldDrawOffsetX) + Math.round((x-0.5f+yskew/2f)*hexWidth))),
                         bgPosY+fieldPosY+(fieldDrawScale * (Math.round(fieldDrawOffsetY) + (y-0.5f)*hexHeight))

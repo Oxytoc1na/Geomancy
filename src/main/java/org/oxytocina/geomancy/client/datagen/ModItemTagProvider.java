@@ -63,7 +63,11 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
 
         // spell storing
         getOrCreateTagBuilder(SPELL_STORING).setReplace(false)
-                .add(ModItems.SPELLSTORAGE_SMALL);
+                .add(
+                        ModItems.SPELLSTORAGE_SMALL,
+                        ModItems.SPELLSTORAGE_MEDIUM,
+                        ModItems.SPELLSTORAGE_LARGE
+                );
 
         // spell casters
         getOrCreateTagBuilder(CASTING_ITEM).setReplace(false)

@@ -5,10 +5,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
 import org.joml.Vector2i;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class SpellGrid {
     public int width;
@@ -123,7 +126,17 @@ public class SpellGrid {
     }
 
     public boolean inBounds(Vector2i position){
-        return position.x>=0 && position.y>=0&&position.x<width&&position.y<height;
+        return
+                position.x>=0 &&
+                        position.y>=0&&
+                        position.x<width&&
+                        position.y<height&&
+                positionIsInGrid(position.x,position.y,width,height);
+    }
+
+    public MutableText getName(){
+        if(Objects.equals(name, "")) return Text.translatable("geomancy.spellstorage.unnamed");
+        return Text.literal(name);
     }
 
     public void writeNbt(NbtCompound nbt){
@@ -151,6 +164,24 @@ public class SpellGrid {
 
             SpellComponent comp = new SpellComponent(this,nbtComp);
             tryAddComponent(comp);
+        }
+    }
+
+    // cuts off hexagonal edges
+    public static boolean positionIsInGrid(int x, int y, int width, int height){
+        int ySkew = y%2;
+        float midYIndex = height/2f-0.5f;
+        float diffToMidYIndex = Math.abs(y-midYIndex);
+
+        if(x>width/2f){
+            // to the right of the middle
+            int xDiffToEdges = width-x;
+            return xDiffToEdges>=(diffToMidYIndex+1+ySkew)/2;
+        }
+        else{
+            // to the left of the middle
+            int xDiffToEdges = x;
+            return xDiffToEdges>=(diffToMidYIndex-ySkew)/2;
         }
     }
 }
