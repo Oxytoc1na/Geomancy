@@ -66,9 +66,10 @@ public class SpellmakerScreenHandler extends ScreenHandler {
     public SpellGrid currentGrid;
 
     public int hoveredOverHexagon = -1;
+    public Vector2i hoveredOverHexagonPos = null;
     public int selectedNewComponentIndex = -1;
     public SpellComponent selectedNewComponent;
-    public int selectedComponentIndex = -1;
+    public Vector2i selectedComponentPosition = null;
     public SpellComponent selectedComponent;
 
     public static final int NEW_COMPONENTS_SLOT_COUNT = 14;
@@ -256,7 +257,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
 
     private void hexClicked(){
 
-        Vector2i componentPosition = getComponentPositionFromIndex(hoveredOverHexagon);
+        Vector2i componentPosition = hoveredOverHexagonPos;
 
         // place a new component down
         if(selectedNewComponent!=null)
@@ -292,14 +293,14 @@ public class SpellmakerScreenHandler extends ScreenHandler {
         }
         else
         {
-            if(selectedComponentIndex==hoveredOverHexagon){
+            if(selectedComponentPosition==hoveredOverHexagonPos){
                 // deselect
-                selectedComponentIndex=-1;
+                selectedComponentPosition=null;
                 selectedComponentChanged();
             }
             else{
                 // select if something there
-                selectedComponentIndex = currentGrid.components.containsKey(componentPosition) ? hoveredOverHexagon : -1;
+                selectedComponentPosition = currentGrid.components.containsKey(componentPosition) ? hoveredOverHexagonPos : null;
                 selectedComponentChanged();
             }
             selectedComponentChanged();
@@ -313,20 +314,14 @@ public class SpellmakerScreenHandler extends ScreenHandler {
     }
 
     public void selectedComponentChanged(){
-        selectedComponent = getComponentFromIndex(selectedComponentIndex);
+        selectedComponent = getComponentFromPosition(selectedComponentPosition);
         screen.setComponentInspected(selectedComponent!=null);
     }
 
-    private Vector2i getComponentPositionFromIndex(int index){
-        int x = index % currentGrid.width;
-        int y = index / currentGrid.width;
-        return new Vector2i(x,y);
-    }
-
-    private SpellComponent getComponentFromIndex(int index){
+    private SpellComponent getComponentFromPosition(Vector2i index){
         if(!hasGrid()) return null;
-        if(index < 0) return null;
-        return currentGrid.getComponent(getComponentPositionFromIndex(index));
+        if(index==null) return null;
+        return currentGrid.getComponent(index);
     }
 
     public boolean hasGrid(){return currentGrid!=null;}
@@ -383,6 +378,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
         context.enableScissor(bgPosX+fieldPosX,bgPosY+fieldPosY,bgPosX+fieldPosX+fieldWidth,bgPosY+fieldPosY+fieldHeight);
 
         List<Vector2f> drawPositions = new ArrayList<>();
+        List<Vector2i> drawPositionIndices = new ArrayList<>();
 
         // render grid
         for (int y = 0; y < currentGrid.height; y++) {
@@ -390,6 +386,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
             for (int x = 0; x < currentGrid.width; x++) {
                 if(!SpellGrid.positionIsInGrid(x,y,currentGrid.width,currentGrid.height)) continue;
                 if(!currentGrid.inBounds(new Vector2i(x,y))) continue;
+                drawPositionIndices.add(new Vector2i(x,y));
                 drawPositions.add(new Vector2f(
                         bgPosX+fieldPosX+(fieldDrawScale * (Math.round(fieldDrawOffsetX) + Math.round((x-0.5f+yskew/2f)*hexWidth))),
                         bgPosY+fieldPosY+(fieldDrawScale * (Math.round(fieldDrawOffsetY) + (y-0.5f)*hexHeight))
@@ -399,6 +396,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
 
         // calculate selected hexagon
         int selectedHexagon = -1;
+        hoveredOverHexagonPos = null;
         if(mouseInField(mouseX,mouseY)){
             float minDist = 10000000;
             for (int i = 0; i < drawPositions.size(); i++) {
@@ -411,6 +409,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
                 if(dist>= minDist)continue;
                 minDist=dist;
                 selectedHexagon=i;
+                hoveredOverHexagonPos = drawPositionIndices.get(i);
 
             }
         }
@@ -419,11 +418,8 @@ public class SpellmakerScreenHandler extends ScreenHandler {
 
         // render grid
         for (int i = 0; i < drawPositions.size(); i++) {
-            int x = i % currentGrid.width;
-            int y = i / currentGrid.height;
-
             // render component
-            var component = currentGrid.getComponent(new Vector2i(x,y));
+            var component = currentGrid.getComponent(drawPositionIndices.get(i));
             if(component!=null){
                 var fgTexture = component.getHexFrontTexture();
                 var bgTexture = component.getHexBackTexture();
@@ -536,7 +532,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
                 }
                 // actually render an empty cell
                 else{
-                    if(i==selectedHexagon || i ==selectedComponentIndex) {
+                    if(i==selectedHexagon || drawPositionIndices.get(i) ==selectedComponentPosition) {
                         RenderSystem.setShaderColor(1,1,1,1);
                     }
                     else{

@@ -98,6 +98,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("cos","Cosine","returns the cosine of the input");
             addSpell("tan","Tangent","returns the tangent of the input");
             addSpell("exp","Exponent","returns a number to the power of another number");
+            addSpell("raycast_pos","Raycast Pos.","returns the block position hit by a ray");
+            addSpell("raycast_dir","Raycast Dir.","returns the block face hit by a ray");
             // effectors
             addSpell("print","Print","outputs a value to the casters chat");
             addSpell("fireball","Fireball","summons a fireball");
@@ -106,6 +108,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("teleport","Teleport","teleports an entity to a specified position");
             addSpell("dimhop","Dimhop","teleports an entity to a specified dimension");
             addSpell("break","Break","attempts to destroy a block at a position");
+            addSpell("push","Push","sets the velocity of an entity");
             // reference
             addSpell("action","Action","calls another installed spell");
             addSpell("ref_output","Ref. Output","gets a variable from the reference arguments");

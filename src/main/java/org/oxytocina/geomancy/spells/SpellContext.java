@@ -35,6 +35,8 @@ public class SpellContext {
 
         availableSoul -= amount;
         if(caster instanceof PlayerEntity player){
+            if(player.isCreative()) return true;
+
             ManaUtil.setMana(player,availableSoul);
             return true;
         }

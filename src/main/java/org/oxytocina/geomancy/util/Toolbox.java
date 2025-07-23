@@ -220,4 +220,12 @@ public class Toolbox {
                 (float)(Math.sin(a)*v1.x-Math.cos(a)*v1.y)
                 );
     }
+
+    public static int floor(double d){
+        return Math.round((float)Math.floor(d));
+    }
+
+    public static BlockPos posToBlockPos(Vec3d v){
+        return new BlockPos(floor(v.x),floor(v.y),floor(v.z));
+    }
 }

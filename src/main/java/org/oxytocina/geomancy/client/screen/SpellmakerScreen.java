@@ -327,7 +327,7 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
                     data.writeBlockPos(handler.blockEntity.getPos());
                     ClientPlayNetworking.send(ModMessages.SPELLMAKER_TRY_REMOVE_COMPONENT, data);
 
-                    handler.selectedComponentIndex = -1;
+                    handler.selectedComponentPosition = null;
                     handler.selectedComponentChanged();
 
                 });

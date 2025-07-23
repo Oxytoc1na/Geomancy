@@ -168,16 +168,40 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         conditionsFromItem(ModItems.EMPTY_ARTIFACT));
             }
 
-            // spell storage
+            // small
+            AddShapedSmitheryRecipe(new String[]{
+                            " t ",
+                            " m ",
+                            " g "}
+                    ,new SPatKey[]{
+                            new SPatKey("t",SmithingIngredient.ofItems(1,1,ModItems.TITANIUM_INGOT)),
+                            new SPatKey("m",SmithingIngredient.ofItems(1,1,ModItems.MITHRIL_INGOT)),
+                            new SPatKey("g",SmithingIngredient.ofItems(1,1,Items.GOLD_INGOT)),
+                    },
+                    ModItems.SPELLSTORAGE_SMALL,1,100,12,conditionsFromItem(ModItems.MITHRIL_INGOT));
+
+            // medium
             AddShapedSmitheryRecipe(new String[]{
                             " m ",
                             " o ",
-                            " m "}
+                            " g "}
                     ,new SPatKey[]{
                             new SPatKey("m",SmithingIngredient.ofItems(1,1,ModItems.MITHRIL_INGOT)),
                             new SPatKey("o",SmithingIngredient.ofItems(1,1,ModItems.OCTANGULITE_INGOT)),
+                            new SPatKey("g",SmithingIngredient.ofItems(1,1,Items.GOLD_INGOT)),
                     },
-                    ModItems.SPELLSTORAGE_SMALL,1,100,12,conditionsFromItem(ModItems.MITHRIL_INGOT));
+                    ModItems.SPELLSTORAGE_MEDIUM,1,200,15,conditionsFromItem(ModItems.OCTANGULITE_INGOT));
+
+            // medium
+            AddShapedSmitheryRecipe(new String[]{
+                            " o ",
+                            " o ",
+                            " g "}
+                    ,new SPatKey[]{
+                            new SPatKey("o",SmithingIngredient.ofItems(1,1,ModItems.OCTANGULITE_INGOT)),
+                            new SPatKey("g",SmithingIngredient.ofItems(1,1,Items.GOLD_INGOT)),
+                    },
+                    ModItems.SPELLSTORAGE_LARGE,1,300,20,conditionsFromItem(ModItems.OCTANGULITE_INGOT));
 
 
             // spellcomponents

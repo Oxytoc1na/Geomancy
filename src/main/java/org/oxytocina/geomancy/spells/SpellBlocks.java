@@ -1,5 +1,6 @@
 package org.oxytocina.geomancy.spells;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
@@ -14,10 +15,15 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import org.oxytocina.geomancy.items.SoulCastingItem;
 import org.oxytocina.geomancy.items.SpellStoringItem;
+import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -55,6 +61,8 @@ public class SpellBlocks {
     public static final SpellBlock VECTOR_ENTITYSPAWN;
     public static final SpellBlock VECTOR_ENTITYEYEPOS;
     public static final SpellBlock VECTOR_ENTITYDIR;
+    public static final SpellBlock RAYCAST_POS;
+    public static final SpellBlock RAYCAST_DIR;
 
     // effectors
     public static final SpellBlock PRINT;
@@ -362,6 +370,42 @@ public class SpellBlocks {
                         })
                         .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
+
+                RAYCAST_POS = register(SpellBlock.Builder.create("raycast_pos")
+                        .inputs(SpellSignal.createVector(null).named("from"),
+                                SpellSignal.createVector(null).named("dir"),
+                                SpellSignal.createNumber(0).named("length"))
+                        .outputs(SpellSignal.createVector(null).named("hitPos"))
+                        .parameters()
+                        .func((comp,vars) -> {
+                            SpellBlockResult res = SpellBlockResult.empty();
+                            var hit = raycast(comp,vars);
+                            if(hit.getType()== HitResult.Type.BLOCK){
+                                var hitPos = hit.getBlockPos();
+                                res.add(SpellSignal.createVector(hitPos.toCenterPos()).named("hitPos"));
+                            }
+                            return res;
+                        })
+                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
+                        .category(cat).build());
+
+                RAYCAST_DIR = register(SpellBlock.Builder.create("raycast_dir")
+                        .inputs(SpellSignal.createVector(null).named("from"),
+                                SpellSignal.createVector(null).named("dir"),
+                                SpellSignal.createNumber(0).named("length"))
+                        .outputs(SpellSignal.createVector(null).named("hitDir"))
+                        .parameters()
+                        .func((comp,vars) -> {
+                            SpellBlockResult res = SpellBlockResult.empty();
+                            var hit = raycast(comp,vars);
+                            if(hit.getType()== HitResult.Type.BLOCK){
+                                var hitPos = hit.getSide().getVector();
+                                res.add(SpellSignal.createVector(new Vec3d(hitPos.getX(), hitPos.getY(),hitPos.getZ())).named("hitDir"));
+                            }
+                            return res;
+                        })
+                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
+                        .category(cat).build());
             }
 
             // entities
@@ -649,7 +693,8 @@ public class SpellBlocks {
                                 +castOffsetSoulCost(comp,pos,0.1f);
 
                         if(trySpendSoul(comp,manaCost)){
-                            ent.setPosition(pos);
+                            //comp.world().setBlockState(Toolbox.posToBlockPos(pos), Blocks.GLOWSTONE.getDefaultState());
+                            ent.teleport(pos.x,pos.y,pos.z);
                         }
                         else{
                             // too broke
@@ -685,14 +730,14 @@ public class SpellBlocks {
                             if(!(comp.world() instanceof ServerWorld sw)) return SpellBlockResult.empty();
 
                             ServerWorld destination = switch (Math.round(dim)) {
-                                case 0 -> sw.getServer().getOverworld();
                                 case 1 -> sw.getServer().getWorld(World.END);
                                 case -1 -> sw.getServer().getWorld(World.NETHER);
-                                default -> null;
+                                default -> sw.getServer().getOverworld();
                             };
 
                             if(destination==null) return SpellBlockResult.empty();
-                            ent.moveToWorld(destination);
+                            if(sw.getRegistryKey() == destination.getRegistryKey()) return SpellBlockResult.empty();
+                            ent.teleport(destination,ent.getX(),ent.getY(),ent.getZ(),null,ent.getYaw(),ent.getPitch());
                         }
                         else{
                             // too broke
@@ -718,12 +763,18 @@ public class SpellBlocks {
                     .func((comp,vars) -> {
                         var uuid = vars.getUUID("entity");
                         var vel = vars.getVector("velocity");
+                        if(!(comp.world() instanceof ServerWorld serverWorld)) return SpellBlockResult.empty();
+                        var entity = serverWorld.getEntity(uuid);
+                        if(entity==null) return SpellBlockResult.empty();
 
                         float manaCost = 0
-                                +(float)vel.length()*1;
+                                +(float)Math.pow((vel.length()+1),2)*2;
 
                         if(trySpendSoul(comp,manaCost)){
-                            comp.caster().setVelocity(vel);
+                            entity.setVelocity(vel);
+                            entity.setVelocityClient(vel.x,vel.y,vel.z);
+                            entity.velocityModified=true;
+                            entity.velocityDirty=true;
                         }
                         else{
                             // too broke
@@ -828,6 +879,15 @@ public class SpellBlocks {
                 })
                 .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                 .category(cat).build();
+    }
+    // raycasts
+    private static BlockHitResult raycast(SpellComponent comp, SpellBlockArgs vars){
+        var from = vars.getVector("from");
+        var dir = vars.getVector("dir");
+        var length = vars.getNumber("length");
+        RaycastContext ctx = new RaycastContext(from,from.add(dir.multiply(length)), RaycastContext.ShapeType.VISUAL, RaycastContext.FluidHandling.ANY,comp.caster());
+        var hit = comp.world().raycast(ctx);
+        return hit;
     }
 
     private static void tryLogDebug(SpellComponent comp, Object... args){
