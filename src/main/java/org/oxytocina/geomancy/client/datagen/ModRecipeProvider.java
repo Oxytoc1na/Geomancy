@@ -72,6 +72,18 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         AddSmeltAndBlastRecipe(List.of(
             ModItems.RAW_MITHRIL, ModBlocks.MITHRIL_ORE, ModBlocks.DEEPSLATE_MITHRIL_ORE),
             ModItems.MITHRIL_INGOT,5f,400,100);
+        AddSmeltAndBlastRecipe(List.of(
+            ModItems.RAW_MOLYBDENUM, ModBlocks.MOLYBDENUM_ORE, ModBlocks.DEEPSLATE_MOLYBDENUM_ORE),
+            ModItems.MOLYBDENUM_INGOT,5f,20,10);
+        AddSmeltAndBlastRecipe(List.of(
+            ModItems.RAW_LEAD, ModBlocks.LEAD_ORE, ModBlocks.DEEPSLATE_LEAD_ORE),
+            ModItems.LEAD_INGOT,5f,20,10);
+        AddSmeltAndBlastRecipe(List.of(
+            ModItems.RAW_TITANIUM, ModBlocks.TITANIUM_ORE, ModBlocks.DEEPSLATE_TITANIUM_ORE),
+            ModItems.TITANIUM_INGOT,5f,40,20);
+        AddSmeltAndBlastRecipe(List.of(
+            ModItems.RAW_OCTANGULITE, ModBlocks.OCTANGULITE_ORE, ModBlocks.DEEPSLATE_OCTANGULITE_ORE),
+            ModItems.OCTANGULITE_INGOT,5f,400,100);
 
         // compacting recipes
         AddOreCompactingRecipes(ModItems.MITHRIL_NUGGET,ModItems.MITHRIL_INGOT,ModBlocks.MITHRIL_BLOCK,ModItems.RAW_MITHRIL,ModBlocks.RAW_MITHRIL_BLOCK);
@@ -444,9 +456,14 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         }
 
         // decorative blocks
+        // titanium
         offerStonecuttingRecipe(exporter,RecipeCategory.BUILDING_BLOCKS,ModBlocks.CUT_TITANIUM,ModBlocks.TITANIUM_BLOCK,8);
         ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, ModBlocks.MOSSY_CUT_TITANIUM, 1).input(ModBlocks.CUT_TITANIUM).input(Items.VINE).group("mossify").criterion(hasItem(ModBlocks.CUT_TITANIUM), conditionsFromItem(ModBlocks.CUT_TITANIUM)).offerTo(exporter, convertBetween(ModBlocks.MOSSY_CUT_TITANIUM, ModBlocks.CUT_TITANIUM));
-
+        // lead
+        offerStonecuttingRecipe(exporter,RecipeCategory.BUILDING_BLOCKS,ModBlocks.CUT_LEAD,ModBlocks.LEAD_BLOCK,8);
+        offerStonecuttingRecipe(exporter,RecipeCategory.BUILDING_BLOCKS,ModBlocks.LEAD_BRICKS,ModBlocks.LEAD_BLOCK,8);
+        offerStonecuttingRecipe(exporter,RecipeCategory.BUILDING_BLOCKS,ModBlocks.LEAD_BRICK_STAIRS,ModBlocks.LEAD_BRICKS,1);
+        offerStonecuttingRecipe(exporter,RecipeCategory.BUILDING_BLOCKS,ModBlocks.LEAD_BRICK_SLABS,ModBlocks.LEAD_BRICKS,2);
 
         this.exporter=null;
     }

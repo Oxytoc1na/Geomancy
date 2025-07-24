@@ -4,6 +4,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
+import net.minecraft.block.SlabBlock;
+import net.minecraft.block.StairsBlock;
 import net.minecraft.data.client.*;
 import net.minecraft.block.Block;
 import net.minecraft.item.ArmorMaterial;
@@ -46,6 +48,66 @@ public class ModModelProvider extends FabricModelProvider {
         // cube all
         for(Block b : ExtraBlockSettings.SimpleCubeBlocks){
             blockStateModelGenerator.registerSimpleCubeAll(b);
+        }
+
+        // stairs
+        for(StairsBlock b : ExtraBlockSettings.StairsBlocks.keySet()){
+            Identifier baseBlockID = Registries.BLOCK.getId(ExtraBlockSettings.StairsBlocks.get(b));
+            Identifier id = Registries.BLOCK.getId(b);
+            var sup = BlockStateModelGenerator.createStairsBlockState(b,
+                    id.withPrefixedPath("block/").withSuffixedPath("_inner"),
+                    id.withPrefixedPath("block/"),
+                    id.withPrefixedPath("block/").withSuffixedPath("_outer"));
+            blockStateModelGenerator.blockStateCollector.accept(sup);
+            blockStateModelGenerator.createSubModel(b,"",Models.INNER_STAIRS,(identifier -> {
+                TextureMap res = new TextureMap();
+                res.put(TextureKey.BOTTOM,Geomancy.locate("block/"+baseBlockID.getPath()));
+                res.put(TextureKey.TOP,Geomancy.locate("block/"+baseBlockID.getPath()));
+                res.put(TextureKey.SIDE,Geomancy.locate("block/"+baseBlockID.getPath()));
+                return res;
+            }));
+
+            blockStateModelGenerator.createSubModel(b,"",Models.STAIRS,(identifier -> {
+                TextureMap res = new TextureMap();
+                res.put(TextureKey.BOTTOM,Geomancy.locate("block/"+baseBlockID.getPath()));
+                res.put(TextureKey.TOP,Geomancy.locate("block/"+baseBlockID.getPath()));
+                res.put(TextureKey.SIDE,Geomancy.locate("block/"+baseBlockID.getPath()));
+                return res;
+            }));
+
+            blockStateModelGenerator.createSubModel(b,"",Models.OUTER_STAIRS,(identifier -> {
+                TextureMap res = new TextureMap();
+                res.put(TextureKey.BOTTOM,Geomancy.locate("block/"+baseBlockID.getPath()));
+                res.put(TextureKey.TOP,Geomancy.locate("block/"+baseBlockID.getPath()));
+                res.put(TextureKey.SIDE,Geomancy.locate("block/"+baseBlockID.getPath()));
+                return res;
+            }));
+        }
+
+        // slab
+        for(SlabBlock b : ExtraBlockSettings.SlabBlocks.keySet()){
+            Identifier baseBlockID = Registries.BLOCK.getId(ExtraBlockSettings.SlabBlocks.get(b));
+            Identifier id = Registries.BLOCK.getId(b);
+            var sup = BlockStateModelGenerator.createSlabBlockState(b,
+                    id.withPrefixedPath("block/").withSuffixedPath(""),
+                    id.withPrefixedPath("block/").withSuffixedPath("_top"),
+                    baseBlockID.withPrefixedPath("block/"));
+            blockStateModelGenerator.blockStateCollector.accept(sup);
+            blockStateModelGenerator.createSubModel(b,"",Models.SLAB,(identifier -> {
+                TextureMap res = new TextureMap();
+                res.put(TextureKey.BOTTOM,Geomancy.locate("block/"+baseBlockID.getPath()));
+                res.put(TextureKey.TOP,Geomancy.locate("block/"+baseBlockID.getPath()));
+                res.put(TextureKey.SIDE,Geomancy.locate("block/"+baseBlockID.getPath()));
+                return res;
+            }));
+
+            blockStateModelGenerator.createSubModel(b,"",Models.SLAB_TOP,(identifier -> {
+                TextureMap res = new TextureMap();
+                res.put(TextureKey.BOTTOM,Geomancy.locate("block/"+baseBlockID.getPath()));
+                res.put(TextureKey.TOP,Geomancy.locate("block/"+baseBlockID.getPath()));
+                res.put(TextureKey.SIDE,Geomancy.locate("block/"+baseBlockID.getPath()));
+                return res;
+            }));
         }
 
         // cube variants

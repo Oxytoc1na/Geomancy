@@ -280,6 +280,10 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("block.MODID.deepslate_lead_ore" , "Deepslate Lead Ore");
             add("block.MODID.raw_lead_block"     , "Block of raw Lead");
             add("block.MODID.lead_block"         , "Block of Lead");
+            add("block.MODID.cut_lead"           , "Cut Lead");
+            add("block.MODID.lead_bricks"        , "Lead Bricks");
+            add("block.MODID.lead_brick_stairs"  , "Lead Brick Stairs");
+            add("block.MODID.lead_brick_slab"    , "Lead Brick Slab");
         }
 
         // Enchantments

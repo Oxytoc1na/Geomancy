@@ -2,6 +2,8 @@ package org.oxytocina.geomancy.blocks;
 
 
 import net.minecraft.block.Block;
+import net.minecraft.block.SlabBlock;
+import net.minecraft.block.StairsBlock;
 import net.minecraft.util.Pair;
 
 import java.util.ArrayList;
@@ -14,7 +16,11 @@ public class ExtraBlockSettings {
     public static final ArrayList<Block> ToolableBlock_Axe = new ArrayList<Block>();
     public static final ArrayList<Block> ToolableBlock_Shovel = new ArrayList<Block>();
     public static final ArrayList<Block> BlocksInGroup = new ArrayList<Block>();
+
     public static final ArrayList<Block> SimpleCubeBlocks = new ArrayList<Block>();
+    public static final HashMap<StairsBlock,Block> StairsBlocks = new HashMap<>();
+    public static final HashMap<SlabBlock,Block> SlabBlocks = new HashMap<>();
+
     public static final ArrayList<Block> RegularDropBlocks = new ArrayList<Block>();
     public static final HashMap<Block,Integer> VariantCubeBlocks = new HashMap<Block,Integer>();
     public static final HashMap<Block,Integer> VariantCubeColumnBlocks = new HashMap<Block,Integer>();
@@ -22,6 +28,7 @@ public class ExtraBlockSettings {
     public static final HashMap<Block,Integer> BlockMiningLevels = new HashMap<Block, Integer>();
 
     public Block block;
+    private Block variantBaseBlock;
 
     private boolean pickaxe = false;
     private boolean axe = false;
@@ -61,16 +68,24 @@ public class ExtraBlockSettings {
     public ExtraBlockSettings hasTextureVariantsColumn(int count){textureVariants=count; variantCubeColumn = true; notSimpleCube(); return this;}
     public ExtraBlockSettings fluid() { return notSimpleCube().dontGroupItem(); }
     public ExtraBlockSettings notRegularDrop() { regularDrop = false; return this; }
+    public ExtraBlockSettings stairs(Block base) { variantBaseBlock = base; return notSimpleCube(); }
+    public ExtraBlockSettings slab(Block base) { variantBaseBlock = base; return notSimpleCube(); }
 
     public void apply(){
         if(pickaxe) ToolableBlock_Pickaxe.add(block);
         if(axe) ToolableBlock_Axe.add(block);
         if(shovel) ToolableBlock_Shovel.add(block);
 
+        if(block instanceof StairsBlock sb)
+        {StairsBlocks.put(sb,variantBaseBlock); simpleCubeModel=false;}
+        if(block instanceof SlabBlock sb)
+        {SlabBlocks.put(sb,variantBaseBlock); simpleCubeModel=false;}
+
         if(shouldAddItemToGroup)
             BlocksInGroup.add(block);
         if(simpleCubeModel)
             SimpleCubeBlocks.add(block);
+
         if(variantCube)
             VariantCubeBlocks.put(block,textureVariants);
         if(variantCubeColumn)
