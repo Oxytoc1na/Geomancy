@@ -72,6 +72,7 @@ public class SpellBlocks {
 
     // reference
     public static final SpellBlock ACTION;
+    public static final SpellBlock PROVIDER;
     public static final SpellBlock FUNCTION;
     public static final SpellBlock REF_OUTPUT;
     public static final SpellBlock REF_INPUT;
@@ -815,6 +816,27 @@ public class SpellBlocks {
                         return refSpell.runReferenced(comp.context,comp,vars);
                     })
                     .sideConfigGetter((c)->SpellBlock.SideUtil.sidesInput(c,"trigger"))
+                    .category(cat).build());
+
+            PROVIDER = register(SpellBlock.Builder.create("provider")
+                    .inputs()
+                    .outputs(SpellSignal.createAny().named("res"))
+                    .parameters(SpellBlock.Parameter.createText("function","helloworld"))
+                    .func((comp,vars) -> {
+                        if(!(comp.context.casterItem.getItem() instanceof SoulCastingItem)) return SpellBlockResult.empty();
+                        var funcName = vars.getText("function");
+                        // check if specified function exists
+                        var refSpell = SoulCastingItem.getSpell(comp.context.casterItem,funcName);
+                        if(refSpell==null)
+                        {
+                            tryLogDebugNoSuchFunction(comp,funcName);
+                            return SpellBlockResult.empty();
+                        }
+
+                        // run referenced
+                        return refSpell.runReferenced(comp.context,comp,vars);
+                    })
+                    .sideConfigGetter((c)->SpellBlock.SideUtil.sidesOutput(c,"res"))
                     .category(cat).build());
 
             FUNCTION = register(SpellBlock.Builder.create("function")

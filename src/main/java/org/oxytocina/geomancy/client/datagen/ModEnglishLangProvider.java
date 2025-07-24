@@ -45,6 +45,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.spellmaker.delete",  "remove");
             add("MODID.spellmaker.rotate",  "rotate");
             add("MODID.spellmaker.grid.name","Spell name");
+            add("MODID.spellmaker.grid.lib","Library Spell");
             add("MODID.spellmaker.dir.ne",  "Northeast");
             add("MODID.spellmaker.dir.e",   "East");
             add("MODID.spellmaker.dir.se",  "Southeast");
@@ -111,6 +112,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("push","Push","sets the velocity of an entity");
             // reference
             addSpell("action","Action","calls another installed spell");
+            addSpell("provider","Provider","automatically returns the result of a spell");
             addSpell("ref_output","Ref. Output","gets a variable from the reference arguments");
             addSpell("ref_input","Ref. Input","sets a call result variable");
             addSpell("function","Function","calls a spell and returns a result");

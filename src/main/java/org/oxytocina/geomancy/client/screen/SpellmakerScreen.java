@@ -6,8 +6,6 @@ import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.widget.CheckboxWidget;
-import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.nbt.NbtCompound;
@@ -113,13 +111,14 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
 
         clearChildren();
 
-        // naming the grid
+        // grid properties
         if(!inspecting && handler.hasGrid()){
             int bgPosX = (width-getBackgroundWidth())/2;
             int bgPosY = (height-getBackgroundHeight())/2;
             final int infoPosX = bgPosX+SpellmakerScreen.bgWidth+10;
             final int infoPosY = bgPosY+10+10;
 
+            // naming the grid
             SpellmakerTextInput textInput = new SpellmakerTextInput(this, MinecraftClient.getInstance().textRenderer,infoPosX,infoPosY,100,15,Text.literal(handler.currentGrid.name));
             textInput.setText(handler.currentGrid.name);
             textInput.setChangedListener(s -> {
@@ -138,6 +137,19 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
             });
             textInputs.add(textInput);
             addDrawableChild(textInput);
+
+            // lib
+            SpellmakerCheckbox libCheckBox = new SpellmakerCheckbox(this,infoPosX,infoPosY+20,15,15,Text.translatable("geomancy.spellmaker.grid.lib"),handler.currentGrid.library);
+            libCheckBox.onPressed = ()->{
+                // set value
+                // send packet to server
+                PacketByteBuf data = PacketByteBufs.create();
+                data.writeBlockPos(handler.blockEntity.getPos());
+                data.writeBoolean(libCheckBox.isChecked());
+                ClientPlayNetworking.send(ModMessages.SPELLMAKER_TRY_CHANGE_GRIDLIB, data);
+                return true;
+            };
+            addDrawableChild(libCheckBox);
         }
 
         // instantiate buttons

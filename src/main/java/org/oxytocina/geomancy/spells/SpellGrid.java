@@ -9,6 +9,7 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import org.joml.Vector2i;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.items.SpellStoringItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,18 +19,23 @@ public class SpellGrid {
     public int width;
     public int height;
     public String name;
+    public boolean library; // if true, hides spell from spell selection
     public HashMap<Vector2i,SpellComponent> components;
     public float soulCostMultiplier = 1;
 
     public SpellGrid(ItemStack stack, NbtCompound nbt){
         this.components=new HashMap<>();
         readNbt(nbt);
+        // soul saver
+        if(stack.getItem() instanceof SpellStoringItem storer)
+            soulCostMultiplier=storer.getSoulCostMultiplier(stack);
     }
 
     public SpellGrid(int width, int height){
         this.width=width;
         this.height=height;
         this.name="";
+        this.library=false;
         this.components=new HashMap<>();
     }
 
@@ -153,6 +159,7 @@ public class SpellGrid {
         nbt.putInt("width",width);
         nbt.putInt("height",height);
         nbt.putString("name",name);
+        nbt.putBoolean("lib",library);
         NbtList compsNbt = new NbtList();
         for (var c:components.values())
         {
@@ -167,6 +174,7 @@ public class SpellGrid {
         width=nbt.getInt("width");
         height=nbt.getInt("height");
         name=nbt.getString("name");
+        library=nbt.getBoolean("lib");
         NbtList compsNbt = nbt.getList("components", NbtElement.COMPOUND_TYPE);
         for (var c:compsNbt)
         {

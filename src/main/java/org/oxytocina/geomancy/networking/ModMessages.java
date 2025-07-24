@@ -41,6 +41,7 @@ public class ModMessages {
     public static final Identifier SPELLMAKER_TRY_CHANGE_VAR = Geomancy.locate("spellmaker_try_change_var");
     public static final Identifier SPELLMAKER_TRY_CHANGE_PARAM = Geomancy.locate("spellmaker_try_change_param");
     public static final Identifier SPELLMAKER_TRY_CHANGE_GRIDNAME = Geomancy.locate("spellmaker_try_change_gridname");
+    public static final Identifier SPELLMAKER_TRY_CHANGE_GRIDLIB = Geomancy.locate("spellmaker_try_change_lib");
     public static final Identifier SPELLMAKER_TRY_ROTATE_COMPONENT = Geomancy.locate("spellmaker_try_rotate_component");
     public static final Identifier SPELLSTORER_TRY_UPDATE_CASTER = Geomancy.locate("spellstorer_try_update_caster");
     public static final Identifier CASTER_CHANGE_SELECTED_SPELL = Geomancy.locate("caster_change_selected_spell");
@@ -53,6 +54,7 @@ public class ModMessages {
         ServerPlayNetworking.registerGlobalReceiver(SPELLMAKER_TRY_CHANGE_VAR, SpellmakerTryChangeVarC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(SPELLMAKER_TRY_CHANGE_PARAM, SpellmakerTryChangeParamC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(SPELLMAKER_TRY_CHANGE_GRIDNAME, SpellmakerTryChangeGridnameC2SPacket::receive);
+        ServerPlayNetworking.registerGlobalReceiver(SPELLMAKER_TRY_CHANGE_GRIDLIB, SpellmakerTryChangeGridLibC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(SPELLMAKER_TRY_ROTATE_COMPONENT, SpellmakerTryRotateComponentC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(SPELLSTORER_TRY_UPDATE_CASTER, SpellstorerTryUpdateCasterC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(CASTER_CHANGE_SELECTED_SPELL, CasterChangeSelectedSpellC2S::receive);

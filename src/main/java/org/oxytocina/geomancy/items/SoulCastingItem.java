@@ -20,11 +20,8 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector2i;
 import org.oxytocina.geomancy.client.screen.SpellstorerScreenHandler;
 import org.oxytocina.geomancy.networking.ModMessages;
-import org.oxytocina.geomancy.spells.SpellBlocks;
-import org.oxytocina.geomancy.spells.SpellComponent;
 import org.oxytocina.geomancy.spells.SpellGrid;
 import org.oxytocina.geomancy.util.Toolbox;
 
@@ -75,7 +72,7 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
         super.appendTooltip(stack, world, tooltip, context);
 
         var selectedSpellIndex = getSelectedSpellIndex(stack);
-        var spells = getSpellItems(stack);
+        var spells = getCastableSpellItems(stack);
         if(!spells.isEmpty())
             selectedSpellIndex = selectedSpellIndex%spells.size();
         for (int i = 0; i < spells.size(); i++) {
@@ -92,13 +89,27 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
         }
     }
 
-    public ArrayList<ItemStack> getSpellItems(ItemStack stack){
+    public ArrayList<ItemStack> getAllSpellItems(ItemStack stack){
         if(!(stack.getItem() instanceof  SoulCastingItem)) return null;
 
         ArrayList<ItemStack> res = new ArrayList<>();
         for (int i = 0; i < getSize(stack); i++) {
             var spell = getStack(stack,i);
             if(!(spell.getItem() instanceof SpellStoringItem)) continue;
+            res.add(spell);
+        }
+        return res;
+    }
+
+    public ArrayList<ItemStack> getCastableSpellItems(ItemStack stack){
+        if(!(stack.getItem() instanceof  SoulCastingItem)) return null;
+
+        ArrayList<ItemStack> res = new ArrayList<>();
+        for (int i = 0; i < getSize(stack); i++) {
+            var spell = getStack(stack,i);
+            if(!(spell.getItem() instanceof SpellStoringItem storer)) continue;
+            var grid = SpellStoringItem.readGrid(spell);
+            if(grid==null||grid.library) continue;
             res.add(spell);
         }
         return res;
@@ -150,7 +161,7 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
     }
 
     public int getInstalledSpellsCount(ItemStack stack){
-        return getSpellItems(stack).size();
+        return getCastableSpellItems(stack).size();
     }
 
     public static SpellGrid getSpell(ItemStack casterItem,String name){
@@ -292,7 +303,7 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
 
     @Override
     public Text getName(ItemStack stack) {
-        var spells = getSpellItems(stack);
+        var spells = getCastableSpellItems(stack);
         MutableText spellText = null;
         if(spells.isEmpty()){
             spellText = Text.translatable("geomancy.caster.nospells").formatted(Formatting.RED);
@@ -328,7 +339,7 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
         nextIndex=getSelectedSpellIndex(stack);
 
         // display selected spell
-        var spells = getSpellItems(stack);
+        var spells = getCastableSpellItems(stack);
         if(spells.isEmpty()){
             player.sendMessage(Text.translatable("geomancy.caster.nospells").formatted(Formatting.RED),true);
         }

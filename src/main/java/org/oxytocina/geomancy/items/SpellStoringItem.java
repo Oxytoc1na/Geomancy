@@ -14,6 +14,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
+import org.oxytocina.geomancy.enchantments.ModEnchantments;
 import org.oxytocina.geomancy.spells.SpellBlocks;
 import org.oxytocina.geomancy.spells.SpellComponent;
 import org.oxytocina.geomancy.spells.SpellGrid;
@@ -72,6 +73,18 @@ public class SpellStoringItem extends Item {
         grid.run(caster,spellstorage,user);
     }
 
+    public float getSoulCostMultiplier(ItemStack stack) {
+        return 1 * (
+                // save 15% per level of soul saver
+                // for 25% cost at level 5
+                1f-0.15f*getSoulSaverLevel(stack)
+                );
+    }
+
+    public float getSoulSaverLevel(ItemStack stack){
+        return ModEnchantments.getLevel(stack,ModEnchantments.SOUL_SAVER);
+    }
+
     @Override
     public Text getName(ItemStack stack) {
         SpellGrid grid = readGrid(stack);
@@ -87,6 +100,10 @@ public class SpellStoringItem extends Item {
 
         var grid = readGrid(stack);
         if(grid==null) return;
+
+        if(grid.library){
+            tooltip.add(Text.translatable("geomancy.spellmaker.grid.lib").formatted(Formatting.DARK_GRAY));
+        }
 
         for(var comp : grid.components.values()){
             tooltip.add(Text.translatable("geomancy.spellcomponent."+comp.function.identifier.getPath()).formatted(Formatting.GRAY));
