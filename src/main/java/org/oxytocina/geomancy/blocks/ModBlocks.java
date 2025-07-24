@@ -15,9 +15,11 @@ import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
+import org.jetbrains.annotations.NotNull;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.fluids.GoldFluidBlock;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
+import org.oxytocina.geomancy.items.ExtraItemSettings;
 import org.oxytocina.geomancy.items.LeadBlockItem;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.OctanguliteBlockItem;
@@ -89,13 +91,38 @@ public class ModBlocks {
     // decorative
     public static final Block GILDED_DEEPSLATE = register("gilded_deepslate", Block::new,AbstractBlock.Settings.create().mapColor(MapColor.DEEPSLATE_GRAY).instrument(Instrument.BASEDRUM).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.POLISHED_DEEPSLATE),ExtraBlockSettings.create().mineableByPickaxe(),new FabricItemSettings());
     public static final Block DECORATED_GILDED_DEEPSLATE = register("decorated_gilded_deepslate", Block::new,AbstractBlock.Settings.create().mapColor(MapColor.DEEPSLATE_GRAY).instrument(Instrument.BASEDRUM).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.POLISHED_DEEPSLATE),ExtraBlockSettings.create().mineableByPickaxe().hasTextureVariants(4),new FabricItemSettings());
+
     public static final Block CUT_TITANIUM = register("cut_titanium", Block::new, AbstractBlock.Settings.create().mapColor(MapColor.WHITE_GRAY).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.METAL).instrument(Instrument.BELL).requiresTool(),ExtraBlockSettings.create().mineableByPickaxe(),new FabricItemSettings());
-    public static final Block MOSSY_CUT_TITANIUM = register("mossy_cut_titanium", Block::new, AbstractBlock.Settings.copy(CUT_TITANIUM).mapColor(MapColor.PALE_GREEN),ExtraBlockSettings.create().mineableByPickaxe(),new FabricItemSettings());
+    public static final Block MOSSY_CUT_TITANIUM = register("mossy_cut_titanium", Block::new, AbstractBlock.Settings.copy(CUT_TITANIUM).mapColor(MapColor.PALE_GREEN),ExtraBlockSettings.copyFrom(CUT_TITANIUM),new FabricItemSettings());
+    public static final Block TITANIUM_BRICKS = register("titanium_bricks", Block::new, AbstractBlock.Settings.copy(CUT_TITANIUM),ExtraBlockSettings.copyFrom(CUT_TITANIUM),new FabricItemSettings());
+    public static final StairsBlock TITANIUM_BRICK_STAIRS = (StairsBlock)register("titanium_brick_stairs", (settings -> new StairsBlock(TITANIUM_BRICKS.getDefaultState(), settings)), AbstractBlock.Settings.copy(TITANIUM_BRICKS),ExtraBlockSettings.copyFrom(TITANIUM_BRICKS).stairs(TITANIUM_BRICKS),new FabricItemSettings());
+    public static final SlabBlock TITANIUM_BRICK_SLABS = (SlabBlock)register("titanium_brick_slab", (SlabBlock::new), AbstractBlock.Settings.copy(TITANIUM_BRICKS),ExtraBlockSettings.copyFrom(TITANIUM_BRICKS).slab(TITANIUM_BRICKS),new FabricItemSettings());
+    public static final WallBlock TITANIUM_BRICK_WALL = (WallBlock)register("titanium_brick_wall", (WallBlock::new), AbstractBlock.Settings.copy(TITANIUM_BRICKS).solid(),ExtraBlockSettings.copyFrom(TITANIUM_BRICKS).wall(TITANIUM_BRICKS),new FabricItemSettings());
 
     public static final LeadBlock CUT_LEAD = (LeadBlock)register("cut_lead", (settings -> new LeadBlock(settings,1)), AbstractBlock.Settings.create().mapColor(MapColor.GRAY).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.METAL).instrument(Instrument.BELL).requiresTool(),ExtraBlockSettings.create().mineableByPickaxe(),new FabricItemSettings());
-    public static final LeadBlock LEAD_BRICKS = (LeadBlock)register("lead_bricks", (settings -> new LeadBlock(settings,1)), AbstractBlock.Settings.create().mapColor(MapColor.GRAY).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.METAL).instrument(Instrument.BELL).requiresTool(),ExtraBlockSettings.create().mineableByPickaxe(),new FabricItemSettings());
-    public static final LeadStairsBlock LEAD_BRICK_STAIRS = (LeadStairsBlock)register("lead_brick_stairs", (settings -> new LeadStairsBlock(LEAD_BRICKS.getDefaultState(), settings,1)), AbstractBlock.Settings.copy(LEAD_BRICKS),ExtraBlockSettings.create().mineableByPickaxe().stairs(LEAD_BRICKS),new FabricItemSettings());
-    public static final LeadSlabBlock LEAD_BRICK_SLABS = (LeadSlabBlock)register("lead_brick_slab", (settings -> new LeadSlabBlock(settings,1)), AbstractBlock.Settings.copy(LEAD_BRICKS),ExtraBlockSettings.create().mineableByPickaxe().slab(LEAD_BRICKS),new FabricItemSettings());
+    public static final LeadBlock LEAD_BRICKS = (LeadBlock)register("lead_bricks", (settings -> new LeadBlock(settings,1)), AbstractBlock.Settings.copy(CUT_LEAD),ExtraBlockSettings.copyFrom(CUT_LEAD),new FabricItemSettings());
+    public static final LeadStairsBlock LEAD_BRICK_STAIRS = (LeadStairsBlock)register("lead_brick_stairs", (settings -> new LeadStairsBlock(LEAD_BRICKS.getDefaultState(), settings,1)), AbstractBlock.Settings.copy(LEAD_BRICKS),ExtraBlockSettings.copyFrom(LEAD_BRICKS).stairs(LEAD_BRICKS),new FabricItemSettings());
+    public static final LeadSlabBlock LEAD_BRICK_SLABS = (LeadSlabBlock)register("lead_brick_slab", (settings -> new LeadSlabBlock(settings,1)), AbstractBlock.Settings.copy(LEAD_BRICKS),ExtraBlockSettings.copyFrom(LEAD_BRICKS).slab(LEAD_BRICKS),new FabricItemSettings());
+    public static final LeadWallBlock LEAD_BRICK_WALL = (LeadWallBlock)register("lead_brick_wall", (settings -> new LeadWallBlock(settings,1)), AbstractBlock.Settings.copy(LEAD_BRICKS).solid(),ExtraBlockSettings.copyFrom(LEAD_BRICKS).wall(LEAD_BRICKS),new FabricItemSettings());
+
+    public static final Block CUT_MOLYBDENUM = register("cut_molybdenum", Block::new, AbstractBlock.Settings.create().mapColor(MapColor.GRAY).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.METAL).instrument(Instrument.BELL).requiresTool(),ExtraBlockSettings.create().mineableByPickaxe(),new FabricItemSettings());
+    public static final Block MOLYBDENUM_BRICKS = register("molybdenum_bricks", Block::new, AbstractBlock.Settings.copy(CUT_MOLYBDENUM),ExtraBlockSettings.copyFrom(CUT_MOLYBDENUM),new FabricItemSettings());
+    public static final StairsBlock MOLYBDENUM_BRICK_STAIRS = (StairsBlock)register("molybdenum_brick_stairs", (settings -> new StairsBlock(MOLYBDENUM_BRICKS.getDefaultState(), settings)), AbstractBlock.Settings.copy(MOLYBDENUM_BRICKS),ExtraBlockSettings.copyFrom(MOLYBDENUM_BRICKS).stairs(MOLYBDENUM_BRICKS),new FabricItemSettings());
+    public static final SlabBlock MOLYBDENUM_BRICK_SLABS = (SlabBlock)register("molybdenum_brick_slab", (SlabBlock::new), AbstractBlock.Settings.copy(MOLYBDENUM_BRICKS),ExtraBlockSettings.copyFrom(MOLYBDENUM_BRICKS).slab(MOLYBDENUM_BRICKS),new FabricItemSettings());
+    public static final WallBlock MOLYBDENUM_BRICK_WALL = (WallBlock)register("molybdenum_brick_wall", (WallBlock::new), AbstractBlock.Settings.copy(MOLYBDENUM_BRICKS).solid(),ExtraBlockSettings.copyFrom(MOLYBDENUM_BRICKS).wall(MOLYBDENUM_BRICKS),new FabricItemSettings());
+
+    public static final Block CUT_MITHRIL = register("cut_mithril", Block::new, AbstractBlock.Settings.create().mapColor(MapColor.WHITE).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.METAL).instrument(Instrument.BELL).requiresTool(),ExtraBlockSettings.create().mineableByPickaxe(),new FabricItemSettings());
+    public static final Block MITHRIL_BRICKS = register("mithril_bricks", Block::new, AbstractBlock.Settings.copy(CUT_MITHRIL),ExtraBlockSettings.copyFrom(CUT_MITHRIL),new FabricItemSettings());
+    public static final StairsBlock MITHRIL_BRICK_STAIRS = (StairsBlock)register("mithril_brick_stairs", (settings -> new StairsBlock(MITHRIL_BRICKS.getDefaultState(), settings)), AbstractBlock.Settings.copy(MITHRIL_BRICKS),ExtraBlockSettings.copyFrom(MITHRIL_BRICKS).stairs(MITHRIL_BRICKS),new FabricItemSettings());
+    public static final SlabBlock MITHRIL_BRICK_SLABS = (SlabBlock)register("mithril_brick_slab", (SlabBlock::new), AbstractBlock.Settings.copy(MITHRIL_BRICKS),ExtraBlockSettings.copyFrom(MITHRIL_BRICKS).slab(MITHRIL_BRICKS),new FabricItemSettings());
+    public static final WallBlock MITHRIL_BRICK_WALL = (WallBlock)register("mithril_brick_wall", (WallBlock::new), AbstractBlock.Settings.copy(MITHRIL_BRICKS).solid(),ExtraBlockSettings.copyFrom(MITHRIL_BRICKS).wall(MITHRIL_BRICKS),new FabricItemSettings());
+
+    public static final OctanguliteBlock CUT_OCTANGULITE = (OctanguliteBlock)register("cut_octangulite", settings -> new OctanguliteBlock(settings,1), AbstractBlock.Settings.create().mapColor(MapColor.GRAY).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.METAL).instrument(Instrument.BELL).requiresTool(),ExtraBlockSettings.create().mineableByPickaxe(),new FabricItemSettings());
+    public static final OctanguliteBlock OCTANGULITE_BRICKS = (OctanguliteBlock) register("octangulite_bricks", settings -> new OctanguliteBlock(settings,1), AbstractBlock.Settings.copy(CUT_OCTANGULITE),ExtraBlockSettings.copyFrom(CUT_OCTANGULITE),new FabricItemSettings());
+    public static final OctanguliteStairsBlock OCTANGULITE_BRICK_STAIRS = (OctanguliteStairsBlock)register("octangulite_brick_stairs", (settings -> new OctanguliteStairsBlock(OCTANGULITE_BRICKS.getDefaultState(), settings,1)), AbstractBlock.Settings.copy(OCTANGULITE_BRICKS),ExtraBlockSettings.copyFrom(OCTANGULITE_BRICKS).stairs(OCTANGULITE_BRICKS),new FabricItemSettings());
+    public static final OctanguliteSlabBlock OCTANGULITE_BRICK_SLABS = (OctanguliteSlabBlock)register("octangulite_brick_slab", s->new OctanguliteSlabBlock(s,1), AbstractBlock.Settings.copy(OCTANGULITE_BRICKS),ExtraBlockSettings.copyFrom(OCTANGULITE_BRICKS).slab(OCTANGULITE_BRICKS),new FabricItemSettings());
+    public static final OctanguliteWallBlock OCTANGULITE_BRICK_WALL = (OctanguliteWallBlock)register("octangulite_brick_wall", s->new OctanguliteWallBlock(s,1), AbstractBlock.Settings.copy(OCTANGULITE_BRICKS).solid(),ExtraBlockSettings.copyFrom(OCTANGULITE_BRICKS).wall(OCTANGULITE_BRICKS),new FabricItemSettings());
+
 
     // block entities
     public static final SmitheryBlock SMITHERY = (SmitheryBlock) register("smithery_block", SmitheryBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe());
@@ -116,7 +143,6 @@ public class ModBlocks {
             for(Block b : ExtraBlockSettings.BlocksInGroup){
                 itemGroup.add(b.asItem());
             }
-
         });
     }
 
@@ -139,17 +165,22 @@ public class ModBlocks {
             // can be the same.
             RegistryKey<Item> itemKey = keyOfItem(name);
 
+            var extraItemSettings = ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom);
+            if(block instanceof WallBlock)
+                extraItemSettings.modelType(ExtraItemSettings.ModelType.Wall);
+
             if(block instanceof ILeadPoisoningBlock leadBlock){
                 LeadBlockItem blockItem = new LeadBlockItem(block, itemSettings,leadBlock.getInventoryPoisoningSpeed());
-                Registry.register(Registries.ITEM, itemKey, blockItem);
+                registerBlockItem(itemKey.getValue().getPath(),blockItem,extraItemSettings);
             }
             else if(block instanceof IOctanguliteBlock octanguliteBlock){
                 OctanguliteBlockItem blockItem = new OctanguliteBlockItem(block, itemSettings,octanguliteBlock.getInventoryMaddeningSpeed());
-                Registry.register(Registries.ITEM, itemKey, blockItem);
+                registerBlockItem(itemKey.getValue().getPath(),blockItem,extraItemSettings);
             }
             else{
                 BlockItem blockItem = new BlockItem(block, itemSettings);
-                Registry.register(Registries.ITEM, itemKey, blockItem);
+                registerBlockItem(itemKey.getValue().getPath(),blockItem,extraItemSettings);
+
             }
 
 
@@ -163,6 +194,10 @@ public class ModBlocks {
 
         return res;
     }
+    private static void registerBlockItem(String id, BlockItem item, @NotNull ExtraItemSettings settings){
+        ModItems.register(id,item,settings);
+    }
+
     private static RegistryKey<Block> keyOfBlock(String name) {
         return RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(Geomancy.MOD_ID, name));
     }

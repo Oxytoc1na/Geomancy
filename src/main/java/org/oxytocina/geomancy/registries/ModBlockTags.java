@@ -1,0 +1,27 @@
+package org.oxytocina.geomancy.registries;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.TagKey;
+import net.minecraft.util.Identifier;
+import org.oxytocina.geomancy.Geomancy;
+
+public class ModBlockTags {
+    public static final TagKey<Block> WALLS = register(new Identifier("walls"));
+
+    public static final TagKey<Block> PICKAXE_MINEABLES = register(Identifier.of(Identifier.DEFAULT_NAMESPACE, "mineable/pickaxe"));
+    public static final TagKey<Block> AXE_MINEABLES = register(Identifier.of(Identifier.DEFAULT_NAMESPACE, "mineable/axe"));
+    public static final TagKey<Block> SHOVEL_MINEABLES = register(Identifier.of(Identifier.DEFAULT_NAMESPACE, "mineable/shovel"));
+
+    public static final TagKey<Block> MININGLEVEL_STONE = register(Identifier.of(Identifier.DEFAULT_NAMESPACE, "needs_stone_tool"));
+    public static final TagKey<Block> MININGLEVEL_IRON = register(Identifier.of(Identifier.DEFAULT_NAMESPACE, "needs_iron_tool"));
+    public static final TagKey<Block> MININGLEVEL_DIAMOND = register(Identifier.of(Identifier.DEFAULT_NAMESPACE, "needs_diamond_tool"));
+
+    public static TagKey<Block> register(String name){
+        return register(Geomancy.locate(name));
+    }
+    public static TagKey<Block> register(Identifier id){
+        return TagKey.of(RegistryKeys.BLOCK,id);
+    }
+}

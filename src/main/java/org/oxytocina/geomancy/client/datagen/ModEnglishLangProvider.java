@@ -263,11 +263,21 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("block.MODID.deepslate_octangulite_ore" , "Deepslate Octangulite Ore");
             add("block.MODID.raw_octangulite_block"     , "Octangulite Scrap");
             add("block.MODID.octangulite_block"         , "Block of Octangulite");
+            add("block.MODID.cut_octangulite"           , "Cut Octangulite");
+            add("block.MODID.octangulite_bricks"        , "Octangulite Bricks");
+            add("block.MODID.octangulite_brick_stairs"  , "Octangulite Brick Stairs");
+            add("block.MODID.octangulite_brick_slab"    , "Octangulite Brick Slab");
+            add("block.MODID.octangulite_brick_wall"    , "Octangulite Brick Wall");
 
             add("block.MODID.molybdenum_ore"           , "Molybdenum Ore");
             add("block.MODID.deepslate_molybdenum_ore" , "Deepslate Molybdenum Ore");
             add("block.MODID.raw_molybdenum_block"     , "Block of raw Molybdenum");
             add("block.MODID.molybdenum_block"         , "Block of Molybdenum");
+            add("block.MODID.cut_molybdenum"           , "Cut Molybdenum");
+            add("block.MODID.molybdenum_bricks"        , "Molybdenum Bricks");
+            add("block.MODID.molybdenum_brick_stairs"  , "Molybdenum Brick Stairs");
+            add("block.MODID.molybdenum_brick_slab"    , "Molybdenum Brick Slab");
+            add("block.MODID.molybdenum_brick_wall"    , "Molybdenum Brick Wall");
 
             add("block.MODID.titanium_ore"           , "Titanium Ore");
             add("block.MODID.deepslate_titanium_ore" , "Deepslate Titanium Ore");
@@ -275,6 +285,10 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("block.MODID.titanium_block"         , "Block of Titanium");
             add("block.MODID.cut_titanium"           , "Cut Titanium");
             add("block.MODID.mossy_cut_titanium"     , "Mossy Cut Titanium");
+            add("block.MODID.titanium_bricks"        , "Titanium Bricks");
+            add("block.MODID.titanium_brick_stairs"  , "Titanium Brick Stairs");
+            add("block.MODID.titanium_brick_slab"    , "Titanium Brick Slab");
+            add("block.MODID.titanium_brick_wall"    , "Titanium Brick Wall");
 
             add("block.MODID.lead_ore"           , "Lead Ore");
             add("block.MODID.deepslate_lead_ore" , "Deepslate Lead Ore");
@@ -284,6 +298,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("block.MODID.lead_bricks"        , "Lead Bricks");
             add("block.MODID.lead_brick_stairs"  , "Lead Brick Stairs");
             add("block.MODID.lead_brick_slab"    , "Lead Brick Slab");
+            add("block.MODID.lead_brick_wall"    , "Lead Brick Wall");
         }
 
         // Enchantments

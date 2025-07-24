@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.StairsBlock;
+import net.minecraft.block.WallBlock;
 import net.minecraft.data.client.*;
 import net.minecraft.block.Block;
 import net.minecraft.item.ArmorMaterial;
@@ -110,6 +111,38 @@ public class ModModelProvider extends FabricModelProvider {
             }));
         }
 
+        // wall
+        for(WallBlock b : ExtraBlockSettings.WallBlocks.keySet()){
+            Identifier baseBlockID = Registries.BLOCK.getId(ExtraBlockSettings.WallBlocks.get(b));
+            Identifier id = Registries.BLOCK.getId(b);
+            var sup = BlockStateModelGenerator.createWallBlockState(b,
+                    id.withPrefixedPath("block/").withSuffixedPath("_post"),
+                    id.withPrefixedPath("block/").withSuffixedPath("_side"),
+                    id.withPrefixedPath("block/").withSuffixedPath("_side_tall"));
+            blockStateModelGenerator.blockStateCollector.accept(sup);
+            blockStateModelGenerator.createSubModel(b,"",Models.TEMPLATE_WALL_POST,(identifier -> {
+                TextureMap res = new TextureMap();
+                res.put(TextureKey.WALL,Geomancy.locate("block/"+baseBlockID.getPath()));
+                return res;
+            }));
+            blockStateModelGenerator.createSubModel(b,"",Models.TEMPLATE_WALL_SIDE,(identifier -> {
+                TextureMap res = new TextureMap();
+                res.put(TextureKey.WALL,Geomancy.locate("block/"+baseBlockID.getPath()));
+                return res;
+            }));
+            blockStateModelGenerator.createSubModel(b,"",Models.TEMPLATE_WALL_SIDE_TALL,(identifier -> {
+                TextureMap res = new TextureMap();
+                res.put(TextureKey.WALL,Geomancy.locate("block/"+baseBlockID.getPath()));
+                return res;
+            }));
+            blockStateModelGenerator.createSubModel(b,"",Models.WALL_INVENTORY,(identifier -> {
+                TextureMap res = new TextureMap();
+                res.put(TextureKey.WALL,Geomancy.locate("block/"+baseBlockID.getPath()));
+                return res;
+            }));
+        }
+
+
         // cube variants
         for(Block b : ExtraBlockSettings.VariantCubeBlocks.keySet()){
 
@@ -163,6 +196,11 @@ public class ModModelProvider extends FabricModelProvider {
 
         for(JewelryItem i : ExtraItemSettings.JewelryModel){
             registerJewelryItemModels(i);
+        }
+
+        for(Item i : ExtraItemSettings.WallModel){
+            Model wallModel = new Model(Optional.of(Geomancy.locate("block/"+Registries.ITEM.getId(i).getPath()+"_inventory")),Optional.empty());
+            itemModelGenerator.register(i, wallModel);
         }
 
         for(var ent : ModItems.spawnEggs.entrySet()){

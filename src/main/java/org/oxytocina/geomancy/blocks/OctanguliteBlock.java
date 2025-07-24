@@ -27,7 +27,7 @@ public class OctanguliteBlock extends Block implements IOctanguliteBlock {
         return true;
     }
 
-    static final float whisperChance = 0.2f;
+    public static final float whisperChance = 0.2f;
     @Override
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         if(random.nextFloat()<whisperChance)

@@ -3,7 +3,7 @@ package org.oxytocina.geomancy.client.datagen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.advancement.criterion.CriterionConditions;
-import net.minecraft.block.Blocks;
+import net.minecraft.block.*;
 import net.minecraft.data.server.recipe.*;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
@@ -16,7 +16,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import org.oxytocina.geomancy.Geomancy;
-import org.oxytocina.geomancy.blocks.ModBlocks;
+import org.oxytocina.geomancy.blocks.*;
 import org.oxytocina.geomancy.client.datagen.recipes.GeodeRecipeJsonBuilder;
 import org.oxytocina.geomancy.client.datagen.recipes.JewelryRecipeJsonBuilder;
 import org.oxytocina.geomancy.client.datagen.recipes.SmitheryRecipeJsonBuilder;
@@ -456,16 +456,35 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         }
 
         // decorative blocks
-        // titanium
-        offerStonecuttingRecipe(exporter,RecipeCategory.BUILDING_BLOCKS,ModBlocks.CUT_TITANIUM,ModBlocks.TITANIUM_BLOCK,8);
+
         ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, ModBlocks.MOSSY_CUT_TITANIUM, 1).input(ModBlocks.CUT_TITANIUM).input(Items.VINE).group("mossify").criterion(hasItem(ModBlocks.CUT_TITANIUM), conditionsFromItem(ModBlocks.CUT_TITANIUM)).offerTo(exporter, convertBetween(ModBlocks.MOSSY_CUT_TITANIUM, ModBlocks.CUT_TITANIUM));
-        // lead
-        offerStonecuttingRecipe(exporter,RecipeCategory.BUILDING_BLOCKS,ModBlocks.CUT_LEAD,ModBlocks.LEAD_BLOCK,8);
-        offerStonecuttingRecipe(exporter,RecipeCategory.BUILDING_BLOCKS,ModBlocks.LEAD_BRICKS,ModBlocks.LEAD_BLOCK,8);
-        offerStonecuttingRecipe(exporter,RecipeCategory.BUILDING_BLOCKS,ModBlocks.LEAD_BRICK_STAIRS,ModBlocks.LEAD_BRICKS,1);
-        offerStonecuttingRecipe(exporter,RecipeCategory.BUILDING_BLOCKS,ModBlocks.LEAD_BRICK_SLABS,ModBlocks.LEAD_BRICKS,2);
+
+        AddDecorativeBlockBatch("lead");
+        AddDecorativeBlockBatch("titanium");
+        AddDecorativeBlockBatch("mithril");
+        AddDecorativeBlockBatch("molybdenum");
+        AddDecorativeBlockBatch("octangulite");
 
         this.exporter=null;
+    }
+
+    private void AddDecorativeBlockBatch(String mat) {
+        AddDecorativeBlockBatch(
+                Registries.BLOCK.get(Geomancy.locate(mat+"_block")),
+                Registries.BLOCK.get(Geomancy.locate("cut_"+mat)),
+                Registries.BLOCK.get(Geomancy.locate(mat+"_bricks")),
+                (StairsBlock) Registries.BLOCK.get(Geomancy.locate(mat+"_brick_stairs")),
+                (SlabBlock) Registries.BLOCK.get(Geomancy.locate(mat+"_brick_slab")),
+                (WallBlock) Registries.BLOCK.get(Geomancy.locate(mat+"_brick_wall"))
+        );
+    }
+
+    private void AddDecorativeBlockBatch(Block base, Block cut, Block bricks, StairsBlock stairs, SlabBlock slab, WallBlock wall) {
+        offerStonecuttingRecipe(exporter,RecipeCategory.BUILDING_BLOCKS,cut,base,8);
+        offerStonecuttingRecipe(exporter,RecipeCategory.BUILDING_BLOCKS,bricks,base,8);
+        offerStonecuttingRecipe(exporter,RecipeCategory.BUILDING_BLOCKS,stairs,bricks,1);
+        offerStonecuttingRecipe(exporter,RecipeCategory.BUILDING_BLOCKS,slab,bricks,2);
+        offerStonecuttingRecipe(exporter,RecipeCategory.BUILDING_BLOCKS,wall,bricks,1);
     }
 
     private void AddSmeltAndBlastRecipe(List<ItemConvertible> input, ItemConvertible output, float xp, int smeltTime, int blastTime){

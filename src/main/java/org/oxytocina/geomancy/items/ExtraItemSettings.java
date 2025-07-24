@@ -11,6 +11,7 @@ public class ExtraItemSettings {
 
     public static final ArrayList<Item> GeneratedModel = new ArrayList<Item>();
     public static final ArrayList<Item> HandheldModel = new ArrayList<Item>();
+    public static final ArrayList<Item> WallModel = new ArrayList<Item>();
     public static final ArrayList<JewelryItem> JewelryModel = new ArrayList<JewelryItem>();
     public static final ArrayList<Item> ItemsInGroup = new ArrayList<Item>();
 
@@ -44,6 +45,7 @@ public class ExtraItemSettings {
             case Generated:GeneratedModel.add(item);break;
             case Handheld:HandheldModel.add(item);break;
             case Jewelry:JewelryModel.add((JewelryItem) item);break;
+            case Wall:WallModel.add(item);break;
             default: break;
         }
 
@@ -56,6 +58,7 @@ public class ExtraItemSettings {
         Generated,
         Handheld,
         Jewelry,
+        Wall,
         Custom
     }
 }

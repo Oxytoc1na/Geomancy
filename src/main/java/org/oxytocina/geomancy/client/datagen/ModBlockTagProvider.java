@@ -12,6 +12,7 @@ import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.blocks.ExtraBlockSettings;
 import org.oxytocina.geomancy.blocks.ModBlocks;
+import static org.oxytocina.geomancy.registries.ModBlockTags.*;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -23,6 +24,8 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
     @Override
     protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
 
+
+
         // required tools
         var builder = getOrCreateTagBuilder(PICKAXE_MINEABLES).setReplace(false);
         for(Block b : ExtraBlockSettings.ToolableBlock_Pickaxe) builder.add(b);
@@ -32,6 +35,12 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
 
         builder = getOrCreateTagBuilder(SHOVEL_MINEABLES).setReplace(false);
         for(Block b : ExtraBlockSettings.ToolableBlock_Shovel) builder.add(b);
+
+        // walls
+        builder = getOrCreateTagBuilder(WALLS).setReplace(false);
+        for(Block b : ExtraBlockSettings.WallBlocks.keySet()){
+            builder.add(b);
+        }
 
         // mining levels
         var levelbuilder_stone = getOrCreateTagBuilder(MININGLEVEL_STONE).setReplace(false);
@@ -48,11 +57,5 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
         }
     }
 
-    public static final TagKey<Block> PICKAXE_MINEABLES = TagKey.of(RegistryKeys.BLOCK, Identifier.of(Identifier.DEFAULT_NAMESPACE, "mineable/pickaxe"));
-    public static final TagKey<Block> AXE_MINEABLES = TagKey.of(RegistryKeys.BLOCK, Identifier.of(Identifier.DEFAULT_NAMESPACE, "mineable/axe"));
-    public static final TagKey<Block> SHOVEL_MINEABLES = TagKey.of(RegistryKeys.BLOCK, Identifier.of(Identifier.DEFAULT_NAMESPACE, "mineable/shovel"));
 
-    public static final TagKey<Block> MININGLEVEL_STONE = TagKey.of(RegistryKeys.BLOCK, Identifier.of(Identifier.DEFAULT_NAMESPACE, "needs_stone_tool"));
-    public static final TagKey<Block> MININGLEVEL_IRON = TagKey.of(RegistryKeys.BLOCK, Identifier.of(Identifier.DEFAULT_NAMESPACE, "needs_iron_tool"));
-    public static final TagKey<Block> MININGLEVEL_DIAMOND = TagKey.of(RegistryKeys.BLOCK, Identifier.of(Identifier.DEFAULT_NAMESPACE, "needs_diamond_tool"));
 }

@@ -1,9 +1,11 @@
 package org.oxytocina.geomancy.blocks;
 
 
+import it.unimi.dsi.fastutil.Hash;
 import net.minecraft.block.Block;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.StairsBlock;
+import net.minecraft.block.WallBlock;
 import net.minecraft.util.Pair;
 
 import java.util.ArrayList;
@@ -11,6 +13,8 @@ import java.util.Dictionary;
 import java.util.HashMap;
 
 public class ExtraBlockSettings {
+
+    public static final HashMap<Block,ExtraBlockSettings> logged = new HashMap<>();
 
     public static final ArrayList<Block> ToolableBlock_Pickaxe = new ArrayList<Block>();
     public static final ArrayList<Block> ToolableBlock_Axe = new ArrayList<Block>();
@@ -20,6 +24,7 @@ public class ExtraBlockSettings {
     public static final ArrayList<Block> SimpleCubeBlocks = new ArrayList<Block>();
     public static final HashMap<StairsBlock,Block> StairsBlocks = new HashMap<>();
     public static final HashMap<SlabBlock,Block> SlabBlocks = new HashMap<>();
+    public static final HashMap<WallBlock,Block> WallBlocks = new HashMap<>();
 
     public static final ArrayList<Block> RegularDropBlocks = new ArrayList<Block>();
     public static final HashMap<Block,Integer> VariantCubeBlocks = new HashMap<Block,Integer>();
@@ -48,6 +53,24 @@ public class ExtraBlockSettings {
 
     }
 
+    public ExtraBlockSettings copy(){
+        ExtraBlockSettings res = new ExtraBlockSettings();
+        res.block=block;
+        res.variantBaseBlock=variantBaseBlock;
+        res.pickaxe=pickaxe;
+        res.axe=axe;
+        res.shovel=shovel;
+        res.shouldRegisterItem=shouldRegisterItem;
+        res.shouldAddItemToGroup=shouldAddItemToGroup;
+        res.simpleCubeModel=simpleCubeModel;
+        res.regularDrop=regularDrop;
+        res.miningLevel=miningLevel;
+        res.textureVariants=textureVariants;
+        res.variantCube=variantCube;
+        res.variantCubeColumn=variantCubeColumn;
+        return res;
+    }
+
     public static ExtraBlockSettings create(){
         return new ExtraBlockSettings();
     }
@@ -70,6 +93,7 @@ public class ExtraBlockSettings {
     public ExtraBlockSettings notRegularDrop() { regularDrop = false; return this; }
     public ExtraBlockSettings stairs(Block base) { variantBaseBlock = base; return notSimpleCube(); }
     public ExtraBlockSettings slab(Block base) { variantBaseBlock = base; return notSimpleCube(); }
+    public ExtraBlockSettings wall(Block base) { variantBaseBlock = base; return notSimpleCube(); }
 
     public void apply(){
         if(pickaxe) ToolableBlock_Pickaxe.add(block);
@@ -80,6 +104,8 @@ public class ExtraBlockSettings {
         {StairsBlocks.put(sb,variantBaseBlock); simpleCubeModel=false;}
         if(block instanceof SlabBlock sb)
         {SlabBlocks.put(sb,variantBaseBlock); simpleCubeModel=false;}
+        if(block instanceof WallBlock sb)
+        {WallBlocks.put(sb,variantBaseBlock); simpleCubeModel=false;}
 
         if(shouldAddItemToGroup)
             BlocksInGroup.add(block);
@@ -94,5 +120,10 @@ public class ExtraBlockSettings {
             RegularDropBlocks.add(block);
 
         BlockMiningLevels.put(block,miningLevel);
+        logged.put(block,this);
+    }
+
+    public static ExtraBlockSettings copyFrom(Block block){
+        return logged.get(block);
     }
 }
