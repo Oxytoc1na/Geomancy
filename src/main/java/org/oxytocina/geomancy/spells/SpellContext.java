@@ -10,9 +10,12 @@ public class SpellContext {
     public ItemStack casterItem;
     public ItemStack spellStorage;
     public float availableSoul;
+    public float soulCostMultiplier = 1;
     public Stage stage;
     public boolean debugging = false;
     public int depthLimit = 100;
+    public int baseDepth = 0;
+    public int highestRecordedDepth = 0;
     public boolean depthLimitReached = false;
     public boolean couldntAffordSomething = false;
 
@@ -22,12 +25,19 @@ public class SpellContext {
     public SpellBlockResult referenceResult = SpellBlockResult.empty();
     public SpellBlockArgs internalVars;
 
-    public SpellContext(LivingEntity caster, ItemStack casterItem, ItemStack spellStorage, float availableSoul){
+    public SpellContext(
+            LivingEntity caster,
+            ItemStack casterItem,
+            ItemStack spellStorage,
+            float availableSoul,
+            float soulCostMultiplier
+    ){
         this.caster = caster;
         this.casterItem=casterItem;
         this.spellStorage=spellStorage;
         this.availableSoul=availableSoul;
         this.stage = Stage.PreInit;
+        this.soulCostMultiplier=soulCostMultiplier;
     }
 
     public boolean tryConsumeSoul(float amount){
@@ -65,10 +75,11 @@ public class SpellContext {
     }
 
     public SpellContext createReferenced(SpellComponent comp){
-        SpellContext res = new SpellContext(caster,casterItem,spellStorage,availableSoul);
+        SpellContext res = new SpellContext(caster,casterItem,spellStorage,availableSoul,soulCostMultiplier);
         res.parentCall = this;
         res.referenceCallingFrom = comp;
         res.internalVars=new SpellBlockArgs();
+        res.baseDepth = highestRecordedDepth;
         return res;
     }
 

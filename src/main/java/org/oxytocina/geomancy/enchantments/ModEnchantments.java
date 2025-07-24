@@ -15,6 +15,7 @@ public class ModEnchantments {
     public static final SkillfulEnchantment SKILLFUL = (SkillfulEnchantment) register("skillful",new SkillfulEnchantment());
     public static final MightyEnchantment MIGHTY = (MightyEnchantment) register("mighty",new MightyEnchantment());
     public static final BrillianceEnchantment BRILLIANCE = (BrillianceEnchantment) register("brilliance",new BrillianceEnchantment());
+    public static final SoulSaverEnchantment SOUL_SAVER = (SoulSaverEnchantment) register("soul_saver",new SoulSaverEnchantment());
 
     public static void register(){
 

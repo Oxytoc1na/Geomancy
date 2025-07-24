@@ -22,6 +22,9 @@ public class SpellSignal {
     public UUID uuidValue;
     public Vec3d vectorValue;
 
+    // prevent endless loops
+    public int depth = 0;
+
     public SpellSignal(Type type, String name, float numberValue, String textValue, UUID uuidValue,Vec3d vector){
         this.type=type;
         this.name=name;
@@ -120,6 +123,14 @@ public class SpellSignal {
 
     public Text toText(){
         return Text.translatable("geomancy.spellmaker.types."+type.toString().toLowerCase()).formatted(Formatting.DARK_AQUA).append(Text.literal(" "+name).formatted(Formatting.GRAY));
+    }
+
+    public int getDepth() {
+        return depth;
+    }
+
+    public void setDepth(int depth){
+        this.depth=depth;
     }
 
     public enum Type{

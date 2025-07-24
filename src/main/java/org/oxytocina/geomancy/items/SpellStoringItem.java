@@ -56,7 +56,7 @@ public class SpellStoringItem extends Item {
         if(!Nbt.contains("spell", NbtElement.COMPOUND_TYPE)) return null;
         var subNbt = Nbt.getCompound("spell");
 
-        return new SpellGrid(subNbt);
+        return new SpellGrid(stack,subNbt);
     }
 
     public static void writeGrid(ItemStack stack,SpellGrid grid){

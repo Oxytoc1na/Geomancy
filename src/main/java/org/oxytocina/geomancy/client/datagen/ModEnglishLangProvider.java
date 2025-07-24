@@ -120,6 +120,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.spells.debug.broke","Couldn't afford spell %1$s. Cost: %2$f, available: %3$f");
             add("MODID.spells.debug.wrongsignal","Component %1$s received wrong signal type. Got: %2$s, expected: %3$s");
             add("MODID.spells.debug.nosuchfunction","Component %1$s referenced non-existing spell %2$s");
+            add("MODID.spells.debug.depthlimit","Component %1$s: Depth limit reached!");
             add("MODID.caster.nospells","No spells installed");
         }
 
@@ -283,6 +284,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         add("enchantment.MODID.skillful"    , "Skillful");
         add("enchantment.MODID.mighty"      , "Mighty");
         add("enchantment.MODID.brilliance"  , "Brilliance");
+        add("enchantment.MODID.soul_saver"  , "Soul Saver");
 
         // damage types
         add("death.attack.geomancy.duplicate_trinkets", "%1$s felt their own hubris");

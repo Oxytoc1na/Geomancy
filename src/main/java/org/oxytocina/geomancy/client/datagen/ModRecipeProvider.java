@@ -168,40 +168,45 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         conditionsFromItem(ModItems.EMPTY_ARTIFACT));
             }
 
-            // small
-            AddShapedSmitheryRecipe(new String[]{
-                            " t ",
-                            " m ",
-                            " g "}
-                    ,new SPatKey[]{
-                            new SPatKey("t",SmithingIngredient.ofItems(1,1,ModItems.TITANIUM_INGOT)),
-                            new SPatKey("m",SmithingIngredient.ofItems(1,1,ModItems.MITHRIL_INGOT)),
-                            new SPatKey("g",SmithingIngredient.ofItems(1,1,Items.GOLD_INGOT)),
-                    },
-                    ModItems.SPELLSTORAGE_SMALL,1,100,12,conditionsFromItem(ModItems.MITHRIL_INGOT));
+            // spell storage
+            {
+                // small
+                AddShapedSmitheryRecipe(new String[]{
+                                " t ",
+                                " m ",
+                                " g "}
+                        ,new SPatKey[]{
+                                new SPatKey("t",SmithingIngredient.ofItems(1,1,ModItems.TITANIUM_INGOT)),
+                                new SPatKey("m",SmithingIngredient.ofItems(1,1,ModItems.MITHRIL_INGOT)),
+                                new SPatKey("g",SmithingIngredient.ofItems(1,1,Items.GOLD_INGOT)),
+                        },
+                        ModItems.SPELLSTORAGE_SMALL,1,100,12,conditionsFromItem(ModItems.MITHRIL_INGOT));
 
-            // medium
-            AddShapedSmitheryRecipe(new String[]{
-                            " m ",
-                            " o ",
-                            " g "}
-                    ,new SPatKey[]{
-                            new SPatKey("m",SmithingIngredient.ofItems(1,1,ModItems.MITHRIL_INGOT)),
-                            new SPatKey("o",SmithingIngredient.ofItems(1,1,ModItems.OCTANGULITE_INGOT)),
-                            new SPatKey("g",SmithingIngredient.ofItems(1,1,Items.GOLD_INGOT)),
-                    },
-                    ModItems.SPELLSTORAGE_MEDIUM,1,200,15,conditionsFromItem(ModItems.OCTANGULITE_INGOT));
+                // medium
+                AddShapedSmitheryRecipe(new String[]{
+                                " m ",
+                                " o ",
+                                " g "}
+                        ,new SPatKey[]{
+                                new SPatKey("m",SmithingIngredient.ofItems(1,1,ModItems.MITHRIL_INGOT)),
+                                new SPatKey("o",SmithingIngredient.ofItems(1,1,ModItems.OCTANGULITE_INGOT)),
+                                new SPatKey("g",SmithingIngredient.ofItems(1,1,Items.GOLD_INGOT)),
+                        },
+                        ModItems.SPELLSTORAGE_MEDIUM,1,200,15,conditionsFromItem(ModItems.OCTANGULITE_INGOT));
 
-            // medium
-            AddShapedSmitheryRecipe(new String[]{
-                            " o ",
-                            " o ",
-                            " g "}
-                    ,new SPatKey[]{
-                            new SPatKey("o",SmithingIngredient.ofItems(1,1,ModItems.OCTANGULITE_INGOT)),
-                            new SPatKey("g",SmithingIngredient.ofItems(1,1,Items.GOLD_INGOT)),
-                    },
-                    ModItems.SPELLSTORAGE_LARGE,1,300,20,conditionsFromItem(ModItems.OCTANGULITE_INGOT));
+                // large
+                AddShapedSmitheryRecipe(new String[]{
+                                " o ",
+                                " o ",
+                                " g "}
+                        ,new SPatKey[]{
+                                new SPatKey("o",SmithingIngredient.ofItems(1,1,ModItems.OCTANGULITE_INGOT)),
+                                new SPatKey("g",SmithingIngredient.ofItems(1,1,Items.GOLD_INGOT)),
+                        },
+                        ModItems.SPELLSTORAGE_LARGE,1,300,20,conditionsFromItem(ModItems.OCTANGULITE_INGOT));
+
+            }
+
 
 
             // spellcomponents
@@ -348,6 +353,18 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.RED_BED),
                     }).toList(),SpellBlocks.VECTOR_ENTITYSPAWN,true);
+
+                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,baseIngot),
+                            SmithingIngredient.ofItems(1,1,Items.ENDER_EYE),
+                    }).toList(),SpellBlocks.RAYCAST_POS,true);
+
+                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,baseIngot),
+                            SmithingIngredient.ofItems(1,1,Items.SLIME_BALL),
+                    }).toList(),SpellBlocks.RAYCAST_DIR,true);
                 }
 
                 // effectors
@@ -376,6 +393,24 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.FIRE_CHARGE),
                     }).toList(),SpellBlocks.FIREBALL,true);
+
+                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,baseIngot),
+                            SmithingIngredient.ofItems(1,1,Items.ENDER_PEARL),
+                    }).toList(),SpellBlocks.TELEPORT,true);
+
+                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,baseIngot),
+                            SmithingIngredient.ofItems(1,1,Items.CHORUS_FLOWER),
+                    }).toList(),SpellBlocks.DIMHOP,true);
+
+                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,baseIngot),
+                            SmithingIngredient.ofItems(1,1,Items.FIREWORK_ROCKET),
+                    }).toList(),SpellBlocks.PUSH,true);
                 }
 
                 // reference

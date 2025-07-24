@@ -111,6 +111,12 @@ public class SpellComponent {
         }
     }
 
+    public void pushSignals(SpellBlockResult res){
+        if(res.depth>context.depthLimit) return;
+        res.refreshSignalDepths();
+        pushSignals(res.vars);
+    }
+
     public void pushSignal(String dir, SpellSignal signal){
         if(!hasNeighbor(dir)) return; // no neighbor to push to
         getNeighbor(dir).tryAcceptSignalFrom(dir,signal);
@@ -121,6 +127,19 @@ public class SpellComponent {
 
         HashMap<String,SpellSignal> args = new HashMap<>();
         args.putAll(this.receivedSignals);
+
+        // prevent endless loops
+        int highestSignalDepth = context.baseDepth;
+        for(var sig : this.receivedSignals.values())
+            if(sig.getDepth() > highestSignalDepth)
+                highestSignalDepth = sig.getDepth();
+        context.highestRecordedDepth = Math.max(context.highestRecordedDepth,highestSignalDepth);
+
+        if(highestSignalDepth>context.depthLimit){
+            SpellBlocks.tryLogDebugDepthLimitReached(this);
+            return;
+        }
+
         for(var param : configuredParameters.values())
         {
             var paramSig = param.getSignal();
@@ -129,7 +148,7 @@ public class SpellComponent {
 
         var blockArgs = new SpellBlockArgs(args);
         var result = function.run(this,blockArgs);
-        result.depth = blockArgs.depth+1;
+        result.depth = highestSignalDepth+1;
 
         for (int i = 0; i < result.iterations; i++) {
             var iterationResult = result.clone();
@@ -141,6 +160,7 @@ public class SpellComponent {
             }
 
             iterationResult.add(result.iterationVarName,i);
+            iterationResult.refreshSignalDepths();
             pushSignals(iterationResult.vars);
         }
         this.receivedSignals.clear();
@@ -148,6 +168,7 @@ public class SpellComponent {
 
     // check if all required signals have been received
     public boolean canExecute(){
+        if(context==null) return false;
         for(var varName : function.inputs.keySet()){
             if(!receivedSignals.containsKey(varName)) return false;
             var varObj = function.inputs.get(varName);

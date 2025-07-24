@@ -62,6 +62,12 @@ public class SpellBlockResult {
         SpellBlockResult res = new SpellBlockResult();
         res.vars.putAll(vars);
         res.iterationVarName=iterationVarName;
+        res.depth=depth;
         return res;
+    }
+
+    public void refreshSignalDepths() {
+        for(var sig : vars.values())
+            sig.setDepth(depth);
     }
 }

@@ -173,8 +173,9 @@ public class SpellBlocks {
                         if(!component.castClearedData.containsKey("prevent")) return;
 
                         SpellBlockResult res = new SpellBlockResult();
+                        res.depth=component.context.highestRecordedDepth;
                         res.add(SpellSignal.createBoolean(true).named("signal"));
-                        component.pushSignals(res.vars);
+                        component.pushSignals(res);
                     })
                     .sideConfigGetter((comp)->{
                         SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
@@ -890,23 +891,27 @@ public class SpellBlocks {
         return hit;
     }
 
+    private static void logDebug(LivingEntity player, Text text){
+        if(player != null)
+        {
+            World world = player.getWorld();
+            if(world instanceof ServerWorld){
+                if(player instanceof ServerPlayerEntity p2)
+                    p2.sendMessage(text);
+            }
+            else if(world instanceof ClientWorld){
+                if(player instanceof ClientPlayerEntity p3)
+                    p3.sendMessage(text);
+            }
+        }
+    }
+
     private static void tryLogDebug(SpellComponent comp, Object... args){
         if(!comp.context.debugging) return;
 
         var msg = Text.translatable("geomancy.spells.debug.error",comp.function.identifier.getPath(),args);
 
-        if(comp.context.caster != null)
-        {
-            World world = comp.context.caster.getWorld();
-            if(world instanceof ServerWorld){
-                if(comp.context.caster instanceof ServerPlayerEntity player)
-                    player.sendMessage(msg);
-            }
-            else if(world instanceof ClientWorld){
-                if(comp.context.caster instanceof ClientPlayerEntity player)
-                    player.sendMessage(msg);
-            }
-        }
+        logDebug(comp.context.caster,msg);
     }
 
     public static void tryLogDebugWrongSignal(SpellComponent comp, SpellSignal.Type got, SpellSignal.Type expected){
@@ -918,18 +923,17 @@ public class SpellBlocks {
                 Text.translatable("geomancy.spellmaker.types."+expected.toString().toLowerCase()).formatted(Formatting.DARK_AQUA)
                 );
 
-        if(comp.context.caster != null)
-        {
-            World world = comp.context.caster.getWorld();
-            if(world instanceof ServerWorld){
-                if(comp.context.caster instanceof ServerPlayerEntity player)
-                    player.sendMessage(msg);
-            }
-            else if(world instanceof ClientWorld){
-                if(comp.context.caster instanceof ClientPlayerEntity player)
-                    player.sendMessage(msg);
-            }
-        }
+        logDebug(comp.context.caster,msg);
+    }
+
+    public static void tryLogDebugDepthLimitReached(SpellComponent comp){
+        if(!comp.context.debugging) return;
+
+        var msg = Text.translatable("geomancy.spells.debug.depthlimit",
+                Text.translatable("geomancy.spellcomponent."+comp.function.identifier.getPath()).formatted(Formatting.DARK_AQUA)
+        );
+
+        logDebug(comp.context.caster,msg);
     }
 
     private static void tryLogDebugBroke(SpellComponent comp,float cost){
@@ -939,18 +943,7 @@ public class SpellBlocks {
                 Text.translatable("geomancy.spellcomponent."+comp.function.identifier.getPath()).formatted(Formatting.DARK_AQUA)
                 ,cost,comp.context.availableSoul);
 
-        if(comp.context.caster != null)
-        {
-            World world = comp.context.caster.getWorld();
-            if(world instanceof ServerWorld){
-                if(comp.context.caster instanceof ServerPlayerEntity player)
-                    player.sendMessage(msg);
-            }
-            else if(world instanceof ClientWorld){
-                if(comp.context.caster instanceof ClientPlayerEntity player)
-                    player.sendMessage(msg);
-            }
-        }
+        logDebug(comp.context.caster,msg);
     }
 
     private static void tryLogDebugNoSuchFunction(SpellComponent comp, String spellname){
@@ -960,18 +953,7 @@ public class SpellBlocks {
                 Text.translatable("geomancy.spellcomponent."+comp.function.identifier.getPath()).formatted(Formatting.DARK_AQUA)
                 ,spellname);
 
-        if(comp.context.caster != null)
-        {
-            World world = comp.context.caster.getWorld();
-            if(world instanceof ServerWorld){
-                if(comp.context.caster instanceof ServerPlayerEntity player)
-                    player.sendMessage(msg);
-            }
-            else if(world instanceof ClientWorld){
-                if(comp.context.caster instanceof ClientPlayerEntity player)
-                    player.sendMessage(msg);
-            }
-        }
+        logDebug(comp.context.caster,msg);
     }
 
     private static boolean trySpendSoul(SpellComponent comp, float amount){

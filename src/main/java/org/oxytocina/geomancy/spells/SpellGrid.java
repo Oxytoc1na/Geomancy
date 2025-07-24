@@ -8,6 +8,7 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import org.joml.Vector2i;
+import org.oxytocina.geomancy.Geomancy;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,8 +19,9 @@ public class SpellGrid {
     public int height;
     public String name;
     public HashMap<Vector2i,SpellComponent> components;
+    public float soulCostMultiplier = 1;
 
-    public SpellGrid(NbtCompound nbt){
+    public SpellGrid(ItemStack stack, NbtCompound nbt){
         this.components=new HashMap<>();
         readNbt(nbt);
     }
@@ -51,17 +53,25 @@ public class SpellGrid {
     }
 
     public void run(ItemStack casterItem, ItemStack containerItem, LivingEntity casterEntity){
-        SpellContext context = new SpellContext(casterEntity,casterItem,containerItem,0);
+        SpellContext context = new SpellContext(casterEntity,casterItem,containerItem,0,soulCostMultiplier);
         context.refreshAvailableSoul();
-        for (var comp : components.values())
-            comp.preRunSetup(context);
 
-        context.stage = SpellContext.Stage.Run;
-        for (var comp : components.values())
-            comp.run();
+        try{
+            for (var comp : components.values())
+                comp.preRunSetup(context);
 
-        for (var comp : components.values())
-            comp.postRun();
+            context.stage = SpellContext.Stage.Run;
+            for (var comp : components.values())
+                comp.run();
+
+            for (var comp : components.values())
+                comp.postRun();
+        }
+        catch(Exception ignored){
+            Geomancy.logError("AAAAA!!!! Spells threw an exception! DEBUG ME!");
+        }
+
+
     }
 
     public boolean tryRemoveComponent(Vector2i position){
