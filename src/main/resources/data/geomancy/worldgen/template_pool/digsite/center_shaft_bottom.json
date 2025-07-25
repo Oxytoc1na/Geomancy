@@ -1,0 +1,14 @@
+{
+  "fallback": "geomancy:digsite/center_shaft_bottom",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "geomancy:digsite/center_shaft_bottom",
+        "projection": "rigid",
+        "processors": "geomancy:digsite_degrade"
+      }
+    }
+  ]
+}

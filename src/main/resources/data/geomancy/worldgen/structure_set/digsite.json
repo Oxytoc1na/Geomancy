@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "geomancy:digsite",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 30,
+    "separation": 10,
+    "salt": 57948123
+  }
+}

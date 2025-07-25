@@ -341,7 +341,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addAdvancement(":milestones/milestone_smithery","The Craft of the Ancients","Obtain the smithery");
 
             addAdvancement(":location/ancient_hall","Ancient","Discover the once prosperous remains of the ancients");
-            addAdvancement(":location/octangula","Geometric","Discover the discarded remains of something else");
+            addAdvancement(":location/octangula","Geometric","Discover the vessel of something else");
+            addAdvancement(":location/digsite","Imposing","Discover the discarded remains of something else");
 
             addAdvancement(".octangulite.get_spellcomponent","Building Blocks","Discover the foundation of soulcasting");
         }

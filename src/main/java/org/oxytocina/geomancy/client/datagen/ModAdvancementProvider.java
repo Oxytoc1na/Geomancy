@@ -72,6 +72,8 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
 
         // structures visited
         Advancement structure_ancient_hall = AddLocationAdvancement("ancient_hall","ancient_hall",Items.GILDED_BLACKSTONE,main);
+        Advancement structure_octangula = AddLocationAdvancement("octangula","octangula",ModBlocks.CUT_TITANIUM,main);
+        Advancement structure_digsite = AddLocationAdvancement("digsite","digsite",ModBlocks.CUT_LEAD,main);
 
         // obtained spell component advancements
         Advancement got_spellcomponent = AddGetItemAdvancement(ModItems.SPELLCOMPONENT,"spellcomponent",ModItems.SPELLCOMPONENT,"octangulite",AdvancementFrame.TASK,true,false,main);
