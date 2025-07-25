@@ -40,6 +40,7 @@ public class ExtraBlockSettings {
     private boolean shovel = false;
 
     public boolean shouldRegisterItem = true;
+    public boolean shouldGenerateModels = true;
     private boolean shouldAddItemToGroup = true;
     private boolean simpleCubeModel = true;
     private boolean regularDrop = true;
@@ -68,6 +69,7 @@ public class ExtraBlockSettings {
         res.textureVariants=textureVariants;
         res.variantCube=variantCube;
         res.variantCubeColumn=variantCubeColumn;
+        res.shouldGenerateModels=shouldGenerateModels;
         return res;
     }
 
@@ -94,6 +96,7 @@ public class ExtraBlockSettings {
     public ExtraBlockSettings stairs(Block base) { variantBaseBlock = base; return notSimpleCube(); }
     public ExtraBlockSettings slab(Block base) { variantBaseBlock = base; return notSimpleCube(); }
     public ExtraBlockSettings wall(Block base) { variantBaseBlock = base; return notSimpleCube(); }
+    public ExtraBlockSettings noModels() { shouldGenerateModels=false; return this; }
 
     public void apply(){
         if(pickaxe) ToolableBlock_Pickaxe.add(block);

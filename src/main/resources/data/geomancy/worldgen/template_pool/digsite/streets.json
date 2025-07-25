@@ -1,0 +1,59 @@
+{
+  "fallback": "geomancy:digsite/fallback_streets",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "geomancy:digsite/streets/straight_decor",
+        "projection": "terrain_matching",
+        "processors": "geomancy:digsite_degrade"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "geomancy:digsite/streets/straight_building",
+        "projection": "terrain_matching",
+        "processors": "geomancy:digsite_degrade"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "geomancy:digsite/streets/bend_decor",
+        "projection": "terrain_matching",
+        "processors": "geomancy:digsite_degrade"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "geomancy:digsite/streets/t_decor",
+        "projection": "terrain_matching",
+        "processors": "geomancy:digsite_degrade"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "geomancy:digsite/streets/t_building",
+        "projection": "terrain_matching",
+        "processors": "geomancy:digsite_degrade"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "geomancy:digsite/streets/cross_decor",
+        "projection": "terrain_matching",
+        "processors": "geomancy:digsite_degrade"
+      }
+    }
+  ]
+}

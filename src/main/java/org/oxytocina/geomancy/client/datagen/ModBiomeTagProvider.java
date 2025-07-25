@@ -56,6 +56,28 @@ public class ModBiomeTagProvider extends FabricTagProvider<Biome> {
                         )
                 .setReplace(true);
 
+        getOrCreateTagBuilder(HAS_DIGSITE)
+                .add(
+                        BiomeKeys.SWAMP,
+                        BiomeKeys.MANGROVE_SWAMP,
+                        BiomeKeys.BAMBOO_JUNGLE,
+                        BiomeKeys.BIRCH_FOREST,
+                        BiomeKeys.CHERRY_GROVE,
+                        BiomeKeys.DARK_FOREST,
+                        BiomeKeys.FLOWER_FOREST,
+                        BiomeKeys.FOREST,
+                        BiomeKeys.GROVE,
+                        BiomeKeys.JUNGLE,
+                        BiomeKeys.MEADOW,
+                        BiomeKeys.OLD_GROWTH_BIRCH_FOREST,
+                        BiomeKeys.OLD_GROWTH_PINE_TAIGA,
+                        BiomeKeys.OLD_GROWTH_SPRUCE_TAIGA,
+                        BiomeKeys.PLAINS,
+                        BiomeKeys.SPARSE_JUNGLE,
+                        BiomeKeys.SUNFLOWER_PLAINS
+                )
+                .setReplace(true);
+
         getOrCreateTagBuilder(VPB_LOWER)
                 .forceAddTag(BiomeTags.IS_END)
                 .setReplace(true);

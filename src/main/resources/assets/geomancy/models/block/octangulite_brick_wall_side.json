@@ -1,0 +1,20 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "1": "geomancy:block/octangulite_bricks",
+    "particle": "geomancy:block/octangulite_bricks"
+  },
+  "elements": [
+    { "from": [ 5, 0, 0 ],
+      "to": [ 11, 14, 8 ],
+      "faces": {
+        "down":  { "uv": [ 0, 5, 8, 11 ], "texture": "#1", "tintindex": 0 },
+        "up":    { "uv": [ 0, 5, 8, 11 ], "texture": "#1", "tintindex": 0 },
+        "north": { "uv": [ 0, 0, 8, 14 ], "texture": "#1", "tintindex": 0, "cullface": "north"},
+        "south": { "uv": [ 0, 0, 8, 14 ], "texture": "#1", "tintindex": 0, "cullface": "south"},
+        "west":  { "uv": [ 0, 0, 8, 14 ], "texture": "#1", "tintindex": 0},
+        "east":  { "uv": [ 0, 0, 8, 14 ], "texture": "#1", "tintindex": 0}
+      }
+    }
+  ]
+}

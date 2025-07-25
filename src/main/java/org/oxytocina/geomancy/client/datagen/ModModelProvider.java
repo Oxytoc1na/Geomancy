@@ -60,6 +60,9 @@ public class ModModelProvider extends FabricModelProvider {
                     id.withPrefixedPath("block/"),
                     id.withPrefixedPath("block/").withSuffixedPath("_outer"));
             blockStateModelGenerator.blockStateCollector.accept(sup);
+
+            if(!ExtraBlockSettings.logged.get((Block) b).shouldGenerateModels) continue;
+
             blockStateModelGenerator.createSubModel(b,"",Models.INNER_STAIRS,(identifier -> {
                 TextureMap res = new TextureMap();
                 res.put(TextureKey.BOTTOM,Geomancy.locate("block/"+baseBlockID.getPath()));
@@ -94,6 +97,9 @@ public class ModModelProvider extends FabricModelProvider {
                     id.withPrefixedPath("block/").withSuffixedPath("_top"),
                     baseBlockID.withPrefixedPath("block/"));
             blockStateModelGenerator.blockStateCollector.accept(sup);
+
+            if(!ExtraBlockSettings.logged.get((Block) b).shouldGenerateModels) continue;
+
             blockStateModelGenerator.createSubModel(b,"",Models.SLAB,(identifier -> {
                 TextureMap res = new TextureMap();
                 res.put(TextureKey.BOTTOM,Geomancy.locate("block/"+baseBlockID.getPath()));
@@ -120,6 +126,9 @@ public class ModModelProvider extends FabricModelProvider {
                     id.withPrefixedPath("block/").withSuffixedPath("_side"),
                     id.withPrefixedPath("block/").withSuffixedPath("_side_tall"));
             blockStateModelGenerator.blockStateCollector.accept(sup);
+
+            if(!ExtraBlockSettings.logged.get((Block) b).shouldGenerateModels) continue;
+
             blockStateModelGenerator.createSubModel(b,"",Models.TEMPLATE_WALL_POST,(identifier -> {
                 TextureMap res = new TextureMap();
                 res.put(TextureKey.WALL,Geomancy.locate("block/"+baseBlockID.getPath()));

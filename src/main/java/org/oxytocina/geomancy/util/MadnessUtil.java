@@ -128,6 +128,8 @@ public class MadnessUtil {
     }
 
     private static void tryWhisper(ServerPlayerEntity player) {
+        if(player.isCreative() || player.isDead()) return;
+
         float madness = getMadness(player);
         float ambientMadness = getAmbientMadness(player);
 
@@ -141,6 +143,8 @@ public class MadnessUtil {
     }
 
     private static void tryMadnessEffects(ServerPlayerEntity player) {
+        if(player.isCreative() || player.isDead()) return;
+
         float madness = getMadness(player);
         // effect chance asymptotically approaches 100%.
         // at 100, there is a 20% chance.
@@ -215,6 +219,8 @@ public class MadnessUtil {
     }
 
     private static boolean tickMadness(ServerPlayerEntity player){
+        if(player.isCreative() || player.isDead()) return false;
+
         boolean changed = false;
 
         float prevMadness = getMadness(player);

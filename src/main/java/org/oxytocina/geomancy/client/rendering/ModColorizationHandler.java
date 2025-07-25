@@ -21,7 +21,15 @@ public class ModColorizationHandler {
 
         ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> {
                     if (view == null || pos == null) {return 0xFFFFFFFF;} else {return octanguliteNoise(pos,tintIndex,0.03f);}
-                }, ModBlocks.RAW_OCTANGULITE_BLOCK,ModBlocks.OCTANGULITE_BLOCK);
+                },
+                ModBlocks.RAW_OCTANGULITE_BLOCK,
+                ModBlocks.OCTANGULITE_BLOCK,
+                ModBlocks.CUT_OCTANGULITE,
+                ModBlocks.OCTANGULITE_BRICKS,
+                ModBlocks.OCTANGULITE_BRICK_STAIRS,
+                ModBlocks.OCTANGULITE_BRICK_SLABS,
+                ModBlocks.OCTANGULITE_BRICK_WALL
+        );
         ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> {
             if (view == null || pos == null || tintIndex == 0) {return 0xFFFFFFFF;} else {return octanguliteNoise(pos,tintIndex,0.003f);}
         }, ModBlocks.OCTANGULITE_ORE,ModBlocks.DEEPSLATE_OCTANGULITE_ORE);
@@ -35,6 +43,11 @@ public class ModColorizationHandler {
         addOctanguliteItem(ModItems.OCTANGULITE_NUGGET,0.01F,true);
         addOctanguliteItem(ModBlocks.OCTANGULITE_BLOCK.asItem(),0.03F,false);
         addOctanguliteItem(ModBlocks.RAW_OCTANGULITE_BLOCK.asItem(),0.03F,false);
+        addOctanguliteItem(ModBlocks.CUT_OCTANGULITE.asItem(),0.03F,false);
+        addOctanguliteItem(ModBlocks.OCTANGULITE_BRICKS.asItem(),0.03F,false);
+        addOctanguliteItem(ModBlocks.OCTANGULITE_BRICK_STAIRS.asItem(),0.03F,false);
+        addOctanguliteItem(ModBlocks.OCTANGULITE_BRICK_SLABS.asItem(),0.03F,false);
+        addOctanguliteItem(ModBlocks.OCTANGULITE_BRICK_WALL.asItem(),0.03F,false);
 
         addOctanguliteOreItem(ModBlocks.OCTANGULITE_ORE.asItem(),0.003F,false);
         addOctanguliteOreItem(ModBlocks.DEEPSLATE_OCTANGULITE_ORE.asItem(),0.003F,false);

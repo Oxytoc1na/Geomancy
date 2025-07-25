@@ -246,6 +246,11 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("block.MODID.deepslate_mithril_ore" , "Deepslate Mithril Ore");
             add("block.MODID.raw_mithril_block"     , "Block of Raw Mithril");
             add("block.MODID.mithril_block"         , "Block of Mithril");
+            add("block.MODID.cut_mithril"           , "Cut Mithril");
+            add("block.MODID.mithril_bricks"        , "Mithril Bricks");
+            add("block.MODID.mithril_brick_stairs"  , "Mithril Brick Stairs");
+            add("block.MODID.mithril_brick_slab"    , "Mithril Brick Slab");
+            add("block.MODID.mithril_brick_wall"    , "Mithril Brick Wall");
 
             add("block.MODID.molten_gold"           , "Molten Gold");
             add("block.MODID.mithril_anvil"         , "Mithril Anvil");

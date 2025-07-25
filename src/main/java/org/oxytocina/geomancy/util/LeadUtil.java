@@ -121,6 +121,8 @@ public class LeadUtil {
     }
 
     private static void tryLeadEffects(ServerPlayerEntity player) {
+        if(player.isCreative() || player.isDead()) return;
+
         float poison = getPoisoning(player);
         // effect chance asymptotically approaches 100%.
         // at 100, there is a 20% chance.
@@ -214,6 +216,8 @@ public class LeadUtil {
     }
 
     private static boolean tickLeadPoisoning(ServerPlayerEntity player){
+        if(player.isCreative() || player.isDead()) return false;
+
         boolean changed = false;
 
         float prevPoisoning = getPoisoning(player);

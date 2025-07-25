@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "geomancy:block/octangulite_bricks",
+    "side": "geomancy:block/octangulite_bricks",
+    "top": "geomancy:block/octangulite_bricks"
+  }
+}

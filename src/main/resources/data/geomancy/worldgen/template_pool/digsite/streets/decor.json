@@ -1,0 +1,14 @@
+{
+  "fallback": "geomancy:digsite/fallback_streets",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "geomancy:digsite/decor/lamp",
+        "projection": "rigid",
+        "processors": "geomancy:digsite_degrade"
+      }
+    }
+  ]
+}
