@@ -233,10 +233,10 @@ public class MadnessUtil {
         final double g = 0.03;
         effectiveMaddeningSpeed = (float)Toolbox.log(1+g,effectiveMaddeningSpeed*g+1);
 
-        // slow poisoning down a lot
+        // slow maddening down a lot
         effectiveMaddeningSpeed *= 0.001f;
 
-        // prevents poisoning from climbing endlessly
+        // prevents maddening from climbing endlessly
         // healing is much less effective if you're still exposed
         final float lerpPerTick = 0.0001f / (1+effectiveMaddeningSpeed);
 

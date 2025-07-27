@@ -13,9 +13,11 @@ import org.oxytocina.geomancy.client.blocks.blockEntities.SpellmakerBlockEntityR
 import org.oxytocina.geomancy.client.blocks.blockEntities.SpellstorerBlockEntityRenderer;
 import org.oxytocina.geomancy.client.entity.ModEntityRenderers;
 import org.oxytocina.geomancy.client.event.ClientPlayerTickHandler;
+import org.oxytocina.geomancy.client.registries.ModModelLayers;
 import org.oxytocina.geomancy.client.rendering.ModBlockTransparency;
 import org.oxytocina.geomancy.client.rendering.ModColorizationHandler;
 import org.oxytocina.geomancy.client.rendering.ModModelPredicateProvider;
+import org.oxytocina.geomancy.client.rendering.armor.ModArmorRenderers;
 import org.oxytocina.geomancy.client.screen.ModScreenHandlers;
 import org.oxytocina.geomancy.client.screen.SmitheryScreen;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
@@ -41,6 +43,8 @@ public class GeomancyClient implements ClientModInitializer {
         ModFluids.registerClient();
         ModEntityRenderers.register();
         GeomancyIntegrationPacks.registerClient();
+        ModArmorRenderers.register();
+        ModModelLayers.register();
 
         ClientTickEvents.START_CLIENT_TICK.register(new ClientPlayerTickHandler());
 

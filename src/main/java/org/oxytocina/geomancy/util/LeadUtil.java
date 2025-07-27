@@ -169,7 +169,7 @@ public class LeadUtil {
         var picked = Toolbox.selectWeightedRandomIndex(pickedEffects,null);
         if(picked!=null){
             picked.getC().accept(player);
-            // trigger lead poisoning advancement
+            // TODO trigger lead poisoning advancement
         }
 
     }

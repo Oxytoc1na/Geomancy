@@ -291,6 +291,10 @@ public class ModColorizationHandler {
 
     public static int hsvToRgb(float hue, float saturation, float value) {
 
+        hue = Toolbox.clampF(hue,0,1);
+        saturation = Toolbox.clampF(saturation,0,1);
+        value = Toolbox.clampF(value,0,1);
+
         int h = (int)(hue * 6);
         float f = hue * 6 - h;
         float p = value * (1 - saturation);
