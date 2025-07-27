@@ -463,6 +463,13 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         AddToolBatch(MOLYBDENUM_INGOT,MOLYBDENUM_SWORD,MOLYBDENUM_SHOVEL,MOLYBDENUM_PICKAXE,MOLYBDENUM_AXE,MOLYBDENUM_HOE);
         AddToolBatch(OCTANGULITE_INGOT,OCTANGULITE_SWORD,OCTANGULITE_SHOVEL,OCTANGULITE_PICKAXE,OCTANGULITE_AXE,OCTANGULITE_HOE);
 
+        // armors
+        AddArmors(LEAD_INGOT,LEAD_BOOTS,LEAD_LEGGINGS,LEAD_CHESTPLATE,LEAD_HELMET);
+        AddArmors(TITANIUM_INGOT,TITANIUM_BOOTS,TITANIUM_LEGGINGS,TITANIUM_CHESTPLATE,TITANIUM_HELMET);
+        AddArmors(MITHRIL_INGOT,MITHRIL_BOOTS,MITHRIL_LEGGINGS,MITHRIL_CHESTPLATE,MITHRIL_HELMET);
+        AddArmors(MOLYBDENUM_INGOT,MOLYBDENUM_BOOTS,MOLYBDENUM_LEGGINGS,MOLYBDENUM_CHESTPLATE,MOLYBDENUM_HELMET);
+        AddArmors(OCTANGULITE_INGOT,OCTANGULITE_BOOTS,OCTANGULITE_LEGGINGS,OCTANGULITE_CHESTPLATE,OCTANGULITE_HELMET);
+
         // decorative blocks
 
         ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, ModBlocks.MOSSY_CUT_TITANIUM, 1).input(ModBlocks.CUT_TITANIUM).input(Items.VINE).group("mossify").criterion(hasItem(ModBlocks.CUT_TITANIUM), conditionsFromItem(ModBlocks.CUT_TITANIUM)).offerTo(exporter, convertBetween(ModBlocks.MOSSY_CUT_TITANIUM, ModBlocks.CUT_TITANIUM));
@@ -521,6 +528,27 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .pattern("##")
                 .pattern(" s")
                 .pattern(" s").criterion(hasItem(base), conditionsFromItem(base)).offerTo(exporter);
+    }
+
+    private void AddArmors(Item base, Item boots, Item leggings, Item chestplate, Item helmet) {
+        ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, boots, 1)
+                .input('#', base)
+                .pattern("# #")
+                .pattern("# #").criterion(hasItem(base), conditionsFromItem(base)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, leggings, 1)
+                .input('#', base)
+                .pattern("###")
+                .pattern("# #")
+                .pattern("# #").criterion(hasItem(base), conditionsFromItem(base)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, chestplate, 1)
+                .input('#', base)
+                .pattern("# #")
+                .pattern("###")
+                .pattern("###").criterion(hasItem(base), conditionsFromItem(base)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, helmet, 1)
+                .input('#', base)
+                .pattern("###")
+                .pattern("# #").criterion(hasItem(base), conditionsFromItem(base)).offerTo(exporter);
 
     }
 

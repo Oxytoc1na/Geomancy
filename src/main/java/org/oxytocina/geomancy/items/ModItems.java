@@ -19,13 +19,13 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.items.armor.materials.LeadArmorItem;
+import org.oxytocina.geomancy.items.armor.materials.ModArmorMaterials;
+import org.oxytocina.geomancy.items.armor.materials.OctanguliteArmorItem;
 import org.oxytocina.geomancy.items.tools.*;
 import org.oxytocina.geomancy.items.tools.materials.ModToolMaterials;
 import org.oxytocina.geomancy.entity.ExtraEntitySettings;
-import org.oxytocina.geomancy.items.artifacts.ArtifactItem;
-import org.oxytocina.geomancy.items.artifacts.ArtifactSettings;
-import org.oxytocina.geomancy.items.artifacts.GoldArtifact;
-import org.oxytocina.geomancy.items.artifacts.IronArtifact;
+import org.oxytocina.geomancy.items.artifacts.*;
 import org.oxytocina.geomancy.items.jewelry.*;
 import org.oxytocina.geomancy.loottables.ModLootTables;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
@@ -144,6 +144,11 @@ public class ModItems {
     public static final LeadPickaxeItem LEAD_PICKAXE = (LeadPickaxeItem) register("lead_pickaxe", new LeadPickaxeItem(ModToolMaterials.LEAD, 1, -2.8F, new Item.Settings(),1),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
     public static final LeadAxeItem LEAD_AXE = (LeadAxeItem) register("lead_axe", new LeadAxeItem(ModToolMaterials.LEAD, 7.0F, -3.2F, new Item.Settings(),1),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
     public static final LeadHoeItem LEAD_HOE = (LeadHoeItem) register("lead_hoe", new LeadHoeItem(ModToolMaterials.LEAD, -1, -2.0F, new Item.Settings(),1),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final LeadArmorItem LEAD_HELMET = (LeadArmorItem) register("lead_helmet", new LeadArmorItem(ModArmorMaterials.LEAD, net.minecraft.item.ArmorItem.Type.HELMET, new Item.Settings(),1));
+    public static final LeadArmorItem LEAD_CHESTPLATE = (LeadArmorItem) register("lead_chestplate", new LeadArmorItem(ModArmorMaterials.LEAD, net.minecraft.item.ArmorItem.Type.CHESTPLATE, new Item.Settings(),1));
+    public static final LeadArmorItem LEAD_LEGGINGS = (LeadArmorItem) register("lead_leggings", new LeadArmorItem(ModArmorMaterials.LEAD, net.minecraft.item.ArmorItem.Type.LEGGINGS, new Item.Settings(),1));
+    public static final LeadArmorItem LEAD_BOOTS = (LeadArmorItem) register("lead_boots", new LeadArmorItem(ModArmorMaterials.LEAD, net.minecraft.item.ArmorItem.Type.BOOTS, new Item.Settings(),1));
+
 
     // mithril
     public static final SwordItem MITHRIL_SWORD = (SwordItem) register("mithril_sword", new SwordItem(ModToolMaterials.MITHRIL, 3, -2.4F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
@@ -151,6 +156,10 @@ public class ModItems {
     public static final PickaxeItem MITHRIL_PICKAXE = (PickaxeItem) register("mithril_pickaxe", new PickaxeItem(ModToolMaterials.MITHRIL, 1, -2.8F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
     public static final AxeItem MITHRIL_AXE = (AxeItem) register("mithril_axe", new AxeItem(ModToolMaterials.MITHRIL, 7.0F, -3.2F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
     public static final HoeItem MITHRIL_HOE = (HoeItem) register("mithril_hoe", new HoeItem(ModToolMaterials.MITHRIL, -1, -2.0F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final ArmorItem MITHRIL_HELMET = (ArmorItem) register("mithril_helmet", new ArmorItem(ModArmorMaterials.MITHRIL, net.minecraft.item.ArmorItem.Type.HELMET, new Item.Settings()));
+    public static final ArmorItem MITHRIL_CHESTPLATE = (ArmorItem) register("mithril_chestplate", new ArmorItem(ModArmorMaterials.MITHRIL, net.minecraft.item.ArmorItem.Type.CHESTPLATE, new Item.Settings()));
+    public static final ArmorItem MITHRIL_LEGGINGS = (ArmorItem) register("mithril_leggings", new ArmorItem(ModArmorMaterials.MITHRIL, net.minecraft.item.ArmorItem.Type.LEGGINGS, new Item.Settings()));
+    public static final ArmorItem MITHRIL_BOOTS = (ArmorItem) register("mithril_boots", new ArmorItem(ModArmorMaterials.MITHRIL, net.minecraft.item.ArmorItem.Type.BOOTS, new Item.Settings()));
 
     // titanium
     public static final SwordItem TITANIUM_SWORD = (SwordItem) register("titanium_sword", new SwordItem(ModToolMaterials.TITANIUM, 3, -2.4F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
@@ -158,6 +167,10 @@ public class ModItems {
     public static final PickaxeItem TITANIUM_PICKAXE = (PickaxeItem) register("titanium_pickaxe", new PickaxeItem(ModToolMaterials.TITANIUM, 1, -2.8F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
     public static final AxeItem TITANIUM_AXE = (AxeItem) register("titanium_axe", new AxeItem(ModToolMaterials.TITANIUM, 7.0F, -3.2F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
     public static final HoeItem TITANIUM_HOE = (HoeItem) register("titanium_hoe", new HoeItem(ModToolMaterials.TITANIUM, -1, -2.0F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final ArmorItem TITANIUM_HELMET = (ArmorItem) register("titanium_helmet", new ArmorItem(ModArmorMaterials.TITANIUM, net.minecraft.item.ArmorItem.Type.HELMET, new Item.Settings()));
+    public static final ArmorItem TITANIUM_CHESTPLATE = (ArmorItem) register("titanium_chestplate", new ArmorItem(ModArmorMaterials.TITANIUM, net.minecraft.item.ArmorItem.Type.CHESTPLATE, new Item.Settings()));
+    public static final ArmorItem TITANIUM_LEGGINGS = (ArmorItem) register("titanium_leggings", new ArmorItem(ModArmorMaterials.TITANIUM, net.minecraft.item.ArmorItem.Type.LEGGINGS, new Item.Settings()));
+    public static final ArmorItem TITANIUM_BOOTS = (ArmorItem) register("titanium_boots", new ArmorItem(ModArmorMaterials.TITANIUM, net.minecraft.item.ArmorItem.Type.BOOTS, new Item.Settings()));
 
     // molybdenum
     public static final SwordItem MOLYBDENUM_SWORD = (SwordItem) register("molybdenum_sword", new SwordItem(ModToolMaterials.MOLYBDENUM, 3, -2.4F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
@@ -165,6 +178,10 @@ public class ModItems {
     public static final PickaxeItem MOLYBDENUM_PICKAXE = (PickaxeItem) register("molybdenum_pickaxe", new PickaxeItem(ModToolMaterials.MOLYBDENUM, 1, -2.8F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
     public static final AxeItem MOLYBDENUM_AXE = (AxeItem) register("molybdenum_axe", new AxeItem(ModToolMaterials.MOLYBDENUM, 7.0F, -3.2F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
     public static final HoeItem MOLYBDENUM_HOE = (HoeItem) register("molybdenum_hoe", new HoeItem(ModToolMaterials.MOLYBDENUM, -1, -2.0F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final ArmorItem MOLYBDENUM_HELMET = (ArmorItem) register("molybdenum_helmet", new ArmorItem(ModArmorMaterials.MOLYBDENUM, net.minecraft.item.ArmorItem.Type.HELMET, new Item.Settings()));
+    public static final ArmorItem MOLYBDENUM_CHESTPLATE = (ArmorItem) register("molybdenum_chestplate", new ArmorItem(ModArmorMaterials.MOLYBDENUM, net.minecraft.item.ArmorItem.Type.CHESTPLATE, new Item.Settings()));
+    public static final ArmorItem MOLYBDENUM_LEGGINGS = (ArmorItem) register("molybdenum_leggings", new ArmorItem(ModArmorMaterials.MOLYBDENUM, net.minecraft.item.ArmorItem.Type.LEGGINGS, new Item.Settings()));
+    public static final ArmorItem MOLYBDENUM_BOOTS = (ArmorItem) register("molybdenum_boots", new ArmorItem(ModArmorMaterials.MOLYBDENUM, net.minecraft.item.ArmorItem.Type.BOOTS, new Item.Settings()));
 
     // octangulite
     public static final OctanguliteSwordItem OCTANGULITE_SWORD = (OctanguliteSwordItem) register("octangulite_sword", new OctanguliteSwordItem(ModToolMaterials.OCTANGULITE, 3, -2.4F, new Item.Settings(),1),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom));
@@ -172,6 +189,10 @@ public class ModItems {
     public static final OctangulitePickaxeItem OCTANGULITE_PICKAXE = (OctangulitePickaxeItem) register("octangulite_pickaxe", new OctangulitePickaxeItem(ModToolMaterials.OCTANGULITE, 1, -2.8F, new Item.Settings(),1),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom));
     public static final OctanguliteAxeItem OCTANGULITE_AXE = (OctanguliteAxeItem) register("octangulite_axe", new OctanguliteAxeItem(ModToolMaterials.OCTANGULITE, 7.0F, -3.2F, new Item.Settings(),1),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom));
     public static final OctanguliteHoeItem OCTANGULITE_HOE = (OctanguliteHoeItem) register("octangulite_hoe", new OctanguliteHoeItem(ModToolMaterials.OCTANGULITE, -1, -2.0F, new Item.Settings(),1),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom));
+    public static final OctanguliteArmorItem OCTANGULITE_HELMET = (OctanguliteArmorItem) register("octangulite_helmet", new OctanguliteArmorItem(ModArmorMaterials.OCTANGULITE, net.minecraft.item.ArmorItem.Type.HELMET, new Item.Settings(),1));
+    public static final OctanguliteArmorItem OCTANGULITE_CHESTPLATE = (OctanguliteArmorItem) register("octangulite_chestplate", new OctanguliteArmorItem(ModArmorMaterials.OCTANGULITE, net.minecraft.item.ArmorItem.Type.CHESTPLATE, new Item.Settings(),1));
+    public static final OctanguliteArmorItem OCTANGULITE_LEGGINGS = (OctanguliteArmorItem) register("octangulite_leggings", new OctanguliteArmorItem(ModArmorMaterials.OCTANGULITE, net.minecraft.item.ArmorItem.Type.LEGGINGS, new Item.Settings(),1));
+    public static final OctanguliteArmorItem OCTANGULITE_BOOTS = (OctanguliteArmorItem) register("octangulite_boots", new OctanguliteArmorItem(ModArmorMaterials.OCTANGULITE, net.minecraft.item.ArmorItem.Type.BOOTS, new Item.Settings(),1));
 
 
     public static final HammerItem IRON_HAMMER = (HammerItem) register("iron_hammer",new HammerItem(5,-3.3f,

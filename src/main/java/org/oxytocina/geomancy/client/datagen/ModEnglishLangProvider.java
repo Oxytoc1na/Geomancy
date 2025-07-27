@@ -139,6 +139,10 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("item.MODID.mithril_pickaxe"        , "Mithril Pickaxe");
             add("item.MODID.mithril_axe"            , "Mithril Axe");
             add("item.MODID.mithril_hoe"            , "Mithril Hoe");
+            add("item.MODID.mithril_boots"          , "Mithril Boots");
+            add("item.MODID.mithril_leggings"       , "Mithril Leggings");
+            add("item.MODID.mithril_chestplate"     , "Mithril Chestplate");
+            add("item.MODID.mithril_helmet"         , "Mithril Helmet");
 
             add("item.MODID.raw_molybdenum"            , "Raw Molybdenum");
             add("item.MODID.molybdenum_ingot"          , "Molybdenum Ingot");
@@ -148,6 +152,10 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("item.MODID.molybdenum_pickaxe"        , "Molybdenum Pickaxe");
             add("item.MODID.molybdenum_axe"            , "Molybdenum Axe");
             add("item.MODID.molybdenum_hoe"            , "Molybdenum Hoe");
+            add("item.MODID.molybdenum_boots"          , "Molybdenum Boots");
+            add("item.MODID.molybdenum_leggings"       , "Molybdenum Leggings");
+            add("item.MODID.molybdenum_chestplate"     , "Molybdenum Chestplate");
+            add("item.MODID.molybdenum_helmet"         , "Molybdenum Helmet");
 
             add("item.MODID.raw_titanium"            , "Raw Titanium");
             add("item.MODID.titanium_ingot"          , "Titanium Ingot");
@@ -157,6 +165,10 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("item.MODID.titanium_pickaxe"        , "Titanium Pickaxe");
             add("item.MODID.titanium_axe"            , "Titanium Axe");
             add("item.MODID.titanium_hoe"            , "Titanium Hoe");
+            add("item.MODID.titanium_boots"          , "Titanium Boots");
+            add("item.MODID.titanium_leggings"       , "Titanium Leggings");
+            add("item.MODID.titanium_chestplate"     , "Titanium Chestplate");
+            add("item.MODID.titanium_helmet"         , "Titanium Helmet");
 
             add("item.MODID.raw_lead"            , "Raw Lead");
             add("item.MODID.lead_ingot"          , "Lead Ingot");
@@ -166,6 +178,10 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("item.MODID.lead_pickaxe"        , "Lead Pickaxe");
             add("item.MODID.lead_axe"            , "Lead Axe");
             add("item.MODID.lead_hoe"            , "Lead Hoe");
+            add("item.MODID.lead_boots"          , "Lead Boots");
+            add("item.MODID.lead_leggings"       , "Lead Leggings");
+            add("item.MODID.lead_chestplate"     , "Lead Chestplate");
+            add("item.MODID.lead_helmet"         , "Lead Helmet");
 
             add("item.MODID.raw_octangulite"        , "Raw Octangulite");
             add("item.MODID.octangulite_ingot"      , "Octangulite Ingot");
@@ -175,6 +191,10 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("item.MODID.octangulite_pickaxe"        , "Octangulite Pickaxe");
             add("item.MODID.octangulite_axe"            , "Octangulite Axe");
             add("item.MODID.octangulite_hoe"            , "Octangulite Hoe");
+            add("item.MODID.octangulite_boots"          , "Octangulite Boots");
+            add("item.MODID.octangulite_leggings"       , "Octangulite Leggings");
+            add("item.MODID.octangulite_chestplate"     , "Octangulite Chestplate");
+            add("item.MODID.octangulite_helmet"         , "Octangulite Helmet");
 
             add("item.MODID.tourmaline" , "Tourmaline");
             add("item.MODID.orthoclase" , "Orthoclase");
