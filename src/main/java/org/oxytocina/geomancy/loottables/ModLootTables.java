@@ -45,6 +45,8 @@ public class ModLootTables {
 
     public static final LootTable OCTANGULA_HALL_CHEST;
 
+    public static final LootTable DIGSITE_HALLWAY_CHEST;
+
     static {
         // DWARVEN_REMNANTS_CHEST
         {
@@ -471,6 +473,21 @@ public class ModLootTables {
         // OCTANGULA_HALL_CHEST
         {
             OCTANGULA_HALL_CHEST = register("chests/octangula_hall", LootTable.builder()
+                    // ancient hall treasure map
+                    .pool(LootPool.builder()
+                            .rolls(UniformLootNumberProvider.create(1.0F, 1.0F))
+                            .with(ItemEntry.builder(
+                                            Items.MAP)
+                                    .apply(ExplorationMapLootFunction.builder()
+                                            .withDestination(TagKey.of(RegistryKeys.STRUCTURE,Geomancy.locate("on_digsite_map")))
+                                            .withDecoration(MapIcon.Type.TARGET_POINT)
+                                            .withSkipExistingChunks(false)
+                                            .withZoom((byte)1)
+                                    )
+                                    .apply(SetNameLootFunction.builder(Text.translatable("item.geomancy.explorers_map.digsite")))
+                            )
+
+                    )
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(1.0F, 3.0F))
                             .with(ItemEntry.builder(
@@ -510,6 +527,55 @@ public class ModLootTables {
                             .rolls(UniformLootNumberProvider.create(2.0F, 4.0F))
                     )
                     .randomSequenceId(Geomancy.locate("chests/dwarven_remnants"))
+            );
+        }
+
+        // DIGSITE_HALLWAY_CHEST
+        {
+            DIGSITE_HALLWAY_CHEST = register("chests/digsite_hallway", LootTable.builder()
+                    .pool(LootPool.builder()
+                            .rolls(UniformLootNumberProvider.create(1.0F, 3.0F))
+                            .with(ItemEntry.builder(
+                                            ModItems.RAW_OCTANGULITE)
+                                    .weight(20)
+                                    .apply(SetCountLootFunction.builder(
+                                            UniformLootNumberProvider.create(1.0F, 4.0F))))
+                            .with(ItemEntry.builder(
+                                            ModItems.OCTANGULITE_INGOT)
+                                    .weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 2.0F))))
+                            .with(ItemEntry.builder(
+                                            ModItems.OCTANGULITE_NUGGET)
+                                    .weight(10)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(5.0F, 16.0F)))))
+                    .pool(LootPool.builder()
+                            .rolls(UniformLootNumberProvider.create(2.0F, 4.0F))
+                            .with(ItemEntry.builder(
+                                            ModBlocks.CUT_TITANIUM)
+                                    .apply(SetCountLootFunction.builder(
+                                            UniformLootNumberProvider.create(3.0F, 8.0F))))
+                            .with(ItemEntry.builder(
+                                            ModBlocks.CUT_LEAD)
+                                    .apply(SetCountLootFunction.builder(
+                                            UniformLootNumberProvider.create(3.0F, 8.0F))))
+                    )
+                    .pool(LootPool.builder()
+                            .rolls(UniformLootNumberProvider.create(3.0F, 7.0F))
+                            .with(ItemEntry.builder(
+                                            Items.EMERALD)
+                                    .weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(4.0F, 8.0F))))
+                            .with(ItemEntry.builder(
+                                            Items.DIAMOND)
+                                    .weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 2.0F))))
+                            .with(ItemEntry.builder(
+                                            Items.GOLD_INGOT)
+                                    .weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(3.0F, 8.0F)))))
+                    .pool(spellComponentsBuilder()
+                            .rolls(UniformLootNumberProvider.create(2.0F, 4.0F))
+                    )
             );
         }
     }

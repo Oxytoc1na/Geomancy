@@ -1,5 +1,5 @@
 {
-  "fallback": "geomancy:digsite/fallback_streets",
+  "fallback": "minecraft:empty",
   "elements": [
     {
       "weight": 1,

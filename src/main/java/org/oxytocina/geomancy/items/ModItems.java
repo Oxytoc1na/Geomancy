@@ -19,7 +19,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import org.oxytocina.geomancy.Geomancy;
-import org.oxytocina.geomancy.ModToolMaterials;
+import org.oxytocina.geomancy.items.tools.materials.ModToolMaterials;
 import org.oxytocina.geomancy.entity.ExtraEntitySettings;
 import org.oxytocina.geomancy.items.artifacts.ArtifactItem;
 import org.oxytocina.geomancy.items.artifacts.ArtifactSettings;
@@ -28,7 +28,6 @@ import org.oxytocina.geomancy.items.artifacts.IronArtifact;
 import org.oxytocina.geomancy.items.jewelry.*;
 import org.oxytocina.geomancy.loottables.ModLootTables;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
-import org.oxytocina.geomancy.spells.SpellBlocks;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,8 +45,6 @@ public class ModItems {
             .hunger(1).alwaysEdible().snack().statusEffect(new StatusEffectInstance(StatusEffects.POISON, 6 * 20, 1), 1.0f).build();
 
     public static final Item SUSPICIOUS_SUBSTANCE = register("suspicious_substance",new Item(new FabricItemSettings().food(SUSPICIOUS_FOOD_COMPONENT)));
-
-    public static final Item GUIDITE_SWORD = register("guidite_sword",new SwordItem(ModToolMaterials.GUIDITE, 2, 0.5F, new FabricItemSettings()),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Handheld));
 
     // mithril
     public static final Item RAW_MITHRIL = register("raw_mithril",new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof()));
@@ -139,11 +136,48 @@ public class ModItems {
 
 
     // tools
+
+    // lead
+    public static final SwordItem LEAD_SWORD = (SwordItem) register("lead_sword", new SwordItem(ModToolMaterials.LEAD, 3, -2.4F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final ShovelItem LEAD_SHOVEL = (ShovelItem) register("lead_shovel", new ShovelItem(ModToolMaterials.LEAD, 1.5F, -3.0F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final PickaxeItem LEAD_PICKAXE = (PickaxeItem) register("lead_pickaxe", new PickaxeItem(ModToolMaterials.LEAD, 1, -2.8F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final AxeItem LEAD_AXE = (AxeItem) register("lead_axe", new AxeItem(ModToolMaterials.LEAD, 7.0F, -3.2F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final HoeItem LEAD_HOE = (HoeItem) register("lead_hoe", new HoeItem(ModToolMaterials.LEAD, -1, -2.0F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+
+    // mithril
+    public static final SwordItem MITHRIL_SWORD = (SwordItem) register("mithril_sword", new SwordItem(ModToolMaterials.MITHRIL, 3, -2.4F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final ShovelItem MITHRIL_SHOVEL = (ShovelItem) register("mithril_shovel", new ShovelItem(ModToolMaterials.MITHRIL, 1.5F, -3.0F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final PickaxeItem MITHRIL_PICKAXE = (PickaxeItem) register("mithril_pickaxe", new PickaxeItem(ModToolMaterials.MITHRIL, 1, -2.8F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final AxeItem MITHRIL_AXE = (AxeItem) register("mithril_axe", new AxeItem(ModToolMaterials.MITHRIL, 7.0F, -3.2F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final HoeItem MITHRIL_HOE = (HoeItem) register("mithril_hoe", new HoeItem(ModToolMaterials.MITHRIL, -1, -2.0F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+
+    // titanium
+    public static final SwordItem TITANIUM_SWORD = (SwordItem) register("titanium_sword", new SwordItem(ModToolMaterials.TITANIUM, 3, -2.4F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final ShovelItem TITANIUM_SHOVEL = (ShovelItem) register("titanium_shovel", new ShovelItem(ModToolMaterials.TITANIUM, 1.5F, -3.0F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final PickaxeItem TITANIUM_PICKAXE = (PickaxeItem) register("titanium_pickaxe", new PickaxeItem(ModToolMaterials.TITANIUM, 1, -2.8F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final AxeItem TITANIUM_AXE = (AxeItem) register("titanium_axe", new AxeItem(ModToolMaterials.TITANIUM, 7.0F, -3.2F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final HoeItem TITANIUM_HOE = (HoeItem) register("titanium_hoe", new HoeItem(ModToolMaterials.TITANIUM, -1, -2.0F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+
+    // molybdenum
+    public static final SwordItem MOLYBDENUM_SWORD = (SwordItem) register("molybdenum_sword", new SwordItem(ModToolMaterials.MOLYBDENUM, 3, -2.4F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final ShovelItem MOLYBDENUM_SHOVEL = (ShovelItem) register("molybdenum_shovel", new ShovelItem(ModToolMaterials.MOLYBDENUM, 1.5F, -3.0F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final PickaxeItem MOLYBDENUM_PICKAXE = (PickaxeItem) register("molybdenum_pickaxe", new PickaxeItem(ModToolMaterials.MOLYBDENUM, 1, -2.8F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final AxeItem MOLYBDENUM_AXE = (AxeItem) register("molybdenum_axe", new AxeItem(ModToolMaterials.MOLYBDENUM, 7.0F, -3.2F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final HoeItem MOLYBDENUM_HOE = (HoeItem) register("molybdenum_hoe", new HoeItem(ModToolMaterials.MOLYBDENUM, -1, -2.0F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+
+    // octangulite
+    public static final SwordItem OCTANGULITE_SWORD = (SwordItem) register("octangulite_sword", new SwordItem(ModToolMaterials.OCTANGULITE, 3, -2.4F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final ShovelItem OCTANGULITE_SHOVEL = (ShovelItem) register("octangulite_shovel", new ShovelItem(ModToolMaterials.OCTANGULITE, 1.5F, -3.0F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final PickaxeItem OCTANGULITE_PICKAXE = (PickaxeItem) register("octangulite_pickaxe", new PickaxeItem(ModToolMaterials.OCTANGULITE, 1, -2.8F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final AxeItem OCTANGULITE_AXE = (AxeItem) register("octangulite_axe", new AxeItem(ModToolMaterials.OCTANGULITE, 7.0F, -3.2F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final HoeItem OCTANGULITE_HOE = (HoeItem) register("octangulite_hoe", new HoeItem(ModToolMaterials.OCTANGULITE, -1, -2.0F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+
+
     public static final HammerItem IRON_HAMMER = (HammerItem) register("iron_hammer",new HammerItem(5,-3.3f,
             ToolMaterials.IRON, TagKey.of(RegistryKeys.BLOCK,new Identifier(Geomancy.MOD_ID,"hammer_mineable")),
             new FabricItemSettings(),10,1,10,20),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Handheld));
     public static final HammerItem MITHRIL_HAMMER = (HammerItem) register("mithril_hammer",new HammerItem(7,-3.3f,
-            ToolMaterials.DIAMOND, TagKey.of(RegistryKeys.BLOCK,new Identifier(Geomancy.MOD_ID,"hammer_mineable")),new FabricItemSettings(),
+            ModToolMaterials.MITHRIL, TagKey.of(RegistryKeys.BLOCK,new Identifier(Geomancy.MOD_ID,"hammer_mineable")),new FabricItemSettings(),
             1000,100,50,10),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Handheld));
 
     // caster items
@@ -219,7 +253,6 @@ public class ModItems {
 
         // Return the registered item!
         return registeredItem;
-
     }
 
     public static void registerSpawnEgg(ExtraEntitySettings settings) {

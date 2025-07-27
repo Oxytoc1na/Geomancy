@@ -134,22 +134,47 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("item.MODID.raw_mithril"            , "Raw Mithril");
             add("item.MODID.mithril_ingot"          , "Mithril Ingot");
             add("item.MODID.mithril_nugget"         , "Mithril Nugget");
+            add("item.MODID.mithril_sword"          , "Mithril Sword");
+            add("item.MODID.mithril_shovel"         , "Mithril Shovel");
+            add("item.MODID.mithril_pickaxe"        , "Mithril Pickaxe");
+            add("item.MODID.mithril_axe"            , "Mithril Axe");
+            add("item.MODID.mithril_hoe"            , "Mithril Hoe");
 
             add("item.MODID.raw_molybdenum"            , "Raw Molybdenum");
             add("item.MODID.molybdenum_ingot"          , "Molybdenum Ingot");
             add("item.MODID.molybdenum_nugget"         , "Molybdenum Nugget");
+            add("item.MODID.molybdenum_sword"          , "Molybdenum Sword");
+            add("item.MODID.molybdenum_shovel"         , "Molybdenum Shovel");
+            add("item.MODID.molybdenum_pickaxe"        , "Molybdenum Pickaxe");
+            add("item.MODID.molybdenum_axe"            , "Molybdenum Axe");
+            add("item.MODID.molybdenum_hoe"            , "Molybdenum Hoe");
 
             add("item.MODID.raw_titanium"            , "Raw Titanium");
             add("item.MODID.titanium_ingot"          , "Titanium Ingot");
             add("item.MODID.titanium_nugget"         , "Titanium Nugget");
+            add("item.MODID.titanium_sword"          , "Titanium Sword");
+            add("item.MODID.titanium_shovel"         , "Titanium Shovel");
+            add("item.MODID.titanium_pickaxe"        , "Titanium Pickaxe");
+            add("item.MODID.titanium_axe"            , "Titanium Axe");
+            add("item.MODID.titanium_hoe"            , "Titanium Hoe");
 
             add("item.MODID.raw_lead"            , "Raw Lead");
             add("item.MODID.lead_ingot"          , "Lead Ingot");
             add("item.MODID.lead_nugget"         , "Lead Nugget");
+            add("item.MODID.lead_sword"          , "Lead Sword");
+            add("item.MODID.lead_shovel"         , "Lead Shovel");
+            add("item.MODID.lead_pickaxe"        , "Lead Pickaxe");
+            add("item.MODID.lead_axe"            , "Lead Axe");
+            add("item.MODID.lead_hoe"            , "Lead Hoe");
 
             add("item.MODID.raw_octangulite"        , "Raw Octangulite");
             add("item.MODID.octangulite_ingot"      , "Octangulite Ingot");
             add("item.MODID.octangulite_nugget"     , "Octangulite Nugget");
+            add("item.MODID.octangulite_sword"          , "Octangulite Sword");
+            add("item.MODID.octangulite_shovel"         , "Octangulite Shovel");
+            add("item.MODID.octangulite_pickaxe"        , "Octangulite Pickaxe");
+            add("item.MODID.octangulite_axe"            , "Octangulite Axe");
+            add("item.MODID.octangulite_hoe"            , "Octangulite Hoe");
 
             add("item.MODID.tourmaline" , "Tourmaline");
             add("item.MODID.orthoclase" , "Orthoclase");
@@ -220,9 +245,10 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("tooltip.geomancy.jewelry.unsmith"  ,"Salvages gems");
             add("tooltip.geomancy.jewelry.quality"  ,"Quality");
 
-            add("item.MODID.stone_geode"            , "Stone Geode");
-            add("tooltip.MODID.geodes"              , "Can be hammered open...if you're careful.");
-            add("item.MODID.explorers_map.ancient_hall", "Directions home");
+            add("item.MODID.stone_geode"            ,       "Stone Geode");
+            add("tooltip.MODID.geodes"              ,       "Can be hammered open...if you're careful.");
+            add("item.MODID.explorers_map.ancient_hall",    "Directions home");
+            add("item.MODID.explorers_map.digsite",         "DIGSITE COORDINATES");
 
             add("item.MODID.spellstorage_small",        "Minute Spellcradle");
             add("item.MODID.spellstorage_medium",       "Mundane Spellcradle");
