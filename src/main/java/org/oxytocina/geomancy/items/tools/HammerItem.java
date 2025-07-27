@@ -1,10 +1,9 @@
-package org.oxytocina.geomancy.items;
+package org.oxytocina.geomancy.items.tools;
 
 import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,7 +23,6 @@ import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.SmitheryBlock;
 import org.oxytocina.geomancy.blocks.blockEntities.SmitheryBlockEntity;
 import org.oxytocina.geomancy.enchantments.ModEnchantments;
-import org.oxytocina.geomancy.enchantments.SkillfulEnchantment;
 
 import java.util.List;
 

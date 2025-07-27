@@ -1,4 +1,4 @@
-package org.oxytocina.geomancy.items;
+package org.oxytocina.geomancy.items.tools;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -21,6 +21,10 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.client.screen.SpellstorerScreenHandler;
+import org.oxytocina.geomancy.items.ICastingItem;
+import org.oxytocina.geomancy.items.IManaStoringItem;
+import org.oxytocina.geomancy.items.IScrollListenerItem;
+import org.oxytocina.geomancy.items.SpellStoringItem;
 import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.spells.SpellGrid;
 import org.oxytocina.geomancy.util.Toolbox;

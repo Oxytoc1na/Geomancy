@@ -24,11 +24,9 @@ import org.joml.Vector2f;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.blockEntities.SpellstorerBlockEntity;
 import org.oxytocina.geomancy.client.screen.slots.SpellstorerSpellSlot;
-import org.oxytocina.geomancy.client.screen.slots.StackFilterSlot;
 import org.oxytocina.geomancy.client.screen.slots.TagFilterSlot;
 import org.oxytocina.geomancy.inventories.ImplementedInventory;
-import org.oxytocina.geomancy.items.ModItems;
-import org.oxytocina.geomancy.items.SoulCastingItem;
+import org.oxytocina.geomancy.items.tools.SoulCastingItem;
 import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.registries.ModItemTags;
 

@@ -7,6 +7,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.TimeHelper;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import org.oxytocina.geomancy.client.GeomancyClient;
 import org.oxytocina.geomancy.items.ModItems;
@@ -51,6 +52,12 @@ public class ModColorizationHandler {
 
         addOctanguliteOreItem(ModBlocks.OCTANGULITE_ORE.asItem(),0.003F,false);
         addOctanguliteOreItem(ModBlocks.DEEPSLATE_OCTANGULITE_ORE.asItem(),0.003F,false);
+
+        addOctanguliteToolItem(ModItems.OCTANGULITE_SWORD);
+        addOctanguliteToolItem(ModItems.OCTANGULITE_SHOVEL);
+        addOctanguliteToolItem(ModItems.OCTANGULITE_PICKAXE);
+        addOctanguliteToolItem(ModItems.OCTANGULITE_AXE);
+        addOctanguliteToolItem(ModItems.OCTANGULITE_HOE);
     }
 
     private static void addOctanguliteItem(Item item,float zoom,boolean withSlotOffset){
@@ -64,6 +71,14 @@ public class ModColorizationHandler {
                     if(tintIndex == 0) return 0xFFFFFFFF;
                     return octanguliteItemNoise(stack,tintIndex-1,zoom,withSlotOffset);
                     },item);
+    }
+
+    private static void addOctanguliteToolItem(Item item){
+        ColorProviderRegistry.ITEM.register(
+                (stack, tintIndex) -> {
+                    if(tintIndex == 0) return 0xFFFFFFFF;
+                    return octanguliteToolNoise(stack);
+                },item);
     }
 
     private static int octanguliteNoise(BlockPos pos, int tintIndex, float zoom){
@@ -152,6 +167,97 @@ public class ModColorizationHandler {
                 (float)(org.oxytocina.geomancy.util.SimplexNoise.noise(x,y,z)+1)/2,
                 (float) (1-Math.pow(1F-((SimplexNoise.noise(x2,y2,z2)+1)/2),2)),
                 (float) (1-Math.pow(1F-((SimplexNoise.noise(x3,y3,z3)+1)/2),2))
+        );
+
+    }
+
+    public static int octanguliteToolNoise(ItemStack stack){
+
+        final float zoom = 0.03f;
+        final float speed = 0.01f;
+        final int tintIndex = 0;
+        final boolean withSlotOffset = true;
+
+        float hue = 0;
+        float sat = 1;
+        float val = 1;
+
+        float baseX, baseY, baseZ;
+
+        if(stack.getHolder()!=null){
+            Vec3d pos = stack.getHolder().getPos();
+
+            if(withSlotOffset && stack.getHolder() instanceof PlayerEntity player){
+
+                int slot = player.getInventory().getSlotWithStack(stack);
+
+                baseX = (float)pos.getX()+slot;
+                baseY = (float)pos.getY()+13+slot*2;
+                baseZ = (float)pos.getZ()+54+slot*3;
+            }
+            else{
+                baseX = (float)pos.getX();
+                baseY = (float)pos.getY();
+                baseZ = (float)pos.getZ();
+            }
+        }
+        else if(MinecraftClient.getInstance() != null)
+        {
+            if(withSlotOffset && MinecraftClient.getInstance().player != null)
+            {
+                Vec3d pos = MinecraftClient.getInstance().player.getPos();
+                int slot = MinecraftClient.getInstance().player.getInventory().getSlotWithStack(stack);
+
+                baseX = (float)pos.getX()+slot;
+                baseY = (float)pos.getY()+13+slot*2;
+                baseZ = (float)pos.getZ()+54+slot*3;
+            }
+            else if(MinecraftClient.getInstance().cameraEntity!=null) {
+                Vec3d pos = MinecraftClient.getInstance().cameraEntity.getPos();
+                baseX = (float) pos.getX();
+                baseY = (float) pos.getY();
+                baseZ = (float) pos.getZ();
+            }
+            else{
+                baseX = 0;
+                baseY = 0;
+                baseZ = 0;
+            }
+
+
+        }
+        else{
+            baseX = 0;
+            baseY = 0;
+            baseZ = 0;
+        }
+
+        baseX += speed*GeomancyClient.tick;
+
+        float x = zoom*baseX * (1+tintIndex*0.3f) + tintIndex*16;
+        float y = zoom*baseY * (1+tintIndex*0.3f) + tintIndex*16;
+        float z = zoom*baseZ * (1+tintIndex*0.3f) + tintIndex*16;
+
+        float x2 = zoom*1.5f*((baseX+230) * (1+tintIndex*0.3f) + tintIndex*16);
+        float y2 = zoom*1.5f*((baseY+590) * (1+tintIndex*0.3f) + tintIndex*16);
+        float z2 = zoom*1.5f*((baseZ+367) * (1+tintIndex*0.3f) + tintIndex*16);
+
+        float x3 = zoom*2f*((baseX+129) * (1+tintIndex*0.3f) + tintIndex*16);
+        float y3 = zoom*2f*((baseY+395) * (1+tintIndex*0.3f) + tintIndex*16);
+        float z3 = zoom*2f*((baseZ+529) * (1+tintIndex*0.3f) + tintIndex*16);
+
+        hue = (float)(org.oxytocina.geomancy.util.SimplexNoise.noise(x,y,z)+1)/2;
+        sat = (float) (1-Math.pow(1F-((SimplexNoise.noise(x2,y2,z2)+1)/2),2));
+        val = (float) (1-Math.pow(1F-((SimplexNoise.noise(x3,y3,z3)+1)/2),2));
+
+        float durability = 1;
+        if(stack.isDamageable()){
+            durability = 1f-(stack.getDamage()/(float)stack.getMaxDamage());
+        }
+        hue = MathHelper.lerp(durability,0,hue);
+
+        return hsvToRgb(
+                hue,sat,val
         );
 
     }

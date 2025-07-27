@@ -38,7 +38,7 @@ import org.oxytocina.geomancy.util.Toolbox;
 import org.oxytocina.geomancy.blocks.MultiblockCrafter;
 import org.oxytocina.geomancy.inventories.AutoCraftingInventory;
 import org.oxytocina.geomancy.inventories.ImplementedInventory;
-import org.oxytocina.geomancy.items.HammerItem;
+import org.oxytocina.geomancy.items.tools.HammerItem;
 import org.oxytocina.geomancy.recipe.smithery.SmitheryRecipeI;
 import org.oxytocina.geomancy.recipe.smithery.SmithingIngredient;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;

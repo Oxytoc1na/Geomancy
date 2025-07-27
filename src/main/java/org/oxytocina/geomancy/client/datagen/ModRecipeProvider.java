@@ -21,7 +21,8 @@ import org.oxytocina.geomancy.client.datagen.recipes.GeodeRecipeJsonBuilder;
 import org.oxytocina.geomancy.client.datagen.recipes.JewelryRecipeJsonBuilder;
 import org.oxytocina.geomancy.client.datagen.recipes.SmitheryRecipeJsonBuilder;
 import org.oxytocina.geomancy.items.GeodeItem;
-import org.oxytocina.geomancy.items.ModItems;
+import static org.oxytocina.geomancy.items.ModItems.*;
+
 import org.oxytocina.geomancy.items.SpellComponentStoringItem;
 import org.oxytocina.geomancy.items.jewelry.JewelryItem;
 import org.oxytocina.geomancy.recipe.smithery.SmithingIngredient;
@@ -46,11 +47,11 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         this.exporter=exporter;
 
         // shapeless recipes
-        offerShapelessRecipe(exporter, ModItems.SUSPICIOUS_SUBSTANCE,ModItems.SUSPICIOUS_SUBSTANCE,null,1);
+        offerShapelessRecipe(exporter, SUSPICIOUS_SUBSTANCE,SUSPICIOUS_SUBSTANCE,null,1);
 
         // shaped recipes
         ShapedRecipeJsonBuilder.create(
-                        RecipeCategory.TOOLS, ModItems.IRON_HAMMER, 1)
+                        RecipeCategory.TOOLS, IRON_HAMMER, 1)
                 .input('#', Items.IRON_INGOT)
                 .input('s', Items.STICK)
                 .pattern("###")
@@ -70,27 +71,27 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
         // smelting recipes
         AddSmeltAndBlastRecipe(List.of(
-            ModItems.RAW_MITHRIL, ModBlocks.MITHRIL_ORE, ModBlocks.DEEPSLATE_MITHRIL_ORE),
-            ModItems.MITHRIL_INGOT,5f,400,100);
+            RAW_MITHRIL, ModBlocks.MITHRIL_ORE, ModBlocks.DEEPSLATE_MITHRIL_ORE),
+            MITHRIL_INGOT,5f,400,100);
         AddSmeltAndBlastRecipe(List.of(
-            ModItems.RAW_MOLYBDENUM, ModBlocks.MOLYBDENUM_ORE, ModBlocks.DEEPSLATE_MOLYBDENUM_ORE),
-            ModItems.MOLYBDENUM_INGOT,5f,20,10);
+            RAW_MOLYBDENUM, ModBlocks.MOLYBDENUM_ORE, ModBlocks.DEEPSLATE_MOLYBDENUM_ORE),
+            MOLYBDENUM_INGOT,5f,20,10);
         AddSmeltAndBlastRecipe(List.of(
-            ModItems.RAW_LEAD, ModBlocks.LEAD_ORE, ModBlocks.DEEPSLATE_LEAD_ORE),
-            ModItems.LEAD_INGOT,5f,20,10);
+            RAW_LEAD, ModBlocks.LEAD_ORE, ModBlocks.DEEPSLATE_LEAD_ORE),
+            LEAD_INGOT,5f,20,10);
         AddSmeltAndBlastRecipe(List.of(
-            ModItems.RAW_TITANIUM, ModBlocks.TITANIUM_ORE, ModBlocks.DEEPSLATE_TITANIUM_ORE),
-            ModItems.TITANIUM_INGOT,5f,40,20);
+            RAW_TITANIUM, ModBlocks.TITANIUM_ORE, ModBlocks.DEEPSLATE_TITANIUM_ORE),
+            TITANIUM_INGOT,5f,40,20);
         AddSmeltAndBlastRecipe(List.of(
-            ModItems.RAW_OCTANGULITE, ModBlocks.OCTANGULITE_ORE, ModBlocks.DEEPSLATE_OCTANGULITE_ORE),
-            ModItems.OCTANGULITE_INGOT,5f,400,100);
+            RAW_OCTANGULITE, ModBlocks.OCTANGULITE_ORE, ModBlocks.DEEPSLATE_OCTANGULITE_ORE),
+            OCTANGULITE_INGOT,5f,400,100);
 
         // compacting recipes
-        AddOreCompactingRecipes(ModItems.MITHRIL_NUGGET,ModItems.MITHRIL_INGOT,ModBlocks.MITHRIL_BLOCK,ModItems.RAW_MITHRIL,ModBlocks.RAW_MITHRIL_BLOCK);
-        AddOreCompactingRecipes(ModItems.OCTANGULITE_NUGGET,ModItems.OCTANGULITE_INGOT,ModBlocks.OCTANGULITE_BLOCK,ModItems.RAW_OCTANGULITE,ModBlocks.RAW_OCTANGULITE_BLOCK);
-        AddOreCompactingRecipes(ModItems.MOLYBDENUM_NUGGET,ModItems.MOLYBDENUM_INGOT,ModBlocks.MOLYBDENUM_BLOCK,ModItems.RAW_MOLYBDENUM,ModBlocks.RAW_MOLYBDENUM_BLOCK);
-        AddOreCompactingRecipes(ModItems.TITANIUM_NUGGET,ModItems.TITANIUM_INGOT,ModBlocks.TITANIUM_BLOCK,ModItems.RAW_TITANIUM,ModBlocks.RAW_TITANIUM_BLOCK);
-        AddOreCompactingRecipes(ModItems.LEAD_NUGGET,ModItems.LEAD_INGOT,ModBlocks.LEAD_BLOCK,ModItems.RAW_LEAD,ModBlocks.RAW_LEAD_BLOCK);
+        AddOreCompactingRecipes(MITHRIL_NUGGET,MITHRIL_INGOT,ModBlocks.MITHRIL_BLOCK,RAW_MITHRIL,ModBlocks.RAW_MITHRIL_BLOCK);
+        AddOreCompactingRecipes(OCTANGULITE_NUGGET,OCTANGULITE_INGOT,ModBlocks.OCTANGULITE_BLOCK,RAW_OCTANGULITE,ModBlocks.RAW_OCTANGULITE_BLOCK);
+        AddOreCompactingRecipes(MOLYBDENUM_NUGGET,MOLYBDENUM_INGOT,ModBlocks.MOLYBDENUM_BLOCK,RAW_MOLYBDENUM,ModBlocks.RAW_MOLYBDENUM_BLOCK);
+        AddOreCompactingRecipes(TITANIUM_NUGGET,TITANIUM_INGOT,ModBlocks.TITANIUM_BLOCK,RAW_TITANIUM,ModBlocks.RAW_TITANIUM_BLOCK);
+        AddOreCompactingRecipes(LEAD_NUGGET,LEAD_INGOT,ModBlocks.LEAD_BLOCK,RAW_LEAD,ModBlocks.RAW_LEAD_BLOCK);
 
 
         // smithing recipes
@@ -101,12 +102,12 @@ public class ModRecipeProvider extends FabricRecipeProvider {
             GenJewelryRecData[] mats = new GenJewelryRecData[]{
                     new GenJewelryRecData("iron",Items.IRON_INGOT,30,15),
                     new GenJewelryRecData("gold",Items.GOLD_INGOT,40,30),
-                    new GenJewelryRecData("mithril",ModItems.MITHRIL_INGOT,50,30),
+                    new GenJewelryRecData("mithril",MITHRIL_INGOT,50,30),
                     new GenJewelryRecData("copper",Items.COPPER_INGOT,30,20),
-                    new GenJewelryRecData("molybdenum",ModItems.MOLYBDENUM_INGOT,40,20),
-                    new GenJewelryRecData("titanium",ModItems.TITANIUM_INGOT,70,40),
-                    new GenJewelryRecData("lead",ModItems.LEAD_INGOT,20,17),
-                    new GenJewelryRecData("octangulite",ModItems.OCTANGULITE_INGOT,80,100),
+                    new GenJewelryRecData("molybdenum",MOLYBDENUM_INGOT,40,20),
+                    new GenJewelryRecData("titanium",TITANIUM_INGOT,70,40),
+                    new GenJewelryRecData("lead",LEAD_INGOT,20,17),
+                    new GenJewelryRecData("octangulite",OCTANGULITE_INGOT,80,100),
             };
 
             for(var dat : mats){
@@ -139,14 +140,14 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                             "oso",
                             " s "}
                     ,new SPatKey[]{
-                            new SPatKey("o",SmithingIngredient.ofItems(1,1,1,ModItems.MITHRIL_INGOT)),
+                            new SPatKey("o",SmithingIngredient.ofItems(1,1,1,MITHRIL_INGOT)),
                             new SPatKey("s",SmithingIngredient.ofItems(1,1,1,Items.STICK)),
                     },
-                    ModItems.MITHRIL_HAMMER,1,100,12,conditionsFromItem(ModItems.MITHRIL_INGOT));
+                    MITHRIL_HAMMER,1,100,12,conditionsFromItem(MITHRIL_INGOT));
 
 
             // geode recipes
-            for(GeodeItem item : ModItems.geodeItems){
+            for(GeodeItem item : geodeItems){
                 AddGeodeRecipe(item);
             }
 
@@ -154,30 +155,30 @@ public class ModRecipeProvider extends FabricRecipeProvider {
             {
                 // Empty Artifact
                 AddSmitheryRecipe(Arrays.stream(new SmithingIngredient[] {
-                                SmithingIngredient.ofItems(ModItems.MITHRIL_INGOT),
+                                SmithingIngredient.ofItems(MITHRIL_INGOT),
                                 SmithingIngredient.ofItems(Items.LEATHER)
-                        }).toList(),ModItems.EMPTY_ARTIFACT,1, 40,5, true,
-                        conditionsFromItem(ModItems.MITHRIL_INGOT));
+                        }).toList(),EMPTY_ARTIFACT,1, 40,5, true,
+                        conditionsFromItem(MITHRIL_INGOT));
 
                 // Artifact of Iron
                 AddSmitheryRecipe(Arrays.stream(new SmithingIngredient[] {
-                                SmithingIngredient.ofItems(1,1,4,ModItems.EMPTY_ARTIFACT),
+                                SmithingIngredient.ofItems(1,1,4,EMPTY_ARTIFACT),
                                 SmithingIngredient.ofItems(1,1,1,Items.IRON_BLOCK),
                                 SmithingIngredient.ofItems(1,1,3,Items.SHIELD),
                                 SmithingIngredient.ofItems(1,1,5,Items.IRON_CHESTPLATE),
                                 SmithingIngredient.ofItems(1,1,7,Items.IRON_BARS),
-                        }).toList(),ModItems.ARTIFACT_OF_IRON,1, 100,20,false,
-                        conditionsFromItem(ModItems.EMPTY_ARTIFACT));
+                        }).toList(),ARTIFACT_OF_IRON,1, 100,20,false,
+                        conditionsFromItem(EMPTY_ARTIFACT));
 
                 // Artifact of Gold
                 AddSmitheryRecipe(Arrays.stream(new SmithingIngredient[] {
-                                SmithingIngredient.ofItems(1,1,4,ModItems.EMPTY_ARTIFACT),
+                                SmithingIngredient.ofItems(1,1,4,EMPTY_ARTIFACT),
                                 SmithingIngredient.ofItems(1,1,1,Items.GOLD_BLOCK),
                                 SmithingIngredient.ofItems(1,1,3,Items.GOLDEN_APPLE),
                                 SmithingIngredient.ofItems(1,1,5,Items.GOLDEN_HELMET),
                                 SmithingIngredient.ofItems(1,1,7,Items.GOLDEN_CARROT),
-                        }).toList(),ModItems.ARTIFACT_OF_GOLD,1, 100,20,false,
-                        conditionsFromItem(ModItems.EMPTY_ARTIFACT));
+                        }).toList(),ARTIFACT_OF_GOLD,1, 100,20,false,
+                        conditionsFromItem(EMPTY_ARTIFACT));
             }
 
             // spell storage
@@ -188,11 +189,11 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                                 " m ",
                                 " g "}
                         ,new SPatKey[]{
-                                new SPatKey("t",SmithingIngredient.ofItems(1,1,ModItems.TITANIUM_INGOT)),
-                                new SPatKey("m",SmithingIngredient.ofItems(1,1,ModItems.MITHRIL_INGOT)),
+                                new SPatKey("t",SmithingIngredient.ofItems(1,1,TITANIUM_INGOT)),
+                                new SPatKey("m",SmithingIngredient.ofItems(1,1,MITHRIL_INGOT)),
                                 new SPatKey("g",SmithingIngredient.ofItems(1,1,Items.GOLD_INGOT)),
                         },
-                        ModItems.SPELLSTORAGE_SMALL,1,100,12,conditionsFromItem(ModItems.MITHRIL_INGOT));
+                        SPELLSTORAGE_SMALL,1,100,12,conditionsFromItem(MITHRIL_INGOT));
 
                 // medium
                 AddShapedSmitheryRecipe(new String[]{
@@ -200,11 +201,11 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                                 " o ",
                                 " g "}
                         ,new SPatKey[]{
-                                new SPatKey("m",SmithingIngredient.ofItems(1,1,ModItems.MITHRIL_INGOT)),
-                                new SPatKey("o",SmithingIngredient.ofItems(1,1,ModItems.OCTANGULITE_INGOT)),
+                                new SPatKey("m",SmithingIngredient.ofItems(1,1,MITHRIL_INGOT)),
+                                new SPatKey("o",SmithingIngredient.ofItems(1,1,OCTANGULITE_INGOT)),
                                 new SPatKey("g",SmithingIngredient.ofItems(1,1,Items.GOLD_INGOT)),
                         },
-                        ModItems.SPELLSTORAGE_MEDIUM,1,200,15,conditionsFromItem(ModItems.OCTANGULITE_INGOT));
+                        SPELLSTORAGE_MEDIUM,1,200,15,conditionsFromItem(OCTANGULITE_INGOT));
 
                 // large
                 AddShapedSmitheryRecipe(new String[]{
@@ -212,10 +213,10 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                                 " o ",
                                 " g "}
                         ,new SPatKey[]{
-                                new SPatKey("o",SmithingIngredient.ofItems(1,1,ModItems.OCTANGULITE_INGOT)),
+                                new SPatKey("o",SmithingIngredient.ofItems(1,1,OCTANGULITE_INGOT)),
                                 new SPatKey("g",SmithingIngredient.ofItems(1,1,Items.GOLD_INGOT)),
                         },
-                        ModItems.SPELLSTORAGE_LARGE,1,300,20,conditionsFromItem(ModItems.OCTANGULITE_INGOT));
+                        SPELLSTORAGE_LARGE,1,300,20,conditionsFromItem(OCTANGULITE_INGOT));
 
             }
 
@@ -225,27 +226,27 @@ public class ModRecipeProvider extends FabricRecipeProvider {
             {
                 // flow control
                 {
-                    Item baseIngot = ModItems.MITHRIL_INGOT;
+                    Item baseIngot = MITHRIL_INGOT;
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.LEVER),
                     }).toList(),SpellBlocks.FOR,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.OAK_DOOR),
                     }).toList(),SpellBlocks.GATE,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.REDSTONE_TORCH),
                     }).toList(),SpellBlocks.NOT,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.HOPPER),
                     }).toList(),SpellBlocks.CONVEYOR,true);
@@ -253,27 +254,27 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
                 // providers
                 {
-                    Item baseIngot = ModItems.MOLYBDENUM_INGOT;
+                    Item baseIngot = MOLYBDENUM_INGOT;
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.LEVER),
                     }).toList(),SpellBlocks.CONST_BOOLEAN,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.COMPARATOR),
                     }).toList(),SpellBlocks.CONST_NUM,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.OAK_SIGN),
                     }).toList(),SpellBlocks.CONST_TEXT,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.DIRT),
                     }).toList(),SpellBlocks.ENTITY_CASTER,true);
@@ -281,99 +282,99 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
                 // arithmetic
                 {
-                    Item baseIngot = ModItems.LEAD_INGOT;
+                    Item baseIngot = LEAD_INGOT;
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.REDSTONE),
                     }).toList(),SpellBlocks.SUM,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.REDSTONE_TORCH),
                     }).toList(),SpellBlocks.SUBTRACT,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.REPEATER),
                     }).toList(),SpellBlocks.MULTIPLY,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.COMPARATOR),
                     }).toList(),SpellBlocks.DIVIDE,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.REDSTONE_BLOCK),
                     }).toList(),SpellBlocks.EXP,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.OAK_STAIRS),
                     }).toList(),SpellBlocks.SIN,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.COBBLESTONE_STAIRS),
                     }).toList(),SpellBlocks.COS,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.STONE_STAIRS),
                     }).toList(),SpellBlocks.TAN,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.CRAFTING_TABLE),
                     }).toList(),SpellBlocks.VECTOR_BUILD,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.STONE_PRESSURE_PLATE),
                     }).toList(),SpellBlocks.VECTOR_ENTITYPOS,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.SPIDER_EYE),
                     }).toList(),SpellBlocks.VECTOR_ENTITYEYEPOS,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.ARROW),
                     }).toList(),SpellBlocks.VECTOR_ENTITYDIR,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.WOODEN_AXE),
                     }).toList(),SpellBlocks.VECTOR_SPLIT,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.RED_BED),
                     }).toList(),SpellBlocks.VECTOR_ENTITYSPAWN,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.ENDER_EYE),
                     }).toList(),SpellBlocks.RAYCAST_POS,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.SLIME_BALL),
                     }).toList(),SpellBlocks.RAYCAST_DIR,true);
@@ -381,45 +382,45 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
                 // effectors
                 {
-                    Item baseIngot = ModItems.OCTANGULITE_INGOT;
+                    Item baseIngot = OCTANGULITE_INGOT;
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.TRIPWIRE_HOOK),
                     }).toList(),SpellBlocks.DEBUG,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.OAK_SIGN),
                     }).toList(),SpellBlocks.PRINT,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.LIGHTNING_ROD),
                     }).toList(),SpellBlocks.LIGHTNING,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.FIRE_CHARGE),
                     }).toList(),SpellBlocks.FIREBALL,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.ENDER_PEARL),
                     }).toList(),SpellBlocks.TELEPORT,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.CHORUS_FLOWER),
                     }).toList(),SpellBlocks.DIMHOP,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.FIREWORK_ROCKET),
                     }).toList(),SpellBlocks.PUSH,true);
@@ -428,25 +429,25 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 // reference
                 {
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,Items.COPPER_INGOT),
                             SmithingIngredient.ofItems(1,1,Items.STICKY_PISTON),
                     }).toList(),SpellBlocks.REF_OUTPUT,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,Items.COPPER_INGOT),
                             SmithingIngredient.ofItems(1,1,Items.PISTON),
                     }).toList(),SpellBlocks.REF_INPUT,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,Items.COPPER_INGOT),
                             SmithingIngredient.ofItems(1,1,Items.REDSTONE),
                     }).toList(),SpellBlocks.ACTION,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,ModItems.SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,Items.COPPER_INGOT),
                             SmithingIngredient.ofItems(1,1,Items.REDSTONE_BLOCK),
                     }).toList(),SpellBlocks.FUNCTION,true);
@@ -454,6 +455,13 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
             }
         }
+
+        // tools
+        AddToolBatch(LEAD_INGOT,LEAD_SWORD,LEAD_SHOVEL,LEAD_PICKAXE,LEAD_AXE,LEAD_HOE);
+        AddToolBatch(TITANIUM_INGOT,TITANIUM_SWORD,TITANIUM_SHOVEL,TITANIUM_PICKAXE,TITANIUM_AXE,TITANIUM_HOE);
+        AddToolBatch(MITHRIL_INGOT,MITHRIL_SWORD,MITHRIL_SHOVEL,MITHRIL_PICKAXE,MITHRIL_AXE,MITHRIL_HOE);
+        AddToolBatch(MOLYBDENUM_INGOT,MOLYBDENUM_SWORD,MOLYBDENUM_SHOVEL,MOLYBDENUM_PICKAXE,MOLYBDENUM_AXE,MOLYBDENUM_HOE);
+        AddToolBatch(OCTANGULITE_INGOT,OCTANGULITE_SWORD,OCTANGULITE_SHOVEL,OCTANGULITE_PICKAXE,OCTANGULITE_AXE,OCTANGULITE_HOE);
 
         // decorative blocks
 
@@ -485,6 +493,35 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         offerStonecuttingRecipe(exporter,RecipeCategory.BUILDING_BLOCKS,stairs,bricks,1);
         offerStonecuttingRecipe(exporter,RecipeCategory.BUILDING_BLOCKS,slab,bricks,2);
         offerStonecuttingRecipe(exporter,RecipeCategory.BUILDING_BLOCKS,wall,bricks,1);
+    }
+
+    private void AddToolBatch(Item base, Item sword, Item shovel, Item pickaxe, Item axe, Item hoe) {
+        ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, sword, 1)
+                .input('#', base).input('s', Items.STICK)
+                .pattern("#")
+                .pattern("#")
+                .pattern("s").criterion(hasItem(base), conditionsFromItem(base)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, shovel, 1)
+                .input('#', base).input('s', Items.STICK)
+                .pattern("#")
+                .pattern("s")
+                .pattern("s").criterion(hasItem(base), conditionsFromItem(base)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, pickaxe, 1)
+                .input('#', base).input('s', Items.STICK)
+                .pattern("###")
+                .pattern(" s ")
+                .pattern(" s ").criterion(hasItem(base), conditionsFromItem(base)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, axe, 1)
+                .input('#', base).input('s', Items.STICK)
+                .pattern("##")
+                .pattern("#s")
+                .pattern(" s").criterion(hasItem(base), conditionsFromItem(base)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, hoe, 1)
+                .input('#', base).input('s', Items.STICK)
+                .pattern("##")
+                .pattern(" s")
+                .pattern(" s").criterion(hasItem(base), conditionsFromItem(base)).offerTo(exporter);
+
     }
 
     private void AddSmeltAndBlastRecipe(List<ItemConvertible> input, ItemConvertible output, float xp, int smeltTime, int blastTime){
@@ -619,11 +656,11 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
     private void AddSpellcomponentRecipe(List<SmithingIngredient> input, SpellBlock outputComponent, boolean shapeless){
 
-        var conditions = conditionsFromItem(ModItems.SPELLCOMPONENT);
+        var conditions = conditionsFromItem(SPELLCOMPONENT);
 
         DefaultedList<SmithingIngredient> ingredients = DefaultedList.of();
         ingredients.addAll(input);
-        ItemStack output = new ItemStack(ModItems.SPELLCOMPONENT);
+        ItemStack output = new ItemStack(SPELLCOMPONENT);
         var nbt = SpellComponentStoringItem.getNbtFor(outputComponent);
         output.setSubNbt("component",nbt);
         SmitheryRecipeJsonBuilder.create(

@@ -8,7 +8,7 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import org.oxytocina.geomancy.blocks.blockEntities.SpellstorerBlockEntity;
-import org.oxytocina.geomancy.items.SoulCastingItem;
+import org.oxytocina.geomancy.items.tools.SoulCastingItem;
 
 public class SpellstorerTryUpdateCasterC2SPacket {
 

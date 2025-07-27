@@ -1,4 +1,4 @@
-package org.oxytocina.geomancy.items;
+package org.oxytocina.geomancy.items.tools;
 
 import com.klikli_dev.modonomicon.client.gui.*;
 import net.fabricmc.api.*;

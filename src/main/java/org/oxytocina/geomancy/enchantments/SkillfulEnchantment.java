@@ -4,7 +4,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
-import org.oxytocina.geomancy.items.HammerItem;
+import org.oxytocina.geomancy.items.tools.HammerItem;
 
 public class SkillfulEnchantment extends Enchantment {
 

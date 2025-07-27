@@ -19,6 +19,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.items.tools.*;
 import org.oxytocina.geomancy.items.tools.materials.ModToolMaterials;
 import org.oxytocina.geomancy.entity.ExtraEntitySettings;
 import org.oxytocina.geomancy.items.artifacts.ArtifactItem;
@@ -138,11 +139,11 @@ public class ModItems {
     // tools
 
     // lead
-    public static final SwordItem LEAD_SWORD = (SwordItem) register("lead_sword", new SwordItem(ModToolMaterials.LEAD, 3, -2.4F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
-    public static final ShovelItem LEAD_SHOVEL = (ShovelItem) register("lead_shovel", new ShovelItem(ModToolMaterials.LEAD, 1.5F, -3.0F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
-    public static final PickaxeItem LEAD_PICKAXE = (PickaxeItem) register("lead_pickaxe", new PickaxeItem(ModToolMaterials.LEAD, 1, -2.8F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
-    public static final AxeItem LEAD_AXE = (AxeItem) register("lead_axe", new AxeItem(ModToolMaterials.LEAD, 7.0F, -3.2F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
-    public static final HoeItem LEAD_HOE = (HoeItem) register("lead_hoe", new HoeItem(ModToolMaterials.LEAD, -1, -2.0F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final LeadSwordItem LEAD_SWORD = (LeadSwordItem) register("lead_sword", new LeadSwordItem(ModToolMaterials.LEAD, 3, -2.4F, new Item.Settings(),1),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final LeadShovelItem LEAD_SHOVEL = (LeadShovelItem) register("lead_shovel", new LeadShovelItem(ModToolMaterials.LEAD, 1.5F, -3.0F, new Item.Settings(),1),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final LeadPickaxeItem LEAD_PICKAXE = (LeadPickaxeItem) register("lead_pickaxe", new LeadPickaxeItem(ModToolMaterials.LEAD, 1, -2.8F, new Item.Settings(),1),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final LeadAxeItem LEAD_AXE = (LeadAxeItem) register("lead_axe", new LeadAxeItem(ModToolMaterials.LEAD, 7.0F, -3.2F, new Item.Settings(),1),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final LeadHoeItem LEAD_HOE = (LeadHoeItem) register("lead_hoe", new LeadHoeItem(ModToolMaterials.LEAD, -1, -2.0F, new Item.Settings(),1),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
 
     // mithril
     public static final SwordItem MITHRIL_SWORD = (SwordItem) register("mithril_sword", new SwordItem(ModToolMaterials.MITHRIL, 3, -2.4F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
@@ -166,11 +167,11 @@ public class ModItems {
     public static final HoeItem MOLYBDENUM_HOE = (HoeItem) register("molybdenum_hoe", new HoeItem(ModToolMaterials.MOLYBDENUM, -1, -2.0F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
 
     // octangulite
-    public static final SwordItem OCTANGULITE_SWORD = (SwordItem) register("octangulite_sword", new SwordItem(ModToolMaterials.OCTANGULITE, 3, -2.4F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
-    public static final ShovelItem OCTANGULITE_SHOVEL = (ShovelItem) register("octangulite_shovel", new ShovelItem(ModToolMaterials.OCTANGULITE, 1.5F, -3.0F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
-    public static final PickaxeItem OCTANGULITE_PICKAXE = (PickaxeItem) register("octangulite_pickaxe", new PickaxeItem(ModToolMaterials.OCTANGULITE, 1, -2.8F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
-    public static final AxeItem OCTANGULITE_AXE = (AxeItem) register("octangulite_axe", new AxeItem(ModToolMaterials.OCTANGULITE, 7.0F, -3.2F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
-    public static final HoeItem OCTANGULITE_HOE = (HoeItem) register("octangulite_hoe", new HoeItem(ModToolMaterials.OCTANGULITE, -1, -2.0F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final OctanguliteSwordItem OCTANGULITE_SWORD = (OctanguliteSwordItem) register("octangulite_sword", new OctanguliteSwordItem(ModToolMaterials.OCTANGULITE, 3, -2.4F, new Item.Settings(),1),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom));
+    public static final OctanguliteShovelItem OCTANGULITE_SHOVEL = (OctanguliteShovelItem) register("octangulite_shovel", new OctanguliteShovelItem(ModToolMaterials.OCTANGULITE, 1.5F, -3.0F, new Item.Settings(),1),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom));
+    public static final OctangulitePickaxeItem OCTANGULITE_PICKAXE = (OctangulitePickaxeItem) register("octangulite_pickaxe", new OctangulitePickaxeItem(ModToolMaterials.OCTANGULITE, 1, -2.8F, new Item.Settings(),1),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom));
+    public static final OctanguliteAxeItem OCTANGULITE_AXE = (OctanguliteAxeItem) register("octangulite_axe", new OctanguliteAxeItem(ModToolMaterials.OCTANGULITE, 7.0F, -3.2F, new Item.Settings(),1),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom));
+    public static final OctanguliteHoeItem OCTANGULITE_HOE = (OctanguliteHoeItem) register("octangulite_hoe", new OctanguliteHoeItem(ModToolMaterials.OCTANGULITE, -1, -2.0F, new Item.Settings(),1),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom));
 
 
     public static final HammerItem IRON_HAMMER = (HammerItem) register("iron_hammer",new HammerItem(5,-3.3f,

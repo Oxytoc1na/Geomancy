@@ -27,12 +27,8 @@ import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.client.screen.SpellstorerScreenHandler;
 import org.oxytocina.geomancy.inventories.AutoCraftingInventory;
 import org.oxytocina.geomancy.inventories.ImplementedInventory;
-import org.oxytocina.geomancy.items.SoulCastingItem;
-import org.oxytocina.geomancy.items.SpellComponentStoringItem;
+import org.oxytocina.geomancy.items.tools.SoulCastingItem;
 import org.oxytocina.geomancy.items.SpellStoringItem;
-import org.oxytocina.geomancy.spells.SpellBlock;
-
-import java.util.LinkedHashMap;
 
 public class SpellstorerBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory, ImplementedInventory {
 

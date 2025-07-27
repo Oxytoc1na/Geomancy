@@ -1,4 +1,4 @@
-package org.oxytocina.geomancy.items;
+package org.oxytocina.geomancy.items.tools;
 
 import net.minecraft.client.item.*;
 import net.minecraft.entity.player.*;
@@ -9,6 +9,7 @@ import net.minecraft.util.*;
 import net.minecraft.world.*;
 import org.jetbrains.annotations.*;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.items.ModItems;
 
 import java.util.*;
 

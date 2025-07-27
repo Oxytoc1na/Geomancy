@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "geomancy:item/shovel_rod",
+    "layer1": "geomancy:item/octangulite_shovel_head"
+  }
+}
