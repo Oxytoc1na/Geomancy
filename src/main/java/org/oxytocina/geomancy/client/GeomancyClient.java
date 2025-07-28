@@ -18,11 +18,8 @@ import org.oxytocina.geomancy.client.rendering.ModBlockTransparency;
 import org.oxytocina.geomancy.client.rendering.ModColorizationHandler;
 import org.oxytocina.geomancy.client.rendering.ModModelPredicateProvider;
 import org.oxytocina.geomancy.client.rendering.armor.ModArmorRenderers;
-import org.oxytocina.geomancy.client.screen.ModScreenHandlers;
-import org.oxytocina.geomancy.client.screen.SmitheryScreen;
+import org.oxytocina.geomancy.client.screen.*;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
-import org.oxytocina.geomancy.client.screen.SpellmakerScreen;
-import org.oxytocina.geomancy.client.screen.SpellstorerScreen;
 import org.oxytocina.geomancy.compat.GeomancyIntegrationPacks;
 import org.oxytocina.geomancy.event.KeyInputHandler;
 import org.oxytocina.geomancy.networking.ModMessages;
@@ -35,6 +32,7 @@ public class GeomancyClient implements ClientModInitializer {
     public void onInitializeClient() {
 
         ModScreenHandlers.register();
+        ModScreens.register();
         ModColorizationHandler.register();
         ModBlockTransparency.register();
         ModModelPredicateProvider.register();
@@ -48,14 +46,12 @@ public class GeomancyClient implements ClientModInitializer {
 
         ClientTickEvents.START_CLIENT_TICK.register(new ClientPlayerTickHandler());
 
-        HandledScreens.register(ModScreenHandlers.SMITHERY_SCREEN_HANDLER, SmitheryScreen::new);
         BlockEntityRendererFactories.register(ModBlockEntities.SMITHERY_BLOCK_ENTITY, SmitheryBlockEntityRenderer::new);
 
         BlockEntityRendererFactories.register(ModBlockEntities.SPELLMAKER_BLOCK_ENTITY, SpellmakerBlockEntityRenderer::new);
-        HandledScreens.register(ModScreenHandlers.SPELLMAKER_SCREEN_HANDLER, SpellmakerScreen::new);
 
         BlockEntityRendererFactories.register(ModBlockEntities.SPELLSTORER_BLOCK_ENTITY, SpellstorerBlockEntityRenderer::new);
-        HandledScreens.register(ModScreenHandlers.SPELLSTORER_SCREEN_HANDLER, SpellstorerScreen::new);
+
 
     }
 }

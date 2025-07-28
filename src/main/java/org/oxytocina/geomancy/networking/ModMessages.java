@@ -16,12 +16,12 @@ import org.oxytocina.geomancy.networking.packet.S2C.*;
 public class ModMessages {
 
     // server to client
-    public static final Identifier MANA_SYNC = Geomancy.locate("mana_sync");
-    public static final Identifier LEAD_POISONING_SYNC = Geomancy.locate("lead_poisoning_sync");
-    public static final Identifier MADNESS_SYNC = Geomancy.locate("madness_sync");
-    public static final Identifier ITEM_MANA_SYNC = Geomancy.locate("item_mana_sync");
-    public static final Identifier INITIAL_SYNC = Geomancy.locate("initial_sync");
-    public static final Identifier SPELLMAKER_REFRESH = Geomancy.locate("spellmaker_refresh");
+    public static final Identifier MANA_SYNC =              Geomancy.locate("mana_sync");
+    public static final Identifier LEAD_POISONING_SYNC =    Geomancy.locate("lead_poisoning_sync");
+    public static final Identifier MADNESS_SYNC =           Geomancy.locate("madness_sync");
+    public static final Identifier ITEM_MANA_SYNC =         Geomancy.locate("item_mana_sync");
+    public static final Identifier INITIAL_SYNC =           Geomancy.locate("initial_sync");
+    public static final Identifier SPELLMAKER_REFRESH =     Geomancy.locate("spellmaker_refresh");
 
     // client to server
 
@@ -34,17 +34,18 @@ public class ModMessages {
         data.writeInt(nextIndex);
         ClientPlayNetworking.send(ModMessages.SPELLSTORER_TRY_UPDATE_CASTER, data);
     */
-    public static final Identifier CLIENT_JOINED = Geomancy.locate("client_joined");
-    public static final Identifier SPELLMAKER_TRY_ADD_COMPONENT = Geomancy.locate("spellmaker_try_add_component");
-    public static final Identifier SPELLMAKER_TRY_REMOVE_COMPONENT = Geomancy.locate("spellmaker_try_remove_component");
-    public static final Identifier SPELLMAKER_TRY_CHANGE_TYPE = Geomancy.locate("spellmaker_try_change_type");
-    public static final Identifier SPELLMAKER_TRY_CHANGE_VAR = Geomancy.locate("spellmaker_try_change_var");
-    public static final Identifier SPELLMAKER_TRY_CHANGE_PARAM = Geomancy.locate("spellmaker_try_change_param");
-    public static final Identifier SPELLMAKER_TRY_CHANGE_GRIDNAME = Geomancy.locate("spellmaker_try_change_gridname");
-    public static final Identifier SPELLMAKER_TRY_CHANGE_GRIDLIB = Geomancy.locate("spellmaker_try_change_lib");
-    public static final Identifier SPELLMAKER_TRY_ROTATE_COMPONENT = Geomancy.locate("spellmaker_try_rotate_component");
-    public static final Identifier SPELLSTORER_TRY_UPDATE_CASTER = Geomancy.locate("spellstorer_try_update_caster");
-    public static final Identifier CASTER_CHANGE_SELECTED_SPELL = Geomancy.locate("caster_change_selected_spell");
+    public static final Identifier CLIENT_JOINED =                      Geomancy.locate("client_joined");
+    public static final Identifier SPELLMAKER_TRY_ADD_COMPONENT =       Geomancy.locate("spellmaker_try_add_component");
+    public static final Identifier SPELLMAKER_TRY_REMOVE_COMPONENT =    Geomancy.locate("spellmaker_try_remove_component");
+    public static final Identifier SPELLMAKER_TRY_CHANGE_TYPE =         Geomancy.locate("spellmaker_try_change_type");
+    public static final Identifier SPELLMAKER_TRY_CHANGE_VAR =          Geomancy.locate("spellmaker_try_change_var");
+    public static final Identifier SPELLMAKER_TRY_CHANGE_PARAM =        Geomancy.locate("spellmaker_try_change_param");
+    public static final Identifier SPELLMAKER_TRY_CHANGE_GRIDNAME =     Geomancy.locate("spellmaker_try_change_gridname");
+    public static final Identifier SPELLMAKER_TRY_CHANGE_GRIDLIB =      Geomancy.locate("spellmaker_try_change_lib");
+    public static final Identifier SPELLMAKER_TRY_ROTATE_COMPONENT =    Geomancy.locate("spellmaker_try_rotate_component");
+    public static final Identifier SPELLSTORER_TRY_UPDATE_CASTER =      Geomancy.locate("spellstorer_try_update_caster");
+    public static final Identifier SPELLSTORER_ITEM_TRY_UPDATE_CASTER = Geomancy.locate("spellstorer_item_try_update_caster");
+    public static final Identifier CASTER_CHANGE_SELECTED_SPELL =       Geomancy.locate("caster_change_selected_spell");
 
     public static void registerC2SPackets(){
         ServerPlayNetworking.registerGlobalReceiver(CLIENT_JOINED, ClientJoinedC2SPacket::receive);
@@ -57,6 +58,7 @@ public class ModMessages {
         ServerPlayNetworking.registerGlobalReceiver(SPELLMAKER_TRY_CHANGE_GRIDLIB, SpellmakerTryChangeGridLibC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(SPELLMAKER_TRY_ROTATE_COMPONENT, SpellmakerTryRotateComponentC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(SPELLSTORER_TRY_UPDATE_CASTER, SpellstorerTryUpdateCasterC2SPacket::receive);
+        ServerPlayNetworking.registerGlobalReceiver(SPELLSTORER_ITEM_TRY_UPDATE_CASTER, SpellstorerItemTryUpdateCasterC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(CASTER_CHANGE_SELECTED_SPELL, CasterChangeSelectedSpellC2S::receive);
 
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {

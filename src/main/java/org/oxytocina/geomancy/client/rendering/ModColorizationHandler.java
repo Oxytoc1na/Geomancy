@@ -58,6 +58,10 @@ public class ModColorizationHandler {
         addOctanguliteToolItem(ModItems.OCTANGULITE_PICKAXE);
         addOctanguliteToolItem(ModItems.OCTANGULITE_AXE);
         addOctanguliteToolItem(ModItems.OCTANGULITE_HOE);
+        addOctanguliteArmorItem(ModItems.OCTANGULITE_BOOTS);
+        addOctanguliteArmorItem(ModItems.OCTANGULITE_LEGGINGS);
+        addOctanguliteArmorItem(ModItems.OCTANGULITE_CHESTPLATE);
+        addOctanguliteArmorItem(ModItems.OCTANGULITE_HELMET);
     }
 
     private static void addOctanguliteItem(Item item,float zoom,boolean withSlotOffset){
@@ -77,6 +81,13 @@ public class ModColorizationHandler {
         ColorProviderRegistry.ITEM.register(
                 (stack, tintIndex) -> {
                     if(tintIndex == 0) return 0xFFFFFFFF;
+                    return octanguliteToolNoise(stack);
+                },item);
+    }
+
+    private static void addOctanguliteArmorItem(Item item){
+        ColorProviderRegistry.ITEM.register(
+                (stack, tintIndex) -> {
                     return octanguliteToolNoise(stack);
                 },item);
     }
@@ -246,7 +257,9 @@ public class ModColorizationHandler {
         float y3 = zoom*2f*((baseY+395) * (1+tintIndex*0.3f) + tintIndex*16);
         float z3 = zoom*2f*((baseZ+529) * (1+tintIndex*0.3f) + tintIndex*16);
 
-        hue = (float)(org.oxytocina.geomancy.util.SimplexNoise.noise(x,y,z)+1)/2;
+        final float hueShift = 83/360f;
+
+        hue = (float)(org.oxytocina.geomancy.util.SimplexNoise.noise(x,y,z)+1)/2*(1-hueShift) + hueShift;
         sat = (float) (1-Math.pow(1F-((SimplexNoise.noise(x2,y2,z2)+1)/2),2));
         val = (float) (1-Math.pow(1F-((SimplexNoise.noise(x3,y3,z3)+1)/2),2));
 

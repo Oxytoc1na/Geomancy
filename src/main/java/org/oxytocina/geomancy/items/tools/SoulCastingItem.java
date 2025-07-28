@@ -2,9 +2,12 @@ package org.oxytocina.geomancy.items.tools;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
@@ -12,6 +15,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.screen.PropertyDelegate;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -20,7 +27,9 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import org.oxytocina.geomancy.client.screen.SpellstorerItemScreenHandler;
 import org.oxytocina.geomancy.client.screen.SpellstorerScreenHandler;
+import org.oxytocina.geomancy.inventories.ImplementedInventory;
 import org.oxytocina.geomancy.items.ICastingItem;
 import org.oxytocina.geomancy.items.IManaStoringItem;
 import org.oxytocina.geomancy.items.IScrollListenerItem;
@@ -34,9 +43,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-public class SoulCastingItem extends Item implements IManaStoringItem, ICastingItem, IScrollListenerItem {
+public class SoulCastingItem extends Item implements IManaStoringItem, ICastingItem, IScrollListenerItem, ExtendedScreenHandlerFactory {
 
     public static final HashMap<ItemStack,DefaultedList<ItemStack>> inventories = new HashMap<>();
+    public static final HashMap<ItemStack,Inventory> actualInventories = new HashMap<>();
 
     public int spellStorageSize = SpellstorerScreenHandler.STORAGE_DISPLAY_SLOTS;
 
@@ -52,7 +62,19 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (!world.isClient) {
 
-            cast(user.getStackInHand(hand),user);
+            if(user.isSneaking())
+            {
+                // open spell storing interface
+                if(user instanceof ServerPlayerEntity sp){
+                    var stack = user.getStackInHand(hand);
+                    sp.openHandledScreen((SoulCastingItem) stack.getItem());
+                }
+            }
+            else{
+                cast(user.getStackInHand(hand),user);
+
+            }
+
 
             return TypedActionResult.consume(user.getStackInHand(hand));
         } else {
@@ -140,6 +162,7 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
 
     public void clearCache(ItemStack stack){
         inventories.remove(stack);
+        actualInventories.remove(stack);
     }
 
     public void setInventory(ItemStack stack, NbtCompound nbt){
@@ -195,6 +218,16 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
         // generate and cache inventory
         DefaultedList<ItemStack> inv = readInventoryFromNbt(stack);
         inventories.put(stack,inv);
+
+        return inv;
+    }
+
+    public static Inventory getInventory(ItemStack stack){
+        if(actualInventories.containsKey(stack)) return actualInventories.get(stack);
+
+        // generate and cache inventory
+        Inventory inv = ImplementedInventory.of(((SoulCastingItem) stack.getItem()).getItems(stack));
+        actualInventories.put(stack,inv);
 
         return inv;
     }
@@ -336,29 +369,13 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
     public boolean onScrolled(ItemStack stack, float delta,PlayerEntity player) {
         if(!player.isSneaking()) return false;
 
-        int dir = Toolbox.sign(delta);
+        int dir = -Toolbox.sign(delta);
 
         int nextIndex = getSelectedSpellIndex(stack)+dir;
         setSelectedSpellIndex(stack,nextIndex);
         nextIndex=getSelectedSpellIndex(stack);
 
-        // display selected spell
-        var spells = getCastableSpellItems(stack);
-        if(spells.isEmpty()){
-            player.sendMessage(Text.translatable("geomancy.caster.nospells").formatted(Formatting.RED),true);
-        }
-        else{
-            var spellItem = spells.get(nextIndex);
-            var grid = SpellStoringItem.readGrid(spellItem);
-            MutableText indexText = Text.literal((nextIndex+1)+"/"+spells.size()+"/"+spellStorageSize+": ").formatted(Formatting.GRAY);
-            if(grid==null)
-            {
-                player.sendMessage(indexText.append(Text.translatable("geomancy.spellstorage.empty").formatted(Formatting.GRAY)),true);
-            }
-            else{
-                player.sendMessage(indexText.append(grid.getName().formatted(Formatting.DARK_AQUA)),true);
-            }
-        }
+        displaySelectedSpell(stack,player,nextIndex);
 
         // send packet to server
         PacketByteBuf data = PacketByteBufs.create();
@@ -371,8 +388,77 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
         return true;
     }
 
+    public void displaySelectedSpell(ItemStack stack, PlayerEntity player, int index){
+        // display selected spell
+        var spells = getCastableSpellItems(stack);
+        if(spells.isEmpty()){
+            player.sendMessage(Text.translatable("geomancy.caster.nospells").formatted(Formatting.RED),true);
+        }
+        else{
+            var spellItem = spells.get(index);
+            var grid = SpellStoringItem.readGrid(spellItem);
+            MutableText indexText = Text.literal((index+1)+"/"+spells.size()+"/"+spellStorageSize+": ").formatted(Formatting.GRAY);
+            if(grid==null)
+            {
+                player.sendMessage(indexText.append(Text.translatable("geomancy.spellstorage.empty").formatted(Formatting.GRAY)),true);
+            }
+            else{
+                player.sendMessage(indexText.append(grid.getName().formatted(Formatting.DARK_AQUA)),true);
+            }
+        }
+    }
+
+    // display selected spell if sneaking
+    @Override
+    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
+        super.inventoryTick(stack, world, entity, slot, selected);
+        if(selected && entity instanceof PlayerEntity player && player.isSneaking())
+            displaySelectedSpell(stack,player,getSelectedSpellIndex(stack));
+    }
+
     @Override
     public boolean shouldBlockScrolling(ItemStack stack, PlayerEntity player) {
         return player.isSneaking();
+    }
+
+    @Override
+    public Text getDisplayName() {
+        return Text.translatable("container.geomancy.spellstorer_block");
+    }
+
+    @Override
+    public @Nullable ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+        var stack = player.getStackInHand(player.getActiveHand());
+        if(!(stack.getItem() instanceof SoulCastingItem sci)) return null;
+        return new SpellstorerItemScreenHandler(syncId,playerInventory,stack,new PropertyDelegate() {
+            @Override
+            public int get(int index) {
+                return switch(index) {
+                    //case 0 -> SpellmakerBlockEntity.this.progress;
+                    //case 1 -> SpellmakerBlockEntity.this.maxProgress;
+                    //case 2 -> SpellmakerBlockEntity.this.currentRecipe!=null? SpellmakerBlockEntity.this.currentRecipe.getDifficulty(SpellmakerBlockEntity.this.inputInventory(), SpellmakerBlockEntity.this.getLastHammerStack(), SpellmakerBlockEntity.this.getLastHammerer()):-1;
+                    default -> 0;
+                };
+            }
+
+            @Override
+            public void set(int index, int value) {
+                switch(index) {
+                    //case 0 -> SpellmakerBlockEntity.this.progress = value;
+                    //case 1 -> SpellmakerBlockEntity.this.maxProgress = value;
+                }
+            }
+
+            @Override
+            public int size() {
+                return 3;
+            }
+        });
+    }
+
+    @Override
+    public void writeScreenOpeningData(ServerPlayerEntity serverPlayerEntity, PacketByteBuf packetByteBuf) {
+        var stack = serverPlayerEntity.getStackInHand(serverPlayerEntity.getActiveHand());
+        packetByteBuf.writeInt(serverPlayerEntity.getInventory().getSlotWithStack(stack));
     }
 }

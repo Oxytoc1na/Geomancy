@@ -71,6 +71,8 @@ public class SpellmakerBlockEntity extends BlockEntity implements ExtendedScreen
             }
         };
 
+        markDirty();
+
         //recipeChanged(state);
     }
 
@@ -137,7 +139,7 @@ public class SpellmakerBlockEntity extends BlockEntity implements ExtendedScreen
         for(var stack : stacks.values())
         {
             if(i>=stacksComposed.size()) break;
-                stacksComposed.set(i++,stack);
+            stacksComposed.set(i++,stack);
         }
         return ImplementedInventory.of(stacksComposed);
     }

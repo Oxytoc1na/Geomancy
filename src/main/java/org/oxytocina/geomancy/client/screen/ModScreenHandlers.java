@@ -22,6 +22,10 @@ public class ModScreenHandlers {
             Registry.register(Registries.SCREEN_HANDLER, new Identifier(Geomancy.MOD_ID, "spellstorer_block.json"),
                     new ExtendedScreenHandlerType<>(SpellstorerScreenHandler::new));
 
+    public static final ExtendedScreenHandlerType<SpellstorerItemScreenHandler> SPELLSTORER_ITEM_SCREEN_HANDLER =
+            Registry.register(Registries.SCREEN_HANDLER, new Identifier(Geomancy.MOD_ID, "spellstorer_item.json"),
+                    new ExtendedScreenHandlerType<>(SpellstorerItemScreenHandler::new));
+
     // TODO: clean up this mess
     public static void register() {
         SmitheryBlockEntity.SetScreenHandler(SmitheryScreenHandler::new);
