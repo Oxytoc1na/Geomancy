@@ -1,6 +1,7 @@
 package org.oxytocina.geomancy.items;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.World;
@@ -26,7 +27,7 @@ public interface IManaStoringItem {
         init(stack);
         return getData(world,stack).maxMana;
     }
-    default float getRechargeSpeedMultiplier(World world, ItemStack stack){
+    default float getRechargeSpeedMultiplier(World world, ItemStack stack, LivingEntity entity){
         init(stack);
         return getData(world,stack).speedMultiplier;
     }

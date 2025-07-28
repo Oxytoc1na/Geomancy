@@ -16,6 +16,7 @@ import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.blocks.blockEntities.ModBlockEntities;
 import org.oxytocina.geomancy.commands.ModCommands;
 import org.oxytocina.geomancy.compat.GeomancyIntegrationPacks;
+import org.oxytocina.geomancy.effects.ModStatusEffects;
 import org.oxytocina.geomancy.enchantments.ModEnchantments;
 import org.oxytocina.geomancy.entity.ModEntityAttributes;
 import org.oxytocina.geomancy.entity.ModEntityTypes;
@@ -74,6 +75,7 @@ public class Geomancy implements ModInitializer {
         ModEntityTypes.register();
         ModEntityAttributes.register();
         GeomancyIntegrationPacks.register();
+        ModStatusEffects.register();
 
         ServerTickEvents.START_SERVER_TICK.register(new PlayerTickHandler());
 

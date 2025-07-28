@@ -21,6 +21,7 @@ import org.oxytocina.geomancy.client.rendering.armor.ModArmorRenderers;
 import org.oxytocina.geomancy.client.screen.*;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 import org.oxytocina.geomancy.compat.GeomancyIntegrationPacks;
+import org.oxytocina.geomancy.effects.ParanoiaStatusEffect;
 import org.oxytocina.geomancy.event.KeyInputHandler;
 import org.oxytocina.geomancy.networking.ModMessages;
 
@@ -43,6 +44,7 @@ public class GeomancyClient implements ClientModInitializer {
         GeomancyIntegrationPacks.registerClient();
         ModArmorRenderers.register();
         ModModelLayers.register();
+
 
         ClientTickEvents.START_CLIENT_TICK.register(new ClientPlayerTickHandler());
 

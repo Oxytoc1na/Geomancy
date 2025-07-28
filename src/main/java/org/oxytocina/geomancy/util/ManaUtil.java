@@ -16,6 +16,8 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import org.oxytocina.geomancy.effects.ModStatusEffect;
+import org.oxytocina.geomancy.effects.ModStatusEffects;
 import org.oxytocina.geomancy.entity.ManaStoringItemData;
 import org.oxytocina.geomancy.entity.PlayerData;
 import org.oxytocina.geomancy.items.IManaStoringItem;
@@ -157,18 +159,25 @@ public class ManaUtil {
 
     public static float getRegenSpeedMultiplier(ServerPlayerEntity player){
         float res = JewelryItem.getManaRegenMultiplier(player);
+
+        if(player.hasStatusEffect(ModStatusEffects.MOURNING))
+        {
+            var amp = player.getStatusEffect(ModStatusEffects.MOURNING).getAmplifier();
+            res *= Toolbox.clampF(1-(amp+1)*0.2f,0,1);
+        }
+
         return res;
     }
 
     private static boolean tickMana(ServerPlayerEntity player){
         // channeling souls
         float ambientMana = getAmbientSoulsPerBlock(player);
-        float regenSpeed = getRegenSpeedMultiplier(player);
+        float playerRegenSpeed = getRegenSpeedMultiplier(player);
         boolean changed = false;
 
         var items = getAllSoulStoringItems(player);
         for(var i : items){
-            changed=tickMana(i,player,ambientMana,regenSpeed)||changed;
+            changed=tickMana(i,player,ambientMana,playerRegenSpeed)||changed;
         }
 
         if(changed) queueRecalculateMana(player);
@@ -207,9 +216,13 @@ public class ManaUtil {
         boolean changed = false;
 
         var data = IManaStoringItem.getData(player.getWorld(),soulStorage);
+        var item = (IManaStoringItem) soulStorage.getItem();
 
         // per tick
-        float actualRegenSpeed = 0.001f * regenSpeed * ambientMana;
+        float actualRegenSpeed = 0.001f *
+                (regenSpeed
+                        +item.getRechargeSpeedMultiplier(player.getWorld(),soulStorage,player))
+                * ambientMana;
 
         // regen from ambiance
         float newMana = Toolbox.clampF(data.mana + actualRegenSpeed,0,data.maxMana);

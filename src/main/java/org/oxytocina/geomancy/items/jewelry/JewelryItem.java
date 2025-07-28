@@ -273,10 +273,11 @@ public class JewelryItem extends TrinketItem implements DyeableItem {
     public static float getManaRegenMultiplier(LivingEntity wearer){
         float res = 1;
 
-        var wornJewelry = getAllWornJewelryItems(wearer);
-        for(ItemStack jewelryItem : wornJewelry){
-            res += getManaRegenMultiplier(jewelryItem,wearer);
-        }
+        // TODO: speed multiplier stat seperate from per-item amethysts
+        //var wornJewelry = getAllWornJewelryItems(wearer);
+        //for(ItemStack jewelryItem : wornJewelry){
+        //    res += getManaRegenMultiplier(jewelryItem,wearer);
+        //}
 
         return res;
     }

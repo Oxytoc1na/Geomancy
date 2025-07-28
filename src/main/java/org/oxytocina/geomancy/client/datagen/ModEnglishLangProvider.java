@@ -382,6 +382,11 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         add("geomancy.message.lead.nausea", "You feel like throwing up...");
         add("geomancy.message.lead.poison", "You feel a sharp pain in your head...");
         add("geomancy.message.lead.joints", "Your joints hurt...");
+        add("geomancy.message.madness.regret", "Maybe it is time to stop...");
+        add("geomancy.message.madness.mourning", "You feel terrible...");
+        add("geomancy.message.madness.ecstasy", "You feel wonderful!");
+        add("geomancy.message.madness.nausea", "Your head is spinning...");
+        add("geomancy.message.madness.paranoia", "Did you hear something?");
 
         // Advancements
         {

@@ -6,12 +6,15 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.entity.PlayerData;
 import org.oxytocina.geomancy.entity.StateSaverAndLoader;
 import org.oxytocina.geomancy.networking.packet.C2S.*;
 import org.oxytocina.geomancy.networking.packet.S2C.*;
+
+import java.util.function.Function;
 
 public class ModMessages {
 
@@ -22,6 +25,7 @@ public class ModMessages {
     public static final Identifier ITEM_MANA_SYNC =         Geomancy.locate("item_mana_sync");
     public static final Identifier INITIAL_SYNC =           Geomancy.locate("initial_sync");
     public static final Identifier SPELLMAKER_REFRESH =     Geomancy.locate("spellmaker_refresh");
+    public static final Identifier CAST_PARTICLES =         Geomancy.locate("cast_particles");
 
     // client to server
 
@@ -83,10 +87,18 @@ public class ModMessages {
         ClientPlayNetworking.registerGlobalReceiver(ITEM_MANA_SYNC, ItemManaSyncS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(INITIAL_SYNC, InitialSyncS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(SPELLMAKER_REFRESH, SpellmakerRefreshS2CPacket::receive);
+        ClientPlayNetworking.registerGlobalReceiver(CAST_PARTICLES, CastParticlesS2CPacket::receive);
     }
 
     public static void sendToAllClients(MinecraftServer server, Identifier id, PacketByteBuf buf){
         for(var player : server.getPlayerManager().getPlayerList()){
+            ServerPlayNetworking.send(player,id,buf);
+        }
+    }
+
+    public static void sendToAllClients(MinecraftServer server, Identifier id,PacketByteBuf buf, Function<ServerPlayerEntity,Boolean> predicate){
+        for(var player : server.getPlayerManager().getPlayerList()){
+            if(!predicate.apply(player)) continue;
             ServerPlayNetworking.send(player,id,buf);
         }
     }

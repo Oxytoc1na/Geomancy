@@ -40,6 +40,10 @@ public class ModSoundEvents {
     public static final SoundEvent ENTITY_STELLGE_ENGINEER_DEATH =  register("entity_stellge_engineer_death",new ExtraData().count(1).prefix("geomancy:mob/stellge_engineer/death"));
 
     public static final SoundEvent WHISPERS = register("whispers",new ExtraData().count(4).prefix("geomancy:octangulite/whispers_single"));
+    public static final SoundEvent CAST_FAILURE_BROKE = register("cast_fail_broke",new ExtraData().count(1).prefix("geomancy:casting/fail_broke"));
+    public static final SoundEvent CAST_SUCCESS_CHEAP = register("cast_success_cheap",new ExtraData().count(1).prefix("geomancy:casting/success_cheap"));
+    public static final SoundEvent CAST_SUCCESS_MEDIUM = register("cast_success_medium",new ExtraData().count(1).prefix("geomancy:casting/success_medium"));
+    public static final SoundEvent CAST_SUCCESS_EXPENSIVE = register("cast_success_expensive",new ExtraData().count(1).prefix("geomancy:casting/success_expensive"));
 
     public static void register(){
 

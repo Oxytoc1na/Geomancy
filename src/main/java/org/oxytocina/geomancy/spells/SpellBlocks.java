@@ -1,6 +1,10 @@
 package org.oxytocina.geomancy.spells;
 
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.loader.impl.lib.sat4j.core.Vec;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.Enchantments;
@@ -16,6 +20,8 @@ import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -27,9 +33,14 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.LocalRandom;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
+import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.client.GeomancyClient;
 import org.oxytocina.geomancy.items.tools.SoulCastingItem;
+import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.util.BlockHelper;
 import org.oxytocina.geomancy.util.Toolbox;
 
@@ -668,10 +679,12 @@ public class SpellBlocks {
                             FireballEntity fireball = new FireballEntity(comp.world(),comp.context.caster,vel.x,vel.y,vel.z,power);
                             fireball.setPosition(pos);
                             comp.world().spawnEntity(fireball);
+                            spawnCastParticles(comp,CastParticleData.genericSuccess(comp,pos));
                         }
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
+                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,pos));
                         }
 
                         return SpellBlockResult.empty();
@@ -702,10 +715,12 @@ public class SpellBlocks {
                             LightningEntity lightning = new LightningEntity(EntityType.LIGHTNING_BOLT,comp.world());
                             lightning.setPosition(pos);
                             comp.world().spawnEntity(lightning);
+                            spawnCastParticles(comp,CastParticleData.genericSuccess(comp,pos));
                         }
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
+                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,pos));
                         }
 
                         return SpellBlockResult.empty();
@@ -736,11 +751,14 @@ public class SpellBlocks {
 
                         if(trySpendSoul(comp,manaCost)){
                             //comp.world().setBlockState(Toolbox.posToBlockPos(pos), Blocks.GLOWSTONE.getDefaultState());
+                            spawnCastParticles(comp,CastParticleData.genericSuccess(comp,ent.getPos()));
                             ent.teleport(pos.x,pos.y,pos.z);
+                            spawnCastParticles(comp,CastParticleData.genericSuccess(comp,pos));
                         }
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
+                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,comp.caster().getPos()));
                         }
 
                         return SpellBlockResult.empty();
@@ -779,11 +797,14 @@ public class SpellBlocks {
 
                             if(destination==null) return SpellBlockResult.empty();
                             if(sw.getRegistryKey() == destination.getRegistryKey()) return SpellBlockResult.empty();
+
+                            spawnCastParticles(comp,CastParticleData.genericSuccess(comp,ent.getPos()));
                             ent.teleport(destination,ent.getX(),ent.getY(),ent.getZ(),null,ent.getYaw(),ent.getPitch());
                         }
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
+                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,comp.caster().getPos()));
                         }
 
                         return SpellBlockResult.empty();
@@ -817,10 +838,12 @@ public class SpellBlocks {
                             entity.setVelocityClient(vel.x,vel.y,vel.z);
                             entity.velocityModified=true;
                             entity.velocityDirty=true;
+                            spawnCastParticles(comp,CastParticleData.genericSuccess(comp,entity.getPos()));
                         }
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
+                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,comp.caster().getPos()));
                         }
 
                         return SpellBlockResult.empty();
@@ -864,10 +887,12 @@ public class SpellBlocks {
                             comp.world().setBlockState(Toolbox.posToBlockPos(pos), bi.getBlock().getDefaultState());
                             Toolbox.playSound(bi.getBlock().getSoundGroup(targetState).getPlaceSound(),comp.world(),blockPos, SoundCategory.BLOCKS,1,1);
                             trySpendSoul(comp,manaCost);
+                            spawnCastParticles(comp,CastParticleData.genericSuccess(comp,pos));
                         }
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
+                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,pos));
                         }
 
                         return SpellBlockResult.empty();
@@ -929,10 +954,12 @@ public class SpellBlocks {
                             }
 
                             trySpendSoul(comp,manaCost);
+                            spawnCastParticles(comp,CastParticleData.genericSuccess(comp,pos));
                         }
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
+                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,pos));
                         }
 
                         return SpellBlockResult.empty();
@@ -1002,10 +1029,12 @@ public class SpellBlocks {
                         if(trySpendSoul(comp,manaCost)){
                             var effectInst = new StatusEffectInstance(Registries.STATUS_EFFECT.get(id),Math.round(duration*20),amp);
                             ent.addStatusEffect(effectInst);
+                            spawnCastParticles(comp,CastParticleData.genericSuccess(comp,ent.getPos()));
                         }
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
+                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,comp.caster().getPos()));
                         }
 
                         return SpellBlockResult.empty();
@@ -1230,6 +1259,13 @@ public class SpellBlocks {
                 comp.getRuntimeName(),text));
     }
 
+    private static void spawnCastParticles(SpellComponent comp,CastParticleData data){
+        PacketByteBuf buf = PacketByteBufs.create();
+        data.write(buf);
+        ModMessages.sendToAllClients((comp.world() instanceof ServerWorld sw) ? sw.getServer() : null,ModMessages.CAST_PARTICLES,buf,serverPlayerEntity ->
+                serverPlayerEntity.getWorld().getRegistryKey().getValue().equals(data.world));
+    }
+
     private static boolean trySpendSoul(SpellComponent comp, float amount){
         return comp.context.tryConsumeSoul(amount);
     }
@@ -1310,6 +1346,86 @@ public class SpellBlocks {
 
         public float getCost(int amp, float duration) {
             return (float)Math.pow((amp+1),ampExponent) * duration * costMult * 0.2f;
+        }
+    }
+    public static class CastParticleData{
+        public Type type = Type.SOUL;
+        public int amount = 10;
+        public float dispersion = 0.5f;
+        public Vec3d pos;
+        public Identifier world;
+
+        private CastParticleData(Type type, int amount,Vec3d pos, Identifier world,float dispersion){
+            this.type=type;
+            this.amount=amount;
+            this.pos=pos;
+            this.world=world;
+            this.dispersion=dispersion;
+        }
+
+        public static CastParticleData genericSuccess(SpellComponent comp,Vec3d pos){
+            return create(comp,pos).type(Type.SOUL).amount(10);
+        }
+
+        public static CastParticleData genericBroke(SpellComponent comp,Vec3d pos){
+            return create(comp,pos).type(Type.SOUL_FIRE).amount(10);
+        }
+
+        public static CastParticleData genericFail(SpellComponent comp,Vec3d pos){
+            return create(comp,pos).type(Type.SOUL_FIRE).amount(10);
+        }
+
+        public static CastParticleData create(SpellComponent comp,Vec3d pos){
+            return new CastParticleData(Type.SOUL, 10,pos,comp.world().getRegistryKey().getValue(),0.5f);
+        }
+
+        public CastParticleData amount(int amount){this.amount = amount;return this;}
+        public CastParticleData dispersion(int dispersion){this.dispersion = dispersion;return this;}
+        public CastParticleData type(Type type){this.type = type;return this;}
+
+        public void write(PacketByteBuf buf){
+            buf.writeString(type.toString());
+            buf.writeInt(amount);
+            buf.writeFloat(dispersion);
+            buf.writeVector3f(pos.toVector3f());
+            buf.writeIdentifier(world);
+        }
+
+        public static CastParticleData from(PacketByteBuf buf){
+            Type type = Type.valueOf(buf.readString());
+            int amount = buf.readInt();
+            float dispersion = buf.readFloat();
+            Vec3d pos = new Vec3d(buf.readVector3f());
+            Identifier world = buf.readIdentifier();
+            return new CastParticleData(type,amount,pos,world,dispersion);
+        }
+
+        public void run(){
+            World worldObj = MinecraftClient.getInstance().world;
+            if(!worldObj.getRegistryKey().getValue().equals(world)) return; // ignore particle spawns in different worlds
+            Random rand = new LocalRandom(GeomancyClient.tick);
+            for (int i = 0; i < amount; i++) {
+                Vec3d pPos = new Vec3d(
+                        pos.x+(rand.nextFloat()*2-1)*dispersion,
+                        pos.y+(rand.nextFloat()*2-1)*dispersion,
+                        pos.z+(rand.nextFloat()*2-1)*dispersion);
+                switch(type){
+                    case SOUL:{
+                        worldObj.addParticle(ParticleTypes.SOUL,pPos.x,pPos.y,pPos.z,0,0,0);
+                        break;
+                    }
+                    case SOUL_FIRE:{
+                        Vec3d randVel = new Vec3d(0,0,0).addRandom(rand,0.08f);
+                        worldObj.addParticle(ParticleTypes.SOUL_FIRE_FLAME,pPos.x,pPos.y,pPos.z,randVel.x,randVel.y,randVel.z);
+                        break;
+                    }
+                }
+            }
+        }
+
+        public enum Type{
+            SOUL,
+            SOUL_FIRE,
         }
     }
 }

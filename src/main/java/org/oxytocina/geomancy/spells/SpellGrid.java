@@ -10,7 +10,9 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.joml.Vector2i;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.effects.ModStatusEffects;
 import org.oxytocina.geomancy.items.SpellStoringItem;
+import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,7 +63,15 @@ public class SpellGrid {
     }
 
     public void run(ItemStack casterItem, ItemStack containerItem, LivingEntity casterEntity){
-        SpellContext context = new SpellContext(this,casterEntity,casterItem,containerItem,0,soulCostMultiplier);
+
+        float costMultiplier = soulCostMultiplier;
+        if(casterEntity.hasStatusEffect(ModStatusEffects.REGRETFUL))
+        {
+            var amp = casterEntity.getStatusEffect(ModStatusEffects.REGRETFUL).getAmplifier();
+            costMultiplier *= 1+(amp+1)*0.5f;
+        }
+
+        SpellContext context = new SpellContext(this,casterEntity,casterItem,containerItem,0,costMultiplier);
         context.refreshAvailableSoul();
 
         try{

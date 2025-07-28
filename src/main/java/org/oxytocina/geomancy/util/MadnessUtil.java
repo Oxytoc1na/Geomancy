@@ -21,6 +21,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import org.oxytocina.geomancy.blocks.ILeadPoisoningBlock;
 import org.oxytocina.geomancy.blocks.IOctanguliteBlock;
+import org.oxytocina.geomancy.effects.ModStatusEffects;
 import org.oxytocina.geomancy.entity.PlayerData;
 import org.oxytocina.geomancy.items.ILeadPoisoningItem;
 import org.oxytocina.geomancy.items.IMaddeningItem;
@@ -147,19 +148,44 @@ public class MadnessUtil {
 
         float madness = getMadness(player);
         // effect chance asymptotically approaches 100%.
-        // at 100, there is a 20% chance.
-        // at 400, there is a 50% chance.
-        float chance = madness/(madness+400);
+        // at 200, there is a 20% chance.
+        // at 800, there is a 50% chance.
+        float chance = madness/(madness+800);
         if(Toolbox.random.nextFloat()>chance) return;
 
         // effects are defined with severity, which affects at which level of poisoning they can happen,
         // weight, if it is added to the pool, and the function that happens when it is picked
         ArrayList<Triplet<Float,Integer, Consumer<ServerPlayerEntity>>> effects = new ArrayList<>();
 
-        // whispers
-        //effects.add(new Triplet<>(10f,1, p -> {
-        //    p.sendMessage(Text.translatable("geomancy.message.lead.tingling"),true);
-        //}));
+        // Regret
+        effects.add(new Triplet<>(10f,1, p -> {
+            p.addStatusEffect(new StatusEffectInstance(ModStatusEffects.REGRETFUL,20*60,0));
+            p.sendMessage(Text.translatable("geomancy.message.madness.regret"),true);
+        }));
+
+        // Mourning
+        effects.add(new Triplet<>(20f,1, p -> {
+            p.addStatusEffect(new StatusEffectInstance(ModStatusEffects.MOURNING,20*60,0));
+            p.sendMessage(Text.translatable("geomancy.message.madness.mourning"),true);
+        }));
+
+        // Ecstasy
+        effects.add(new Triplet<>(30f,1, p -> {
+            p.addStatusEffect(new StatusEffectInstance(ModStatusEffects.ECSTATIC,20*60,0));
+            p.sendMessage(Text.translatable("geomancy.message.madness.ecstasy"),true);
+        }));
+
+        // Nausea
+        effects.add(new Triplet<>(40f,1, p -> {
+            p.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA,20*20,0));
+            p.sendMessage(Text.translatable("geomancy.message.madness.nausea"),true);
+        }));
+
+        // Paranoia
+        effects.add(new Triplet<>(40f,1, p -> {
+            p.addStatusEffect(new StatusEffectInstance(ModStatusEffects.PARANOIA,20*20,0));
+            p.sendMessage(Text.translatable("geomancy.message.madness.paranoia"),true);
+        }));
 
         // add to available pool
         HashMap<Triplet<Float,Integer, Consumer<ServerPlayerEntity>>,Integer> pickedEffects = new HashMap<>();
@@ -172,7 +198,8 @@ public class MadnessUtil {
         var picked = Toolbox.selectWeightedRandomIndex(pickedEffects,null);
         if(picked!=null){
             picked.getC().accept(player);
-            // trigger lead poisoning advancement
+            // trigger madness advancement
+            AdvancementHelper.grantAdvancementCriterion(player,"geomancy:main/simple_maddened","simple_maddened");
         }
 
     }

@@ -169,7 +169,7 @@ public class LeadUtil {
         var picked = Toolbox.selectWeightedRandomIndex(pickedEffects,null);
         if(picked!=null){
             picked.getC().accept(player);
-            // TODO trigger lead poisoning advancement
+            AdvancementHelper.grantAdvancementCriterion(player,"geomancy:main/simple_lead_poisoned","simple_lead_poisoned");
         }
 
     }

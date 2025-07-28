@@ -44,6 +44,7 @@ public class SpellContext {
     }
 
     public boolean tryConsumeSoul(float amount){
+        amount*=soulCostMultiplier;
         if(!canAfford(amount)) { couldntAffordSomething = true; return false; }
 
         availableSoul -= amount;
