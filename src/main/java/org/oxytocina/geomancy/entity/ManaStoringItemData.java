@@ -19,15 +19,17 @@ public class ManaStoringItemData {
 
     public float mana = 0;
     public float maxMana = 0;
+    public float speedMultiplier = 1;
     public UUID uuid = null;
 
     public ManaStoringItemData(){
 
     }
 
-    public ManaStoringItemData(float mana, float maxMana){
+    public ManaStoringItemData(float mana, float maxMana, float speedMultiplier){
         this.mana = mana;
         this.maxMana=maxMana;
+        this.speedMultiplier=speedMultiplier;
     }
 
     public ManaStoringItemData(UUID uuid) {
@@ -45,6 +47,7 @@ public class ManaStoringItemData {
         res.uuid=nbt.getUuid("uuid");
         res.mana = nbt.getFloat("mana");
         res.maxMana = nbt.getFloat("maxMana");
+        res.speedMultiplier = nbt.getFloat("speedMultiplier");
         return res;
     }
 
@@ -53,6 +56,7 @@ public class ManaStoringItemData {
         res.uuid = buf.readUuid();
         res.mana = buf.readFloat();
         res.maxMana = buf.readFloat();
+        res.speedMultiplier = buf.readFloat();
         return res;
     }
 
@@ -61,12 +65,14 @@ public class ManaStoringItemData {
         nbt.putUuid("uuid",uuid);
         nbt.putFloat("mana",mana);
         nbt.putFloat("maxMana",maxMana);
+        nbt.putFloat("speedMultiplier",speedMultiplier);
     }
 
     public void writeBuf(PacketByteBuf buf){
         buf.writeUuid(uuid);
         buf.writeFloat(mana);
         buf.writeFloat(maxMana);
+        buf.writeFloat(speedMultiplier);
     }
 
     public static ManaStoringItemData from(World world, ItemStack stack, UUID uuid){
@@ -93,7 +99,7 @@ public class ManaStoringItemData {
     }
 
     public ManaStoringItemData clone(){
-        return new ManaStoringItemData(mana,maxMana);
+        return new ManaStoringItemData(mana,maxMana,speedMultiplier);
     }
 
     public static void setFromBuffer(PacketByteBuf buf){

@@ -18,6 +18,7 @@ public class SpellContext {
     public int highestRecordedDepth = 0;
     public boolean depthLimitReached = false;
     public boolean couldntAffordSomething = false;
+    public SpellGrid grid;
 
     // reference calls
     public SpellContext parentCall;
@@ -26,12 +27,14 @@ public class SpellContext {
     public SpellBlockArgs internalVars;
 
     public SpellContext(
+            SpellGrid grid,
             LivingEntity caster,
             ItemStack casterItem,
             ItemStack spellStorage,
             float availableSoul,
             float soulCostMultiplier
     ){
+        this.grid=grid;
         this.caster = caster;
         this.casterItem=casterItem;
         this.spellStorage=spellStorage;
@@ -44,14 +47,12 @@ public class SpellContext {
         if(!canAfford(amount)) { couldntAffordSomething = true; return false; }
 
         availableSoul -= amount;
+
         if(caster instanceof PlayerEntity player){
             if(player.isCreative()) return true;
-
-            ManaUtil.setMana(player,availableSoul);
-            return true;
         }
-        // TODO: livingentity mana
-        return true;
+
+        return ManaUtil.tryConsumeMana(caster,amount);
     }
 
     public boolean canAfford(float amount){
@@ -75,7 +76,7 @@ public class SpellContext {
     }
 
     public SpellContext createReferenced(SpellComponent comp){
-        SpellContext res = new SpellContext(caster,casterItem,spellStorage,availableSoul,soulCostMultiplier);
+        SpellContext res = new SpellContext(this.grid,caster,casterItem,spellStorage,availableSoul,soulCostMultiplier);
         res.parentCall = this;
         res.referenceCallingFrom = comp;
         res.internalVars=new SpellBlockArgs();

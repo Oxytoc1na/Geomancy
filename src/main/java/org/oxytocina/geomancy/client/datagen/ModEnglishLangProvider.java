@@ -101,6 +101,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("exp","Exponent","returns a number to the power of another number");
             addSpell("raycast_pos","Raycast Pos.","returns the block position hit by a ray");
             addSpell("raycast_dir","Raycast Dir.","returns the block face hit by a ray");
+            addSpell("bool_entitygrounded","Entity Grounded","returns if an entity is on the ground");
             // effectors
             addSpell("print","Print","outputs a value to the casters chat");
             addSpell("fireball","Fireball","summons a fireball");
@@ -108,21 +109,32 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("debug","Debug","enables debug mode if placed somewhere in the grid");
             addSpell("teleport","Teleport","teleports an entity to a specified position");
             addSpell("dimhop","Dimhop","teleports an entity to a specified dimension");
-            addSpell("break","Break","attempts to destroy a block at a position");
             addSpell("push","Push","sets the velocity of an entity");
+            addSpell("place","Place","attempts to place a block from an inventory slot");
+            addSpell("break","Break","attempts to destroy a block at a position");
+            addSpell("imbue","Imbue","grants a configurable status effect");
             // reference
             addSpell("action","Action","calls another installed spell");
             addSpell("provider","Provider","automatically returns the result of a spell");
             addSpell("ref_output","Ref. Output","gets a variable from the reference arguments");
             addSpell("ref_input","Ref. Input","sets a call result variable");
             addSpell("function","Function","calls a spell and returns a result");
+            addSpell("function_two","Function 2","calls a spell with two arguments and returns a result");
 
 
             add("MODID.spells.debug.error","Error in spell component %1$s: %2$s");
             add("MODID.spells.debug.broke","Couldn't afford spell %1$s. Cost: %2$f, available: %3$f");
             add("MODID.spells.debug.wrongsignal","Component %1$s received wrong signal type. Got: %2$s, expected: %3$s");
             add("MODID.spells.debug.nosuchfunction","Component %1$s referenced non-existing spell %2$s");
+            add("MODID.spells.debug.slotoob","Component %1$s referenced non-existing inventory slot %2$i");
+            add("MODID.spells.debug.notplaceable","Component %1$s tried to place non-placeable item %2$t");
+            add("MODID.spells.debug.notbreakable","Component %1$s tried to break non-breakable block %2$t");
+            add("MODID.spells.debug.notreplacable","Component %1$s tried to replace non-replaceable block %2$t");
+            add("MODID.spells.debug.invalideffect","Component %1$s tried to imbue non-existent status effect %2$t");
+            add("MODID.spells.debug.notimbuable","Component %1$s tried to imbue incompatible status effect %2$t");
             add("MODID.spells.debug.depthlimit","Component %1$s: Depth limit reached!");
+
+
             add("MODID.caster.nospells","No spells installed");
         }
 

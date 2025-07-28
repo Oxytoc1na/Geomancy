@@ -293,10 +293,16 @@ public class ModColorizationHandler {
         float y3 = zoom*2f*((baseY+395) * (1+0.3f));
         float z3 = zoom*2f*((baseZ+529) * (1+0.3f));
 
+        // desaturate emptier bars
+        float sat = MathHelper.lerp(0.3f+0.7f*progress,0,(float) (1-Math.pow(1F-((SimplexNoise.noise(x2,y2,z2)+1)/2),2)));
+
+        // ensure its readable
+        float val = 0.4f + 0.6f * (float) (1-Math.pow(1F-((SimplexNoise.noise(x3,y3,z3)+1)/2),2));
+
         return hsvToRgb(
                 (float)(org.oxytocina.geomancy.util.SimplexNoise.noise(x,y,z)+1)/2,
-                (float) (1-Math.pow(1F-((SimplexNoise.noise(x2,y2,z2)+1)/2),2)),
-                (float) (1-Math.pow(1F-((SimplexNoise.noise(x3,y3,z3)+1)/2),2))
+                sat,val
+
         );
 
     }

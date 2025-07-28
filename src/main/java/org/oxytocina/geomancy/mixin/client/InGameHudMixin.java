@@ -29,9 +29,9 @@ public abstract class InGameHudMixin {
 
     @Shadow public abstract void render(DrawContext context, float tickDelta);
 
-    @Inject(method = "renderStatusBars(Lnet/minecraft/client/gui/DrawContext;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getArmor()I"), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void spectrum$renderHealthBar(DrawContext context, CallbackInfo ci, PlayerEntity cameraPlayer, int lastHealth, boolean blinking, long timeStart, int health, HungerManager hungerManager, int foodLevel, int x, int foodX, int y, float maxHealth, int absorption, int heartRows, int rowHeight, int armorY) {
-        ModHudRenderer.onHudRender(context, cameraPlayer);
+    @Inject(method = "Lnet/minecraft/client/gui/hud/InGameHud;render(Lnet/minecraft/client/gui/DrawContext;F)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;isDemo()Z"), locals = LocalCapture.CAPTURE_FAILHARD)
+    private void geomancy$render(DrawContext context, float tickDelta, CallbackInfo ci) {
+        ModHudRenderer.onHudRender(context, getCameraPlayer());
     }
 
     @ModifyArg(method = "renderStatusEffectOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V", ordinal = 0))

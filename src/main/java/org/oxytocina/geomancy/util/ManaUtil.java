@@ -5,6 +5,7 @@ import dev.emi.trinkets.api.TrinketsApi;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -122,9 +123,7 @@ public class ManaUtil {
         ManaStoringItemData data = ManaStoringItemData.from(world,stack, IManaStoringItem.getUUID(stack));
 
         PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeUuid(data.uuid);
-        buf.writeFloat(data.mana);
-        buf.writeFloat(data.maxMana);
+        data.writeBuf(buf);
 
         ModMessages.sendToAllClients(svw.getServer(),ModMessages.ITEM_MANA_SYNC,buf);
 
@@ -169,7 +168,7 @@ public class ManaUtil {
 
         var items = getAllSoulStoringItems(player);
         for(var i : items){
-            changed=changed|| tickMana(i,player,ambientMana,regenSpeed);
+            changed=tickMana(i,player,ambientMana,regenSpeed)||changed;
         }
 
         if(changed) queueRecalculateMana(player);
@@ -225,4 +224,34 @@ public class ManaUtil {
         return changed;
     }
 
+    /// equally takes mana from all equipped mana storing items
+    public static boolean tryConsumeMana(LivingEntity entity, float amount){
+        // TODO: living entity mana consumption
+        if(!(entity instanceof ServerPlayerEntity player)) return true;
+
+        if(getMana(player) < amount) return false;
+
+        var storers = getAllSoulStoringItems(player);
+        float left = amount;
+        boolean changed=true;
+        World world = player.getWorld();
+        while(left>0){
+            if(!changed) break;
+            changed=false;
+            int stacksWithMana = 0;
+            for(var stack : storers){if(((IManaStoringItem)stack.getItem()).getMana(world,stack) > 0 ) stacksWithMana++;}
+            float amountPerStack = left/stacksWithMana;
+            for(var stack : storers){
+                if(!(stack.getItem() instanceof IManaStoringItem storer)) continue;
+                float mana = storer.getMana(world,stack);
+                if(mana<=0) continue;
+                float taken = Math.min(mana,amountPerStack);
+                left-=taken;
+                storer.setMana(world,stack,mana-taken);
+                changed=true;
+            }
+        }
+
+        return true;
+    }
 }

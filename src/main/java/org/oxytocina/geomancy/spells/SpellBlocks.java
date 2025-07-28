@@ -1,14 +1,26 @@
 package org.oxytocina.geomancy.spells;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FireballEntity;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
@@ -18,9 +30,13 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import org.oxytocina.geomancy.items.tools.SoulCastingItem;
+import org.oxytocina.geomancy.util.BlockHelper;
+import org.oxytocina.geomancy.util.Toolbox;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 public class SpellBlocks {
     public static LinkedHashMap<Identifier, SpellBlock> functions = new LinkedHashMap<>();
@@ -37,6 +53,7 @@ public class SpellBlocks {
     public static final SpellBlock CONST_TEXT;
     public static final SpellBlock CONST_BOOLEAN;
     public static final SpellBlock ENTITY_CASTER;
+    public static final SpellBlock CASTER_SLOT;
 
     // arithmetic
     public static final SpellBlock SUM;
@@ -55,17 +72,22 @@ public class SpellBlocks {
     public static final SpellBlock VECTOR_ENTITYDIR;
     public static final SpellBlock RAYCAST_POS;
     public static final SpellBlock RAYCAST_DIR;
+    public static final SpellBlock BOOL_ENTITYGROUNDED;
 
     // effectors
     public static final SpellBlock PRINT;
     public static final SpellBlock FIREBALL;
     public static final SpellBlock DEBUG;
     public static final SpellBlock LIGHTNING;
+    public static final SpellBlock PLACE;
+    public static final SpellBlock BREAK;
+    public static final SpellBlock IMBUE;
 
     // reference
     public static final SpellBlock ACTION;
     public static final SpellBlock PROVIDER;
     public static final SpellBlock FUNCTION;
+    public static final SpellBlock FUNCTION2;
     public static final SpellBlock REF_OUTPUT;
     public static final SpellBlock REF_INPUT;
     public static final SpellBlock TELEPORT;
@@ -73,6 +95,8 @@ public class SpellBlocks {
     public static final SpellBlock PUSH;
 
     private static SpellBlock.Category cat;
+
+    private static HashMap<Identifier, ImbueData> imbueData = new HashMap();
     static{
 
         // flow control
@@ -221,6 +245,17 @@ public class SpellBlocks {
                         if(component.context.caster!=null) res.add("caster",component.context.caster.getUuid());return res;
                     })
                     .sideConfigGetter((c)->SpellBlock.SideUtil.sidesOutput(c,"caster"))
+                    .category(cat).build());
+
+            CASTER_SLOT = register(SpellBlock.Builder.create("caster_slot")
+                    .inputs()
+                    .outputs(SpellSignal.createNumber(0).named("slot"))
+                    .func((component, stringSpellSignalHashMap) -> {
+                        SpellBlockResult res = new SpellBlockResult();
+                        if(component.context.caster instanceof PlayerEntity pe && component.context.casterItem != null)
+                            res.add("slot",pe.getInventory().getSlotWithStack(component.context.casterItem));return res;
+                    })
+                    .sideConfigGetter((c)->SpellBlock.SideUtil.sidesOutput(c,"slot"))
                     .category(cat).build());
         }
 
@@ -503,6 +538,19 @@ public class SpellBlocks {
                             return res;
                         })
                         .category(cat).build());
+
+                BOOL_ENTITYGROUNDED = register(SpellBlock.Builder.create("bool_entitygrounded")
+                        .inputs(SpellSignal.createUUID(null).named("entity"))
+                        .outputs(SpellSignal.createBoolean(false).named("grounded"))
+                        .parameters()
+                        .func((component, vars) -> {
+                            SpellBlockResult res = SpellBlockResult.empty();
+                            if(!(vars.get("entity").getEntity(component.world()) instanceof LivingEntity ent)) return res;
+                            res.add(SpellSignal.createBoolean(ent.isOnGround()).named("grounded"));
+                            return res;
+                        })
+                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
+                        .category(cat).build());
             }
 
             // vector math
@@ -784,6 +832,191 @@ public class SpellBlocks {
                     })
                     .category(cat).build());
 
+            PLACE = register(SpellBlock.Builder.create("place")
+                    .inputs(
+                            SpellSignal.createVector(null).named("position"),
+                            SpellSignal.createNumber(0).named("slot")
+                    )
+                    .outputs().parameters()
+                    .func((comp,vars) -> {
+                        if(!(comp.context.caster instanceof PlayerEntity pe)) return SpellBlockResult.empty(); // not a player
+                        var pos = vars.getVector("position");
+                        var slot = vars.getNumber("slot");
+                        int slotInt = Math.round(slot);
+                        if(slotInt <0||slotInt>=pe.getInventory().size()) { tryLogDebugSlotOOB(comp,slotInt); return SpellBlockResult.empty();} // slot OOB
+                        var stack = pe.getInventory().getStack(slotInt);
+                        if(!(stack.getItem() instanceof BlockItem bi)) { tryLogDebugNotPlaceable(comp,stack); return SpellBlockResult.empty(); } // not a block
+
+                        float manaCost = 1
+                                +castOffsetSoulCost(comp,pos,0.05f);
+
+                        if(canAfford(comp,manaCost)){
+                            var blockPos = Toolbox.posToBlockPos(pos);
+
+                            BlockState targetState = comp.world().getBlockState(blockPos);
+                            if(!targetState.isReplaceable())
+                            {
+                                // couldnt replace
+                                tryLogDebugNotReplaceable(comp,targetState);
+                                return SpellBlockResult.empty();
+                            }
+
+                            comp.world().setBlockState(Toolbox.posToBlockPos(pos), bi.getBlock().getDefaultState());
+                            Toolbox.playSound(bi.getBlock().getSoundGroup(targetState).getPlaceSound(),comp.world(),blockPos, SoundCategory.BLOCKS,1,1);
+                            trySpendSoul(comp,manaCost);
+                        }
+                        else{
+                            // too broke
+                            tryLogDebugBroke(comp,manaCost);
+                        }
+
+                        return SpellBlockResult.empty();
+                    })
+                    .sideConfigGetter((comp)->{
+                        SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
+                        for(int i = 0; i <6; i++) res[i] = SpellComponent.SideConfig.createToggleableInput(comp,SpellComponent.getDir(i)).named(i%2==0?"position":"slot");
+                        return res;
+                    })
+                    .category(cat).build());
+
+            BREAK = register(SpellBlock.Builder.create("break")
+                    .inputs(
+                            SpellSignal.createVector(null).named("position"),
+                            SpellSignal.createBoolean(true).named("silk touch")
+                    )
+                    .outputs().parameters()
+                    .func((comp,vars) -> {
+                        if(!(comp.context.caster instanceof PlayerEntity pe)) return SpellBlockResult.empty(); // not a player
+                        var pos = vars.getVector("position");
+                        var silkTouch = vars.getBoolean("silk touch");
+                        var blockPos = Toolbox.posToBlockPos(pos);
+
+                        // calculate breaking cost
+                        BlockState targetState = comp.world().getBlockState(blockPos);
+
+                        float manaCost = 0.2f
+                                +targetState.getBlock().getHardness()/5f* (silkTouch?2:1)
+                                +castOffsetSoulCost(comp,pos,0.05f);
+
+                        if(canAfford(comp,manaCost)){
+
+                            ItemStack stack = new ItemStack(Items.DIRT);
+                            if(targetState.isToolRequired()){
+                                if(targetState.isIn(BlockTags.PICKAXE_MINEABLE)) stack = new ItemStack(Items.NETHERITE_PICKAXE);
+                                else if(targetState.isIn(BlockTags.AXE_MINEABLE)) stack = new ItemStack(Items.NETHERITE_AXE);
+                                else if(targetState.isIn(BlockTags.SHOVEL_MINEABLE)) stack = new ItemStack(Items.NETHERITE_SHOVEL);
+                                else if(targetState.isIn(BlockTags.HOE_MINEABLE)) stack = new ItemStack(Items.NETHERITE_HOE);
+                                else if(targetState.isIn(BlockTags.SWORD_EFFICIENT)) stack = new ItemStack(Items.NETHERITE_SWORD);
+                            }
+
+                            if(silkTouch)
+                                stack.addEnchantment(Enchantments.SILK_TOUCH,1);
+
+                            final ItemStack s2 = stack.copy();
+
+                            Predicate<BlockState> minableBlocksPredicate = s -> !s.isToolRequired() || s2.isSuitableFor(s);
+
+                            if (!minableBlocksPredicate.test(targetState)) {
+                                // couldnt mine
+                                tryLogDebugNotbreakable(comp,targetState);
+                                return SpellBlockResult.empty();
+                            }
+
+                            if(!BlockHelper.breakBlockWithDrops(pe,stack,comp.world(),blockPos,minableBlocksPredicate)){
+                                // couldnt mine... again?
+                                tryLogDebugNotbreakable(comp,targetState);
+                                return SpellBlockResult.empty();
+                            }
+
+                            trySpendSoul(comp,manaCost);
+                        }
+                        else{
+                            // too broke
+                            tryLogDebugBroke(comp,manaCost);
+                        }
+
+                        return SpellBlockResult.empty();
+                    })
+                    .sideConfigGetter((comp)->{
+                        SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
+                        for(int i = 0; i <6; i++) res[i] = SpellComponent.SideConfig.createToggleableInput(comp,SpellComponent.getDir(i)).named(i%2==0?"position":"silk touch");
+                        return res;
+                    })
+                    .category(cat).build());
+
+            addImbueData(StatusEffects.REGENERATION,new ImbueData(10,1));
+            addImbueData(StatusEffects.POISON,new ImbueData(10,1,1.5f));
+            addImbueData(StatusEffects.WITHER,new ImbueData(10,1,1.5f));
+            addImbueData(StatusEffects.STRENGTH,new ImbueData(10,2));
+            addImbueData(StatusEffects.WEAKNESS,new ImbueData(10,2));
+            addImbueData(StatusEffects.SPEED,new ImbueData(10,2));
+            addImbueData(StatusEffects.SLOWNESS,new ImbueData(10,2,1.5f));
+            addImbueData(StatusEffects.JUMP_BOOST,new ImbueData(10,2));
+            addImbueData(StatusEffects.NIGHT_VISION,new ImbueData(0,1,1));
+            addImbueData(StatusEffects.BLINDNESS,new ImbueData(0,1,1));
+            addImbueData(StatusEffects.WATER_BREATHING,new ImbueData(0,1,1));
+            addImbueData(StatusEffects.DOLPHINS_GRACE,new ImbueData(0,3,1));
+            addImbueData(StatusEffects.FIRE_RESISTANCE,new ImbueData(0,1,1));
+            addImbueData(StatusEffects.INVISIBILITY,new ImbueData(0,0.5f,1));
+            addImbueData(StatusEffects.GLOWING,new ImbueData(0,0.25f,1f));
+            addImbueData(StatusEffects.RESISTANCE,new ImbueData(4,2f,2));
+            addImbueData(StatusEffects.LUCK,new ImbueData(10,0.5f,1.5f));
+            addImbueData(StatusEffects.UNLUCK,new ImbueData(10,0.25f,1.2f));
+            addImbueData(StatusEffects.SLOW_FALLING,new ImbueData(0,0.5f,1f));
+            addImbueData(StatusEffects.LEVITATION,new ImbueData(10,2,2f));
+            addImbueData(StatusEffects.HERO_OF_THE_VILLAGE,new ImbueData(3,3f,2f));
+            addImbueData(StatusEffects.BAD_OMEN,new ImbueData(0,0.1f,1f));
+            addImbueData(StatusEffects.HUNGER,new ImbueData(10,0.5f,1.5f));
+            addImbueData(StatusEffects.SATURATION,new ImbueData(10,10f,2f));
+            addImbueData(StatusEffects.HASTE,new ImbueData(10,2));
+            addImbueData(StatusEffects.MINING_FATIGUE,new ImbueData(10,2));
+            addImbueData(StatusEffects.ABSORPTION,new ImbueData(10,1,1.5f));
+            addImbueData(StatusEffects.HEALTH_BOOST,new ImbueData(10,1,1.5f));
+            addImbueData(StatusEffects.INSTANT_HEALTH,new ImbueData(10,1,1f,true));
+            addImbueData(StatusEffects.INSTANT_DAMAGE,new ImbueData(10,2,1f,true));
+            IMBUE = register(SpellBlock.Builder.create("imbue")
+                    .inputs(
+                            SpellSignal.createUUID(null).named("entity"),
+                            SpellSignal.createNumber(0).named("amp"),
+                            SpellSignal.createNumber(10).named("duration")
+                    )
+                    .outputs()
+                    .parameters(SpellBlock.Parameter.createText("effect","regeneration"))
+                    .func((comp,vars) -> {
+                        var uuid = vars.getUUID("entity");
+                        var effect = vars.getText("effect");
+                        var amp = vars.getInt("amp");
+                        var duration = vars.getNumber("duration");
+                        LivingEntity ent = comp.world() instanceof ServerWorld sw ? (sw.getEntity(uuid) instanceof LivingEntity le ? le : null) : null;
+                        if(ent==null) return SpellBlockResult.empty(); // invalid entity
+                        if(duration<0||amp<0) return SpellBlockResult.empty(); // invalid amp or duration
+                        Identifier id = Identifier.tryParse(effect);
+                        if(id==null) { tryLogDebugNoSuchEffect(comp,effect); return SpellBlockResult.empty();  } // invalid status effect
+                        if(!imbueData.containsKey(id)) { tryLogDebugUnimbuableEffect(comp,Registries.STATUS_EFFECT.get(id).getName()); return SpellBlockResult.empty();  } // unimbuable status effect;
+                        var data = imbueData.get(id);
+                        amp = Toolbox.clampI(amp,0,data.maxAmp);
+                        if(data.instant) duration = 1/20f;
+
+                        float manaCost = 0.5f + data.getCost(amp,duration);
+
+                        if(trySpendSoul(comp,manaCost)){
+                            var effectInst = new StatusEffectInstance(Registries.STATUS_EFFECT.get(id),Math.round(duration*20),amp);
+                            ent.addStatusEffect(effectInst);
+                        }
+                        else{
+                            // too broke
+                            tryLogDebugBroke(comp,manaCost);
+                        }
+
+                        return SpellBlockResult.empty();
+                    })
+                    .sideConfigGetter((comp)->{
+                        SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
+                        for(int i = 0; i <6; i++) res[i] = SpellComponent.SideConfig.createToggleableInput(comp,SpellComponent.getDir(i)).named(i%3==0?"amp":i%3==1?"entity":"duration");
+                        return res;
+                    })
+                    .category(cat).build());
+
         }
 
         // reference
@@ -833,6 +1066,27 @@ public class SpellBlocks {
 
             FUNCTION = register(SpellBlock.Builder.create("function")
                     .inputs(SpellSignal.createAny().named("arg"))
+                    .outputs(SpellSignal.createAny().named("res"))
+                    .parameters(SpellBlock.Parameter.createText("spell","helloworld"))
+                    .func((comp,vars) -> {
+                        if(!(comp.context.casterItem.getItem() instanceof SoulCastingItem)) return SpellBlockResult.empty();
+                        var funcName = vars.getText("spell");
+                        // check if specified function exists
+                        var refSpell = SoulCastingItem.getSpell(comp.context.casterItem,funcName);
+                        if(refSpell==null)
+                        {
+                            tryLogDebugNoSuchFunction(comp,funcName);
+                            return SpellBlockResult.empty();
+                        }
+
+                        // run referenced
+                        return refSpell.runReferenced(comp.context,comp,vars);
+                    })
+                    .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
+                    .category(cat).build());
+
+            FUNCTION2 = register(SpellBlock.Builder.create("function_two")
+                    .inputs(SpellSignal.createAny().named("arg"),SpellSignal.createAny().named("arg2"))
                     .outputs(SpellSignal.createAny().named("res"))
                     .parameters(SpellBlock.Parameter.createText("spell","helloworld"))
                     .func((comp,vars) -> {
@@ -920,54 +1174,60 @@ public class SpellBlocks {
         }
     }
 
-    private static void tryLogDebug(SpellComponent comp, Object... args){
+    public static void tryLogDebug(SpellComponent comp, Text msg){
         if(!comp.context.debugging) return;
-
-        var msg = Text.translatable("geomancy.spells.debug.error",comp.function.identifier.getPath(),args);
-
         logDebug(comp.context.caster,msg);
     }
 
     public static void tryLogDebugWrongSignal(SpellComponent comp, SpellSignal.Type got, SpellSignal.Type expected){
-        if(!comp.context.debugging) return;
-
-        var msg = Text.translatable("geomancy.spells.debug.wrongsignal",
-                Text.translatable("geomancy.spellcomponent."+comp.function.identifier.getPath()).formatted(Formatting.DARK_AQUA),
+        tryLogDebug(comp,Text.translatable("geomancy.spells.debug.wrongsignal",
+                comp.getRuntimeName(),
                 Text.translatable("geomancy.spellmaker.types."+got.toString().toLowerCase()).formatted(Formatting.DARK_AQUA),
                 Text.translatable("geomancy.spellmaker.types."+expected.toString().toLowerCase()).formatted(Formatting.DARK_AQUA)
-                );
-
-        logDebug(comp.context.caster,msg);
+                ));
     }
 
     public static void tryLogDebugDepthLimitReached(SpellComponent comp){
-        if(!comp.context.debugging) return;
-
-        var msg = Text.translatable("geomancy.spells.debug.depthlimit",
-                Text.translatable("geomancy.spellcomponent."+comp.function.identifier.getPath()).formatted(Formatting.DARK_AQUA)
-        );
-
-        logDebug(comp.context.caster,msg);
+        tryLogDebug(comp,Text.translatable("geomancy.spells.debug.depthlimit",comp.getRuntimeName()));
     }
 
     private static void tryLogDebugBroke(SpellComponent comp,float cost){
-        if(!comp.context.debugging) return;
-
-        var msg = Text.translatable("geomancy.spells.debug.broke",
-                Text.translatable("geomancy.spellcomponent."+comp.function.identifier.getPath()).formatted(Formatting.DARK_AQUA)
-                ,cost,comp.context.availableSoul);
-
-        logDebug(comp.context.caster,msg);
+        tryLogDebug(comp,Text.translatable("geomancy.spells.debug.broke",comp.getRuntimeName(),cost,comp.context.availableSoul));
     }
 
     private static void tryLogDebugNoSuchFunction(SpellComponent comp, String spellname){
-        if(!comp.context.debugging) return;
+        tryLogDebug(comp,Text.translatable("geomancy.spells.debug.nosuchfunction",
+                comp.getRuntimeName(),spellname));
+    }
 
-        var msg = Text.translatable("geomancy.spells.debug.nosuchfunction",
-                Text.translatable("geomancy.spellcomponent."+comp.function.identifier.getPath()).formatted(Formatting.DARK_AQUA)
-                ,spellname);
+    private static void tryLogDebugSlotOOB(SpellComponent comp,int slot){
+        tryLogDebug(comp,Text.translatable("geomancy.spells.debug.slotoob",
+                comp.getRuntimeName(),slot));
+    }
 
-        logDebug(comp.context.caster,msg);
+    private static void tryLogDebugNotPlaceable(SpellComponent comp, ItemStack stack){
+        tryLogDebug(comp,Text.translatable("geomancy.spells.debug.notplaceable",
+                comp.getRuntimeName(),stack.getName()));
+    }
+
+    private static void tryLogDebugNotReplaceable(SpellComponent comp, BlockState state){
+        tryLogDebug(comp,Text.translatable("geomancy.spells.debug.notreplaceable",
+                comp.getRuntimeName(),state.getBlock().getName()));
+    }
+
+    private static void tryLogDebugNotbreakable(SpellComponent comp, BlockState state){
+        tryLogDebug(comp,Text.translatable("geomancy.spells.debug.notbreakable",
+                comp.getRuntimeName(),state.getBlock().getName()));
+    }
+
+    private static void tryLogDebugNoSuchEffect(SpellComponent comp, String text){
+        tryLogDebug(comp,Text.translatable("geomancy.spells.debug.invalideffect",
+                comp.getRuntimeName(),Text.literal(text)));
+    }
+
+    private static void tryLogDebugUnimbuableEffect(SpellComponent comp, Text text){
+        tryLogDebug(comp,Text.translatable("geomancy.spells.debug.notimbuable",
+                comp.getRuntimeName(),text));
     }
 
     private static boolean trySpendSoul(SpellComponent comp, float amount){
@@ -1018,5 +1278,38 @@ public class SpellBlocks {
             res[i].varName=var;
         }
         return res;
+    }
+
+    public static boolean canImbueEffect(String effect){
+        return true;
+    }
+
+    private static void addImbueData(StatusEffect effect, ImbueData data){
+        imbueData.put(Registries.STATUS_EFFECT.getId(effect),data);
+    }
+    public static class ImbueData{
+        public final int maxAmp;
+        public final float ampExponent;
+        public final float costMult;
+        public final boolean instant;
+
+        public ImbueData(int maxAmp, float costMult){
+            this(maxAmp,costMult,2,false);
+        }
+
+        public ImbueData(int maxAmp, float costMult, float ampExponent){
+            this(maxAmp,costMult,ampExponent,false);
+        }
+
+        public ImbueData(int maxAmp, float costMult, float ampExponent,boolean instant){
+            this.maxAmp=maxAmp;
+            this.costMult=costMult;
+            this.ampExponent=ampExponent;
+            this.instant=instant;
+        }
+
+        public float getCost(int amp, float duration) {
+            return (float)Math.pow((amp+1),ampExponent) * duration * costMult * 0.2f;
+        }
     }
 }

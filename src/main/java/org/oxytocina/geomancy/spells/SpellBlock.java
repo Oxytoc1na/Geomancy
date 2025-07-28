@@ -259,7 +259,7 @@ public class SpellBlock {
         }
 
         public static Parameter createText(String name, String defaultText){
-            return new Parameter(Type.ConstantText,name,0,0,0,"defaultText");
+            return new Parameter(Type.ConstantText,name,0,0,0,defaultText);
         }
 
         public static Parameter createBoolean(String name, boolean defaultValue){

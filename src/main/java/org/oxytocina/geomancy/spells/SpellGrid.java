@@ -7,6 +7,7 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import org.joml.Vector2i;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.items.SpellStoringItem;
@@ -42,6 +43,7 @@ public class SpellGrid {
     public SpellBlockResult runReferenced(SpellContext parent,SpellComponent casterComp,SpellBlockArgs args){
         SpellContext context = parent.createReferenced(casterComp);
         context.internalVars = args;
+        context.grid = this;
 
         context.refreshAvailableSoul();
         for (var comp : components.values())
@@ -59,7 +61,7 @@ public class SpellGrid {
     }
 
     public void run(ItemStack casterItem, ItemStack containerItem, LivingEntity casterEntity){
-        SpellContext context = new SpellContext(casterEntity,casterItem,containerItem,0,soulCostMultiplier);
+        SpellContext context = new SpellContext(this,casterEntity,casterItem,containerItem,0,soulCostMultiplier);
         context.refreshAvailableSoul();
 
         try{
@@ -77,6 +79,9 @@ public class SpellGrid {
             Geomancy.logError("AAAAA!!!! Spells threw an exception! DEBUG ME!");
         }
 
+        if(context.depthLimitReached && context.debugging){
+            //SpellBlocks.tryLogDebugDepthLimitReached();
+        }
 
     }
 
@@ -153,6 +158,12 @@ public class SpellGrid {
     public MutableText getName(){
         if(Objects.equals(name, "")) return Text.translatable("geomancy.spellstorage.unnamed");
         return Text.literal(name);
+    }
+
+    public MutableText getRuntimeName(SpellContext context){
+        MutableText res = getName();
+        if(context.isChild()) res = context.parentCall.grid.getRuntimeName(context.parentCall).append(" -> ").append(res);
+        return res;
     }
 
     public void writeNbt(NbtCompound nbt){

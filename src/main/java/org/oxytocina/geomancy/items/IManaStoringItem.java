@@ -26,6 +26,14 @@ public interface IManaStoringItem {
         init(stack);
         return getData(world,stack).maxMana;
     }
+    default float getRechargeSpeedMultiplier(World world, ItemStack stack){
+        init(stack);
+        return getData(world,stack).speedMultiplier;
+    }
+    default void setRechargeSpeedMultiplier(World world, ItemStack stack, float speed){
+        init(stack);
+        getData(world,stack).speedMultiplier = speed;
+    }
     default float getMana(World world, ItemStack stack){
         init(stack);
         return getData(world,stack).mana;

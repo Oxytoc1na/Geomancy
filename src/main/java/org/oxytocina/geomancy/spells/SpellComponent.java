@@ -6,6 +6,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import org.joml.Vector2i;
@@ -156,6 +159,7 @@ public class SpellComponent {
 
             if(iterationResult.depth > context.depthLimit){
                 context.depthLimitReached = true;
+                SpellBlocks.tryLogDebugDepthLimitReached(this);
                 break;
             }
 
@@ -583,5 +587,10 @@ public class SpellComponent {
 
     public SpellComponent clone(){
         return new SpellComponent(parent,position,function,sideConfigs,configuredParameters);
+    }
+
+    public MutableText getRuntimeName(){
+        return Text.translatable("geomancy.spellcomponent."+this.function.identifier.getPath()).formatted(Formatting.DARK_AQUA)
+                .append(Text.literal(" ["+context.grid.getRuntimeName(context).getString()+":"+position.x+","+position.y+"]").formatted(Formatting.DARK_GRAY));
     }
 }

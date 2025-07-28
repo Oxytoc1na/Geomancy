@@ -151,6 +151,15 @@ stellge
 
 PROGRAMMING
 TODO: signals are delayed
+TODO: programmable armor
+- helmet
+-- casts when hit something, passes entity
+- chestplate
+-- casts when wearer got hit, passes attacker entity
+- leggings
+-- casts when jumping
+- boots
+-- casts when ?
 
 PREMADE SPELLS
 - hello world
