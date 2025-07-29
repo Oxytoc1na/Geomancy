@@ -12,6 +12,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -32,6 +33,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.LocalRandom;
 import net.minecraft.util.math.random.Random;
@@ -84,6 +86,7 @@ public class SpellBlocks {
     public static final SpellBlock RAYCAST_POS;
     public static final SpellBlock RAYCAST_DIR;
     public static final SpellBlock BOOL_ENTITYGROUNDED;
+    public static final SpellBlock ENTITY_NEAREST;
 
     // effectors
     public static final SpellBlock PRINT;
@@ -93,6 +96,9 @@ public class SpellBlocks {
     public static final SpellBlock PLACE;
     public static final SpellBlock BREAK;
     public static final SpellBlock IMBUE;
+    public static final SpellBlock TELEPORT;
+    public static final SpellBlock DIMHOP;
+    public static final SpellBlock PUSH;
 
     // reference
     public static final SpellBlock ACTION;
@@ -101,9 +107,7 @@ public class SpellBlocks {
     public static final SpellBlock FUNCTION2;
     public static final SpellBlock REF_OUTPUT;
     public static final SpellBlock REF_INPUT;
-    public static final SpellBlock TELEPORT;
-    public static final SpellBlock DIMHOP;
-    public static final SpellBlock PUSH;
+
 
     private static SpellBlock.Category cat;
 
@@ -558,6 +562,24 @@ public class SpellBlocks {
                             SpellBlockResult res = SpellBlockResult.empty();
                             if(!(vars.get("entity").getEntity(component.world()) instanceof LivingEntity ent)) return res;
                             res.add(SpellSignal.createBoolean(ent.isOnGround()).named("grounded"));
+                            return res;
+                        })
+                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
+                        .category(cat).build());
+
+                ENTITY_NEAREST = register(SpellBlock.Builder.create("entity_nearest")
+                        .inputs(SpellSignal.createVector(null).named("position"))
+                        .outputs(SpellSignal.createUUID(null).named("entity"))
+                        .parameters(SpellBlock.Parameter.createNumber("range",5,0,20))
+                        .func((comp, vars) -> {
+                            SpellBlockResult res = SpellBlockResult.empty();
+                            var pos = vars.getVector("position");
+                            var range = vars.getNumber("range");
+
+                            var ent = comp.world().getClosestEntity(LivingEntity.class, TargetPredicate.DEFAULT,null,pos.x,pos.y,pos.z, Box.of(pos,range,range,range));
+                            if(ent==null) return res;
+
+                            res.add("entity",ent.getUuid());
                             return res;
                         })
                         .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)

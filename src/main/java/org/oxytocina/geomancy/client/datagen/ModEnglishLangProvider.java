@@ -84,6 +84,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("constant_text","Constant Text","returns a configurable text");
             addSpell("constant_number","Constant Number","returns a configurable number");
             addSpell("constant_vector","Constant Vector","returns a configurable vector");
+            addSpell("caster_slot","Caster Slot","returns the slot ID the caster item is in");
             // arithmetic
             addSpell("vector_entityspawn","Entity Spawn","returns the respawn point of the entity");
             addSpell("vector_entitypos","Entity Pos.","returns the position of the entity");
@@ -102,6 +103,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("raycast_pos","Raycast Pos.","returns the block position hit by a ray");
             addSpell("raycast_dir","Raycast Dir.","returns the block face hit by a ray");
             addSpell("bool_entitygrounded","Entity Grounded","returns if an entity is on the ground");
+            addSpell("entity_nearest","Nearest Entity","returns the entity closest to the position");
             // effectors
             addSpell("print","Print","outputs a value to the casters chat");
             addSpell("fireball","Fireball","summons a fireball");
@@ -364,6 +366,14 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("block.MODID.lead_brick_wall"    , "Lead Brick Wall");
         }
 
+        // status effects
+        {
+            add("effect.MODID.paranoia"    , "Paranoia");
+            add("effect.MODID.regretful"   , "Regretful");
+            add("effect.MODID.mourning"    , "Mourning");
+            add("effect.MODID.ecstatic"    , "Ecstatic");
+
+        }
         // Enchantments
         add("enchantment.MODID.skillful"    , "Skillful");
         add("enchantment.MODID.mighty"      , "Mighty");

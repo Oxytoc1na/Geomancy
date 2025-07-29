@@ -199,7 +199,7 @@ public class MadnessUtil {
         if(picked!=null){
             picked.getC().accept(player);
             // trigger madness advancement
-            AdvancementHelper.grantAdvancementCriterion(player,"geomancy:main/simple_maddened","simple_maddened");
+            AdvancementHelper.grantAdvancementCriterion(player,"main/simple_maddened","simple_maddened");
         }
 
     }

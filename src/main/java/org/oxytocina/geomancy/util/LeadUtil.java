@@ -169,7 +169,7 @@ public class LeadUtil {
         var picked = Toolbox.selectWeightedRandomIndex(pickedEffects,null);
         if(picked!=null){
             picked.getC().accept(player);
-            AdvancementHelper.grantAdvancementCriterion(player,"geomancy:main/simple_lead_poisoned","simple_lead_poisoned");
+            AdvancementHelper.grantAdvancementCriterion(player,"main/simple_lead_poisoned","simple_lead_poisoned");
         }
 
     }

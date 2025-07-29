@@ -26,6 +26,9 @@ public class ParanoiaStatusEffect extends ModStatusEffect {
 		addEvent(SoundEvents.ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR,SoundCategory.BLOCKS);
 		addEvent(SoundEvents.BLOCK_WOODEN_DOOR_OPEN,SoundCategory.BLOCKS);
 		addEvent(SoundEvents.BLOCK_WOODEN_DOOR_CLOSE,SoundCategory.BLOCKS);
+		addEvent(SoundEvents.ENTITY_CREEPER_PRIMED,SoundCategory.HOSTILE);
+		addEvent(SoundEvents.ENTITY_ZOMBIE_AMBIENT,SoundCategory.HOSTILE);
+		addEvent(SoundEvents.ENTITY_SKELETON_AMBIENT,SoundCategory.HOSTILE);
 	}
 	private static void addEvent(SoundEvent event,SoundCategory category){
 		oneshotEvents.put(event,category);
@@ -44,7 +47,7 @@ public class ParanoiaStatusEffect extends ModStatusEffect {
 
 		if(world.isClient && entity instanceof ClientPlayerEntity playerEntity){
 
-			if(Toolbox.random.nextFloat() < 0.5f)
+			if(Toolbox.random.nextFloat() < 0.7f)
 			{
 				// oneshot event
 				var events = oneshotEvents.keySet().stream().toList();
@@ -65,8 +68,22 @@ public class ParanoiaStatusEffect extends ModStatusEffect {
 
 				// take the block the player is standing on
 				if(playerEntity.supportingBlockPos.isPresent()){
-					var state = playerEntity.getWorld().getBlockState(playerEntity.supportingBlockPos.get());
-					event.event = state.getBlock().getSoundGroup(state).getStepSound();
+					// player footstep
+					if(Toolbox.random.nextFloat() < 0.5f)
+					{
+						var state = playerEntity.getWorld().getBlockState(playerEntity.supportingBlockPos.get());
+						event.event = state.getBlock().getSoundGroup(state).getStepSound();
+					}
+					// mob footstep
+					else
+					{
+						int mobCase = Toolbox.random.nextInt(2);
+						event.event = switch(mobCase){
+							case 1 -> SoundEvents.ENTITY_SKELETON_STEP;
+							default -> SoundEvents.ENTITY_ZOMBIE_STEP;
+						};
+					}
+
 
 					// position the footstep event around the player
 					Vec3d pos = playerEntity.getPos();
@@ -113,7 +130,7 @@ public class ParanoiaStatusEffect extends ModStatusEffect {
 				cooldown +=cooldownPerSound;
 				// play sound
 				if(MinecraftClient.getInstance().world!=null)
-					MinecraftClient.getInstance().world.playSound(pos.x,pos.y,pos.z,event,SoundCategory.PLAYERS,1,Toolbox.random.nextFloat()*0.4f+0.8f,true);
+					MinecraftClient.getInstance().world.playSound(pos.x,pos.y,pos.z,event,SoundCategory.PLAYERS,0.3f,Toolbox.random.nextFloat()*0.4f+0.8f,true);
 				pos.add(dir);
 			}
 			durationLeft--;
