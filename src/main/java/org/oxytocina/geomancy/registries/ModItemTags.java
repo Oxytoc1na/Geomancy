@@ -3,13 +3,12 @@ package org.oxytocina.geomancy.registries;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
 
 public class ModItemTags {
-
-    public static final TagKey<Item> MUSIC_DISCS = register(new Identifier("music_discs"));
 
     public static final TagKey<Item> SMELLY_ITEMS = register( "smelly_items");
     public static final TagKey<Item> JEWELRY_GEMS = register("jewelry_gems");

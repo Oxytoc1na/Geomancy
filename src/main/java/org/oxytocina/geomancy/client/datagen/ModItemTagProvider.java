@@ -36,7 +36,7 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
             .forceAddTag(ItemTags.BANNERS)
             .setReplace(true);
 
-        getOrCreateTagBuilder(MUSIC_DISCS)
+        getOrCreateTagBuilder(ItemTags.MUSIC_DISCS)
                 .add(ModItems.MUSIC_DISC_DIGGY)
                 .setReplace(false);
 
@@ -56,6 +56,38 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
         octangulite.add(ModBlocks.OCTANGULITE_ORE.asItem());
         octangulite.add(ModBlocks.DEEPSLATE_OCTANGULITE_ORE.asItem());
         octangulite.add(ModBlocks.RAW_OCTANGULITE_BLOCK.asItem());
+
+        // wood
+        getOrCreateTagBuilder(ItemTags.PLANKS).add(
+                ModBlocks.SOUL_OAK_PLANKS.asItem()
+        ).setReplace(false);
+        getOrCreateTagBuilder(ItemTags.LOGS_THAT_BURN).add(
+                ModBlocks.SOUL_OAK_LOG.asItem(),
+                ModBlocks.STRIPPED_SOUL_OAK_LOG.asItem(),
+                ModBlocks.SOUL_OAK_WOOD.asItem(),
+                ModBlocks.STRIPPED_SOUL_OAK_WOOD.asItem()
+        ).setReplace(false);
+        getOrCreateTagBuilder(ItemTags.WOODEN_BUTTONS).add(
+                ModBlocks.SOUL_OAK_BUTTON.asItem()
+        ).setReplace(false);
+        getOrCreateTagBuilder(ItemTags.WOODEN_DOORS).add(
+                ModBlocks.SOUL_OAK_DOOR.asItem()
+        ).setReplace(false);
+        getOrCreateTagBuilder(ItemTags.WOODEN_FENCES).add(
+                ModBlocks.SOUL_OAK_FENCE.asItem()
+        ).setReplace(false);
+        getOrCreateTagBuilder(ItemTags.WOODEN_SLABS).add(
+                ModBlocks.SOUL_OAK_SLAB.asItem()
+        ).setReplace(false);
+        getOrCreateTagBuilder(ItemTags.WOODEN_STAIRS).add(
+                ModBlocks.SOUL_OAK_STAIRS.asItem()
+        ).setReplace(false);
+        getOrCreateTagBuilder(ItemTags.WOODEN_PRESSURE_PLATES).add(
+                ModBlocks.SOUL_OAK_PRESSURE_PLATE.asItem()
+        ).setReplace(false);
+        getOrCreateTagBuilder(ItemTags.WOODEN_TRAPDOORS).add(
+                ModBlocks.SOUL_OAK_TRAPDOOR.asItem()
+        ).setReplace(false);
 
         // stellge curious
         getOrCreateTagBuilder(STELLGE_CURIOUS).setReplace(false)

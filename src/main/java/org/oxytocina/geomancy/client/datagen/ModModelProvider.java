@@ -4,11 +4,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.block.WallBlock;
+import net.minecraft.block.*;
 import net.minecraft.data.client.*;
-import net.minecraft.block.Block;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
 
@@ -147,6 +144,148 @@ public class ModModelProvider extends FabricModelProvider {
             blockStateModelGenerator.createSubModel(b,"",Models.WALL_INVENTORY,(identifier -> {
                 TextureMap res = new TextureMap();
                 res.put(TextureKey.WALL,Geomancy.locate("block/"+baseBlockID.getPath()));
+                return res;
+            }));
+        }
+
+        // fence
+        for(FenceBlock b : ExtraBlockSettings.FenceBlocks.keySet()){
+            Identifier baseBlockID = Registries.BLOCK.getId(ExtraBlockSettings.FenceBlocks.get(b));
+            Identifier id = Registries.BLOCK.getId(b);
+            var sup = BlockStateModelGenerator.createFenceBlockState(b,
+                    id.withPrefixedPath("block/").withSuffixedPath("_post"),
+                    id.withPrefixedPath("block/").withSuffixedPath("_side"));
+            blockStateModelGenerator.blockStateCollector.accept(sup);
+
+            if(!ExtraBlockSettings.logged.get(b).shouldGenerateModels) continue;
+
+            blockStateModelGenerator.createSubModel(b,"",Models.FENCE_POST,(identifier -> {
+                TextureMap res = new TextureMap();
+                res.put(TextureKey.TEXTURE,Geomancy.locate("block/"+baseBlockID.getPath()));
+                return res;
+            }));
+            blockStateModelGenerator.createSubModel(b,"",Models.FENCE_SIDE,(identifier -> {
+                TextureMap res = new TextureMap();
+                res.put(TextureKey.TEXTURE,Geomancy.locate("block/"+baseBlockID.getPath()));
+                return res;
+            }));
+            blockStateModelGenerator.createSubModel(b,"",Models.FENCE_INVENTORY,(identifier -> {
+                TextureMap res = new TextureMap();
+                res.put(TextureKey.TEXTURE,Geomancy.locate("block/"+baseBlockID.getPath()));
+                return res;
+            }));
+        }
+
+        // fence gate
+        for(FenceGateBlock b : ExtraBlockSettings.FenceGateBlocks.keySet()){
+            Identifier baseBlockID = Registries.BLOCK.getId(ExtraBlockSettings.FenceGateBlocks.get(b));
+            Identifier id = Registries.BLOCK.getId(b);
+            var sup = BlockStateModelGenerator.createFenceGateBlockState(b,
+                    id.withPrefixedPath("block/").withSuffixedPath("_open"),
+                    id.withPrefixedPath("block/").withSuffixedPath("_closed"),
+                    id.withPrefixedPath("block/").withSuffixedPath("_open_wall"),
+                    id.withPrefixedPath("block/").withSuffixedPath("_closed_wall"),
+                    true
+                    );
+            blockStateModelGenerator.blockStateCollector.accept(sup);
+
+            if(!ExtraBlockSettings.logged.get(b).shouldGenerateModels) continue;
+
+            blockStateModelGenerator.createSubModel(b,"",Models.TEMPLATE_FENCE_GATE,(identifier -> {
+                TextureMap res = new TextureMap();
+                res.put(TextureKey.TEXTURE,Geomancy.locate("block/"+baseBlockID.getPath()));
+                return res;
+            }));
+            blockStateModelGenerator.createSubModel(b,"",Models.TEMPLATE_FENCE_GATE_OPEN,(identifier -> {
+                TextureMap res = new TextureMap();
+                res.put(TextureKey.TEXTURE,Geomancy.locate("block/"+baseBlockID.getPath()));
+                return res;
+            }));
+            blockStateModelGenerator.createSubModel(b,"",Models.TEMPLATE_FENCE_GATE_WALL,(identifier -> {
+                TextureMap res = new TextureMap();
+                res.put(TextureKey.TEXTURE,Geomancy.locate("block/"+baseBlockID.getPath()));
+                return res;
+            }));
+            blockStateModelGenerator.createSubModel(b,"",Models.TEMPLATE_FENCE_GATE_WALL_OPEN,(identifier -> {
+                TextureMap res = new TextureMap();
+                res.put(TextureKey.TEXTURE,Geomancy.locate("block/"+baseBlockID.getPath()));
+                return res;
+            }));
+        }
+
+        // pressure plate
+        for(PressurePlateBlock b : ExtraBlockSettings.PressurePlateBlocks.keySet()){
+            Identifier baseBlockID = Registries.BLOCK.getId(ExtraBlockSettings.PressurePlateBlocks.get(b));
+            Identifier id = Registries.BLOCK.getId(b);
+            var sup = BlockStateModelGenerator.createPressurePlateBlockState(b,
+                    id.withPrefixedPath("block/").withSuffixedPath("_up"),
+                    id.withPrefixedPath("block/").withSuffixedPath("_down"));
+            blockStateModelGenerator.blockStateCollector.accept(sup);
+
+            if(!ExtraBlockSettings.logged.get(b).shouldGenerateModels) continue;
+
+            blockStateModelGenerator.createSubModel(b,"",Models.PRESSURE_PLATE_UP,(identifier -> {
+                TextureMap res = new TextureMap();
+                res.put(TextureKey.TEXTURE,Geomancy.locate("block/"+baseBlockID.getPath()));
+                return res;
+            }));
+            blockStateModelGenerator.createSubModel(b,"",Models.PRESSURE_PLATE_DOWN,(identifier -> {
+                TextureMap res = new TextureMap();
+                res.put(TextureKey.TEXTURE,Geomancy.locate("block/"+baseBlockID.getPath()));
+                return res;
+            }));
+        }
+
+        // button
+        for(ButtonBlock b : ExtraBlockSettings.ButtonBlocks.keySet()){
+            Identifier baseBlockID = Registries.BLOCK.getId(ExtraBlockSettings.ButtonBlocks.get(b));
+            Identifier id = Registries.BLOCK.getId(b);
+            var sup = BlockStateModelGenerator.createButtonBlockState(b,
+                    id.withPrefixedPath("block/").withSuffixedPath(""),
+                    id.withPrefixedPath("block/").withSuffixedPath("_pressed"));
+            blockStateModelGenerator.blockStateCollector.accept(sup);
+
+            if(!ExtraBlockSettings.logged.get(b).shouldGenerateModels) continue;
+
+            blockStateModelGenerator.createSubModel(b,"",Models.BUTTON,(identifier -> {
+                TextureMap res = new TextureMap();
+                res.put(TextureKey.TEXTURE,Geomancy.locate("block/"+baseBlockID.getPath()));
+                return res;
+            }));
+            blockStateModelGenerator.createSubModel(b,"",Models.BUTTON_PRESSED,(identifier -> {
+                TextureMap res = new TextureMap();
+                res.put(TextureKey.TEXTURE,Geomancy.locate("block/"+baseBlockID.getPath()));
+                return res;
+            }));
+            blockStateModelGenerator.createSubModel(b,"",Models.BUTTON_INVENTORY,(identifier -> {
+                TextureMap res = new TextureMap();
+                res.put(TextureKey.TEXTURE,Geomancy.locate("block/"+baseBlockID.getPath()));
+                return res;
+            }));
+        }
+
+        // pillar
+        for(PillarBlock b : ExtraBlockSettings.PillarBlocks){
+            Identifier baseBlockID = Registries.BLOCK.getId(b);
+            Identifier id = Registries.BLOCK.getId(b);
+            var sup = BlockStateModelGenerator.createAxisRotatedBlockState(b,
+                    id.withPrefixedPath("block/").withSuffixedPath(""),
+                    id.withPrefixedPath("block/").withSuffixedPath("_horizontal")
+                    );
+            blockStateModelGenerator.blockStateCollector.accept(sup);
+
+            if(!ExtraBlockSettings.logged.get(b).shouldGenerateModels) continue;
+
+            blockStateModelGenerator.createSubModel(b,"",Models.CUBE_COLUMN,(identifier -> {
+                TextureMap res = new TextureMap();
+                res.put(TextureKey.END,Geomancy.locate("block/"+baseBlockID.getPath()+"_top"));
+                res.put(TextureKey.SIDE,Geomancy.locate("block/"+baseBlockID.getPath()));
+                return res;
+            }));
+            blockStateModelGenerator.createSubModel(b,"",Models.CUBE_COLUMN_HORIZONTAL,(identifier -> {
+                TextureMap res = new TextureMap();
+                res.put(TextureKey.END,Geomancy.locate("block/"+baseBlockID.getPath()+"_top"));
+                res.put(TextureKey.SIDE,Geomancy.locate("block/"+baseBlockID.getPath()));
                 return res;
             }));
         }

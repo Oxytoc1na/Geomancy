@@ -5,6 +5,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.World;
+import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.client.rendering.ModColorizationHandler;
 import org.oxytocina.geomancy.entity.ManaStoringItemData;
 
@@ -37,6 +38,14 @@ public interface IManaStoringItem {
     }
     default float getMana(World world, ItemStack stack){
         init(stack);
+
+        float mana = getData(world,stack).mana;
+        if(Float.isNaN(mana))
+        {
+            Geomancy.logError("item mana was NaN!");
+            setMana(world,stack,0);
+        }
+
         return getData(world,stack).mana;
     }
     default void setCapacity(World world, ItemStack stack, float capacity){

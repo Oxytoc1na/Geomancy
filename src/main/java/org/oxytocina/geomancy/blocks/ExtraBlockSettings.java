@@ -43,6 +43,7 @@ public class ExtraBlockSettings {
 
     public boolean shouldRegisterItem = true;
     public boolean shouldGenerateModels = true;
+    public boolean shouldItemHaveOwnName = false;
     private boolean shouldAddItemToGroup = true;
     private boolean simpleCubeModel = true;
     private boolean regularDrop = true;
@@ -72,6 +73,7 @@ public class ExtraBlockSettings {
         res.variantCube=variantCube;
         res.variantCubeColumn=variantCubeColumn;
         res.shouldGenerateModels=shouldGenerateModels;
+        res.shouldItemHaveOwnName=shouldItemHaveOwnName;
         return res;
     }
 
@@ -89,6 +91,7 @@ public class ExtraBlockSettings {
     public ExtraBlockSettings mineableByShovel(){shovel=true; return this;}
     public ExtraBlockSettings dontRegisterItem(){shouldRegisterItem=false; return this;}
     public ExtraBlockSettings dontGroupItem(){shouldAddItemToGroup=false; return this;}
+    public ExtraBlockSettings itemHasOwnName(){shouldItemHaveOwnName=true; return this;}
     public ExtraBlockSettings notSimpleCube(){simpleCubeModel=false; return this;}
     public ExtraBlockSettings miningLevel(int level){miningLevel=level; return this;}
     public ExtraBlockSettings hasTextureVariants(int count){textureVariants=count; variantCube = true; notSimpleCube(); return this;}

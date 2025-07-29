@@ -19,6 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.ILeadPoisoningBlock;
 import org.oxytocina.geomancy.effects.ModStatusEffect;
 import org.oxytocina.geomancy.effects.ModStatusEffects;
@@ -140,7 +141,7 @@ public class ManaUtil {
         return getAmbientSoulsPerBlock(entity.getWorld(),entity.getBlockPos());
     }
     public static float getAmbientSoulsPerBlock(World world, BlockPos pos){
-        if(cachedAmbientSouls.containsKey(pos)) return cachedAmbientSouls.get(pos);
+        if(cachedAmbientSouls.containsKey(pos)) return Toolbox.ifNotNullThenElse(cachedAmbientSouls.get(pos),0f);
 
         float res = 100;
 
@@ -259,12 +260,17 @@ public class ManaUtil {
         // make regen less effective the fuller the item is
         // at 0%, 100% speed
         // at 100%, 50% speed
-        actualRegenSpeed *= 1-0.5f*(data.mana/data.maxMana);
+        actualRegenSpeed *= 1-0.5f*(data.mana/Math.max(data.maxMana,1));
 
         // regen from ambiance
         float newMana = Toolbox.clampF(data.mana + actualRegenSpeed,0,data.maxMana);
         if(newMana!=data.mana)
         {
+            if(Float.isNaN(newMana))
+            {
+                Geomancy.logError("setting new mana as NaN!");
+                newMana=0;
+            }
             data.mana = newMana;
             changed=true;
         }

@@ -4,6 +4,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.world.World;
+import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.items.IManaStoringItem;
 
 import java.util.HashMap;
@@ -12,7 +13,7 @@ import java.util.UUID;
 public class ManaStoringItemData {
 
     // used to identify duplicated stacks, to give them a unique UUID
-    public final static HashMap<UUID, ItemStack> stackMap = new HashMap<UUID, ItemStack>();
+    public final static HashMap<UUID, ItemStack> stackMap = new HashMap<>();
 
     // client cache for rendering
     public final static HashMap<UUID, ManaStoringItemData> clientMap = new HashMap<UUID, ManaStoringItemData>();
@@ -46,6 +47,11 @@ public class ManaStoringItemData {
         ManaStoringItemData res = new ManaStoringItemData();
         res.uuid=nbt.getUuid("uuid");
         res.mana = nbt.getFloat("mana");
+        if(Float.isNaN(res.mana))
+        {
+            Geomancy.logError("mana item data had NaN as mana!");
+            res.mana = 0;
+        }
         res.maxMana = nbt.getFloat("maxMana");
         res.speedMultiplier = nbt.getFloat("speedMultiplier");
         return res;

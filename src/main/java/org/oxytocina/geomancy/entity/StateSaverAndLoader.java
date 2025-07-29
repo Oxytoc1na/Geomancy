@@ -32,6 +32,7 @@ public class StateSaverAndLoader extends PersistentState {
 
         NbtCompound manaStoringItemDataNbt = new NbtCompound();
         manaStoringItemData.forEach((uuid, data) -> {
+            if(data.mana<=0) return; // dont save empty data
             NbtCompound manaDataNbt = new NbtCompound();
             data.writeNbt(manaDataNbt);
             manaStoringItemDataNbt.put(uuid.toString(), manaDataNbt);
@@ -64,6 +65,7 @@ public class StateSaverAndLoader extends PersistentState {
     public static StateSaverAndLoader createNew() {
         StateSaverAndLoader state = new StateSaverAndLoader();
         state.players = new HashMap<>();
+        state.manaStoringItemData=new HashMap<>();
         return state;
     }
 
@@ -95,7 +97,7 @@ public class StateSaverAndLoader extends PersistentState {
 
         StateSaverAndLoader serverState = getServerState(player.getWorld());
 
-        // Either get the player by the uuid, or we don't have data for him yet, make a new player state
+        // Either get the player by the uuid, or we don't have data for them yet, make a new player state
         PlayerData playerState = serverState.players.computeIfAbsent(player.getUuid(), uuid -> new PlayerData());
 
         return playerState;
@@ -109,8 +111,8 @@ public class StateSaverAndLoader extends PersistentState {
 
         StateSaverAndLoader serverState = getServerState(serverWorld);
 
-        // Either get the player by the uuid, or we don't have data for him yet, make a new player state
-        ManaStoringItemData state = serverState.manaStoringItemData.computeIfAbsent(uuid, (uuid1 -> new ManaStoringItemData(uuid,stack)));
+        // Either get the player by the uuid, or we don't have data for them yet, make a new player state
+        ManaStoringItemData state = serverState.manaStoringItemData.computeIfAbsent(uuid, (uuid1 -> new ManaStoringItemData(uuid1,stack)));
 
         return state;
     }

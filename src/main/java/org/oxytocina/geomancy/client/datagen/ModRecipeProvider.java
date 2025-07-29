@@ -505,6 +505,11 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .pattern("#  ")
                 .pattern("## ")
                 .pattern("###").criterion(hasItem(SOUL_OAK_PLANKS), conditionsFromItem(SOUL_OAK_PLANKS)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, SOUL_OAK_SIGN, 3).input('#', SOUL_OAK_PLANKS).input('x', Items.STICK)
+                .pattern("###")
+                .pattern("###")
+                .pattern(" x ").criterion(hasItem(SOUL_OAK_PLANKS), conditionsFromItem(SOUL_OAK_PLANKS)).offerTo(exporter);
+        offerShapelessRecipe(exporter,SOUL_OAK_BUTTON,SOUL_OAK_PLANKS,"misc",1);
         this.exporter=null;
     }
 
