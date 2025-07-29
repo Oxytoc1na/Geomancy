@@ -26,12 +26,18 @@ public class OctanguliteJewelryItem extends JewelryItem implements IManaStoringI
 
     @Override
     public float getCapacity(World world, ItemStack stack) {
-        return baseSoulCapacity;
+        LivingEntity wearer = null;
+        if(stack.getHolder() instanceof LivingEntity le) wearer = le;
+        return baseSoulCapacity * getCapacityMultiplier(world,stack,wearer);
     }
 
     @Override
     public float getRechargeSpeedMultiplier(World world, ItemStack stack, LivingEntity entity) {
         return getManaRegenMultiplier(stack,entity);
+    }
+
+    public float getCapacityMultiplier(World world, ItemStack stack, LivingEntity entity) {
+        return getManaCapacityMultiplier(stack,entity);
     }
 
     @Override

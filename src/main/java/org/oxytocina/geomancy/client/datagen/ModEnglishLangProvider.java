@@ -364,6 +364,29 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("block.MODID.lead_brick_stairs"  , "Lead Brick Stairs");
             add("block.MODID.lead_brick_slab"    , "Lead Brick Slab");
             add("block.MODID.lead_brick_wall"    , "Lead Brick Wall");
+
+            add("block.MODID.soul_oak_log"                  , "Soul Oak Log");
+            add("block.MODID.stripped_soul_oak_log"         , "Stripped Soul Oak Log");
+            add("block.MODID.soul_oak_wood"                 , "Soul Oak Wood");
+            add("block.MODID.stripped_soul_oak_wood"        , "Stripped Soul Oak Wood");
+            add("block.MODID.soul_oak_planks"               , "Soul Oak Planks");
+            add("block.MODID.soul_oak_leaves"               , "Soul Oak Leaves");
+            add("block.MODID.soul_oak_sign"                 , "Soul Oak Sign");
+            add("block.MODID.soul_oak_wall_sign"            , "Soul Oak Wall Sign");
+            add("block.MODID.soul_oak_hanging_sign"         , "Soul Oak Hanging Sign");
+            add("block.MODID.soul_oak_wall_hanging_sign"    , "Soul Oak Wall Hanging Sign");
+            add("block.MODID.soul_oak_pressure_plate"       , "Soul Oak Pressure Plate");
+            add("block.MODID.soul_oak_sapling"              , "Soul Oak Sapling");
+            add("block.MODID.potted_soul_oak_sapling"       , "Potted Soul Oak Sapling");
+            add("block.MODID.soul_oak_button"               , "Soul Oak Button");
+            add("block.MODID.soul_oak_fence_gate"           , "Soul Oak Fence Gate");
+            add("block.MODID.soul_oak_stairs"               , "Soul Oak Stairs");
+            add("block.MODID.soul_oak_slab"                 , "Soul Oak Slab");
+            add("block.MODID.soul_oak_fence"                , "Soul Oak Fence");
+            add("block.MODID.soul_oak_door"                 , "Soul Oak Door");
+            add("block.MODID.soul_oak_trapdoor"             , "Soul Oak Trapdoor");
+
+
         }
 
         // status effects

@@ -18,6 +18,12 @@ public class ModBlockTags {
     public static final TagKey<Block> MININGLEVEL_IRON = register(Identifier.of(Identifier.DEFAULT_NAMESPACE, "needs_iron_tool"));
     public static final TagKey<Block> MININGLEVEL_DIAMOND = register(Identifier.of(Identifier.DEFAULT_NAMESPACE, "needs_diamond_tool"));
 
+    public static final TagKey<Block> OCTANGULITE = register( "octangulite");
+    public static final TagKey<Block> ADDS_SOULS = register( "adds_souls");
+    public static final TagKey<Block> ADDS_SOULS_FEW = register( "adds_souls_few");
+    public static final TagKey<Block> ADDS_SOULS_NORMAL = register( "adds_souls_normal");
+    public static final TagKey<Block> ADDS_SOULS_MANY = register( "adds_souls_many");
+
     public static TagKey<Block> register(String name){
         return register(Geomancy.locate(name));
     }

@@ -313,4 +313,14 @@ public class GemSlot {
         return res;
     }
 
+    public float getManaCapacityMultiplier(ItemStack parent, LivingEntity entity){
+        float res = 0;
+
+        if(gemItem == Items.ECHO_SHARD){
+            res += getEffectiveQuality(parent,entity);
+        }
+
+        return res;
+    }
+
 }

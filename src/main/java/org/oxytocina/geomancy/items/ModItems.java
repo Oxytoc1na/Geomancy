@@ -211,6 +211,12 @@ public class ModItems {
     public static final SpellComponentStoringItem SPELLCOMPONENT = (SpellComponentStoringItem) register("spellcomponent",new SpellComponentStoringItem(new FabricItemSettings()),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
 
     // geodes
+    // if something else goes terribly wrong, this place is usually where the exception gets thrown
+    // instead of somewhere where it would make more sense. no clue why, but it's sort of a little useful.
+    // check your initializations!
+
+    // VVV swap commented out lines to see if it "solves" it (its a clue!) VVV
+    //public static final Item STONE_GEODE = register("stone_geode",new Item(new FabricItemSettings()));
     public static final GeodeItem STONE_GEODE = (GeodeItem) register("stone_geode",new GeodeItem(new FabricItemSettings(),ModLootTables.GEODE_STONE));
 
     // test alien tooltip

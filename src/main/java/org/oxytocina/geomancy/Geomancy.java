@@ -33,6 +33,9 @@ import org.oxytocina.geomancy.particles.ModParticleTypes;
 import org.oxytocina.geomancy.progression.advancement.ModCriteria;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
+import org.oxytocina.geomancy.world.gen.ModWorldGeneration;
+import org.oxytocina.geomancy.world.tree.ModFoliagePlacerTypes;
+import org.oxytocina.geomancy.world.tree.ModTrunkPlacerTypes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,8 +51,22 @@ public class Geomancy implements ModInitializer {
     public static final Map<Identifier, TagKey<Item>> CACHED_ITEM_TAG_MAP = new HashMap<>();
     //public static SpectrumConfig CONFIG;
 
+    public static boolean initialized = false;
+
+    // called from APIs if they so mischievously tried to access geomancys static variables before it got the chance to load itself
+    public static void initializeForeign(){
+        if(initialized) return;
+        Geomancy.logError("initialized from foreign entrypoint!");
+        initialize();
+    }
+
     @Override
     public void onInitialize() {
+        initialize();
+    }
+
+    public static void initialize(){
+        if(initialized) return;
         // This code runs as soon as Minecraft is in a mod-load-ready state.
         // However, some things (like resources) may still be uninitialized.
         // Proceed with mild caution.
@@ -76,6 +93,9 @@ public class Geomancy implements ModInitializer {
         ModEntityAttributes.register();
         GeomancyIntegrationPacks.register();
         ModStatusEffects.register();
+        ModWorldGeneration.generateModWorldGen();
+        ModTrunkPlacerTypes.register();
+        ModFoliagePlacerTypes.register();
 
         ServerTickEvents.START_SERVER_TICK.register(new PlayerTickHandler());
 
@@ -83,6 +103,7 @@ public class Geomancy implements ModInitializer {
 
         logInfo(Registries.RECIPE_SERIALIZER.get(locate(ModRecipeTypes.GOLD_CONVERTING_ID)).toString());
 
+        initialized=true;
     }
 
     public static void logInfo(String message,World world) {

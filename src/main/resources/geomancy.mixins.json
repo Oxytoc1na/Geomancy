@@ -7,10 +7,12 @@
     "ApplyBonusLootFunctionMixin",
     "EntityApplyFluidsMixin",
     "EntityMixin",
+    "FoliagePlacerTypeInvoker",
     "ItemStackMixin",
     "LivingEntityMixin",
     "ModEntityDataSaverMixin",
     "PlayerInventoryMixin",
+    "TrunkPlacerTypeInvoker",
     "compat.connector.absent.EntityApplyFluidsMixinNoSinytra"
   ],
   "client": [

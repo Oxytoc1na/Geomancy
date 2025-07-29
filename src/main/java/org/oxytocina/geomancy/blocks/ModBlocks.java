@@ -2,6 +2,7 @@ package org.oxytocina.geomancy.blocks;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.enums.Instrument;
 import net.minecraft.block.piston.PistonBehavior;
@@ -14,6 +15,7 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import org.jetbrains.annotations.NotNull;
 import org.oxytocina.geomancy.Geomancy;
@@ -23,7 +25,10 @@ import org.oxytocina.geomancy.items.ExtraItemSettings;
 import org.oxytocina.geomancy.items.LeadBlockItem;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.OctanguliteBlockItem;
+import org.oxytocina.geomancy.registries.ModBlockSetTypes;
+import org.oxytocina.geomancy.registries.ModWoodTypes;
 import org.oxytocina.geomancy.sound.ModBlockSoundGroups;
+import org.oxytocina.geomancy.world.tree.SoulOakSaplingGenerator;
 
 import java.util.*;
 import java.util.function.Function;
@@ -87,6 +92,28 @@ public class ModBlocks {
 
     // mithril anvil
     public static final Block MITHRIL_ANVIL = register("mithril_anvil",AnvilBlock::new,AbstractBlock.Settings.create().mapColor(MapColor.IRON_GRAY).requiresTool().strength(5.0F, 1200.0F).sounds(BlockSoundGroup.ANVIL).pistonBehavior(PistonBehavior.BLOCK),ExtraBlockSettings.create().mineableByPickaxe().notSimpleCube(),new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof());
+
+    // wood
+    public static final OctangulitePillarBlock SOUL_OAK_LOG = (OctangulitePillarBlock)register("soul_oak_log",(s)->new OctangulitePillarBlock(s,0.3f),AbstractBlock.Settings.create().mapColor((state) -> state.get(PillarBlock.AXIS) == Direction.Axis.Y ? MapColor.OAK_TAN : MapColor.SPRUCE_BROWN).instrument(Instrument.BASS).strength(2.0F).sounds(BlockSoundGroup.WOOD).burnable(),ExtraBlockSettings.create(), new Item.Settings());
+    public static final OctangulitePillarBlock STRIPPED_SOUL_OAK_LOG = (OctangulitePillarBlock)register("stripped_soul_oak_log",(s)->new OctangulitePillarBlock(s,0.3f),AbstractBlock.Settings.create().mapColor((state) -> state.get(PillarBlock.AXIS) == Direction.Axis.Y ? MapColor.OAK_TAN : MapColor.SPRUCE_BROWN).instrument(Instrument.BASS).strength(2.0F).sounds(BlockSoundGroup.WOOD).burnable(),ExtraBlockSettings.create(), new Item.Settings());
+    public static final OctangulitePillarBlock SOUL_OAK_WOOD = (OctangulitePillarBlock)register("soul_oak_log",s->new OctangulitePillarBlock(s,0.3f),AbstractBlock.Settings.create().mapColor(MapColor.SPRUCE_BROWN).instrument(Instrument.BASS).strength(2.0F).sounds(BlockSoundGroup.WOOD).burnable());
+    public static final OctangulitePillarBlock STRIPPED_SOUL_OAK_WOOD = (OctangulitePillarBlock)register("stripped_soul_oak_log",s->new OctangulitePillarBlock(s,0.3f),AbstractBlock.Settings.create().mapColor(MapColor.OAK_TAN).instrument(Instrument.BASS).strength(2.0F).sounds(BlockSoundGroup.WOOD).burnable());
+    public static final OctanguliteBlock SOUL_OAK_PLANKS = (OctanguliteBlock)register("soul_oak_planks",(s)->new OctanguliteBlock(s,0.3f),AbstractBlock.Settings.copy(Blocks.OAK_PLANKS),ExtraBlockSettings.create(), new Item.Settings());
+    public static final Block SOUL_OAK_LEAVES = register("soul_oak_leaves",Blocks.createLeavesBlock(BlockSoundGroup.GRASS),ExtraBlockSettings.create(),new FabricItemSettings());
+    public static final Block SOUL_OAK_SIGN = register("soul_oak_sign",s->new SignBlock(s, ModWoodTypes.SOUL_OAK),AbstractBlock.Settings.create().mapColor(SOUL_OAK_PLANKS.getDefaultMapColor()).solid().instrument(Instrument.BASS).noCollision().strength(1.0F).burnable());
+    public static final Block SOUL_OAK_WALL_SIGN = register("soul_oak_wall_sign",s->new WallSignBlock(s, ModWoodTypes.SOUL_OAK),AbstractBlock.Settings.create().mapColor(SOUL_OAK_PLANKS.getDefaultMapColor()).solid().instrument(Instrument.BASS).noCollision().strength(1.0F).burnable());
+    public static final Block SOUL_OAK_HANGING_SIGN = register("soul_oak_hanging_sign",s->new HangingSignBlock(s, ModWoodTypes.SOUL_OAK),AbstractBlock.Settings.create().mapColor(SOUL_OAK_PLANKS.getDefaultMapColor()).solid().instrument(Instrument.BASS).noCollision().strength(1.0F).burnable());
+    public static final Block SOUL_OAK_WALL_HANGING_SIGN = register("soul_oak_wall_hanging_sign",s->new WallHangingSignBlock(s, ModWoodTypes.SOUL_OAK),AbstractBlock.Settings.create().mapColor(SOUL_OAK_PLANKS.getDefaultMapColor()).solid().instrument(Instrument.BASS).noCollision().strength(1.0F).burnable());
+    public static final Block SOUL_OAK_PRESSURE_PLATE = register("soul_oak_pressure_plate",s->new PressurePlateBlock(PressurePlateBlock.ActivationRule.EVERYTHING,s,ModBlockSetTypes.SOUL_OAK),AbstractBlock.Settings.create().mapColor(SOUL_OAK_PLANKS.getDefaultMapColor()).solid().instrument(Instrument.BASS).noCollision().strength(0.5f).burnable());
+    public static final SaplingBlock SOUL_OAK_SAPLING = (SaplingBlock) register("soul_oak_sapling",s->new SaplingBlock(new SoulOakSaplingGenerator(),s),AbstractBlock.Settings.create().mapColor(MapColor.PINK).noCollision().ticksRandomly().breakInstantly().sounds(BlockSoundGroup.GRASS).pistonBehavior(PistonBehavior.DESTROY));
+    public static final Block POTTED_SOUL_OAK_SAPLING = register("potted_soul_oak_sapling",Blocks.createFlowerPotBlock(SOUL_OAK_SAPLING),ExtraBlockSettings.create(),new FabricItemSettings());
+    public static final Block SOUL_OAK_BUTTON = register("potted_soul_oak_sapling",Blocks.createWoodenButtonBlock(ModBlockSetTypes.SOUL_OAK),ExtraBlockSettings.create(),new FabricItemSettings());
+    public static final Block SOUL_OAK_FENCE_GATE = register("soul_oak_fence_gate",s->new FenceGateBlock(s, ModWoodTypes.SOUL_OAK),AbstractBlock.Settings.create().mapColor(SOUL_OAK_PLANKS.getDefaultMapColor()).solid().instrument(Instrument.BASS).strength(2.0F, 3.0F).burnable(),ExtraBlockSettings.create(),new FabricItemSettings());
+    public static final OctanguliteStairsBlock SOUL_OAK_STAIRS = (OctanguliteStairsBlock)register("soul_oak_stairs",(s)->new OctanguliteStairsBlock(SOUL_OAK_PLANKS.getDefaultState(),s,0.3f),AbstractBlock.Settings.copy(SOUL_OAK_PLANKS),ExtraBlockSettings.create(), new FabricItemSettings());
+    public static final OctanguliteSlabBlock SOUL_OAK_SLAB = (OctanguliteSlabBlock)register("soul_oak_slab",(s)->new OctanguliteSlabBlock(s,0.3f),AbstractBlock.Settings.copy(SOUL_OAK_PLANKS),ExtraBlockSettings.create(), new FabricItemSettings());
+    public static final OctanguliteFenceBlock SOUL_OAK_FENCE = (OctanguliteFenceBlock)register("soul_oak_fence",(s)->new OctanguliteFenceBlock(s,0.3f),AbstractBlock.Settings.copy(SOUL_OAK_PLANKS),ExtraBlockSettings.create(), new FabricItemSettings());
+    public static final OctanguliteDoorBlock SOUL_OAK_DOOR = (OctanguliteDoorBlock)register("soul_oak_door",(s)->new OctanguliteDoorBlock(s, ModBlockSetTypes.SOUL_OAK,0.3f),AbstractBlock.Settings.copy(SOUL_OAK_PLANKS),ExtraBlockSettings.create(), new FabricItemSettings());
+    public static final OctanguliteTrapdoorBlock SOUL_OAK_TRAPDOOR = (OctanguliteTrapdoorBlock)register("soul_oak_trapdoor",(s)->new OctanguliteTrapdoorBlock(s,ModBlockSetTypes.SOUL_OAK,0.3f),AbstractBlock.Settings.copy(SOUL_OAK_PLANKS),ExtraBlockSettings.create(), new FabricItemSettings());
 
     // decorative
     public static final Block GILDED_DEEPSLATE = register("gilded_deepslate", Block::new,AbstractBlock.Settings.create().mapColor(MapColor.DEEPSLATE_GRAY).instrument(Instrument.BASEDRUM).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.POLISHED_DEEPSLATE),ExtraBlockSettings.create().mineableByPickaxe(),new FabricItemSettings());
@@ -153,10 +180,18 @@ public class ModBlocks {
         return register(name, blockFactory, settings,extraSettings,new Item.Settings());
     }
     private static Block register(String name, Function<AbstractBlock.Settings, Block> blockFactory, AbstractBlock.Settings settings,ExtraBlockSettings extraSettings, Item.Settings itemSettings) {
-        // Create a registry key for the block
-        RegistryKey<Block> blockKey = keyOfBlock(name);
         // Create the block instance
         Block block = blockFactory.apply(settings);
+        return register(name,block,extraSettings,itemSettings);
+    }
+    private static Block register(String name, Block block,ExtraBlockSettings extraSettings,Item.Settings itemSettings){
+        if(block==null){
+            Geomancy.logError("tried to register null block: "+name);
+            return Blocks.AIR;
+        }
+
+        // Create a registry key for the block
+        RegistryKey<Block> blockKey = keyOfBlock(name);
 
         // Sometimes, you may not want to register an item for the block.
         // Eg: if it's a technical block like `minecraft:moving_piston` or `minecraft:end_gateway`

@@ -40,6 +40,7 @@ repositories {
     // REI
     maven { url "https://maven.shedaniel.me" }
     maven { url = "https://maven.terraformersmc.com/" } // Modmenu, EMI
+    maven { url = 'https://maven.minecraftforge.net/' } // terrablender
 }
 
 dependencies {
@@ -50,8 +51,10 @@ dependencies {
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
+    // trinkets
     modImplementation "dev.emi:trinkets:${trinkets_version}"
 
+    // modonomicon
     modImplementation("com.klikli_dev:modonomicon-${minecraft_version}-fabric:${modonomicon_version}") { exclude(group: "com.klikli_dev") exclude(group: "mezz.jei") }
 
     // REI
@@ -59,6 +62,9 @@ dependencies {
 
     // EMI
     modCompileOnly("dev.emi:emi-fabric:${emi_version}") // https://github.com/emilyploszaj/emi
+
+    // Terrablender
+    modImplementation "com.github.glitchfiend:TerraBlender-fabric:${terrablender_version}"
 }
 
 processResources {

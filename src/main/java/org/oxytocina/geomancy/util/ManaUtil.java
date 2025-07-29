@@ -4,6 +4,7 @@ import dev.emi.trinkets.api.TrinketComponent;
 import dev.emi.trinkets.api.TrinketsApi;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -13,9 +14,12 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import org.oxytocina.geomancy.blocks.ILeadPoisoningBlock;
 import org.oxytocina.geomancy.effects.ModStatusEffect;
 import org.oxytocina.geomancy.effects.ModStatusEffects;
 import org.oxytocina.geomancy.entity.ManaStoringItemData;
@@ -24,6 +28,7 @@ import org.oxytocina.geomancy.items.IManaStoringItem;
 import org.oxytocina.geomancy.items.jewelry.JewelryItem;
 import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.registries.ModBiomeTags;
+import org.oxytocina.geomancy.registries.ModBlockTags;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -151,10 +156,37 @@ public class ManaUtil {
         else if(biome.isIn(ModBiomeTags.VPB_LOW)) res /= 2f;
 
         // from nearby living blocks
-        // TODO
+        res+= getAmbientSPBFromBlocks(world,pos);
 
         cachedAmbientSouls.put(pos,res);
         return res;
+    }
+
+    public static float getAmbientSPBFromBlocks(World world, BlockPos pos){
+        final float checkRadius = 4;
+
+        float res = 0;
+
+        List<BlockPos> checkedBlockPos = new ArrayList<>();
+        BlockPos.stream(Box.from(new BlockBox(pos)).expand(checkRadius))
+                .filter(pos3 -> addsAmbientSouls(world.getBlockState(pos3))).forEach((blockPos -> checkedBlockPos.add(blockPos.mutableCopy())));
+        for(var pos2 : checkedBlockPos)
+        {
+            BlockState state = world.getBlockState(pos2);
+            double dist = pos.getSquaredDistance(pos2);
+            float div = Math.max(1,(float)(Math.sqrt(dist)));
+
+            if(state.isIn(ModBlockTags.ADDS_SOULS_NORMAL)) res += 3/div;
+            else if(state.isIn(ModBlockTags.ADDS_SOULS_FEW)) res += 1/div;
+            else if(state.isIn(ModBlockTags.ADDS_SOULS_MANY)) res += 10/div;
+        }
+
+        return res;
+    }
+
+    public static boolean addsAmbientSouls(BlockState state){
+        return state.isIn(ModBlockTags.ADDS_SOULS);
+
     }
 
     public static float getRegenSpeedMultiplier(ServerPlayerEntity player){
@@ -219,10 +251,15 @@ public class ManaUtil {
         var item = (IManaStoringItem) soulStorage.getItem();
 
         // per tick
-        float actualRegenSpeed = 0.001f *
+        float actualRegenSpeed = 0.0005f *
                 (regenSpeed
                         +item.getRechargeSpeedMultiplier(player.getWorld(),soulStorage,player))
                 * ambientMana;
+
+        // make regen less effective the fuller the item is
+        // at 0%, 100% speed
+        // at 100%, 50% speed
+        actualRegenSpeed *= 1-0.5f*(data.mana/data.maxMana);
 
         // regen from ambiance
         float newMana = Toolbox.clampF(data.mana + actualRegenSpeed,0,data.maxMana);

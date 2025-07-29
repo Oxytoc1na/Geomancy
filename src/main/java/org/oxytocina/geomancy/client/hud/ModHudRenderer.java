@@ -25,6 +25,8 @@ public class ModHudRenderer {
     static float manaShakeX = 0;
     static float manaShakeY = 0;
 
+    static float ambientManaArrowProgress = 0;
+
     private static final Identifier FILLED_THIRST = new Identifier(Geomancy.MOD_ID,
             "textures/item/artifact_of_gold.png");
     private static final Identifier EMPTY_THIRST = new Identifier(Geomancy.MOD_ID,
@@ -80,6 +82,10 @@ public class ModHudRenderer {
             }
 
             String string = Math.round(ManaUtil.getMana(player)) +" / "+ Math.round(ManaUtil.getMaxMana(player));
+            if(showAmbientMana()){
+                int t = Toolbox.floor(ambientManaArrowProgress*2.999f);
+                string = Math.round(ManaUtil.getAmbientSoulsPerBlock(player.getWorld(),player.getBlockPos()))+" "+(t%3==0?">":"-")+(t%3==1?">":"-")+(t%3==2?">":"-")+" "+string;
+            }
             float xPos = (width - client.textRenderer.getWidth(string)) / 2f + manaShakeX;
             float yPos = height - 31 - 4 + manaShakeY;
             if(player.experienceLevel>0)
@@ -99,6 +105,20 @@ public class ModHudRenderer {
 
         manaShakeX = (int)Math.round(Math.sin(Math.PI*4*GeomancyClient.tick/20f)*manaUseShake*20);
         manaShakeY = (int)Math.round(Math.sin(Math.PI*7.31f*GeomancyClient.tick/20f)*manaUseShake*10);
+
+        if(showAmbientMana()){
+            if(MinecraftClient.getInstance() != null && MinecraftClient.getInstance().cameraEntity!=null)
+            {
+                ambientManaArrowProgress += 1 / 20f / 400f * ManaUtil.getAmbientSoulsPerBlock(MinecraftClient.getInstance().world, MinecraftClient.getInstance().cameraEntity.getBlockPos());
+                ambientManaArrowProgress = ambientManaArrowProgress%1;
+            }
+        }
+
+    }
+
+    public static boolean showAmbientMana(){
+        // TODO: unlock to see regen speed
+        return true;
     }
 
     static void drawTexturedQuad(Identifier texture, MatrixStack matrices, float x1, float x2, float y1, float y2, float z, float u1, float u2, float v1, float v2, float red, float green, float blue, float alpha) {

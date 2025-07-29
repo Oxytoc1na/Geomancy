@@ -111,5 +111,7 @@ public class ManaStoringItemData {
         }
 
         clientMap.get(newData.uuid).mana = newData.mana;
+        clientMap.get(newData.uuid).maxMana = newData.maxMana;
+        clientMap.get(newData.uuid).speedMultiplier = newData.speedMultiplier;
     }
 }

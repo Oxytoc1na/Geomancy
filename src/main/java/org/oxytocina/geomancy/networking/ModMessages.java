@@ -9,10 +9,12 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.entity.ManaStoringItemData;
 import org.oxytocina.geomancy.entity.PlayerData;
 import org.oxytocina.geomancy.entity.StateSaverAndLoader;
 import org.oxytocina.geomancy.networking.packet.C2S.*;
 import org.oxytocina.geomancy.networking.packet.S2C.*;
+import org.oxytocina.geomancy.util.ManaUtil;
 
 import java.util.function.Function;
 
@@ -72,6 +74,11 @@ public class ModMessages {
                     PacketByteBuf data = PacketByteBufs.create();
                     playerState.writeBuf(data);
                     ServerPlayNetworking.send(handler.getPlayer(), INITIAL_SYNC, data);
+
+                    // send item mana data to player
+                    for(var stack : ManaStoringItemData.stackMap.values()){
+                        ManaUtil.syncItemMana(handler.getPlayer().getWorld(),stack);
+                    }
                 }
                 catch (Exception ignored){
 
