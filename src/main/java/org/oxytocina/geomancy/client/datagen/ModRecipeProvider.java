@@ -22,10 +22,12 @@ import org.oxytocina.geomancy.client.datagen.recipes.JewelryRecipeJsonBuilder;
 import org.oxytocina.geomancy.client.datagen.recipes.SmitheryRecipeJsonBuilder;
 import org.oxytocina.geomancy.items.GeodeItem;
 import static org.oxytocina.geomancy.items.ModItems.*;
+import static org.oxytocina.geomancy.blocks.ModBlocks.*;
 
 import org.oxytocina.geomancy.items.SpellComponentStoringItem;
 import org.oxytocina.geomancy.items.jewelry.JewelryItem;
 import org.oxytocina.geomancy.recipe.smithery.SmithingIngredient;
+import org.oxytocina.geomancy.registries.ModItemTags;
 import org.oxytocina.geomancy.spells.SpellBlock;
 import org.oxytocina.geomancy.spells.SpellBlocks;
 
@@ -480,6 +482,29 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         AddDecorativeBlockBatch("molybdenum");
         AddDecorativeBlockBatch("octangulite");
 
+        // wood
+        offerBarkBlockRecipe(exporter,SOUL_OAK_WOOD,SOUL_OAK_LOG);
+        offerHangingSignRecipe(exporter,SOUL_OAK_HANGING_SIGN,SOUL_OAK_PLANKS);
+        offerPlanksRecipe(exporter,SOUL_OAK_PLANKS, ModItemTags.SOUL_OAK_LOGS,4);
+        offerPressurePlateRecipe(exporter,SOUL_OAK_PRESSURE_PLATE,SOUL_OAK_PLANKS);
+        offerSlabRecipe(exporter,RecipeCategory.BUILDING_BLOCKS,SOUL_OAK_SLAB,SOUL_OAK_PLANKS);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, SOUL_OAK_DOOR, 3).input('#', SOUL_OAK_PLANKS)
+                .pattern("##")
+                .pattern("##")
+                .pattern("##").criterion(hasItem(SOUL_OAK_PLANKS), conditionsFromItem(SOUL_OAK_PLANKS)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, SOUL_OAK_FENCE, 3).input('#', SOUL_OAK_PLANKS).input('x', Items.STICK)
+                .pattern("#x#")
+                .pattern("#x#").criterion(hasItem(SOUL_OAK_PLANKS), conditionsFromItem(SOUL_OAK_PLANKS)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, SOUL_OAK_FENCE_GATE, 1).input('#', SOUL_OAK_PLANKS).input('x', Items.STICK)
+                .pattern("x#x")
+                .pattern("x#x").criterion(hasItem(SOUL_OAK_PLANKS), conditionsFromItem(SOUL_OAK_PLANKS)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, SOUL_OAK_TRAPDOOR, 2).input('#', SOUL_OAK_PLANKS)
+                .pattern("###")
+                .pattern("###").criterion(hasItem(SOUL_OAK_PLANKS), conditionsFromItem(SOUL_OAK_PLANKS)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, SOUL_OAK_STAIRS, 4).input('#', SOUL_OAK_PLANKS)
+                .pattern("#  ")
+                .pattern("## ")
+                .pattern("###").criterion(hasItem(SOUL_OAK_PLANKS), conditionsFromItem(SOUL_OAK_PLANKS)).offerTo(exporter);
         this.exporter=null;
     }
 

@@ -2,10 +2,7 @@ package org.oxytocina.geomancy.blocks;
 
 
 import it.unimi.dsi.fastutil.Hash;
-import net.minecraft.block.Block;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.block.WallBlock;
+import net.minecraft.block.*;
 import net.minecraft.util.Pair;
 
 import java.util.ArrayList;
@@ -25,6 +22,11 @@ public class ExtraBlockSettings {
     public static final HashMap<StairsBlock,Block> StairsBlocks = new HashMap<>();
     public static final HashMap<SlabBlock,Block> SlabBlocks = new HashMap<>();
     public static final HashMap<WallBlock,Block> WallBlocks = new HashMap<>();
+    public static final HashMap<PressurePlateBlock,Block> PressurePlateBlocks = new HashMap<>();
+    public static final HashMap<ButtonBlock,Block> ButtonBlocks = new HashMap<>();
+    public static final HashMap<FenceBlock,Block> FenceBlocks = new HashMap<>();
+    public static final HashMap<FenceGateBlock,Block> FenceGateBlocks = new HashMap<>();
+    public static final ArrayList<PillarBlock> PillarBlocks = new ArrayList<>();
 
     public static final ArrayList<Block> RegularDropBlocks = new ArrayList<Block>();
     public static final HashMap<Block,Integer> VariantCubeBlocks = new HashMap<Block,Integer>();
@@ -96,6 +98,10 @@ public class ExtraBlockSettings {
     public ExtraBlockSettings stairs(Block base) { variantBaseBlock = base; return notSimpleCube(); }
     public ExtraBlockSettings slab(Block base) { variantBaseBlock = base; return notSimpleCube(); }
     public ExtraBlockSettings wall(Block base) { variantBaseBlock = base; return notSimpleCube(); }
+    public ExtraBlockSettings fence(Block base) { variantBaseBlock = base; return notSimpleCube(); }
+    public ExtraBlockSettings fenceGate(Block base) { variantBaseBlock = base; return notSimpleCube(); }
+    public ExtraBlockSettings pressurePlate(Block base) { variantBaseBlock = base; return notSimpleCube(); }
+    public ExtraBlockSettings button(Block base) { variantBaseBlock = base; return notSimpleCube(); }
     public ExtraBlockSettings noModels() { shouldGenerateModels=false; return this; }
 
     public void apply(){
@@ -105,10 +111,20 @@ public class ExtraBlockSettings {
 
         if(block instanceof StairsBlock sb)
         {StairsBlocks.put(sb,variantBaseBlock); simpleCubeModel=false;}
-        if(block instanceof SlabBlock sb)
+        else if(block instanceof SlabBlock sb)
         {SlabBlocks.put(sb,variantBaseBlock); simpleCubeModel=false;}
-        if(block instanceof WallBlock sb)
+        else if(block instanceof WallBlock sb)
         {WallBlocks.put(sb,variantBaseBlock); simpleCubeModel=false;}
+        else if(block instanceof PressurePlateBlock sb)
+        {PressurePlateBlocks.put(sb,variantBaseBlock); simpleCubeModel=false;}
+        else if(block instanceof ButtonBlock sb)
+        {ButtonBlocks.put(sb,variantBaseBlock); simpleCubeModel=false;}
+        else if(block instanceof FenceBlock sb)
+        {FenceBlocks.put(sb,variantBaseBlock); simpleCubeModel=false;}
+        else if(block instanceof FenceGateBlock sb)
+        {FenceGateBlocks.put(sb,variantBaseBlock); simpleCubeModel=false;}
+        else if(block instanceof PillarBlock sb)
+        {PillarBlocks.add(sb); simpleCubeModel=false;}
 
         if(shouldAddItemToGroup)
             BlocksInGroup.add(block);

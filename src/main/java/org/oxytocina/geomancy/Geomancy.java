@@ -67,6 +67,8 @@ public class Geomancy implements ModInitializer {
 
     public static void initialize(){
         if(initialized) return;
+        initialized=true;
+
         // This code runs as soon as Minecraft is in a mod-load-ready state.
         // However, some things (like resources) may still be uninitialized.
         // Proceed with mild caution.
@@ -103,7 +105,6 @@ public class Geomancy implements ModInitializer {
 
         logInfo(Registries.RECIPE_SERIALIZER.get(locate(ModRecipeTypes.GOLD_CONVERTING_ID)).toString());
 
-        initialized=true;
     }
 
     public static void logInfo(String message,World world) {
