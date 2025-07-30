@@ -16,6 +16,7 @@ public class ExtraBlockSettings {
     public static final ArrayList<Block> ToolableBlock_Pickaxe = new ArrayList<Block>();
     public static final ArrayList<Block> ToolableBlock_Axe = new ArrayList<Block>();
     public static final ArrayList<Block> ToolableBlock_Shovel = new ArrayList<Block>();
+    public static final ArrayList<Block> ToolableBlock_Hoe = new ArrayList<Block>();
     public static final ArrayList<Block> BlocksInGroup = new ArrayList<Block>();
 
     public static final ArrayList<Block> SimpleCubeBlocks = new ArrayList<Block>();
@@ -27,6 +28,10 @@ public class ExtraBlockSettings {
     public static final HashMap<FenceBlock,Block> FenceBlocks = new HashMap<>();
     public static final HashMap<FenceGateBlock,Block> FenceGateBlocks = new HashMap<>();
     public static final ArrayList<PillarBlock> PillarBlocks = new ArrayList<>();
+    public static final ArrayList<DoorBlock> DoorBlocks = new ArrayList<>();
+    public static final ArrayList<TrapdoorBlock> TrapdoorBlocks = new ArrayList<>();
+
+    public static final ArrayList<Block> CutoutLayerBlocks = new ArrayList<>();
 
     public static final ArrayList<Block> RegularDropBlocks = new ArrayList<Block>();
     public static final HashMap<Block,Integer> VariantCubeBlocks = new HashMap<Block,Integer>();
@@ -40,10 +45,12 @@ public class ExtraBlockSettings {
     private boolean pickaxe = false;
     private boolean axe = false;
     private boolean shovel = false;
+    private boolean hoe = false;
 
     public boolean shouldRegisterItem = true;
     public boolean shouldGenerateModels = true;
     public ModelType modelType = ModelType.Default;
+    public Layer layer = Layer.Default;
     public boolean shouldItemHaveOwnName = false;
     private boolean shouldAddItemToGroup = true;
     private boolean simpleCubeModel = true;
@@ -91,6 +98,7 @@ public class ExtraBlockSettings {
     public ExtraBlockSettings mineableByPickaxe(){pickaxe=true; return this;}
     public ExtraBlockSettings mineableByAxe(){axe=true; return this;}
     public ExtraBlockSettings mineableByShovel(){shovel=true; return this;}
+    public ExtraBlockSettings mineableByHoe(){hoe=true; return this;}
     public ExtraBlockSettings dontRegisterItem(){shouldRegisterItem=false; return this;}
     public ExtraBlockSettings dontGroupItem(){shouldAddItemToGroup=false; return this;}
     public ExtraBlockSettings itemHasOwnName(){shouldItemHaveOwnName=true; return this;}
@@ -110,11 +118,14 @@ public class ExtraBlockSettings {
     public ExtraBlockSettings noModels() { shouldGenerateModels=false; return notSimpleCube(); }
     public ExtraBlockSettings tintedModels() { return modelType(ModelType.Tinted); }
     public ExtraBlockSettings modelType(ModelType type) { modelType = type; return this; }
+    public ExtraBlockSettings cutout(){return layer(Layer.Cutout);}
+    public ExtraBlockSettings layer(Layer layer){this.layer=layer;return this;}
 
     public void apply(){
         if(pickaxe) ToolableBlock_Pickaxe.add(block);
         if(axe) ToolableBlock_Axe.add(block);
         if(shovel) ToolableBlock_Shovel.add(block);
+        if(hoe) ToolableBlock_Hoe.add(block);
 
         if(block instanceof StairsBlock sb)
         {StairsBlocks.put(sb,variantBaseBlock); simpleCubeModel=false;}
@@ -132,6 +143,10 @@ public class ExtraBlockSettings {
         {FenceGateBlocks.put(sb,variantBaseBlock); simpleCubeModel=false;}
         else if(block instanceof PillarBlock sb)
         {PillarBlocks.add(sb); simpleCubeModel=false;}
+        else if(block instanceof DoorBlock sb)
+        {DoorBlocks.add(sb); simpleCubeModel=false;}
+        else if(block instanceof TrapdoorBlock sb)
+        {TrapdoorBlocks.add(sb); simpleCubeModel=false;}
 
         if(shouldAddItemToGroup)
             BlocksInGroup.add(block);
@@ -145,6 +160,12 @@ public class ExtraBlockSettings {
         if(regularDrop)
             RegularDropBlocks.add(block);
 
+        switch(layer)
+        {
+            case Cutout: CutoutLayerBlocks.add(block); break;
+            default:break;
+        }
+
         BlockMiningLevels.put(block,miningLevel);
         logged.put(block,this);
     }
@@ -156,5 +177,10 @@ public class ExtraBlockSettings {
     public enum ModelType{
         Default,
         Tinted
+    }
+
+    public enum Layer{
+        Default,
+        Cutout
     }
 }

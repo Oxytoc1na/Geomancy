@@ -1,0 +1,7 @@
+{
+  "parent": "geomancy:block/double_tinted_cross",
+  "textures": {
+    "cross": "geomancy:block/soul_oak_sapling_leaves",
+    "cross2": "geomancy:block/soul_oak_sapling_stem"
+  }
+}

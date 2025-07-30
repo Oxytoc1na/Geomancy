@@ -31,7 +31,8 @@ public class ModModels {
     public static final Model TINTED_BUTTON_INVENTORY = block("geomancy:tinted_button_inventory","_inventory", TextureKey.TEXTURE);
     public static final Model TINTED_CUBE_COLUMN = block("geomancy:tinted_cube_column", TextureKey.END,TextureKey.SIDE);
     public static final Model TINTED_CUBE_COLUMN_HORIZONTAL = block("geomancy:tinted_cube_column_horizontal","_horizontal", TextureKey.END,TextureKey.SIDE);
-    public static final Model TINTED_TINTED_FLOWER_POT_CROSS = block("geomancy:tinted_tinted_flower_pot_cross", TextureKey.PLANT, TextureKey.of("plant2"));
+    public static final Model DOUBLE_TINTED_FLOWER_POT_CROSS = block("geomancy:double_tinted_flower_pot_cross", TextureKey.PLANT, TextureKey.of("plant2"));
+    public static final Model DOUBLE_TINTED_CROSS = block("geomancy:double_tinted_cross", TextureKey.CROSS, TextureKey.of("cross2"));
 
 
     private static Model block(String parent, TextureKey... requiredTextureKeys) {

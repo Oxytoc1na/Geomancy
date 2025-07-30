@@ -36,11 +36,22 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
         builder = getOrCreateTagBuilder(SHOVEL_MINEABLES).setReplace(false);
         for(Block b : ExtraBlockSettings.ToolableBlock_Shovel) builder.add(b);
 
+        builder = getOrCreateTagBuilder(HOE_MINEABLES).setReplace(false);
+        for(Block b : ExtraBlockSettings.ToolableBlock_Hoe) builder.add(b);
+
         // walls
-        builder = getOrCreateTagBuilder(WALLS).setReplace(false);
-        for(Block b : ExtraBlockSettings.WallBlocks.keySet()){
-            builder.add(b);
-        }
+        builder = getOrCreateTagBuilder(BlockTags.WALLS).setReplace(false);
+        for(Block b : ExtraBlockSettings.WallBlocks.keySet())builder.add(b);
+
+        // fences
+        builder = getOrCreateTagBuilder(BlockTags.FENCES).setReplace(false);
+        for(Block b : ExtraBlockSettings.FenceBlocks.keySet())builder.add(b);
+        builder = getOrCreateTagBuilder(BlockTags.WOODEN_FENCES).setReplace(false)
+                .add(ModBlocks.SOUL_OAK_FENCE);
+
+        // fence gates
+        builder = getOrCreateTagBuilder(BlockTags.FENCE_GATES).setReplace(false);
+        for(Block b : ExtraBlockSettings.FenceBlocks.keySet())builder.add(b);
 
         // mining levels
         var levelbuilder_stone = getOrCreateTagBuilder(MININGLEVEL_STONE).setReplace(false);

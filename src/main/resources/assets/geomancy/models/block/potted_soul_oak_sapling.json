@@ -1,5 +1,5 @@
 {
-  "parent": "geomancy:block/tinted_tinted_flower_pot_cross",
+  "parent": "geomancy:block/double_tinted_flower_pot_cross",
   "textures": {
     "plant": "geomancy:block/soul_oak_sapling_leaves",
     "plant2": "geomancy:block/soul_oak_sapling_stem"

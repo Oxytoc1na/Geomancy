@@ -1,12 +1,15 @@
 package org.oxytocina.geomancy.client;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 //import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 
+import org.oxytocina.geomancy.blocks.ExtraBlockSettings;
 import org.oxytocina.geomancy.blocks.blockEntities.ModBlockEntities;
 import org.oxytocina.geomancy.client.blocks.blockEntities.SmitheryBlockEntityRenderer;
 import org.oxytocina.geomancy.client.blocks.blockEntities.SpellmakerBlockEntityRenderer;
@@ -54,6 +57,9 @@ public class GeomancyClient implements ClientModInitializer {
 
         BlockEntityRendererFactories.register(ModBlockEntities.SPELLSTORER_BLOCK_ENTITY, SpellstorerBlockEntityRenderer::new);
 
+        for(var b : ExtraBlockSettings.CutoutLayerBlocks){
+            BlockRenderLayerMap.INSTANCE.putBlock(b, RenderLayer.getCutout());
+        }
 
     }
 }
