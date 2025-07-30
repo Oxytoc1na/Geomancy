@@ -112,8 +112,8 @@ public class ModBlocks {
     public static final OctanguliteStairsBlock SOUL_OAK_STAIRS = register("soul_oak_stairs",(s)->new OctanguliteStairsBlock(SOUL_OAK_PLANKS.getDefaultState(),s,0.3f),AbstractBlock.Settings.copy(SOUL_OAK_PLANKS),ExtraBlockSettings.create().stairs(SOUL_OAK_PLANKS).tintedModels(), new FabricItemSettings());
     public static final OctanguliteSlabBlock SOUL_OAK_SLAB = register("soul_oak_slab",(s)->new OctanguliteSlabBlock(s,0.3f),AbstractBlock.Settings.copy(SOUL_OAK_PLANKS),ExtraBlockSettings.create().slab(SOUL_OAK_PLANKS).tintedModels(), new FabricItemSettings());
     public static final OctanguliteFenceBlock SOUL_OAK_FENCE = register("soul_oak_fence",(s)->new OctanguliteFenceBlock(s,0.3f),AbstractBlock.Settings.copy(SOUL_OAK_PLANKS),ExtraBlockSettings.create().fence(SOUL_OAK_PLANKS).tintedModels(), new FabricItemSettings());
-    public static final OctanguliteDoorBlock SOUL_OAK_DOOR = register("soul_oak_door",(s)->new OctanguliteDoorBlock(s, ModBlockSetTypes.SOUL_OAK,0.3f),AbstractBlock.Settings.copy(SOUL_OAK_PLANKS),ExtraBlockSettings.create().tintedModels().cutout(), new FabricItemSettings());
-    public static final OctanguliteTrapdoorBlock SOUL_OAK_TRAPDOOR = register("soul_oak_trapdoor",(s)->new OctanguliteTrapdoorBlock(s,ModBlockSetTypes.SOUL_OAK,0.3f),AbstractBlock.Settings.copy(SOUL_OAK_PLANKS),ExtraBlockSettings.create().tintedModels().cutout(), new FabricItemSettings());
+    public static final OctanguliteDoorBlock SOUL_OAK_DOOR = register("soul_oak_door",(s)->new OctanguliteDoorBlock(s, ModBlockSetTypes.SOUL_OAK,0.3f),AbstractBlock.Settings.copy(SOUL_OAK_PLANKS).nonOpaque(),ExtraBlockSettings.create().tintedModels().cutout(), new FabricItemSettings());
+    public static final OctanguliteTrapdoorBlock SOUL_OAK_TRAPDOOR = register("soul_oak_trapdoor",(s)->new OctanguliteTrapdoorBlock(s,ModBlockSetTypes.SOUL_OAK,0.3f),AbstractBlock.Settings.copy(SOUL_OAK_PLANKS).nonOpaque(),ExtraBlockSettings.create().tintedModels().cutout(), new FabricItemSettings());
 
     // decorative
     public static final Block GILDED_DEEPSLATE = register("gilded_deepslate", Block::new,AbstractBlock.Settings.create().mapColor(MapColor.DEEPSLATE_GRAY).instrument(Instrument.BASEDRUM).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.POLISHED_DEEPSLATE),ExtraBlockSettings.create().mineableByPickaxe(),new FabricItemSettings());
@@ -206,6 +206,7 @@ public class ModBlocks {
             RegistryKey<Item> itemKey = keyOfItem(name);
 
             var extraItemSettings = ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom);
+            if(!extraSettings.shouldAddItemToGroup) extraItemSettings.dontGroupItem();
             if(block instanceof WallBlock || block instanceof FenceBlock)
                 extraItemSettings.modelType(ExtraItemSettings.ModelType.BlockPlusInventory);
             else if(block instanceof TrapdoorBlock)

@@ -52,7 +52,7 @@ public class ExtraBlockSettings {
     public ModelType modelType = ModelType.Default;
     public Layer layer = Layer.Default;
     public boolean shouldItemHaveOwnName = false;
-    private boolean shouldAddItemToGroup = true;
+    public boolean shouldAddItemToGroup = true;
     private boolean simpleCubeModel = true;
     private boolean regularDrop = true;
 

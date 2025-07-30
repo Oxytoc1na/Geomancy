@@ -46,6 +46,7 @@ public class ModColorizationHandler {
                 ModBlocks.SOUL_OAK_SLAB,
                 ModBlocks.SOUL_OAK_STAIRS,
                 ModBlocks.SOUL_OAK_TRAPDOOR,
+                ModBlocks.SOUL_OAK_DOOR,
                 ModBlocks.SOUL_OAK_LOG,
                 ModBlocks.STRIPPED_SOUL_OAK_LOG,
                 ModBlocks.STRIPPED_SOUL_OAK_WOOD

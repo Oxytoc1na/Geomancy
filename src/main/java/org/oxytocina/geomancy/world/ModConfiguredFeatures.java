@@ -13,6 +13,7 @@ import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.feature.size.TwoLayersFeatureSize;
 import net.minecraft.world.gen.stateprovider.BlockStateProvider;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.world.tree.custom.SoulOakFoliagePlacer;
 import org.oxytocina.geomancy.world.tree.custom.SoulOakTrunkPlacer;
 
@@ -51,10 +52,10 @@ public class ModConfiguredFeatures {
 
          */
         register(context, SOUL_OAK_TREE_KEY, Feature.TREE, new TreeFeatureConfig.Builder(
-                BlockStateProvider.of(Blocks.OAK_LOG),
+                BlockStateProvider.of(ModBlocks.SOUL_OAK_LOG),
                 new SoulOakTrunkPlacer(5, 3, 0),
 
-                BlockStateProvider.of(Blocks.OAK_LEAVES),
+                BlockStateProvider.of(ModBlocks.SOUL_OAK_LEAVES),
                 new SoulOakFoliagePlacer(ConstantIntProvider.create(2), ConstantIntProvider.create(1), 2),
 
                 new TwoLayersFeatureSize(1, 0, 2)).build());

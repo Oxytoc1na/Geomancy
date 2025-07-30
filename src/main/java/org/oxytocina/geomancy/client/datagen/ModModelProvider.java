@@ -442,7 +442,7 @@ public class ModModelProvider extends FabricModelProvider {
             // generate (useful) item model
             blockStateModelGenerator.modelCollector.accept(ModelIds.getItemModelId(b.asItem()), () -> {
                 JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty("parent", "minecraft:generated");
+                jsonObject.addProperty("parent", "minecraft:item/generated");
                 JsonObject sub = new JsonObject();
                 sub.addProperty("layer0","geomancy:item/"+id.getPath());
                 jsonObject.add("textures", sub);
