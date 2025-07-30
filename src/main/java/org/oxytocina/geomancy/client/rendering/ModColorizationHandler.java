@@ -48,9 +48,20 @@ public class ModColorizationHandler {
                 ModBlocks.SOUL_OAK_TRAPDOOR,
                 ModBlocks.SOUL_OAK_LOG,
                 ModBlocks.STRIPPED_SOUL_OAK_LOG,
-                ModBlocks.SOUL_OAK_WOOD,
                 ModBlocks.STRIPPED_SOUL_OAK_WOOD
                 );
+
+        // soul oak wood only has one tint index, but should use tint index 1 for the bark
+        ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> {
+                    if (view == null || pos == null) {return 0xFFFFFFFF;} else {return octanguliteNoise(pos,tintIndex+1,0.03f);}},
+                ModBlocks.SOUL_OAK_WOOD);
+
+        // similarly, have leaves offset their tint index by 2
+        ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> {
+                    if (view == null || pos == null) {return 0xFFFFFFFF;} else {return octanguliteNoise(pos,tintIndex+2,0.03f);}},
+                ModBlocks.SOUL_OAK_LEAVES);
+
+
         ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> {
             if (view == null || pos == null || tintIndex == 0) {return 0xFFFFFFFF;} else {return octanguliteNoise(pos,tintIndex,0.003f);}
         }, ModBlocks.OCTANGULITE_ORE,ModBlocks.DEEPSLATE_OCTANGULITE_ORE);

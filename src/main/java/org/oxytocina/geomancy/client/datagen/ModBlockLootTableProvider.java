@@ -3,19 +3,18 @@ package org.oxytocina.geomancy.client.datagen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.minecraft.block.Block;
+import net.minecraft.data.server.loottable.BlockLootTableGenerator;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
+import net.minecraft.item.Items;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
-import net.minecraft.loot.condition.LootCondition;
-import net.minecraft.loot.condition.MatchToolLootCondition;
-import net.minecraft.loot.entry.AlternativeEntry;
-import net.minecraft.loot.entry.CombinedEntry;
-import net.minecraft.loot.entry.ItemEntry;
-import net.minecraft.loot.entry.LootPoolEntry;
+import net.minecraft.loot.condition.*;
+import net.minecraft.loot.entry.*;
 import net.minecraft.loot.function.*;
 import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
+import net.minecraft.loot.provider.number.UniformLootNumberProvider;
 import net.minecraft.predicate.NumberRange;
 import net.minecraft.predicate.NumberRange.IntRange;
 import net.minecraft.predicate.item.EnchantmentPredicate;
@@ -49,6 +48,8 @@ public class ModBlockLootTableProvider extends FabricBlockLootTableProvider {
         addOreDrop(ModBlocks.LEAD_ORE,ModItems.RAW_LEAD);
         addOreDrop(ModBlocks.DEEPSLATE_LEAD_ORE,ModItems.RAW_LEAD);
 
+        addLeaves(ModBlocks.SOUL_OAK_LEAVES,ModBlocks.SOUL_OAK_SAPLING, Items.STICK);
+
         for(Block b : ExtraBlockSettings.RegularDropBlocks){
             addDrop(b);
         }
@@ -71,6 +72,36 @@ public class ModBlockLootTableProvider extends FabricBlockLootTableProvider {
                                                 .apply(ApplyBonusLootFunction.oreDrops(Enchantments.FORTUNE))
                                                 .apply(ExplosionDecayLootFunction.builder())
                                 )
+                        )
+                ).randomSequenceId(ModBlocks.BlockIdentifiers.get(block))
+        );
+    }
+
+    private void addLeaves(Block block, ItemConvertible sapling, ItemConvertible stick){
+        addDrop(block,LootTable.builder()
+                // pool 1 : silk touch or sapling
+                .pool(LootPool.builder()
+                        .rolls(ConstantLootNumberProvider.create(1f))
+                        .with(AlternativeEntry.builder()
+                                .alternatively(
+                                        ItemEntry.builder(block)
+                                                .conditionally(BlockLootTableGenerator.WITH_SILK_TOUCH_OR_SHEARS)
+                                )
+                                .alternatively(
+                                        ItemEntry.builder(sapling)
+                                                .conditionally(SurvivesExplosionLootCondition.builder())
+                                                .conditionally(TableBonusLootCondition.builder(Enchantments.FORTUNE,0.05f, 0.0625f, 0.083333336f, 0.1f))
+                                )
+                        )
+                )
+                // pool 2: sticks
+                .pool(LootPool.builder()
+                        .rolls(ConstantLootNumberProvider.create(1f))
+                        .conditionally(InvertedLootCondition.builder(BlockLootTableGenerator.WITH_SILK_TOUCH_OR_SHEARS))
+                        .with(ItemEntry.builder(stick)
+                                .conditionally(TableBonusLootCondition.builder(Enchantments.FORTUNE,0.02f, 0.022222223f, 0.025f, 0.033333335f, 0.1f))
+                                .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1,2)))
+                                .apply(ExplosionDecayLootFunction.builder())
                         )
                 ).randomSequenceId(ModBlocks.BlockIdentifiers.get(block))
         );
