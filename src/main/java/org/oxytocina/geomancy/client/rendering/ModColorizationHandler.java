@@ -61,6 +61,11 @@ public class ModColorizationHandler {
                     if (view == null || pos == null) {return 0xFFFFFFFF;} else {return octanguliteNoise(pos,tintIndex+2,0.03f);}},
                 ModBlocks.SOUL_OAK_LEAVES);
 
+        // similarly, have saplings morph their tint indices from 0 (leaves) -> 2, and 1 (bark) -> 1
+        ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> {
+                    if (view == null || pos == null) {return 0xFFFFFFFF;} else {return octanguliteNoise(pos,2-tintIndex,0.03f);}},
+                ModBlocks.SOUL_OAK_SAPLING, ModBlocks.POTTED_SOUL_OAK_SAPLING);
+
 
         ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> {
             if (view == null || pos == null || tintIndex == 0) {return 0xFFFFFFFF;} else {return octanguliteNoise(pos,tintIndex,0.003f);}

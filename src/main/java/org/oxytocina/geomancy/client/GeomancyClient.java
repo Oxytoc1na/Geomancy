@@ -9,6 +9,7 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 //import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 
+import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.ExtraBlockSettings;
 import org.oxytocina.geomancy.blocks.blockEntities.ModBlockEntities;
 import org.oxytocina.geomancy.client.blocks.blockEntities.SmitheryBlockEntityRenderer;
@@ -32,8 +33,11 @@ public class GeomancyClient implements ClientModInitializer {
 
     public static long tick = 0;
 
-    @Override
-    public void onInitializeClient() {
+    public static boolean initialized = false;
+
+    public synchronized static void initialize(){
+        if(initialized) return;
+        Geomancy.logInfo("Initializing Geomancy Client");
 
         ModScreenHandlers.register();
         ModScreens.register();
@@ -61,5 +65,11 @@ public class GeomancyClient implements ClientModInitializer {
             BlockRenderLayerMap.INSTANCE.putBlock(b, RenderLayer.getCutout());
         }
 
+        Geomancy.logInfo("Finished Initializing Geomancy Client");
+        initialized=true;
+    }
+    @Override
+    public void onInitializeClient() {
+        initialize();
     }
 }

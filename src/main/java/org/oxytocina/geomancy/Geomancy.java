@@ -51,7 +51,7 @@ public class Geomancy implements ModInitializer {
     public static final Map<Identifier, TagKey<Item>> CACHED_ITEM_TAG_MAP = new HashMap<>();
     //public static SpectrumConfig CONFIG;
 
-    public static boolean initialized = false;
+    public static boolean startedInitialization = false;
     public static boolean initializing = false;
     public static boolean finishedInitialization = false;
 
@@ -92,8 +92,8 @@ public class Geomancy implements ModInitializer {
     }
 
     public static synchronized void initialize(){
-        if(initialized) return;
-        initialized=true;
+        if(startedInitialization) return;
+        startedInitialization =true;
         initializing=true;
 
         // This code runs as soon as Minecraft is in a mod-load-ready state.

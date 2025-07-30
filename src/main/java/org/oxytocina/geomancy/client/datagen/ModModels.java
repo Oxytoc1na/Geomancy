@@ -34,6 +34,18 @@ public class ModModels {
     public static final Model DOUBLE_TINTED_FLOWER_POT_CROSS = block("geomancy:double_tinted_flower_pot_cross", TextureKey.PLANT, TextureKey.of("plant2"));
     public static final Model DOUBLE_TINTED_CROSS = block("geomancy:double_tinted_cross", TextureKey.CROSS, TextureKey.of("cross2"));
 
+    public static final Model TINTED_DOOR_BOTTOM_LEFT       = block("geomancy:tinted_door_bottom_left","_bottom_left",TextureKey.TOP,TextureKey.BOTTOM);
+    public static final Model TINTED_DOOR_BOTTOM_LEFT_OPEN  = block("geomancy:tinted_door_bottom_left_open","_bottom_left_open",TextureKey.TOP,TextureKey.BOTTOM);
+    public static final Model TINTED_DOOR_BOTTOM_RIGHT      = block("geomancy:tinted_door_bottom_right","_bottom_right",TextureKey.TOP,TextureKey.BOTTOM);
+    public static final Model TINTED_DOOR_BOTTOM_RIGHT_OPEN = block("geomancy:tinted_door_bottom_right_open","_bottom_right_open",TextureKey.TOP,TextureKey.BOTTOM);
+    public static final Model TINTED_DOOR_TOP_LEFT          = block("geomancy:tinted_door_top_left","_top_left",TextureKey.TOP,TextureKey.BOTTOM);
+    public static final Model TINTED_DOOR_TOP_LEFT_OPEN     = block("geomancy:tinted_door_top_left_open","_top_left_open",TextureKey.TOP,TextureKey.BOTTOM);
+    public static final Model TINTED_DOOR_TOP_RIGHT         = block("geomancy:tinted_door_top_right","_top_right",TextureKey.TOP,TextureKey.BOTTOM);
+    public static final Model TINTED_DOOR_TOP_RIGHT_OPEN    = block("geomancy:tinted_door_top_right_open","_top_right_open",TextureKey.TOP,TextureKey.BOTTOM);
+
+    public static final Model TINTED_TEMPLATE_TRAPDOOR_TOP    = block("geomancy:tinted_template_trapdoor_top","_top",TextureKey.TEXTURE);
+    public static final Model TINTED_TEMPLATE_TRAPDOOR_BOTTOM = block("geomancy:tinted_template_trapdoor_bottom","_bottom",TextureKey.TEXTURE);
+    public static final Model TINTED_TEMPLATE_TRAPDOOR_OPEN   = block("geomancy:tinted_template_trapdoor_open","_open",TextureKey.TEXTURE);
 
     private static Model block(String parent, TextureKey... requiredTextureKeys) {
         return new Model(Optional.ofNullable(Identifier.tryParse(parent).withPrefixedPath("block/")), Optional.empty(), requiredTextureKeys);

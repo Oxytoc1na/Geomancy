@@ -6,7 +6,6 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.block.*;
 import net.minecraft.data.client.*;
-import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
 
 import net.minecraft.item.SpawnEggItem;
@@ -15,15 +14,11 @@ import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.ExtraBlockSettings;
 import org.oxytocina.geomancy.blocks.ModBlocks;
-import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 import org.oxytocina.geomancy.items.ExtraItemSettings;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.jewelry.JewelryItem;
-import org.oxytocina.geomancy.spells.SpellBlock;
 import org.oxytocina.geomancy.spells.SpellBlocks;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 
@@ -430,6 +425,110 @@ public class ModModelProvider extends FabricModelProvider {
             }));
         }
 
+        // doors
+        for(DoorBlock b : ExtraBlockSettings.DoorBlocks){
+            Identifier id = Registries.BLOCK.getId(b);
+            Identifier baseBlockID = id;
+            var sup = BlockStateModelGenerator.createDoorBlockState(b,
+                    id.withPrefixedPath("block/").withSuffixedPath("_bottom_left"),
+                    id.withPrefixedPath("block/").withSuffixedPath("_bottom_left_open"),
+                    id.withPrefixedPath("block/").withSuffixedPath("_bottom_right"),
+                    id.withPrefixedPath("block/").withSuffixedPath("_bottom_right_open"),
+                    id.withPrefixedPath("block/").withSuffixedPath("_top_left"),
+                    id.withPrefixedPath("block/").withSuffixedPath("_top_left_open"),
+                    id.withPrefixedPath("block/").withSuffixedPath("_top_right"),
+                    id.withPrefixedPath("block/").withSuffixedPath("_top_right_open")
+            );
+            // generate (useful) item model
+            blockStateModelGenerator.modelCollector.accept(ModelIds.getItemModelId(b.asItem()), () -> {
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("parent", "minecraft:generated");
+                JsonObject sub = new JsonObject();
+                sub.addProperty("layer0","geomancy:item/"+id.getPath());
+                jsonObject.add("textures", sub);
+                return jsonObject;
+            });
+            // this line for some reason generates an unwanted item model if we dont have one already???
+            blockStateModelGenerator.blockStateCollector.accept(sup);
+
+            var dat = ExtraBlockSettings.logged.get(b);
+            if(!dat.shouldGenerateModels) continue;
+
+            Model bottomLeftClosed,bottomLeftOpen,bottomRightClosed,bottomRightOpen;
+            Model topLeftClosed,topLeftOpen,topRightClosed,topRightOpen;
+            switch(dat.modelType)
+            {
+                case Tinted:
+                    bottomLeftClosed =     ModModels.TINTED_DOOR_BOTTOM_LEFT;
+                    bottomLeftOpen =       ModModels.TINTED_DOOR_BOTTOM_LEFT_OPEN;
+                    bottomRightClosed =    ModModels.TINTED_DOOR_BOTTOM_RIGHT;
+                    bottomRightOpen =      ModModels.TINTED_DOOR_BOTTOM_RIGHT_OPEN;
+                    topLeftClosed =        ModModels.TINTED_DOOR_TOP_LEFT;
+                    topLeftOpen =          ModModels.TINTED_DOOR_TOP_LEFT_OPEN;
+                    topRightClosed =       ModModels.TINTED_DOOR_TOP_RIGHT;
+                    topRightOpen =         ModModels.TINTED_DOOR_TOP_RIGHT_OPEN;
+                    break;
+                default:
+                    bottomLeftClosed =     Models.DOOR_BOTTOM_LEFT;
+                    bottomLeftOpen =       Models.DOOR_BOTTOM_LEFT_OPEN;
+                    bottomRightClosed =    Models.DOOR_BOTTOM_RIGHT;
+                    bottomRightOpen =      Models.DOOR_BOTTOM_RIGHT_OPEN;
+                    topLeftClosed =        Models.DOOR_TOP_LEFT;
+                    topLeftOpen =          Models.DOOR_TOP_LEFT_OPEN;
+                    topRightClosed =       Models.DOOR_TOP_RIGHT;
+                    topRightOpen =         Models.DOOR_TOP_RIGHT_OPEN;
+                    break;
+            }
+            for(var model : new Model[]{bottomLeftClosed,bottomLeftOpen,bottomRightClosed,bottomRightOpen,topLeftClosed,topLeftOpen,topRightClosed,topRightOpen})
+            {
+                blockStateModelGenerator.createSubModel(b,"",model,(identifier -> {
+                    TextureMap res = new TextureMap();
+                    res.put(TextureKey.TOP,Geomancy.locate("block/"+baseBlockID.getPath()+"_top"));
+                    res.put(TextureKey.BOTTOM,Geomancy.locate("block/"+baseBlockID.getPath()+"_bottom"));
+                    return res;
+                }));
+            }
+        }
+
+        // trapdoors
+        for(TrapdoorBlock b : ExtraBlockSettings.TrapdoorBlocks){
+            Identifier id = Registries.BLOCK.getId(b);
+            Identifier baseBlockID = id;
+            var sup = BlockStateModelGenerator.createTrapdoorBlockState(b,
+                    id.withPrefixedPath("block/").withSuffixedPath("_top"),
+                    id.withPrefixedPath("block/").withSuffixedPath("_bottom"),
+                    id.withPrefixedPath("block/").withSuffixedPath("_open")
+            );
+            blockStateModelGenerator.blockStateCollector.accept(sup);
+
+            var dat = ExtraBlockSettings.logged.get(b);
+            if(!dat.shouldGenerateModels) continue;
+
+            Model topModel, bottomModel, openModel;
+            switch(dat.modelType)
+            {
+                case Tinted:
+                    topModel =     ModModels.TINTED_TEMPLATE_TRAPDOOR_TOP;
+                    bottomModel =  ModModels.TINTED_TEMPLATE_TRAPDOOR_BOTTOM;
+                    openModel =    ModModels.TINTED_TEMPLATE_TRAPDOOR_OPEN;
+                    break;
+                default:
+                    topModel =     Models.TEMPLATE_TRAPDOOR_TOP;
+                    bottomModel =  Models.TEMPLATE_TRAPDOOR_BOTTOM;
+                    openModel =    Models.TEMPLATE_TRAPDOOR_OPEN;
+                    break;
+            }
+            for(var model : new Model[]{topModel, bottomModel, openModel})
+            {
+                blockStateModelGenerator.createSubModel(b,"",model,(identifier -> {
+                    TextureMap res = new TextureMap();
+                    res.put(TextureKey.TEXTURE,Geomancy.locate("block/"+baseBlockID.getPath()));
+                    return res;
+                }));
+            }
+        }
+
+
         // cube variants
         for(Block b : ExtraBlockSettings.VariantCubeBlocks.keySet()){
 
@@ -479,6 +578,8 @@ public class ModModelProvider extends FabricModelProvider {
             blockStateModelGenerator.blockStateCollector.accept(supplier);
         }
 
+        // fluids
+        // TODO
     }
 
 
@@ -498,8 +599,13 @@ public class ModModelProvider extends FabricModelProvider {
             registerJewelryItemModels(i);
         }
 
-        for(Item i : ExtraItemSettings.WallModel){
+        for(Item i : ExtraItemSettings.ParentInventoryModel){
             Model wallModel = new Model(Optional.of(Geomancy.locate("block/"+Registries.ITEM.getId(i).getPath()+"_inventory")),Optional.empty());
+            itemModelGenerator.register(i, wallModel);
+        }
+
+        for(Item i : ExtraItemSettings.ParentBottomModel){
+            Model wallModel = new Model(Optional.of(Geomancy.locate("block/"+Registries.ITEM.getId(i).getPath()+"_bottom")),Optional.empty());
             itemModelGenerator.register(i, wallModel);
         }
 
