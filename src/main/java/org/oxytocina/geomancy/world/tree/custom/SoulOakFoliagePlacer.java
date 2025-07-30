@@ -29,15 +29,18 @@ public class SoulOakFoliagePlacer extends FoliagePlacer {
     @Override
     protected void generate(TestableWorld world, BlockPlacer placer, Random random, TreeFeatureConfig config, int trunkHeight,
                             TreeNode treeNode, int foliageHeight, int radius, int offset) {
-
+        for(int i = offset; i >= offset - foliageHeight; --i) {
+            int j = Math.max(radius + treeNode.getFoliageRadius() - 1 - i / 2, 0);
+            this.generateSquare(world, placer, random, config, treeNode.getCenter(), j, i, treeNode.isGiantTrunk());
+        }
         // generateSquare(world, placer, random, config, treeNode.getCenter());
         // radius on how many blocks it extends into x and z direction
         // y how much offset in the y direction from treeNode.getCenter()
         // y if it is dependent on i, also offsets each new layer in the y direction
 
-        generateSquare(world, placer, random, config, treeNode.getCenter().up(0), 2, 1, treeNode.isGiantTrunk());
-        generateSquare(world, placer, random, config, treeNode.getCenter().up(1), 2, 1, treeNode.isGiantTrunk());
-        generateSquare(world, placer, random, config, treeNode.getCenter().up(2), 2, 1, treeNode.isGiantTrunk());
+        //generateSquare(world, placer, random, config, treeNode.getCenter().up(0), 2, 1, treeNode.isGiantTrunk());
+        //generateSquare(world, placer, random, config, treeNode.getCenter().up(1), 2, 1, treeNode.isGiantTrunk());
+        //generateSquare(world, placer, random, config, treeNode.getCenter().up(2), 2, 1, treeNode.isGiantTrunk());
     }
 
     @Override

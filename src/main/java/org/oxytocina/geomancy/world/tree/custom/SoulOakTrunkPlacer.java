@@ -36,6 +36,15 @@ public class SoulOakTrunkPlacer extends TrunkPlacer {
     public List<FoliagePlacer.TreeNode> generate(TestableWorld world, BiConsumer<BlockPos, BlockState> replacer,
                                                  Random random, int height, BlockPos startPos, TreeFeatureConfig config) {
         setToDirt(world, replacer, random, startPos.down(), config);
+
+        for(int i = 0; i < height; ++i) {
+            this.getAndSetState(world, replacer, random, startPos.up(i), config);
+        }
+
+        return ImmutableList.of(new FoliagePlacer.TreeNode(startPos.up(height), 0, false));
+
+        /*
+
         int height_ = height + random.nextBetween(firstRandomHeight, firstRandomHeight + 2) + random.nextBetween(secondRandomHeight - 1, secondRandomHeight + 1);
 
         for(int i = 0; i < height_; i++) {
@@ -73,5 +82,6 @@ public class SoulOakTrunkPlacer extends TrunkPlacer {
         }
 
         return ImmutableList.of(new FoliagePlacer.TreeNode(startPos.up(height_), 0, false));
+    */
     }
 }
