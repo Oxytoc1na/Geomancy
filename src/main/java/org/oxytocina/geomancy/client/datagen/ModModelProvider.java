@@ -45,11 +45,25 @@ public class ModModelProvider extends FabricModelProvider {
 
         // cube all
         for(Block b : ExtraBlockSettings.SimpleCubeBlocks){
-            blockStateModelGenerator.registerSimpleCubeAll(b);
+            Identifier modelId = ModelIds.getBlockSubModelId(b, "");
+            var dat = ExtraBlockSettings.logged.get(b);
+            if(dat.shouldGenerateModels)
+                switch(dat.modelType)
+                {
+                    case Tinted:
+                        modelId = ModModels.TINTED_CUBE_ALL.upload(b,TextureMap.all(b), blockGenerator.modelCollector);
+                        break;
+                    default:
+                        modelId = TexturedModel.CUBE_ALL.upload(b, blockGenerator.modelCollector);
+                        break;
+                }
+
+            blockStateModelGenerator.blockStateCollector.accept(BlockStateModelGenerator.createSingletonBlockState(b,modelId));
         }
 
         // stairs
         for(StairsBlock b : ExtraBlockSettings.StairsBlocks.keySet()){
+
             Identifier baseBlockID = Registries.BLOCK.getId(ExtraBlockSettings.StairsBlocks.get(b));
             Identifier id = Registries.BLOCK.getId(b);
             var sup = BlockStateModelGenerator.createStairsBlockState(b,
@@ -58,9 +72,25 @@ public class ModModelProvider extends FabricModelProvider {
                     id.withPrefixedPath("block/").withSuffixedPath("_outer"));
             blockStateModelGenerator.blockStateCollector.accept(sup);
 
-            if(!ExtraBlockSettings.logged.get((Block) b).shouldGenerateModels) continue;
+            var dat = ExtraBlockSettings.logged.get(b);
+            if(!dat.shouldGenerateModels) continue;
 
-            blockStateModelGenerator.createSubModel(b,"",Models.INNER_STAIRS,(identifier -> {
+            Model baseModel,innerModel,outerModel;
+            switch(dat.modelType)
+            {
+                case Tinted:
+                    baseModel = ModModels.TINTED_STAIRS;
+                    innerModel = ModModels.TINTED_INNER_STAIRS;
+                    outerModel = ModModels.TINTED_OUTER_STAIRS;
+                    break;
+                default:
+                    baseModel = Models.STAIRS;
+                    innerModel = Models.INNER_STAIRS;
+                    outerModel = Models.OUTER_STAIRS;
+                    break;
+            }
+
+            blockStateModelGenerator.createSubModel(b,"",innerModel,(identifier -> {
                 TextureMap res = new TextureMap();
                 res.put(TextureKey.BOTTOM,Geomancy.locate("block/"+baseBlockID.getPath()));
                 res.put(TextureKey.TOP,Geomancy.locate("block/"+baseBlockID.getPath()));
@@ -68,7 +98,7 @@ public class ModModelProvider extends FabricModelProvider {
                 return res;
             }));
 
-            blockStateModelGenerator.createSubModel(b,"",Models.STAIRS,(identifier -> {
+            blockStateModelGenerator.createSubModel(b,"",baseModel,(identifier -> {
                 TextureMap res = new TextureMap();
                 res.put(TextureKey.BOTTOM,Geomancy.locate("block/"+baseBlockID.getPath()));
                 res.put(TextureKey.TOP,Geomancy.locate("block/"+baseBlockID.getPath()));
@@ -76,7 +106,7 @@ public class ModModelProvider extends FabricModelProvider {
                 return res;
             }));
 
-            blockStateModelGenerator.createSubModel(b,"",Models.OUTER_STAIRS,(identifier -> {
+            blockStateModelGenerator.createSubModel(b,"",outerModel,(identifier -> {
                 TextureMap res = new TextureMap();
                 res.put(TextureKey.BOTTOM,Geomancy.locate("block/"+baseBlockID.getPath()));
                 res.put(TextureKey.TOP,Geomancy.locate("block/"+baseBlockID.getPath()));
@@ -95,9 +125,23 @@ public class ModModelProvider extends FabricModelProvider {
                     baseBlockID.withPrefixedPath("block/"));
             blockStateModelGenerator.blockStateCollector.accept(sup);
 
-            if(!ExtraBlockSettings.logged.get((Block) b).shouldGenerateModels) continue;
+            var dat = ExtraBlockSettings.logged.get(b);
+            if(!dat.shouldGenerateModels) continue;
 
-            blockStateModelGenerator.createSubModel(b,"",Models.SLAB,(identifier -> {
+            Model baseModel,topModel;
+            switch(dat.modelType)
+            {
+                case Tinted:
+                    baseModel = ModModels.TINTED_SLAB;
+                    topModel = ModModels.TINTED_SLAB_TOP;
+                    break;
+                default:
+                    baseModel = Models.SLAB;
+                    topModel = Models.SLAB_TOP;
+                    break;
+            }
+
+            blockStateModelGenerator.createSubModel(b,"",baseModel,(identifier -> {
                 TextureMap res = new TextureMap();
                 res.put(TextureKey.BOTTOM,Geomancy.locate("block/"+baseBlockID.getPath()));
                 res.put(TextureKey.TOP,Geomancy.locate("block/"+baseBlockID.getPath()));
@@ -105,7 +149,7 @@ public class ModModelProvider extends FabricModelProvider {
                 return res;
             }));
 
-            blockStateModelGenerator.createSubModel(b,"",Models.SLAB_TOP,(identifier -> {
+            blockStateModelGenerator.createSubModel(b,"",topModel,(identifier -> {
                 TextureMap res = new TextureMap();
                 res.put(TextureKey.BOTTOM,Geomancy.locate("block/"+baseBlockID.getPath()));
                 res.put(TextureKey.TOP,Geomancy.locate("block/"+baseBlockID.getPath()));
@@ -124,24 +168,42 @@ public class ModModelProvider extends FabricModelProvider {
                     id.withPrefixedPath("block/").withSuffixedPath("_side_tall"));
             blockStateModelGenerator.blockStateCollector.accept(sup);
 
-            if(!ExtraBlockSettings.logged.get((Block) b).shouldGenerateModels) continue;
+            var dat = ExtraBlockSettings.logged.get(b);
+            if(!dat.shouldGenerateModels) continue;
 
-            blockStateModelGenerator.createSubModel(b,"",Models.TEMPLATE_WALL_POST,(identifier -> {
+            Model postModel,sideModel,sideWallModel,inventoryModel;
+            switch(dat.modelType)
+            {
+                case Tinted:
+                    postModel =         ModModels.TINTED_TEMPLATE_WALL_POST;
+                    sideModel =         ModModels.TINTED_TEMPLATE_WALL_SIDE;
+                    sideWallModel =     ModModels.TINTED_TEMPLATE_WALL_SIDE_TALL;
+                    inventoryModel =    ModModels.TINTED_WALL_INVENTORY;
+                    break;
+                default:
+                    postModel =         Models.TEMPLATE_WALL_POST;
+                    sideModel =         Models.TEMPLATE_WALL_SIDE;
+                    sideWallModel =     Models.TEMPLATE_WALL_SIDE_TALL;
+                    inventoryModel =    Models.WALL_INVENTORY;
+                    break;
+            }
+
+            blockStateModelGenerator.createSubModel(b,"",postModel,(identifier -> {
                 TextureMap res = new TextureMap();
                 res.put(TextureKey.WALL,Geomancy.locate("block/"+baseBlockID.getPath()));
                 return res;
             }));
-            blockStateModelGenerator.createSubModel(b,"",Models.TEMPLATE_WALL_SIDE,(identifier -> {
+            blockStateModelGenerator.createSubModel(b,"",sideModel,(identifier -> {
                 TextureMap res = new TextureMap();
                 res.put(TextureKey.WALL,Geomancy.locate("block/"+baseBlockID.getPath()));
                 return res;
             }));
-            blockStateModelGenerator.createSubModel(b,"",Models.TEMPLATE_WALL_SIDE_TALL,(identifier -> {
+            blockStateModelGenerator.createSubModel(b,"",sideWallModel,(identifier -> {
                 TextureMap res = new TextureMap();
                 res.put(TextureKey.WALL,Geomancy.locate("block/"+baseBlockID.getPath()));
                 return res;
             }));
-            blockStateModelGenerator.createSubModel(b,"",Models.WALL_INVENTORY,(identifier -> {
+            blockStateModelGenerator.createSubModel(b,"",inventoryModel,(identifier -> {
                 TextureMap res = new TextureMap();
                 res.put(TextureKey.WALL,Geomancy.locate("block/"+baseBlockID.getPath()));
                 return res;
@@ -157,19 +219,35 @@ public class ModModelProvider extends FabricModelProvider {
                     id.withPrefixedPath("block/").withSuffixedPath("_side"));
             blockStateModelGenerator.blockStateCollector.accept(sup);
 
-            if(!ExtraBlockSettings.logged.get(b).shouldGenerateModels) continue;
+            var dat = ExtraBlockSettings.logged.get(b);
+            if(!dat.shouldGenerateModels) continue;
 
-            blockStateModelGenerator.createSubModel(b,"",Models.FENCE_POST,(identifier -> {
+            Model postModel,sideModel,inventoryModel;
+            switch(dat.modelType)
+            {
+                case Tinted:
+                    postModel =         ModModels.TINTED_FENCE_POST;
+                    sideModel =         ModModels.TINTED_FENCE_SIDE;
+                    inventoryModel =    ModModels.TINTED_FENCE_INVENTORY;
+                    break;
+                default:
+                    postModel =         Models.FENCE_POST;
+                    sideModel =         Models.FENCE_SIDE;
+                    inventoryModel =    Models.FENCE_INVENTORY;
+                    break;
+            }
+
+            blockStateModelGenerator.createSubModel(b,"",postModel,(identifier -> {
                 TextureMap res = new TextureMap();
                 res.put(TextureKey.TEXTURE,Geomancy.locate("block/"+baseBlockID.getPath()));
                 return res;
             }));
-            blockStateModelGenerator.createSubModel(b,"",Models.FENCE_SIDE,(identifier -> {
+            blockStateModelGenerator.createSubModel(b,"",sideModel,(identifier -> {
                 TextureMap res = new TextureMap();
                 res.put(TextureKey.TEXTURE,Geomancy.locate("block/"+baseBlockID.getPath()));
                 return res;
             }));
-            blockStateModelGenerator.createSubModel(b,"",Models.FENCE_INVENTORY,(identifier -> {
+            blockStateModelGenerator.createSubModel(b,"",inventoryModel,(identifier -> {
                 TextureMap res = new TextureMap();
                 res.put(TextureKey.TEXTURE,Geomancy.locate("block/"+baseBlockID.getPath()));
                 return res;
@@ -182,31 +260,49 @@ public class ModModelProvider extends FabricModelProvider {
             Identifier id = Registries.BLOCK.getId(b);
             var sup = BlockStateModelGenerator.createFenceGateBlockState(b,
                     id.withPrefixedPath("block/").withSuffixedPath("_open"),
-                    id.withPrefixedPath("block/").withSuffixedPath("_closed"),
-                    id.withPrefixedPath("block/").withSuffixedPath("_open_wall"),
-                    id.withPrefixedPath("block/").withSuffixedPath("_closed_wall"),
+                    id.withPrefixedPath("block/").withSuffixedPath(""),
+                    id.withPrefixedPath("block/").withSuffixedPath("_wall_open"),
+                    id.withPrefixedPath("block/").withSuffixedPath("_wall"),
                     true
                     );
             blockStateModelGenerator.blockStateCollector.accept(sup);
 
-            if(!ExtraBlockSettings.logged.get(b).shouldGenerateModels) continue;
+            var dat = ExtraBlockSettings.logged.get(b);
+            if(!dat.shouldGenerateModels) continue;
 
-            blockStateModelGenerator.createSubModel(b,"",Models.TEMPLATE_FENCE_GATE,(identifier -> {
+            Model closedModel,openModel,closedWallModel,openWallModel;
+            switch(dat.modelType)
+            {
+                case Tinted:
+                    closedModel =       ModModels.TINTED_TEMPLATE_FENCE_GATE;
+                    openModel =         ModModels.TINTED_TEMPLATE_FENCE_GATE_OPEN;
+                    closedWallModel =   ModModels.TINTED_TEMPLATE_FENCE_GATE_WALL;
+                    openWallModel =     ModModels.TINTED_TEMPLATE_FENCE_GATE_WALL_OPEN;
+                    break;
+                default:
+                    closedModel =       Models.TEMPLATE_FENCE_GATE;
+                    openModel =         Models.TEMPLATE_FENCE_GATE_OPEN;
+                    closedWallModel =   Models.TEMPLATE_FENCE_GATE_WALL;
+                    openWallModel =     Models.TEMPLATE_FENCE_GATE_WALL_OPEN;
+                    break;
+            }
+
+            blockStateModelGenerator.createSubModel(b,"",closedModel,(identifier -> {
                 TextureMap res = new TextureMap();
                 res.put(TextureKey.TEXTURE,Geomancy.locate("block/"+baseBlockID.getPath()));
                 return res;
             }));
-            blockStateModelGenerator.createSubModel(b,"",Models.TEMPLATE_FENCE_GATE_OPEN,(identifier -> {
+            blockStateModelGenerator.createSubModel(b,"",openModel,(identifier -> {
                 TextureMap res = new TextureMap();
                 res.put(TextureKey.TEXTURE,Geomancy.locate("block/"+baseBlockID.getPath()));
                 return res;
             }));
-            blockStateModelGenerator.createSubModel(b,"",Models.TEMPLATE_FENCE_GATE_WALL,(identifier -> {
+            blockStateModelGenerator.createSubModel(b,"",closedWallModel,(identifier -> {
                 TextureMap res = new TextureMap();
                 res.put(TextureKey.TEXTURE,Geomancy.locate("block/"+baseBlockID.getPath()));
                 return res;
             }));
-            blockStateModelGenerator.createSubModel(b,"",Models.TEMPLATE_FENCE_GATE_WALL_OPEN,(identifier -> {
+            blockStateModelGenerator.createSubModel(b,"",openWallModel,(identifier -> {
                 TextureMap res = new TextureMap();
                 res.put(TextureKey.TEXTURE,Geomancy.locate("block/"+baseBlockID.getPath()));
                 return res;
@@ -218,18 +314,32 @@ public class ModModelProvider extends FabricModelProvider {
             Identifier baseBlockID = Registries.BLOCK.getId(ExtraBlockSettings.PressurePlateBlocks.get(b));
             Identifier id = Registries.BLOCK.getId(b);
             var sup = BlockStateModelGenerator.createPressurePlateBlockState(b,
-                    id.withPrefixedPath("block/").withSuffixedPath("_up"),
+                    id.withPrefixedPath("block/").withSuffixedPath(""),
                     id.withPrefixedPath("block/").withSuffixedPath("_down"));
             blockStateModelGenerator.blockStateCollector.accept(sup);
 
-            if(!ExtraBlockSettings.logged.get(b).shouldGenerateModels) continue;
+            var dat = ExtraBlockSettings.logged.get(b);
+            if(!dat.shouldGenerateModels) continue;
 
-            blockStateModelGenerator.createSubModel(b,"",Models.PRESSURE_PLATE_UP,(identifier -> {
+            Model upModel,downModel;
+            switch(dat.modelType)
+            {
+                case Tinted:
+                    upModel =       ModModels.TINTED_PRESSURE_PLATE_UP;
+                    downModel =     ModModels.TINTED_PRESSURE_PLATE_DOWN;
+                    break;
+                default:
+                    upModel =       Models.PRESSURE_PLATE_UP;
+                    downModel =     Models.PRESSURE_PLATE_DOWN;
+                    break;
+            }
+
+            blockStateModelGenerator.createSubModel(b,"",upModel,(identifier -> {
                 TextureMap res = new TextureMap();
                 res.put(TextureKey.TEXTURE,Geomancy.locate("block/"+baseBlockID.getPath()));
                 return res;
             }));
-            blockStateModelGenerator.createSubModel(b,"",Models.PRESSURE_PLATE_DOWN,(identifier -> {
+            blockStateModelGenerator.createSubModel(b,"",downModel,(identifier -> {
                 TextureMap res = new TextureMap();
                 res.put(TextureKey.TEXTURE,Geomancy.locate("block/"+baseBlockID.getPath()));
                 return res;
@@ -245,19 +355,35 @@ public class ModModelProvider extends FabricModelProvider {
                     id.withPrefixedPath("block/").withSuffixedPath("_pressed"));
             blockStateModelGenerator.blockStateCollector.accept(sup);
 
-            if(!ExtraBlockSettings.logged.get(b).shouldGenerateModels) continue;
+            var dat = ExtraBlockSettings.logged.get(b);
+            if(!dat.shouldGenerateModels) continue;
 
-            blockStateModelGenerator.createSubModel(b,"",Models.BUTTON,(identifier -> {
+            Model baseModel,pressedModel,inventoryModel;
+            switch(dat.modelType)
+            {
+                case Tinted:
+                    baseModel =       ModModels.TINTED_BUTTON;
+                    pressedModel =    ModModels.TINTED_BUTTON_PRESSED;
+                    inventoryModel =  ModModels.TINTED_BUTTON_INVENTORY;
+                    break;
+                default:
+                    baseModel =       Models.BUTTON;
+                    pressedModel =    Models.BUTTON_PRESSED;
+                    inventoryModel =  Models.BUTTON_INVENTORY;
+                    break;
+            }
+
+            blockStateModelGenerator.createSubModel(b,"",baseModel,(identifier -> {
                 TextureMap res = new TextureMap();
                 res.put(TextureKey.TEXTURE,Geomancy.locate("block/"+baseBlockID.getPath()));
                 return res;
             }));
-            blockStateModelGenerator.createSubModel(b,"",Models.BUTTON_PRESSED,(identifier -> {
+            blockStateModelGenerator.createSubModel(b,"",pressedModel,(identifier -> {
                 TextureMap res = new TextureMap();
                 res.put(TextureKey.TEXTURE,Geomancy.locate("block/"+baseBlockID.getPath()));
                 return res;
             }));
-            blockStateModelGenerator.createSubModel(b,"",Models.BUTTON_INVENTORY,(identifier -> {
+            blockStateModelGenerator.createSubModel(b,"",inventoryModel,(identifier -> {
                 TextureMap res = new TextureMap();
                 res.put(TextureKey.TEXTURE,Geomancy.locate("block/"+baseBlockID.getPath()));
                 return res;
@@ -274,15 +400,29 @@ public class ModModelProvider extends FabricModelProvider {
                     );
             blockStateModelGenerator.blockStateCollector.accept(sup);
 
-            if(!ExtraBlockSettings.logged.get(b).shouldGenerateModels) continue;
+            var dat = ExtraBlockSettings.logged.get(b);
+            if(!dat.shouldGenerateModels) continue;
 
-            blockStateModelGenerator.createSubModel(b,"",Models.CUBE_COLUMN,(identifier -> {
+            Model baseModel,horizontal;
+            switch(dat.modelType)
+            {
+                case Tinted:
+                    baseModel =     ModModels.TINTED_CUBE_COLUMN;
+                    horizontal =    ModModels.TINTED_CUBE_COLUMN_HORIZONTAL;
+                    break;
+                default:
+                    baseModel =     Models.CUBE_COLUMN;
+                    horizontal =    Models.CUBE_COLUMN_HORIZONTAL;
+                    break;
+            }
+
+            blockStateModelGenerator.createSubModel(b,"",baseModel,(identifier -> {
                 TextureMap res = new TextureMap();
                 res.put(TextureKey.END,Geomancy.locate("block/"+baseBlockID.getPath()+"_top"));
                 res.put(TextureKey.SIDE,Geomancy.locate("block/"+baseBlockID.getPath()));
                 return res;
             }));
-            blockStateModelGenerator.createSubModel(b,"",Models.CUBE_COLUMN_HORIZONTAL,(identifier -> {
+            blockStateModelGenerator.createSubModel(b,"",horizontal,(identifier -> {
                 TextureMap res = new TextureMap();
                 res.put(TextureKey.END,Geomancy.locate("block/"+baseBlockID.getPath()+"_top"));
                 res.put(TextureKey.SIDE,Geomancy.locate("block/"+baseBlockID.getPath()));
@@ -290,13 +430,25 @@ public class ModModelProvider extends FabricModelProvider {
             }));
         }
 
-
         // cube variants
         for(Block b : ExtraBlockSettings.VariantCubeBlocks.keySet()){
 
+            var dat = ExtraBlockSettings.logged.get(b);
+            if(!dat.shouldGenerateModels) continue;
+
+
             BlockStateVariant[] variants = new BlockStateVariant[ExtraBlockSettings.VariantCubeBlocks.get(b)];
 
-            Model model = new Model(Optional.of(Identifier.of(Identifier.DEFAULT_NAMESPACE,"block/cube_all")),Optional.empty(),TextureKey.ALL);
+            Model model;
+            switch(dat.modelType)
+            {
+                case Tinted:
+                    model =     ModModels.TINTED_CUBE_ALL;
+                    break;
+                default:
+                    model =     Models.CUBE_ALL;
+                    break;
+            }
 
             String blockPath = Registries.BLOCK.getId(b).getPath();
 

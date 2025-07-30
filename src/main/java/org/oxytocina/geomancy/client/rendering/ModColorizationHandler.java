@@ -29,8 +29,28 @@ public class ModColorizationHandler {
                 ModBlocks.OCTANGULITE_BRICKS,
                 ModBlocks.OCTANGULITE_BRICK_STAIRS,
                 ModBlocks.OCTANGULITE_BRICK_SLABS,
-                ModBlocks.OCTANGULITE_BRICK_WALL
-        );
+                ModBlocks.OCTANGULITE_BRICK_WALL,
+                ModBlocks.SOUL_OAK_PLANKS,
+                ModBlocks.SOUL_OAK_LOG,
+                ModBlocks.STRIPPED_SOUL_OAK_LOG,
+                ModBlocks.SOUL_OAK_WOOD,
+                ModBlocks.STRIPPED_SOUL_OAK_WOOD,
+                ModBlocks.SOUL_OAK_BUTTON,
+                ModBlocks.SOUL_OAK_PRESSURE_PLATE,
+                ModBlocks.SOUL_OAK_FENCE,
+                ModBlocks.SOUL_OAK_FENCE_GATE,
+                ModBlocks.SOUL_OAK_SIGN,
+                ModBlocks.SOUL_OAK_HANGING_SIGN,
+                ModBlocks.SOUL_OAK_WALL_SIGN,
+                ModBlocks.SOUL_OAK_WALL_HANGING_SIGN,
+                ModBlocks.SOUL_OAK_SLAB,
+                ModBlocks.SOUL_OAK_STAIRS,
+                ModBlocks.SOUL_OAK_TRAPDOOR,
+                ModBlocks.SOUL_OAK_LOG,
+                ModBlocks.STRIPPED_SOUL_OAK_LOG,
+                ModBlocks.SOUL_OAK_WOOD,
+                ModBlocks.STRIPPED_SOUL_OAK_WOOD
+                );
         ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> {
             if (view == null || pos == null || tintIndex == 0) {return 0xFFFFFFFF;} else {return octanguliteNoise(pos,tintIndex,0.003f);}
         }, ModBlocks.OCTANGULITE_ORE,ModBlocks.DEEPSLATE_OCTANGULITE_ORE);
@@ -49,6 +69,23 @@ public class ModColorizationHandler {
         addOctanguliteItem(ModBlocks.OCTANGULITE_BRICK_STAIRS.asItem(),0.03F,false);
         addOctanguliteItem(ModBlocks.OCTANGULITE_BRICK_SLABS.asItem(),0.03F,false);
         addOctanguliteItem(ModBlocks.OCTANGULITE_BRICK_WALL.asItem(),0.03F,false);
+        addOctanguliteItem(ModBlocks.SOUL_OAK_PLANKS.asItem(),0.03F,false);
+        addOctanguliteItem(ModBlocks.SOUL_OAK_LOG.asItem(),0.03F,false);
+        addOctanguliteItem(ModBlocks.STRIPPED_SOUL_OAK_LOG.asItem(),0.03F,false);
+        addOctanguliteItem(ModBlocks.SOUL_OAK_WOOD.asItem(),0.03F,false);
+        addOctanguliteItem(ModBlocks.STRIPPED_SOUL_OAK_WOOD.asItem(),0.03F,false);
+        addOctanguliteItem(ModBlocks.SOUL_OAK_BUTTON.asItem(),0.03F,false);
+        addOctanguliteItem(ModBlocks.SOUL_OAK_DOOR.asItem(),0.03F,false);
+        addOctanguliteItem(ModBlocks.SOUL_OAK_TRAPDOOR.asItem(),0.03F,false);
+        addOctanguliteItem(ModBlocks.SOUL_OAK_FENCE.asItem(),0.03F,false);
+        addOctanguliteItem(ModBlocks.SOUL_OAK_FENCE_GATE.asItem(),0.03F,false);
+        addOctanguliteItem(ModBlocks.SOUL_OAK_PRESSURE_PLATE.asItem(),0.03F,false);
+        addOctanguliteItem(ModBlocks.SOUL_OAK_SAPLING.asItem(),0.03F,false);
+        //addOctanguliteItem(ModBlocks.POTTED_SOUL_OAK_SAPLING.asItem(),0.03F,false);
+        addOctanguliteItem(ModBlocks.SOUL_OAK_SIGN.asItem(),0.03F,false);
+        addOctanguliteItem(ModBlocks.SOUL_OAK_HANGING_SIGN.asItem(),0.03F,false);
+        addOctanguliteItem(ModBlocks.SOUL_OAK_STAIRS.asItem(),0.03F,false);
+        addOctanguliteItem(ModBlocks.SOUL_OAK_SLAB.asItem(),0.03F,false);
 
         addOctanguliteOreItem(ModBlocks.OCTANGULITE_ORE.asItem(),0.003F,false);
         addOctanguliteOreItem(ModBlocks.DEEPSLATE_OCTANGULITE_ORE.asItem(),0.003F,false);

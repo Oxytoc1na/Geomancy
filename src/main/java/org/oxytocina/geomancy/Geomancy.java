@@ -54,9 +54,9 @@ public class Geomancy implements ModInitializer {
     public static boolean initialized = false;
 
     // called from APIs if they so mischievously tried to access geomancys static variables before it got the chance to load itself
-    public static void initializeForeign(){
+    public static void initializeForeign(String from){
         if(initialized) return;
-        Geomancy.logError("initialized from foreign entrypoint!");
+        Geomancy.logWarning("initializing from foreign entrypoint "+from+"!");
         initialize();
     }
 

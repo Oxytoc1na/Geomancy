@@ -43,6 +43,7 @@ public class ExtraBlockSettings {
 
     public boolean shouldRegisterItem = true;
     public boolean shouldGenerateModels = true;
+    public ModelType modelType = ModelType.Default;
     public boolean shouldItemHaveOwnName = false;
     private boolean shouldAddItemToGroup = true;
     private boolean simpleCubeModel = true;
@@ -74,6 +75,7 @@ public class ExtraBlockSettings {
         res.variantCubeColumn=variantCubeColumn;
         res.shouldGenerateModels=shouldGenerateModels;
         res.shouldItemHaveOwnName=shouldItemHaveOwnName;
+        res.modelType=modelType;
         return res;
     }
 
@@ -105,7 +107,9 @@ public class ExtraBlockSettings {
     public ExtraBlockSettings fenceGate(Block base) { variantBaseBlock = base; return notSimpleCube(); }
     public ExtraBlockSettings pressurePlate(Block base) { variantBaseBlock = base; return notSimpleCube(); }
     public ExtraBlockSettings button(Block base) { variantBaseBlock = base; return notSimpleCube(); }
-    public ExtraBlockSettings noModels() { shouldGenerateModels=false; return this; }
+    public ExtraBlockSettings noModels() { shouldGenerateModels=false; return notSimpleCube(); }
+    public ExtraBlockSettings tintedModels() { return modelType(ModelType.Tinted); }
+    public ExtraBlockSettings modelType(ModelType type) { modelType = type; return this; }
 
     public void apply(){
         if(pickaxe) ToolableBlock_Pickaxe.add(block);
@@ -146,6 +150,11 @@ public class ExtraBlockSettings {
     }
 
     public static ExtraBlockSettings copyFrom(Block block){
-        return logged.get(block);
+        return logged.get(block).copy();
+    }
+
+    public enum ModelType{
+        Default,
+        Tinted
     }
 }

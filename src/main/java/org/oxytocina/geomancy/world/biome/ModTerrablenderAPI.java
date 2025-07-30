@@ -11,7 +11,7 @@ public class ModTerrablenderAPI implements TerraBlenderApi {
     @Override
     public void onTerraBlenderInitialized() {
 
-        Geomancy.initializeForeign();
+        Geomancy.initializeForeign("TerraBlender");
 
         Regions.register(new ModOverworldRegion(Geomancy.locate("overworld"), 4));
 
