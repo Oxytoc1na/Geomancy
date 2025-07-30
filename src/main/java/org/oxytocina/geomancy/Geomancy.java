@@ -52,10 +52,36 @@ public class Geomancy implements ModInitializer {
     //public static SpectrumConfig CONFIG;
 
     public static boolean initialized = false;
+    public static boolean initializing = false;
+    public static boolean finishedInitialization = false;
 
     // called from APIs if they so mischievously tried to access geomancys static variables before it got the chance to load itself
     public static void initializeForeign(String from){
-        if(initialized) return;
+        if(finishedInitialization) return;
+
+        if(initializing)
+        {
+            Geomancy.logWarning("waiting for finished initialization from foreign entrypoint "+from+"!");
+            int waited = 0;
+            while(initializing){
+                try{
+                    Thread.sleep(1);
+                    waited++;
+                    if(waited%10000 == 0)
+                        Geomancy.logWarning("waited for finished initialization from foreign entrypoint "+from+" for "+waited+"ms!");
+
+                }
+                catch (Exception ignored)
+                {
+                    Geomancy.logError("error while waiting from foreign entrypoint "+from+"!");
+                    return;
+                }
+            }
+
+            return;
+        }
+
+
         Geomancy.logWarning("initializing from foreign entrypoint "+from+"!");
         initialize();
     }
@@ -65,9 +91,10 @@ public class Geomancy implements ModInitializer {
         initialize();
     }
 
-    public static void initialize(){
+    public static synchronized void initialize(){
         if(initialized) return;
         initialized=true;
+        initializing=true;
 
         // This code runs as soon as Minecraft is in a mod-load-ready state.
         // However, some things (like resources) may still be uninitialized.
@@ -105,6 +132,10 @@ public class Geomancy implements ModInitializer {
 
         logInfo(Registries.RECIPE_SERIALIZER.get(locate(ModRecipeTypes.GOLD_CONVERTING_ID)).toString());
 
+        LOGGER.info("Finished Loading Geomancy");
+
+        finishedInitialization=true;
+        initializing = false;
     }
 
     public static void logInfo(String message,World world) {

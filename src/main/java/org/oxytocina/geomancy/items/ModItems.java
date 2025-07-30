@@ -137,6 +137,7 @@ public class ModItems {
 
 
     // tools
+    // NOTE: ModToolMaterials may only be called after all the required repair ingredients have been initialized above!!
 
     // lead
     public static final LeadSwordItem LEAD_SWORD = register("lead_sword", new LeadSwordItem(ModToolMaterials.LEAD, 3, -2.4F, new Item.Settings(),1),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
@@ -148,7 +149,6 @@ public class ModItems {
     public static final LeadArmorItem LEAD_CHESTPLATE = register("lead_chestplate", new LeadArmorItem(ModArmorMaterials.LEAD, ArmorItem.Type.CHESTPLATE, new Item.Settings(),1));
     public static final LeadArmorItem LEAD_LEGGINGS = register("lead_leggings", new LeadArmorItem(ModArmorMaterials.LEAD, ArmorItem.Type.LEGGINGS, new Item.Settings(),1));
     public static final LeadArmorItem LEAD_BOOTS = register("lead_boots", new LeadArmorItem(ModArmorMaterials.LEAD, ArmorItem.Type.BOOTS, new Item.Settings(),1));
-
 
     // mithril
     public static final SwordItem MITHRIL_SWORD = register("mithril_sword", new SwordItem(ModToolMaterials.MITHRIL, 3, -2.4F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
