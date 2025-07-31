@@ -24,8 +24,6 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
     @Override
     protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
 
-
-
         // required tools
         var builder = getOrCreateTagBuilder(PICKAXE_MINEABLES).setReplace(false);
         for(Block b : ExtraBlockSettings.ToolableBlock_Pickaxe) builder.add(b);
@@ -80,6 +78,21 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
                         ModBlocks.OCTANGULITE_BRICK_SLABS,
                         ModBlocks.OCTANGULITE_BRICK_WALL
                 );
+
+        getOrCreateTagBuilder(SOUL_OAK_LOGS).setReplace(false)
+                .add(ModBlocks.SOUL_OAK_LOG)
+                .add(ModBlocks.SOUL_OAK_WOOD)
+                .add(ModBlocks.STRIPPED_SOUL_OAK_LOG)
+                .add(ModBlocks.STRIPPED_SOUL_OAK_WOOD)
+        ;
+
+        getOrCreateTagBuilder(BlockTags.LOGS_THAT_BURN).setReplace(false)
+                .forceAddTag(SOUL_OAK_LOGS)
+        ;
+
+        getOrCreateTagBuilder(BlockTags.LEAVES).setReplace(false)
+                .add(ModBlocks.SOUL_OAK_LEAVES)
+        ;
 
         // ambient souls
         addSoulTag(BlockTags.WOOL,SoulLevel.Few);

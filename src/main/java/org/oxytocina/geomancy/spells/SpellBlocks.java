@@ -906,7 +906,13 @@ public class SpellBlocks {
                                 return SpellBlockResult.empty();
                             }
 
+                            // place block in world
                             comp.world().setBlockState(Toolbox.posToBlockPos(pos), bi.getBlock().getDefaultState());
+
+                            // remove block from inventory
+                            if(!pe.isCreative())
+                                stack.decrement(1);
+
                             Toolbox.playSound(bi.getBlock().getSoundGroup(targetState).getPlaceSound(),comp.world(),blockPos, SoundCategory.BLOCKS,1,1);
                             trySpendSoul(comp,manaCost);
                             spawnCastParticles(comp,CastParticleData.genericSuccess(comp,pos));

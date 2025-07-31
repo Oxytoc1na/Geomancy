@@ -24,6 +24,8 @@ public class ModBlockTags {
     public static final TagKey<Block> ADDS_SOULS_NORMAL = register( "adds_souls_normal");
     public static final TagKey<Block> ADDS_SOULS_MANY = register( "adds_souls_many");
 
+    public static final TagKey<Block> SOUL_OAK_LOGS = register( "soul_oak_logs");
+
     public static TagKey<Block> register(String name){
         return register(Geomancy.locate(name));
     }
