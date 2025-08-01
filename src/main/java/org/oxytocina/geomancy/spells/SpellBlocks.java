@@ -28,10 +28,12 @@ import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
@@ -43,6 +45,7 @@ import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.client.GeomancyClient;
 import org.oxytocina.geomancy.items.tools.SoulCastingItem;
 import org.oxytocina.geomancy.networking.ModMessages;
+import org.oxytocina.geomancy.sound.ModSoundEvents;
 import org.oxytocina.geomancy.util.BlockHelper;
 import org.oxytocina.geomancy.util.Toolbox;
 
@@ -584,6 +587,7 @@ public class SpellBlocks {
                         })
                         .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
+
             }
 
             // vector math
@@ -1244,8 +1248,9 @@ public class SpellBlocks {
                 ));
     }
 
-    public static void tryLogDebugDepthLimitReached(SpellComponent comp){
-        tryLogDebug(comp,Text.translatable("geomancy.spells.debug.depthlimit",comp.getRuntimeName()));
+    public static void tryLogDebugDepthLimitReached(SpellContext ctx){
+        if(!ctx.debugging) return;
+        logDebug(ctx.caster,Text.translatable("geomancy.spells.debug.depthlimit",ctx.grid.getRuntimeName(ctx)));
     }
 
     private static void tryLogDebugBroke(SpellComponent comp,float cost){
@@ -1292,6 +1297,18 @@ public class SpellBlocks {
         data.write(buf);
         ModMessages.sendToAllClients((comp.world() instanceof ServerWorld sw) ? sw.getServer() : null,ModMessages.CAST_PARTICLES,buf,serverPlayerEntity ->
                 serverPlayerEntity.getWorld().getRegistryKey().getValue().equals(data.world));
+    }
+
+    public static void playCastSound(SpellContext ctx){
+        float fraction = ctx.soulConsumed / ctx.getCasterMaxSoul();
+        SoundEvent event = null;
+        if(fraction > 80 && ctx.soulConsumed > 200)
+            event = ModSoundEvents.CAST_SUCCESS_EXPENSIVE;
+        else if(fraction > 30 && ctx.soulConsumed > 50)
+            event = ModSoundEvents.CAST_SUCCESS_MEDIUM;
+        else
+            event = ModSoundEvents.CAST_SUCCESS_CHEAP;
+        Toolbox.playSound(event,ctx.caster.getWorld(), ctx.caster.getBlockPos(), SoundCategory.PLAYERS,1,0.8f+Toolbox.random.nextFloat()*0.4f);
     }
 
     private static boolean trySpendSoul(SpellComponent comp, float amount){

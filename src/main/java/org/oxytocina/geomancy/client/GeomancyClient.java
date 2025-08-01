@@ -61,9 +61,7 @@ public class GeomancyClient implements ClientModInitializer {
 
         BlockEntityRendererFactories.register(ModBlockEntities.SPELLSTORER_BLOCK_ENTITY, SpellstorerBlockEntityRenderer::new);
 
-        for(var b : ExtraBlockSettings.CutoutLayerBlocks){
-            BlockRenderLayerMap.INSTANCE.putBlock(b, RenderLayer.getCutout());
-        }
+
 
         Geomancy.logInfo("Finished Initializing Geomancy Client");
         initialized=true;

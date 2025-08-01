@@ -9,7 +9,8 @@ public class SpellContext {
     public LivingEntity caster;
     public ItemStack casterItem;
     public ItemStack spellStorage;
-    public float availableSoul;
+    protected float availableSoul;
+    public float soulConsumed = 0;
     public float soulCostMultiplier = 1;
     public Stage stage;
     public boolean debugging = false;
@@ -32,7 +33,8 @@ public class SpellContext {
             ItemStack casterItem,
             ItemStack spellStorage,
             float availableSoul,
-            float soulCostMultiplier
+            float soulCostMultiplier,
+            float soulConsumed
     ){
         this.grid=grid;
         this.caster = caster;
@@ -41,9 +43,12 @@ public class SpellContext {
         this.availableSoul=availableSoul;
         this.stage = Stage.PreInit;
         this.soulCostMultiplier=soulCostMultiplier;
+        this.soulConsumed=soulConsumed;
     }
 
     public boolean tryConsumeSoul(float amount){
+        if(isChild()) return parentCall.tryConsumeSoul(amount);
+
         amount*=soulCostMultiplier;
         if(!canAfford(amount)) { couldntAffordSomething = true; return false; }
 
@@ -57,6 +62,8 @@ public class SpellContext {
     }
 
     public boolean canAfford(float amount){
+        if(isChild()) return parentCall.canAfford(amount);
+
         if(caster instanceof PlayerEntity player){
             availableSoul = ManaUtil.getMana(player);
             return availableSoul>=amount;
@@ -67,6 +74,7 @@ public class SpellContext {
     }
 
     public void refreshAvailableSoul(){
+        if(isChild()) {parentCall.getCasterMaxSoul(); return;}
         if(caster instanceof PlayerEntity player){
             availableSoul = ManaUtil.getMana(player);
             return;
@@ -76,8 +84,18 @@ public class SpellContext {
         return;
     }
 
+    public float getCasterMaxSoul(){
+        if(isChild()) return parentCall.getCasterMaxSoul();
+        if(caster instanceof PlayerEntity pe){
+            return ManaUtil.getMaxMana(pe);
+        }
+
+        // TODO: livingentity mana
+        return 100;
+    }
+
     public SpellContext createReferenced(SpellComponent comp){
-        SpellContext res = new SpellContext(this.grid,caster,casterItem,spellStorage,availableSoul,soulCostMultiplier);
+        SpellContext res = new SpellContext(this.grid,caster,casterItem,spellStorage,availableSoul,soulCostMultiplier,soulConsumed);
         res.parentCall = this;
         res.referenceCallingFrom = comp;
         res.internalVars=new SpellBlockArgs();

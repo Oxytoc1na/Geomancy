@@ -76,27 +76,6 @@ public class Toolbox {
         return def;
     }
 
-    public static void grantAdvancementCriterion(@NotNull ServerPlayerEntity serverPlayerEntity, Identifier advancementIdentifier, String criterion) {
-        if (serverPlayerEntity.getServer() == null) {
-            return;
-        }
-        ServerAdvancementLoader sal = serverPlayerEntity.getServer().getAdvancementLoader();
-        PlayerAdvancementTracker tracker = serverPlayerEntity.getAdvancementTracker();
-
-        Advancement advancement = sal.get(advancementIdentifier);
-        if (advancement == null) {
-            Geomancy.logError("Trying to grant a criterion \"" + criterion + "\" for an advancement that does not exist: " + advancementIdentifier);
-        } else {
-            if (!tracker.getProgress(advancement).isDone()) {
-                tracker.grantCriterion(advancement, criterion);
-            }
-        }
-    }
-
-    public static void grantAdvancementCriterion(@NotNull ServerPlayerEntity serverPlayerEntity, String advancementString, String criterion) {
-        grantAdvancementCriterion(serverPlayerEntity, Geomancy.locate(advancementString), criterion);
-    }
-
     public static Identifier locate(String string){return Geomancy.locate(string);}
 
     public static int colorFromRGB(Vector3f colVec){

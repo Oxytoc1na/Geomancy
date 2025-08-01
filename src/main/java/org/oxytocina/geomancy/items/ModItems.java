@@ -103,8 +103,18 @@ public class ModItems {
 
     // artifacts
     public static final ArtifactItem EMPTY_ARTIFACT = register("empty_artifact",new ArtifactItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON).fireproof(),new ArtifactSettings()));
-    public static final IronArtifact ARTIFACT_OF_IRON = register("artifact_of_iron",new IronArtifact(new Item.Settings().maxCount(1).rarity(Rarity.RARE).fireproof(),new ArtifactSettings()));
-    public static final GoldArtifact ARTIFACT_OF_GOLD = register("artifact_of_gold",new GoldArtifact(new Item.Settings().maxCount(1).rarity(Rarity.RARE).fireproof(),new ArtifactSettings()));
+    private static final Item.Settings ARTIFACT_SETTINGS = new Item.Settings().maxCount(1).rarity(Rarity.RARE).fireproof();
+    public static final IronArtifact ARTIFACT_OF_IRON = register("artifact_of_iron",new IronArtifact(ARTIFACT_SETTINGS,new ArtifactSettings()));
+    public static final GoldArtifact ARTIFACT_OF_GOLD = register("artifact_of_gold",new GoldArtifact(ARTIFACT_SETTINGS,new ArtifactSettings()));
+    //public static final ArtifactItem ARTIFACT_OF_COAL =       register("artifact_of_coal",new ArtifactItem(ARTIFACT_SETTINGS,new ArtifactSettings()));
+    //public static final ArtifactItem ARTIFACT_OF_COPPER =     register("artifact_of_copper",new ArtifactItem(ARTIFACT_SETTINGS,new ArtifactSettings()));
+    //public static final ArtifactItem ARTIFACT_OF_DIAMOND =    register("artifact_of_diamond",new ArtifactItem(ARTIFACT_SETTINGS,new ArtifactSettings()));
+    //public static final ArtifactItem ARTIFACT_OF_EMERALD =    register("artifact_of_emerald",new ArtifactItem(ARTIFACT_SETTINGS,new ArtifactSettings()));
+    //public static final ArtifactItem ARTIFACT_OF_LEAD =       register("artifact_of_lead",new ArtifactItem(ARTIFACT_SETTINGS,new ArtifactSettings()));
+    //public static final ArtifactItem ARTIFACT_OF_MITHRIL =    register("artifact_of_mithril",new ArtifactItem(ARTIFACT_SETTINGS,new ArtifactSettings()));
+    //public static final ArtifactItem ARTIFACT_OF_MOLYBDENUM = register("artifact_of_molybdenum",new ArtifactItem(ARTIFACT_SETTINGS,new ArtifactSettings()));
+    //public static final ArtifactItem ARTIFACT_OF_TITANIUM =   register("artifact_of_titanium",new ArtifactItem(ARTIFACT_SETTINGS,new ArtifactSettings()));
+    //public static final ArtifactItem ARTIFACT_OF_OCTANGULITE = register("artifact_of_octangulite",new ArtifactItem(ARTIFACT_SETTINGS,new ArtifactSettings()));
 
     // jewelry
     // rings

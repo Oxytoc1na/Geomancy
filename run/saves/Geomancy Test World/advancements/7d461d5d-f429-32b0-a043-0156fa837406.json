@@ -365,5 +365,167 @@
     },
     "done": true
   },
+  "geomancy:recipes/decorations/soul_oak_fence": {
+    "criteria": {
+      "has_soul_oak_planks": "2025-07-30 10:03:59 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/building_blocks/soul_oak_slab": {
+    "criteria": {
+      "has_soul_oak_planks": "2025-07-30 10:03:59 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/building_blocks/soul_oak_wood": {
+    "criteria": {
+      "has_log": "2025-07-30 10:03:59 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/soul_oak_button_from_soul_oak_planks": {
+    "criteria": {
+      "has_soul_oak_planks": "2025-07-30 10:03:59 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/jewelry_octangulite_ring": {
+    "criteria": {
+      "has_ingredient": "2025-07-30 10:03:59 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/decorations/soul_oak_door": {
+    "criteria": {
+      "has_soul_oak_planks": "2025-07-30 10:03:59 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/composter": {
+    "criteria": {
+      "has_wood_slab": "2025-07-30 10:03:59 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/stick": {
+    "criteria": {
+      "has_planks": "2025-07-30 10:03:59 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/jewelry_octangulite_pendant": {
+    "criteria": {
+      "has_ingredient": "2025-07-30 10:03:59 +0200"
+    },
+    "done": true
+  },
+  "geomancy:spellcomponents/get_constant_boolean": {
+    "criteria": {
+      "got_constant_boolean": "2025-07-30 10:03:59 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/decorations/soul_oak_trapdoor": {
+    "criteria": {
+      "has_soul_oak_planks": "2025-07-30 10:03:59 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/decorations/soul_oak_stairs": {
+    "criteria": {
+      "has_soul_oak_planks": "2025-07-30 10:03:59 +0200"
+    },
+    "done": true
+  },
+  "geomancy:spellcomponents/get_imbue": {
+    "criteria": {
+      "got_imbue": "2025-07-30 10:03:59 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/redstone/soul_oak_pressure_plate": {
+    "criteria": {
+      "has_soul_oak_planks": "2025-07-30 10:03:59 +0200"
+    },
+    "done": true
+  },
+  "geomancy:spellcomponents/get_raycast_dir": {
+    "criteria": {
+      "got_raycast_dir": "2025-07-30 10:03:59 +0200"
+    },
+    "done": true
+  },
+  "geomancy:spellcomponents/get_lightning": {
+    "criteria": {
+      "got_lightning": "2025-07-30 10:03:59 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/decorations/soul_oak_sign": {
+    "criteria": {
+      "has_soul_oak_planks": "2025-07-30 10:03:59 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/decorations/soul_oak_fence_gate": {
+    "criteria": {
+      "has_soul_oak_planks": "2025-07-30 10:03:59 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/charcoal": {
+    "criteria": {
+      "has_log": "2025-07-30 10:03:59 +0200"
+    },
+    "done": true
+  },
+  "geomancy:spellcomponents/get_push": {
+    "criteria": {
+      "got_push": "2025-07-30 10:03:59 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/octangulite_ingot_from_blasting_octangulite_ore": {
+    "criteria": {
+      "has_octangulite_ore": "2025-07-30 10:03:59 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/decorations/soul_oak_hanging_sign": {
+    "criteria": {
+      "has_stripped_logs": "2025-07-30 10:03:59 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/barrel": {
+    "criteria": {
+      "has_wood_slab": "2025-07-30 10:03:59 +0200"
+    },
+    "done": true
+  },
+  "geomancy:spellcomponents/get_break": {
+    "criteria": {
+      "got_break": "2025-07-30 10:03:59 +0200"
+    },
+    "done": true
+  },
+  "geomancy:spellcomponents/get_debug": {
+    "criteria": {
+      "got_debug": "2025-07-30 10:03:59 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/octangulite_ingot_from_smelting_octangulite_ore": {
+    "criteria": {
+      "has_octangulite_ore": "2025-07-30 10:03:59 +0200"
+    },
+    "done": true
+  },
+  "geomancy:spellcomponents/get_sum": {
+    "criteria": {
+      "got_sum": "2025-07-30 10:03:59 +0200"
+    },
+    "done": true
+  },
   "DataVersion": 3465
 }

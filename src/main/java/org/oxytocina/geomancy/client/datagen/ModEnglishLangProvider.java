@@ -196,6 +196,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("item.MODID.lead_leggings"       , "Lead Leggings");
             add("item.MODID.lead_chestplate"     , "Lead Chestplate");
             add("item.MODID.lead_helmet"         , "Lead Helmet");
+            add("item.MODID.lead_apple"          , "Lead Apple");
 
             add("item.MODID.raw_octangulite"        , "Raw Octangulite");
             add("item.MODID.octangulite_ingot"      , "Octangulite Ingot");
@@ -227,10 +228,16 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
             add("item.MODID.empty_artifact"         , "Empty Artifact");
             add("item.MODID.empty_artifact.desc"    , "Makes you feel incomplete");
-            add("item.MODID.artifact_of_iron"       , "Artifact of Iron");
-            add("item.MODID.artifact_of_iron.desc"  , "Makes you feel stalwart");
-            add("item.MODID.artifact_of_gold"       , "Artifact of Gold");
-            add("item.MODID.artifact_of_gold.desc"  , "Does something idk");
+            addArtifact("iron"          ,"Artifact of Iron","Makes you feel stalwart");
+            addArtifact("gold"          ,"Artifact of Gold","Turns held apples and carrots to gold");
+            addArtifact("copper"        ,"Artifact of Copper","???");
+            addArtifact("emerald"       ,"Artifact of Emerald","???");
+            addArtifact("diamond"       ,"Artifact of Diamond","???");
+            addArtifact("lead"          ,"Artifact of Lead","Removes negative lead effects");
+            addArtifact("molybdenum"    ,"Artifact of Molybdenum","???");
+            addArtifact("mithril"       ,"Artifact of Mithril","???");
+            addArtifact("octangulite"   ,"Artifact of Octangulite","???");
+            addArtifact("titanium"      ,"Artifact of Titanium","???");
 
             add("item.MODID.iron_ring"              , "Iron Ring");
             add("item.MODID.iron_necklace"          , "Iron Necklace");
@@ -302,8 +309,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         {
             add("block.MODID.condensed_dirt"        , "Condensed Dirt");
 
-            add("block.MODID.mithril_ore"           , "Mithril Ore");
-            add("block.MODID.deepslate_mithril_ore" , "Deepslate Mithril Ore");
+            addOres("mithril_ore", "Mithril Ore");
             add("block.MODID.raw_mithril_block"     , "Block of Raw Mithril");
             add("block.MODID.mithril_block"         , "Block of Mithril");
             add("block.MODID.cut_mithril"           , "Cut Mithril");
@@ -324,8 +330,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("block.MODID.spellmaker_block"            , "Spellmaker");
             add("container.MODID.spellmaker_block"        , "Spellmaker");
 
-            add("block.MODID.octangulite_ore"           , "Octangulite Ore");
-            add("block.MODID.deepslate_octangulite_ore" , "Deepslate Octangulite Ore");
+            addOres("octangulite_ore", "Octangulite Ore");
             add("block.MODID.raw_octangulite_block"     , "Octangulite Scrap");
             add("block.MODID.octangulite_block"         , "Block of Octangulite");
             add("block.MODID.cut_octangulite"           , "Cut Octangulite");
@@ -334,8 +339,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("block.MODID.octangulite_brick_slab"    , "Octangulite Brick Slab");
             add("block.MODID.octangulite_brick_wall"    , "Octangulite Brick Wall");
 
-            add("block.MODID.molybdenum_ore"           , "Molybdenum Ore");
-            add("block.MODID.deepslate_molybdenum_ore" , "Deepslate Molybdenum Ore");
+            addOres("molybdenum_ore", "Molybdenum Ore");
             add("block.MODID.raw_molybdenum_block"     , "Block of raw Molybdenum");
             add("block.MODID.molybdenum_block"         , "Block of Molybdenum");
             add("block.MODID.cut_molybdenum"           , "Cut Molybdenum");
@@ -344,8 +348,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("block.MODID.molybdenum_brick_slab"    , "Molybdenum Brick Slab");
             add("block.MODID.molybdenum_brick_wall"    , "Molybdenum Brick Wall");
 
-            add("block.MODID.titanium_ore"           , "Titanium Ore");
-            add("block.MODID.deepslate_titanium_ore" , "Deepslate Titanium Ore");
+            addOres("titanium_ore", "Titanium Ore");
             add("block.MODID.raw_titanium_block"     , "Block of raw Titanium");
             add("block.MODID.titanium_block"         , "Block of Titanium");
             add("block.MODID.cut_titanium"           , "Cut Titanium");
@@ -355,8 +358,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("block.MODID.titanium_brick_slab"    , "Titanium Brick Slab");
             add("block.MODID.titanium_brick_wall"    , "Titanium Brick Wall");
 
-            add("block.MODID.lead_ore"           , "Lead Ore");
-            add("block.MODID.deepslate_lead_ore" , "Deepslate Lead Ore");
+            addOres("lead_ore", "Lead Ore");
             add("block.MODID.raw_lead_block"     , "Block of raw Lead");
             add("block.MODID.lead_block"         , "Block of Lead");
             add("block.MODID.cut_lead"           , "Cut Lead");
@@ -364,6 +366,11 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("block.MODID.lead_brick_stairs"  , "Lead Brick Stairs");
             add("block.MODID.lead_brick_slab"    , "Lead Brick Slab");
             add("block.MODID.lead_brick_wall"    , "Lead Brick Wall");
+
+            addOres("axinite_ore", "Axinite Ore");
+            addOres("orthoclase_ore", "Orthoclase Ore");
+            addOres("tourmaline_ore", "Tourmaline Ore");
+            addOres("peridot_ore", "Peridot Ore");
 
             add("block.MODID.soul_oak_log"                  , "Soul Oak Log");
             add("block.MODID.stripped_soul_oak_log"         , "Stripped Soul Oak Log");
@@ -431,10 +438,13 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addAdvancement(".main.get_molybdenum","Eccentric","Discover something quirky");
             addAdvancement(".main.get_molten_gold","Greedy","Discover Molten Gold");
             addAdvancement(".main.get_gilded_deepslate","Adorned","Discover Gilded Deepslate");
+
             addAdvancement(".main.simple_duplicate_trinkets","Hubris","Try and fail to equip two artifacts of the same type at once");
-            addAdvancement(".main.simple_tried_to_take_smithery_result","You've gotta hammer it!","You need to smack the smithery with a hammer to start crafting");
+            addAdvancement(".main.simple_lead_poisoned","Delicious","Experience symptoms of heavy metal poisoning");
+            addAdvancement(".main.simple_maddened","The silence after sanity","Let the whispers get to you");
 
             addAdvancement(":milestones/milestone_smithery","The Craft of the Ancients","Obtain the smithery");
+            addAdvancement(":milestones/milestone_souls","Soulcraft","Learn of the true nature of octangulite");
 
             addAdvancement(":location/ancient_hall","Ancient","Discover the once prosperous remains of the ancients");
             addAdvancement(":location/octangula","Geometric","Discover the vessel of something else");
@@ -536,10 +546,23 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
             add(getS("gb:oc")+"name", "Octangulite");
             {
-                addGBEntryAndInfo(getS("gb:oc")+"intro","Octangulite");
-                add(getS("gb:oc")+"intro.description"  , "");
-                add(getS("gb:oc")+"intro.info.text", "This... strange substance seems to shift in color when I don't look. Its hardness also doesn't seem to stay consistent. It feels out of this world. I am not quite sure what to do with it.");
-                add(getS("gb:oc")+"intro.raw_octangulite.text", "Undulating.");
+                addGBEntryAndInfo(getS("gb:oc")+"octangulite","Octangulite");
+                add(getS("gb:oc")+"octangulite.description"  , "");
+                add(getS("gb:oc")+"octangulite.info.text", "This...strange substance seems to shift in color when I don't look. Its hardness also doesn't seem to stay consistent. It feels out of this world. I am not quite sure what to do with it.");
+                add(getS("gb:oc")+"octangulite.raw_octangulite.text", "Undulating.");
+
+                addGBEntryAndInfo(getS("gb:oc")+"soul_oak","Soul Oak");
+                add(getS("gb:oc")+"soul_oak.description"  , "");
+                add(getS("gb:oc")+"soul_oak.info.text", "This type of wood is mesmerizing. Its color is inconsistent. I struggle to look away from it.");
+                add(getS("gb:oc")+"soul_oak.soul_oak_log.text", "Mesmerizing.");
+
+                addGBEntryAndInfo(getS("gb:oc")+"whispers","Whispers");
+                add(getS("gb:oc")+"whispers.description"  , "");
+                add(getS("gb:oc")+"whispers.info.text", "I can't shake the feeling that some of the more colorful discoveries I've made are...talking to me? Either I'm going mad, or something weird is going on. Or both.");
+
+                addGBEntryAndInfo(getS("gb:oc")+"madness","Madness");
+                add(getS("gb:oc")+"madness.description"  , "");
+                add(getS("gb:oc")+"madness.info.text", "It's both! The octangulite, or whatever it's made of is driving me mad! I best stay away from it. But...maybe it can tell me whats going on?");
 
                 addGBEntryAndInfo(getS("gb:oc")+"spellcomponents","Spell Components");
                 add(getS("gb:oc")+"spellcomponents.0.text"  , "");
@@ -861,5 +884,14 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
     void addAdvancement(String advancement, String name, String description){
         add("advancement.MODID"+advancement+".name"       , name);
         add("advancement.MODID"+advancement+".description", description);
+    }
+    void addOres(String key, String name){
+        add("block.MODID."+key, name);
+        add("block.MODID.deepslate_"+key, "Deepslate "+name);
+    }
+
+    void addArtifact(String of, String name, String desc){
+        add("item.MODID.artifact_of_"+of, name);
+        add("item.MODID.artifact_of_"+of+".desc", desc);
     }
 }

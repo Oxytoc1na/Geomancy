@@ -7,6 +7,7 @@ import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
@@ -18,6 +19,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.blocks.blockEntities.ModBlockEntities;
 import org.oxytocina.geomancy.blocks.blockEntities.SmitheryBlockEntity;
+import org.oxytocina.geomancy.util.AdvancementHelper;
 
 public class SmitheryBlock extends BlockWithEntity implements BlockEntityProvider {
 
@@ -62,6 +64,7 @@ public class SmitheryBlock extends BlockWithEntity implements BlockEntityProvide
 
             if(screenHandlerFactory!=null){
                 player.openHandledScreen(screenHandlerFactory);
+                AdvancementHelper.grantAdvancementCriterion((ServerPlayerEntity)player,"interaction/simple_smithery","simple_smithery");
             }
         }
 

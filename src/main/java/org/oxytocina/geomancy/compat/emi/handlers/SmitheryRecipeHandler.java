@@ -16,17 +16,17 @@ public class SmitheryRecipeHandler implements StandardRecipeHandler<SmitheryScre
         List<Slot> slots = new ArrayList<>();
 
         // crafting & gemstone powder slots
-        slots.addAll(handler.slots.subList(0, 14));
+        slots.addAll(handler.slots.subList(0, 10));
 
         // player inventory & hotbar
-        slots.addAll(handler.slots.subList(16, 52));
+        slots.addAll(handler.slots.subList(10, 10+9*4));
 
         return slots;
     }
 
     @Override
     public List<Slot> getCraftingSlots(SmitheryScreenHandler handler) {
-        return handler.slots.subList(0, 14);
+        return handler.slots.subList(0, 10);
     }
 
     @Override

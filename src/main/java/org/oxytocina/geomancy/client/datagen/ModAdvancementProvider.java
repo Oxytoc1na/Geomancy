@@ -55,6 +55,10 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                 .criterion("crafting_table", InventoryChangedCriterion.Conditions.items(Items.CRAFTING_TABLE))
                 .build(consumer, Geomancy.MOD_ID + ":main/root");
 
+        // progression milestones
+        Advancement milestone_smithery = AddOrMilestoneAdvancement("smithery", Arrays.stream(new String[]{"geomancy:interaction/simple_smithery"}).toList(),ModBlocks.SMITHERY,Geomancy.locate("textures/block/gilded_deepslate.png"));
+        Advancement milestone_souls = AddOrMilestoneAdvancement("souls", Arrays.stream(new String[]{"geomancy:recipes/tools/smithery_block"}).toList(),ModBlocks.SMITHERY,Geomancy.locate("textures/block/octangulite_block.png"));
+
         Advancement got_molten_gold = AddGetItemAdvancement(ModFluids.MOLTEN_GOLD_BUCKET,"molten_gold",ModFluids.MOLTEN_GOLD_BUCKET,"main",AdvancementFrame.CHALLENGE,true,false,main);
         Advancement got_mithril = AddGetItemAdvancement(ModItems.RAW_MITHRIL,"mithril",ModItems.RAW_MITHRIL,"main",AdvancementFrame.TASK,true,false,main);
         Advancement got_octangulite = AddGetItemAdvancement(ModItems.RAW_OCTANGULITE,"octangulite",ModItems.RAW_OCTANGULITE,"main",AdvancementFrame.TASK,true,false,main);
@@ -62,13 +66,14 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         Advancement got_lead = AddGetItemAdvancement(ModItems.RAW_LEAD,"lead",ModItems.RAW_LEAD,"main",AdvancementFrame.TASK,true,false,main);
         Advancement got_molybdenum = AddGetItemAdvancement(ModItems.RAW_MOLYBDENUM,"molybdenum",ModItems.RAW_MOLYBDENUM,"main",AdvancementFrame.TASK,true,false,main);
         Advancement got_gilded_deepslate = AddGetItemAdvancement(ModBlocks.DECORATED_GILDED_DEEPSLATE,"gilded_deepslate",new ItemConvertible[]{ModBlocks.GILDED_DEEPSLATE,ModBlocks.DECORATED_GILDED_DEEPSLATE},"main",AdvancementFrame.TASK,true,false,main);
-        Advancement simple_duplicate_trinkets = AddSimpleAdvancement(ModItems.ARTIFACT_OF_IRON,"duplicate_trinkets","duplicate_trinkets","main",AdvancementFrame.TASK,true,false,main);
+        Advancement simple_duplicate_trinkets = AddSimpleAdvancement(ModItems.ARTIFACT_OF_IRON,"duplicate_trinkets","duplicate_trinkets","main",AdvancementFrame.TASK,true,true,main);
         Advancement simple_tried_to_take_smithery_result = AddSimpleAdvancement(ModItems.IRON_HAMMER,"tried_to_take_smithery_result","tried_to_take_smithery_result","main",AdvancementFrame.TASK,true,true,main);
         Advancement simple_lead_poisoned = AddSimpleAdvancement(ModItems.RAW_LEAD,"lead_poisoned","lead_poisoned","main",AdvancementFrame.TASK,true,true,got_lead);
         Advancement simple_maddened = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"maddened","maddened","main",AdvancementFrame.TASK,true,true,got_octangulite);
 
-        // progression milestones
-        Advancement milestone_smithery = AddOrMilestoneAdvancement("smithery", Arrays.stream(new String[]{"geomancy:recipes/tools/smithery_block"}).toList(),ModBlocks.SMITHERY,Geomancy.locate("textures/block/gilded_deepslate.png"));
+        // interaction (hidden)
+        Advancement interaction_smithery = AddSimpleAdvancement(null,"smithery","interact","interaction",AdvancementFrame.TASK,false,true,null);
+
 
         // structures visited
         Advancement structure_ancient_hall = AddLocationAdvancement("ancient_hall","ancient_hall",Items.GILDED_BLACKSTONE,main);
@@ -127,22 +132,23 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
     private Advancement AddSimpleAdvancement(ItemConvertible display, String name, String conditionName, String category, AdvancementFrame frame, boolean announce, boolean hidden, Advancement parent)
     {
 
-        Advancement res = Advancement.Builder.create()
-                .display(
-                        display, // The display icon
-                        Text.translatable("advancement."+Geomancy.MOD_ID+"."+category+".simple_"+name+".name"), // The title
-                        Text.translatable("advancement."+Geomancy.MOD_ID+"."+category+".simple_"+name+".description"), // The title
-                        null,
-                        frame, // TASK, CHALLENGE, or GOAL
-                        announce, // Show the toast when completing it
-                        announce, // Announce it to chat
-                        hidden // Hide it in the advancement tab until it's achieved
-                )
+        Advancement.Builder res = Advancement.Builder.create()
                 .criterion("simple_"+name, new SimpleCriterion.Conditions(conditionName))
-                .parent(parent)
-                .build(consumer, Geomancy.MOD_ID + ":"+category+"/simple_"+name);
+                .parent(parent);
 
-        return res;
+        if(display!=null)
+            res.display(
+            display, // The display icon
+            Text.translatable("advancement."+Geomancy.MOD_ID+"."+category+".simple_"+name+".name"), // The title
+            Text.translatable("advancement."+Geomancy.MOD_ID+"."+category+".simple_"+name+".description"), // The title
+            null,
+            frame, // TASK, CHALLENGE, or GOAL
+            announce, // Show the toast when completing it
+            announce, // Announce it to chat
+            hidden // Hide it in the advancement tab until it's achieved
+            );
+
+        return res.build(consumer, Geomancy.MOD_ID + ":"+category+"/simple_"+name);
     }
 
     private Advancement AddOrMilestoneAdvancement(String name, List<String> ORprerequisites,ItemConvertible icon, Identifier bgTexture){

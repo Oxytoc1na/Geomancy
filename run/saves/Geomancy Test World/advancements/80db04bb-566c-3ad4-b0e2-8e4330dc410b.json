@@ -41,12 +41,6 @@
     },
     "done": true
   },
-  "minecraft:recipes/decorations/crafting_table": {
-    "criteria": {
-      "unlock_right_away": "2025-06-24 20:07:27 +0200"
-    },
-    "done": true
-  },
   "geomancy:recipes/misc/mithril_ingot_compress_to_mithril_block": {
     "criteria": {
       "has_mithril_ingot": "2025-06-24 20:07:26 +0200"
@@ -74,6 +68,414 @@
   "minecraft:recipes/decorations/anvil": {
     "criteria": {
       "has_iron_block": "2025-06-24 20:07:26 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/crafting_table": {
+    "criteria": {
+      "unlock_right_away": "2025-06-24 20:07:27 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_ref_output": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/stone_bricks": {
+    "criteria": {
+      "has_stone": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_raycast_dir": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_exp": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_debug": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/jewelry_octangulite_ring": {
+    "criteria": {
+      "has_ingredient": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_constant_number": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_teleport": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:spellcomponents/get_constant_number": {
+    "criteria": {
+      "got_constant_number": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/stone_bricks_from_stone_stonecutting": {
+    "criteria": {
+      "has_stone": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/stone_slab": {
+    "criteria": {
+      "has_stone": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_ref_input": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/jewelry_octangulite_pendant": {
+    "criteria": {
+      "has_ingredient": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/stone_stairs_from_stone_stonecutting": {
+    "criteria": {
+      "has_stone": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_sum": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_subtract": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_for": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:spellcomponents/get_entity_caster": {
+    "criteria": {
+      "got_entity_caster": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:octangulite/get_spellcomponent": {
+    "criteria": {
+      "got_spellcomponent": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_sin": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/stone_button": {
+    "criteria": {
+      "has_stone": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/stonecutter": {
+    "criteria": {
+      "has_stone": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:spellcomponents/get_constant_boolean": {
+    "criteria": {
+      "got_constant_boolean": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/stone_pressure_plate": {
+    "criteria": {
+      "has_stone": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/smooth_stone": {
+    "criteria": {
+      "has_stone": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_constant_boolean": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:spellcomponents/get_imbue": {
+    "criteria": {
+      "got_imbue": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_conveyor": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_not": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_lightning": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_dimhop": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/stone_brick_walls_from_stone_stonecutting": {
+    "criteria": {
+      "has_stone": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:spellcomponents/get_teleport": {
+    "criteria": {
+      "got_teleport": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:spellcomponents/get_raycast_dir": {
+    "criteria": {
+      "got_raycast_dir": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:spellcomponents/get_function": {
+    "criteria": {
+      "got_function": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/stone_brick_slab_from_stone_stonecutting": {
+    "criteria": {
+      "has_stone": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_function": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:spellcomponents/get_lightning": {
+    "criteria": {
+      "got_lightning": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/stone_brick_stairs_from_stone_stonecutting": {
+    "criteria": {
+      "has_stone": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_fireball": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_push": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_cos": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/stone_slab_from_stone_stonecutting": {
+    "criteria": {
+      "has_stone": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_tan": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/charcoal": {
+    "criteria": {
+      "has_log": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_constant_text": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:spellcomponents/get_push": {
+    "criteria": {
+      "got_push": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_vector_build": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_multiply": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_gate": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/chiseled_stone_bricks_stone_from_stonecutting": {
+    "criteria": {
+      "has_stone": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_vector_entityeyepos": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/octangulite_ingot_from_blasting_octangulite_ore": {
+    "criteria": {
+      "has_octangulite_ore": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_vector_entitydir": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_entity_caster": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_vector_split": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_raycast_pos": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_action": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_divide": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:spellcomponents/get_break": {
+    "criteria": {
+      "got_break": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_vector_entitypos": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:spellcomponents/get_debug": {
+    "criteria": {
+      "got_debug": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_print": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_vector_entityspawn": {
+    "criteria": {
+      "gotten_base": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/octangulite_ingot_from_smelting_octangulite_ore": {
+    "criteria": {
+      "has_octangulite_ore": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:spellcomponents/get_sum": {
+    "criteria": {
+      "got_sum": "2025-07-30 07:48:00 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/stone_stairs": {
+    "criteria": {
+      "has_stone": "2025-07-30 07:48:00 +0200"
     },
     "done": true
   },

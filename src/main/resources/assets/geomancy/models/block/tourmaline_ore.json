@@ -1,0 +1,56 @@
+
+{
+    "parent": "block/block",
+    "textures": {
+        "1": "geomancy:block/tourmaline_ore",
+        "2": "geomancy:block/tourmaline_gems_1",
+        "3": "geomancy:block/tourmaline_gems_2",
+        "4": "geomancy:block/tourmaline_gems_3"
+    },
+    "elements": [
+        {   "from": [ 0, 0, 0 ],
+            "to": [ 16, 16, 16 ],
+            "faces": {
+                "down":  { "texture": "#1", "tintindex": 0, "cullface": "down" },
+                "up":    { "texture": "#1", "tintindex": 0, "cullface": "up" },
+                "north": { "texture": "#1", "tintindex": 0, "cullface": "north" },
+                "south": { "texture": "#1", "tintindex": 0, "cullface": "south" },
+                "west":  { "texture": "#1", "tintindex": 0, "cullface": "west" },
+                "east":  { "texture": "#1", "tintindex": 0, "cullface": "east" }
+            }
+        },
+        {   "from": [ 0, 0, 0 ],
+            "to": [ 16, 16, 16 ],
+            "faces": {
+                "down":  { "texture": "#2", "tintindex": 1, "cullface": "down" },
+                "up":    { "texture": "#2", "tintindex": 1, "cullface": "up" },
+                "north": { "texture": "#2", "tintindex": 1, "cullface": "north" },
+                "south": { "texture": "#2", "tintindex": 1, "cullface": "south" },
+                "west":  { "texture": "#2", "tintindex": 1, "cullface": "west" },
+                "east":  { "texture": "#2", "tintindex": 1, "cullface": "east" }
+            }
+        },
+        {   "from": [ 0, 0, 0 ],
+            "to": [ 16, 16, 16 ],
+            "faces": {
+                "down":  { "texture": "#3", "tintindex": 2, "cullface": "down" },
+                "up":    { "texture": "#3", "tintindex": 2, "cullface": "up" },
+                "north": { "texture": "#3", "tintindex": 2, "cullface": "north" },
+                "south": { "texture": "#3", "tintindex": 2, "cullface": "south" },
+                "west":  { "texture": "#3", "tintindex": 2, "cullface": "west" },
+                "east":  { "texture": "#3", "tintindex": 2, "cullface": "east" }
+            }
+        },
+        {   "from": [ 0, 0, 0 ],
+            "to": [ 16, 16, 16 ],
+            "faces": {
+                "down":  { "texture": "#4", "tintindex": 3, "cullface": "down" },
+                "up":    { "texture": "#4", "tintindex": 3, "cullface": "up" },
+                "north": { "texture": "#4", "tintindex": 3, "cullface": "north" },
+                "south": { "texture": "#4", "tintindex": 3, "cullface": "south" },
+                "west":  { "texture": "#4", "tintindex": 3, "cullface": "west" },
+                "east":  { "texture": "#4", "tintindex": 3, "cullface": "east" }
+            }
+        }
+    ]
+}

@@ -16,6 +16,8 @@ import org.oxytocina.geomancy.util.Toolbox;
 import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.items.jewelry.JewelryItem;
 
+import java.util.function.Function;
+
 public class ModColorizationHandler {
 
     public static void register(){
@@ -67,10 +69,18 @@ public class ModColorizationHandler {
                     if (view == null || pos == null) {return 0xFFFFFFFF;} else {return octanguliteNoise(pos,2-tintIndex,0.03f);}},
                 ModBlocks.SOUL_OAK_SAPLING, ModBlocks.POTTED_SOUL_OAK_SAPLING);
 
-
+        // octangulite ores
         ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> {
             if (view == null || pos == null || tintIndex == 0) {return 0xFFFFFFFF;} else {return octanguliteNoise(pos,tintIndex,0.003f);}
         }, ModBlocks.OCTANGULITE_ORE,ModBlocks.DEEPSLATE_OCTANGULITE_ORE);
+
+        // tourmaline ores
+        ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> {
+                    if (view == null || pos == null) {return 0xFFFFFFFF;} else {return tintIndex==0?0xFFFFFFFF:tourmalineNoise(pos,tintIndex,0.3f);}},
+                ModBlocks.TOURMALINE_ORE,ModBlocks.DEEPSLATE_TOURMALINE_ORE);
+        ColorProviderRegistry.ITEM.register(
+                (stack, tintIndex) -> tintIndex==0?0xFFFFFFFF:tourmalineNoise(BlockPos.ORIGIN,tintIndex, 0.3f),
+                ModBlocks.TOURMALINE_ORE.asItem(),ModBlocks.DEEPSLATE_TOURMALINE_ORE.asItem());
 
         // jewelry
         for(JewelryItem jewelry : JewelryItem.List){ColorProviderRegistry.ITEM.register(jewelry::getColor,jewelry);}
@@ -89,7 +99,7 @@ public class ModColorizationHandler {
         addOctanguliteItem(ModBlocks.SOUL_OAK_PLANKS.asItem(),0.03F,false);
         addOctanguliteItem(ModBlocks.SOUL_OAK_LOG.asItem(),0.03F,false);
         addOctanguliteItem(ModBlocks.STRIPPED_SOUL_OAK_LOG.asItem(),0.03F,false);
-        addOctanguliteItem(ModBlocks.SOUL_OAK_WOOD.asItem(),0.03F,false);
+        addOctanguliteItem(ModBlocks.SOUL_OAK_WOOD.asItem(),0.03F,false,t->t+1);
         addOctanguliteItem(ModBlocks.STRIPPED_SOUL_OAK_WOOD.asItem(),0.03F,false);
         addOctanguliteItem(ModBlocks.SOUL_OAK_BUTTON.asItem(),0.03F,false);
         addOctanguliteItem(ModBlocks.SOUL_OAK_DOOR.asItem(),0.03F,false);
@@ -97,7 +107,8 @@ public class ModColorizationHandler {
         addOctanguliteItem(ModBlocks.SOUL_OAK_FENCE.asItem(),0.03F,false);
         addOctanguliteItem(ModBlocks.SOUL_OAK_FENCE_GATE.asItem(),0.03F,false);
         addOctanguliteItem(ModBlocks.SOUL_OAK_PRESSURE_PLATE.asItem(),0.03F,false);
-        addOctanguliteItem(ModBlocks.SOUL_OAK_SAPLING.asItem(),0.03F,false);
+        addOctanguliteItem(ModBlocks.SOUL_OAK_SAPLING.asItem(),0.03F,false,t->2-t);
+        addOctanguliteItem(ModBlocks.SOUL_OAK_LEAVES.asItem(),0.03F,false,t->t+2);
         //addOctanguliteItem(ModBlocks.POTTED_SOUL_OAK_SAPLING.asItem(),0.03F,false);
         addOctanguliteItem(ModBlocks.SOUL_OAK_SIGN.asItem(),0.03F,false);
         addOctanguliteItem(ModBlocks.SOUL_OAK_HANGING_SIGN.asItem(),0.03F,false);
@@ -119,8 +130,12 @@ public class ModColorizationHandler {
     }
 
     private static void addOctanguliteItem(Item item,float zoom,boolean withSlotOffset){
+        addOctanguliteItem(item,zoom,withSlotOffset,t->t);
+    }
+
+    private static void addOctanguliteItem(Item item, float zoom, boolean withSlotOffset, Function<Integer,Integer> indices){
         ColorProviderRegistry.ITEM.register(
-                (stack, tintIndex) -> {return octanguliteItemNoise(stack,tintIndex,zoom,withSlotOffset);},item);
+                (stack, tintIndex) -> octanguliteItemNoise(stack, indices.apply(tintIndex), zoom,withSlotOffset),item);
     }
 
     private static void addOctanguliteOreItem(Item item,float zoom,boolean withSlotOffset){
@@ -358,6 +373,31 @@ public class ModColorizationHandler {
                 sat,val
 
         );
+
+    }
+
+    private static int tourmalineNoise(BlockPos pos, int tintIndex, float zoom){
+        float x = zoom*(pos.getX() * (1+tintIndex*0.3f) + tintIndex*16);
+        float y = zoom*(pos.getY() * (1+tintIndex*0.3f) + tintIndex*16);
+        float z = zoom*(pos.getZ() * (1+tintIndex*0.3f) + tintIndex*16);
+        float n = (float)(org.oxytocina.geomancy.util.SimplexNoise.noise(x,y,z)+1)/2;
+
+        final Function<Float, Integer> sup = (a)->{
+            if(a<0.27f)
+                return 0x15D4E6; // cyan
+            else if(a< 0.5f)
+                return 0x01B497; // teal;
+            else if(a < 0.65f)
+                return 0xAE6D35; // brown
+            else if(a < 0.8f)
+                return 0xFF2D41; // red
+            else if(a < 0.9f)
+                return 0x00293F; // dark blue
+            else
+                return 0x452E38; // dark purple
+        };
+
+        return sup.apply(n);
 
     }
 

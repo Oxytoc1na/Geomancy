@@ -139,7 +139,7 @@ public class SpellComponent {
         context.highestRecordedDepth = Math.max(context.highestRecordedDepth,highestSignalDepth);
 
         if(highestSignalDepth>context.depthLimit){
-            SpellBlocks.tryLogDebugDepthLimitReached(this);
+            //SpellBlocks.tryLogDebugDepthLimitReached(this);
             return;
         }
 
@@ -159,7 +159,7 @@ public class SpellComponent {
 
             if(iterationResult.depth > context.depthLimit){
                 context.depthLimitReached = true;
-                SpellBlocks.tryLogDebugDepthLimitReached(this);
+                //SpellBlocks.tryLogDebugDepthLimitReached(this);
                 break;
             }
 

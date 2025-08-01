@@ -13,6 +13,7 @@ import net.minecraft.util.*;
 import net.minecraft.world.*;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.progression.advancement.ModAdvancementCriterion;
+import org.oxytocina.geomancy.util.AdvancementHelper;
 import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.*;
@@ -79,12 +80,9 @@ public class GuidebookItem extends Item {
                 openGuidebook(Geomancy.locate("general/intro"), 0);
             }
         } else if (user instanceof ServerPlayerEntity serverPlayerEntity) {
-            // Process new advancement unlocks that got added
-            // after spectrum has been installed / updated
             reprocessAdvancementUnlocks(serverPlayerEntity);
 
-            // there is no "use_item" advancement trigger smh
-            Toolbox.grantAdvancementCriterion(serverPlayerEntity, "hidden/opened_guidebook", "opened_guidebook");
+            AdvancementHelper.grantAdvancementCriterion(serverPlayerEntity, "hidden/opened_guidebook", "opened_guidebook");
         }
         user.incrementStat(Stats.USED.getOrCreateStat(this));
 

@@ -71,7 +71,7 @@ public class SpellGrid {
             costMultiplier *= 1+(amp+1)*0.5f;
         }
 
-        SpellContext context = new SpellContext(this,casterEntity,casterItem,containerItem,0,costMultiplier);
+        SpellContext context = new SpellContext(this,casterEntity,casterItem,containerItem,0,costMultiplier,0);
         context.refreshAvailableSoul();
 
         try{
@@ -90,7 +90,11 @@ public class SpellGrid {
         }
 
         if(context.depthLimitReached && context.debugging){
-            //SpellBlocks.tryLogDebugDepthLimitReached();
+            SpellBlocks.tryLogDebugDepthLimitReached(context);
+        }
+
+        if(context.soulConsumed > 0){
+            SpellBlocks.playCastSound(context);
         }
 
     }

@@ -49,10 +49,10 @@ public class ModBlocks {
 
     public static final OctanguliteExperienceDroppingBlock OCTANGULITE_ORE = register("octangulite_ore", (AbstractBlock.Settings s) -> new OctanguliteExperienceDroppingBlock(s, UniformIntProvider.create(9,13),1),
             AbstractBlock.Settings.create().mapColor(MapColor.STONE_GRAY).instrument(Instrument.BASEDRUM).requiresTool().strength(3.0F, 3.0F).sounds(ModBlockSoundGroups.STONE_WHISPERS),
-            ExtraBlockSettings.create().mineableByPickaxe().miningLevel(3).notSimpleCube().notRegularDrop(),new FabricItemSettings().rarity(Rarity.RARE));
+            ExtraBlockSettings.create().mineableByPickaxe().miningLevel(3).notSimpleCube().notRegularDrop().cutout(),new FabricItemSettings().rarity(Rarity.RARE));
     public static final OctanguliteExperienceDroppingBlock DEEPSLATE_OCTANGULITE_ORE = register("deepslate_octangulite_ore", (AbstractBlock.Settings s) -> new OctanguliteExperienceDroppingBlock(s, UniformIntProvider.create(9,13),1),
             AbstractBlock.Settings.copy(OCTANGULITE_ORE).mapColor(MapColor.DEEPSLATE_GRAY).strength(4.5F, 3.0F).sounds(ModBlockSoundGroups.DEEPSLATE_WHISPERS),
-            ExtraBlockSettings.create().mineableByPickaxe().miningLevel(3).notSimpleCube().notRegularDrop(),new FabricItemSettings().rarity(Rarity.RARE));
+            ExtraBlockSettings.create().mineableByPickaxe().miningLevel(3).notSimpleCube().notRegularDrop().cutout(),new FabricItemSettings().rarity(Rarity.RARE));
 
     public static final ExperienceDroppingBlock MOLYBDENUM_ORE = register("molybdenum_ore", (AbstractBlock.Settings s) -> new ExperienceDroppingBlock(s, UniformIntProvider.create(9,13)),
             AbstractBlock.Settings.create().mapColor(MapColor.STONE_GRAY).instrument(Instrument.BASEDRUM).requiresTool().strength(3.0F, 3.0F).sounds(BlockSoundGroup.STONE),
@@ -75,10 +75,38 @@ public class ModBlocks {
             AbstractBlock.Settings.copy(LEAD_ORE).mapColor(MapColor.DEEPSLATE_GRAY).strength(4.5F, 3.0F).sounds(BlockSoundGroup.DEEPSLATE),
             ExtraBlockSettings.create().mineableByPickaxe().miningLevel(1).notRegularDrop(),new FabricItemSettings().rarity(Rarity.COMMON));
 
+    public static final ExperienceDroppingBlock TOURMALINE_ORE = register("tourmaline_ore", s -> new ExperienceDroppingBlock(s, UniformIntProvider.create(9,13)),
+            AbstractBlock.Settings.create().mapColor(MapColor.STONE_GRAY).instrument(Instrument.BASEDRUM).requiresTool().strength(3.0F, 3.0F).sounds(BlockSoundGroup.STONE),
+            ExtraBlockSettings.create().mineableByPickaxe().miningLevel(2).notRegularDrop().noModels().cutout(),new FabricItemSettings().rarity(Rarity.UNCOMMON));
+    public static final ExperienceDroppingBlock DEEPSLATE_TOURMALINE_ORE = register("deepslate_tourmaline_ore", s -> new ExperienceDroppingBlock(s, UniformIntProvider.create(9,13)),
+            AbstractBlock.Settings.copy(TOURMALINE_ORE).mapColor(MapColor.DEEPSLATE_GRAY).strength(4.5F, 3.0F).sounds(BlockSoundGroup.DEEPSLATE),
+            ExtraBlockSettings.create().mineableByPickaxe().miningLevel(2).notRegularDrop().noModels().cutout(),new FabricItemSettings().rarity(Rarity.UNCOMMON));
+
+    public static final ExperienceDroppingBlock AXINITE_ORE = register("axinite_ore", s -> new ExperienceDroppingBlock(s, UniformIntProvider.create(9,13)),
+            AbstractBlock.Settings.create().mapColor(MapColor.STONE_GRAY).instrument(Instrument.BASEDRUM).requiresTool().strength(3.0F, 3.0F).sounds(BlockSoundGroup.STONE),
+            ExtraBlockSettings.create().mineableByPickaxe().miningLevel(2).notRegularDrop(),new FabricItemSettings().rarity(Rarity.UNCOMMON));
+    public static final ExperienceDroppingBlock DEEPSLATE_AXINITE_ORE = register("deepslate_axinite_ore", s -> new ExperienceDroppingBlock(s, UniformIntProvider.create(9,13)),
+            AbstractBlock.Settings.copy(AXINITE_ORE).mapColor(MapColor.DEEPSLATE_GRAY).strength(4.5F, 3.0F).sounds(BlockSoundGroup.DEEPSLATE),
+            ExtraBlockSettings.create().mineableByPickaxe().miningLevel(2).notRegularDrop(),new FabricItemSettings().rarity(Rarity.UNCOMMON));
+
+    public static final ExperienceDroppingBlock ORTHOCLASE_ORE = register("orthoclase_ore", s -> new ExperienceDroppingBlock(s, UniformIntProvider.create(9,13)),
+            AbstractBlock.Settings.create().mapColor(MapColor.STONE_GRAY).instrument(Instrument.BASEDRUM).requiresTool().strength(3.0F, 3.0F).sounds(BlockSoundGroup.STONE),
+            ExtraBlockSettings.create().mineableByPickaxe().miningLevel(2).notRegularDrop(),new FabricItemSettings().rarity(Rarity.UNCOMMON));
+    public static final ExperienceDroppingBlock DEEPSLATE_ORTHOCLASE_ORE = register("deepslate_orthoclase_ore", s -> new ExperienceDroppingBlock(s, UniformIntProvider.create(9,13)),
+            AbstractBlock.Settings.copy(ORTHOCLASE_ORE).mapColor(MapColor.DEEPSLATE_GRAY).strength(4.5F, 3.0F).sounds(BlockSoundGroup.DEEPSLATE),
+            ExtraBlockSettings.create().mineableByPickaxe().miningLevel(2).notRegularDrop(),new FabricItemSettings().rarity(Rarity.UNCOMMON));
+
+    public static final ExperienceDroppingBlock PERIDOT_ORE = register("peridot_ore", s -> new ExperienceDroppingBlock(s, UniformIntProvider.create(9,13)),
+            AbstractBlock.Settings.create().mapColor(MapColor.STONE_GRAY).instrument(Instrument.BASEDRUM).requiresTool().strength(3.0F, 3.0F).sounds(BlockSoundGroup.STONE),
+            ExtraBlockSettings.create().mineableByPickaxe().miningLevel(2).notRegularDrop(),new FabricItemSettings().rarity(Rarity.UNCOMMON));
+    public static final ExperienceDroppingBlock DEEPSLATE_PERIDOT_ORE = register("deepslate_peridot_ore", s -> new ExperienceDroppingBlock(s, UniformIntProvider.create(9,13)),
+            AbstractBlock.Settings.copy(PERIDOT_ORE).mapColor(MapColor.DEEPSLATE_GRAY).strength(4.5F, 3.0F).sounds(BlockSoundGroup.DEEPSLATE),
+            ExtraBlockSettings.create().mineableByPickaxe().miningLevel(2).notRegularDrop(),new FabricItemSettings().rarity(Rarity.UNCOMMON));
+
 
     // raw ore blocks
     public static final Block RAW_MITHRIL_BLOCK = register("raw_mithril_block", Block::new, AbstractBlock.Settings.create().mapColor(MapColor.IRON_GRAY).instrument(Instrument.BASEDRUM).requiresTool().strength(5.0F, 6.0F),ExtraBlockSettings.create().mineableByPickaxe().miningLevel(3),new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof());
-    public static final OctanguliteBlock RAW_OCTANGULITE_BLOCK = register("raw_octangulite_block", (settings -> new OctanguliteBlock(settings,5)), AbstractBlock.Settings.create().mapColor(MapColor.IRON_GRAY).instrument(Instrument.BASEDRUM).requiresTool().strength(5.0F, 6.0F).sounds(ModBlockSoundGroups.STONE_WHISPERS),ExtraBlockSettings.create().mineableByPickaxe().miningLevel(3).noModels(),new FabricItemSettings().rarity(Rarity.RARE).fireproof());
+    public static final OctanguliteBlock RAW_OCTANGULITE_BLOCK = register("raw_octangulite_block", (settings -> new OctanguliteBlock(settings,5)), AbstractBlock.Settings.create().mapColor(MapColor.IRON_GRAY).instrument(Instrument.BASEDRUM).requiresTool().strength(5.0F, 6.0F).sounds(ModBlockSoundGroups.STONE_WHISPERS),ExtraBlockSettings.create().mineableByPickaxe().miningLevel(3).noModels().cutout(),new FabricItemSettings().rarity(Rarity.RARE).fireproof());
     public static final Block RAW_MOLYBDENUM_BLOCK = register("raw_molybdenum_block", Block::new, AbstractBlock.Settings.create().mapColor(MapColor.IRON_GRAY).instrument(Instrument.BASEDRUM).requiresTool().strength(5.0F, 6.0F),ExtraBlockSettings.create().mineableByPickaxe().miningLevel(1),new FabricItemSettings().rarity(Rarity.COMMON).fireproof());
     public static final Block RAW_TITANIUM_BLOCK = register("raw_titanium_block", Block::new, AbstractBlock.Settings.create().mapColor(MapColor.IRON_GRAY).instrument(Instrument.BASEDRUM).requiresTool().strength(5.0F, 6.0F),ExtraBlockSettings.create().mineableByPickaxe().miningLevel(1),new FabricItemSettings().rarity(Rarity.COMMON).fireproof());
     public static final LeadBlock RAW_LEAD_BLOCK = register("raw_lead_block", (settings -> new LeadBlock(settings,5)), AbstractBlock.Settings.create().mapColor(MapColor.IRON_GRAY).instrument(Instrument.BASEDRUM).requiresTool().strength(5.0F, 6.0F),ExtraBlockSettings.create().mineableByPickaxe().miningLevel(1),new FabricItemSettings().rarity(Rarity.COMMON).fireproof());
@@ -154,7 +182,7 @@ public class ModBlocks {
     // block entities
     public static final SmitheryBlock SMITHERY = (SmitheryBlock) register("smithery_block", SmitheryBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe());
     public static final SpellmakerBlock SPELLMAKER = (SpellmakerBlock) register("spellmaker_block", SpellmakerBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe());
-    public static final SpellstorerBlock SPELLSTORER = (SpellstorerBlock) register("spellstorer_block", SpellstorerBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe());
+    public static final SpellstorerBlock SPELLSTORER = (SpellstorerBlock) register("spellstorer_block", SpellstorerBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe().dontGroupItem());
 
     // fluids
     private static AbstractBlock.Settings fluid(MapColor mapColor) {
