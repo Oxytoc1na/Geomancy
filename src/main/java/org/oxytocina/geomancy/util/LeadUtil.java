@@ -43,6 +43,13 @@ public class LeadUtil {
     private static final HashMap<BlockPos,Float> cachedAmbientPoison = new HashMap<>();
 
     /// DOESNT sync poisoning
+    public static boolean addPoisoning(PlayerEntity player, float amount){
+        if(player==null) return false;
+        float newP = Math.max(0,getPoisoning(player)+amount);
+        return setPoisoning(player,newP);
+    }
+
+    /// DOESNT sync poisoning
     public static boolean setPoisoning(PlayerEntity player, float amount){
         if(player==null) return false;
         PlayerData data = PlayerData.from(player);
@@ -114,15 +121,14 @@ public class LeadUtil {
 
         if(++leadEffectsCounter> 20*60){
             for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+                if(player.isCreative() || player.isSpectator() || player.isDead()) continue;
                 LeadUtil.tryLeadEffects(player);
             }
             leadEffectsCounter=0;
         }
     }
 
-    private static void tryLeadEffects(ServerPlayerEntity player) {
-        if(player.isCreative() || player.isDead()) return;
-
+    public static void tryLeadEffects(ServerPlayerEntity player) {
         float poison = getPoisoning(player);
         // effect chance asymptotically approaches 100%.
         // at 100, there is a 20% chance.

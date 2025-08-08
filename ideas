@@ -1,12 +1,16 @@
+MODIFIERS
+
+- limited to 1 per item
+
 
 MINERALS
 
 x Mithril
 -- hard to work with, many gem slots, quality bonus
-- Lead
+x Lead
 -- easy to work with, many gem slots, quality malus, but slowly poisons you (random effects)
 -- lead cleanse drink item
-- Titanium
+x Titanium
 -- hard to work with, many gem slots
 x Molybdenium
 -- normal to work with, medium gem slots
@@ -78,7 +82,7 @@ ARTIFACTS
 -- aliens
 --- stellarite octangulists
 --- reverse engineering crashed and abandoned structures
---- experimental treatment for DNA mutation
+//--- experimental treatment for DNA mutation
 
 -- dwarf magic
 --- magical alloys
@@ -90,13 +94,13 @@ ARTIFACTS
 + deepslate: regenerate mana faster the deeper you are
 + magma: fire resistance
 X-- journey book (treasures of the deep)
---- "mana"
+x-- "mana"
 --- runic crafting
 ---- multiblock for enchanting things with runes
 X--- hit the workpiece with a hammer over and over to do it
 X--- mishaps
 ---- smithing levels to increase speed and proficiency
---- ores
+x-- ores
 --- oakenshield
 X-- liquid gold
 ---- upgraded lava for smithing structure

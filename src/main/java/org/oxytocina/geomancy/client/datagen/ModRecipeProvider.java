@@ -71,6 +71,8 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         Items.IRON_INGOT,Blocks.IRON_BLOCK,Items.GOLD_INGOT}).build()))
                 .offerTo(exporter);
 
+        AddSurrounded(Items.APPLE,LEAD_INGOT,LEAD_APPLE,1);
+
         // smelting recipes
         AddSmeltAndBlastRecipe(List.of(
             RAW_MITHRIL, ModBlocks.MITHRIL_ORE, ModBlocks.DEEPSLATE_MITHRIL_ORE),
@@ -580,6 +582,15 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .pattern("###")
                 .pattern("# #").criterion(hasItem(base), conditionsFromItem(base)).offerTo(exporter);
 
+    }
+
+    private void AddSurrounded(Item base, Item surrounded, Item output, int outputCount) {
+        ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, output, outputCount)
+                .input('s', surrounded)
+                .input('#', base)
+                .pattern("sss")
+                .pattern("s#s")
+                .pattern("sss").criterion(hasItem(surrounded), conditionsFromItem(surrounded)).offerTo(exporter);
     }
 
     private void AddSmeltAndBlastRecipe(List<ItemConvertible> input, ItemConvertible output, float xp, int smeltTime, int blastTime){

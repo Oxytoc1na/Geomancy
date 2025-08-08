@@ -20,6 +20,7 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Pair;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
@@ -44,6 +45,7 @@ public class ModLootTables {
     public static final LootTable ANCIENT_HALL_BARRACKS_CHEST;
 
     public static final LootTable OCTANGULA_HALL_CHEST;
+    public static final LootTable OCTANGULA_SPELLMAKER_CHEST;
 
     public static final LootTable DIGSITE_HALLWAY_CHEST;
 
@@ -473,21 +475,6 @@ public class ModLootTables {
         // OCTANGULA_HALL_CHEST
         {
             OCTANGULA_HALL_CHEST = register("chests/octangula_hall", LootTable.builder()
-                    // ancient hall treasure map
-                    .pool(LootPool.builder()
-                            .rolls(UniformLootNumberProvider.create(1.0F, 1.0F))
-                            .with(ItemEntry.builder(
-                                            Items.MAP)
-                                    .apply(ExplorationMapLootFunction.builder()
-                                            .withDestination(TagKey.of(RegistryKeys.STRUCTURE,Geomancy.locate("on_digsite_map")))
-                                            .withDecoration(MapIcon.Type.TARGET_POINT)
-                                            .withSkipExistingChunks(false)
-                                            .withZoom((byte)1)
-                                    )
-                                    .apply(SetNameLootFunction.builder(Text.translatable("item.geomancy.explorers_map.digsite")))
-                            )
-
-                    )
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(1.0F, 3.0F))
                             .with(ItemEntry.builder(
@@ -524,6 +511,34 @@ public class ModLootTables {
                                     .weight(5)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(3.0F, 8.0F)))))
                     .pool(spellComponentsBuilder()
+                            .rolls(UniformLootNumberProvider.create(2.0F, 4.0F))
+                    )
+                    .randomSequenceId(Geomancy.locate("chests/dwarven_remnants"))
+            );
+        }
+
+        // OCTANGULA_SPELLMAKER_CHEST
+        {
+            OCTANGULA_SPELLMAKER_CHEST = register("chests/octangula_spellmaker", LootTable.builder()
+                    // digsite treasure map
+                    .pool(LootPool.builder()
+                            .rolls(UniformLootNumberProvider.create(1.0F, 1.0F))
+                            .with(ItemEntry.builder(
+                                            Items.MAP)
+                                    .apply(ExplorationMapLootFunction.builder()
+                                            .withDestination(TagKey.of(RegistryKeys.STRUCTURE,Geomancy.locate("on_digsite_map")))
+                                            .withDecoration(MapIcon.Type.TARGET_POINT)
+                                            .withSkipExistingChunks(false)
+                                            .withZoom((byte)1)
+                                    )
+                                    .apply(SetNameLootFunction.builder(Text.translatable("item.geomancy.explorers_map.digsite")))
+                            )
+
+                    )
+                    .pool(spellComponentsBuilder()
+                            .rolls(UniformLootNumberProvider.create(2.0F, 4.0F))
+                    )
+                    .pool(premadeSpellsBuilder()
                             .rolls(UniformLootNumberProvider.create(2.0F, 4.0F))
                     )
                     .randomSequenceId(Geomancy.locate("chests/dwarven_remnants"))
@@ -598,6 +613,428 @@ public class ModLootTables {
 
     private static LootPool.Builder spellComponentsBuilder(){
         var res = LootPool.builder();
+
+        for(var spell : SpellBlocks.functions.values()){
+            NbtCompound nbt = new NbtCompound();
+            nbt.put("component",SpellComponentStoringItem.getNbtFor(spell));
+            res.with(ItemEntry.builder(ModItems.SPELLCOMPONENT)
+                    .weight(spell.defaultLootWeight)
+                    .apply(SetNbtLootFunction.builder(nbt)));
+        }
+
+        return res;
+    }
+
+    private static LootPool.Builder premadeSpellsBuilder(){
+        var res = LootPool.builder();
+
+        // print hello world#
+        // broken fireball
+        // broken teleport (missing +dir)
+        // broken blink (up)
+        // self-lightning
+
+        final HashMap<String,Integer> spells = new HashMap<>();
+
+        // hello world
+        {
+            spells.put("""
+                    {
+                        spell: {
+                          width: 3,
+                          name: "HelloWorld",
+                          components: [
+                            {
+                              x: 2,
+                              y: 1,
+                              sides: [
+                                {
+                                  mode: 1,
+                                  dir: "ne",
+                                  var: ""
+                                },
+                                {
+                                  mode: 1,
+                                  dir: "e",
+                                  var: ""
+                                },
+                                {
+                                  mode: 1,
+                                  dir: "se",
+                                  var: ""
+                                },
+                                {
+                                  mode: 0,
+                                  dir: "sw",
+                                  var: "val"
+                                },
+                                {
+                                  mode: 1,
+                                  dir: "w",
+                                  var: ""
+                                },
+                                {
+                                  mode: 1,
+                                  dir: "nw",
+                                  var: ""
+                                }
+                              ],
+                              func: "geomancy:print",
+                              params: [],
+                              rotation: 0
+                            },
+                            {
+                              x: 2,
+                              y: 2,
+                              sides: [
+                                {
+                                  mode: 0,
+                                  dir: "ne",
+                                  var: "val"
+                                },
+                                {
+                                  mode: 1,
+                                  dir: "e",
+                                  var: ""
+                                },
+                                {
+                                  mode: 1,
+                                  dir: "se",
+                                  var: ""
+                                },
+                                {
+                                  mode: 1,
+                                  dir: "sw",
+                                  var: ""
+                                },
+                                {
+                                  mode: 1,
+                                  dir: "w",
+                                  var: ""
+                                },
+                                {
+                                  mode: 1,
+                                  dir: "nw",
+                                  var: ""
+                                }
+                              ],
+                              func: "geomancy:constant_text",
+                              params: [
+                                {
+                                  param: "val",
+                                  signal: {
+                                    val: "Hello World",
+                                    name: "val",
+                                    type: "Text"
+                                  }
+                                }
+                              ],
+                              rotation: 0
+                            }
+                          ],
+                          lib: 0b,
+                          height: 3
+                        }
+                      }
+                    """,1);
+        }
+
+        // into block teleport
+        {
+            spells.put("""
+                    {
+                            spell: {
+                              width: 3,
+                              name: "Teleport",
+                              components: [
+                                {
+                                  x: 2,
+                                  y: 1,
+                                  sides: [
+                                    {
+                                      mode: 1,
+                                      dir: "ne",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "e",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "se",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "sw",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 0,
+                                      dir: "w",
+                                      var: "val"
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "nw",
+                                      var: ""
+                                    }
+                                  ],
+                                  func: "geomancy:constant_number",
+                                  params: [
+                                    {
+                                      param: "val",
+                                      signal: {
+                                        val: 50.0f,
+                                        name: "val",
+                                        type: "Number"
+                                      }
+                                    }
+                                  ],
+                                  rotation: 0
+                                },
+                                {
+                                  x: 1,
+                                  y: 0,
+                                  sides: [
+                                    {
+                                      mode: 1,
+                                      dir: "ne",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 0,
+                                      dir: "e",
+                                      var: "caster"
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "se",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "sw",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "w",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "nw",
+                                      var: ""
+                                    }
+                                  ],
+                                  func: "geomancy:entity_caster",
+                                  params: [],
+                                  rotation: 0
+                                },
+                                {
+                                  x: 1,
+                                  y: 1,
+                                  sides: [
+                                    {
+                                      mode: 2,
+                                      dir: "ne",
+                                      var: "hitPos"
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "e",
+                                      var: "length"
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "se",
+                                      var: "from"
+                                    },
+                                    {
+                                      mode: 0,
+                                      dir: "sw",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "w",
+                                      var: "dir"
+                                    },
+                                    {
+                                      mode: 0,
+                                      dir: "nw",
+                                      var: ""
+                                    }
+                                  ],
+                                  func: "geomancy:raycast_pos",
+                                  params: [],
+                                  rotation: 0
+                                },
+                                {
+                                  x: 2,
+                                  y: 2,
+                                  sides: [
+                                    {
+                                      mode: 1,
+                                      dir: "ne",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "e",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "se",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "sw",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 0,
+                                      dir: "w",
+                                      var: "entity"
+                                    },
+                                    {
+                                      mode: 0,
+                                      dir: "nw",
+                                      var: "eye position"
+                                    }
+                                  ],
+                                  func: "geomancy:vector_entityeyepos",
+                                  params: [],
+                                  rotation: 4
+                                },
+                                {
+                                  x: 1,
+                                  y: 2,
+                                  sides: [
+                                    {
+                                      mode: 1,
+                                      dir: "ne",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 0,
+                                      dir: "e",
+                                      var: "caster"
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "se",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "sw",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "w",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 0,
+                                      dir: "nw",
+                                      var: "caster"
+                                    }
+                                  ],
+                                  func: "geomancy:entity_caster",
+                                  params: [],
+                                  rotation: 0
+                                },
+                                {
+                                  x: 0,
+                                  y: 1,
+                                  sides: [
+                                    {
+                                      mode: 1,
+                                      dir: "ne",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 0,
+                                      dir: "e",
+                                      var: "direction"
+                                    },
+                                    {
+                                      mode: 0,
+                                      dir: "se",
+                                      var: "entity"
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "sw",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "w",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "nw",
+                                      var: ""
+                                    }
+                                  ],
+                                  func: "geomancy:vector_entitydir",
+                                  params: [],
+                                  rotation: 4
+                                },
+                                {
+                                  x: 2,
+                                  y: 0,
+                                  sides: [
+                                    {
+                                      mode: 1,
+                                      dir: "ne",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "e",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "se",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 0,
+                                      dir: "sw",
+                                      var: "position"
+                                    },
+                                    {
+                                      mode: 0,
+                                      dir: "w",
+                                      var: "entity"
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "nw",
+                                      var: ""
+                                    }
+                                  ],
+                                  func: "geomancy:teleport",
+                                  params: [],
+                                  rotation: 0
+                                }
+                              ],
+                              lib: 0b,
+                              height: 3
+                            }
+                          }""", 1);
+        }
 
         for(var spell : SpellBlocks.functions.values()){
             NbtCompound nbt = new NbtCompound();

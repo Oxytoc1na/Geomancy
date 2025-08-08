@@ -418,15 +418,15 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         add("itemGroup.MODID.main",     "Geomancy");
         add("itemGroup.MODID.jewelry",  "Geomancy Jewelry");
         add("itemGroup.MODID.spells",   "Geomancy Spells");
-        add("geomancy.message.lead.tingling", "Your fingers are tingling...");
-        add("geomancy.message.lead.nausea", "You feel like throwing up...");
-        add("geomancy.message.lead.poison", "You feel a sharp pain in your head...");
-        add("geomancy.message.lead.joints", "Your joints hurt...");
-        add("geomancy.message.madness.regret", "Maybe it is time to stop...");
-        add("geomancy.message.madness.mourning", "You feel terrible...");
-        add("geomancy.message.madness.ecstasy", "You feel wonderful!");
-        add("geomancy.message.madness.nausea", "Your head is spinning...");
-        add("geomancy.message.madness.paranoia", "Did you hear something?");
+        add("geomancy.message.lead.tingling",   "Your fingers are tingling...");
+        add("geomancy.message.lead.nausea",     "You feel like throwing up...");
+        add("geomancy.message.lead.poison",     "You feel a sharp pain in your head...");
+        add("geomancy.message.lead.joints",     "Your joints hurt...");
+        add("geomancy.message.madness.regret",      "Maybe it is time to stop...");
+        add("geomancy.message.madness.mourning",    "You feel terrible...");
+        add("geomancy.message.madness.ecstasy",     "You feel wonderful!");
+        add("geomancy.message.madness.nausea",      "Your head is spinning...");
+        add("geomancy.message.madness.paranoia",    "Did you hear something?");
 
         // Advancements
         {
@@ -546,25 +546,31 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
             add(getS("gb:oc")+"name", "Octangulite");
             {
-                addGBEntryAndInfo(getS("gb:oc")+"octangulite","Octangulite");
-                add(getS("gb:oc")+"octangulite.description"  , "");
-                add(getS("gb:oc")+"octangulite.info.text", "This...strange substance seems to shift in color when I don't look. Its hardness also doesn't seem to stay consistent. It feels out of this world. I am not quite sure what to do with it.");
-                add(getS("gb:oc")+"octangulite.raw_octangulite.text", "Undulating.");
+                for(var s : new String[]{"gb:mn","gb:oc"}){
+                    addGBEntryAndInfo(getS(s)+"octangulite_intro","Octangulite");
+                    add(getS(s)+"octangulite_intro.description"  , "");
+                    add(getS(s)+"octangulite_intro.info.text", "This...strange substance seems to shift in color when I don't look. Its hardness also doesn't seem to stay consistent. It feels out of this world. I am not quite sure what to do with it.");
+                    add(getS(s)+"octangulite_intro.raw_octangulite.text", "Undulating.");
+                }
 
                 addGBEntryAndInfo(getS("gb:oc")+"soul_oak","Soul Oak");
                 add(getS("gb:oc")+"soul_oak.description"  , "");
                 add(getS("gb:oc")+"soul_oak.info.text", "This type of wood is mesmerizing. Its color is inconsistent. I struggle to look away from it.");
-                add(getS("gb:oc")+"soul_oak.soul_oak_log.text", "Mesmerizing.");
+                add(getS("gb:oc")+"soul_oak.soul_oak_planks.text", "Mesmerizing.");
 
                 addGBEntryAndInfo(getS("gb:oc")+"whispers","Whispers");
                 add(getS("gb:oc")+"whispers.description"  , "");
                 add(getS("gb:oc")+"whispers.info.text", "I can't shake the feeling that some of the more colorful discoveries I've made are...talking to me? Either I'm going mad, or something weird is going on. Or both.");
+                add(getS("gb:oc")+"whispers.1.text", "Their language is foreign to me. The more I hear of them the surer I am that it's not just one language, but many.");
+                add(getS("gb:oc")+"whispers.octangulite_ore.text", "This mineral whispers the loudest. Maybe if I just listen to it long enough I'll understand...");
 
                 addGBEntryAndInfo(getS("gb:oc")+"madness","Madness");
                 add(getS("gb:oc")+"madness.description"  , "");
                 add(getS("gb:oc")+"madness.info.text", "It's both! The octangulite, or whatever it's made of is driving me mad! I best stay away from it. But...maybe it can tell me whats going on?");
+                add(getS("gb:oc")+"madness.1.text", "I feel fuzzy... This feels dangerous. Whatever happens, I am sorry to those that I'll hurt when I no longer remember them.");
 
                 addGBEntryAndInfo(getS("gb:oc")+"spellcomponents","Spell Components");
+                add(getS("gb:oc")+"spellcomponents.description"  , "");
                 add(getS("gb:oc")+"spellcomponents.0.text"  , "");
                 add(getS("gb:oc")+"spellcomponents.1.text"  , "");
             }
@@ -749,26 +755,74 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
                 // expedition
                 {
-                    add("item.MODID.lorelog_expedition_1","SOL III EXPEDITION ORDER");
-                    add("item.MODID.lorelog_expedition_1.tooltip","INITIATION");
+                    // initiation
+                    int entry = 1;
+                    add("item.MODID.lorelog_expedition_"+entry,"SOL III EXPEDITION ORDER");
+                    add("item.MODID.lorelog_expedition_"+entry+".tooltip","INITIATION");
 
-                    addGBEntryAndInfo(getS("gb:lr")+"expedition_1","SOL III EXPEDITION ORDER");
-                    add(getS("gb:lr")+"expedition_1.description"  , "INITIATION");
-                    add(getS("gb:lr")+"expedition_1.1.text","""
-                        Dwarven High Regal Defense Department (DHRDD)
-                        \\
-                        Report 78S-1
-                        \\
-                        \\
-                        Several large floating vessels of metal of unknown origin have landed near the Swamp of Shorg.
-                        \\
-                        Their captains are rigid yet in motion. They levitate akin to their vessels. Their forms are foreign to all other living beings.
-                        \\
-                        Their motives are as of yet unknown.
+                    addGBEntryAndInfo(getS("gb:lr")+"expedition_"+entry,"SOL III EXPEDITION ORDER");
+                    add(getS("gb:lr")+"expedition_"+entry+".description"  , "INITIATION");
+                    add(getS("gb:lr")+"expedition_"+entry+".1.text","""
                         """);
-                    add(getS("gb:lr")+"expedition_1.2.text", """
+                    add(getS("gb:lr")+"expedition_"+entry+".2.text", """
                         """);
-                    add(getS("gb:lr")+"expedition_1.3.text", """
+                    add(getS("gb:lr")+"expedition_"+entry+".3.text", """
+                        """);
+
+                    // planetfall
+                    entry++;
+                    add("item.MODID.lorelog_expedition_"+entry,"SOL III PLANETFALL LOG");
+                    add("item.MODID.lorelog_expedition_"+entry+".tooltip","PLANETFALL");
+
+                    addGBEntryAndInfo(getS("gb:lr")+"expedition_"+entry,"SOL III PLANETFALL LOG");
+                    add(getS("gb:lr")+"expedition_"+entry+".description"  , "PLANETFALL");
+                    add(getS("gb:lr")+"expedition_"+entry+".1.text","""
+                        """);
+                    add(getS("gb:lr")+"expedition_"+entry+".2.text", """
+                        """);
+                    add(getS("gb:lr")+"expedition_"+entry+".3.text", """
+                        """);
+
+                    // annoying locals
+                    entry++;
+                    add("item.MODID.lorelog_expedition_"+entry,"SOL III ADDENDUM I");
+                    add("item.MODID.lorelog_expedition_"+entry+".tooltip","LOCALS");
+
+                    addGBEntryAndInfo(getS("gb:lr")+"expedition_"+entry,"SOL III ADDENDUM I");
+                    add(getS("gb:lr")+"expedition_"+entry+".description"  , "LOCALS");
+                    add(getS("gb:lr")+"expedition_"+entry+".1.text","""
+                        """);
+                    add(getS("gb:lr")+"expedition_"+entry+".2.text", """
+                        """);
+                    add(getS("gb:lr")+"expedition_"+entry+".3.text", """
+                        """);
+
+                    // eradication complete
+                    entry++;
+                    add("item.MODID.lorelog_expedition_"+entry,"SOL III ADDENDUM II");
+                    add("item.MODID.lorelog_expedition_"+entry+".tooltip","ERADICATION");
+
+                    addGBEntryAndInfo(getS("gb:lr")+"expedition_"+entry,"SOL III ADDENDUM II");
+                    add(getS("gb:lr")+"expedition_"+entry+".description"  , "ERADICATION");
+                    add(getS("gb:lr")+"expedition_"+entry+".1.text","""
+                        """);
+                    add(getS("gb:lr")+"expedition_"+entry+".2.text", """
+                        """);
+                    add(getS("gb:lr")+"expedition_"+entry+".3.text", """
+                        """);
+
+                    // departure and surveillance
+                    entry++;
+                    add("item.MODID.lorelog_expedition_"+entry,"SOL III EXPEDITION FINALIZATION");
+                    add("item.MODID.lorelog_expedition_"+entry+".tooltip","DEPARTURE");
+
+                    addGBEntryAndInfo(getS("gb:lr")+"expedition_"+entry,"SOL III EXPEDITION FINALIZATION");
+                    add(getS("gb:lr")+"expedition_"+entry+".description"  , "DEPARTURE");
+                    add(getS("gb:lr")+"expedition_"+entry+".1.text","""
+                        """);
+                    add(getS("gb:lr")+"expedition_"+entry+".2.text", """
+                        """);
+                    add(getS("gb:lr")+"expedition_"+entry+".3.text", """
                         """);
                 }
 

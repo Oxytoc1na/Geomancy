@@ -9,12 +9,14 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
@@ -29,6 +31,7 @@ import org.oxytocina.geomancy.items.artifacts.*;
 import org.oxytocina.geomancy.items.jewelry.*;
 import org.oxytocina.geomancy.loottables.ModLootTables;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
+import org.oxytocina.geomancy.util.LeadUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -213,8 +216,8 @@ public class ModItems {
             1000,100,50,10),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Handheld));
 
     // caster items
-    public static final SoulCastingItem CASTER_TEST = register("caster_test",new SoulCastingItem(new FabricItemSettings(),1));
-    public static final SoulCastingItem SPELLGLOVE = register("spellglove",new SoulCastingItem(new FabricItemSettings(),3),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
+    //public static final SoulCastingItem CASTER_TEST = register("caster_test",new SoulCastingItem(new FabricItemSettings(),1));
+    public static final SoulCastingItem SPELLGLOVE = register("spellglove",new SoulCastingItem(new FabricItemSettings(),9*3),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
     public static final SpellStoringItem SPELLSTORAGE_SMALL = register("spellstorage_small",new SpellStoringItem(new FabricItemSettings(),3,3));
     public static final SpellStoringItem SPELLSTORAGE_MEDIUM = register("spellstorage_medium",new SpellStoringItem(new FabricItemSettings(),5,5));
     public static final SpellStoringItem SPELLSTORAGE_LARGE = register("spellstorage_large",new SpellStoringItem(new FabricItemSettings(),7,7));
@@ -232,10 +235,15 @@ public class ModItems {
     // test alien tooltip
     public static final StellgeTooltippedItem TEST = register("stellge_test",new StellgeTooltippedItem(new FabricItemSettings(),"lorem ipsum dolor sit amet"));
 
+    public static final FoodItem LEAD_APPLE = register("lead_apple",new FoodItem(new FabricItemSettings().food(new FoodComponent.Builder().alwaysEdible().hunger(4).build()),le->{
+        LeadUtil.addPoisoning((PlayerEntity) le,100);
+        LeadUtil.syncPoisoning((PlayerEntity) le);
+        if(le instanceof ServerPlayerEntity spe) LeadUtil.tryLeadEffects(spe);
+    }),ExtraItemSettings.create());
+
     public static void register() {
         // initialize static fields
         // calling this method is sufficient to do that, actually
-
         // Add the suspicious substance to the composting registry with a 30% chance of increasing the composter's level.
         CompostingChanceRegistry.INSTANCE.add(ModItems.SUSPICIOUS_SUBSTANCE, 0.3f);
         // Add the suspicious substance to the flammable block registry with a burn time of 30 seconds.
