@@ -1,6 +1,7 @@
 package org.oxytocina.geomancy.loottables;
 
 import com.google.common.collect.Sets;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.Items;
@@ -14,6 +15,7 @@ import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.function.*;
 import net.minecraft.loot.provider.number.UniformLootNumberProvider;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.Potions;
 import net.minecraft.registry.RegistryKeys;
@@ -24,6 +26,7 @@ import net.minecraft.util.Pair;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
+import org.oxytocina.geomancy.helpers.NbtHelper;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.SpellComponentStoringItem;
 import org.oxytocina.geomancy.spells.SpellBlocks;
@@ -1036,11 +1039,149 @@ public class ModLootTables {
                           }""", 1);
         }
 
-        for(var spell : SpellBlocks.functions.values()){
-            NbtCompound nbt = new NbtCompound();
-            nbt.put("component",SpellComponentStoringItem.getNbtFor(spell));
-            res.with(ItemEntry.builder(ModItems.SPELLCOMPONENT)
-                    .weight(spell.defaultLootWeight)
+        // self lightning
+        {
+            spells.put("""
+                    {
+                            spell: {
+                              width: 3,
+                              name: "Lightning",
+                              components: [
+                                {
+                                  x: 2,
+                                  y: 1,
+                                  sides: [
+                                    {
+                                      mode: 1,
+                                      dir: "ne",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "e",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "se",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "sw",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 0,
+                                      dir: "w",
+                                      var: "position"
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "nw",
+                                      var: ""
+                                    }
+                                  ],
+                                  func: "geomancy:lightning",
+                                  params: [],
+                                  rotation: 2
+                                },
+                                {
+                                  x: 1,
+                                  y: 1,
+                                  sides: [
+                                    {
+                                      mode: 1,
+                                      dir: "ne",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 0,
+                                      dir: "e",
+                                      var: "position"
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "se",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "sw",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 0,
+                                      dir: "w",
+                                      var: "entity"
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "nw",
+                                      var: ""
+                                    }
+                                  ],
+                                  func: "geomancy:vector_entitypos",
+                                  params: [],
+                                  rotation: 3
+                                },
+                                {
+                                  x: 0,
+                                  y: 1,
+                                  sides: [
+                                    {
+                                      mode: 1,
+                                      dir: "ne",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 0,
+                                      dir: "e",
+                                      var: "caster"
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "se",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "sw",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "w",
+                                      var: ""
+                                    },
+                                    {
+                                      mode: 1,
+                                      dir: "nw",
+                                      var: ""
+                                    }
+                                  ],
+                                  func: "geomancy:entity_caster",
+                                  params: [],
+                                  rotation: 0
+                                }
+                              ],
+                              lib: 0b,
+                              height: 3
+                            }
+                          }
+                    """,1);
+        }
+
+        for(var spell : spells.keySet()){
+            int weight = spells.get(spell);
+            NbtCompound nbt = null;
+            try {
+                nbt = StringNbtReader.parse(spell);
+            } catch (CommandSyntaxException e) {
+                throw new RuntimeException(e);
+            }
+            res.with(ItemEntry.builder(ModItems.SPELLSTORAGE_SMALL)
+                    .weight(weight)
                     .apply(SetNbtLootFunction.builder(nbt)));
         }
 
