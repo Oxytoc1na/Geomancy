@@ -1,33 +1,48 @@
 package org.oxytocina.geomancy.util;
 
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.advancement.Advancement;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.MutableText;
-import net.minecraft.text.OrderedText;
-import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.client.toast.GeomancyToast;
+import org.oxytocina.geomancy.client.toast.StellgeKnowledgeToast;
 import org.oxytocina.geomancy.entity.PlayerData;
+import org.oxytocina.geomancy.networking.ModMessages;
+import org.oxytocina.geomancy.spells.SpellBlocks;
 
-import java.util.List;
+import java.util.HashMap;
 
 public class StellgeUtil {
+
+    public static float clientAdvancementKnowledge = 0;
 
     public static MutableText stellgify(MutableText t){
         return t.setStyle(t.getStyle().withFont(Geomancy.locate("stellgian")));
     }
 
     public static MutableText stellgify(MutableText t, float knowledgeRequired){
+        return stellgify(t,knowledgeRequired,0);
+    }
+
+    public static MutableText stellgify(MutableText t, float knowledgeRequired, float knowledgeBonus){
         if(MinecraftClient.getInstance()==null||MinecraftClient.getInstance().player==null) return t;
-        return stellgify(t,knowledgeRequired, MinecraftClient.getInstance().player);
+        return stellgify(t,knowledgeRequired,knowledgeBonus, MinecraftClient.getInstance().player);
     }
 
-    public static MutableText stellgify(MutableText t, float requiredKnowledge, PlayerEntity pe) {
+    public static MutableText stellgify(MutableText t, float requiredKnowledge, float knowledgeBonus, PlayerEntity pe) {
         float knowledge = getKnowledge(pe);
-        return stellgify(t,requiredKnowledge,knowledge);
+        return stellgify(t,requiredKnowledge,knowledgeBonus,knowledge);
     }
 
-    public static MutableText stellgify(MutableText t, float requiredKnowledge, float knowledge){
+    public static MutableText stellgify(MutableText t, float requiredKnowledge, float knowledgeBonus, float knowledge){
         float knowledgeFraction = knowledge/requiredKnowledge;
         if(knowledgeFraction<=0) return stellgify(t);
         if(knowledgeFraction>=1) return t;
@@ -44,8 +59,82 @@ public class StellgeUtil {
         return resText;
     }
 
+    // does NOT sync data to clients
+    public static boolean setItemKnowledge(PlayerEntity player, float amount){
+        if(player==null) return false;
+        PlayerData data = PlayerData.from(player);
+        float old = data.stellgianKnowledge;
+        if(old==amount) return false;
+        data.stellgianKnowledge = amount;
+        return true;
+    }
+
+    /// client method only used by sync packets
+    public static void setAdvancementKnowledge(float amount)
+    {
+        if(clientAdvancementKnowledge<amount)
+        {
+            // show toast
+            GeomancyToast.show(new StellgeKnowledgeToast());
+        }
+        clientAdvancementKnowledge=amount;
+    }
+
     public static float getKnowledge(PlayerEntity player){
+        return getItemKnowledge(player) + getAdvancementKnowledge(player);
+    }
+
+    public static float getItemKnowledge(PlayerEntity player){
         return PlayerData.from(player).stellgianKnowledge;
     }
+
+    public static float getAdvancementKnowledge(PlayerEntity player){
+        if(player instanceof ClientPlayerEntity) return clientAdvancementKnowledge;
+
+        if(player instanceof ServerPlayerEntity spe){
+            return calculateAdvancementKnowledge(spe);
+        }
+
+        return 0;
+    }
+
+    private static float calculateAdvancementKnowledge(ServerPlayerEntity spe){
+        float res = 0;
+        HashMap<String,Float> vals = new HashMap<>();
+
+        // spell components each give 0.2 knowledge per unlock
+        for(var id : SpellBlocks.functions.keySet())
+            vals.put("geomancy:spellcomponents/get_"+id.getPath(),0.2f);
+
+        // having unlocked any spell component gives 1.8 (2) knowledge
+        vals.put("geomancy:octangulite/get_spellcomponent",1.8f);
+
+        // being mad grants 2 knowledge
+        vals.put("geomancy:main/simple_maddened",2f);
+
+        // having visited the stellge structures grants 1 knowledge each
+        vals.put("geomancy:location/octangula",1f);
+        vals.put("geomancy:location/digsite",1f);
+
+        // having learned about souls grants 5 knowledge
+        vals.put("geomancy:milestones/milestone_souls",5f);
+
+        for(var s : vals.keySet())
+        {
+            if(AdvancementHelper.hasAdvancement(spe, Identifier.tryParse(s)))
+                res+=vals.get(s);
+        }
+        return res;
+    }
+
+    public static void syncKnowledge(PlayerEntity player){
+        if(!(player instanceof ServerPlayerEntity spe)) return;
+
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeFloat(getAdvancementKnowledge(player));
+        buf.writeFloat(getItemKnowledge(player));
+        ServerPlayNetworking.send(spe, ModMessages.STELLGE_KNOWLEDGE_SYNC,buf);
+    }
+
 
 }

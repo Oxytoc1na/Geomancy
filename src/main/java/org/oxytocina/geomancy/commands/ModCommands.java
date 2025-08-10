@@ -7,6 +7,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import org.oxytocina.geomancy.util.LeadUtil;
 import org.oxytocina.geomancy.util.MadnessUtil;
+import org.oxytocina.geomancy.util.StellgeUtil;
 
 import static net.minecraft.server.command.CommandManager.*;
 // getString(ctx, "string")
@@ -68,6 +69,35 @@ public class ModCommands {
                                                         MadnessUtil.setMadness(p,value);
                                                         MadnessUtil.syncMadness(p);
                                                         context.getSource().sendFeedback(() -> Text.literal("set madness of "+p.getEntityName()+" to "+value), false);
+                                                    }
+                                                    return 1;
+                                                })
+                                        )))
+                ));
+
+        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) ->
+                dispatcher.register(literal("stellge")
+                        .executes(context -> {
+                            PlayerEntity player = context.getSource().getPlayer();
+                            if(player==null){
+                                return 0;
+                            }
+                            context.getSource().sendFeedback(() -> Text.literal("knowledge: "
+                                    + StellgeUtil.getKnowledge(player)
+                                    +" from advancements: " +StellgeUtil.getAdvancementKnowledge(player)
+                                    +" from items: " +StellgeUtil.getItemKnowledge(player)
+                            ), false);
+                            return 1;
+                        })
+                        .then(literal("set")
+                                .then(argument("players", EntityArgumentType.players())
+                                        .then(argument("value", FloatArgumentType.floatArg(0))
+                                                .executes(context -> {
+                                                    final float value = FloatArgumentType.getFloat(context, "value");
+                                                    for(var p :EntityArgumentType.getPlayers(context,"players")){
+                                                        StellgeUtil.setItemKnowledge(p,value);
+                                                        StellgeUtil.syncKnowledge(p);
+                                                        context.getSource().sendFeedback(() -> Text.literal("set item knowledge of "+p.getEntityName()+" to "+value), false);
                                                     }
                                                     return 1;
                                                 })

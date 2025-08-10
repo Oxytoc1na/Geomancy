@@ -101,5 +101,383 @@
     },
     "done": true
   },
+  "geomancy:recipes/misc/spellcomponent_ref_output": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_raycast_dir": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_exp": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:spellcomponents/get_sin": {
+    "criteria": {
+      "got_sin": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_octangulite_ring": {
+    "criteria": {
+      "default_conditions": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_debug": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/raw_iron_block": {
+    "criteria": {
+      "has_raw_iron": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/octangulite_ingot_decompress_to_octangulite_nugget": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_constant_number": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:spellcomponents/get_constant_text": {
+    "criteria": {
+      "got_constant_text": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/iron_ingot_from_blasting_iron_ore": {
+    "criteria": {
+      "has_iron_ore": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_chestplate": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_teleport": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_ref_input": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_octangulite_necklace": {
+    "criteria": {
+      "default_conditions": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_sum": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_subtract": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_for": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:octangulite/get_spellcomponent": {
+    "criteria": {
+      "got_spellcomponent": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_sin": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_leggings": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_hoe": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/jewelry_mithril_boots": {
+    "criteria": {
+      "has_ingredient": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_constant_boolean": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_conveyor": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_not": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_lightning": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_dimhop": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_shovel": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_function": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_boots": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/jewelry_mithril_leggings": {
+    "criteria": {
+      "has_ingredient": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_fireball": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_push": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/iron_ingot_from_smelting_raw_iron": {
+    "criteria": {
+      "has_raw_iron": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/iron_ingot_from_smelting_iron_ore": {
+    "criteria": {
+      "has_iron_ore": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_cos": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_sword": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_tan": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_constant_text": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_axe": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_vector_build": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_pickaxe": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/jewelry_mithril_chestplate": {
+    "criteria": {
+      "has_ingredient": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_multiply": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_gate": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_spellstorage_large": {
+    "criteria": {
+      "default_conditions": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/jewelry_mithril_helmet": {
+    "criteria": {
+      "has_ingredient": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_vector_entityeyepos": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_spellstorage_medium": {
+    "criteria": {
+      "default_conditions": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_vector_entitydir": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_entity_caster": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/iron_ingot_from_blasting_raw_iron": {
+    "criteria": {
+      "has_raw_iron": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_octangulite_pendant": {
+    "criteria": {
+      "default_conditions": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_vector_split": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_raycast_pos": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_action": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_divide": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_vector_entitypos": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_print": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_vector_entityspawn": {
+    "criteria": {
+      "gotten_base": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/octangulite_ingot_compress_to_octangulite_block": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_helmet": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-08-10 18:56:31 +0200"
+    },
+    "done": true
+  },
   "DataVersion": 3465
 }

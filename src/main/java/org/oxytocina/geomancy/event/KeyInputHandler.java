@@ -9,6 +9,7 @@ import net.minecraft.client.util.InputUtil;
 import net.minecraft.client.util.Window;
 import org.lwjgl.glfw.GLFW;
 import org.oxytocina.geomancy.client.toast.GeomancyToast;
+import org.oxytocina.geomancy.client.toast.StellgeKnowledgeToast;
 import org.oxytocina.geomancy.items.ModItems;
 
 public class KeyInputHandler {
@@ -20,7 +21,7 @@ public class KeyInputHandler {
     private static void registerKeyInputs(){
         ClientTickEvents.END_CLIENT_TICK.register(minecraftClient -> {
             if(KEY_OPEN_SKILLTREE.wasPressed()){
-                //GeomancyToast.showGeomancyToast(MinecraftClient.getInstance(), ModItems.ARTIFACT_OF_GOLD.getDefaultStack(),null);
+                GeomancyToast.show(new StellgeKnowledgeToast());
             }
         });
     }

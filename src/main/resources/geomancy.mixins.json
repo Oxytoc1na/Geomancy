@@ -11,6 +11,7 @@
     "ItemStackMixin",
     "LivingEntityMixin",
     "ModEntityDataSaverMixin",
+    "PlayerAdvancementTrackerMixin",
     "PlayerInventoryMixin",
     "TrunkPlacerTypeInvoker",
     "compat.connector.absent.EntityApplyFluidsMixinNoSinytra"

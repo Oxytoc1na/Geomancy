@@ -19,7 +19,7 @@ public class ModonomiconCompat extends GeomancyIntegrationPacks.ModIntegrationPa
     // Page Types
     public static final Identifier SMITHERY_CRAFTING = Geomancy.locate("smithery_crafting");
     public static final Identifier NBT_SPOTLIGHT_PAGE = Geomancy.locate("nbt_spotlight");
-    public static final Identifier STELLGE_TEXT = Geomancy.locate("stellge_text");
+    public static final Identifier STELLGE_TEXT = Geomancy.locate("text_stellge");
 
     @Override
     public void register() {

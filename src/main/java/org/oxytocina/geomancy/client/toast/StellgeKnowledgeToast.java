@@ -9,7 +9,9 @@ import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.toast.Toast;
 import net.minecraft.client.toast.ToastManager;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -23,8 +25,8 @@ import java.util.List;
 public class StellgeKnowledgeToast extends GeomancyToast {
 
 
-    public StellgeKnowledgeToast(ItemStack itemStack, SoundEvent soundEvent) {
-        super(itemStack, soundEvent);
+    public StellgeKnowledgeToast() {
+        super(new ItemStack(Items.KNOWLEDGE_BOOK), SoundEvents.AMBIENT_UNDERWATER_LOOP_ADDITIONS);
     }
 
     @Override
@@ -39,7 +41,7 @@ public class StellgeKnowledgeToast extends GeomancyToast {
         List<OrderedText> wrappedText = textRenderer.wrapLines(text, 125);
         List<OrderedText> wrappedTitle = textRenderer.wrapLines(title, 125);
         int l;
-        long toastTimeMilliseconds = 3000;//Geomancy.CONFIG.ToastTimeMilliseconds;
+        long toastTimeMilliseconds = 5000;//Geomancy.CONFIG.ToastTimeMilliseconds;
         if (startTime < toastTimeMilliseconds / 2) {
             l = MathHelper.floor(MathHelper.clamp((float) (toastTimeMilliseconds / 2 - startTime) / 300.0F, 0.0F, 1.0F) * 255.0F) << 24 | 67108864;
             int halfHeight = this.getHeight() / 2;
@@ -58,7 +60,7 @@ public class StellgeKnowledgeToast extends GeomancyToast {
 
             for (Iterator<OrderedText> var12 = wrappedText.iterator(); var12.hasNext(); m += 9) {
                 OrderedText orderedText = var12.next();
-                drawContext.drawText(textRenderer, orderedText, 30, m, l, false);
+                drawContext.drawText(textRenderer, orderedText, 30, m, 0x00FFFFFF | l, false);
             }
         }
 

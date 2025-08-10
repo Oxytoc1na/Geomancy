@@ -440,6 +440,10 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         add("geomancy.message.madness.nausea",      "Your head is spinning...");
         add("geomancy.message.madness.paranoia",    "Did you hear something?");
 
+        // Toasts
+        add("geomancy.toast.stellgeknowledge.title","Stellgian Knowledge gained");
+        add("geomancy.toast.stellgeknowledge.text","Your Comprehension grows...");
+
         // Advancements
         {
             addAdvancement(".main","Geomancy","A world of buried treasures and wonders");
@@ -776,10 +780,40 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                     addGBEntryAndInfo(getS("gb:lr")+"expedition_"+entry,"SOL III EXPEDITION ORDER");
                     add(getS("gb:lr")+"expedition_"+entry+".description"  , "INITIATION");
                     add(getS("gb:lr")+"expedition_"+entry+".1.text","""
+                        increased Soul Stone concentrations detected on Sol III.
+                        
+                        evaluating...
+                        
+                        local risk factors:
+                        
+                        wildlife: harmless
+                        
+                        radiation: type B
+                        
+                        temperature: warm
+                        
+                        
+                        verdict: suitable
                         """);
                     add(getS("gb:lr")+"expedition_"+entry+".2.text", """
+                        beginning extraction protocol.
+                        
+                        sending extraction flotilla 35A.
+                        
+                        calculated time of arrival: 7254829108647L
+                        
+                        estimated time of completion: 7254829137574L
+                        
+                        estimated time of return: 7254829174068L
                         """);
                     add(getS("gb:lr")+"expedition_"+entry+".3.text", """
+                        estimated yield: 8329.53Ms
+                        
+                        estimated profit: 6284Ms
+                        
+                        expected losses: 5%
+                        
+                        operation name: Sol_III_ex_34
                         """);
 
                     // planetfall
@@ -790,10 +824,19 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                     addGBEntryAndInfo(getS("gb:lr")+"expedition_"+entry,"SOL III PLANETFALL LOG");
                     add(getS("gb:lr")+"expedition_"+entry+".description"  , "PLANETFALL");
                     add(getS("gb:lr")+"expedition_"+entry+".1.text","""
+                        Sol_III_ex_34 log 1
+                        current time: 7254829108647L
+                        
+                        arrived as planned.
+                        since the previous visit, the locals have advanced to a type # civilization.
+                        no alteration to the plan is required.
                         """);
                     add(getS("gb:lr")+"expedition_"+entry+".2.text", """
+                        estimated losses have gone up by 0.03% following the development of the locals.
+                        reserving 32Ms for wiper A, just in case.
                         """);
                     add(getS("gb:lr")+"expedition_"+entry+".3.text", """
+                        flotilla 35A has landed and is setting up for the impending mining operations in several hotspots on Sol III.
                         """);
 
                     // annoying locals
@@ -804,10 +847,24 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                     addGBEntryAndInfo(getS("gb:lr")+"expedition_"+entry,"SOL III ADDENDUM I");
                     add(getS("gb:lr")+"expedition_"+entry+".description"  , "LOCALS");
                     add(getS("gb:lr")+"expedition_"+entry+".1.text","""
+                        Sol_III_ex_34 log 2
+                        current time: 7254829115729L
+                        
+                        mining operations at outposts IZ, JC, JK and JO have been interrupted by organized packs of locals.
+                        use of wiper A has been authorized.
                         """);
                     add(getS("gb:lr")+"expedition_"+entry+".2.text", """
+                        pest control flotillette 35A-qt has been dispatched.
+                        target species: Sol_III_DHM_7
+                        target tolerance: 5%
+                        expected time taken: 5389L
                         """);
                     add(getS("gb:lr")+"expedition_"+entry+".3.text", """
+                        species hideouts: burrows, class E
+                        locations: mountains
+                        
+                        heightening warrior patrols.
+                        continuing with mining operations as planned.
                         """);
 
                     // eradication complete
@@ -818,6 +875,9 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                     addGBEntryAndInfo(getS("gb:lr")+"expedition_"+entry,"SOL III ADDENDUM II");
                     add(getS("gb:lr")+"expedition_"+entry+".description"  , "ERADICATION");
                     add(getS("gb:lr")+"expedition_"+entry+".1.text","""
+                        Sol_III_ex_34 log 3
+                        current time: 7254829115729L
+                        
                         """);
                     add(getS("gb:lr")+"expedition_"+entry+".2.text", """
                         """);

@@ -15,6 +15,7 @@ import org.oxytocina.geomancy.entity.StateSaverAndLoader;
 import org.oxytocina.geomancy.networking.packet.C2S.*;
 import org.oxytocina.geomancy.networking.packet.S2C.*;
 import org.oxytocina.geomancy.util.ManaUtil;
+import org.oxytocina.geomancy.util.StellgeUtil;
 
 import java.util.function.Function;
 
@@ -23,6 +24,7 @@ public class ModMessages {
     // server to client
     public static final Identifier MANA_SYNC =              Geomancy.locate("mana_sync");
     public static final Identifier LEAD_POISONING_SYNC =    Geomancy.locate("lead_poisoning_sync");
+    public static final Identifier STELLGE_KNOWLEDGE_SYNC =    Geomancy.locate("stellge_knowledge_sync");
     public static final Identifier MADNESS_SYNC =           Geomancy.locate("madness_sync");
     public static final Identifier ITEM_MANA_SYNC =         Geomancy.locate("item_mana_sync");
     public static final Identifier INITIAL_SYNC =           Geomancy.locate("initial_sync");
@@ -79,6 +81,9 @@ public class ModMessages {
                     for(var stack : ManaStoringItemData.stackMap.values()){
                         ManaUtil.syncItemMana(handler.getPlayer().getWorld(),stack);
                     }
+
+                    // sync various other things
+                    StellgeUtil.syncKnowledge(handler.getPlayer());
                 }
                 catch (Exception ignored){
 
@@ -90,6 +95,7 @@ public class ModMessages {
     public static void registerS2CPackets(){
         ClientPlayNetworking.registerGlobalReceiver(MANA_SYNC, ManaSyncS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(LEAD_POISONING_SYNC, LeadPoisoningSyncS2CPacket::receive);
+        ClientPlayNetworking.registerGlobalReceiver(STELLGE_KNOWLEDGE_SYNC, StellgeKnowledgeSyncS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(MADNESS_SYNC, MadnessSyncS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(ITEM_MANA_SYNC, ItemManaSyncS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(INITIAL_SYNC, InitialSyncS2CPacket::receive);
