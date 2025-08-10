@@ -21,9 +21,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import org.oxytocina.geomancy.Geomancy;
-import org.oxytocina.geomancy.items.armor.materials.LeadArmorItem;
-import org.oxytocina.geomancy.items.armor.materials.ModArmorMaterials;
-import org.oxytocina.geomancy.items.armor.materials.OctanguliteArmorItem;
+import org.oxytocina.geomancy.items.armor.materials.*;
 import org.oxytocina.geomancy.items.tools.*;
 import org.oxytocina.geomancy.items.tools.materials.ModToolMaterials;
 import org.oxytocina.geomancy.entity.ExtraEntitySettings;
@@ -56,14 +54,14 @@ public class ModItems {
     public static final Item MITHRIL_NUGGET = register("mithril_nugget",new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof()));
 
     // octangulite
-    public static final OctanguliteItem RAW_OCTANGULITE = register("raw_octangulite",new OctanguliteItem(new FabricItemSettings().rarity(Rarity.RARE).fireproof(),1));
-    public static final OctanguliteItem OCTANGULITE_INGOT = register("octangulite_ingot",new OctanguliteItem(new FabricItemSettings().rarity(Rarity.RARE).fireproof(),1));
-    public static final OctanguliteItem OCTANGULITE_NUGGET = register("octangulite_nugget",new OctanguliteItem(new FabricItemSettings().rarity(Rarity.RARE).fireproof(),1/9f));
+    public static final MaddeningItem RAW_OCTANGULITE = register("raw_octangulite",new MaddeningItem(new FabricItemSettings().rarity(Rarity.RARE).fireproof(),1));
+    public static final MaddeningItem OCTANGULITE_INGOT = register("octangulite_ingot",new MaddeningItem(new FabricItemSettings().rarity(Rarity.RARE).fireproof(),1));
+    public static final MaddeningItem OCTANGULITE_NUGGET = register("octangulite_nugget",new MaddeningItem(new FabricItemSettings().rarity(Rarity.RARE).fireproof(),1/9f));
 
     // molybdenum
-    public static final Item RAW_MOLYBDENUM = register("raw_molybdenum",new Item(new FabricItemSettings().rarity(Rarity.COMMON).fireproof()));
-    public static final Item MOLYBDENUM_INGOT = register("molybdenum_ingot",new Item(new FabricItemSettings().rarity(Rarity.COMMON).fireproof()));
-    public static final Item MOLYBDENUM_NUGGET = register("molybdenum_nugget",new Item(new FabricItemSettings().rarity(Rarity.COMMON).fireproof()));
+    public static final MaddeningItem RAW_MOLYBDENUM = register("raw_molybdenum",new MaddeningItem(new FabricItemSettings().rarity(Rarity.COMMON).fireproof(),-1));
+    public static final MaddeningItem MOLYBDENUM_INGOT = register("molybdenum_ingot",new MaddeningItem(new FabricItemSettings().rarity(Rarity.COMMON).fireproof(),-1));
+    public static final MaddeningItem MOLYBDENUM_NUGGET = register("molybdenum_nugget",new MaddeningItem(new FabricItemSettings().rarity(Rarity.COMMON).fireproof(),-1/9f));
 
     // titanium
     public static final Item RAW_TITANIUM = register("raw_titanium",new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof()));
@@ -125,7 +123,7 @@ public class ModItems {
     public static final JewelryItem GOLD_RING =         register("gold_ring",new JewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.RING).withGemCount(2)),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
     public static final JewelryItem MITHRIL_RING =      register("mithril_ring",new JewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.RING).withGemCount(2)),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
     public static final JewelryItem COPPER_RING =       register("copper_ring",new JewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.RING).withGemCount(1)),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
-    public static final JewelryItem MOLYBDENUM_RING =   register("molybdenum_ring",new JewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.RING).withGemCount(2)),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
+    public static final MolybdenumJewelryItem MOLYBDENUM_RING =   register("molybdenum_ring",new MolybdenumJewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.RING).withGemCount(2),-1,-3),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
     public static final JewelryItem TITANIUM_RING =     register("titanium_ring",new JewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.RING).withGemCount(2)),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
     public static final LeadJewelryItem LEAD_RING =     register("lead_ring",new LeadJewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.RING).withGemCount(2),1,5),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
     public static final OctanguliteJewelryItem OCTANGULITE_RING = register("octangulite_ring",new OctanguliteJewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.RING).withGemCount(3),100,1,3),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
@@ -134,7 +132,7 @@ public class ModItems {
     public static final JewelryItem GOLD_NECKLACE =         register("gold_necklace",new JewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(2)),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
     public static final JewelryItem MITHRIL_NECKLACE =      register("mithril_necklace",new JewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(3)),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
     public static final JewelryItem COPPER_NECKLACE =       register("copper_necklace",new JewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(1)),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
-    public static final JewelryItem MOLYBDENUM_NECKLACE =   register("molybdenum_necklace",new JewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(2)),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
+    public static final MolybdenumJewelryItem MOLYBDENUM_NECKLACE =   register("molybdenum_necklace",new MolybdenumJewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(2),-1,-4),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
     public static final JewelryItem TITANIUM_NECKLACE =     register("titanium_necklace",new JewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(3)),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
     public static final LeadJewelryItem LEAD_NECKLACE =     register("lead_necklace",new LeadJewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(2),1,5),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
     public static final OctanguliteJewelryItem OCTANGULITE_NECKLACE = register("octangulite_necklace",new OctanguliteJewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(4),200,1,4),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
@@ -143,7 +141,7 @@ public class ModItems {
     public static final JewelryItem GOLD_PENDANT =          register("gold_pendant",new JewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(2).setPendant()),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
     public static final JewelryItem MITHRIL_PENDANT =       register("mithril_pendant",new JewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(3).setPendant()),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
     public static final JewelryItem COPPER_PENDANT =        register("copper_pendant",new JewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(1).setPendant()),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
-    public static final JewelryItem MOLYBDENUM_PENDANT =    register("molybdenum_pendant",new JewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(2).setPendant()),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
+    public static final MolybdenumJewelryItem MOLYBDENUM_PENDANT =    register("molybdenum_pendant",new MolybdenumJewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(2).setPendant(),-1,-4),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
     public static final JewelryItem TITANIUM_PENDANT =      register("titanium_pendant",new JewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(3).setPendant()),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
     public static final LeadJewelryItem LEAD_PENDANT =      register("lead_pendant",new LeadJewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(2).setPendant(),1,5),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
     public static final OctanguliteJewelryItem OCTANGULITE_PENDANT = register("octangulite_pendant",new OctanguliteJewelryItem(new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(4).setPendant(),100,1,4),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
@@ -162,6 +160,7 @@ public class ModItems {
     public static final LeadArmorItem LEAD_CHESTPLATE = register("lead_chestplate", new LeadArmorItem(ModArmorMaterials.LEAD, ArmorItem.Type.CHESTPLATE, new Item.Settings(),1));
     public static final LeadArmorItem LEAD_LEGGINGS = register("lead_leggings", new LeadArmorItem(ModArmorMaterials.LEAD, ArmorItem.Type.LEGGINGS, new Item.Settings(),1));
     public static final LeadArmorItem LEAD_BOOTS = register("lead_boots", new LeadArmorItem(ModArmorMaterials.LEAD, ArmorItem.Type.BOOTS, new Item.Settings(),1));
+    public static final Plumbometer PLUMBOMETER = register("plumbometer",new Plumbometer(new FabricItemSettings().maxCount(1).rarity(Rarity.UNCOMMON)),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom));
 
     // mithril
     public static final SwordItem MITHRIL_SWORD = register("mithril_sword", new SwordItem(ModToolMaterials.MITHRIL, 3, -2.4F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
@@ -169,10 +168,10 @@ public class ModItems {
     public static final PickaxeItem MITHRIL_PICKAXE = register("mithril_pickaxe", new PickaxeItem(ModToolMaterials.MITHRIL, 1, -2.8F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
     public static final AxeItem MITHRIL_AXE = register("mithril_axe", new AxeItem(ModToolMaterials.MITHRIL, 7.0F, -3.2F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
     public static final HoeItem MITHRIL_HOE = register("mithril_hoe", new HoeItem(ModToolMaterials.MITHRIL, -1, -2.0F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
-    public static final ArmorItem MITHRIL_HELMET = register("mithril_helmet", new ArmorItem(ModArmorMaterials.MITHRIL, ArmorItem.Type.HELMET, new Item.Settings()));
-    public static final ArmorItem MITHRIL_CHESTPLATE = register("mithril_chestplate", new ArmorItem(ModArmorMaterials.MITHRIL, ArmorItem.Type.CHESTPLATE, new Item.Settings()));
-    public static final ArmorItem MITHRIL_LEGGINGS = register("mithril_leggings", new ArmorItem(ModArmorMaterials.MITHRIL, ArmorItem.Type.LEGGINGS, new Item.Settings()));
-    public static final ArmorItem MITHRIL_BOOTS = register("mithril_boots", new ArmorItem(ModArmorMaterials.MITHRIL, ArmorItem.Type.BOOTS, new Item.Settings()));
+    public static final MithrilArmorItem MITHRIL_HELMET = register("mithril_helmet", new MithrilArmorItem(ModArmorMaterials.MITHRIL, ArmorItem.Type.HELMET, new Item.Settings(),JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.ARMOR).withGemCount(1)),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Jewelry));
+    public static final MithrilArmorItem MITHRIL_CHESTPLATE = register("mithril_chestplate", new MithrilArmorItem(ModArmorMaterials.MITHRIL, ArmorItem.Type.CHESTPLATE, new Item.Settings(),JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.ARMOR).withGemCount(2)),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Jewelry));
+    public static final MithrilArmorItem MITHRIL_LEGGINGS = register("mithril_leggings", new MithrilArmorItem(ModArmorMaterials.MITHRIL, ArmorItem.Type.LEGGINGS, new Item.Settings(),JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.ARMOR).withGemCount(1)),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Jewelry));
+    public static final MithrilArmorItem MITHRIL_BOOTS = register("mithril_boots", new MithrilArmorItem(ModArmorMaterials.MITHRIL, ArmorItem.Type.BOOTS, new Item.Settings(),JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.ARMOR).withGemCount(1)),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Jewelry));
 
     // titanium
     public static final SwordItem TITANIUM_SWORD = register("titanium_sword", new SwordItem(ModToolMaterials.TITANIUM, 3, -2.4F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
@@ -186,15 +185,16 @@ public class ModItems {
     public static final ArmorItem TITANIUM_BOOTS = register("titanium_boots", new ArmorItem(ModArmorMaterials.TITANIUM, ArmorItem.Type.BOOTS, new Item.Settings()));
 
     // molybdenum
-    public static final SwordItem MOLYBDENUM_SWORD = register("molybdenum_sword", new SwordItem(ModToolMaterials.MOLYBDENUM, 3, -2.4F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
-    public static final ShovelItem MOLYBDENUM_SHOVEL = register("molybdenum_shovel", new ShovelItem(ModToolMaterials.MOLYBDENUM, 1.5F, -3.0F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
-    public static final PickaxeItem MOLYBDENUM_PICKAXE = register("molybdenum_pickaxe", new PickaxeItem(ModToolMaterials.MOLYBDENUM, 1, -2.8F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
-    public static final AxeItem MOLYBDENUM_AXE = register("molybdenum_axe", new AxeItem(ModToolMaterials.MOLYBDENUM, 7.0F, -3.2F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
-    public static final HoeItem MOLYBDENUM_HOE = register("molybdenum_hoe", new HoeItem(ModToolMaterials.MOLYBDENUM, -1, -2.0F, new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
-    public static final ArmorItem MOLYBDENUM_HELMET = register("molybdenum_helmet", new ArmorItem(ModArmorMaterials.MOLYBDENUM, ArmorItem.Type.HELMET, new Item.Settings()));
-    public static final ArmorItem MOLYBDENUM_CHESTPLATE = register("molybdenum_chestplate", new ArmorItem(ModArmorMaterials.MOLYBDENUM, ArmorItem.Type.CHESTPLATE, new Item.Settings()));
-    public static final ArmorItem MOLYBDENUM_LEGGINGS = register("molybdenum_leggings", new ArmorItem(ModArmorMaterials.MOLYBDENUM, ArmorItem.Type.LEGGINGS, new Item.Settings()));
-    public static final ArmorItem MOLYBDENUM_BOOTS = register("molybdenum_boots", new ArmorItem(ModArmorMaterials.MOLYBDENUM, ArmorItem.Type.BOOTS, new Item.Settings()));
+    // madness-healing properties
+    public static final MolybdenumSwordItem MOLYBDENUM_SWORD = register("molybdenum_sword", new MolybdenumSwordItem(ModToolMaterials.MOLYBDENUM, 3, -2.4F, new Item.Settings(),-1),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final MolybdenumShovelItem MOLYBDENUM_SHOVEL = register("molybdenum_shovel", new MolybdenumShovelItem(ModToolMaterials.MOLYBDENUM, 1.5F, -3.0F, new Item.Settings(),-1),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final MolybdenumPickaxeItem MOLYBDENUM_PICKAXE = register("molybdenum_pickaxe", new MolybdenumPickaxeItem(ModToolMaterials.MOLYBDENUM, 1, -2.8F, new Item.Settings(),-1),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final MolybdenumAxeItem MOLYBDENUM_AXE = register("molybdenum_axe", new MolybdenumAxeItem(ModToolMaterials.MOLYBDENUM, 7.0F, -3.2F, new Item.Settings(),-1),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final MolybdenumHoeItem MOLYBDENUM_HOE = register("molybdenum_hoe", new MolybdenumHoeItem(ModToolMaterials.MOLYBDENUM, -1, -2.0F, new Item.Settings(),-1),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final MolybdenumArmorItem MOLYBDENUM_HELMET = register("molybdenum_helmet", new MolybdenumArmorItem(ModArmorMaterials.MOLYBDENUM, ArmorItem.Type.HELMET, new Item.Settings(),-1));
+    public static final MolybdenumArmorItem MOLYBDENUM_CHESTPLATE = register("molybdenum_chestplate", new MolybdenumArmorItem(ModArmorMaterials.MOLYBDENUM, ArmorItem.Type.CHESTPLATE, new Item.Settings(),-1));
+    public static final MolybdenumArmorItem MOLYBDENUM_LEGGINGS = register("molybdenum_leggings", new MolybdenumArmorItem(ModArmorMaterials.MOLYBDENUM, ArmorItem.Type.LEGGINGS, new Item.Settings(),-1));
+    public static final MolybdenumArmorItem MOLYBDENUM_BOOTS = register("molybdenum_boots", new MolybdenumArmorItem(ModArmorMaterials.MOLYBDENUM, ArmorItem.Type.BOOTS, new Item.Settings(),-1));
 
     // octangulite
     public static final OctanguliteSwordItem OCTANGULITE_SWORD = register("octangulite_sword", new OctanguliteSwordItem(ModToolMaterials.OCTANGULITE, 3, -2.4F, new Item.Settings(),1),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom));

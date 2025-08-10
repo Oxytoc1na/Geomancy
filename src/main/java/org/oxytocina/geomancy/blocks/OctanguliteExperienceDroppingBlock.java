@@ -1,6 +1,5 @@
 package org.oxytocina.geomancy.blocks;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ExperienceDroppingBlock;
 import net.minecraft.server.world.ServerWorld;
@@ -11,7 +10,7 @@ import net.minecraft.util.math.random.Random;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
 import org.oxytocina.geomancy.util.Toolbox;
 
-public class OctanguliteExperienceDroppingBlock extends ExperienceDroppingBlock implements IOctanguliteBlock {
+public class OctanguliteExperienceDroppingBlock extends ExperienceDroppingBlock implements IMaddeningBlock {
     public final float maddeningSpeed;
 
     public OctanguliteExperienceDroppingBlock(Settings settings, IntProvider experience, float maddeningSpeed) {

@@ -1,9 +1,11 @@
 package org.oxytocina.geomancy.client.rendering;
 
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
+import net.minecraft.item.Item;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.SpellComponentStoringItem;
+import org.oxytocina.geomancy.items.jewelry.IJewelryItem;
 import org.oxytocina.geomancy.items.jewelry.JewelryItem;
 
 public class ModModelPredicateProvider {
@@ -11,8 +13,8 @@ public class ModModelPredicateProvider {
     public static void register(){
 
         // jewelry
-        for(JewelryItem item : JewelryItem.List) {
-            ModelPredicateProviderRegistry.register(item, Geomancy.locate("has_gem"), (itemStack, clientWorld, livingEntity, seed) -> item.getHasGemPredicate(itemStack));
+        for(Item item : IJewelryItem.List) {
+            ModelPredicateProviderRegistry.register(item, Geomancy.locate("has_gem"), (itemStack, clientWorld, livingEntity, seed) -> ((IJewelryItem)item).getHasGemPredicate(itemStack));
         }
 
         // spell components

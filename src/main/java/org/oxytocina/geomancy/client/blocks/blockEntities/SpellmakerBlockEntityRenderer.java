@@ -38,17 +38,10 @@ public class SpellmakerBlockEntityRenderer<T extends SpellmakerBlockEntity> impl
     public SpellmakerBlockEntityRenderer(BlockEntityRendererFactory.Context ctx) {
         TexturedModelData texturedModelData = getTexturedModelData();
         root = texturedModelData.createModel();
-        var fakeRoot = root.getChild("root");
-        driver = fakeRoot.getChild("driver");
-        piston = fakeRoot.getChild("piston");
-        cap = fakeRoot.getChild("cap");
     }
 
     private static final SpriteIdentifier SPRITE_IDENTIFIER = new SpriteIdentifier(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, Geomancy.locate("block/compacting_chest"));
     private final ModelPart root;
-    private final ModelPart driver;
-    private final ModelPart piston;
-    private final ModelPart cap;
 
     public static @NotNull TexturedModelData getTexturedModelData() {
         ModelData modelData = new ModelData();
@@ -64,7 +57,7 @@ public class SpellmakerBlockEntityRenderer<T extends SpellmakerBlockEntity> impl
         //        .uv(0, 43).cuboid(-7.5F, -2.0F, -7.5F, 15.0F, 2.0F, 15.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
 
         for (int i = 0; i < 3; i++) {
-            ModelPartData driver = root.addChild("driver",
+            ModelPartData driver = root.addChild("driver"+i,
                     ModelPartBuilder.create()
                             .uv(53, 38)
                             .cuboid(-3.5F, -36.0F, -3.5F, 7.0F, 11.0F, 7.0F, new Dilation(0.0F)),
@@ -87,9 +80,9 @@ public class SpellmakerBlockEntityRenderer<T extends SpellmakerBlockEntity> impl
         var pistonPos = 14;
         var driverPos = 6;
         var capPos = 5;
-        piston.pivotY = -22 - pistonPos;
-        driver.pivotY = 21 - driverPos;
-        cap.pivotY = 21 - capPos;
+        //piston.pivotY = -22 - pistonPos;
+        //driver.pivotY = 21 - driverPos;
+        //cap.pivotY = 21 - capPos;
 
         VertexConsumer vertexConsumer = SPRITE_IDENTIFIER.getVertexConsumer(vertexConsumers, RenderLayer::getEntityCutoutNoCull);
         root.render(matrixStack, vertexConsumer, light, overlay);

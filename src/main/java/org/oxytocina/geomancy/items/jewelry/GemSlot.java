@@ -49,8 +49,8 @@ public class GemSlot {
     static{
 
         // Diamond gems give 2 Armor per quality
-        register(Settings.create(Items.DIAMOND).setColor(0,1,1).setDifficulty(10).setProgressCost(10).withGenericTooltip(Formatting.AQUA,(q)->Integer.toString(Math.round(q*2))).setModifier((itemStack, gemSlot, slotReference, livingEntity, uuid, modifiers) -> {
-            if(JewelryItem.isPendant(itemStack)) return modifiers;
+        register(Settings.create(Items.DIAMOND).setColor(0,1,1).setDifficulty(10).setProgressCost(10).withGenericTooltip((q)->Integer.toString(Math.round(q*2))).setModifier((itemStack, gemSlot, slotReference, livingEntity, uuid, modifiers) -> {
+            if(IJewelryItem.isPendant(itemStack)) return modifiers;
 
             float value = 2*gemSlot.getEffectiveQuality(itemStack,livingEntity);
             String id = "geomancy:jewelry_diamond_gem_armor";
@@ -80,25 +80,25 @@ public class GemSlot {
             return modifiers;
         }));
         // fortune
-        register(Settings.create(Items.EMERALD).setColor(0,1,0).setDifficulty(15).setProgressCost(10).withGenericTooltip(Formatting.GREEN,GemSlot::QualityRounded));
+        register(Settings.create(Items.EMERALD).setColor(0,1,0).setDifficulty(15).setProgressCost(10).withGenericTooltip(GemSlot::QualityRounded));
         // more xp drops
-        register(Settings.create(Items.LAPIS_LAZULI).setColor(0,0,1).setDifficulty(10).setProgressCost(10).withGenericTooltip(Formatting.BLUE,GemSlot::QualityPercent));
-        register(Settings.create(ModItems.TOURMALINE).setColor(0,0,1).setDifficulty(10).setProgressCost(10).withGenericTooltip(Formatting.BLUE,GemSlot::QualityPercent).withGenericStatusEffectFunction(StatusEffects.SPEED,-1,0.01f));
-        register(Settings.create(ModItems.ORTHOCLASE).setColor(0,0,1).setDifficulty(10).setProgressCost(10).withGenericTooltip(Formatting.GRAY,GemSlot::QualityPercent));
-        register(Settings.create(ModItems.PERIDOT).setColor(0,0,1).setDifficulty(10).setProgressCost(10).withGenericTooltip(Formatting.GREEN,GemSlot::QualityPercent));
-        register(Settings.create(ModItems.AXINITE).setColor(0,0,1).setDifficulty(10).setProgressCost(10).withGenericTooltip(Formatting.BLUE,GemSlot::QualityPercent).withGenericStatusEffectFunction(StatusEffects.HASTE,-1,0.01f));
+        register(Settings.create(Items.LAPIS_LAZULI).setColor(0,0,1).setDifficulty(10).setProgressCost(10).withGenericTooltip(GemSlot::QualityPercent));
+        register(Settings.create(ModItems.TOURMALINE).setColor(0xFF2D41).setDifficulty(10).setProgressCost(10).withGenericTooltip(GemSlot::QualityPercent).withGenericStatusEffectFunction(StatusEffects.SPEED,-1,0.01f));
+        register(Settings.create(ModItems.ORTHOCLASE).setColor(0x90785D).setDifficulty(10).setProgressCost(10).withGenericTooltip(GemSlot::QualityPercent));
+        register(Settings.create(ModItems.PERIDOT).setColor(0xE5F070).setDifficulty(10).setProgressCost(10).withGenericTooltip(GemSlot::QualityPercent));
+        register(Settings.create(ModItems.AXINITE).setColor(0xAE7651).setDifficulty(10).setProgressCost(10).withGenericTooltip(GemSlot::QualityPercent).withGenericStatusEffectFunction(StatusEffects.HASTE,-1,0.01f));
         // quicker mana charge
-        register(Settings.create(Items.AMETHYST_SHARD).setColor(0x8D6ACC).setDifficulty(30).setProgressCost(30).withGenericTooltip(Formatting.DARK_PURPLE,GemSlot::QualityPercent));
+        register(Settings.create(Items.AMETHYST_SHARD).setColor(0x8D6ACC).setDifficulty(30).setProgressCost(30).withGenericTooltip(GemSlot::QualityPercent));
         // larger mana storage
-        register(Settings.create(Items.ECHO_SHARD).setColor(0x0A5060).setDifficulty(45).setProgressCost(30).withGenericTooltip(Formatting.DARK_GRAY,GemSlot::QualityPercent));
+        register(Settings.create(Items.ECHO_SHARD).setColor(0x0A5060).setDifficulty(45).setProgressCost(30).withGenericTooltip(GemSlot::QualityPercent));
         // heart of the sea gives water breathing
-        register(Settings.create(Items.HEART_OF_THE_SEA).setColor(0x1F96B1).setDifficulty(20).setProgressCost(40).withGenericTooltip(Formatting.BLUE,GemSlot::QualityEmpty).withGenericStatusEffectFunction(StatusEffects.WATER_BREATHING,0,0));
+        register(Settings.create(Items.HEART_OF_THE_SEA).setColor(0x1F96B1).setDifficulty(20).setProgressCost(40).withGenericTooltip(GemSlot::QualityEmpty).withGenericStatusEffectFunction(StatusEffects.WATER_BREATHING,0,0));
         // regen
-        register(Settings.create(Items.END_CRYSTAL).setColor(0xBE95D4).setDifficulty(20).setProgressCost(40).withGenericTooltip(Formatting.LIGHT_PURPLE,GemSlot::QualityEmpty).withGenericStatusEffectFunction(StatusEffects.REGENERATION,-1,0.01f));
-        register(Settings.create(Items.ENDER_PEARL).setColor(0x258474).setDifficulty(20).setProgressCost(40).withGenericTooltip(Formatting.DARK_AQUA,GemSlot::QualityEmpty));
-        register(Settings.create(Items.PRISMARINE_CRYSTALS).setColor(0x258474).setDifficulty(20).setProgressCost(40).withGenericTooltip(Formatting.DARK_AQUA,GemSlot::QualityEmpty));
-        register(Settings.create(Items.ENDER_EYE).setColor(0x71AC49).setDifficulty(20).setProgressCost(40).withGenericTooltip(Formatting.GREEN,GemSlot::QualityEmpty));
-        register(Settings.create(Items.NETHER_STAR).setColor(0xFDFFA8).setDifficulty(60).setProgressCost(120).withGenericTooltip(Formatting.YELLOW,GemSlot::QualityEmpty));
+        register(Settings.create(Items.END_CRYSTAL).setColor(0xBE95D4).setDifficulty(20).setProgressCost(40).withGenericTooltip(GemSlot::QualityEmpty).withGenericStatusEffectFunction(StatusEffects.REGENERATION,-1,0.01f));
+        register(Settings.create(Items.ENDER_PEARL).setColor(0x258474).setDifficulty(20).setProgressCost(40).withGenericTooltip(GemSlot::QualityEmpty));
+        register(Settings.create(Items.PRISMARINE_CRYSTALS).setColor(0x258474).setDifficulty(20).setProgressCost(40).withGenericTooltip(GemSlot::QualityEmpty));
+        register(Settings.create(Items.ENDER_EYE).setColor(0x71AC49).setDifficulty(20).setProgressCost(40).withGenericTooltip(GemSlot::QualityEmpty));
+        register(Settings.create(Items.NETHER_STAR).setColor(0xFDFFA8).setDifficulty(60).setProgressCost(120).withGenericTooltip(GemSlot::QualityEmpty));
 
     }
 
@@ -163,7 +163,7 @@ public class GemSlot {
     public float getEffectiveQuality(ItemStack stack, LivingEntity entity){
         return quality *
                 (1 + ModEnchantments.getLevel(stack,ModEnchantments.BRILLIANCE) * 0.2F)
-                * JewelryItem.getGemQualityMultiplierFor(this,stack,entity);
+                * IJewelryItem.getGemQualityMultiplierFor(this,stack,entity);
     }
 
     public static Settings getSettings(Item item){
@@ -246,12 +246,15 @@ public class GemSlot {
         public Settings setUnequip(Function4<ItemStack,GemSlot, SlotReference, LivingEntity,Boolean> f){unequipFunction=f;return this;}
         public Settings setModifier(Function6<ItemStack,GemSlot, SlotReference, LivingEntity,UUID,Multimap<EntityAttribute, EntityAttributeModifier>,Multimap<EntityAttribute, EntityAttributeModifier>> f){modifierFunction=f;return this;}
         public Settings setTooltip(Function6<ItemStack,GemSlot,LivingEntity, World , List<Text> , TooltipContext ,Boolean> f){tooltipFunction=f;return this;}
-        public Settings withGenericTooltip(net.minecraft.util.Formatting formatting, Function<Float,String> qualityFunc){ return setTooltip((itemStack, gemSlot, wearer, world, texts, tooltipContext) -> {
+        public Settings withGenericTooltip(Function<Float,String> qualityFunc){ return setTooltip((itemStack, gemSlot, wearer, world, texts, tooltipContext) -> {
+            var gemText = Text.translatable(gemSlot.gemItem.getTranslationKey());
+            gemText.setStyle(gemText.getStyle().withColor(gemSlot.getColor()));
+
             texts.add(Text.translatable("tooltip.geomancy.jewelry.quality").formatted(Formatting.AQUA)
                     .append(" ")
                     .append(gemSlot.getQualityString(itemStack,wearer)).append(" ")
-                    .append(Text.translatable(gemSlot.gemItem.getTranslationKey()).formatted(formatting)));
-            if(!JewelryItem.isPendant(itemStack))
+                    .append(gemText));
+            if(!IJewelryItem.isPendant(itemStack))
                 texts.add(Text.literal("  ").append(Text.translatable("tooltip.geomancy.jewelry.gemeffect."+Registries.ITEM.getId(gemSlot.gemItem).getPath(),qualityFunc.apply(gemSlot.getEffectiveQuality(itemStack,wearer))).formatted(Formatting.DARK_GRAY)));
             return true;});};
 

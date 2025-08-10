@@ -26,6 +26,7 @@ import org.oxytocina.geomancy.effects.ModStatusEffects;
 import org.oxytocina.geomancy.entity.ManaStoringItemData;
 import org.oxytocina.geomancy.entity.PlayerData;
 import org.oxytocina.geomancy.items.IManaStoringItem;
+import org.oxytocina.geomancy.items.jewelry.IJewelryItem;
 import org.oxytocina.geomancy.items.jewelry.JewelryItem;
 import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.registries.ModBiomeTags;
@@ -191,7 +192,7 @@ public class ManaUtil {
     }
 
     public static float getRegenSpeedMultiplier(ServerPlayerEntity player){
-        float res = JewelryItem.getManaRegenMultiplier(player);
+        float res = IJewelryItem.getManaRegenMultiplier(player);
 
         if(player.hasStatusEffect(ModStatusEffects.MOURNING))
         {

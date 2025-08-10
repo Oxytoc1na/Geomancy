@@ -11,6 +11,7 @@ import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.util.StellgeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +28,9 @@ public class StellgeTooltippedItem extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        float knowledge = 0;
+        float knowledge = 1;
         var base = Text.translatable(descriptionLangKey).getString();
-        Text res = Text.literal(base).setStyle(Style.EMPTY.withFont(Geomancy.locate("stellgian")));
+        Text res = StellgeUtil.stellgify(Text.literal(base),2,knowledge);
         tooltip.add(res);
     }
 }

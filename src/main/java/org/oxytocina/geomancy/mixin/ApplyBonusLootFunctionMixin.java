@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.loot.function.ApplyBonusLootFunction;
+import org.oxytocina.geomancy.items.jewelry.IJewelryItem;
 import org.oxytocina.geomancy.items.jewelry.JewelryItem;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -37,7 +38,7 @@ public class ApplyBonusLootFunctionMixin {
         if (itemStack != null) {
             int i = EnchantmentHelper.getLevel(this.enchantment, itemStack);
             if(context.get(LootContextParameters.THIS_ENTITY) instanceof LivingEntity le)
-                i += Math.round(JewelryItem.getFortuneBonus(le));
+                i += Math.round(IJewelryItem.getFortuneBonus(le));
             int j = this.formula.getValue(context.getRandom(), stack.getCount(), i);
             stack.setCount(j);
         }

@@ -2,11 +2,11 @@ package org.oxytocina.geomancy.items;
 
 import net.minecraft.item.Item;
 
-public class OctanguliteItem extends Item implements IMaddeningItem{
+public class MaddeningItem extends Item implements IMaddeningItem{
 
     public final float maddeningSpeed;
 
-    public OctanguliteItem(Settings settings, float maddeningSpeed) {
+    public MaddeningItem(Settings settings, float maddeningSpeed) {
         super(settings);
         this.maddeningSpeed =maddeningSpeed;
     }

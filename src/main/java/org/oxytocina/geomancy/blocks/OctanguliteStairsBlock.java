@@ -9,17 +9,10 @@ import net.minecraft.util.math.random.Random;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
 import org.oxytocina.geomancy.util.Toolbox;
 
-public class OctanguliteStairsBlock extends StairsBlock implements IOctanguliteBlock {
-    public final float maddeningSpeed;
+public class OctanguliteStairsBlock extends MaddeningStairsBlock {
 
     public OctanguliteStairsBlock(BlockState baseBlockState, Settings settings, float maddeningSpeed) {
-        super(baseBlockState, settings);
-        this.maddeningSpeed=maddeningSpeed;
-    }
-
-    @Override
-    public float getAmbientMaddeningSpeed() {
-        return maddeningSpeed;
+        super(baseBlockState, settings,maddeningSpeed);
     }
 
     @Override

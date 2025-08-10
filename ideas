@@ -14,6 +14,8 @@ x Titanium
 -- hard to work with, many gem slots
 x Molybdenium
 -- normal to work with, medium gem slots
+-- magic shielding properties
+-- disperses souls
 x Octangulite
 -- alien, exclusively found in ruined alien structures
 -- in the form of scrap, then refined
@@ -144,7 +146,7 @@ removing pendants and similar updates modifiers
 buried in raw octangulite overlay is BUSTED as SHIT!!!!!!
 
 stellge
-- copper : engineers
+x copper : engineers
 - titanium : warriors
 - lead : pilots
 - octangulite : casters

@@ -101,5 +101,215 @@
     },
     "done": true
   },
+  "minecraft:recipes/combat/diamond_leggings": {
+    "criteria": {
+      "has_diamond": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_octangulite_ring": {
+    "criteria": {
+      "default_conditions": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/raw_iron_block": {
+    "criteria": {
+      "has_raw_iron": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/octangulite_ingot_decompress_to_octangulite_nugget": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/diamond_sword": {
+    "criteria": {
+      "has_diamond": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/jukebox": {
+    "criteria": {
+      "has_diamond": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/iron_ingot_from_blasting_iron_ore": {
+    "criteria": {
+      "has_iron_ore": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_chestplate": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/diamond_chestplate": {
+    "criteria": {
+      "has_diamond": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_octangulite_necklace": {
+    "criteria": {
+      "default_conditions": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/diamond_pickaxe": {
+    "criteria": {
+      "has_diamond": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_leggings": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_hoe": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/diamond_hoe": {
+    "criteria": {
+      "has_diamond": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/diamond_shovel": {
+    "criteria": {
+      "has_diamond": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/diamond_boots": {
+    "criteria": {
+      "has_diamond": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_shovel": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_boots": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/iron_ingot_from_smelting_raw_iron": {
+    "criteria": {
+      "has_raw_iron": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/iron_ingot_from_smelting_iron_ore": {
+    "criteria": {
+      "has_iron_ore": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_sword": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_axe": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/diamond_helmet": {
+    "criteria": {
+      "has_diamond": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_pickaxe": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/jewelry_mithril_chestplate": {
+    "criteria": {
+      "has_ingredient": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_spellstorage_large": {
+    "criteria": {
+      "default_conditions": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/jewelry_mithril_helmet": {
+    "criteria": {
+      "has_ingredient": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_spellstorage_medium": {
+    "criteria": {
+      "default_conditions": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/iron_ingot_from_blasting_raw_iron": {
+    "criteria": {
+      "has_raw_iron": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_octangulite_pendant": {
+    "criteria": {
+      "default_conditions": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/diamond_block": {
+    "criteria": {
+      "has_diamond": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "minecraft:story/mine_diamond": {
+    "criteria": {
+      "diamond": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/diamond_axe": {
+    "criteria": {
+      "has_diamond": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/octangulite_ingot_compress_to_octangulite_block": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_helmet": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-08-10 12:47:16 +0200"
+    },
+    "done": true
+  },
   "DataVersion": 3465
 }

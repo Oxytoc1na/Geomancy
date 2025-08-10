@@ -197,6 +197,17 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("item.MODID.lead_chestplate"     , "Lead Chestplate");
             add("item.MODID.lead_helmet"         , "Lead Helmet");
             add("item.MODID.lead_apple"          , "Lead Apple");
+            add("item.MODID.plumbometer"         , "Plumbometer");
+            add("item.MODID.plumbometer.desc"    , "Painfully measures blood lead levels");
+            add("MODID.plumbometer.start"        , "Reading Blood Lead Levels of %1$s...");
+            add("MODID.plumbometer.readout"      , "Blood Lead Levels: %1$s");
+            add("MODID.plumbometer.nouser"       , "No valid user!");
+            add("MODID.plumbometer.0"            , "None");
+            add("MODID.plumbometer.1"            , "Negligible");
+            add("MODID.plumbometer.2"            , "Notable");
+            add("MODID.plumbometer.3"            , "Poisoned");
+            add("MODID.plumbometer.4"            , "Heavily Poisoned");
+            add("MODID.plumbometer.5"            , "Extremely Poisoned");
 
             add("item.MODID.raw_octangulite"        , "Raw Octangulite");
             add("item.MODID.octangulite_ingot"      , "Octangulite Ingot");
@@ -413,6 +424,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         // damage types
         add("death.attack.geomancy.duplicate_trinkets", "%1$s felt their own hubris");
         add("death.attack.geomancy.molten_gold", "%1$s fell into King Midas' bathtub");
+        add("death.attack.geomancy.plumbometer", "%1$s died of Hypochondria");
 
         // Misc
         add("itemGroup.MODID.main",     "Geomancy");
@@ -440,6 +452,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addAdvancement(".main.get_gilded_deepslate","Adorned","Discover Gilded Deepslate");
 
             addAdvancement(".main.simple_duplicate_trinkets","Hubris","Try and fail to equip two artifacts of the same type at once");
+            addAdvancement(".main.simple_tried_to_take_smithery_result","You've gotta hammer it!","Hit the Smithery with a Hammer to craft!");
             addAdvancement(".main.simple_lead_poisoned","Delicious","Experience symptoms of heavy metal poisoning");
             addAdvancement(".main.simple_maddened","The silence after sanity","Let the whispers get to you");
 

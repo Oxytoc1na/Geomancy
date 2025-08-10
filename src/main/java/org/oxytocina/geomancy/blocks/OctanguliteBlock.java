@@ -9,19 +9,11 @@ import net.minecraft.util.math.random.Random;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
 import org.oxytocina.geomancy.util.Toolbox;
 
-public class OctanguliteBlock extends Block implements IOctanguliteBlock {
-    public final float maddeningSpeed;
+public class OctanguliteBlock extends MaddeningBlock {
 
     public OctanguliteBlock(Settings settings, float maddeningSpeed) {
-        super(settings);
-        this.maddeningSpeed = maddeningSpeed;
+        super(settings,maddeningSpeed);
     }
-
-    @Override
-    public float getAmbientMaddeningSpeed() {
-        return maddeningSpeed;
-    }
-
     @Override
     public boolean hasRandomTicks(BlockState state) {
         return true;

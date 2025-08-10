@@ -11,6 +11,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import org.oxytocina.geomancy.client.GeomancyClient;
 import org.oxytocina.geomancy.items.ModItems;
+import org.oxytocina.geomancy.items.jewelry.IJewelryItem;
 import org.oxytocina.geomancy.util.SimplexNoise;
 import org.oxytocina.geomancy.util.Toolbox;
 import org.oxytocina.geomancy.blocks.ModBlocks;
@@ -83,7 +84,7 @@ public class ModColorizationHandler {
                 ModBlocks.TOURMALINE_ORE.asItem(),ModBlocks.DEEPSLATE_TOURMALINE_ORE.asItem());
 
         // jewelry
-        for(JewelryItem jewelry : JewelryItem.List){ColorProviderRegistry.ITEM.register(jewelry::getColor,jewelry);}
+        for(Item jewelry : IJewelryItem.List){ColorProviderRegistry.ITEM.register((s,t)->((IJewelryItem)jewelry).getColor(s,t),jewelry);}
 
         // octangulite items
         addOctanguliteItem(ModItems.RAW_OCTANGULITE,0.01F,true);

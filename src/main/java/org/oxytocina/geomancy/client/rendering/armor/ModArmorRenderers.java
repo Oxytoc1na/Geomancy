@@ -24,9 +24,17 @@ public class ModArmorRenderers {
 					ModItems.OCTANGULITE_LEGGINGS,
 					ModItems.OCTANGULITE_BOOTS
 			);
+	public static final List<Item> MITHRIL_ARMOR =
+			List.of(
+					ModItems.MITHRIL_HELMET,
+					ModItems.MITHRIL_CHESTPLATE,
+					ModItems.MITHRIL_LEGGINGS,
+					ModItems.MITHRIL_BOOTS
+			);
 	
 	public static void register() {
 		ArmorRenderer.register(OctanguliteArmorModel::renderPartStatic, OCTANGULITE_ARMOR.toArray(new Item[0]));
+		ArmorRenderer.register(MithrilArmorModel::renderPartStatic, MITHRIL_ARMOR.toArray(new Item[0]));
 	}
 
 	public static void renderPart(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, ItemStack stack, Model model, Identifier texture,float r, float g, float b, float a) {

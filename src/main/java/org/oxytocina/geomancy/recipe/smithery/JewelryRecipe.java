@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.items.ModItems;
+import org.oxytocina.geomancy.items.jewelry.IJewelryItem;
 import org.oxytocina.geomancy.items.jewelry.JewelryItem;
 import org.oxytocina.geomancy.recipe.GatedModRecipe;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
@@ -75,11 +76,11 @@ public class JewelryRecipe extends GatedModRecipe<Inventory> implements Smithery
 
         ItemStack baseStack = getRecipeBase(inv);
         if(baseStack.isEmpty()) return res;
-        if(!(baseStack.getItem() instanceof JewelryItem jewelryItem)) return res;
-        var presentGems = JewelryItem.getSlots(baseStack);
+        if(!(baseStack.getItem() instanceof IJewelryItem jewelryItem)) return res;
+        var presentGems = IJewelryItem.getSlots(baseStack);
 
         // fetch free slots
-        int freeSlots = jewelryItem.gemSlotCount-presentGems.size();
+        int freeSlots = jewelryItem.getGemSlotCount()-presentGems.size();
 
         // fetch ingredient gems
         HashMap<Integer,ItemStack> gemSlotsToAdd = getAddedGems(inv,freeSlots);
@@ -171,7 +172,7 @@ public class JewelryRecipe extends GatedModRecipe<Inventory> implements Smithery
         // fetch already slotted gems
         ItemStack baseStack = getRecipeBase(inv);
         if(baseStack.isEmpty() || !(baseStack.getItem() instanceof JewelryItem jewelryItem)) return difficulty;
-        var presentGems = JewelryItem.getSlots(baseStack);
+        var presentGems = IJewelryItem.getSlots(baseStack);
 
         // fetch free slots
         int freeSlots = jewelryItem.gemSlotCount-presentGems.size();
@@ -192,12 +193,12 @@ public class JewelryRecipe extends GatedModRecipe<Inventory> implements Smithery
         // fetch already slotted gems
         ItemStack baseStack = getRecipeBase(inv);
 
-        if(!(baseStack.getItem() instanceof JewelryItem jewelryItem)) return 1000000;
+        if(!(baseStack.getItem() instanceof IJewelryItem jewelryItem)) return 1000000;
 
-        var presentGems = JewelryItem.getSlots(baseStack);
+        var presentGems = IJewelryItem.getSlots(baseStack);
 
         // fetch free slots
-        int freeSlots = jewelryItem.gemSlotCount-presentGems.size();
+        int freeSlots = jewelryItem.getGemSlotCount()-presentGems.size();
 
         HashMap<Integer,ItemStack> gemsToAdd = getAddedGems(inv,freeSlots);
 

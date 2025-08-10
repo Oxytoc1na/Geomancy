@@ -631,11 +631,8 @@ public class ModLootTables {
     private static LootPool.Builder premadeSpellsBuilder(){
         var res = LootPool.builder();
 
-        // print hello world#
         // broken fireball
-        // broken teleport (missing +dir)
         // broken blink (up)
-        // self-lightning
 
         final HashMap<String,Integer> spells = new HashMap<>();
 

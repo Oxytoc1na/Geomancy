@@ -22,6 +22,12 @@ public class ModBiomeTags {
     public static final TagKey<Biome> VPB_HIGHEST = of( "vpb_highest");
     public static final TagKey<Biome> VPB_INSANE = of("vpb_insane");
 
+    public static final TagKey<Biome> HAS_PERIDOT_ORE = of( "has_peridot_ore");
+    public static final TagKey<Biome> HAS_AXINITE_ORE = of( "has_axinite_ore");
+    public static final TagKey<Biome> HAS_ORTHOCLASE_ORE = of( "has_orthoclase_ore");
+    public static final TagKey<Biome> HAS_TOURMALINE_ORE = of( "has_tourmaline_ore");
+
+
     private static TagKey<Biome> of(String id) {
         return TagKey.of(RegistryKeys.BIOME, Geomancy.locate(id));
     }

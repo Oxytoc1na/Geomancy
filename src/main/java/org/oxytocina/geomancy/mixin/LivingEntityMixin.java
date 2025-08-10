@@ -20,6 +20,7 @@ import net.minecraft.util.math.*;
 import net.minecraft.world.*;
 import org.jetbrains.annotations.*;
 import org.oxytocina.geomancy.entity.TouchingFluidAware;
+import org.oxytocina.geomancy.items.jewelry.IJewelryItem;
 import org.oxytocina.geomancy.items.jewelry.JewelryItem;
 import org.oxytocina.geomancy.mixin.EntityMixin;
 import org.oxytocina.geomancy.registries.ModFluidTags;
@@ -97,7 +98,7 @@ public abstract class LivingEntityMixin {
     private float geomancy$getXpDropMultiplier(PlayerEntity attackingPlayer) {
         float res = 1;
 
-        res = JewelryItem.getXPMultiplier(attackingPlayer);
+        res = IJewelryItem.getXPMultiplier(attackingPlayer);
 
         return res;
     }

@@ -27,6 +27,7 @@ public class JewelryItemSettings {
     public enum TrinketSlot{
         ANY,
         RING,
-        NECKLACE
+        NECKLACE,
+        ARMOR
     }
 }

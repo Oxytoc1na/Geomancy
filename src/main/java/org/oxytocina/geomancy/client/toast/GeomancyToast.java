@@ -18,10 +18,10 @@ import java.util.*;
 @Environment(EnvType.CLIENT)
 public class GeomancyToast implements Toast {
 
-    private final Identifier TEXTURE = Geomancy.locate("textures/gui/toasts.png");
-    private final ItemStack itemStack;
-    private final SoundEvent soundEvent;
-    private boolean soundPlayed;
+    public final Identifier TEXTURE = Geomancy.locate("textures/gui/toasts.png");
+    public final ItemStack itemStack;
+    public final SoundEvent soundEvent;
+    public boolean soundPlayed;
 
     public GeomancyToast(ItemStack itemStack, SoundEvent soundEvent) {
         this.itemStack = itemStack;
@@ -29,8 +29,8 @@ public class GeomancyToast implements Toast {
         this.soundPlayed = false;
     }
 
-    public static void showGeomancyToast(MinecraftClient client, ItemStack itemStack, SoundEvent soundEvent) {
-        client.getToastManager().add(new GeomancyToast(itemStack, soundEvent));
+    public static void show(GeomancyToast t){
+        MinecraftClient.getInstance().getToastManager().add(t);
     }
 
     @Override

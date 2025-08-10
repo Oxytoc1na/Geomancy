@@ -25,7 +25,9 @@ import static org.oxytocina.geomancy.items.ModItems.*;
 import static org.oxytocina.geomancy.blocks.ModBlocks.*;
 
 import org.oxytocina.geomancy.items.SpellComponentStoringItem;
+import org.oxytocina.geomancy.items.jewelry.IJewelryItem;
 import org.oxytocina.geomancy.items.jewelry.JewelryItem;
+import org.oxytocina.geomancy.progression.advancement.ModAdvancementCriterion;
 import org.oxytocina.geomancy.recipe.smithery.SmithingIngredient;
 import org.oxytocina.geomancy.registries.ModItemTags;
 import org.oxytocina.geomancy.spells.SpellBlock;
@@ -71,7 +73,6 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         Items.IRON_INGOT,Blocks.IRON_BLOCK,Items.GOLD_INGOT}).build()))
                 .offerTo(exporter);
 
-        AddSurrounded(Items.APPLE,LEAD_INGOT,LEAD_APPLE,1);
 
         // smelting recipes
         AddSmeltAndBlastRecipe(List.of(
@@ -132,8 +133,8 @@ public class ModRecipeProvider extends FabricRecipeProvider {
             }
 
             // jewelry gem slotting recipes
-            for(JewelryItem item : JewelryItem.List){
-                AddSmitheryJewelryRecipe(item);
+            for(Item item : IJewelryItem.List){
+                AddSmitheryJewelryRecipe((IJewelryItem)item);
             }
 
 
@@ -462,6 +463,11 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
         // tools
         AddToolBatch(LEAD_INGOT,LEAD_SWORD,LEAD_SHOVEL,LEAD_PICKAXE,LEAD_AXE,LEAD_HOE);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, PLUMBOMETER, 1).input('#', LEAD_INGOT)
+                .pattern("#")
+                .pattern("#").criterion(hasItem(SOUL_OAK_PLANKS), ModAdvancementCriterion.conditionsFromAdvancement(Geomancy.locate("main/simple_lead_poisoned"))).offerTo(exporter);
+        AddSurrounded(Items.APPLE,LEAD_INGOT,LEAD_APPLE,1);
+
         AddToolBatch(TITANIUM_INGOT,TITANIUM_SWORD,TITANIUM_SHOVEL,TITANIUM_PICKAXE,TITANIUM_AXE,TITANIUM_HOE);
         AddToolBatch(MITHRIL_INGOT,MITHRIL_SWORD,MITHRIL_SHOVEL,MITHRIL_PICKAXE,MITHRIL_AXE,MITHRIL_HOE);
         AddToolBatch(MOLYBDENUM_INGOT,MOLYBDENUM_SWORD,MOLYBDENUM_SHOVEL,MOLYBDENUM_PICKAXE,MOLYBDENUM_AXE,MOLYBDENUM_HOE);
@@ -507,10 +513,10 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .pattern("#  ")
                 .pattern("## ")
                 .pattern("###").criterion(hasItem(SOUL_OAK_PLANKS), conditionsFromItem(SOUL_OAK_PLANKS)).offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, SOUL_OAK_SIGN, 3).input('#', SOUL_OAK_PLANKS).input('x', Items.STICK)
-                .pattern("###")
-                .pattern("###")
-                .pattern(" x ").criterion(hasItem(SOUL_OAK_PLANKS), conditionsFromItem(SOUL_OAK_PLANKS)).offerTo(exporter);
+        //ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, SOUL_OAK_SIGN, 3).input('#', SOUL_OAK_PLANKS).input('x', Items.STICK)
+        //        .pattern("###")
+        //        .pattern("###")
+        //        .pattern(" x ").criterion(hasItem(SOUL_OAK_PLANKS), conditionsFromItem(SOUL_OAK_PLANKS)).offerTo(exporter);
         offerShapelessRecipe(exporter,SOUL_OAK_BUTTON,SOUL_OAK_PLANKS,"misc",1);
         this.exporter=null;
     }
@@ -674,7 +680,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
     }
 
-    private void AddSmitheryJewelryRecipe(JewelryItem base){
+    private void AddSmitheryJewelryRecipe(IJewelryItem base){
 
         int progressRequiredBase = 10;
         int difficulty = 15;
@@ -682,9 +688,9 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         float gemDifficultyMultiplier = 1;
         int baseMishapWeight = base.getMishapWeight();
 
-        JewelryRecipeJsonBuilder.create(SmithingIngredient.ofItems(1,baseMishapWeight,4,base), progressRequiredBase,
+        JewelryRecipeJsonBuilder.create(SmithingIngredient.ofItems(1,baseMishapWeight,4,(Item)base), progressRequiredBase,
                 gemProgressCostMultiplier,difficulty,gemDifficultyMultiplier,RecipeCategory.MISC)
-                .criterion("has_ingredient",conditionsFromItem(base)).offerTo(exporter,new Identifier(Geomancy.MOD_ID,"jewelry_"+getItemName(base)));
+                .criterion("has_ingredient",conditionsFromItem((Item)base)).offerTo(exporter,new Identifier(Geomancy.MOD_ID,"jewelry_"+getItemName((Item)base)));
 
     }
 

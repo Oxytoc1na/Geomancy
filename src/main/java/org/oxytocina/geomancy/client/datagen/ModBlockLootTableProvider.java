@@ -33,20 +33,16 @@ public class ModBlockLootTableProvider extends FabricBlockLootTableProvider {
     @Override
     public void generate() {
 
-        addOreDrop(ModBlocks.MITHRIL_ORE,ModItems.RAW_MITHRIL);
-        addOreDrop(ModBlocks.DEEPSLATE_MITHRIL_ORE,ModItems.RAW_MITHRIL);
+        addOreDrop(ModBlocks.MITHRIL_ORE,ModBlocks.DEEPSLATE_MITHRIL_ORE,ModItems.RAW_MITHRIL);
+        addOreDrop(ModBlocks.OCTANGULITE_ORE,ModBlocks.DEEPSLATE_OCTANGULITE_ORE,ModItems.RAW_OCTANGULITE);
+        addOreDrop(ModBlocks.MOLYBDENUM_ORE,ModBlocks.DEEPSLATE_MOLYBDENUM_ORE,ModItems.RAW_MOLYBDENUM);
+        addOreDrop(ModBlocks.TITANIUM_ORE,ModBlocks.DEEPSLATE_TITANIUM_ORE,ModItems.RAW_TITANIUM);
+        addOreDrop(ModBlocks.LEAD_ORE,ModBlocks.DEEPSLATE_LEAD_ORE,ModItems.RAW_LEAD);
 
-        addOreDrop(ModBlocks.OCTANGULITE_ORE,ModItems.RAW_OCTANGULITE);
-        addOreDrop(ModBlocks.DEEPSLATE_OCTANGULITE_ORE,ModItems.RAW_OCTANGULITE);
-
-        addOreDrop(ModBlocks.MOLYBDENUM_ORE,ModItems.RAW_MOLYBDENUM);
-        addOreDrop(ModBlocks.DEEPSLATE_MOLYBDENUM_ORE,ModItems.RAW_MOLYBDENUM);
-
-        addOreDrop(ModBlocks.TITANIUM_ORE,ModItems.RAW_TITANIUM);
-        addOreDrop(ModBlocks.DEEPSLATE_TITANIUM_ORE,ModItems.RAW_TITANIUM);
-
-        addOreDrop(ModBlocks.LEAD_ORE,ModItems.RAW_LEAD);
-        addOreDrop(ModBlocks.DEEPSLATE_LEAD_ORE,ModItems.RAW_LEAD);
+        addOreDrop(ModBlocks.PERIDOT_ORE,ModBlocks.DEEPSLATE_PERIDOT_ORE,ModItems.PERIDOT);
+        addOreDrop(ModBlocks.ORTHOCLASE_ORE,ModBlocks.DEEPSLATE_ORTHOCLASE_ORE,ModItems.ORTHOCLASE);
+        addOreDrop(ModBlocks.AXINITE_ORE,ModBlocks.DEEPSLATE_AXINITE_ORE,ModItems.AXINITE);
+        addOreDrop(ModBlocks.TOURMALINE_ORE,ModBlocks.DEEPSLATE_TOURMALINE_ORE,ModItems.TOURMALINE);
 
         addLeaves(ModBlocks.SOUL_OAK_LEAVES,ModBlocks.SOUL_OAK_SAPLING, Items.STICK);
 
@@ -57,6 +53,10 @@ public class ModBlockLootTableProvider extends FabricBlockLootTableProvider {
 
     private void addOreDrop(Block block, ItemConvertible result){
         addOreDrop(block,result,block);
+    }
+    private void addOreDrop(Block ore, Block deepslateOre, ItemConvertible result){
+        addOreDrop(ore,result,ore);
+        addOreDrop(deepslateOre,result,deepslateOre);
     }
     private void addOreDrop(Block block, ItemConvertible fortuneResult, ItemConvertible silktouchResult){
         addDrop(block,LootTable.builder()

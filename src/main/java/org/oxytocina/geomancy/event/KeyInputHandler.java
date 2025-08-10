@@ -20,7 +20,7 @@ public class KeyInputHandler {
     private static void registerKeyInputs(){
         ClientTickEvents.END_CLIENT_TICK.register(minecraftClient -> {
             if(KEY_OPEN_SKILLTREE.wasPressed()){
-                GeomancyToast.showGeomancyToast(MinecraftClient.getInstance(), ModItems.ARTIFACT_OF_GOLD.getDefaultStack(),null);
+                //GeomancyToast.showGeomancyToast(MinecraftClient.getInstance(), ModItems.ARTIFACT_OF_GOLD.getDefaultStack(),null);
             }
         });
     }

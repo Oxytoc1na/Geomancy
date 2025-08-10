@@ -21,11 +21,9 @@ public class PlayerData {
     public float madness = 0;
     public float madnessSpeed = 0;
 
+    public float stellgianKnowledge = 0;
+
     public PlayerData(){
-
-    }
-
-    public PlayerData(UUID uuid){
 
     }
 
@@ -38,6 +36,7 @@ public class PlayerData {
         res.madness = nbt.getFloat("madness");
         res.madnessSpeed = nbt.getFloat("madnessSpeed");
         res.baseManaRechargeRate = nbt.getFloat("baseManaRechargeRate");
+        res.stellgianKnowledge = nbt.getFloat("stellgianKnowledge");
         return res;
     }
 
@@ -50,6 +49,7 @@ public class PlayerData {
         res.madness = buf.readFloat();
         res.madnessSpeed = buf.readFloat();
         res.baseManaRechargeRate = buf.readFloat();
+        res.stellgianKnowledge = buf.readFloat();
         return res;
     }
 
@@ -61,6 +61,7 @@ public class PlayerData {
         nbt.putFloat("madness",madness);
         nbt.putFloat("madnessSpeed",madnessSpeed);
         nbt.putFloat("baseManaRechargeRate",baseManaRechargeRate);
+        nbt.putFloat("stellgianKnowledge",stellgianKnowledge);
     }
 
     public void writeBuf(PacketByteBuf buf){
@@ -71,6 +72,7 @@ public class PlayerData {
         buf.writeFloat(madness);
         buf.writeFloat(madnessSpeed);
         buf.writeFloat(baseManaRechargeRate);
+        buf.writeFloat(stellgianKnowledge);
     }
 
     public static PlayerData from(PlayerEntity entity){

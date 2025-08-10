@@ -19,11 +19,9 @@ import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
-import org.oxytocina.geomancy.blocks.ILeadPoisoningBlock;
-import org.oxytocina.geomancy.blocks.IOctanguliteBlock;
+import org.oxytocina.geomancy.blocks.IMaddeningBlock;
 import org.oxytocina.geomancy.effects.ModStatusEffects;
 import org.oxytocina.geomancy.entity.PlayerData;
-import org.oxytocina.geomancy.items.ILeadPoisoningItem;
 import org.oxytocina.geomancy.items.IMaddeningItem;
 import org.oxytocina.geomancy.networking.ModMessages;
 
@@ -234,7 +232,7 @@ public class MadnessUtil {
         for(var pos2 : checkedBlockPos)
         {
             BlockState state = world.getBlockState(pos2);
-            if(state.getBlock() instanceof IOctanguliteBlock maddeningBlock){
+            if(state.getBlock() instanceof IMaddeningBlock maddeningBlock){
                 float maddeningness = maddeningBlock.getAmbientMaddeningSpeed();
                 double dist = pos.getSquaredDistance(pos2);
                 res+=maddeningness/Math.max(1,(float)(Math.sqrt(dist)));
@@ -284,7 +282,7 @@ public class MadnessUtil {
     }
 
     public static boolean isMaddening(BlockState block){
-        return block.getBlock() instanceof IOctanguliteBlock;
+        return block.getBlock() instanceof IMaddeningBlock;
     }
 
     public static List<HeldInfluenceItem> getAllMaddeningItems(PlayerEntity player){

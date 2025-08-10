@@ -2,7 +2,6 @@ package org.oxytocina.geomancy.blocks;
 
 import net.minecraft.block.BlockSetType;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.DoorBlock;
 import net.minecraft.block.TrapdoorBlock;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -11,7 +10,7 @@ import net.minecraft.util.math.random.Random;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
 import org.oxytocina.geomancy.util.Toolbox;
 
-public class OctanguliteTrapdoorBlock extends TrapdoorBlock implements IOctanguliteBlock {
+public class OctanguliteTrapdoorBlock extends TrapdoorBlock implements IMaddeningBlock {
     public final float maddeningSpeed;
 
     public OctanguliteTrapdoorBlock(Settings settings, BlockSetType blockSetType, float maddeningSpeed) {

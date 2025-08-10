@@ -1,6 +1,5 @@
 package org.oxytocina.geomancy.blocks;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.PillarBlock;
 import net.minecraft.server.world.ServerWorld;
@@ -10,7 +9,7 @@ import net.minecraft.util.math.random.Random;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
 import org.oxytocina.geomancy.util.Toolbox;
 
-public class OctangulitePillarBlock extends PillarBlock implements IOctanguliteBlock {
+public class OctangulitePillarBlock extends PillarBlock implements IMaddeningBlock {
     public final float maddeningSpeed;
 
     public OctangulitePillarBlock(Settings settings, float maddeningSpeed) {

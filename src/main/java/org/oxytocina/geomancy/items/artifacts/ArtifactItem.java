@@ -18,7 +18,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.util.Toolbox;
-import org.oxytocina.geomancy.damageTypes.ModDamageTypes;
+import org.oxytocina.geomancy.registries.ModDamageTypes;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.progression.advancement.ModCriteria;
 

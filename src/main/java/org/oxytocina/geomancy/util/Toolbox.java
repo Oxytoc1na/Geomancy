@@ -207,4 +207,8 @@ public class Toolbox {
     public static BlockPos posToBlockPos(Vec3d v){
         return new BlockPos(floor(v.x),floor(v.y),floor(v.z));
     }
+
+    public static Random seededRandom(int seed){
+        return new Random(seed);
+    }
 }

@@ -52,6 +52,31 @@ public class ModBiomeTagProvider extends FabricTagProvider<Biome> {
                 )
                 .setReplace(true);
 
+        getOrCreateTagBuilder(HAS_PERIDOT_ORE)
+                .forceAddTag(BiomeTags.IS_FOREST)
+                .setReplace(true);
+
+        getOrCreateTagBuilder(HAS_AXINITE_ORE)
+                .forceAddTag(BiomeTags.IS_FOREST)
+                .setReplace(true);
+
+        getOrCreateTagBuilder(HAS_ORTHOCLASE_ORE)
+                .add(
+                        ModBiomes.SOUL_SWAMP,
+                        BiomeKeys.SWAMP,
+                        BiomeKeys.MANGROVE_SWAMP
+                )
+                .setReplace(true);
+
+        getOrCreateTagBuilder(HAS_TOURMALINE_ORE)
+                .forceAddTag(BiomeTags.IS_BADLANDS)
+                .add(
+                        BiomeKeys.PLAINS,
+                        BiomeKeys.SUNFLOWER_PLAINS,
+                        BiomeKeys.SNOWY_PLAINS
+                )
+                .setReplace(true);
+
         getOrCreateTagBuilder(VPB_LOWEST)
                 .forceAddTag(BiomeTags.IS_END)
                 .setReplace(true);

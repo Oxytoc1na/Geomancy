@@ -3,7 +3,6 @@ package org.oxytocina.geomancy.blocks;
 import net.minecraft.block.BlockSetType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DoorBlock;
-import net.minecraft.block.FenceBlock;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -11,7 +10,7 @@ import net.minecraft.util.math.random.Random;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
 import org.oxytocina.geomancy.util.Toolbox;
 
-public class OctanguliteDoorBlock extends DoorBlock implements IOctanguliteBlock {
+public class OctanguliteDoorBlock extends DoorBlock implements IMaddeningBlock {
     public final float maddeningSpeed;
 
     public OctanguliteDoorBlock(Settings settings, BlockSetType blockSetType, float maddeningSpeed) {

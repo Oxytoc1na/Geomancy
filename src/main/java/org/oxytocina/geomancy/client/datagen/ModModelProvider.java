@@ -16,6 +16,7 @@ import org.oxytocina.geomancy.blocks.ExtraBlockSettings;
 import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.items.ExtraItemSettings;
 import org.oxytocina.geomancy.items.ModItems;
+import org.oxytocina.geomancy.items.jewelry.IJewelryItem;
 import org.oxytocina.geomancy.items.jewelry.JewelryItem;
 import org.oxytocina.geomancy.spells.SpellBlocks;
 
@@ -595,7 +596,7 @@ public class ModModelProvider extends FabricModelProvider {
             itemModelGenerator.register(i, Models.HANDHELD);
         }
 
-        for(JewelryItem i : ExtraItemSettings.JewelryModel){
+        for(IJewelryItem i : ExtraItemSettings.JewelryModel){
             registerJewelryItemModels(i);
         }
 
@@ -616,19 +617,19 @@ public class ModModelProvider extends FabricModelProvider {
         registerSpellComponentItemModels();
     }
 
-    private void registerJewelryItemModels(JewelryItem item){
+    private void registerJewelryItemModels(IJewelryItem item){
 
-        String itemPath = Registries.ITEM.getId(item).getPath();
+        String itemPath = Registries.ITEM.getId((Item)item).getPath();
 
         // base layer ID
         Identifier baseLayerTexture = Geomancy.locate("item/jewelry/"+itemPath);
 
         // generate base model
         Model baseModel = new Model(Optional.of(new Identifier("item/generated")),Optional.empty(),TextureKey.LAYER0);
-        baseModel.upload(ModelIds.getItemModelId(item), TextureMap.layer0(baseLayerTexture), itemModelGenerator.writer, (id, textures) -> this.createBaseJewelryJson(item,id, textures));
+        baseModel.upload(ModelIds.getItemModelId((Item)item), TextureMap.layer0(baseLayerTexture), itemModelGenerator.writer, (id, textures) -> this.createBaseJewelryJson(item,id, textures));
 
         // generate gemmed models
-        for (int i = 0; i < item.gemSlotCount; i++) {
+        for (int i = 0; i < item.getGemSlotCount(); i++) {
             TextureKey[] keys = new TextureKey[i+2];
             TextureMap map = new TextureMap();
             keys[0] = TextureKey.of("layer0");
@@ -644,14 +645,14 @@ public class ModModelProvider extends FabricModelProvider {
 
     }
 
-    public final JsonObject createBaseJewelryJson(JewelryItem item, Identifier id, Map<TextureKey, Identifier> textures) {
+    public final JsonObject createBaseJewelryJson(IJewelryItem item, Identifier id, Map<TextureKey, Identifier> textures) {
         JsonObject jsonObject = Models.GENERATED.createJson(id, textures);
         JsonArray overrides = new JsonArray();
 
-        for (int i = 0; i < item.gemSlotCount; i++) {
+        for (int i = 0; i < item.getGemSlotCount(); i++) {
             JsonObject override = new JsonObject();
             JsonObject predicate = new JsonObject();
-            predicate.addProperty("geomancy:has_gem" , (i+0.5f)/(float)item.gemSlotCount);
+            predicate.addProperty("geomancy:has_gem" , (i+0.5f)/(float)item.getGemSlotCount());
             override.add("predicate", predicate);
             override.addProperty("model", jewelryGemmedVariantModelID(item,i).toString());
             overrides.add(override);
@@ -699,8 +700,8 @@ public class ModModelProvider extends FabricModelProvider {
         }
     }
 
-    private static Identifier jewelryGemmedVariantModelID(JewelryItem item, int index){
-        return Geomancy.locate("item/jewelry/"+Registries.ITEM.getId(item).getPath()+"_gem_"+(index+1));
+    private static Identifier jewelryGemmedVariantModelID(IJewelryItem item, int index){
+        return Geomancy.locate("item/jewelry/"+Registries.ITEM.getId((Item)item).getPath()+"_gem_"+(index+1));
     }
 
     private void registerSpawnEgg(SpawnEggItem item){

@@ -2,6 +2,7 @@ package org.oxytocina.geomancy.items;
 
 
 import net.minecraft.item.Item;
+import org.oxytocina.geomancy.items.jewelry.IJewelryItem;
 import org.oxytocina.geomancy.items.jewelry.JewelryItem;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ public class ExtraItemSettings {
     public static final ArrayList<Item> HandheldModel = new ArrayList<Item>();
     public static final ArrayList<Item> ParentInventoryModel = new ArrayList<Item>();
     public static final ArrayList<Item> ParentBottomModel = new ArrayList<Item>();
-    public static final ArrayList<JewelryItem> JewelryModel = new ArrayList<JewelryItem>();
+    public static final ArrayList<IJewelryItem> JewelryModel = new ArrayList<IJewelryItem>();
     public static final ArrayList<Item> ItemsInGroup = new ArrayList<Item>();
 
     public Item item;
@@ -44,7 +45,7 @@ public class ExtraItemSettings {
         switch(model){
             case Generated:GeneratedModel.add(item);break;
             case Handheld:HandheldModel.add(item);break;
-            case Jewelry:JewelryModel.add((JewelryItem) item);break;
+            case Jewelry:JewelryModel.add((IJewelryItem) item);break;
             case BlockPlusInventory:ParentInventoryModel.add(item);break;
             case BlockPlusBottom:ParentBottomModel.add(item);break;
             default: break;
