@@ -1,0 +1,43 @@
+{
+  "background_u_index": 1,
+  "background_v_index": 0,
+  "category": "geomancy:octangulite",
+  "condition": {
+    "type": "modonomicon:advancement",
+    "advancement_id": "geomancy:main/get_octangulite"
+  },
+  "description": "book.geomancy.guidebook.octangulite.octangulite_intro.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "geomancy:raw_octangulite"
+  },
+  "name": "book.geomancy.guidebook.octangulite.octangulite_intro.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.octangulite.octangulite_intro.info.text",
+      "title": "book.geomancy.guidebook.octangulite.octangulite_intro.info.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "item": {
+        "item": "geomancy:raw_octangulite"
+      },
+      "text": "book.geomancy.guidebook.octangulite.octangulite_intro.raw_octangulite.text",
+      "title": ""
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "x": -13,
+  "y": -1
+}

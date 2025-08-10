@@ -1,0 +1,49 @@
+{
+  "background_u_index": 1,
+  "background_v_index": 0,
+  "category": "geomancy:lore",
+  "description": "book.geomancy.guidebook.lore.war_3.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "geomancy:titanium_sword"
+  },
+  "name": "book.geomancy.guidebook.lore.war_3.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.lore.war_3.1.text",
+      "title": "",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.lore.war_3.2.text",
+      "title": "",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.lore.war_3.3.text",
+      "title": "",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "x": -11,
+  "y": -1
+}

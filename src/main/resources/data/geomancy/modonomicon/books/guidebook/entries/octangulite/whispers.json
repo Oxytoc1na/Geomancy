@@ -1,0 +1,58 @@
+{
+  "background_u_index": 1,
+  "background_v_index": 0,
+  "category": "geomancy:octangulite",
+  "description": "book.geomancy.guidebook.octangulite.whispers.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "geomancy:octangulite_ore"
+  },
+  "name": "book.geomancy.guidebook.octangulite.whispers.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.octangulite.whispers.info.text",
+      "title": "book.geomancy.guidebook.octangulite.whispers.info.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.octangulite.whispers.1.text",
+      "title": "",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "item": {
+        "item": "geomancy:octangulite_ore"
+      },
+      "text": "book.geomancy.guidebook.octangulite.whispers.octangulite_ore.text",
+      "title": ""
+    }
+  ],
+  "parents": [
+    {
+      "draw_arrow": true,
+      "entry": "geomancy:octangulite/octangulite_intro",
+      "line_enabled": true,
+      "line_reversed": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "x": -13,
+  "y": 1
+}

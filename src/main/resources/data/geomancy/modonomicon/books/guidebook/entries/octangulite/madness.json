@@ -1,0 +1,46 @@
+{
+  "background_u_index": 1,
+  "background_v_index": 0,
+  "category": "geomancy:octangulite",
+  "description": "book.geomancy.guidebook.octangulite.madness.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "geomancy:octangulite_ingot"
+  },
+  "name": "book.geomancy.guidebook.octangulite.madness.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.octangulite.madness.info.text",
+      "title": "book.geomancy.guidebook.octangulite.madness.info.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.octangulite.madness.1.text",
+      "title": "",
+      "use_markdown_in_title": false
+    }
+  ],
+  "parents": [
+    {
+      "draw_arrow": true,
+      "entry": "geomancy:octangulite/whispers",
+      "line_enabled": true,
+      "line_reversed": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "x": -13,
+  "y": 3
+}

@@ -1,0 +1,55 @@
+{
+  "background_u_index": 1,
+  "background_v_index": 0,
+  "category": "geomancy:lore",
+  "description": "book.geomancy.guidebook.lore.expedition_1.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "geomancy:titanium_ore"
+  },
+  "name": "book.geomancy.guidebook.lore.expedition_1.name",
+  "pages": [
+    {
+      "type": "geomancy:text_stellge",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "knowledgeBonus": 0.0,
+      "requiredKnowledge": 10.0,
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.lore.expedition_1.1.text",
+      "title": "",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "geomancy:text_stellge",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "knowledgeBonus": 0.0,
+      "requiredKnowledge": 10.0,
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.lore.expedition_1.2.text",
+      "title": "",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "geomancy:text_stellge",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "knowledgeBonus": 0.0,
+      "requiredKnowledge": 10.0,
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.lore.expedition_1.3.text",
+      "title": "",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "x": -9,
+  "y": -3
+}
