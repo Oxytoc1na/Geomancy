@@ -253,10 +253,13 @@ public class ModColorizationHandler {
     }
 
     public static int octanguliteToolNoise(ItemStack stack){
+        return octanguliteToolNoise(stack,0);
+    }
+    public static int octanguliteToolNoise(ItemStack stack,int index){
 
         final float zoom = 0.03f;
         final float speed = 0.01f;
-        final int tintIndex = 0;
+        final float tintIndex = index/10f;
         final boolean withSlotOffset = true;
 
         float hue = 0;

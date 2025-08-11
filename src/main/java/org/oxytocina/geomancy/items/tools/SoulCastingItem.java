@@ -356,7 +356,7 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
             }
         }
 
-        return colorizeName(Text.translatable(this.getTranslationKey(stack)).append(Text.literal(" [").append(
+        return colorizeName(stack,Text.translatable(this.getTranslationKey(stack)).append(Text.literal(" [").append(
                 spellText
                 ).append("]").formatted(Formatting.GRAY)));
     }
@@ -461,7 +461,7 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
 
     @Override
     public Rarity getRarity() {
-        return Rarity.Rainbow;
+        return Rarity.None;
     }
 
 

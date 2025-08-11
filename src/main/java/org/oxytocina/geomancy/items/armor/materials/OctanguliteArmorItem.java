@@ -10,14 +10,16 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.client.registries.ModModelLayers;
 import org.oxytocina.geomancy.client.rendering.armor.OctanguliteArmorModel;
+import org.oxytocina.geomancy.items.ICustomRarityItem;
 import org.oxytocina.geomancy.items.IMaddeningItem;
 
-public class OctanguliteArmorItem extends ArmorItem implements IMaddeningItem {
+public class OctanguliteArmorItem extends ArmorItem implements IMaddeningItem, ICustomRarityItem {
     @Environment(EnvType.CLIENT)
     private BipedEntityModel<LivingEntity> model;
 
@@ -62,5 +64,15 @@ public class OctanguliteArmorItem extends ArmorItem implements IMaddeningItem {
         var models = MinecraftClient.getInstance().getEntityModelLoader();
         var root = models.getModelPart(ModModelLayers.MAIN_OCTANGULITE_LAYER);
         return new OctanguliteArmorModel(root, slot);
+    }
+
+    @Override
+    public Text getName(ItemStack stack) {
+        return colorizeName(stack,super.getName(stack));
+    }
+
+    @Override
+    public Rarity getRarity() {
+        return Rarity.Octangulite;
     }
 }

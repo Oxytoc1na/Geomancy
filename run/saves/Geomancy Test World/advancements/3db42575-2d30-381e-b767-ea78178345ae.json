@@ -11,27 +11,9 @@
     },
     "done": true
   },
-  "minecraft:story/obtain_armor": {
-    "criteria": {
-      "iron_chestplate": "2025-06-23 14:07:26 +0200"
-    },
-    "done": true
-  },
   "minecraft:recipes/building_blocks/stone_brick_stairs_from_stone_stonecutting": {
     "criteria": {
       "has_stone": "2025-06-23 14:06:27 +0200"
-    },
-    "done": true
-  },
-  "minecraft:recipes/misc/iron_nugget_from_smelting": {
-    "criteria": {
-      "has_iron_chestplate": "2025-06-23 14:07:26 +0200"
-    },
-    "done": true
-  },
-  "geomancy:recipes/misc/smithing_artifact_of_iron": {
-    "criteria": {
-      "default_conditions": "2025-06-23 14:07:12 +0200"
     },
     "done": true
   },
@@ -50,12 +32,6 @@
   "minecraft:recipes/building_blocks/stone_slab": {
     "criteria": {
       "has_stone": "2025-06-23 14:06:27 +0200"
-    },
-    "done": true
-  },
-  "minecraft:recipes/misc/iron_ingot_from_iron_block": {
-    "criteria": {
-      "has_iron_block": "2025-06-23 14:07:28 +0200"
     },
     "done": true
   },
@@ -83,12 +59,6 @@
     },
     "done": true
   },
-  "minecraft:recipes/misc/iron_nugget_from_blasting": {
-    "criteria": {
-      "has_iron_chestplate": "2025-06-23 14:07:26 +0200"
-    },
-    "done": true
-  },
   "minecraft:recipes/decorations/stonecutter": {
     "criteria": {
       "has_stone": "2025-06-23 14:06:27 +0200"
@@ -107,12 +77,6 @@
     },
     "done": true
   },
-  "minecraft:recipes/decorations/anvil": {
-    "criteria": {
-      "has_iron_block": "2025-06-23 14:07:28 +0200"
-    },
-    "done": true
-  },
   "minecraft:recipes/decorations/stone_brick_walls_from_stone_stonecutting": {
     "criteria": {
       "has_stone": "2025-06-23 14:06:27 +0200"
@@ -122,6 +86,222 @@
   "minecraft:recipes/building_blocks/stone_stairs": {
     "criteria": {
       "has_stone": "2025-06-23 14:06:27 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_artifact_of_iron": {
+    "criteria": {
+      "default_conditions": "2025-06-23 14:07:12 +0200"
+    },
+    "done": true
+  },
+  "minecraft:story/obtain_armor": {
+    "criteria": {
+      "iron_chestplate": "2025-06-23 14:07:26 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/iron_nugget_from_smelting": {
+    "criteria": {
+      "has_iron_chestplate": "2025-06-23 14:07:26 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/iron_nugget_from_blasting": {
+    "criteria": {
+      "has_iron_chestplate": "2025-06-23 14:07:26 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/iron_ingot_from_iron_block": {
+    "criteria": {
+      "has_iron_block": "2025-06-23 14:07:28 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/anvil": {
+    "criteria": {
+      "has_iron_block": "2025-06-23 14:07:28 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_octangulite_ring": {
+    "criteria": {
+      "default_conditions": "2025-08-11 16:49:03 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/raw_iron_block": {
+    "criteria": {
+      "has_raw_iron": "2025-08-11 16:49:03 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/octangulite_ingot_decompress_to_octangulite_nugget": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-08-11 16:49:03 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/iron_ingot_from_blasting_iron_ore": {
+    "criteria": {
+      "has_iron_ore": "2025-08-11 16:49:03 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_chestplate": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-08-11 16:49:03 +0200"
+    },
+    "done": true
+  },
+  "geomancy:main/get_octangulite": {
+    "criteria": {
+      "got_octangulite": "2025-08-11 16:49:03 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/raw_octangulite_compress_to_raw_octangulite_block": {
+    "criteria": {
+      "has_raw_octangulite": "2025-08-11 16:49:03 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/chest": {
+    "criteria": {
+      "has_lots_of_items": "2025-08-11 16:49:03 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_octangulite_necklace": {
+    "criteria": {
+      "default_conditions": "2025-08-11 16:49:03 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/octangulite_ingot_from_smelting_raw_octangulite": {
+    "criteria": {
+      "has_raw_octangulite": "2025-08-11 16:49:03 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_leggings": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-08-11 16:49:03 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_hoe": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-08-11 16:49:03 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/jewelry_mithril_boots": {
+    "criteria": {
+      "has_ingredient": "2025-08-11 16:49:03 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/octangulite_ingot_from_blasting_raw_octangulite": {
+    "criteria": {
+      "has_raw_octangulite": "2025-08-11 16:49:03 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_shovel": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-08-11 16:49:03 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_boots": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-08-11 16:49:03 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/jewelry_mithril_leggings": {
+    "criteria": {
+      "has_ingredient": "2025-08-11 16:49:03 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/iron_ingot_from_smelting_raw_iron": {
+    "criteria": {
+      "has_raw_iron": "2025-08-11 16:49:03 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/iron_ingot_from_smelting_iron_ore": {
+    "criteria": {
+      "has_iron_ore": "2025-08-11 16:49:03 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_sword": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-08-11 16:49:03 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_axe": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-08-11 16:49:03 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_pickaxe": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-08-11 16:49:03 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/jewelry_mithril_chestplate": {
+    "criteria": {
+      "has_ingredient": "2025-08-11 16:49:03 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_spellstorage_large": {
+    "criteria": {
+      "default_conditions": "2025-08-11 16:49:03 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/jewelry_mithril_helmet": {
+    "criteria": {
+      "has_ingredient": "2025-08-11 16:49:03 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_spellstorage_medium": {
+    "criteria": {
+      "default_conditions": "2025-08-11 16:49:03 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/iron_ingot_from_blasting_raw_iron": {
+    "criteria": {
+      "has_raw_iron": "2025-08-11 16:49:03 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_octangulite_pendant": {
+    "criteria": {
+      "default_conditions": "2025-08-11 16:49:03 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/octangulite_ingot_compress_to_octangulite_block": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-08-11 16:49:03 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_helmet": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-08-11 16:49:03 +0200"
     },
     "done": true
   },
