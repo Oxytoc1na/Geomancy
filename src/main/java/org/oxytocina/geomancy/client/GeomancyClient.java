@@ -3,6 +3,7 @@ package org.oxytocina.geomancy.client;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.RenderLayer;
@@ -54,6 +55,8 @@ public class GeomancyClient implements ClientModInitializer {
 
 
         ClientTickEvents.START_CLIENT_TICK.register(new ClientPlayerTickHandler());
+        ClientPlayConnectionEvents.JOIN.register(new ClientPlayConnectionJoin());
+        ClientPlayConnectionEvents.DISCONNECT.register(new ClientPlayConnectionLeave());
 
         BlockEntityRendererFactories.register(ModBlockEntities.SMITHERY_BLOCK_ENTITY, SmitheryBlockEntityRenderer::new);
 

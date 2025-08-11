@@ -40,7 +40,7 @@ public class SpellmakerBlockEntityRenderer<T extends SpellmakerBlockEntity> impl
         root = texturedModelData.createModel();
     }
 
-    private static final SpriteIdentifier SPRITE_IDENTIFIER = new SpriteIdentifier(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, Geomancy.locate("block/compacting_chest"));
+    private static final SpriteIdentifier SPRITE_IDENTIFIER = new SpriteIdentifier(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, Geomancy.locate("block/cut_titanium"));
     private final ModelPart root;
 
     public static @NotNull TexturedModelData getTexturedModelData() {

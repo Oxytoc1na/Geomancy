@@ -7,7 +7,7 @@
         "element_type": "minecraft:single_pool_element",
         "location": "geomancy:digsite/center",
         "projection": "rigid",
-        "processors": "geomancy:digsite_degrade"
+        "processors": "geomancy:digsite_degrade_streets"
       }
     }
   ]

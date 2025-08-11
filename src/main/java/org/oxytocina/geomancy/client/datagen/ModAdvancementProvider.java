@@ -213,4 +213,8 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
 
         return builder.build(consumer, advancementName);
     }
+
+    public static Identifier getComponentID(String compName){
+        return Geomancy.locate("spellcomponents/get_"+compName);
+    }
 }

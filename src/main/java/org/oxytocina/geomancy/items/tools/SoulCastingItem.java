@@ -30,10 +30,7 @@ import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.client.screen.SpellstorerItemScreenHandler;
 import org.oxytocina.geomancy.client.screen.SpellstorerScreenHandler;
 import org.oxytocina.geomancy.inventories.ImplementedInventory;
-import org.oxytocina.geomancy.items.ICastingItem;
-import org.oxytocina.geomancy.items.IManaStoringItem;
-import org.oxytocina.geomancy.items.IScrollListenerItem;
-import org.oxytocina.geomancy.items.SpellStoringItem;
+import org.oxytocina.geomancy.items.*;
 import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.spells.SpellGrid;
 import org.oxytocina.geomancy.util.Toolbox;
@@ -43,7 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-public class SoulCastingItem extends Item implements IManaStoringItem, ICastingItem, IScrollListenerItem, ExtendedScreenHandlerFactory {
+public class SoulCastingItem extends Item implements IManaStoringItem, ICastingItem, IScrollListenerItem, ICustomRarityItem, ExtendedScreenHandlerFactory {
 
     public static final HashMap<ItemStack,DefaultedList<ItemStack>> inventories = new HashMap<>();
     public static final HashMap<ItemStack,Inventory> actualInventories = new HashMap<>();
@@ -359,9 +356,9 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
             }
         }
 
-        return Text.translatable(this.getTranslationKey(stack)).append(Text.literal(" [").append(
+        return colorizeName(Text.translatable(this.getTranslationKey(stack)).append(Text.literal(" [").append(
                 spellText
-                ).append("]").formatted(Formatting.GRAY));
+                ).append("]").formatted(Formatting.GRAY)));
     }
 
 
@@ -461,4 +458,11 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
         var stack = serverPlayerEntity.getStackInHand(serverPlayerEntity.getActiveHand());
         packetByteBuf.writeInt(serverPlayerEntity.getInventory().getSlotWithStack(stack));
     }
+
+    @Override
+    public Rarity getRarity() {
+        return Rarity.Rainbow;
+    }
+
+
 }

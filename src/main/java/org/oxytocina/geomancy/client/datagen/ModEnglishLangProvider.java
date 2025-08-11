@@ -792,18 +792,14 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                         
                         temperature: warm
                         
-                        
                         verdict: suitable
                         """);
                     add(getS("gb:lr")+"expedition_"+entry+".2.text", """
                         beginning extraction protocol.
                         
                         sending extraction flotilla 35A.
-                        
                         calculated time of arrival: 7254829108647L
-                        
                         estimated time of completion: 7254829137574L
-                        
                         estimated time of return: 7254829174068L
                         """);
                     add(getS("gb:lr")+"expedition_"+entry+".3.text", """
@@ -833,6 +829,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                         """);
                     add(getS("gb:lr")+"expedition_"+entry+".2.text", """
                         estimated losses have gone up by 0.03% following the development of the locals.
+                        
                         reserving 32Ms for wiper A, just in case.
                         """);
                     add(getS("gb:lr")+"expedition_"+entry+".3.text", """
@@ -876,10 +873,16 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                     add(getS("gb:lr")+"expedition_"+entry+".description"  , "ERADICATION");
                     add(getS("gb:lr")+"expedition_"+entry+".1.text","""
                         Sol_III_ex_34 log 3
-                        current time: 7254829115729L
+                        current time: 7254829120684L
                         
+                        mining operations completed: 14293/25930
+                        
+                        pest control flotillette 35A-qt has finished its mission.
                         """);
                     add(getS("gb:lr")+"expedition_"+entry+".2.text", """
+                        the remaining outposts are projected to complete operation as planned.
+                        
+                        current yield: 6215Ms
                         """);
                     add(getS("gb:lr")+"expedition_"+entry+".3.text", """
                         """);
@@ -892,10 +895,25 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                     addGBEntryAndInfo(getS("gb:lr")+"expedition_"+entry,"SOL III EXPEDITION FINALIZATION");
                     add(getS("gb:lr")+"expedition_"+entry+".description"  , "DEPARTURE");
                     add(getS("gb:lr")+"expedition_"+entry+".1.text","""
+                        Sol_III_ex_34 log 4
+                        current time: 7254829137697L
+                        
+                        extraction complete.
+                        yield and profits within tolerance.
+                        slight loss caused by late local species Sol_III_DHM_7.
                         """);
                     add(getS("gb:lr")+"expedition_"+entry+".2.text", """
+                        to prevent losses on future expeditions, control force 35A-cs has been stationed.
+                        they will surveil Sol III for suspicious intelligent activity.
+                        Warrior Core 35A-wc is on standby for fast response.
                         """);
                     add(getS("gb:lr")+"expedition_"+entry+".3.text", """
+                        extraction flotilla 35A is departing from Sol III.
+                        calculated time of arrival: 7254829174191L
+                        
+                        Sol_III_ex_34 is deemed a success.
+                        
+                        estimated followup extraction: 7254847295745L
                         """);
                 }
 
@@ -913,6 +931,12 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         // REI, EMI
         {
             add("container.MODID.rei.smithing.title","Smithing");
+
+            add("geomancy.rei.locked_recipe","Locked Recipe");
+            add("geomancy.rei.locked_recipe.2","Progress to unlock");
+
+            add("geomancy.rei.locked_recipe_type","Locked Recipe Type");
+            add("geomancy.rei.locked_recipe_type.2","Progress to unlock");
         }
 
         tb=null;

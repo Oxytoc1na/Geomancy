@@ -21,7 +21,7 @@ public class SmitheryEMIRecipe extends GatedModEMIRecipe<SmitheryRecipe> {
     public static final Identifier TEXTURE =
             Geomancy.locate("textures/gui/smithery_block_gui_rei.png");
     public static final int WIDTH = 176;
-    public static final int HEIGHT = 89;
+    public static final int HEIGHT = 80;
 
     public SmitheryEMIRecipe(SmitheryRecipe recipe) {
         super(ModEMIRecipeCategories.SMITHING, recipe, WIDTH, HEIGHT);

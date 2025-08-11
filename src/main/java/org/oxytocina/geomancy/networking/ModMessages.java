@@ -14,6 +14,7 @@ import org.oxytocina.geomancy.entity.PlayerData;
 import org.oxytocina.geomancy.entity.StateSaverAndLoader;
 import org.oxytocina.geomancy.networking.packet.C2S.*;
 import org.oxytocina.geomancy.networking.packet.S2C.*;
+import org.oxytocina.geomancy.progression.advancement.ClientAdvancements;
 import org.oxytocina.geomancy.util.ManaUtil;
 import org.oxytocina.geomancy.util.StellgeUtil;
 
@@ -24,12 +25,13 @@ public class ModMessages {
     // server to client
     public static final Identifier MANA_SYNC =              Geomancy.locate("mana_sync");
     public static final Identifier LEAD_POISONING_SYNC =    Geomancy.locate("lead_poisoning_sync");
-    public static final Identifier STELLGE_KNOWLEDGE_SYNC =    Geomancy.locate("stellge_knowledge_sync");
+    public static final Identifier STELLGE_KNOWLEDGE_SYNC = Geomancy.locate("stellge_knowledge_sync");
     public static final Identifier MADNESS_SYNC =           Geomancy.locate("madness_sync");
     public static final Identifier ITEM_MANA_SYNC =         Geomancy.locate("item_mana_sync");
     public static final Identifier INITIAL_SYNC =           Geomancy.locate("initial_sync");
     public static final Identifier SPELLMAKER_REFRESH =     Geomancy.locate("spellmaker_refresh");
     public static final Identifier CAST_PARTICLES =         Geomancy.locate("cast_particles");
+    public static final Identifier CLIENT_ADVANCEMENT =     Geomancy.locate("client_advancement");
 
     // client to server
 
@@ -84,6 +86,7 @@ public class ModMessages {
 
                     // sync various other things
                     StellgeUtil.syncKnowledge(handler.getPlayer());
+                    ClientAdvancements.sync(handler.getPlayer());
                 }
                 catch (Exception ignored){
 
@@ -101,6 +104,7 @@ public class ModMessages {
         ClientPlayNetworking.registerGlobalReceiver(INITIAL_SYNC, InitialSyncS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(SPELLMAKER_REFRESH, SpellmakerRefreshS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(CAST_PARTICLES, CastParticlesS2CPacket::receive);
+        ClientPlayNetworking.registerGlobalReceiver(CLIENT_ADVANCEMENT, ClientAdvancementS2CPacket::receive);
     }
 
     public static void sendToAllClients(MinecraftServer server, Identifier id, PacketByteBuf buf){

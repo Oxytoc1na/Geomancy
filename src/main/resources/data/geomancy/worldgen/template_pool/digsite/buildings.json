@@ -1,13 +1,31 @@
 {
-  "fallback": "minecraft:empty",
+  "fallback": "geomancy:digsite/buildings",
   "elements": [
     {
       "weight": 1,
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "geomancy:digsite/decor/lamp",
+        "location": "geomancy:digsite/buildings/storage",
         "projection": "rigid",
-        "processors": "geomancy:digsite_degrade"
+        "processors": "geomancy:digsite_degrade_buildings"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "geomancy:digsite/buildings/silo",
+        "projection": "rigid",
+        "processors": "geomancy:digsite_degrade_buildings"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "geomancy:digsite/buildings/lz",
+        "projection": "rigid",
+        "processors": "geomancy:digsite_degrade_streets"
       }
     }
   ]

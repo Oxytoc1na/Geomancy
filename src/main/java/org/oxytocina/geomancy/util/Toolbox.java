@@ -94,6 +94,29 @@ public class Toolbox {
         return alpha << 24 | red << 16 | green << 8 | blue;
     }
 
+    public static int colorFromHSV(float hue, float saturation, float value) {
+
+        hue = Toolbox.clampF(hue,0,1);
+        saturation = Toolbox.clampF(saturation,0,1);
+        value = Toolbox.clampF(value,0,1);
+
+        int h = (int)(hue * 6);
+        float f = hue * 6 - h;
+        float p = value * (1 - saturation);
+        float q = value * (1 - f * saturation);
+        float t = value * (1 - (1 - f) * saturation);
+
+        switch (h) {
+            case 0: return Toolbox.colorFromRGB(value, t, p);
+            case 1: return Toolbox.colorFromRGB(q, value, p);
+            case 2: return Toolbox.colorFromRGB(p, value, t);
+            case 3: return Toolbox.colorFromRGB(p, q, value);
+            case 4: return Toolbox.colorFromRGB(t, p, value);
+            case 5: return Toolbox.colorFromRGB(value, p, q);
+            default: throw new RuntimeException("Something went wrong when converting from HSV to RGB. Input was " + hue + ", " + saturation + ", " + value);
+        }
+    }
+
     public static boolean itemStacksAreEqual(ItemStack a, ItemStack b){
         if(a.getItem()!=b.getItem()) return false;
         if(a.hasNbt()!=b.hasNbt()) return false;

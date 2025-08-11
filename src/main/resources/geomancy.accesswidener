@@ -14,3 +14,5 @@ accessible field net/minecraft/screen/ScreenHandler trackedStacks Lnet/minecraft
 accessible field net/minecraft/screen/ScreenHandler previousTrackedStacks Lnet/minecraft/util/collection/DefaultedList;
 
 accessible field net/minecraft/item/ArmorItem attributeModifiers Lcom/google/common/collect/Multimap;
+
+accessible field net/minecraft/advancement/PlayerAdvancementTracker progress Ljava/util/Map;

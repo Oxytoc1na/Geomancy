@@ -43,7 +43,7 @@ public class StellgeUtil {
     }
 
     public static MutableText stellgify(MutableText t, float requiredKnowledge, float knowledgeBonus, float knowledge){
-        float knowledgeFraction = knowledge/requiredKnowledge;
+        float knowledgeFraction = (knowledge+knowledgeBonus)/requiredKnowledge;
         if(knowledgeFraction<=0) return stellgify(t);
         if(knowledgeFraction>=1) return t;
 

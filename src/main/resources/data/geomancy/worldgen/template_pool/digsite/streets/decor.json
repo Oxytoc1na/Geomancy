@@ -7,7 +7,34 @@
         "element_type": "minecraft:single_pool_element",
         "location": "geomancy:digsite/decor/lamp",
         "projection": "rigid",
-        "processors": "geomancy:digsite_degrade"
+        "processors": "minecraft:empty"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "geomancy:digsite/decor/broken_lamp",
+        "projection": "rigid",
+        "processors": "minecraft:empty"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "geomancy:digsite/decor/rubble_tuff",
+        "projection": "rigid",
+        "processors": "minecraft:empty"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "geomancy:digsite/decor/rubble_deepslate",
+        "projection": "rigid",
+        "processors": "minecraft:empty"
       }
     }
   ]

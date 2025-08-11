@@ -2,6 +2,7 @@ package org.oxytocina.geomancy.util;
 
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.PlayerAdvancementTracker;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.ServerAdvancementLoader;
@@ -9,12 +10,13 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.progression.advancement.ClientAdvancements;
 
 public class AdvancementHelper {
 
     public static boolean hasAdvancement(PlayerEntity player, Identifier advancementIdentifier){
         // TODO: Client Advancements
-        if(player instanceof ClientPlayerEntity clientPlayer) return true;
+        if(player instanceof ClientPlayerEntity clientPlayer && player == MinecraftClient.getInstance().player) return ClientAdvancements.has(advancementIdentifier);
 
         if(!(player instanceof ServerPlayerEntity serverPlayerEntity)) return false;
 

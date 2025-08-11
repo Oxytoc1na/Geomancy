@@ -22,10 +22,8 @@ public interface GatedRecipe<C extends Inventory> extends Recipe<C> {
     String getRecipeTypeShortID();
 
     default boolean canPlayerCraft(PlayerEntity playerEntity) {
-        return true;
-
-        //return AdvancementHelper.hasAdvancement(playerEntity, getRecipeTypeUnlockIdentifier())
-        //        && AdvancementHelper.hasAdvancement(playerEntity, getRequiredAdvancementIdentifier());
+        return AdvancementHelper.hasAdvancement(playerEntity, getRecipeTypeUnlockIdentifier())
+                && AdvancementHelper.hasAdvancement(playerEntity, getRequiredAdvancementIdentifier());
     }
 
     default Text getSingleUnlockToastString() {

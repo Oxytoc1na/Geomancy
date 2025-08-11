@@ -148,7 +148,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                             new SPatKey("o",SmithingIngredient.ofItems(1,1,1,MITHRIL_INGOT)),
                             new SPatKey("s",SmithingIngredient.ofItems(1,1,1,Items.STICK)),
                     },
-                    MITHRIL_HAMMER,1,100,12,conditionsFromItem(MITHRIL_INGOT));
+                    MITHRIL_HAMMER,1,100,12,conditionsFromItem(MITHRIL_INGOT),null);
 
 
             // geode recipes
@@ -163,7 +163,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                                 SmithingIngredient.ofItems(MITHRIL_INGOT),
                                 SmithingIngredient.ofItems(Items.LEATHER)
                         }).toList(),EMPTY_ARTIFACT,1, 40,5, true,
-                        conditionsFromItem(MITHRIL_INGOT));
+                        conditionsFromItem(MITHRIL_INGOT),null);
 
                 // Artifact of Iron
                 AddSmitheryRecipe(Arrays.stream(new SmithingIngredient[] {
@@ -173,7 +173,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                                 SmithingIngredient.ofItems(1,1,5,Items.IRON_CHESTPLATE),
                                 SmithingIngredient.ofItems(1,1,7,Items.IRON_BARS),
                         }).toList(),ARTIFACT_OF_IRON,1, 100,20,false,
-                        conditionsFromItem(EMPTY_ARTIFACT));
+                        conditionsFromItem(EMPTY_ARTIFACT),null);
 
                 // Artifact of Gold
                 AddSmitheryRecipe(Arrays.stream(new SmithingIngredient[] {
@@ -183,7 +183,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                                 SmithingIngredient.ofItems(1,1,5,Items.GOLDEN_HELMET),
                                 SmithingIngredient.ofItems(1,1,7,Items.GOLDEN_CARROT),
                         }).toList(),ARTIFACT_OF_GOLD,1, 100,20,false,
-                        conditionsFromItem(EMPTY_ARTIFACT));
+                        conditionsFromItem(EMPTY_ARTIFACT),null);
             }
 
             // spell storage
@@ -198,7 +198,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                                 new SPatKey("m",SmithingIngredient.ofItems(1,1,MITHRIL_INGOT)),
                                 new SPatKey("g",SmithingIngredient.ofItems(1,1,Items.GOLD_INGOT)),
                         },
-                        SPELLSTORAGE_SMALL,1,100,12,conditionsFromItem(MITHRIL_INGOT));
+                        SPELLSTORAGE_SMALL,1,100,12,conditionsFromItem(MITHRIL_INGOT),null);
 
                 // medium
                 AddShapedSmitheryRecipe(new String[]{
@@ -210,7 +210,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                                 new SPatKey("o",SmithingIngredient.ofItems(1,1,OCTANGULITE_INGOT)),
                                 new SPatKey("g",SmithingIngredient.ofItems(1,1,Items.GOLD_INGOT)),
                         },
-                        SPELLSTORAGE_MEDIUM,1,200,15,conditionsFromItem(OCTANGULITE_INGOT));
+                        SPELLSTORAGE_MEDIUM,1,200,15,conditionsFromItem(OCTANGULITE_INGOT),null);
 
                 // large
                 AddShapedSmitheryRecipe(new String[]{
@@ -221,7 +221,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                                 new SPatKey("o",SmithingIngredient.ofItems(1,1,OCTANGULITE_INGOT)),
                                 new SPatKey("g",SmithingIngredient.ofItems(1,1,Items.GOLD_INGOT)),
                         },
-                        SPELLSTORAGE_LARGE,1,300,20,conditionsFromItem(OCTANGULITE_INGOT));
+                        SPELLSTORAGE_LARGE,1,300,20,conditionsFromItem(OCTANGULITE_INGOT),null);
 
             }
 
@@ -229,6 +229,17 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
             // spellcomponents
             {
+                // base
+                AddShapedSmitheryRecipe(new String[]{
+                                " t ",
+                                "tit",
+                                " t "}
+                        ,new SPatKey[]{
+                                new SPatKey("i",SmithingIngredient.ofItems(1,1,Items.IRON_INGOT)),
+                                new SPatKey("t",SmithingIngredient.ofItems(1,1,TITANIUM_NUGGET)),
+                        },
+                        SPELLCOMPONENT,1,20,10,ModAdvancementCriterion.conditionsFromAdvancement(Geomancy.locate("octangulite/get_spellcomponent")),null);
+
                 // flow control
                 {
                     Item baseIngot = MITHRIL_INGOT;
@@ -465,7 +476,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         AddToolBatch(LEAD_INGOT,LEAD_SWORD,LEAD_SHOVEL,LEAD_PICKAXE,LEAD_AXE,LEAD_HOE);
         ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, PLUMBOMETER, 1).input('#', LEAD_INGOT)
                 .pattern("#")
-                .pattern("#").criterion(hasItem(SOUL_OAK_PLANKS), ModAdvancementCriterion.conditionsFromAdvancement(Geomancy.locate("main/simple_lead_poisoned"))).offerTo(exporter);
+                .pattern("#").criterion("poisoned", ModAdvancementCriterion.conditionsFromAdvancement(Geomancy.locate("main/simple_lead_poisoned"))).offerTo(exporter);
         AddSurrounded(Items.APPLE,LEAD_INGOT,LEAD_APPLE,1);
 
         AddToolBatch(TITANIUM_INGOT,TITANIUM_SWORD,TITANIUM_SHOVEL,TITANIUM_PICKAXE,TITANIUM_AXE,TITANIUM_HOE);
@@ -620,13 +631,13 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         AddReversibleCompressionRecipe(rawBlock,raw);
     }
 
-    private void AddSmitheryRecipe(List<SmithingIngredient> input, ItemConvertible output, int outputCount, int requiredProgress, int difficulty, boolean shapeless, CriterionConditions conditions){
-        AddSmitheryRecipe(input,output,outputCount,requiredProgress,difficulty, shapeless,"default_conditions",conditions);
+    private void AddSmitheryRecipe(List<SmithingIngredient> input, ItemConvertible output, int outputCount, int requiredProgress, int difficulty, boolean shapeless, CriterionConditions conditions, Identifier requiredAdvancement){
+        AddSmitheryRecipe(input,output,outputCount,requiredProgress,difficulty, shapeless,"default_conditions",conditions,requiredAdvancement);
     }
 
     private void AddShapedSmitheryRecipe(String[] map, SPatKey[] entries,
                                          ItemConvertible output, int outputCount, int requiredProgress, int difficulty,
-                                         CriterionConditions conditions)
+                                         CriterionConditions conditions, Identifier requiredAdvancement)
     {
         List<SmithingIngredient> ingredients = new ArrayList<>();
         for (int i = 0; i < map.length; i++) {
@@ -641,7 +652,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 }
             }
         }
-        AddSmitheryRecipe(ingredients,output,outputCount,requiredProgress,difficulty,false,conditions);
+        AddSmitheryRecipe(ingredients,output,outputCount,requiredProgress,difficulty,false,conditions,requiredAdvancement);
     }
 
     private static class SPatKey {
@@ -673,10 +684,10 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         }
     }
 
-    private void AddSmitheryRecipe(List<SmithingIngredient> input, ItemConvertible output, int outputCount, int requiredProgress, int difficulty, boolean shapeless, String criterionName, CriterionConditions conditions){
+    private void AddSmitheryRecipe(List<SmithingIngredient> input, ItemConvertible output, int outputCount, int requiredProgress, int difficulty, boolean shapeless, String criterionName, CriterionConditions conditions, Identifier requiredAdvancement){
         DefaultedList<SmithingIngredient> ingredients = DefaultedList.of();
         ingredients.addAll(input);
-        SmitheryRecipeJsonBuilder.create(ingredients,output.asItem(),outputCount, requiredProgress,difficulty,shapeless,RecipeCategory.MISC).criterion(criterionName,conditions).offerTo(exporter,new Identifier(Geomancy.MOD_ID,"smithing_"+getItemName(output)));
+        SmitheryRecipeJsonBuilder.create(ingredients,output.asItem(),outputCount, requiredProgress,difficulty,shapeless,RecipeCategory.MISC, requiredAdvancement).criterion(criterionName,conditions).offerTo(exporter,new Identifier(Geomancy.MOD_ID,"smithing_"+getItemName(output)));
 
     }
 
@@ -709,24 +720,24 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         AddDefaultedSmitheryRecipe(new String[]{
                 " o ",
                 "o o",
-                " o "},ingredient,result,requiredProgress,difficulty);
+                " o "},ingredient,result,requiredProgress,difficulty,null);
     }
     private void AddNecklaceSmitheryRecipe(ItemConvertible ingredient, ItemConvertible result, int requiredProgress, int difficulty) {
         AddDefaultedSmitheryRecipe(new String[]{
                 "o o",
                 "o o",
-                " o "},ingredient,result,requiredProgress,difficulty);
+                " o "},ingredient,result,requiredProgress,difficulty,null);
     }
     private void AddPendantSmitheryRecipe(ItemConvertible ingredient, ItemConvertible result, int requiredProgress, int difficulty) {
         AddDefaultedSmitheryRecipe(new String[]{
                 "o o",
                 "ooo",
-                "   "},ingredient,result,requiredProgress,difficulty);
+                "   "},ingredient,result,requiredProgress,difficulty,null);
     }
-    private void AddDefaultedSmitheryRecipe(String[] pattern, ItemConvertible ingredient, ItemConvertible result, int requiredProgress, int difficulty) {
+    private void AddDefaultedSmitheryRecipe(String[] pattern, ItemConvertible ingredient, ItemConvertible result, int requiredProgress, int difficulty, Identifier requiredAdvancement) {
         AddShapedSmitheryRecipe(pattern
                 ,new SPatKey[]{new SPatKey("o",SmithingIngredient.ofItems(1,1,1,ingredient))},
-                result,1,requiredProgress,difficulty,conditionsFromItem(ingredient));
+                result,1,requiredProgress,difficulty,conditionsFromItem(ingredient), requiredAdvancement);
     }
 
     private void AddSpellcomponentRecipe(List<SmithingIngredient> input, SpellBlock outputComponent, boolean shapeless){
@@ -745,7 +756,8 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 outputComponent.recipeRequiredProgress,
                 outputComponent.recipeDifficulty,
                 shapeless,
-                RecipeCategory.MISC)
+                RecipeCategory.MISC,
+                ModAdvancementProvider.getComponentID(outputComponent.identifier.getPath()))
                 .criterion("gotten_base",conditions)
                 .offerTo(exporter,new Identifier(Geomancy.MOD_ID,"spellcomponent_"+outputComponent.identifier.getPath()));
 

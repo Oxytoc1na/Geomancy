@@ -33,9 +33,10 @@ public class SmitheryRecipeJsonBuilder {
     private final int difficulty;
     private final boolean shapeless;
     private final Advancement.Builder advancement = Advancement.Builder.createUntelemetered();
+    @Nullable private final Identifier requiredAdvancement;
     private final RecipeSerializer<?> serializer;
 
-    public SmitheryRecipeJsonBuilder(RecipeSerializer<?> serializer, RecipeCategory category, DefaultedList<SmithingIngredient> inputs, ItemStack output, int count, int progressRequired, int difficulty, boolean shapeless) {
+    public SmitheryRecipeJsonBuilder(RecipeSerializer<?> serializer, RecipeCategory category, DefaultedList<SmithingIngredient> inputs, ItemStack output, int count, int progressRequired, int difficulty, boolean shapeless, @Nullable Identifier requiredAdvancement) {
         this.category = category;
         this.serializer = serializer;
         this.inputs = inputs;
@@ -44,16 +45,17 @@ public class SmitheryRecipeJsonBuilder {
         this.progressRequired=progressRequired;
         this.difficulty=difficulty;
         this.shapeless=shapeless;
+        this.requiredAdvancement=requiredAdvancement;
     }
 
-    public static SmitheryRecipeJsonBuilder create(DefaultedList<SmithingIngredient> inputs, Item output,int count, int progressRequired, int difficulty, boolean shapeless, RecipeCategory category) {
+    public static SmitheryRecipeJsonBuilder create(DefaultedList<SmithingIngredient> inputs, Item output,int count, int progressRequired, int difficulty, boolean shapeless, RecipeCategory category, Identifier requiredAdvancement) {
         return new SmitheryRecipeJsonBuilder(ModRecipeTypes.SMITHING_SERIALIZER, category, inputs, new ItemStack(output),
-                count,progressRequired, difficulty, shapeless);
+                count,progressRequired, difficulty, shapeless, requiredAdvancement);
     }
 
-    public static SmitheryRecipeJsonBuilder create(DefaultedList<SmithingIngredient> inputs, ItemStack output, int count, int progressRequired, int difficulty, boolean shapeless, RecipeCategory category) {
+    public static SmitheryRecipeJsonBuilder create(DefaultedList<SmithingIngredient> inputs, ItemStack output, int count, int progressRequired, int difficulty, boolean shapeless, RecipeCategory category, Identifier requiredAdvancement) {
         return new SmitheryRecipeJsonBuilder(ModRecipeTypes.SMITHING_SERIALIZER, category, inputs, output,
-                count,progressRequired, difficulty, shapeless);
+                count,progressRequired, difficulty, shapeless, requiredAdvancement);
     }
 
     public SmitheryRecipeJsonBuilder criterion(String name, CriterionConditions conditions) {
@@ -67,7 +69,7 @@ public class SmitheryRecipeJsonBuilder {
         exporter.accept(new Provider(
                 recipeId, this.serializer, this.inputs, this.output, this.count, this.progressRequired,
                 this.difficulty,this.shapeless, this.advancement,
-                recipeId.withPrefixedPath("recipes/" + this.category.getName() + "/")));
+                recipeId.withPrefixedPath("recipes/" + this.category.getName() + "/"),requiredAdvancement));
     }
 
     private void validate(Identifier recipeId) {
@@ -78,7 +80,7 @@ public class SmitheryRecipeJsonBuilder {
 
     public static record Provider(Identifier id, RecipeSerializer<?> type, DefaultedList<SmithingIngredient> inputs,
                                   ItemStack output, int count,int progressRequired,int difficulty,boolean shapeless,
-                                  Advancement.Builder advancement, Identifier advancementId) implements RecipeJsonProvider {
+                                  Advancement.Builder advancement, Identifier advancementId, Identifier requiredAdvancement) implements RecipeJsonProvider {
         public void serialize(JsonObject json) {
             //if (!this.group.isEmpty()) {
             //    json.addProperty("group", this.group);
@@ -99,6 +101,7 @@ public class SmitheryRecipeJsonBuilder {
             json.addProperty("difficulty",this.difficulty);
             json.addProperty("shapeless",this.shapeless);
             json.add("result", resultObject);
+            if(requiredAdvancement!=null)json.addProperty("required_advancement",requiredAdvancement.toString());
         }
 
         public Identifier getRecipeId() {
