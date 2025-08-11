@@ -90,7 +90,6 @@ public class ModItems {
     public static final LorebookItem LORE_BOOK_WAR_1 = register("lorebook_war_1",new LorebookItem(new FabricItemSettings(),"lore/war_1"),new ExtraItemSettings());
     public static final LorebookItem LORE_BOOK_WAR_2 = register("lorebook_war_2",new LorebookItem(new FabricItemSettings(),"lore/war_2"),new ExtraItemSettings());
     public static final LorebookItem LORE_BOOK_WAR_3 = register("lorebook_war_3",new LorebookItem(new FabricItemSettings(),"lore/war_3"),new ExtraItemSettings());
-    public static final LorebookItem LORE_BOOK_WAR_4 = register("lorebook_war_4",new LorebookItem(new FabricItemSettings(),"lore/war_4"),new ExtraItemSettings());
 
     public static final LorebookItem LORE_LOG_EXPEDITION_1 = register("lorelog_expedition_1",new LorebookItem(new FabricItemSettings(),"lore/expedition_1"),new ExtraItemSettings());
     public static final LorebookItem LORE_LOG_EXPEDITION_2 = register("lorelog_expedition_2",new LorebookItem(new FabricItemSettings(),"lore/expedition_2"),new ExtraItemSettings());

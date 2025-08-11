@@ -939,6 +939,11 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("geomancy.rei.locked_recipe_type.2","Progress to unlock");
         }
 
+        // config
+        {
+            add("MODID.options.epilepsy","Epilepsy Mode");
+        }
+
         tb=null;
     }
 

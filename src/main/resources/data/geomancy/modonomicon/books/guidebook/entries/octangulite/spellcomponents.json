@@ -7,7 +7,7 @@
     "advancement_id": "geomancy:octangulite/get_spellcomponent"
   },
   "description": "book.geomancy.guidebook.octangulite.spellcomponents.description",
-  "hide_while_locked": false,
+  "hide_while_locked": true,
   "icon": {
     "item": "geomancy:spellcomponent"
   },

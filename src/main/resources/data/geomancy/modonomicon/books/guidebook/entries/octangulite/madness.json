@@ -2,8 +2,12 @@
   "background_u_index": 1,
   "background_v_index": 0,
   "category": "geomancy:octangulite",
+  "condition": {
+    "type": "modonomicon:advancement",
+    "advancement_id": "geomancy:main/simple_maddened"
+  },
   "description": "book.geomancy.guidebook.octangulite.madness.description",
-  "hide_while_locked": false,
+  "hide_while_locked": true,
   "icon": {
     "item": "geomancy:octangulite_ingot"
   },

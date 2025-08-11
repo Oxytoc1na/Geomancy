@@ -3,7 +3,7 @@
   "background_v_index": 0,
   "category": "geomancy:octangulite",
   "description": "book.geomancy.guidebook.octangulite.whispers.description",
-  "hide_while_locked": false,
+  "hide_while_locked": true,
   "icon": {
     "item": "geomancy:octangulite_ore"
   },

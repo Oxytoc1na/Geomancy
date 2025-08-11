@@ -2,8 +2,12 @@
   "background_u_index": 1,
   "background_v_index": 0,
   "category": "geomancy:lore",
+  "condition": {
+    "type": "modonomicon:advancement",
+    "advancement_id": "geomancy:lore/get_lorebook_goldsmith_2"
+  },
   "description": "book.geomancy.guidebook.lore.goldsmith_2.description",
-  "hide_while_locked": false,
+  "hide_while_locked": true,
   "icon": {
     "item": "minecraft:soul_sand"
   },
@@ -44,6 +48,6 @@
     }
   ],
   "show_when_any_parent_unlocked": false,
-  "x": -13,
+  "x": -19,
   "y": -2
 }

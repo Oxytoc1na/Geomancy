@@ -2,8 +2,12 @@
   "background_u_index": 1,
   "background_v_index": 0,
   "category": "geomancy:lore",
+  "condition": {
+    "type": "modonomicon:advancement",
+    "advancement_id": "geomancy:lore/get_lorelog_expedition_1"
+  },
   "description": "book.geomancy.guidebook.lore.expedition_1.description",
-  "hide_while_locked": false,
+  "hide_while_locked": true,
   "icon": {
     "item": "geomancy:titanium_ore"
   },
@@ -50,6 +54,6 @@
     }
   ],
   "show_when_any_parent_unlocked": false,
-  "x": -9,
+  "x": -15,
   "y": -3
 }

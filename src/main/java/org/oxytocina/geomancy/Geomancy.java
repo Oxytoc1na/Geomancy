@@ -33,6 +33,7 @@ import org.oxytocina.geomancy.particles.ModParticleTypes;
 import org.oxytocina.geomancy.progression.advancement.ModCriteria;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
+import org.oxytocina.geomancy.util.GeomancyConfig;
 import org.oxytocina.geomancy.world.gen.ModWorldGeneration;
 import org.oxytocina.geomancy.world.tree.ModFoliagePlacerTypes;
 import org.oxytocina.geomancy.world.tree.ModTrunkPlacerTypes;
@@ -54,6 +55,8 @@ public class Geomancy implements ModInitializer {
     public static boolean startedInitialization = false;
     public static boolean initializing = false;
     public static boolean finishedInitialization = false;
+
+    public static GeomancyConfig CONFIG = null;
 
     // called from APIs if they so mischievously tried to access geomancys static variables before it got the chance to load itself
     public static void initializeForeign(String from){
@@ -102,35 +105,39 @@ public class Geomancy implements ModInitializer {
 
         LOGGER.info("Loading Geomancy");
 
-        ModItems.register();
-        IJewelryItem.populateItemGroup();
-        SpellComponentStoringItem.populateItemGroup();
-        ModBlocks.register();
-        ModFluids.register();
-        ModRecipeTypes.registerSerializer();
-        ModSoundEvents.register();
-        ModLootTables.register();
-        ModCriteria.register();
-        ModBlockEntities.register();
-        ModEnchantments.register();
-        ModParticleTypes.register();
-        ModParticleFactories.register();
-        ModMessages.registerC2SPackets();
-        ModCommands.register();
-        ModEntityTypes.register();
-        ModEntityAttributes.register();
-        GeomancyIntegrationPacks.register();
-        ModStatusEffects.register();
-        ModWorldGeneration.generateModWorldGen();
-        ModTrunkPlacerTypes.register();
-        ModFoliagePlacerTypes.register();
+        try {
 
-        ServerTickEvents.START_SERVER_TICK.register(new PlayerTickHandler());
+            CONFIG = GeomancyConfig.create();
 
-        //ModDamageSources.initialize( ?????? , DynamicRegistryManager.EMPTY);
+            ModItems.register();
+            IJewelryItem.populateItemGroup();
+            SpellComponentStoringItem.populateItemGroup();
+            ModBlocks.register();
+            ModFluids.register();
+            ModRecipeTypes.registerSerializer();
+            ModSoundEvents.register();
+            ModLootTables.register();
+            ModCriteria.register();
+            ModBlockEntities.register();
+            ModEnchantments.register();
+            ModParticleTypes.register();
+            ModParticleFactories.register();
+            ModMessages.registerC2SPackets();
+            ModCommands.register();
+            ModEntityTypes.register();
+            ModEntityAttributes.register();
+            GeomancyIntegrationPacks.register();
+            ModStatusEffects.register();
+            ModWorldGeneration.generateModWorldGen();
+            ModTrunkPlacerTypes.register();
+            ModFoliagePlacerTypes.register();
 
-        logInfo(Registries.RECIPE_SERIALIZER.get(locate(ModRecipeTypes.GOLD_CONVERTING_ID)).toString());
+            ServerTickEvents.START_SERVER_TICK.register(new PlayerTickHandler());
 
+        } catch (Exception e) {
+            logError(e.getMessage());
+            throw e;
+        }
         LOGGER.info("Finished Loading Geomancy");
 
         finishedInitialization=true;

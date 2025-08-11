@@ -27,6 +27,9 @@
     ],
     "terrablender": [
       "org.oxytocina.geomancy.world.biome.ModTerrablenderAPI"
+    ],
+    "modmenu": [
+      "org.oxytocina.geomancy.compat.modMenu.ModMenuApiImpl"
     ]
   },
   "accessWidener": "geomancy.accesswidener",

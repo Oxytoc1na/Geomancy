@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.predicate.item.ItemPredicate;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -70,6 +71,25 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         Advancement simple_tried_to_take_smithery_result = AddSimpleAdvancement(ModItems.IRON_HAMMER,"tried_to_take_smithery_result","tried_to_take_smithery_result","main",AdvancementFrame.TASK,true,true,main);
         Advancement simple_lead_poisoned = AddSimpleAdvancement(ModItems.RAW_LEAD,"lead_poisoned","lead_poisoned","main",AdvancementFrame.TASK,true,true,got_lead);
         Advancement simple_maddened = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"maddened","maddened","main",AdvancementFrame.TASK,true,true,got_octangulite);
+
+        // lore
+        var loreItems = new Item[]{
+                ModItems.LORE_BOOK_GOLDSMITH_1,
+                ModItems.LORE_BOOK_GOLDSMITH_2,
+                ModItems.LORE_BOOK_GOLDSMITH_3,
+                ModItems.LORE_BOOK_GOLDSMITH_4,
+                ModItems.LORE_BOOK_WAR_1,
+                ModItems.LORE_BOOK_WAR_2,
+                ModItems.LORE_BOOK_WAR_3,
+                ModItems.LORE_LOG_EXPEDITION_1,
+                ModItems.LORE_LOG_EXPEDITION_2,
+                ModItems.LORE_LOG_EXPEDITION_3,
+                ModItems.LORE_LOG_EXPEDITION_4,
+                ModItems.LORE_LOG_EXPEDITION_5,
+        };
+        for (var item : loreItems) {
+            AddGetItemAdvancement(item, Registries.ITEM.getId(item).getPath(),item,"lore",AdvancementFrame.TASK,false,true,null);
+        }
 
         // interaction (hidden)
         Advancement interaction_smithery = AddSimpleAdvancement(null,"smithery","interact","interaction",AdvancementFrame.TASK,false,true,null);

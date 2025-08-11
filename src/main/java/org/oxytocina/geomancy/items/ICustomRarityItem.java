@@ -3,6 +3,7 @@ package org.oxytocina.geomancy.items;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.client.GeomancyClient;
 import org.oxytocina.geomancy.util.Toolbox;
 
@@ -11,7 +12,7 @@ public interface ICustomRarityItem {
     Rarity getRarity();
     default int getRarityColor(int index){
         return switch (getRarity()){
-            case Rainbow ->Toolbox.colorFromHSV(((GeomancyClient.tick+index*5)/20f/2)%1,1,1);
+            case Rainbow ->Toolbox.colorFromHSV((((Geomancy.CONFIG.epilepsyMode.value()?0:GeomancyClient.tick)+index*5)/20f/2)%1,0.5f,1);
             default->0xFFFFFFFF;
         };
     }

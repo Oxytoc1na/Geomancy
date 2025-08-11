@@ -2,8 +2,12 @@
   "background_u_index": 1,
   "background_v_index": 0,
   "category": "geomancy:lore",
+  "condition": {
+    "type": "modonomicon:advancement",
+    "advancement_id": "geomancy:lore/get_lorebook_war_2"
+  },
   "description": "book.geomancy.guidebook.lore.war_2.description",
-  "hide_while_locked": false,
+  "hide_while_locked": true,
   "icon": {
     "item": "geomancy:titanium_pickaxe"
   },
@@ -44,6 +48,6 @@
     }
   ],
   "show_when_any_parent_unlocked": false,
-  "x": -11,
+  "x": -17,
   "y": -2
 }
