@@ -34,6 +34,7 @@ import org.oxytocina.geomancy.progression.advancement.ModCriteria;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
 import org.oxytocina.geomancy.util.GeomancyConfig;
+import org.oxytocina.geomancy.world.dimension.ModDimensions;
 import org.oxytocina.geomancy.world.gen.ModWorldGeneration;
 import org.oxytocina.geomancy.world.tree.ModFoliagePlacerTypes;
 import org.oxytocina.geomancy.world.tree.ModTrunkPlacerTypes;
@@ -131,6 +132,7 @@ public class Geomancy implements ModInitializer {
             ModWorldGeneration.generateModWorldGen();
             ModTrunkPlacerTypes.register();
             ModFoliagePlacerTypes.register();
+            ModDimensions.register();
 
             ServerTickEvents.START_SERVER_TICK.register(new PlayerTickHandler());
 

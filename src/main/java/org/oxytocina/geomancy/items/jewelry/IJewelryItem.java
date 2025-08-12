@@ -137,6 +137,7 @@ public interface IJewelryItem {
 
     public static List<ItemStack> getAllWornJewelryItems(LivingEntity wearer){
         List<ItemStack> res = new ArrayList<>();
+        if(wearer==null) return res;
 
         var trinkComp = TrinketsApi.getTrinketComponent(wearer);
         if(trinkComp.isPresent()){

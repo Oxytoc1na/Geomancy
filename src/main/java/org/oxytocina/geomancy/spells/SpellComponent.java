@@ -342,6 +342,10 @@ public class SpellComponent {
         getParam(paramName).setParsed(val);
     }
 
+    public ItemStack getItemStack() {
+        return function.getItemStack();
+    }
+
     public static class SideConfig{
         public String dir;
         public String varName;

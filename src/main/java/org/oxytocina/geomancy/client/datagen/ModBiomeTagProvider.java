@@ -77,6 +77,10 @@ public class ModBiomeTagProvider extends FabricTagProvider<Biome> {
                 )
                 .setReplace(true);
 
+        getOrCreateTagBuilder(VPB_NONE)
+                .add(ModBiomes.NULL)
+                .setReplace(true);
+
         getOrCreateTagBuilder(VPB_LOWEST)
                 .forceAddTag(BiomeTags.IS_END)
                 .setReplace(true);

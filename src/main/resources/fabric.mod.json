@@ -3,10 +3,12 @@
   "id": "geomancy",
   "version": "${version}",
   "name": "Geomancy",
-  "description": "",
-  "authors": [],
+  "description": "A mod about dwarf magic, madness, lead poisoning, runes and ruins.",
+  "authors": [
+    "oxytocina"
+  ],
   "contact": {},
-  "license": "All-Rights-Reserved",
+  "license": "MIT",
   "icon": "assets/geomancy/icon.png",
   "environment": "*",
   "entrypoints": {
@@ -44,6 +46,13 @@
   "depends": {
     "fabricloader": ">=${loader_version}",
     "fabric": "*",
-    "minecraft": "${minecraft_version}"
+    "minecraft": "${minecraft_version}",
+    "terrablender": "*",
+    "modonomicon": "*",
+    "trinkets": "*",
+    "hugestructureblocks": "*"
+  },
+  "recommends": {
+    "hugestructureblocks": "*"
   }
 }

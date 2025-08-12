@@ -232,7 +232,7 @@ public class ModItems {
     public static final GeodeItem STONE_GEODE = register("stone_geode",new GeodeItem(new FabricItemSettings(),ModLootTables.GEODE_STONE));
 
     // test alien tooltip
-    public static final StellgeTooltippedItem TEST = register("stellge_test",new StellgeTooltippedItem(new FabricItemSettings(),"lorem ipsum dolor sit amet"));
+    public static final StellgeTooltippedItem TEST = register("stellge_test",new StellgeTooltippedItem(new FabricItemSettings(),10));
 
     public static final FoodItem LEAD_APPLE = register("lead_apple",new FoodItem(new FabricItemSettings().food(new FoodComponent.Builder().alwaysEdible().hunger(4).build()),le->{
         LeadUtil.addPoisoning((PlayerEntity) le,100);

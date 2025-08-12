@@ -80,6 +80,7 @@ public class SpellBlocks {
     public static final SpellBlock COS;
     public static final SpellBlock TAN;
     public static final SpellBlock EXP;
+    public static final SpellBlock LOG;
     public static final SpellBlock VECTOR_SPLIT;
     public static final SpellBlock VECTOR_BUILD;
     public static final SpellBlock VECTOR_ENTITYPOS;
@@ -413,6 +414,21 @@ public class SpellBlocks {
                             var a = vars.get("a");
                             var b = vars.get("b");
                             res.add(SpellSignal.createNumber(Math.pow(a.getNumberValue(),b.getNumberValue())).named("exp"));
+                            return res;
+                        })
+                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
+                        .category(cat).build());
+
+                LOG = register(SpellBlock.Builder.create("log")
+                        .inputs(SpellSignal.createNumber(0).named("a"),
+                                SpellSignal.createNumber(0).named("base"))
+                        .outputs(SpellSignal.createNumber(0).named("log"))
+                        .parameters()
+                        .func((comp,vars) -> {
+                            SpellBlockResult res = SpellBlockResult.empty();
+                            var a = vars.get("a");
+                            var base = vars.get("base");
+                            res.add(SpellSignal.createNumber(Toolbox.log(base.getNumberValue(),a.getNumberValue())).named("log"));
                             return res;
                         })
                         .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)

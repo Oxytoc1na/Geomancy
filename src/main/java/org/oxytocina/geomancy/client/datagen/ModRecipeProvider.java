@@ -332,6 +332,12 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
                             SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                             SmithingIngredient.ofItems(1,1,baseIngot),
+                            SmithingIngredient.ofItems(1,1,Items.OAK_LOG),
+                    }).toList(),SpellBlocks.LOG,true);
+
+                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.OAK_STAIRS),
                     }).toList(),SpellBlocks.SIN,true);
 

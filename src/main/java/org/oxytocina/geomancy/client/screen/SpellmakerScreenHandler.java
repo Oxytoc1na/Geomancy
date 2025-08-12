@@ -213,18 +213,37 @@ public class SpellmakerScreenHandler extends ScreenHandler {
         if(Math.abs(draggedX) + Math.abs(draggedY) > 2)
             dragging = true;
 
-        fieldDrawOffsetX += deltaX/fieldDrawScale;
-        fieldDrawOffsetY += deltaY/fieldDrawScale;
+        fieldDrawOffsetX += deltaX;
+        fieldDrawOffsetY += deltaY;
     }
 
     public void mouseScrolled(double mouseX, double mouseY, double amount) {
         if(!mouseInField(mouseX,mouseY)) return;
 
         if(amount!=0){
-            // scrolling
-            fieldDrawScale *= 1+0.2f*(float)amount;
-            fieldDrawScale = Toolbox.clampF(fieldDrawScale,0.1f,2f);
+            // zooming
+            zoom(1+0.2f*(float)amount);
+
         }
+    }
+
+    public void zoom(float factor){ //2
+        float prevScale = fieldDrawScale; //2
+        fieldDrawScale *= factor; //4
+        fieldDrawScale = Toolbox.clampF(fieldDrawScale,0.1f,2f);
+
+        factor=1/factor; //0.5
+
+
+        //AAAAAAAAAAAAAAAAAA
+        // determine viewport shift
+        float viewportWidth = fieldWidth / prevScale;//50
+        float viewportHeight = fieldHeight / prevScale;
+        float xShift = viewportWidth * (factor>1?(factor-1):(1-factor)) /2f; //50*(1-0.5)/2 = 12.5
+        float yShift = viewportHeight * (factor>1?(factor-1):(1-factor)) /2f;
+
+        fieldDrawOffsetX += (factor>1?-1:1)*xShift;
+        fieldDrawOffsetY += (factor>1?-1:1)*yShift;
     }
 
     public void mouseClicked(double mouseX, double mouseY, int button) {
@@ -388,8 +407,8 @@ public class SpellmakerScreenHandler extends ScreenHandler {
                 if(!currentGrid.inBounds(new Vector2i(x,y))) continue;
                 drawPositionIndices.add(new Vector2i(x,y));
                 drawPositions.add(new Vector2f(
-                        bgPosX+fieldPosX+(fieldDrawScale * (Math.round(fieldDrawOffsetX) + Math.round((x-0.5f+yskew/2f)*hexWidth))),
-                        bgPosY+fieldPosY+(fieldDrawScale * (Math.round(fieldDrawOffsetY) + (y-0.5f)*hexHeight))
+                        bgPosX+fieldPosX+Math.round(fieldDrawOffsetX) + (fieldDrawScale * (Math.round((x-0.5f+yskew/2f)*hexWidth))),
+                        bgPosY+fieldPosY+Math.round(fieldDrawOffsetY) + (fieldDrawScale * ((y-0.5f)*hexHeight))
                 ));
             }
         }

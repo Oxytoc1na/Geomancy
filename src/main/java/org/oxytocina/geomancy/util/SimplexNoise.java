@@ -133,6 +133,14 @@ public class SimplexNoise {  // Simplex noise in 2D, 3D and 4D
         return 70.0 * (n0 + n1 + n2);
     }
 
+    public static float noiseNormalized(double x, double y, double z, double scale) {
+        return noiseNormalized(x*scale,y*scale,z*scale);
+    }
+
+
+    public static float noiseNormalized(double x, double y, double z){
+        return (float)((noise(x,y,z)+1)/2);
+    }
 
     // 3D simplex noise
     public static double noise(double xin, double yin, double zin) {

@@ -1,0 +1,12 @@
+{
+  "type": "geomancy:null_type",
+  "generator": {
+    "type": "geomancy:null",
+    "settings": "minecraft:overworld",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "geomancy:null"
+    },
+    "world_height": 256
+  }
+}

@@ -9,6 +9,7 @@ import org.oxytocina.geomancy.client.datagen.*;
 import org.oxytocina.geomancy.world.ModConfiguredFeatures;
 import org.oxytocina.geomancy.world.ModPlacedFeatures;
 import org.oxytocina.geomancy.world.biome.ModBiomes;
+import org.oxytocina.geomancy.world.dimension.ModDimensions;
 
 public class GeomancyDataGenerator implements DataGeneratorEntrypoint {
 
@@ -36,6 +37,6 @@ public class GeomancyDataGenerator implements DataGeneratorEntrypoint {
         registryBuilder.addRegistry(RegistryKeys.CONFIGURED_FEATURE, ModConfiguredFeatures::boostrap);
         registryBuilder.addRegistry(RegistryKeys.PLACED_FEATURE, ModPlacedFeatures::boostrap);
         registryBuilder.addRegistry(RegistryKeys.BIOME, ModBiomes::boostrap);
-        //registryBuilder.addRegistry(RegistryKeys.DIMENSION_TYPE, ModDimensions::bootstrapType);
+        registryBuilder.addRegistry(RegistryKeys.DIMENSION_TYPE, ModDimensions::bootstrapType);
     }
 }

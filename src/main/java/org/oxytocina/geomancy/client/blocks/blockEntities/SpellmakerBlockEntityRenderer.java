@@ -8,6 +8,7 @@ import net.fabricmc.fabric.impl.client.particle.FabricSpriteProviderImpl;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.block.BlockRenderManager;
@@ -20,17 +21,31 @@ import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.PlayerScreenHandler;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Matrix3f;
-import org.joml.Matrix4f;
+import org.joml.*;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.blocks.blockEntities.SmitheryBlockEntity;
 import org.oxytocina.geomancy.blocks.blockEntities.SpellmakerBlockEntity;
+import org.oxytocina.geomancy.client.screen.SpellmakerScreen;
+import org.oxytocina.geomancy.client.screen.SpellmakerScreenHandler;
+import org.oxytocina.geomancy.items.SpellComponentStoringItem;
+import org.oxytocina.geomancy.items.SpellStoringItem;
+import org.oxytocina.geomancy.spells.SpellComponent;
+import org.oxytocina.geomancy.spells.SpellGrid;
+import org.oxytocina.geomancy.util.Toolbox;
+
+import java.lang.Math;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
 
 @Environment(EnvType.CLIENT)
 public class SpellmakerBlockEntityRenderer<T extends SpellmakerBlockEntity> implements BlockEntityRenderer<T> {
@@ -40,30 +55,64 @@ public class SpellmakerBlockEntityRenderer<T extends SpellmakerBlockEntity> impl
         root = texturedModelData.createModel();
     }
 
-    private static final SpriteIdentifier SPRITE_IDENTIFIER = new SpriteIdentifier(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, Geomancy.locate("block/cut_titanium"));
+    private static final SpriteIdentifier SPRITE_IDENTIFIER = new SpriteIdentifier(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, Geomancy.locate("block/spellmaker"));
     private final ModelPart root;
 
     public static @NotNull TexturedModelData getTexturedModelData() {
         ModelData modelData = new ModelData();
         ModelPartData modelPartData = modelData.getRoot();
-        ModelPartData root = modelPartData.addChild("root", ModelPartBuilder.create().uv(81, 44).cuboid(-1.5F, -10.0F, -1.5F, 3.0F, 9.0F, 3.0F, new Dilation(0.0F))
-                .uv(0, 0).cuboid(-7.0F, -11.0F, -7.0F, 14.0F, 10.0F, 14.0F, new Dilation(0.0F))
-                .uv(0, 60).cuboid(-5.0F, -11.0F, -5.0F, 10.0F, 10.0F, 10.0F, new Dilation(0.0F))
-                .uv(0, 43).cuboid(-7.5F, -2.0F, -7.5F, 15.0F, 2.0F, 15.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
+        //ModelPartData root = modelPartData.addChild("root", ModelPartBuilder.create()
+        //                .uv(0, 0)
+        //                .cuboid(0, 0, 0, 3.0F, 9.0F, 3.0F, new Dilation(0.0F))
+        //        , ModelTransform.pivot(0.0F, 0, 0.0F));
 
-        //ModelPartData root = modelPartData.addChild("root", ModelPartBuilder.create().uv(81, 44).cuboid(-1.5F, -10.0F, -1.5F, 3.0F, 9.0F, 3.0F, new Dilation(0.0F))
-        //        .uv(0, 0).cuboid(-7.0F, -11.0F, -7.0F, 14.0F, 10.0F, 14.0F, new Dilation(0.0F))
-        //        .uv(0, 60).cuboid(-5.0F, -11.0F, -5.0F, 10.0F, 10.0F, 10.0F, new Dilation(0.0F))
-        //        .uv(0, 43).cuboid(-7.5F, -2.0F, -7.5F, 15.0F, 2.0F, 15.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
+        // top
+        var builder = ModelPartBuilder.create()
+                .uv(32-16, 0);
+        builder.cuboidData.add(
+                new ModelCuboidData((String)null,
+                        (float)builder.textureX,
+                        (float)builder.textureY,
+                        -8,8-0.01f,-8,
+                        16,0,16,
+                        new Dilation(0.0F),
+                        builder.mirror, 1.0F, 1.0F,
+                        EnumSet.of(Direction.DOWN)));
+        ModelPartData top = modelPartData.addChild("top",builder,
+                ModelTransform.pivot(0F, 0, 0F));
 
-        for (int i = 0; i < 3; i++) {
-            ModelPartData driver = root.addChild("driver"+i,
-                    ModelPartBuilder.create()
-                            .uv(53, 38)
-                            .cuboid(-3.5F, -36.0F, -3.5F, 7.0F, 11.0F, 7.0F, new Dilation(0.0F)),
-                    ModelTransform.pivot(0.0F, 21.0F, 0.0F));
+        // bottom
+        builder = ModelPartBuilder.create()
+                .uv(32-16, 0);
+        builder.cuboidData.add(
+                new ModelCuboidData((String)null,
+                        (float)builder.textureX,
+                        (float)builder.textureY,
+                        -8,24+0.01f,-8,
+                        16,0,16,
+                        new Dilation(0.0F),
+                        builder.mirror, 1.0F, 1.0F,
+                        EnumSet.of(Direction.UP)));
+        ModelPartData bottom = modelPartData.addChild("bottom",builder,
+                ModelTransform.pivot(0F, 0, 0F));
+
+        for (int i = 0; i < 6; i++) {
+            builder = ModelPartBuilder.create()
+                    .uv(0, 0);
+            builder.cuboidData.add(
+                    new ModelCuboidData((String)null,
+                            (float)builder.textureX,
+                            (float)builder.textureY,
+                            6.9f-2,8,-4,
+                            2,16,8,
+                            new Dilation(0.0F),
+                            builder.mirror, 1.0F, 1.0F,
+                            EnumSet.of(Direction.EAST,Direction.UP,Direction.DOWN)));
+            ModelPartData driver = modelPartData.addChild("driver"+i,builder,
+                    ModelTransform.pivot(0F, 0, 0F));
+
         }
-        return TexturedModelData.of(modelData, 32, 32);
+        return TexturedModelData.of(modelData, 128, 128);
     }
 
     @Override
@@ -71,23 +120,102 @@ public class SpellmakerBlockEntityRenderer<T extends SpellmakerBlockEntity> impl
         World world = entity.getWorld();
         boolean bl = world != null;
         BlockState blockState = bl ? entity.getCachedState() : ModBlocks.SPELLMAKER.getDefaultState();
+
+        // render model
         matrixStack.push();
         float f = blockState.contains(ChestBlock.FACING) ? blockState.get(ChestBlock.FACING).asRotation() : 0;
         matrixStack.translate(0.5D, 1.5D, 0.5D);
         matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-f));
         matrixStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(180));
 
-        var pistonPos = 14;
-        var driverPos = 6;
-        var capPos = 5;
-        //piston.pivotY = -22 - pistonPos;
-        //driver.pivotY = 21 - driverPos;
-        //cap.pivotY = 21 - capPos;
+        for (int i = 0; i < 6; i++) {
+            var part = root.getChild("driver"+i);
+            part.yaw = (float)Math.PI*2*i/6f + (float)Math.PI*0.5f;
+        }
 
-        VertexConsumer vertexConsumer = SPRITE_IDENTIFIER.getVertexConsumer(vertexConsumers, RenderLayer::getEntityCutoutNoCull);
+        VertexConsumer vertexConsumer = SPRITE_IDENTIFIER.getVertexConsumer(vertexConsumers, RenderLayer::getEntityCutout);
         root.render(matrixStack, vertexConsumer, light, overlay);
 
         matrixStack.pop();
+
+        // render spell storage
+        MinecraftClient client = MinecraftClient.getInstance();
+        ItemStack baseStack = entity.getOutput();
+        light = WorldRenderer.getLightmapCoordinates(entity.getWorld(), entity.getPos().up());
+        if(!baseStack.isEmpty()) {
+            matrixStack.push();
+
+            float time = entity.getWorld().getTime() % 50000 + tickDelta;
+            double height = 1 + Math.sin((time) / 8.0) / 6.0; // item height
+
+            matrixStack.translate(0.5, 0.5 + height, 0.5);
+            matrixStack.multiply(client.getBlockEntityRenderDispatcher().camera.getRotation());
+            matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180.0F));
+            MinecraftClient.getInstance().getItemRenderer().renderItem(baseStack, ModelTransformationMode.GROUND, light, overlay, matrixStack, vertexConsumers, entity.getWorld(), 0);
+            matrixStack.pop();
+        }
+
+        // render grid
+        var grid = SpellStoringItem.readGrid(baseStack);
+        if(grid!=null){
+            for (var compPos : grid.components.keySet()){
+                var comp = grid.getComponent(compPos);
+                matrixStack.push();
+
+                double height = 1; // item height
+
+                float scale = 0.6f/grid.width;
+
+                float hexWidth = 1;
+                float hexHeight = 1;
+
+                float fieldDrawOffsetX = (1-(grid.height >> 1)%2)*hexWidth*0.5f;
+                float fieldDrawOffsetY = 0;
+
+                int yskew = compPos.y%2;
+
+
+                float offsetX = scale * (fieldDrawOffsetX + (compPos.x-grid.width/2f+yskew/2f)*hexWidth);
+                float offsetY = scale * (fieldDrawOffsetY + (compPos.y+0.5f-grid.height/2f)*hexHeight);
+
+                ItemStack compStack = comp.getItemStack();
+
+                matrixStack.translate(0.5 + offsetX, height, 0.5 + offsetY);
+                matrixStack.scale(scale,scale,scale);
+                matrixStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90F));
+                matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
+                MinecraftClient.getInstance().getItemRenderer().renderItem(
+                        compStack,
+                        ModelTransformationMode.FIXED,
+                        light, overlay, matrixStack, vertexConsumers,
+                        entity.getWorld(), 0);
+                matrixStack.pop();
+            }
+        }
+    }
+
+    public void renderQuads(ModelPart.Quad[] quads, MatrixStack.Entry entry, VertexConsumer vertexConsumer, int light, int overlay, float red, float green, float blue, float alpha) {
+        Matrix4f position = entry.getPositionMatrix();
+        Matrix3f normal = entry.getNormalMatrix();
+
+        for (ModelPart.Quad quad : quads) {
+            renderQuad(quad,normal,position,vertexConsumer,light, overlay, red, green, blue, alpha);
+        }
+    }
+
+    public void renderQuad(ModelPart.Quad quad, Matrix3f normal, Matrix4f position,VertexConsumer vertexConsumer,int light, int overlay, float red, float green, float blue, float alpha){
+        Vector3f vector3f = normal.transform(new Vector3f(quad.direction));
+        float f = vector3f.x();
+        float g = vector3f.y();
+        float h = vector3f.z();
+
+        for (ModelPart.Vertex vertex : quad.vertices) {
+            float i = vertex.pos.x() / 16.0F;
+            float j = vertex.pos.y() / 16.0F;
+            float k = vertex.pos.z() / 16.0F;
+            Vector4f vector4f = position.transform(new Vector4f(i, j, k, 1.0F));
+            vertexConsumer.vertex(vector4f.x(), vector4f.y(), vector4f.z(), red, green, blue, alpha, vertex.u, vertex.v, overlay, light, f, g, h);
+        }
     }
 
     @Override

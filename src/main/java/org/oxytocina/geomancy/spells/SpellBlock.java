@@ -1,7 +1,10 @@
 package org.oxytocina.geomancy.spells;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.items.ModItems;
+import org.oxytocina.geomancy.items.SpellComponentStoringItem;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -22,6 +25,7 @@ public class SpellBlock {
     public Identifier hexBackTexture;
     public Function<SpellComponent,SpellComponent.SideConfig[]> sideConfigGetter;
     public Category category;
+    public ItemStack stack;
     public int defaultLootWeight;
     public int recipeRequiredProgress;
     public int recipeDifficulty;
@@ -53,13 +57,15 @@ public class SpellBlock {
                   Category category,
                   int defaultLootWeight,
                   int recipeRequiredProgress,
-                  int recipeDifficulty){
+                  int recipeDifficulty,
+                         ItemStack stack){
         this.identifier=identifier;
         this.inputs = new HashMap<>();
         this.outputs = new HashMap<>();
         this.variables = new HashMap<>();
         this.parameters = new HashMap<>();
         this.category=category;
+        this.stack=stack;
         this.hexFrontTexture = Geomancy.locate("textures/gui/spells/"+identifier.getPath()+".png");
         this.hexBackTexture = Geomancy.locate("textures/gui/spellmaker_hex_bg_"+category.toString().toLowerCase()+".png");
         this.defaultLootWeight=defaultLootWeight;
@@ -77,6 +83,10 @@ public class SpellBlock {
 
         this.singleOutput=outputs.size()==1;
         if(singleOutput) output=outputs.get(0);
+
+        if(this.stack==null){
+            this.stack = SpellComponentStoringItem.createDefaultComponentData(new ItemStack(ModItems.SPELLCOMPONENT),this);
+        }
     }
 
     public SpellBlock hexTex(String texture){
@@ -101,10 +111,15 @@ public class SpellBlock {
         return hexBackTexture;
     }
 
+    public ItemStack getItemStack() {
+        return stack;
+    }
+
     public static class Builder{
 
         final Identifier identifier;
         Category category;
+        ItemStack stack;
         SpellSignal[] inputs;
         SpellSignal[] outputs;
         Parameter[] parameters;
@@ -147,12 +162,18 @@ public class SpellBlock {
                     category,
                     defaultLootWeight,
                     recipeRequiredProgress,
-                    recipeDifficulty
+                    recipeDifficulty,
+                    stack
             );
         }
 
         public Builder category(Category category){
             this.category=category;
+            return this;
+        }
+
+        public Builder stack(ItemStack stack){
+            this.stack=stack;
             return this;
         }
 

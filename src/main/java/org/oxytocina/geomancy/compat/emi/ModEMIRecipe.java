@@ -15,8 +15,8 @@ import org.oxytocina.geomancy.util.Toolbox;
 import java.util.*;
 
 public abstract class ModEMIRecipe implements EmiRecipe {
-    public static final Text HIDDEN_LINE_1 = Text.translatable("geomancy.rei.locked_recipe_type");
-    public static final Text HIDDEN_LINE_2 = Text.translatable("geomancy.rei.locked_recipe_type.2");
+    public static final Text HIDDEN_LINE_1 = Text.translatable("geomancy.rei.locked_recipe");
+    public static final Text HIDDEN_LINE_2 = Text.translatable("geomancy.rei.locked_recipe.2");
     public final EmiRecipeCategory category;
     public final Identifier recipeTypeUnlockIdentifier, recipeIdentifier;
     public final int width, height;

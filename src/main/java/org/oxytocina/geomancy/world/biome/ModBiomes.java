@@ -24,6 +24,7 @@ import org.oxytocina.geomancy.world.ModPlacedFeatures;
 public class ModBiomes {
 
     public static final RegistryKey<Biome> SOUL_SWAMP = register("soul_swamp");
+    public static final RegistryKey<Biome> NULL = register("null");
 
     public static RegistryKey<Biome> register(String name){
         return RegistryKey.of(RegistryKeys.BIOME, Geomancy.locate(name));
@@ -32,6 +33,7 @@ public class ModBiomes {
 
     public static void boostrap(Registerable<Biome> context) {
         context.register(SOUL_SWAMP, soulSwamp(context));
+        context.register(NULL, nullBiome(context));
     }
 
     public static void globalOverworldGeneration(GenerationSettings.LookupBackedBuilder builder) {
@@ -82,6 +84,31 @@ public class ModBiomes {
                         .fogColor(0x373F6D)
                         .moodSound(BiomeMoodSound.CAVE)
                         .music(MusicType.createIngameMusic(SoundEvents.MUSIC_OVERWORLD_SWAMP)).build())
+                .build();
+    }
+    public static Biome nullBiome(Registerable<Biome> context) {
+
+        // spawns
+        SpawnSettings.Builder spawnBuilder = new SpawnSettings.Builder();
+        spawnBuilder.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(ModEntityTypes.STELLGE_ENGINEER, 10, 1, 4));
+
+        // biome
+        GenerationSettings.LookupBackedBuilder biomeBuilder =
+                new GenerationSettings.LookupBackedBuilder(context.getRegistryLookup(RegistryKeys.PLACED_FEATURE),
+                        context.getRegistryLookup(RegistryKeys.CONFIGURED_CARVER));
+
+        return new Biome.Builder()
+                .precipitation(false).downfall(0f).temperature(0f)
+                .generationSettings(biomeBuilder.build()).spawnSettings(spawnBuilder.build())
+                .effects((new BiomeEffects.Builder())
+                        .waterColor(0x373F6D)
+                        .waterFogColor(0x373F6D)
+                        .skyColor(0x000000)
+                        .grassColor(0x373F6D)
+                        .foliageColor(0x373F6D)
+                        .fogColor(0x000000)
+                        .moodSound(BiomeMoodSound.CAVE)
+                        .music(MusicType.createIngameMusic(SoundEvents.MUSIC_END)).build())
                 .build();
     }
 }

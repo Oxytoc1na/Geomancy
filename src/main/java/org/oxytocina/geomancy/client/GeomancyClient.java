@@ -29,6 +29,7 @@ import org.oxytocina.geomancy.compat.GeomancyIntegrationPacks;
 import org.oxytocina.geomancy.effects.ParanoiaStatusEffect;
 import org.oxytocina.geomancy.event.KeyInputHandler;
 import org.oxytocina.geomancy.networking.ModMessages;
+import org.oxytocina.geomancy.world.dimension.ModDimensions;
 
 public class GeomancyClient implements ClientModInitializer {
 
@@ -52,7 +53,7 @@ public class GeomancyClient implements ClientModInitializer {
         GeomancyIntegrationPacks.registerClient();
         ModArmorRenderers.register();
         ModModelLayers.register();
-
+        ModDimensions.registerClient();
 
         ClientTickEvents.START_CLIENT_TICK.register(new ClientPlayerTickHandler());
         ClientPlayConnectionEvents.JOIN.register(new ClientPlayConnectionJoin());

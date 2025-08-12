@@ -1,11 +1,21 @@
 {
 	"format_version": "1.9.0",
-	"texture_size": [32, 32],
+	"texture_size": [128, 128],
 	"textures": {
 		"0": "geomancy:block/spellmaker",
 		"particle": "geomancy:block/spellmaker"
 	},
 	"elements": [
-
+		{   "from": [ 5, 1, 5 ],
+			"to": [ 11, 15, 11 ],
+			"faces": {
+				"down":  { "uv": [ 5,  6, 11, 10 ], "tintindex": 0, "texture": "0", "cullface": "down" },
+				"up":    { "uv": [ 5,  6, 11, 10 ], "tintindex": 0, "texture": "0", "cullface": "up" },
+				"north": { "uv": [ 5, 14, 11, 16 ], "tintindex": 0, "texture": "0" },
+				"south": { "uv": [ 5, 14, 11, 16 ], "tintindex": 0, "texture": "0" },
+				"west":  { "uv": [ 6, 14, 10, 16 ], "tintindex": 0, "texture": "0" },
+				"east":  { "uv": [ 6, 14, 10, 16 ], "tintindex": 0, "texture": "0" }
+			}
+		}
 	]
 }

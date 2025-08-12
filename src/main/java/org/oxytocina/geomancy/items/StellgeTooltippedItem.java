@@ -19,18 +19,21 @@ import java.util.Optional;
 
 public class StellgeTooltippedItem extends Item {
 
-    public final String descriptionLangKey;
+    public final float knowledgeRequired;
 
-    public StellgeTooltippedItem(Settings settings,String descriptionLangKey) {
+    public StellgeTooltippedItem(Settings settings, float knowledgeRequired) {
         super(settings);
-        this.descriptionLangKey=descriptionLangKey;
+        this.knowledgeRequired=knowledgeRequired;
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        float knowledge = 1;
-        var base = Text.translatable(descriptionLangKey).getString();
-        Text res = StellgeUtil.stellgify(Text.literal(base),2,knowledge);
+    public Text getName(ItemStack stack) {
+        return StellgeUtil.stellgify(Text.literal("").append(super.getName(stack)),knowledgeRequired);
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, @Nullable World womaxiirld, List<Text> tooltip, TooltipContext context) {
+        Text res = StellgeUtil.stellgify(Text.translatable(getTranslationKey()+".desc"),knowledgeRequired);
         tooltip.add(res);
     }
 }

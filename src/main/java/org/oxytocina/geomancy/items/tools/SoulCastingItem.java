@@ -356,9 +356,9 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
             }
         }
 
-        return colorizeName(stack,Text.translatable(this.getTranslationKey(stack)).append(Text.literal(" [").append(
+        return ((MutableText)colorizeName(stack,Text.translatable(this.getTranslationKey(stack)))).append(Text.literal(" [").append(
                 spellText
-                ).append("]").formatted(Formatting.GRAY)));
+                ).append("]").formatted(Formatting.GRAY));
     }
 
 

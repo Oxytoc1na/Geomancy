@@ -100,6 +100,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("cos","Cosine","returns the cosine of the input");
             addSpell("tan","Tangent","returns the tangent of the input");
             addSpell("exp","Exponent","returns a number to the power of another number");
+            addSpell("log","Log","returns the logarithm to a base of a number");
             addSpell("raycast_pos","Raycast Pos.","returns the block position hit by a ray");
             addSpell("raycast_dir","Raycast Dir.","returns the block face hit by a ray");
             addSpell("bool_entitygrounded","Entity Grounded","returns if an entity is on the ground");

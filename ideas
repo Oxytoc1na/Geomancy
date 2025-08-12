@@ -168,18 +168,12 @@ TODO: programmable armor
 -- casts when ?
 
 PREMADE SPELLS
-- hello world
+x hello world
 
 EFFECT BLOCKS
-ti lightning
-- status effects
-til- fireball
-l- teleport
-l- dimhop
-- place blocks
-- break blocks
 - taming entities
 - bonemeal spell
-il- player spawn point
 til- sin, cos, tan, exp, log
-til other installed spells (simple: 1 input argument, 1 output argument)
+
+NULL DIMENSION
+- endless maze
