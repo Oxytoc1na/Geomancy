@@ -47,6 +47,7 @@ public class StellgeUtil {
         if(knowledgeFraction<=0) return stellgify(t);
         if(knowledgeFraction>=1) return t;
 
+        // per character
         var tString = t.getString();
         final MutableText resText = Text.literal("");
         t.asOrderedText().accept((index, style, codePoint) -> {
@@ -56,6 +57,18 @@ public class StellgeUtil {
             resText.append(charText);
             return true;
         });
+
+        // per word
+        //var tString = t.getString();
+        //var words = tString.split(" ");
+        //final MutableText resText = Text.literal("");
+        //for (int i = 0; i < words.length; i++) {
+        //    var wordText = Text.literal(words[i]+(i<words.length-1?" ":"")).setStyle(t.getStyle());
+        //    if(Toolbox.seededRandom(i*473).nextFloat()>knowledgeFraction)
+        //        wordText = stellgify(wordText);
+        //    resText.append(wordText);
+        //}
+
         return resText;
     }
 

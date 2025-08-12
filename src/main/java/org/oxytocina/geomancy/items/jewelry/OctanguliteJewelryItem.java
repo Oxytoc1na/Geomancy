@@ -5,13 +5,15 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.world.World;
+import org.oxytocina.geomancy.items.ICustomRarityItem;
 import org.oxytocina.geomancy.items.IMaddeningItem;
 import org.oxytocina.geomancy.items.IManaStoringItem;
 import org.oxytocina.geomancy.util.MadnessUtil;
 import org.oxytocina.geomancy.util.ManaUtil;
 
-public class OctanguliteJewelryItem extends JewelryItem implements IManaStoringItem, IMaddeningItem {
+public class OctanguliteJewelryItem extends JewelryItem implements IManaStoringItem, IMaddeningItem, ICustomRarityItem {
 
     public float baseSoulCapacity;
     public float maddeningSpeed;
@@ -93,5 +95,15 @@ public class OctanguliteJewelryItem extends JewelryItem implements IManaStoringI
     @Override
     public float getWornMaddeningSpeed() {
         return maddeningSpeedWorn;
+    }
+
+    @Override
+    public Text getName(ItemStack stack) {
+        return colorizeName(stack,super.getName(stack));
+    }
+
+    @Override
+    public Rarity getRarity() {
+        return Rarity.Octangulite;
     }
 }

@@ -259,7 +259,7 @@ public class ModColorizationHandler {
 
         final float zoom = 0.03f;
         final float speed = 0.01f;
-        final float tintIndex = index/10f;
+        final float offset = index/3f;
         final boolean withSlotOffset = true;
 
         float hue = 0;
@@ -317,18 +317,19 @@ public class ModColorizationHandler {
         }
 
         baseX += speed*GeomancyClient.tick;
+        baseZ += offset;
 
-        float x = zoom*baseX * (1+tintIndex*0.3f) + tintIndex*16;
-        float y = zoom*baseY * (1+tintIndex*0.3f) + tintIndex*16;
-        float z = zoom*baseZ * (1+tintIndex*0.3f) + tintIndex*16;
+        float x = zoom*baseX;
+        float y = zoom*baseY;
+        float z = zoom*baseZ;
 
-        float x2 = zoom*1.5f*((baseX+230) * (1+tintIndex*0.3f) + tintIndex*16);
-        float y2 = zoom*1.5f*((baseY+590) * (1+tintIndex*0.3f) + tintIndex*16);
-        float z2 = zoom*1.5f*((baseZ+367) * (1+tintIndex*0.3f) + tintIndex*16);
+        float x2 = zoom*1.5f*(baseX+230);
+        float y2 = zoom*1.5f*(baseY+590);
+        float z2 = zoom*1.5f*(baseZ+367);
 
-        float x3 = zoom*2f*((baseX+129) * (1+tintIndex*0.3f) + tintIndex*16);
-        float y3 = zoom*2f*((baseY+395) * (1+tintIndex*0.3f) + tintIndex*16);
-        float z3 = zoom*2f*((baseZ+529) * (1+tintIndex*0.3f) + tintIndex*16);
+        float x3 = zoom*2f*(baseX+129);
+        float y3 = zoom*2f*(baseY+395);
+        float z3 = zoom*2f*(baseZ+529);
 
         final float hueShift = 83/360f;
 
