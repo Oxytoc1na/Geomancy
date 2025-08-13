@@ -234,6 +234,7 @@ public class GemSlot {
         public int difficulty = 0;
         public int progressCost = 0;
         public int color = 0xFFFFFFFF;
+        public int lootWeight = 100;
         public Function4<ItemStack,GemSlot, SlotReference, LivingEntity,Boolean> tickFunction = null;
         public Function4<ItemStack,GemSlot, SlotReference, LivingEntity,Boolean> equipFunction = null;
         public Function4<ItemStack,GemSlot, SlotReference, LivingEntity,Boolean> unequipFunction = null;
@@ -253,6 +254,7 @@ public class GemSlot {
         public Settings setUnequip(Function4<ItemStack,GemSlot, SlotReference, LivingEntity,Boolean> f){unequipFunction=f;return this;}
         public Settings setModifier(Function6<ItemStack,GemSlot, SlotReference, LivingEntity,UUID,Multimap<EntityAttribute, EntityAttributeModifier>,Multimap<EntityAttribute, EntityAttributeModifier>> f){modifierFunction=f;return this;}
         public Settings setTooltip(Function6<ItemStack,GemSlot,LivingEntity, World , List<Text> , TooltipContext ,Boolean> f){tooltipFunction=f;return this;}
+        public Settings setLootWeight(int lootWeight){this.lootWeight=lootWeight;return this;}
         public Settings withGenericTooltip(Function<Float,String> qualityFunc){ return setTooltip((itemStack, gemSlot, wearer, world, texts, tooltipContext) -> {
             var gemText = Text.translatable(gemSlot.gemItem.getTranslationKey());
             gemText.setStyle(gemText.getStyle().withColor(gemSlot.getColor()));

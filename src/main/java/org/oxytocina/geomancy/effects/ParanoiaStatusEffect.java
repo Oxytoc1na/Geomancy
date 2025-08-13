@@ -29,6 +29,8 @@ public class ParanoiaStatusEffect extends ModStatusEffect {
 		addEvent(SoundEvents.ENTITY_CREEPER_PRIMED,SoundCategory.HOSTILE);
 		addEvent(SoundEvents.ENTITY_ZOMBIE_AMBIENT,SoundCategory.HOSTILE);
 		addEvent(SoundEvents.ENTITY_SKELETON_AMBIENT,SoundCategory.HOSTILE);
+		addEvent(SoundEvents.ENTITY_LIGHTNING_BOLT_THUNDER,SoundCategory.AMBIENT);
+		addEvent(SoundEvents.AMBIENT_CAVE.value(),SoundCategory.AMBIENT);
 	}
 	private static void addEvent(SoundEvent event,SoundCategory category){
 		oneshotEvents.put(event,category);

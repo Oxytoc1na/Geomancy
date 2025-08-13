@@ -26,6 +26,7 @@ import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 import org.oxytocina.geomancy.items.SpellComponentStoringItem;
 import org.oxytocina.geomancy.items.jewelry.IJewelryItem;
+import org.oxytocina.geomancy.loottables.ModLootFunctionTypes;
 import org.oxytocina.geomancy.loottables.ModLootTables;
 import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.particles.ModParticleFactories;
@@ -117,6 +118,7 @@ public class Geomancy implements ModInitializer {
             ModFluids.register();
             ModRecipeTypes.registerSerializer();
             ModSoundEvents.register();
+            ModLootFunctionTypes.register();
             ModLootTables.register();
             ModCriteria.register();
             ModBlockEntities.register();

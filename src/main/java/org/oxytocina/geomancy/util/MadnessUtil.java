@@ -157,19 +157,19 @@ public class MadnessUtil {
 
         // Regret
         effects.add(new Triplet<>(10f,1, p -> {
-            p.addStatusEffect(new StatusEffectInstance(ModStatusEffects.REGRETFUL,20*60,0));
+            p.addStatusEffect(new StatusEffectInstance(ModStatusEffects.REGRETFUL,20*60*5,0));
             p.sendMessage(Text.translatable("geomancy.message.madness.regret"),true);
         }));
 
         // Mourning
         effects.add(new Triplet<>(20f,1, p -> {
-            p.addStatusEffect(new StatusEffectInstance(ModStatusEffects.MOURNING,20*60,0));
+            p.addStatusEffect(new StatusEffectInstance(ModStatusEffects.MOURNING,20*60*5,0));
             p.sendMessage(Text.translatable("geomancy.message.madness.mourning"),true);
         }));
 
         // Ecstasy
         effects.add(new Triplet<>(30f,1, p -> {
-            p.addStatusEffect(new StatusEffectInstance(ModStatusEffects.ECSTATIC,20*60,0));
+            p.addStatusEffect(new StatusEffectInstance(ModStatusEffects.ECSTATIC,20*60*2,0));
             p.sendMessage(Text.translatable("geomancy.message.madness.ecstasy"),true);
         }));
 
@@ -181,7 +181,7 @@ public class MadnessUtil {
 
         // Paranoia
         effects.add(new Triplet<>(40f,1, p -> {
-            p.addStatusEffect(new StatusEffectInstance(ModStatusEffects.PARANOIA,20*20,0));
+            p.addStatusEffect(new StatusEffectInstance(ModStatusEffects.PARANOIA,20*60*3,0));
             p.sendMessage(Text.translatable("geomancy.message.madness.paranoia"),true);
         }));
 

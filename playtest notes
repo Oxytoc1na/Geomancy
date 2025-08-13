@@ -1,21 +1,23 @@
-- tourmaline ore break particles unset
+x- tourmaline ore break particles unset
 - spellcomponents without a recipe:
 -- imbue
 -- function 2
-- guidebook no recipe
-- smelt times too fast
+x- guidebook no recipe
+x- smelt times too fast
 - plumbometer missing texture
-- rebalance gems and pendants
--- i got fortune 55 using mithril armor, octangulite rings and a pendant and emeralds
--- tourmalines suck
-- no soul plank recipe
+x- rebalance gems and pendants
+x-- i got fortune 55 using mithril armor, octangulite rings and a pendant and emeralds
+x-- tourmalines suck
+x- no soul plank recipe
 - no soul log debarking
 - no stellge lore in loottables
-- spell component pouch desperately needed!!!
-- paranoia needs to last longer
--- also throw in thunder sounds and cave noises
+x- spell component pouch desperately needed!!!
+x- paranoia needs to last longer
+x-- also throw in thunder sounds and cave noises
 - whispers are too annoying
-- octangulas are too common
+x- octangulas are too common
 -- remove diamonds from their loot tables
 --- i skipped all of tool progression within 10 minutes of spawning in like what
 ---- i mean it made my life a lot easier testing all the other things but still thats not good game design
+- slow madness and lead poisoning
+- status effect icons

@@ -5,7 +5,8 @@
         "1": "geomancy:block/tourmaline_ore",
         "2": "geomancy:block/tourmaline_gems_1",
         "3": "geomancy:block/tourmaline_gems_2",
-        "4": "geomancy:block/tourmaline_gems_3"
+        "4": "geomancy:block/tourmaline_gems_3",
+        "particle": "#1"
     },
     "elements": [
         {   "from": [ 0, 0, 0 ],

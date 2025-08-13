@@ -2,8 +2,10 @@ package org.oxytocina.geomancy.loottables;
 
 import com.google.common.collect.Sets;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.map.MapIcon;
 import net.minecraft.loot.LootPool;
@@ -11,10 +13,13 @@ import net.minecraft.loot.LootTable;
 import net.minecraft.loot.LootTables;
 import net.minecraft.loot.condition.LootCondition;
 import net.minecraft.loot.condition.LootConditionTypes;
+import net.minecraft.loot.condition.RandomChanceLootCondition;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.function.*;
+import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 import net.minecraft.loot.provider.number.UniformLootNumberProvider;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.Potions;
@@ -29,6 +34,9 @@ import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 import org.oxytocina.geomancy.helpers.NbtHelper;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.SpellComponentStoringItem;
+import org.oxytocina.geomancy.items.jewelry.GemSlot;
+import org.oxytocina.geomancy.items.jewelry.IJewelryItem;
+import org.oxytocina.geomancy.items.jewelry.JewelryItem;
 import org.oxytocina.geomancy.spells.SpellBlocks;
 
 import java.util.HashMap;
@@ -71,6 +79,26 @@ public class ModLootTables {
                         )
 
                 )
+                    // lore
+                    .pool(LootPool.builder()
+                            .rolls(UniformLootNumberProvider.create(-1,1))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_BOOK_GOLDSMITH_1)
+                                    .weight(10)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_BOOK_GOLDSMITH_2)
+                                    .weight(7)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_BOOK_GOLDSMITH_3)
+                                    .weight(4)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_BOOK_GOLDSMITH_4)
+                                    .weight(2)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                    )
                 .pool(LootPool.builder()
                         .rolls(UniformLootNumberProvider.create(-1.0F, 1.0F))
                         .with(ItemEntry.builder(
@@ -157,6 +185,26 @@ public class ModLootTables {
         // ANCIENT_HALL_SMITHERY_CHEST
         {
             ANCIENT_HALL_SMITHERY_CHEST = register("chests/ancient_hall_smithery", LootTable.builder()
+                    // lore
+                    .pool(LootPool.builder()
+                            .rolls(UniformLootNumberProvider.create(0,1))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_BOOK_GOLDSMITH_1)
+                                    .weight(10)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_BOOK_GOLDSMITH_2)
+                                    .weight(9)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_BOOK_GOLDSMITH_3)
+                                    .weight(8)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_BOOK_GOLDSMITH_4)
+                                    .weight(7)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                    )
                     // mithril
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(3.0F, 6.0F))
@@ -218,12 +266,49 @@ public class ModLootTables {
                                     .apply(EnchantWithLevelsLootFunction.builder(UniformLootNumberProvider.create(10.0F, 20.0F)))
                                     .apply(SetDamageLootFunction.builder(UniformLootNumberProvider.create(0.0f,0.5f)))
                             ))
+                    .pool(jewelryBuilder().rolls(UniformLootNumberProvider.create(1f,3f)))
             );
         }
 
         // ANCIENT_HALL_STORAGE_CHEST
         {
             ANCIENT_HALL_STORAGE_CHEST = register("chests/ancient_hall_storage", LootTable.builder()
+                    // lore (war)
+                    .pool(LootPool.builder()
+                            .rolls(UniformLootNumberProvider.create(1,1))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_BOOK_WAR_1)
+                                    .weight(10)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_BOOK_WAR_2)
+                                    .weight(9)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_BOOK_WAR_3)
+                                    .weight(8)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                    )
+                    // lore
+                    .pool(LootPool.builder()
+                            .rolls(UniformLootNumberProvider.create(0,1))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_BOOK_GOLDSMITH_1)
+                                    .weight(10)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_BOOK_GOLDSMITH_2)
+                                    .weight(9)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_BOOK_GOLDSMITH_3)
+                                    .weight(8)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_BOOK_GOLDSMITH_4)
+                                    .weight(7)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                    )
                     // treasure
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(3.0F, 7.0F))
@@ -437,6 +522,42 @@ public class ModLootTables {
         // ANCIENT_HALL_BARRACKS_CHEST
         {
             ANCIENT_HALL_BARRACKS_CHEST = register("chests/ancient_hall_barracks", LootTable.builder()
+                    // lore (war)
+                    .pool(LootPool.builder()
+                            .rolls(UniformLootNumberProvider.create(-1,1))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_BOOK_WAR_1)
+                                    .weight(10)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_BOOK_WAR_2)
+                                    .weight(9)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_BOOK_WAR_3)
+                                    .weight(8)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                    )
+                    // lore
+                    .pool(LootPool.builder()
+                            .rolls(UniformLootNumberProvider.create(0,1))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_BOOK_GOLDSMITH_1)
+                                    .weight(10)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_BOOK_GOLDSMITH_2)
+                                    .weight(9)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_BOOK_GOLDSMITH_3)
+                                    .weight(8)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_BOOK_GOLDSMITH_4)
+                                    .weight(7)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                    )
                     // belongings
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(3.0F, 7.0F))
@@ -478,41 +599,78 @@ public class ModLootTables {
         // OCTANGULA_HALL_CHEST
         {
             OCTANGULA_HALL_CHEST = register("chests/octangula_hall", LootTable.builder()
+                    // lore
                     .pool(LootPool.builder()
-                            .rolls(UniformLootNumberProvider.create(1.0F, 3.0F))
+                            .rolls(UniformLootNumberProvider.create(0,1))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_LOG_EXPEDITION_1)
+                                    .weight(10)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_LOG_EXPEDITION_2)
+                                    .weight(10)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_LOG_EXPEDITION_3)
+                                    .weight(10)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_LOG_EXPEDITION_4)
+                                    .weight(10)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_LOG_EXPEDITION_5)
+                                    .weight(10)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                    )
+                    // octangulite
+                    .pool(LootPool.builder()
+                            .rolls(UniformLootNumberProvider.create(0.0F, 2.0F))
                             .with(ItemEntry.builder(
                                             ModItems.RAW_OCTANGULITE)
                                     .weight(20)
                                     .apply(SetCountLootFunction.builder(
-                                            UniformLootNumberProvider.create(1.0F, 4.0F))))
+                                            UniformLootNumberProvider.create(0.0F, 2.0F))))
                             .with(ItemEntry.builder(
                                             ModItems.OCTANGULITE_INGOT)
                                     .weight(5)
-                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 2.0F))))
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(0.0F, 2.0F))))
                             .with(ItemEntry.builder(
                                             ModItems.OCTANGULITE_NUGGET)
                                     .weight(10)
-                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(5.0F, 16.0F)))))
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(2.0F, 6.0F)))))
+                    // blocks
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(2.0F, 4.0F))
                             .with(ItemEntry.builder(
                                             ModBlocks.CUT_TITANIUM)
                                     .apply(SetCountLootFunction.builder(
-                                            UniformLootNumberProvider.create(3.0F, 8.0F)))))
+                                            UniformLootNumberProvider.create(0.0F, 8.0F))))
+                            .with(ItemEntry.builder(
+                                            Blocks.OXIDIZED_CUT_COPPER)
+                                    .apply(SetCountLootFunction.builder(
+                                            UniformLootNumberProvider.create(0.0F, 8.0F))))
+                    )
+                    // treasure
                     .pool(LootPool.builder()
-                            .rolls(UniformLootNumberProvider.create(3.0F, 7.0F))
+                            .rolls(UniformLootNumberProvider.create(1.0F, 3.0F))
                             .with(ItemEntry.builder(
                                             Items.EMERALD)
                                     .weight(5)
-                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(4.0F, 8.0F))))
-                            .with(ItemEntry.builder(
-                                            Items.DIAMOND)
-                                    .weight(5)
-                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 2.0F))))
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
                             .with(ItemEntry.builder(
                                             Items.GOLD_INGOT)
                                     .weight(5)
-                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(3.0F, 8.0F)))))
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
+                            .with(ItemEntry.builder(
+                                            Items.IRON_INGOT)
+                                    .weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
+                            .with(ItemEntry.builder(
+                                            ModItems.LEAD_INGOT)
+                                    .weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
+                    )
                     .pool(spellComponentsBuilder()
                             .rolls(UniformLootNumberProvider.create(2.0F, 4.0F))
                     )
@@ -523,6 +681,30 @@ public class ModLootTables {
         // OCTANGULA_SPELLMAKER_CHEST
         {
             OCTANGULA_SPELLMAKER_CHEST = register("chests/octangula_spellmaker", LootTable.builder()
+                    // lore
+                    .pool(LootPool.builder()
+                            .rolls(UniformLootNumberProvider.create(1,2))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_LOG_EXPEDITION_1)
+                                    .weight(10)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_LOG_EXPEDITION_2)
+                                    .weight(10)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_LOG_EXPEDITION_3)
+                                    .weight(10)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_LOG_EXPEDITION_4)
+                                    .weight(10)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_LOG_EXPEDITION_5)
+                                    .weight(10)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                    )
                     // digsite treasure map
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(1.0F, 1.0F))
@@ -538,9 +720,11 @@ public class ModLootTables {
                             )
 
                     )
+                    // components
                     .pool(spellComponentsBuilder()
                             .rolls(UniformLootNumberProvider.create(2.0F, 4.0F))
                     )
+                    // premade spells
                     .pool(premadeSpellsBuilder()
                             .rolls(UniformLootNumberProvider.create(2.0F, 4.0F))
                     )
@@ -551,8 +735,33 @@ public class ModLootTables {
         // DIGSITE_HALLWAY_CHEST
         {
             DIGSITE_HALLWAY_CHEST = register("chests/digsite_hallway", LootTable.builder()
+                    // lore
                     .pool(LootPool.builder()
-                            .rolls(UniformLootNumberProvider.create(1.0F, 3.0F))
+                            .rolls(UniformLootNumberProvider.create(-3,1))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_LOG_EXPEDITION_1)
+                                    .weight(10)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_LOG_EXPEDITION_2)
+                                    .weight(10)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_LOG_EXPEDITION_3)
+                                    .weight(10)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_LOG_EXPEDITION_4)
+                                    .weight(10)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_LOG_EXPEDITION_5)
+                                    .weight(10)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                    )
+                    // octangulite
+                    .pool(LootPool.builder()
+                            .rolls(UniformLootNumberProvider.create(0.0F, 3.0F))
                             .with(ItemEntry.builder(
                                             ModItems.RAW_OCTANGULITE)
                                     .weight(20)
@@ -566,6 +775,7 @@ public class ModLootTables {
                                             ModItems.OCTANGULITE_NUGGET)
                                     .weight(10)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(5.0F, 16.0F)))))
+                    // blocks
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(2.0F, 4.0F))
                             .with(ItemEntry.builder(
@@ -577,20 +787,21 @@ public class ModLootTables {
                                     .apply(SetCountLootFunction.builder(
                                             UniformLootNumberProvider.create(3.0F, 8.0F))))
                     )
+                    // generic treasure
                     .pool(LootPool.builder()
-                            .rolls(UniformLootNumberProvider.create(3.0F, 7.0F))
+                            .rolls(UniformLootNumberProvider.create(1.0F, 3.0F))
                             .with(ItemEntry.builder(
                                             Items.EMERALD)
                                     .weight(5)
-                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(4.0F, 8.0F))))
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 2.0F))))
                             .with(ItemEntry.builder(
                                             Items.DIAMOND)
                                     .weight(5)
-                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 2.0F))))
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(0.0F, 2.0F))))
                             .with(ItemEntry.builder(
                                             Items.GOLD_INGOT)
                                     .weight(5)
-                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(3.0F, 8.0F)))))
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F)))))
                     .pool(spellComponentsBuilder()
                             .rolls(UniformLootNumberProvider.create(2.0F, 4.0F))
                     )
@@ -1180,6 +1391,43 @@ public class ModLootTables {
             res.with(ItemEntry.builder(ModItems.SPELLSTORAGE_SMALL)
                     .weight(weight)
                     .apply(SetNbtLootFunction.builder(nbt)));
+        }
+
+        return res;
+    }
+
+    private static LootPool.Builder jewelryBuilder(){
+        var res = LootPool.builder();
+
+        HashMap<JewelryItem,Integer> weighted = new HashMap<>();
+        weighted.put(ModItems.COPPER_NECKLACE,100);
+        weighted.put(ModItems.COPPER_PENDANT,100);
+        weighted.put(ModItems.COPPER_RING,100);
+        weighted.put(ModItems.LEAD_NECKLACE,100);
+        weighted.put(ModItems.LEAD_PENDANT,100);
+        weighted.put(ModItems.LEAD_RING,100);
+        weighted.put(ModItems.IRON_NECKLACE,60);
+        weighted.put(ModItems.IRON_PENDANT,60);
+        weighted.put(ModItems.IRON_RING,60);
+        weighted.put(ModItems.GOLD_NECKLACE,30);
+        weighted.put(ModItems.GOLD_PENDANT,30);
+        weighted.put(ModItems.GOLD_RING,30);
+        weighted.put(ModItems.MOLYBDENUM_NECKLACE,30);
+        weighted.put(ModItems.MOLYBDENUM_PENDANT,30);
+        weighted.put(ModItems.MOLYBDENUM_RING,30);
+        weighted.put(ModItems.TITANIUM_NECKLACE,10);
+        weighted.put(ModItems.TITANIUM_PENDANT,10);
+        weighted.put(ModItems.TITANIUM_RING,10);
+        weighted.put(ModItems.MITHRIL_NECKLACE,1);
+        weighted.put(ModItems.MITHRIL_PENDANT,1);
+        weighted.put(ModItems.MITHRIL_RING,1);
+
+        for(var jewelryItem : weighted.keySet()){
+            int weight = weighted.get(jewelryItem);
+            var entryBuilder = ItemEntry.builder(jewelryItem)
+                    .weight(weight);
+            entryBuilder.apply(JewelryLootFunction.builder().conditionally(RandomChanceLootCondition.builder(0.8f)));
+            res.with(entryBuilder);
         }
 
         return res;

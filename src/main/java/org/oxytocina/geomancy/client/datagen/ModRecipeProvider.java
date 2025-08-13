@@ -24,11 +24,13 @@ import org.oxytocina.geomancy.items.GeodeItem;
 import static org.oxytocina.geomancy.items.ModItems.*;
 import static org.oxytocina.geomancy.blocks.ModBlocks.*;
 
+import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.SpellComponentStoringItem;
 import org.oxytocina.geomancy.items.jewelry.IJewelryItem;
 import org.oxytocina.geomancy.items.jewelry.JewelryItem;
 import org.oxytocina.geomancy.progression.advancement.ModAdvancementCriterion;
 import org.oxytocina.geomancy.recipe.smithery.SmithingIngredient;
+import org.oxytocina.geomancy.registries.ModBlockTags;
 import org.oxytocina.geomancy.registries.ModItemTags;
 import org.oxytocina.geomancy.spells.SpellBlock;
 import org.oxytocina.geomancy.spells.SpellBlocks;
@@ -52,6 +54,10 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
         // shapeless recipes
         offerShapelessRecipe(exporter, SUSPICIOUS_SUBSTANCE,SUSPICIOUS_SUBSTANCE,null,1);
+        ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, GUIDE_BOOK, 1)
+                .input(Items.PAPER).input(Items.COBBLESTONE).group("misc").criterion(
+                        hasItem(Items.COBBLESTONE), conditionsFromItem(Items.COBBLESTONE))
+                .offerTo(exporter, "guidebook");
 
         // shaped recipes
         ShapedRecipeJsonBuilder.create(
@@ -77,16 +83,16 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         // smelting recipes
         AddSmeltAndBlastRecipe(List.of(
             RAW_MITHRIL, ModBlocks.MITHRIL_ORE, ModBlocks.DEEPSLATE_MITHRIL_ORE),
-            MITHRIL_INGOT,5f,400,100);
+            MITHRIL_INGOT,5f,200,50);
         AddSmeltAndBlastRecipe(List.of(
             RAW_MOLYBDENUM, ModBlocks.MOLYBDENUM_ORE, ModBlocks.DEEPSLATE_MOLYBDENUM_ORE),
-            MOLYBDENUM_INGOT,5f,20,10);
+            MOLYBDENUM_INGOT,5f,100,50);
         AddSmeltAndBlastRecipe(List.of(
             RAW_LEAD, ModBlocks.LEAD_ORE, ModBlocks.DEEPSLATE_LEAD_ORE),
-            LEAD_INGOT,5f,20,10);
+            LEAD_INGOT,5f,100,50);
         AddSmeltAndBlastRecipe(List.of(
             RAW_TITANIUM, ModBlocks.TITANIUM_ORE, ModBlocks.DEEPSLATE_TITANIUM_ORE),
-            TITANIUM_INGOT,5f,40,20);
+            TITANIUM_INGOT,5f,200,50);
         AddSmeltAndBlastRecipe(List.of(
             RAW_OCTANGULITE, ModBlocks.OCTANGULITE_ORE, ModBlocks.DEEPSLATE_OCTANGULITE_ORE),
             OCTANGULITE_INGOT,5f,400,100);
@@ -535,6 +541,11 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         //        .pattern("###")
         //        .pattern(" x ").criterion(hasItem(SOUL_OAK_PLANKS), conditionsFromItem(SOUL_OAK_PLANKS)).offerTo(exporter);
         offerShapelessRecipe(exporter,SOUL_OAK_BUTTON,SOUL_OAK_PLANKS,"misc",1);
+        offerShapelessRecipe(exporter,SOUL_OAK_PLANKS,SOUL_OAK_LOG,"misc",4);
+        offerShapelessRecipe(exporter,SOUL_OAK_PLANKS,STRIPPED_SOUL_OAK_LOG,"misc",4);
+        offerShapelessRecipe(exporter,SOUL_OAK_PLANKS,SOUL_OAK_WOOD,"misc",4);
+        offerShapelessRecipe(exporter,SOUL_OAK_PLANKS,STRIPPED_SOUL_OAK_WOOD,"misc",4);
+
         this.exporter=null;
     }
 
