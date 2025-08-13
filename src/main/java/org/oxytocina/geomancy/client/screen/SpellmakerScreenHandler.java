@@ -7,6 +7,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.*;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -22,6 +23,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ColorHelper;
+import net.minecraft.util.math.MathHelper;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
@@ -60,7 +62,10 @@ public class SpellmakerScreenHandler extends ScreenHandler {
 
     public double fieldDrawOffsetX = 0;
     public double fieldDrawOffsetY = 0;
-    public float fieldDrawScale = 0.5f;
+    public float fieldDrawScale = 1f;
+    public double lastZoomMousePosX = 0;
+    public double lastZoomMousePosY = 0;
+    public float desiredFieldDrawScale = 1f;
 
     public ItemStack currentOutput;
     public SpellGrid currentGrid;
@@ -201,6 +206,12 @@ public class SpellmakerScreenHandler extends ScreenHandler {
 
     public void tick(){
 
+        float newZoom = MathHelper.lerp(0.3f,fieldDrawScale,desiredFieldDrawScale);
+        if(newZoom!=fieldDrawScale)
+        {
+            float factor = newZoom/fieldDrawScale;
+            zoomTick(factor);
+        }
     }
 
 
@@ -215,6 +226,8 @@ public class SpellmakerScreenHandler extends ScreenHandler {
 
         fieldDrawOffsetX += deltaX;
         fieldDrawOffsetY += deltaY;
+
+        checkOffsetBounds();
     }
 
     public void mouseScrolled(double mouseX, double mouseY, double amount) {
@@ -222,28 +235,55 @@ public class SpellmakerScreenHandler extends ScreenHandler {
 
         if(amount!=0){
             // zooming
-            zoom(1+0.2f*(float)amount);
+            zoom(1+0.2f*(float)amount,mouseX,mouseY);
 
         }
     }
 
-    public void zoom(float factor){ //2
-        float prevScale = fieldDrawScale; //2
-        fieldDrawScale *= factor; //4
-        fieldDrawScale = Toolbox.clampF(fieldDrawScale,0.1f,2f);
+    private void zoomTick(float factor){
+        var oldScale = fieldDrawScale;
+        var newScale = Toolbox.clampF(oldScale * factor,0.5f,2);
 
-        factor=1/factor; //0.5
+        int bgPosX = (screen.width-screen.getBackgroundWidth())/2;
+        int bgPosY = (screen.height-screen.getBackgroundHeight())/2;
 
+        var mouse_x = lastZoomMousePosX-bgPosX-fieldPosX-fieldDrawOffsetX*oldScale;
+        var mouse_y = lastZoomMousePosY-bgPosY-fieldPosY-fieldDrawOffsetY*oldScale;
 
-        //AAAAAAAAAAAAAAAAAA
-        // determine viewport shift
-        float viewportWidth = fieldWidth / prevScale;//50
-        float viewportHeight = fieldHeight / prevScale;
-        float xShift = viewportWidth * (factor>1?(factor-1):(1-factor)) /2f; //50*(1-0.5)/2 = 12.5
-        float yShift = viewportHeight * (factor>1?(factor-1):(1-factor)) /2f;
+        float view_width = fieldWidth;
+        float view_height = fieldHeight;
 
-        fieldDrawOffsetX += (factor>1?-1:1)*xShift;
-        fieldDrawOffsetY += (factor>1?-1:1)*yShift;
+        var side_ratio_x = (mouse_x - (view_width / 2)) / view_width + 0.5f;
+        var side_ratio_h = (mouse_y - (view_height / 2)) / view_height + 0.5f;
+
+        // newoff = pff + offoff
+        // newoff = off + (scaled - newscaled) * shiftfac
+        // newoff= off + (length*prevscale - length*prevscale*scale) * shiftFac
+        fieldDrawOffsetX = fieldDrawOffsetX + (fieldWidth*oldScale - fieldWidth*oldScale*factor) * side_ratio_x;
+        fieldDrawOffsetY = fieldDrawOffsetY + (fieldHeight*oldScale - fieldHeight*oldScale*factor) * side_ratio_h;
+
+        checkOffsetBounds();
+
+        fieldDrawScale = newScale;
+    }
+
+    public void zoom(float factor,double mouseX, double mouseY){
+        var oldScale = desiredFieldDrawScale;
+        var newScale = Toolbox.clampF(oldScale * factor,0.5f,2);
+        desiredFieldDrawScale = newScale;
+        lastZoomMousePosX = mouseX;
+        lastZoomMousePosY = mouseY;
+    }
+
+    private void checkOffsetBounds(){
+        float minX = 0-fieldWidth/fieldDrawScale;
+        float minY = 0-fieldHeight/fieldDrawScale;
+
+        float maxX = fieldWidth;
+        float maxY = fieldHeight;
+
+        fieldDrawOffsetX = Math.min(Math.max(minX,fieldDrawOffsetX),maxX);
+        fieldDrawOffsetY = Math.min(Math.max(minY,fieldDrawOffsetY),maxY);
     }
 
     public void mouseClicked(double mouseX, double mouseY, int button) {
@@ -407,8 +447,8 @@ public class SpellmakerScreenHandler extends ScreenHandler {
                 if(!currentGrid.inBounds(new Vector2i(x,y))) continue;
                 drawPositionIndices.add(new Vector2i(x,y));
                 drawPositions.add(new Vector2f(
-                        bgPosX+fieldPosX+Math.round(fieldDrawOffsetX) + (fieldDrawScale * (Math.round((x-0.5f+yskew/2f)*hexWidth))),
-                        bgPosY+fieldPosY+Math.round(fieldDrawOffsetY) + (fieldDrawScale * ((y-0.5f)*hexHeight))
+                        bgPosX+fieldPosX+(float)fieldDrawOffsetX + (fieldDrawScale * (Math.round((x-0.5f+yskew/2f)*hexWidth))),
+                        bgPosY+fieldPosY+(float)fieldDrawOffsetY + (fieldDrawScale * ((y-0.5f)*hexHeight))
                 ));
             }
         }
@@ -432,7 +472,6 @@ public class SpellmakerScreenHandler extends ScreenHandler {
 
             }
         }
-
         hoveredOverHexagon=selectedHexagon;
 
         // render grid
@@ -444,11 +483,11 @@ public class SpellmakerScreenHandler extends ScreenHandler {
                 var bgTexture = component.getHexBackTexture();
                 RenderSystem.setShaderColor(1,1,1,1);
 
-                context.drawTexture(bgTexture,
-                        Math.round(drawPositions.get(i).x),
-                        Math.round(drawPositions.get(i).y),
-                        Math.round(scaledHexWidth),
-                        Math.round(scaledHexHeight),
+                drawTexture(context.getMatrices(),bgTexture,
+                        drawPositions.get(i).x,
+                        drawPositions.get(i).y,
+                        scaledHexWidth,
+                        scaledHexHeight,
                         (hexBGTextureSize-hexWidth)/2f,
                         0,
                         hexWidth,
@@ -457,11 +496,11 @@ public class SpellmakerScreenHandler extends ScreenHandler {
                         hexBGTextureSize
                 );
 
-                context.drawTexture(fgTexture,
-                        Math.round(drawPositions.get(i).x),
-                        Math.round(drawPositions.get(i).y),
-                        Math.round(scaledHexWidth),
-                        Math.round(scaledHexHeight),
+                drawTexture(context.getMatrices(),fgTexture,
+                        drawPositions.get(i).x,
+                        drawPositions.get(i).y,
+                        scaledHexWidth,
+                        scaledHexHeight,
                         (hexBGTextureSize-hexWidth)/2f,
                         0,
                         hexWidth,
@@ -475,12 +514,12 @@ public class SpellmakerScreenHandler extends ScreenHandler {
                     var tex = conf.getTexture();
                     if(tex!=null){
                         conf.setShaderColor();
-                        context.drawTexture(
+                        drawTexture(context.getMatrices(),
                                 tex,
-                                Math.round(drawPositions.get(i).x),
-                                Math.round(drawPositions.get(i).y),
-                                Math.round(scaledHexWidth),
-                                Math.round(scaledHexHeight),
+                                drawPositions.get(i).x,
+                                drawPositions.get(i).y,
+                                scaledHexWidth,
+                                scaledHexHeight,
                                 (hexBGTextureSize-hexWidth)/2f,
                                 0,
                                 hexWidth,
@@ -501,11 +540,11 @@ public class SpellmakerScreenHandler extends ScreenHandler {
                     var bgTexture = component.getHexBackTexture();
                     RenderSystem.setShaderColor(1,1,1,1);
 
-                    context.drawTexture(bgTexture,
-                            Math.round(drawPositions.get(i).x),
-                            Math.round(drawPositions.get(i).y),
-                            Math.round(scaledHexWidth),
-                            Math.round(scaledHexHeight),
+                    drawTexture(context.getMatrices(),bgTexture,
+                            drawPositions.get(i).x,
+                            drawPositions.get(i).y,
+                            scaledHexWidth,
+                            scaledHexHeight,
                             (hexBGTextureSize-hexWidth)/2f,
                             0,
                             hexWidth,
@@ -514,11 +553,11 @@ public class SpellmakerScreenHandler extends ScreenHandler {
                             hexBGTextureSize
                     );
 
-                    context.drawTexture(fgTexture,
-                            Math.round(drawPositions.get(i).x),
-                            Math.round(drawPositions.get(i).y),
-                            Math.round(scaledHexWidth),
-                            Math.round(scaledHexHeight),
+                    drawTexture(context.getMatrices(),fgTexture,
+                            drawPositions.get(i).x,
+                            drawPositions.get(i).y,
+                            scaledHexWidth,
+                            scaledHexHeight,
                             (hexBGTextureSize-hexWidth)/2f,
                             0,
                             hexWidth,
@@ -558,11 +597,11 @@ public class SpellmakerScreenHandler extends ScreenHandler {
                         RenderSystem.setShaderColor(0.5f,0.5f,0.5f,1);
                     }
 
-                    context.drawTexture(hexBGTexture,
-                            Math.round(drawPositions.get(i).x),
-                            Math.round(drawPositions.get(i).y),
-                            Math.round(scaledHexWidth),
-                            Math.round(scaledHexHeight),
+                    drawTexture(context.getMatrices(),hexBGTexture,
+                            drawPositions.get(i).x,
+                            drawPositions.get(i).y,
+                            scaledHexWidth,
+                            scaledHexHeight,
                             (hexBGTextureSize-hexWidth)/2f,
                             0,
                             hexWidth,
@@ -688,7 +727,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
 
                     switch(param.type){
                         case ConstantBoolean:
-                            i+=15;
+                            i+=20;
                             break;
                         default:
                             context.drawText(MinecraftClient.getInstance().textRenderer, Text.literal(paramName),posX,posY,0xFFFFFFFF,true);
@@ -737,5 +776,30 @@ public class SpellmakerScreenHandler extends ScreenHandler {
         vertexConsumer.vertex(matrix4f, v4.x,v4.y, 0).color(g, h, j, f).next();
         vertexConsumer.vertex(matrix4f, v3.x,v3.y, 0).color(g, h, j, f).next();
         context.draw();
+    }
+
+    void drawTexture(
+            MatrixStack matrices,Identifier texture, float x, float y, float width, float height, float u, float v, int regionWidth, int regionHeight, int textureWidth, int textureHeight
+    ) {
+        drawTexture(matrices,texture, x, x + width, y, y + height, 0, regionWidth, regionHeight, u, v, textureWidth, textureHeight);
+    }
+    void drawTexture(
+            MatrixStack matrices,Identifier texture, float x1, float x2, float y1, float y2, float z, float regionWidth, float regionHeight, float u, float v, int textureWidth, int textureHeight
+    ) {
+        drawTexturedQuad(
+                matrices,texture, x1, x2, y1, y2, z, (u + 0.0F) / textureWidth, (u + regionWidth) / textureWidth, (v + 0.0F) / textureHeight, (v + regionHeight) / textureHeight
+        );
+    }
+    void drawTexturedQuad(MatrixStack matrices, Identifier texture, float x1, float x2, float y1, float y2, float z, float u1, float u2, float v1, float v2) {
+        RenderSystem.setShaderTexture(0, texture);
+        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
+        Matrix4f matrix4f = matrices.peek().getPositionMatrix();
+        BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
+        bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
+        bufferBuilder.vertex(matrix4f, x1, y1, z).texture(u1, v1).next();
+        bufferBuilder.vertex(matrix4f, x1, y2, z).texture(u1, v2).next();
+        bufferBuilder.vertex(matrix4f, x2, y2, z).texture(u2, v2).next();
+        bufferBuilder.vertex(matrix4f, x2, y1, z).texture(u2, v1).next();
+        BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
     }
 }

@@ -103,7 +103,7 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
         this.backgroundHeight = bgHeight;
 
         //titleX = 0;
-        //titleY = 0;
+        titleY = -1000;
         //playerInventoryTitleX = 0;
         this.playerInventoryTitleY = -1000;//backgroundHeight - 94;
 
@@ -139,7 +139,7 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
             addDrawableChild(textInput);
 
             // lib
-            SpellmakerCheckbox libCheckBox = new SpellmakerCheckbox(this,infoPosX,infoPosY+20,15,15,Text.translatable("geomancy.spellmaker.grid.lib"),handler.currentGrid.library);
+            SpellmakerCheckbox libCheckBox = new SpellmakerCheckbox(this,infoPosX,infoPosY+20,20,20,Text.translatable("geomancy.spellmaker.grid.lib"),handler.currentGrid.library);
             libCheckBox.onPressed = ()->{
                 // set value
                 // send packet to server
@@ -272,7 +272,7 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
                         switch(param.type){
                             // checkbox for booleans
                             case ConstantBoolean:
-                                SpellmakerCheckbox checkbox = new SpellmakerCheckbox(this, posX,posY,100,15,Text.literal(param.name),configuredParam.getSignal().getBooleanValue());
+                                SpellmakerCheckbox checkbox = new SpellmakerCheckbox(this, posX,posY,100,20,Text.literal(param.name),configuredParam.getSignal().getBooleanValue());
                                 checkbox.onPressed = ()->{
                                     // set value
                                     // send packet to server
@@ -287,7 +287,7 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
                                     return true;
                                 };
                                 addDrawableChild(checkbox);
-                                height+=15;
+                                height+=20;
                                 break;
 
                             // text input for the rest
