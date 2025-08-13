@@ -81,29 +81,32 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
 
         // smelting recipes
-        AddSmeltAndBlastRecipe(List.of(
-            RAW_MITHRIL, ModBlocks.MITHRIL_ORE, ModBlocks.DEEPSLATE_MITHRIL_ORE),
-            MITHRIL_INGOT,5f,200,50);
-        AddSmeltAndBlastRecipe(List.of(
-            RAW_MOLYBDENUM, ModBlocks.MOLYBDENUM_ORE, ModBlocks.DEEPSLATE_MOLYBDENUM_ORE),
-            MOLYBDENUM_INGOT,5f,100,50);
-        AddSmeltAndBlastRecipe(List.of(
-            RAW_LEAD, ModBlocks.LEAD_ORE, ModBlocks.DEEPSLATE_LEAD_ORE),
-            LEAD_INGOT,5f,100,50);
-        AddSmeltAndBlastRecipe(List.of(
-            RAW_TITANIUM, ModBlocks.TITANIUM_ORE, ModBlocks.DEEPSLATE_TITANIUM_ORE),
-            TITANIUM_INGOT,5f,200,50);
-        AddSmeltAndBlastRecipe(List.of(
-            RAW_OCTANGULITE, ModBlocks.OCTANGULITE_ORE, ModBlocks.DEEPSLATE_OCTANGULITE_ORE),
-            OCTANGULITE_INGOT,5f,400,100);
+        {
+            AddSmeltAndBlastRecipe(List.of(
+                            RAW_MITHRIL, ModBlocks.MITHRIL_ORE, ModBlocks.DEEPSLATE_MITHRIL_ORE),
+                    MITHRIL_INGOT,5f,200,50);
+            AddSmeltAndBlastRecipe(List.of(
+                            RAW_MOLYBDENUM, ModBlocks.MOLYBDENUM_ORE, ModBlocks.DEEPSLATE_MOLYBDENUM_ORE),
+                    MOLYBDENUM_INGOT,5f,100,50);
+            AddSmeltAndBlastRecipe(List.of(
+                            RAW_LEAD, ModBlocks.LEAD_ORE, ModBlocks.DEEPSLATE_LEAD_ORE),
+                    LEAD_INGOT,5f,100,50);
+            AddSmeltAndBlastRecipe(List.of(
+                            RAW_TITANIUM, ModBlocks.TITANIUM_ORE, ModBlocks.DEEPSLATE_TITANIUM_ORE),
+                    TITANIUM_INGOT,5f,200,50);
+            AddSmeltAndBlastRecipe(List.of(
+                            RAW_OCTANGULITE, ModBlocks.OCTANGULITE_ORE, ModBlocks.DEEPSLATE_OCTANGULITE_ORE),
+                    OCTANGULITE_INGOT,5f,400,100);
+        }
 
         // compacting recipes
-        AddOreCompactingRecipes(MITHRIL_NUGGET,MITHRIL_INGOT,ModBlocks.MITHRIL_BLOCK,RAW_MITHRIL,ModBlocks.RAW_MITHRIL_BLOCK);
-        AddOreCompactingRecipes(OCTANGULITE_NUGGET,OCTANGULITE_INGOT,ModBlocks.OCTANGULITE_BLOCK,RAW_OCTANGULITE,ModBlocks.RAW_OCTANGULITE_BLOCK);
-        AddOreCompactingRecipes(MOLYBDENUM_NUGGET,MOLYBDENUM_INGOT,ModBlocks.MOLYBDENUM_BLOCK,RAW_MOLYBDENUM,ModBlocks.RAW_MOLYBDENUM_BLOCK);
-        AddOreCompactingRecipes(TITANIUM_NUGGET,TITANIUM_INGOT,ModBlocks.TITANIUM_BLOCK,RAW_TITANIUM,ModBlocks.RAW_TITANIUM_BLOCK);
-        AddOreCompactingRecipes(LEAD_NUGGET,LEAD_INGOT,ModBlocks.LEAD_BLOCK,RAW_LEAD,ModBlocks.RAW_LEAD_BLOCK);
-
+        {
+            AddOreCompactingRecipes(MITHRIL_NUGGET,MITHRIL_INGOT,ModBlocks.MITHRIL_BLOCK,RAW_MITHRIL,ModBlocks.RAW_MITHRIL_BLOCK);
+            AddOreCompactingRecipes(OCTANGULITE_NUGGET,OCTANGULITE_INGOT,ModBlocks.OCTANGULITE_BLOCK,RAW_OCTANGULITE,ModBlocks.RAW_OCTANGULITE_BLOCK);
+            AddOreCompactingRecipes(MOLYBDENUM_NUGGET,MOLYBDENUM_INGOT,ModBlocks.MOLYBDENUM_BLOCK,RAW_MOLYBDENUM,ModBlocks.RAW_MOLYBDENUM_BLOCK);
+            AddOreCompactingRecipes(TITANIUM_NUGGET,TITANIUM_INGOT,ModBlocks.TITANIUM_BLOCK,RAW_TITANIUM,ModBlocks.RAW_TITANIUM_BLOCK);
+            AddOreCompactingRecipes(LEAD_NUGGET,LEAD_INGOT,ModBlocks.LEAD_BLOCK,RAW_LEAD,ModBlocks.RAW_LEAD_BLOCK);
+        }
 
         // smithing recipes
         {
@@ -142,8 +145,6 @@ public class ModRecipeProvider extends FabricRecipeProvider {
             for(Item item : IJewelryItem.List){
                 AddSmitheryJewelryRecipe((IJewelryItem)item);
             }
-
-
 
             // mithril hammer
             AddShapedSmitheryRecipe(new String[]{
@@ -231,8 +232,6 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
             }
 
-
-
             // spellcomponents
             {
                 // base
@@ -300,6 +299,12 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.DIRT),
                     }).toList(),SpellBlocks.ENTITY_CASTER,true);
+
+                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,baseIngot),
+                            SmithingIngredient.ofItems(1,1,Items.CHEST),
+                    }).toList(),SpellBlocks.CASTER_SLOT,true);
                 }
 
                 // arithmetic
@@ -406,6 +411,18 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.SLIME_BALL),
                     }).toList(),SpellBlocks.RAYCAST_DIR,true);
+
+                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,baseIngot),
+                            SmithingIngredient.ofItems(1,1,Items.STONE),
+                    }).toList(),SpellBlocks.BOOL_ENTITYGROUNDED,true);
+
+                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,baseIngot),
+                            SmithingIngredient.ofItems(1,1,Items.LEAD),
+                    }).toList(),SpellBlocks.ENTITY_NEAREST,true);
                 }
 
                 // effectors
@@ -452,99 +469,138 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.FIREWORK_ROCKET),
                     }).toList(),SpellBlocks.PUSH,true);
+
+                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,baseIngot),
+                            SmithingIngredient.ofItems(1,1,Items.EXPERIENCE_BOTTLE),
+                    }).toList(),SpellBlocks.IMBUE,true);
+
+                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,baseIngot),
+                            SmithingIngredient.ofItems(1,1,Items.CRAFTING_TABLE),
+                    }).toList(),SpellBlocks.PLACE,true);
+
+                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,baseIngot),
+                            SmithingIngredient.ofItems(1,1,Items.IRON_PICKAXE),
+                    }).toList(),SpellBlocks.BREAK,true);
                 }
 
                 // reference
                 {
+                    Item baseIngot = Items.COPPER_INGOT;
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
                             SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,Items.COPPER_INGOT),
+                            SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.STICKY_PISTON),
                     }).toList(),SpellBlocks.REF_OUTPUT,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
                             SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,Items.COPPER_INGOT),
+                            SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.PISTON),
                     }).toList(),SpellBlocks.REF_INPUT,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
                             SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,Items.COPPER_INGOT),
+                            SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.REDSTONE),
                     }).toList(),SpellBlocks.ACTION,true);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
                             SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,Items.COPPER_INGOT),
+                            SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.REDSTONE_BLOCK),
                     }).toList(),SpellBlocks.FUNCTION,true);
+
+                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,baseIngot),
+                            SmithingIngredient.ofItems(1,1,Items.REDSTONE_BLOCK),
+                            SmithingIngredient.ofItems(1,1,Items.REDSTONE_BLOCK),
+                    }).toList(),SpellBlocks.FUNCTION2,true);
+
+                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,baseIngot),
+                            SmithingIngredient.ofItems(1,1,Items.DROPPER),
+                    }).toList(),SpellBlocks.PROVIDER,true);
                 }
 
+                for(var block : SpellBlocks.functions.values()){
+                    if(!spellComponentRecipesBuilt.contains(block))
+                        Geomancy.logWarning("no recipe for spell component "+block.identifier.getPath());
+                }
             }
         }
 
-        // tools
-        AddToolBatch(LEAD_INGOT,LEAD_SWORD,LEAD_SHOVEL,LEAD_PICKAXE,LEAD_AXE,LEAD_HOE);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, PLUMBOMETER, 1).input('#', LEAD_INGOT)
-                .pattern("#")
-                .pattern("#").criterion("poisoned", ModAdvancementCriterion.conditionsFromAdvancement(Geomancy.locate("main/simple_lead_poisoned"))).offerTo(exporter);
-        AddSurrounded(Items.APPLE,LEAD_INGOT,LEAD_APPLE,1);
+        // tools and armors
+        {
+            AddToolBatch(LEAD_INGOT,LEAD_SWORD,LEAD_SHOVEL,LEAD_PICKAXE,LEAD_AXE,LEAD_HOE);
+            ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, PLUMBOMETER, 1).input('#', LEAD_INGOT)
+                    .pattern("#")
+                    .pattern("#").criterion("poisoned", ModAdvancementCriterion.conditionsFromAdvancement(Geomancy.locate("main/simple_lead_poisoned"))).offerTo(exporter);
+            AddSurrounded(Items.APPLE,LEAD_INGOT,LEAD_APPLE,1);
 
-        AddToolBatch(TITANIUM_INGOT,TITANIUM_SWORD,TITANIUM_SHOVEL,TITANIUM_PICKAXE,TITANIUM_AXE,TITANIUM_HOE);
-        AddToolBatch(MITHRIL_INGOT,MITHRIL_SWORD,MITHRIL_SHOVEL,MITHRIL_PICKAXE,MITHRIL_AXE,MITHRIL_HOE);
-        AddToolBatch(MOLYBDENUM_INGOT,MOLYBDENUM_SWORD,MOLYBDENUM_SHOVEL,MOLYBDENUM_PICKAXE,MOLYBDENUM_AXE,MOLYBDENUM_HOE);
-        AddToolBatch(OCTANGULITE_INGOT,OCTANGULITE_SWORD,OCTANGULITE_SHOVEL,OCTANGULITE_PICKAXE,OCTANGULITE_AXE,OCTANGULITE_HOE);
+            AddToolBatch(TITANIUM_INGOT,TITANIUM_SWORD,TITANIUM_SHOVEL,TITANIUM_PICKAXE,TITANIUM_AXE,TITANIUM_HOE);
+            AddToolBatch(MITHRIL_INGOT,MITHRIL_SWORD,MITHRIL_SHOVEL,MITHRIL_PICKAXE,MITHRIL_AXE,MITHRIL_HOE);
+            AddToolBatch(MOLYBDENUM_INGOT,MOLYBDENUM_SWORD,MOLYBDENUM_SHOVEL,MOLYBDENUM_PICKAXE,MOLYBDENUM_AXE,MOLYBDENUM_HOE);
+            AddToolBatch(OCTANGULITE_INGOT,OCTANGULITE_SWORD,OCTANGULITE_SHOVEL,OCTANGULITE_PICKAXE,OCTANGULITE_AXE,OCTANGULITE_HOE);
 
-        // armors
-        AddArmors(LEAD_INGOT,LEAD_BOOTS,LEAD_LEGGINGS,LEAD_CHESTPLATE,LEAD_HELMET);
-        AddArmors(TITANIUM_INGOT,TITANIUM_BOOTS,TITANIUM_LEGGINGS,TITANIUM_CHESTPLATE,TITANIUM_HELMET);
-        AddArmors(MITHRIL_INGOT,MITHRIL_BOOTS,MITHRIL_LEGGINGS,MITHRIL_CHESTPLATE,MITHRIL_HELMET);
-        AddArmors(MOLYBDENUM_INGOT,MOLYBDENUM_BOOTS,MOLYBDENUM_LEGGINGS,MOLYBDENUM_CHESTPLATE,MOLYBDENUM_HELMET);
-        AddArmors(OCTANGULITE_INGOT,OCTANGULITE_BOOTS,OCTANGULITE_LEGGINGS,OCTANGULITE_CHESTPLATE,OCTANGULITE_HELMET);
+            // armors
+            AddArmors(LEAD_INGOT,LEAD_BOOTS,LEAD_LEGGINGS,LEAD_CHESTPLATE,LEAD_HELMET);
+            AddArmors(TITANIUM_INGOT,TITANIUM_BOOTS,TITANIUM_LEGGINGS,TITANIUM_CHESTPLATE,TITANIUM_HELMET);
+            AddArmors(MITHRIL_INGOT,MITHRIL_BOOTS,MITHRIL_LEGGINGS,MITHRIL_CHESTPLATE,MITHRIL_HELMET);
+            AddArmors(MOLYBDENUM_INGOT,MOLYBDENUM_BOOTS,MOLYBDENUM_LEGGINGS,MOLYBDENUM_CHESTPLATE,MOLYBDENUM_HELMET);
+            AddArmors(OCTANGULITE_INGOT,OCTANGULITE_BOOTS,OCTANGULITE_LEGGINGS,OCTANGULITE_CHESTPLATE,OCTANGULITE_HELMET);
+        }
 
         // decorative blocks
+        {
+            ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, ModBlocks.MOSSY_CUT_TITANIUM, 1).input(ModBlocks.CUT_TITANIUM).input(Items.VINE).group("mossify").criterion(hasItem(ModBlocks.CUT_TITANIUM), conditionsFromItem(ModBlocks.CUT_TITANIUM)).offerTo(exporter, convertBetween(ModBlocks.MOSSY_CUT_TITANIUM, ModBlocks.CUT_TITANIUM));
 
-        ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, ModBlocks.MOSSY_CUT_TITANIUM, 1).input(ModBlocks.CUT_TITANIUM).input(Items.VINE).group("mossify").criterion(hasItem(ModBlocks.CUT_TITANIUM), conditionsFromItem(ModBlocks.CUT_TITANIUM)).offerTo(exporter, convertBetween(ModBlocks.MOSSY_CUT_TITANIUM, ModBlocks.CUT_TITANIUM));
+            AddDecorativeBlockBatch("lead");
+            AddDecorativeBlockBatch("titanium");
+            AddDecorativeBlockBatch("mithril");
+            AddDecorativeBlockBatch("molybdenum");
+            AddDecorativeBlockBatch("octangulite");
 
-        AddDecorativeBlockBatch("lead");
-        AddDecorativeBlockBatch("titanium");
-        AddDecorativeBlockBatch("mithril");
-        AddDecorativeBlockBatch("molybdenum");
-        AddDecorativeBlockBatch("octangulite");
-
-        // wood
-        offerBarkBlockRecipe(exporter,SOUL_OAK_WOOD,SOUL_OAK_LOG);
-        offerHangingSignRecipe(exporter,SOUL_OAK_HANGING_SIGN,SOUL_OAK_PLANKS);
-        offerPlanksRecipe(exporter,SOUL_OAK_PLANKS, ModItemTags.SOUL_OAK_LOGS,4);
-        offerPressurePlateRecipe(exporter,SOUL_OAK_PRESSURE_PLATE,SOUL_OAK_PLANKS);
-        offerSlabRecipe(exporter,RecipeCategory.BUILDING_BLOCKS,SOUL_OAK_SLAB,SOUL_OAK_PLANKS);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, SOUL_OAK_DOOR, 3).input('#', SOUL_OAK_PLANKS)
-                .pattern("##")
-                .pattern("##")
-                .pattern("##").criterion(hasItem(SOUL_OAK_PLANKS), conditionsFromItem(SOUL_OAK_PLANKS)).offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, SOUL_OAK_FENCE, 3).input('#', SOUL_OAK_PLANKS).input('x', Items.STICK)
-                .pattern("#x#")
-                .pattern("#x#").criterion(hasItem(SOUL_OAK_PLANKS), conditionsFromItem(SOUL_OAK_PLANKS)).offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, SOUL_OAK_FENCE_GATE, 1).input('#', SOUL_OAK_PLANKS).input('x', Items.STICK)
-                .pattern("x#x")
-                .pattern("x#x").criterion(hasItem(SOUL_OAK_PLANKS), conditionsFromItem(SOUL_OAK_PLANKS)).offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, SOUL_OAK_TRAPDOOR, 2).input('#', SOUL_OAK_PLANKS)
-                .pattern("###")
-                .pattern("###").criterion(hasItem(SOUL_OAK_PLANKS), conditionsFromItem(SOUL_OAK_PLANKS)).offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, SOUL_OAK_STAIRS, 4).input('#', SOUL_OAK_PLANKS)
-                .pattern("#  ")
-                .pattern("## ")
-                .pattern("###").criterion(hasItem(SOUL_OAK_PLANKS), conditionsFromItem(SOUL_OAK_PLANKS)).offerTo(exporter);
-        //ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, SOUL_OAK_SIGN, 3).input('#', SOUL_OAK_PLANKS).input('x', Items.STICK)
-        //        .pattern("###")
-        //        .pattern("###")
-        //        .pattern(" x ").criterion(hasItem(SOUL_OAK_PLANKS), conditionsFromItem(SOUL_OAK_PLANKS)).offerTo(exporter);
-        offerShapelessRecipe(exporter,SOUL_OAK_BUTTON,SOUL_OAK_PLANKS,"misc",1);
-        offerShapelessRecipe(exporter,SOUL_OAK_PLANKS,SOUL_OAK_LOG,"misc",4);
-        offerShapelessRecipe(exporter,SOUL_OAK_PLANKS,STRIPPED_SOUL_OAK_LOG,"misc",4);
-        offerShapelessRecipe(exporter,SOUL_OAK_PLANKS,SOUL_OAK_WOOD,"misc",4);
-        offerShapelessRecipe(exporter,SOUL_OAK_PLANKS,STRIPPED_SOUL_OAK_WOOD,"misc",4);
+            // wood
+            offerBarkBlockRecipe(exporter,SOUL_OAK_WOOD,SOUL_OAK_LOG);
+            offerHangingSignRecipe(exporter,SOUL_OAK_HANGING_SIGN,SOUL_OAK_PLANKS);
+            offerPlanksRecipe(exporter,SOUL_OAK_PLANKS, ModItemTags.SOUL_OAK_LOGS,4);
+            offerPressurePlateRecipe(exporter,SOUL_OAK_PRESSURE_PLATE,SOUL_OAK_PLANKS);
+            offerSlabRecipe(exporter,RecipeCategory.BUILDING_BLOCKS,SOUL_OAK_SLAB,SOUL_OAK_PLANKS);
+            ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, SOUL_OAK_DOOR, 3).input('#', SOUL_OAK_PLANKS)
+                    .pattern("##")
+                    .pattern("##")
+                    .pattern("##").criterion(hasItem(SOUL_OAK_PLANKS), conditionsFromItem(SOUL_OAK_PLANKS)).offerTo(exporter);
+            ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, SOUL_OAK_FENCE, 3).input('#', SOUL_OAK_PLANKS).input('x', Items.STICK)
+                    .pattern("#x#")
+                    .pattern("#x#").criterion(hasItem(SOUL_OAK_PLANKS), conditionsFromItem(SOUL_OAK_PLANKS)).offerTo(exporter);
+            ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, SOUL_OAK_FENCE_GATE, 1).input('#', SOUL_OAK_PLANKS).input('x', Items.STICK)
+                    .pattern("x#x")
+                    .pattern("x#x").criterion(hasItem(SOUL_OAK_PLANKS), conditionsFromItem(SOUL_OAK_PLANKS)).offerTo(exporter);
+            ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, SOUL_OAK_TRAPDOOR, 2).input('#', SOUL_OAK_PLANKS)
+                    .pattern("###")
+                    .pattern("###").criterion(hasItem(SOUL_OAK_PLANKS), conditionsFromItem(SOUL_OAK_PLANKS)).offerTo(exporter);
+            ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, SOUL_OAK_STAIRS, 4).input('#', SOUL_OAK_PLANKS)
+                    .pattern("#  ")
+                    .pattern("## ")
+                    .pattern("###").criterion(hasItem(SOUL_OAK_PLANKS), conditionsFromItem(SOUL_OAK_PLANKS)).offerTo(exporter);
+            //ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, SOUL_OAK_SIGN, 3).input('#', SOUL_OAK_PLANKS).input('x', Items.STICK)
+            //        .pattern("###")
+            //        .pattern("###")
+            //        .pattern(" x ").criterion(hasItem(SOUL_OAK_PLANKS), conditionsFromItem(SOUL_OAK_PLANKS)).offerTo(exporter);
+            offerShapelessRecipe(exporter,SOUL_OAK_BUTTON,SOUL_OAK_PLANKS,"misc",1);
+            offerShapelessRecipe(exporter,SOUL_OAK_PLANKS,SOUL_OAK_LOG,"misc",4);
+            offerShapelessRecipe(exporter,SOUL_OAK_PLANKS,STRIPPED_SOUL_OAK_LOG,"misc",4);
+            offerShapelessRecipe(exporter,SOUL_OAK_PLANKS,SOUL_OAK_WOOD,"misc",4);
+            offerShapelessRecipe(exporter,SOUL_OAK_PLANKS,STRIPPED_SOUL_OAK_WOOD,"misc",4);
+        }
 
         this.exporter=null;
     }
@@ -757,6 +813,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 result,1,requiredProgress,difficulty,conditionsFromItem(ingredient), requiredAdvancement);
     }
 
+    private final ArrayList<SpellBlock> spellComponentRecipesBuilt = new ArrayList<>();
     private void AddSpellcomponentRecipe(List<SmithingIngredient> input, SpellBlock outputComponent, boolean shapeless){
 
         var conditions = conditionsFromItem(SPELLCOMPONENT);
@@ -777,6 +834,8 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 ModAdvancementProvider.getComponentID(outputComponent.identifier.getPath()))
                 .criterion("gotten_base",conditions)
                 .offerTo(exporter,new Identifier(Geomancy.MOD_ID,"spellcomponent_"+outputComponent.identifier.getPath()));
+
+        spellComponentRecipesBuilt.add(outputComponent);
 
     }
 

@@ -95,10 +95,15 @@ public class MadnessUtil {
     private static long clearCacheCounter = 0;
     private static long madnessEffectsCounter = 0;
     private static long whisperCounter = 0;
+    private static long tickCounter = 0;
     public static void tick(MinecraftServer server){
-        for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-            MadnessUtil.tickMadness(player);
+        if(++tickCounter>10){
+            tickCounter = 0;
+            for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+                MadnessUtil.tickMadness(player);
+            }
         }
+
 
         // recalc mana
         for(PlayerEntity entity : queuedRecalcs){
@@ -134,10 +139,10 @@ public class MadnessUtil {
 
         float combined = madness+ambientMadness;
 
-        float chance = combined/(combined+400);
+        float chance = combined/(combined+800);
         if(Toolbox.random.nextFloat()>chance) return;
 
-        Toolbox.playSound(ModSoundEvents.WHISPERS,player.getWorld(),player.getBlockPos(), SoundCategory.AMBIENT,chance,0.8f+Toolbox.random.nextFloat()*0.4f);
+        Toolbox.playSound(ModSoundEvents.WHISPERS,player.getWorld(),player.getBlockPos(), SoundCategory.AMBIENT,0.2f+chance*0.6f,0.8f+Toolbox.random.nextFloat()*0.4f);
 
     }
 
@@ -252,20 +257,20 @@ public class MadnessUtil {
         float playerMaddeningSpeed = getMadnessSpeed(player);
         float ambientMaddeningSpeed = getAmbientMadness(player);
 
-        float effectiveMaddeningSpeed = playerMaddeningSpeed+ambientMaddeningSpeed;
+        double effectiveMaddeningSpeed = playerMaddeningSpeed+ambientMaddeningSpeed;
 
         // make extreme values have less of an impact
         final double g = 0.03;
         effectiveMaddeningSpeed = (float)Toolbox.log(1+g,effectiveMaddeningSpeed*g+1);
 
         // slow maddening down a lot
-        effectiveMaddeningSpeed *= 0.001f;
+        effectiveMaddeningSpeed *= 0.001;
 
         // prevents maddening from climbing endlessly
         // healing is much less effective if you're still exposed
-        final float lerpPerTick = 0.0001f / (1+effectiveMaddeningSpeed);
+        final double lerpPerTick = 0.0001 / (1+effectiveMaddeningSpeed);
 
-        float newMadness = Toolbox.Lerp(prevMadness,0,lerpPerTick) + effectiveMaddeningSpeed;
+        float newMadness = (float)(Toolbox.LerpD(prevMadness,0,lerpPerTick) + effectiveMaddeningSpeed);
 
         if(newMadness!=prevMadness){
             changed=true;

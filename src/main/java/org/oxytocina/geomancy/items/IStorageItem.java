@@ -7,7 +7,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.collection.DefaultedList;
+import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.util.AdvancementHelper;
 
 import java.util.HashMap;
 
@@ -41,9 +44,10 @@ public interface IStorageItem {
 
             int combinedCount = baseStack.getCount() + stack.getCount();
             if (combinedCount <= stack.getMaxCount()) {
-                stack.setCount(0);
                 baseStack.setCount(combinedCount);
                 saveInventoryToNbt(storage);
+                onCollected(storage,entity,player,stack);
+                stack.setCount(0);
                 return;
             } else if (baseStack.getCount() < stack.getMaxCount()) {
                 stack.decrement(stack.getMaxCount() - baseStack.getCount());
@@ -56,9 +60,23 @@ public interface IStorageItem {
         for (int i = 0; i < inv.size(); i++) {
             var baseStack = inv.getStack(i);
             if(!baseStack.isEmpty()) continue;
-            inv.setStack(i,stack.copyAndEmpty());
+            inv.setStack(i,stack.copy());
             saveInventoryToNbt(storage);
+            onCollected(storage,entity,player,stack);
+            stack.setCount(0);
             return;
+        }
+    }
+    default void onCollected(ItemStack storage, ItemEntity entity, PlayerEntity player, ItemStack stack){
+        if(player instanceof ServerPlayerEntity spe)
+        {
+            // check for component unlocks
+            if(stack.getItem() instanceof SpellComponentStoringItem){
+                var comp = SpellComponentStoringItem.readComponent(stack);
+                if(comp!=null){
+                    AdvancementHelper.grantAdvancementCriterion(spe, Geomancy.locate("spellcomponents/get_"+comp.function.identifier.getPath()),"got_"+comp.function.identifier.getPath());
+                }
+            }
         }
     }
 }

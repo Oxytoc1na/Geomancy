@@ -77,8 +77,13 @@ public class StorageItem extends Item implements IStorageItem, ExtendedScreenHan
     public void appendContentsTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context){
         var containedStacks = getAllItems(stack);
         for (int i = 0; i < containedStacks.size(); i++) {
+            if(i>=10){
+                tooltip.add(Text.translatable("geomancy.storage_item.more",containedStacks.size()-10).formatted(Formatting.GRAY));
+                break;
+            }
+
             var containedStack = containedStacks.get(i);
-            tooltip.add(Text.literal("").append(containedStack.getName()).formatted(Formatting.GRAY));
+            tooltip.add(Text.literal("").append(containedStack.getName()).append(containedStack.getCount()>=0?" x "+containedStack.getCount():"").formatted(Formatting.GRAY));
         }
     }
 

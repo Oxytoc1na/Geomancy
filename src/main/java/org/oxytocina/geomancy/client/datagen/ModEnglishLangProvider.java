@@ -313,8 +313,9 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.spellstorage.unnamed",               "unnamed");
 
             add("item.MODID.spellglove",        "Spellglove");
+            add("item.MODID.component_pouch","Component Pouch");
 
-
+            add("geomancy.storage_item.more","...and %1$s more");
         }
 
         // Blocks

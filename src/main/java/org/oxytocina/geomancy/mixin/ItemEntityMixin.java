@@ -1,8 +1,11 @@
 package org.oxytocina.geomancy.mixin;
 
+import net.minecraft.advancement.criterion.Criteria;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.Stats;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.items.IStorageItem;
@@ -29,9 +32,21 @@ public abstract class ItemEntityMixin {
             at = @At(value = "INVOKE",target = "Lnet/minecraft/entity/ItemEntity;getStack()Lnet/minecraft/item/ItemStack;"))
     private void geomancy$pickup(PlayerEntity player, CallbackInfo ci) {
         var stack = getStack();
+        int i = stack.getCount();
         if (this.pickupDelay == 0 && (this.owner == null || this.owner.equals(player.getUuid()))) {
             var ent = (ItemEntity) (Object) this;
             pickup(player,ent,stack);
+
+            player.sendPickup(ent, i);
+            if (stack.isEmpty()) {
+                ent.discard();
+                stack.setCount(i);
+                pickupDelay = 100;
+            }
+
+            player.increaseStat(Stats.PICKED_UP.getOrCreateStat(stack.getItem()), i);
+            player.triggerItemPickedUpByEntityCriteria(ent);
+
             ent.setStack(stack);
         }
     }

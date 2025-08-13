@@ -144,6 +144,10 @@ public class Toolbox {
         return (value * (1.0f - t)) + (target * t);
     }
 
+    public static double LerpD(double value, double target, double t){
+        return (value * (1.0f - t)) + (target * t);
+    }
+
     public static int LerpColor(int col1, int col2, float t){
         Vector3f vec1 = colorIntToVec(col1);
         Vector3f vec2 = colorIntToVec(col2);
