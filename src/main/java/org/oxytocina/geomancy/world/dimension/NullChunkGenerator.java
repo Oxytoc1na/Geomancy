@@ -106,25 +106,26 @@ public class NullChunkGenerator extends ChunkGenerator {
         Heightmap surfaceHeightmap = chunk.getHeightmap(Heightmap.Type.WORLD_SURFACE_WG);
 
         // generate noise
-        int genX, genZ;
+        int genX, genY, genZ;
         final float mainNoiseScale = 0.03f;
         final float mainNoiseScaleOctave1 = 0.1431f;
         final float thresholdNoiseScale = 0.004f;
         final float padding = 0.05f; // padding in percent from bottom and top
         BlockState core = Blocks.STONE.getDefaultState();
         for(int ix = 0; ix < 16; ++ix) {
-            genX = startX+ix;
+            genX = ((startX+ix)/2)*2;
             for(int iy = 0; iy < height; ++iy) {
+                genY = (iy/2)*2;
                 for(int iz = 0; iz < 16; ++iz) {
-                    genZ = startZ+iz;
+                    genZ = ((startZ+iz)/2)*2;
                     float distanceToEnds =  Math.min(iy,height-iy)/(float)height;
 
                     float threshold = Toolbox.clampF((distanceToEnds - padding)*6,0,1)
-                            * (0.2f + SimplexNoise.noiseNormalized(genX,iy,genZ,thresholdNoiseScale)*0.6f);
+                            * (0.2f + SimplexNoise.noiseNormalized(genX,genY,genZ,thresholdNoiseScale)*0.6f);
 
                     float noise =
                             0.8f * (float)Math.pow(SimplexNoise.noiseNormalized(genX*mainNoiseScale,iy*mainNoiseScale,genZ*mainNoiseScale),3)
-                            + 0.2f * SimplexNoise.noiseNormalized(genX,iy,genZ,mainNoiseScaleOctave1)
+                            + 0.2f * SimplexNoise.noiseNormalized(genX,genY,genZ,mainNoiseScaleOctave1)
                             ;
                     if(noise > threshold)
                         chunk.setBlockState(mutable.set(ix, iy, iz), core, false);
