@@ -41,9 +41,19 @@ public class ModSoundEvents {
 
     public static final SoundEvent WHISPERS = register("whispers",new ExtraData().count(4).prefix("geomancy:octangulite/whispers_single"));
     public static final SoundEvent CAST_FAILURE_BROKE = register("cast_fail_broke",new ExtraData().count(1).prefix("geomancy:casting/fail_broke"));
-    public static final SoundEvent CAST_SUCCESS_CHEAP = register("cast_success_cheap",new ExtraData().count(1).prefix("geomancy:casting/success_cheap"));
-    public static final SoundEvent CAST_SUCCESS_MEDIUM = register("cast_success_medium",new ExtraData().count(1).prefix("geomancy:casting/success_medium"));
-    public static final SoundEvent CAST_SUCCESS_EXPENSIVE = register("cast_success_expensive",new ExtraData().count(1).prefix("geomancy:casting/success_expensive"));
+    public static final SoundEvent CAST_SUCCESS_CHEAP = register("cast_success_cheap",new ExtraData().count(1).prefix("geomancy:casting/small"));
+    public static final SoundEvent CAST_SUCCESS_MEDIUM = register("cast_success_medium",new ExtraData().count(1).prefix("geomancy:casting/medium"));
+    public static final SoundEvent CAST_SUCCESS_EXPENSIVE = register("cast_success_expensive",new ExtraData().count(1).prefix("geomancy:casting/large"));
+
+    public static final SoundEvent SPELLMAKER_INSERT_CRADLE = register("spellmaker_insert_cradle",new ExtraData().count(1).prefix("geomancy:spellmaker/insert_cradle"));
+    public static final SoundEvent SPELLMAKER_REMOVE_CRADLE = register("spellmaker_remove_cradle",new ExtraData().count(1).prefix("geomancy:spellmaker/remove_cradle"));
+    public static final SoundEvent SPELLMAKER_INSERT_COMPONENT = register("spellmaker_insert_component",new ExtraData().count(1).prefix("geomancy:spellmaker/insert_component"));
+    public static final SoundEvent SPELLMAKER_REMOVE_COMPONENT = register("spellmaker_remove_component",new ExtraData().count(1).prefix("geomancy:spellmaker/remove_component"));
+    public static final SoundEvent SPELLMAKER_ROTATE = register("spellmaker_rotate",new ExtraData().count(1).prefix("geomancy:spellmaker/rotate"));
+    public static final SoundEvent SPELLMAKER_TYPE = register("spellmaker_type",new ExtraData().count(1).prefix("geomancy:spellmaker/type"));
+    public static final SoundEvent SPELLMAKER_TYPE_BACK = register("spellmaker_type_back",new ExtraData().count(1).prefix("geomancy:spellmaker/type_back"));
+    public static final SoundEvent SPELLMAKER_CHANGE_VAR = register("spellmaker_change_var",new ExtraData().count(1).prefix("geomancy:spellmaker/change_var"));
+    public static final SoundEvent SPELLMAKER_TEXTFIELD_FINISHED = register("spellmaker_textfield_finished",new ExtraData().count(1).prefix("geomancy:spellmaker/textfield_finished"));
 
     public static void register(){
 

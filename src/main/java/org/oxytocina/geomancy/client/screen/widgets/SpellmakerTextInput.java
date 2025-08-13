@@ -23,6 +23,8 @@ public class SpellmakerTextInput extends TextFieldWidget {
 
     public Consumer<String> onEditFinished;
 
+    public String prevText = "";
+
     public SpellmakerTextInput(SpellmakerScreen parent, TextRenderer textRenderer, int x, int y, int width, int height, Text text) {
         super(textRenderer, x, y, width, height, text);
         this.parent=parent;

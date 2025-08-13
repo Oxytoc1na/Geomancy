@@ -50,9 +50,9 @@ public class StorageItemScreenHandler extends ScreenHandler {
     public static final int STORAGE_DISPLAY_Y = 18;
 
     public static final int INVENTORY_DISPLAY_X = 8;
-    public static final int INVENTORY_DISPLAY_Y = 98;
+    public static final int INVENTORY_DISPLAY_Y = 86;
 
-    public static final int HOTBAR_DISPLAY_Y = 156;
+    public static final int HOTBAR_DISPLAY_Y = 144;
 
     public StorageItemScreen screen;
 

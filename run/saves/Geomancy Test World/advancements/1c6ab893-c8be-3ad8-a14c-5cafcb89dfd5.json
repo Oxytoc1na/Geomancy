@@ -59,12 +59,6 @@
     },
     "done": true
   },
-  "minecraft:recipes/decorations/crafting_table": {
-    "criteria": {
-      "unlock_right_away": "2025-06-24 17:30:18 +0200"
-    },
-    "done": true
-  },
   "geomancy:recipes/misc/mithril_ingot_compress_to_mithril_block": {
     "criteria": {
       "has_mithril_ingot": "2025-06-24 17:30:17 +0200"
@@ -98,6 +92,300 @@
   "minecraft:recipes/decorations/anvil": {
     "criteria": {
       "has_iron_block": "2025-06-24 17:30:17 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/crafting_table": {
+    "criteria": {
+      "unlock_right_away": "2025-06-24 17:30:18 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_ref_output": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_place": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_raycast_dir": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_caster_slot": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_exp": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_debug": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/jewelry_octangulite_ring": {
+    "criteria": {
+      "has_ingredient": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_constant_number": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_teleport": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_bool_entitygrounded": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_break": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_ref_input": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_sum": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_subtract": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_for": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_function_two": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:octangulite/get_spellcomponent": {
+    "criteria": {
+      "got_spellcomponent": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_sin": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_entity_nearest": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_constant_boolean": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_conveyor": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_not": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_lightning": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_dimhop": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_function": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_spellcomponent": {
+    "criteria": {
+      "default_conditions": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_provider": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_fireball": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_push": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_cos": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_tan": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_imbue": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_constant_text": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_vector_build": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_multiply": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_gate": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_vector_entityeyepos": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_vector_entitydir": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_entity_caster": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_vector_split": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_raycast_pos": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_action": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_divide": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_vector_entitypos": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:spellcomponents/get_debug": {
+    "criteria": {
+      "got_debug": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_print": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_vector_entityspawn": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_log": {
+    "criteria": {
+      "gotten_base": "2025-08-13 22:05:36 +0200"
     },
     "done": true
   },

@@ -535,6 +535,19 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         Geomancy.logWarning("no recipe for spell component "+block.identifier.getPath());
                 }
             }
+
+            // spellglove
+            AddShapedSmitheryRecipe(new String[]{
+                            "ooo",
+                            "lcl",
+                            " l "}
+                    ,new SPatKey[]{
+                            new SPatKey("o",SmithingIngredient.ofItems(1,1,1,OCTANGULITE_INGOT)),
+                            new SPatKey("l",SmithingIngredient.ofItems(1,1,1,Items.LEATHER)),
+                            new SPatKey("c",SmithingIngredient.ofItems(1,1,1,Items.CHEST)),
+                    },
+                    SPELLGLOVE,1,100,50,conditionsFromItem(OCTANGULITE_INGOT),Geomancy.locate("milestones/milestone_souls"));
+
         }
 
         // tools and armors

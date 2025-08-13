@@ -429,18 +429,21 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         add("death.attack.geomancy.plumbometer", "%1$s died of Hypochondria");
 
         // Misc
-        add("itemGroup.MODID.main",     "Geomancy");
-        add("itemGroup.MODID.jewelry",  "Geomancy Jewelry");
-        add("itemGroup.MODID.spells",   "Geomancy Spells");
-        add("geomancy.message.lead.tingling",   "Your fingers are tingling...");
-        add("geomancy.message.lead.nausea",     "You feel like throwing up...");
-        add("geomancy.message.lead.poison",     "You feel a sharp pain in your head...");
-        add("geomancy.message.lead.joints",     "Your joints hurt...");
-        add("geomancy.message.madness.regret",      "Maybe it is time to stop...");
-        add("geomancy.message.madness.mourning",    "You feel terrible...");
-        add("geomancy.message.madness.ecstasy",     "You feel wonderful!");
-        add("geomancy.message.madness.nausea",      "Your head is spinning...");
-        add("geomancy.message.madness.paranoia",    "Did you hear something?");
+        {
+            add("itemGroup.MODID.main",     "Geomancy");
+            add("itemGroup.MODID.jewelry",  "Geomancy Jewelry");
+            add("itemGroup.MODID.spells",   "Geomancy Spells");
+            add("geomancy.message.lead.tingling",   "Your fingers are tingling...");
+            add("geomancy.message.lead.nausea",     "You feel like throwing up...");
+            add("geomancy.message.lead.poison",     "You feel a sharp pain in your head...");
+            add("geomancy.message.lead.joints",     "Your joints hurt...");
+            add("geomancy.message.madness.regret",      "Maybe it is time to stop...");
+            add("geomancy.message.madness.mourning",    "You feel terrible...");
+            add("geomancy.message.madness.ecstasy",     "You feel wonderful!");
+            add("geomancy.message.madness.nausea",      "Your head is spinning...");
+            add("geomancy.message.madness.paranoia",    "Did you hear something?");
+        }
+
 
         // Toasts
         add("geomancy.toast.stellgeknowledge.title","Stellgian Knowledge gained");
@@ -456,6 +459,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addAdvancement(".main.get_molybdenum","Eccentric","Discover something quirky");
             addAdvancement(".main.get_molten_gold","Greedy","Discover Molten Gold");
             addAdvancement(".main.get_gilded_deepslate","Adorned","Discover Gilded Deepslate");
+            addAdvancement(".main.get_spellmaker","Technomagical","Discover the Spellmaker");
 
             addAdvancement(".main.simple_duplicate_trinkets","Hubris","Try and fail to equip two artifacts of the same type at once");
             addAdvancement(".main.simple_tried_to_take_smithery_result","You've gotta hammer it!","Hit the Smithery with a Hammer to craft!");

@@ -14,12 +14,12 @@ import java.util.Optional;
 
 public class StorageItemScreen extends HandledScreen<StorageItemScreenHandler> {
 
-    private static final Identifier TEXTURE = new Identifier(Geomancy.MOD_ID,"textures/gui/spellstorer_block_gui.png");
+    private static final Identifier TEXTURE = new Identifier(Geomancy.MOD_ID,"textures/gui/storageitem.png");
 
     private final StorageItemScreenHandler handler;
 
     public final static int bgWidth=176;
-    public final static int bgHeight=180;
+    public final static int bgHeight=168;
 
     public StorageItemScreen(StorageItemScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);

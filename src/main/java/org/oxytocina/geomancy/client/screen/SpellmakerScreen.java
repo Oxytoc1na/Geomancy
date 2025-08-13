@@ -1,25 +1,43 @@
 package org.oxytocina.geomancy.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.datafixers.util.Pair;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.sound.PositionedSoundInstance;
+import net.minecraft.client.texture.Sprite;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.slot.Slot;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Util;
+import net.minecraft.util.math.MathHelper;
 import org.lwjgl.glfw.GLFW;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.client.screen.widgets.SpellmakerButton;
 import org.oxytocina.geomancy.client.screen.widgets.SpellmakerCheckbox;
 import org.oxytocina.geomancy.client.screen.widgets.SpellmakerTextInput;
 import org.oxytocina.geomancy.networking.ModMessages;
+import org.oxytocina.geomancy.sound.ModSoundEvents;
 import org.oxytocina.geomancy.spells.SpellComponent;
+import org.oxytocina.geomancy.util.Toolbox;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +46,7 @@ import java.util.Objects;
 public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
 
     private static final Identifier TEXTURE = new Identifier(Geomancy.MOD_ID,"textures/gui/spellmaker_block_gui.png");
+    private static final Logger log = LoggerFactory.getLogger(SpellmakerScreen.class);
 
     private final SpellmakerScreenHandler handler;
 
@@ -37,6 +56,8 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
     private boolean inspecting = false;
 
     public List<SpellmakerTextInput> textInputs;
+
+    public SpellmakerButton[] sideConfigButtons = new SpellmakerButton[12];
 
 
     public SpellmakerScreen(SpellmakerScreenHandler handler, PlayerInventory inventory, Text title) {
@@ -99,7 +120,7 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
     protected void init() {
         ensureTextEditFinish();
 
-        this.backgroundWidth = bgWidth + (handler.hasGrid()?200:0);
+        this.backgroundWidth = bgWidth + (true||handler.hasGrid()?200:0);
         this.backgroundHeight = bgHeight;
 
         //titleX = 0;
@@ -122,11 +143,13 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
             SpellmakerTextInput textInput = new SpellmakerTextInput(this, MinecraftClient.getInstance().textRenderer,infoPosX,infoPosY,100,15,Text.literal(handler.currentGrid.name));
             textInput.setText(handler.currentGrid.name);
             textInput.setChangedListener(s -> {
-                //textInput.validInput = configuredParam.canAccept(s);
+                playUISound(textInput.prevText.length() < s.length() ? ModSoundEvents.SPELLMAKER_TYPE:ModSoundEvents.SPELLMAKER_TYPE_BACK);
+                textInput.prevText = s;
             });
             textInput.onEditFinished = (s -> {
 
                 // set value
+                playUISound(ModSoundEvents.SPELLMAKER_TEXTFIELD_FINISHED);
                 // send packet to server
                 PacketByteBuf data = PacketByteBufs.create();
                 data.writeBlockPos(handler.blockEntity.getPos());
@@ -163,6 +186,7 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
                 final int infoPosY = bgPosY+10;
 
                 // side configs
+                sideConfigButtons = new SpellmakerButton[12];
                 for (int i = 0; i < component.sideConfigs.length; i++) {
                     var conf = component.sideConfigs[i];
 
@@ -192,9 +216,10 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
                         data.writeInt(sideIndex);
                         data.writeInt(newMode);
                         ClientPlayNetworking.send(ModMessages.SPELLMAKER_TRY_CHANGE_TYPE, data);
-                    });
+                    },ModSoundEvents.SPELLMAKER_CHANGE_VAR);
                     typeBtn.active = conf.modes.size()>1;
                     addDrawableChild(typeBtn);
+                    sideConfigButtons[i*2] = typeBtn;
 
                     // change variable
                     String nextVar = "";
@@ -244,12 +269,13 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
                         data.writeInt(sideIndex);
                         data.writeString(nextVar2);
                         ClientPlayNetworking.send(ModMessages.SPELLMAKER_TRY_CHANGE_VAR, data);
-                    });
+                    },ModSoundEvents.SPELLMAKER_CHANGE_VAR);
                     varBtn.visible = conf.activeMode()!= SpellComponent.SideConfig.Mode.Blocked;
                     varBtn.active =
                             conf.isInput()?component.function.inputs.size()>1
                             : conf.isOutput() && component.function.outputs.size() > 1;
                     addDrawableChild(varBtn);
+                    sideConfigButtons[i*2+1] = varBtn;
                 }
 
                 // parameters
@@ -296,12 +322,15 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
                                 textInput.setText(configuredParam.getSignal().getTextValue());
                                 textInput.setChangedListener(s -> {
                                     textInput.validInput = configuredParam.canAccept(s);
+                                    playUISound(textInput.prevText.length() < s.length() ? ModSoundEvents.SPELLMAKER_TYPE:ModSoundEvents.SPELLMAKER_TYPE_BACK);
+                                    textInput.prevText = s;
                                 });
                                 textInput.onEditFinished = (s -> {
 
                                     // check if text is parseable
                                     if(configuredParam.canAccept(s)){
                                         // set value
+                                        playUISound(ModSoundEvents.SPELLMAKER_TEXTFIELD_FINISHED);
                                         // send packet to server
                                         PacketByteBuf data = PacketByteBufs.create();
                                         var nbt = new NbtCompound();
@@ -342,7 +371,7 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
                     handler.selectedComponentPosition = null;
                     handler.selectedComponentChanged();
 
-                });
+                },ModSoundEvents.SPELLMAKER_REMOVE_COMPONENT);
                 addDrawableChild(removeBtn);
 
                 // rotate button
@@ -355,7 +384,7 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
                     data.writeBlockPos(handler.blockEntity.getPos());
                     data.writeInt(1);
                     ClientPlayNetworking.send(ModMessages.SPELLMAKER_TRY_ROTATE_COMPONENT, data);
-                });
+                },ModSoundEvents.SPELLMAKER_ROTATE);
                 addDrawableChild(rotateBtn);
             }
         }
@@ -424,5 +453,26 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
 
     public int getBackgroundHeight() {
         return backgroundHeight;
+    }
+
+    public void playUISound(SoundEvent event) {
+        if(handler.blockEntity.getWorld() instanceof ClientWorld){
+            MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(event, 1.0F));
+        }
+    }
+
+    protected boolean sideConfigButtonHovered(int i){
+        return sideConfigButtons[i] != null && sideConfigButtons[i].isHovered();
+    }
+
+    public boolean hoveredOverSideConfig(int i) {
+        return sideConfigButtonHovered(i*2) || sideConfigButtonHovered(i*2+1);
+    }
+
+    public boolean hoveredOverAnySideConfig(){
+        for (int i = 0; i < 12; i++) {
+            if(sideConfigButtonHovered(i)) return true;
+        }
+        return false;
     }
 }

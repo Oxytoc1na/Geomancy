@@ -20,6 +20,8 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
@@ -30,12 +32,14 @@ import org.joml.Vector2f;
 import org.joml.Vector2i;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.blockEntities.SpellmakerBlockEntity;
+import org.oxytocina.geomancy.client.GeomancyClient;
 import org.oxytocina.geomancy.client.screen.slots.SpellComponentSelectionSlot;
 import org.oxytocina.geomancy.client.screen.slots.TagFilterSlot;
 import org.oxytocina.geomancy.items.SpellComponentStoringItem;
 import org.oxytocina.geomancy.items.SpellStoringItem;
 import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.registries.ModItemTags;
+import org.oxytocina.geomancy.sound.ModSoundEvents;
 import org.oxytocina.geomancy.spells.SpellComponent;
 import org.oxytocina.geomancy.spells.SpellGrid;
 import org.oxytocina.geomancy.util.Toolbox;
@@ -132,8 +136,17 @@ public class SpellmakerScreenHandler extends ScreenHandler {
 
     }
 
+    private ItemStack prevOutput = ItemStack.EMPTY;
     public void rebuild(){
-        currentGrid = SpellStoringItem.getOrCreateGrid(getOutput());
+        var newOutput = getOutput();
+
+        if(prevOutput.isEmpty() && !newOutput.isEmpty())
+            playUISound(ModSoundEvents.SPELLMAKER_INSERT_CRADLE);
+        else if(!prevOutput.isEmpty() && newOutput.isEmpty())
+            playUISound(ModSoundEvents.SPELLMAKER_REMOVE_CRADLE);
+
+        prevOutput = newOutput;
+        currentGrid = SpellStoringItem.getOrCreateGrid(newOutput);
         selectedComponentChanged();
         updateAvailableComponents();
     }
@@ -354,6 +367,8 @@ public class SpellmakerScreenHandler extends ScreenHandler {
                 if(canAfford){
                     SpellComponent componentToBePlaced = selectedNewComponent.clone();
                     componentToBePlaced.position = componentPosition;
+
+                    playUISound(ModSoundEvents.SPELLMAKER_INSERT_COMPONENT);
 
                     // send packet to server
                     PacketByteBuf data = PacketByteBufs.create();
@@ -715,9 +730,11 @@ public class SpellmakerScreenHandler extends ScreenHandler {
                 final float startX = infoPosX+previewWidth/2f+offset.x;
                 final float startY = infoPosY+previewHeight/2f+offset.y;
                 final int endX = infoPosX+sideConfigsOffset;
-                final int endY = infoPosY+i*spacePerSideConfigButtons;
+                final float endY = infoPosY+(i+0.5f)*spacePerSideConfigButtons;
+                final float thicknessMod = (float)Math.sin(Math.PI*2*GeomancyClient.tick/20/3);
 
-                drawLine(context,startX,startY,endX,endY,0.5f,Toolbox.colorFromRGBA(0.8f,1,1,0.3f));
+                if(screen.hoveredOverSideConfig(i))
+                    drawLine(context,startX,startY,endX,endY,0.5f + 0.2f*thicknessMod,Toolbox.colorFromRGBA(0.8f,1,1,0.5f+0.3f*thicknessMod));
 
             }
 
@@ -825,5 +842,11 @@ public class SpellmakerScreenHandler extends ScreenHandler {
         bufferBuilder.vertex(matrix4f, x2, y2, z).texture(u2, v2).next();
         bufferBuilder.vertex(matrix4f, x2, y1, z).texture(u2, v1).next();
         BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
+    }
+
+    public void playUISound(SoundEvent event) {
+        if(screen!=null)
+            screen.playUISound(event);
+        //Toolbox.playSound(event,blockEntity.getWorld(),blockEntity.getPos(), SoundCategory.PLAYERS,1,1);
     }
 }
