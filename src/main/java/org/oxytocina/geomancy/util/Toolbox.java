@@ -234,4 +234,8 @@ public class Toolbox {
     public static Random seededRandom(int seed){
         return new Random(seed);
     }
+
+    public static int roundWithChance(float v){
+        return Math.round(v-(v%1) + (random.nextFloat()<(v%1)?1:0));
+    }
 }

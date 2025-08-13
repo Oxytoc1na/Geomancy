@@ -232,7 +232,7 @@ public interface IJewelryItem {
 
         for(var gem : gems){
             if(gem.gemItem == refgem.gemItem)
-                res += gem.getEffectiveQuality(stack,wearer);
+                res += 0.3f * gem.getEffectiveQuality(stack,wearer);
         }
 
         return res;
@@ -254,9 +254,7 @@ public interface IJewelryItem {
         var gsls = getSlots(jewelryItem);
         for(var gsl : gsls)
         {
-            if(gsl.gemItem == Items.EMERALD){
-                res+=gsl.getEffectiveQuality(jewelryItem,wearer);
-            }
+            res+=gsl.getFortuneBonus(jewelryItem,wearer);
         }
 
         return res;

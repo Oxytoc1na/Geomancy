@@ -4,6 +4,7 @@ import com.google.common.collect.Multimap;
 import com.mojang.datafixers.util.Function4;
 import com.mojang.datafixers.util.Function5;
 import com.mojang.datafixers.util.Function6;
+import de.dafuqs.additionalentityattributes.AdditionalEntityAttributes;
 import dev.emi.trinkets.api.SlotReference;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.Enchantments;
@@ -49,44 +50,42 @@ public class GemSlot {
     static{
 
         // Diamond gems give 2 Armor per quality
-        register(Settings.create(Items.DIAMOND).setColor(0,1,1).setDifficulty(10).setProgressCost(10).withGenericTooltip((q)->Integer.toString(Math.round(q*2))).setModifier((itemStack, gemSlot, slotReference, livingEntity, uuid, modifiers) -> {
+        register(Settings.create(Items.DIAMOND).setColor(0,1,1).setDifficulty(10)
+                .setProgressCost(10).withGenericTooltip((q)->QualityRounded(q*2))
+                .setModifier((itemStack, gemSlot, slotReference, livingEntity, uuid, modifiers) -> {
             if(IJewelryItem.isPendant(itemStack)) return modifiers;
-
             float value = 2*gemSlot.getEffectiveQuality(itemStack,livingEntity);
-            String id = "geomancy:jewelry_diamond_gem_armor";
-            EntityAttributeModifier.Operation op = EntityAttributeModifier.Operation.ADDITION;
-            var newMod = new EntityAttributeModifier(uuid, id, value, op);
-
-            // check for duplicates
-            boolean added = false;
-            if(modifiers.containsKey(EntityAttributes.GENERIC_ARMOR)){
-                for(EntityAttributeModifier mod : modifiers.get(EntityAttributes.GENERIC_ARMOR).stream().toList()){
-                    if(mod.equals(newMod))
-                    {
-                        // matches!
-                        // replace with combined
-                        modifiers.replaceValues(EntityAttributes.GENERIC_ARMOR,modifiers.get(EntityAttributes.GENERIC_ARMOR).stream().map(entityAttributeModifier -> {
-                            if(mod.equals(newMod))
-                                return new EntityAttributeModifier(uuid, id, mod.getValue()+value, op);
-                            return entityAttributeModifier;
-                        }).toList());
-                        added=true;
-                        break;
-                    }
-                }
-            }
-            if(!added)
-                modifiers.put(EntityAttributes.GENERIC_ARMOR, newMod);
-            return modifiers;
+            return addAndCombineModifier(modifiers,new EntityAttributeModifier(uuid,
+                    "geomancy:jewelry_diamond_gem_armor", value,
+                    EntityAttributeModifier.Operation.ADDITION),
+                    EntityAttributes.GENERIC_ARMOR);
         }));
         // fortune
-        register(Settings.create(Items.EMERALD).setColor(0,1,0).setDifficulty(15).setProgressCost(10).withGenericTooltip(GemSlot::QualityRounded));
+        register(Settings.create(Items.EMERALD).setColor(0,1,0).setDifficulty(15).setProgressCost(10).withGenericTooltip(q->QualityRounded(q*0.15f,1)));
         // more xp drops
         register(Settings.create(Items.LAPIS_LAZULI).setColor(0,0,1).setDifficulty(10).setProgressCost(10).withGenericTooltip(GemSlot::QualityPercent));
-        register(Settings.create(ModItems.TOURMALINE).setColor(0xFF2D41).setDifficulty(10).setProgressCost(10).withGenericTooltip(GemSlot::QualityPercent).withGenericStatusEffectFunction(StatusEffects.SPEED,-1,0.01f));
+        // tourmaline : movement speed
+        register(Settings.create(ModItems.TOURMALINE).setColor(0xFF2D41).setDifficulty(10)
+                .setProgressCost(10).withGenericTooltip((q)->QualityPercent(q*0.1f))
+                .setModifier((itemStack, gemSlot, slotReference, livingEntity, uuid, modifiers) -> {
+            if(IJewelryItem.isPendant(itemStack)) return modifiers;
+            float value = 0.1f*gemSlot.getEffectiveQuality(itemStack,livingEntity);
+            return addAndCombineModifier(modifiers,new EntityAttributeModifier(uuid,
+                    "geomancy:jewelry_tourmaline_speed", value,
+                    EntityAttributeModifier.Operation.MULTIPLY_TOTAL),
+                    EntityAttributes.GENERIC_MOVEMENT_SPEED);
+        }));
         register(Settings.create(ModItems.ORTHOCLASE).setColor(0x90785D).setDifficulty(10).setProgressCost(10).withGenericTooltip(GemSlot::QualityPercent));
         register(Settings.create(ModItems.PERIDOT).setColor(0xE5F070).setDifficulty(10).setProgressCost(10).withGenericTooltip(GemSlot::QualityPercent));
-        register(Settings.create(ModItems.AXINITE).setColor(0xAE7651).setDifficulty(10).setProgressCost(10).withGenericTooltip(GemSlot::QualityPercent).withGenericStatusEffectFunction(StatusEffects.HASTE,-1,0.01f));
+        // mining speed
+        register(Settings.create(ModItems.AXINITE).setColor(0xAE7651).setDifficulty(10).setProgressCost(10).withGenericTooltip(q->QualityPercent(q*0.1f)).setModifier((itemStack, gemSlot, slotReference, livingEntity, uuid, modifiers) -> {
+            if(IJewelryItem.isPendant(itemStack)) return modifiers;
+            float value = 0.1f*gemSlot.getEffectiveQuality(itemStack,livingEntity);
+            return addAndCombineModifier(modifiers,new EntityAttributeModifier(uuid,
+                            "geomancy:jewelry_axinite_mining_speed", value,
+                            EntityAttributeModifier.Operation.MULTIPLY_TOTAL),
+                    AdditionalEntityAttributes.DIG_SPEED);
+        }));
         // quicker mana charge
         register(Settings.create(Items.AMETHYST_SHARD).setColor(0x8D6ACC).setDifficulty(30).setProgressCost(30).withGenericTooltip(GemSlot::QualityPercent));
         // larger mana storage
@@ -96,13 +95,21 @@ public class GemSlot {
         // regen
         register(Settings.create(Items.END_CRYSTAL).setColor(0xBE95D4).setDifficulty(20).setProgressCost(40).withGenericTooltip(GemSlot::QualityEmpty).withGenericStatusEffectFunction(StatusEffects.REGENERATION,-1,0.01f));
         register(Settings.create(Items.ENDER_PEARL).setColor(0x258474).setDifficulty(20).setProgressCost(40).withGenericTooltip(GemSlot::QualityEmpty));
-        register(Settings.create(Items.PRISMARINE_CRYSTALS).setColor(0x258474).setDifficulty(20).setProgressCost(40).withGenericTooltip(GemSlot::QualityEmpty));
+        register(Settings.create(Items.PRISMARINE_CRYSTALS).setColor(0x258474).setDifficulty(20).setProgressCost(40).withGenericTooltip(q->QualityPercent(q*0.15f)).setModifier((itemStack, gemSlot, slotReference, livingEntity, uuid, modifiers) -> {
+            if(IJewelryItem.isPendant(itemStack)) return modifiers;
+            float value = 0.15f*gemSlot.getEffectiveQuality(itemStack,livingEntity);
+            return addAndCombineModifier(modifiers,new EntityAttributeModifier(uuid,
+                            "geomancy:jewelry_tourmaline_speed", value,
+                            EntityAttributeModifier.Operation.MULTIPLY_TOTAL),
+                    AdditionalEntityAttributes.WATER_SPEED);
+        }));
         register(Settings.create(Items.ENDER_EYE).setColor(0x71AC49).setDifficulty(20).setProgressCost(40).withGenericTooltip(GemSlot::QualityEmpty));
         register(Settings.create(Items.NETHER_STAR).setColor(0xFDFFA8).setDifficulty(60).setProgressCost(120).withGenericTooltip(GemSlot::QualityEmpty));
 
     }
 
     private static String QualityRounded(float q){return Integer.toString(Math.round(q));}
+    private static String QualityRounded(float q, int decimalPoints){ int mult = Math.round((float)Math.pow(10,decimalPoints)); return Float.toString(Math.round(q*mult)/(float)mult);}
     private static String QualityPercent(float q){return Integer.toString(Math.round(q*100));}
     private static String QualityEmpty(float q){return "";}
 
@@ -306,6 +313,16 @@ public class GemSlot {
         return res;
     }
 
+    public float getFortuneBonus(ItemStack parent, LivingEntity wearer){
+        float res = 0;
+
+        if(gemItem == Items.EMERALD){
+            res+=0.15f*getEffectiveQuality(parent,wearer);
+        }
+
+        return res;
+    }
+
     public float getManaRegenMultiplier(ItemStack parent, LivingEntity wearer){
         float res = 0;
 
@@ -326,4 +343,30 @@ public class GemSlot {
         return res;
     }
 
+    public static Multimap<EntityAttribute,EntityAttributeModifier> addAndCombineModifier(
+            Multimap<EntityAttribute,EntityAttributeModifier> modifiers,
+            EntityAttributeModifier newMod,
+            EntityAttribute attribute){
+        // check for duplicates
+        boolean added = false;
+        if(modifiers.containsKey(attribute)){
+            for(EntityAttributeModifier mod : modifiers.get(attribute).stream().toList()){
+                if(mod.equals(newMod))
+                {
+                    // matches!
+                    // replace with combined
+                    modifiers.replaceValues(attribute,modifiers.get(attribute).stream().map(entityAttributeModifier -> {
+                        if(mod.equals(newMod))
+                            return new EntityAttributeModifier(newMod.getId(), newMod.getName(), mod.getValue()+ newMod.getValue(), newMod.getOperation());
+                        return entityAttributeModifier;
+                    }).toList());
+                    added=true;
+                    break;
+                }
+            }
+        }
+        if(!added)
+            modifiers.put(attribute, newMod);
+        return modifiers;
+    }
 }
