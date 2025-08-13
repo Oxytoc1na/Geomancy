@@ -4,9 +4,10 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.impl.util.log.Log;
+import net.fabricmc.loader.impl.util.log.LogCategory;
 import net.minecraft.item.Item;
 import net.minecraft.recipe.RecipeManager;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Identifier;
@@ -25,7 +26,6 @@ import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 import org.oxytocina.geomancy.items.SpellComponentStoringItem;
 import org.oxytocina.geomancy.items.jewelry.IJewelryItem;
-import org.oxytocina.geomancy.items.jewelry.JewelryItem;
 import org.oxytocina.geomancy.loottables.ModLootTables;
 import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.particles.ModParticleFactories;
@@ -136,9 +136,11 @@ public class Geomancy implements ModInitializer {
 
             ServerTickEvents.START_SERVER_TICK.register(new PlayerTickHandler());
 
-        } catch (Exception e) {
-            logError(e.getMessage());
-            throw e;
+        } catch (Throwable t) {
+            RuntimeException exception = new RuntimeException(String.format("Geomancy Initialization failed!",
+                    t.fillInStackTrace()));
+            Log.debug(LogCategory.ENTRYPOINT, "Geomancy");
+            throw exception;
         }
         LOGGER.info("Finished Loading Geomancy");
 

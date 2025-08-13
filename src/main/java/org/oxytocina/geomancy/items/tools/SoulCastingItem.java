@@ -33,7 +33,12 @@ import java.util.Objects;
 public class SoulCastingItem extends StorageItem implements IManaStoringItem, IScrollListenerItem, ICustomRarityItem {
 
     public SoulCastingItem(Settings settings, int storageSize) {
-        super(settings, storageSize,ModItemTags.SPELL_STORING);
+        super(settings, storageSize,ModItemTags.SPELL_STORING,false);
+    }
+
+    @Override
+    public boolean autocollects() {
+        return false;
     }
 
     @Override

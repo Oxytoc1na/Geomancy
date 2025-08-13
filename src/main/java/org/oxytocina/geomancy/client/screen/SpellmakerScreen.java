@@ -211,7 +211,7 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
                                 if(Objects.equals(name, conf.varName))
                                     nextIsRes = true;
                             }
-                            if(nextVar==null)nextVar=first;
+                            if(nextVar=="")nextVar=first!=null?first:"";
                             break;
                         }
                         case Output:
@@ -225,7 +225,7 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
                                 if(Objects.equals(name, conf.varName))
                                     nextIsRes = true;
                             }
-                            if(nextVar==null||nextVar=="")nextVar=first;
+                            if(nextVar=="")nextVar=first!=null?first:"";
                             break;
                         }
                     }

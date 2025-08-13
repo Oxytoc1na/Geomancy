@@ -15,7 +15,7 @@ public class SpellmakerRefreshS2CPacket {
         var entity = client.world!=null?client.world.getBlockEntity(pos):null;
         if(entity instanceof SpellmakerBlockEntity){
             if(SpellmakerScreenHandler.current!=null){
-                SpellmakerScreenHandler.current.updateAvailableComponents();
+                SpellmakerScreenHandler.current.refresh();
             }
         }
     }

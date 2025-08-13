@@ -31,18 +31,8 @@ public class SpellmakerTryAddComponentC2SPacket {
                 SpellComponent component = new SpellComponent(null,nbt);
                 var function = component.function;
                 // look for matching components in player inventory
-                boolean canAfford = false;
-                var availableComponents = spellmaker.getComponentItems(player.getInventory());
-                for (int i = 0; i < availableComponents.size(); i++) {
-                    ItemStack contender = availableComponents.getStack(i);
-                    if(!(contender.getItem() instanceof SpellComponentStoringItem storer)) continue;
-                    var contenderComponent = SpellComponentStoringItem.readComponent(contender);
-                    if(contenderComponent==null) continue;
-                    if(contenderComponent.function == function){
-                        canAfford=true;
-                        break;
-                    }
-                }
+                var availableComponents = SpellmakerBlockEntity.getComponentAmountsIn(player.getInventory());
+                boolean canAfford = availableComponents.containsKey(function) && availableComponents.get(function) >= 1;
 
                 if(canAfford){
                     ItemStack storageStack = spellmaker.getOutput();
@@ -54,14 +44,8 @@ public class SpellmakerTryAddComponentC2SPacket {
                             SpellStoringItem.writeGrid(storageStack,grid);
 
                             // remove ingredient from player
-                            for (int i = 0; i < player.getInventory().size(); i++) {
-                                var stack = player.getInventory().getStack(i);
-                                if(!(stack.getItem() instanceof SpellComponentStoringItem)) continue;
-                                var contenderComp = SpellComponentStoringItem.readComponent(stack);
-                                if(contenderComp==null || contenderComp.function!=function) continue;
-                                stack.decrement(1);
-                                break;
-                            }
+                            SpellmakerBlockEntity.removeComponentFrom(function,1,player.getInventory());
+                            player.getInventory().markDirty();
 
                             // send update package to client
                             PacketByteBuf data = PacketByteBufs.create();

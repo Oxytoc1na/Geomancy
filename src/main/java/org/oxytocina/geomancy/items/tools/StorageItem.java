@@ -32,11 +32,14 @@ import java.util.List;
 public class StorageItem extends Item implements IStorageItem, ExtendedScreenHandlerFactory {
 
     public int storageSize = StorageItemScreenHandler.STORAGE_DISPLAY_SLOTS;
-    public TagKey<Item> storableTag;
-    public StorageItem(Settings settings, int storageSize, TagKey<Item> storableTag) {
+    public final TagKey<Item> storableTag;
+    public final boolean showContentsInTooltip;
+
+    public StorageItem(Settings settings, int storageSize, TagKey<Item> storableTag, boolean showContentsInTooltip) {
         super(settings);
         this.storageSize = storageSize;
         this.storableTag=storableTag;
+        this.showContentsInTooltip=showContentsInTooltip;
 
         // TODO
         this.storageSize = StorageItemScreenHandler.STORAGE_DISPLAY_SLOTS;
@@ -45,6 +48,11 @@ public class StorageItem extends Item implements IStorageItem, ExtendedScreenHan
     @Override
     public TagKey<Item> getStorableTag() {
         return storableTag;
+    }
+
+    @Override
+    public boolean autocollects() {
+        return true;
     }
 
     @Override
@@ -62,7 +70,11 @@ public class StorageItem extends Item implements IStorageItem, ExtendedScreenHan
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         super.appendTooltip(stack, world, tooltip, context);
+        if(showContentsInTooltip)
+            appendContentsTooltip(stack,world,tooltip,context);
+    }
 
+    public void appendContentsTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context){
         var containedStacks = getAllItems(stack);
         for (int i = 0; i < containedStacks.size(); i++) {
             var containedStack = containedStacks.get(i);

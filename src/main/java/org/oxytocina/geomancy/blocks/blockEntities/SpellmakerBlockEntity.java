@@ -27,11 +27,11 @@ import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.client.screen.SpellmakerScreenHandler;
 import org.oxytocina.geomancy.inventories.AutoCraftingInventory;
 import org.oxytocina.geomancy.inventories.ImplementedInventory;
+import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.SpellComponentStoringItem;
 import org.oxytocina.geomancy.items.SpellStoringItem;
 import org.oxytocina.geomancy.spells.SpellBlock;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SpellmakerBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory, ImplementedInventory {
@@ -121,27 +121,81 @@ public class SpellmakerBlockEntity extends BlockEntity implements ExtendedScreen
     }
 
     public Inventory getComponentItems(Inventory inventory){
-        HashMap<SpellBlock,ItemStack> stacks = new HashMap<>();
-
-        for (int i = 0; i < inventory.size(); i++) {
-            ItemStack contender = inventory.getStack(i);
-            if(contender.isEmpty()) continue;
-            if(!(contender.getItem() instanceof SpellComponentStoringItem storer)) continue;
-            var component = SpellComponentStoringItem.readComponent(contender);
-            if(component==null) continue;
-            var block = component.function;
-            if(stacks.containsKey(block)) stacks.get(block).increment(contender.getCount());
-            else stacks.put(block, contender.copy());
-        }
-
+        var comps = getComponentAmountsIn(inventory);
         DefaultedList<ItemStack> stacksComposed = DefaultedList.ofSize(SpellmakerScreenHandler.NEW_COMPONENTS_SLOT_COUNT,ItemStack.EMPTY);
         int i = 0;
-        for(var stack : stacks.values())
+        for(var block : comps.keySet())
         {
             if(i>=stacksComposed.size()) break;
-            stacksComposed.set(i++,stack);
+            var stack = block.getItemStack();
+            stack.setCount(comps.get(block));
+            stacksComposed.set(i++, stack);
         }
         return ImplementedInventory.of(stacksComposed);
+    }
+
+    public static HashMap<SpellBlock, Integer> getComponentAmountsIn(Inventory inv){
+        HashMap<SpellBlock, Integer> res = new HashMap<>();
+
+        for (int i = 0; i < inv.size(); i++) {
+            ItemStack contender = inv.getStack(i);
+            if(contender.isEmpty()) continue;
+
+            // add component
+            if(contender.getItem() instanceof SpellComponentStoringItem)
+            {
+                var component = SpellComponentStoringItem.readComponent(contender);
+                if(component==null) continue;
+                var key = component.function;
+
+                if(res.containsKey(key)) res.put(key,res.get(key)+contender.getCount());
+                else res.put(key,contender.getCount());
+            }
+
+            // recursively add components
+            if(contender.getItem() == ModItems.COMPONENT_POUCH){
+                var inv2 = ModItems.COMPONENT_POUCH.getInventory(contender);
+                var recursiveRes = getComponentAmountsIn(inv2);
+                for(var key : recursiveRes.keySet()){
+                    if(res.containsKey(key)) res.put(key,res.get(key)+recursiveRes.get(key));
+                    else res.put(key,recursiveRes.get(key));
+                }
+            }
+        }
+
+        return res;
+    }
+
+    public static int removeComponentFrom(SpellBlock func, int count, Inventory inv){
+        if(count<=0) return count;
+
+        for (int i = 0; i < inv.size(); i++) {
+            ItemStack contender = inv.getStack(i);
+            if(contender.isEmpty()) continue;
+
+            // check
+            if(contender.getItem() instanceof SpellComponentStoringItem)
+            {
+                var component = SpellComponentStoringItem.readComponent(contender);
+                if(component==null) continue;
+                if(component.function==func)
+                {
+                    int taken = Math.min(count,contender.getCount());
+                    contender.decrement(taken);
+                    count -= taken;
+                    if(count <= 0) return 0;
+                }
+            }
+
+            // recursively check
+            if(contender.getItem() == ModItems.COMPONENT_POUCH){
+                var inv2 = ModItems.COMPONENT_POUCH.getInventory(contender);
+                count = removeComponentFrom(func,count,inv2);
+                if(count <= 0) return count;
+            }
+        }
+
+        return count;
     }
 
 

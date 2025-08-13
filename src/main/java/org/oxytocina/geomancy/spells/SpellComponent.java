@@ -1,6 +1,7 @@
 package org.oxytocina.geomancy.spells;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import dev.architectury.mixin.fabric.MixinItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;

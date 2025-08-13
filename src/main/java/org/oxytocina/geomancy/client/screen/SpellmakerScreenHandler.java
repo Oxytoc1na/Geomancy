@@ -17,6 +17,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
@@ -47,6 +48,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
 
     private final Inventory inventory;
     private Inventory availableComponents;
+    public boolean desireAvailableComponentsRebuild = false;
     private final PropertyDelegate propertyDelegate;
     public final SpellmakerBlockEntity blockEntity;
     public final PlayerEntity player;
@@ -108,10 +110,26 @@ public class SpellmakerScreenHandler extends ScreenHandler {
 
         addProperties(arrayPropertyDelegate);
 
+        addListener(new ScreenHandlerListener() {
+            @Override
+            public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack) {
+                Geomancy.logInfo("slot update "+slotId+" "+stack.getName().getString());
+                ((SpellmakerScreenHandler)handler).desireAvailableComponentsRebuild = true;
+            }
+
+            @Override
+            public void onPropertyUpdate(ScreenHandler handler, int property, int value) {
+
+            }
+        });
     }
 
     public void outputItemChanged(){
         rebuild();
+    }
+
+    public void refresh(){
+
     }
 
     public void rebuild(){
@@ -211,6 +229,12 @@ public class SpellmakerScreenHandler extends ScreenHandler {
         {
             float factor = newZoom/fieldDrawScale;
             zoomTick(factor);
+        }
+
+        if(desireAvailableComponentsRebuild)
+        {
+            desireAvailableComponentsRebuild=false;
+            updateAvailableComponents();
         }
     }
 
