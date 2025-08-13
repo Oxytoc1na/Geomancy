@@ -182,7 +182,6 @@ public class ModBlocks {
     // block entities
     public static final SmitheryBlock SMITHERY = (SmitheryBlock) register("smithery_block", SmitheryBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe());
     public static final SpellmakerBlock SPELLMAKER = (SpellmakerBlock) register("spellmaker_block", SpellmakerBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe());
-    public static final SpellstorerBlock SPELLSTORER = (SpellstorerBlock) register("spellstorer_block", SpellstorerBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe().dontGroupItem());
 
     // fluids
     private static AbstractBlock.Settings fluid(MapColor mapColor) {

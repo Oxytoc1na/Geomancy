@@ -16,8 +16,6 @@ public class ModBlockEntities {
             FabricBlockEntityTypeBuilder.create(SmitheryBlockEntity::new,ModBlocks.SMITHERY).build());
     public static final BlockEntityType<SpellmakerBlockEntity> SPELLMAKER_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE,new Identifier(Geomancy.MOD_ID,"spellmaker_be"),
             FabricBlockEntityTypeBuilder.create(SpellmakerBlockEntity::new,ModBlocks.SPELLMAKER).build());
-    public static final BlockEntityType<SpellstorerBlockEntity> SPELLSTORER_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE,new Identifier(Geomancy.MOD_ID,"spellstorer_be"),
-            FabricBlockEntityTypeBuilder.create(SpellstorerBlockEntity::new,ModBlocks.SPELLSTORER).build());
 
     public static void register() {
 

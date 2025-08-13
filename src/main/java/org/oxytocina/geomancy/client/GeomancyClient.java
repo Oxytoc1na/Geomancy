@@ -1,21 +1,15 @@
 package org.oxytocina.geomancy.client;
 
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
-import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback;
-import net.minecraft.client.gui.screen.ingame.HandledScreens;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 //import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 
 import org.oxytocina.geomancy.Geomancy;
-import org.oxytocina.geomancy.blocks.ExtraBlockSettings;
 import org.oxytocina.geomancy.blocks.blockEntities.ModBlockEntities;
 import org.oxytocina.geomancy.client.blocks.blockEntities.SmitheryBlockEntityRenderer;
 import org.oxytocina.geomancy.client.blocks.blockEntities.SpellmakerBlockEntityRenderer;
-import org.oxytocina.geomancy.client.blocks.blockEntities.SpellstorerBlockEntityRenderer;
 import org.oxytocina.geomancy.client.entity.ModEntityRenderers;
 import org.oxytocina.geomancy.client.event.ClientPlayerTickHandler;
 import org.oxytocina.geomancy.client.registries.ModModelLayers;
@@ -26,7 +20,6 @@ import org.oxytocina.geomancy.client.rendering.armor.ModArmorRenderers;
 import org.oxytocina.geomancy.client.screen.*;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 import org.oxytocina.geomancy.compat.GeomancyIntegrationPacks;
-import org.oxytocina.geomancy.effects.ParanoiaStatusEffect;
 import org.oxytocina.geomancy.event.KeyInputHandler;
 import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.world.dimension.ModDimensions;
@@ -60,11 +53,7 @@ public class GeomancyClient implements ClientModInitializer {
         ClientPlayConnectionEvents.DISCONNECT.register(new ClientPlayConnectionLeave());
 
         BlockEntityRendererFactories.register(ModBlockEntities.SMITHERY_BLOCK_ENTITY, SmitheryBlockEntityRenderer::new);
-
         BlockEntityRendererFactories.register(ModBlockEntities.SPELLMAKER_BLOCK_ENTITY, SpellmakerBlockEntityRenderer::new);
-
-        BlockEntityRendererFactories.register(ModBlockEntities.SPELLSTORER_BLOCK_ENTITY, SpellstorerBlockEntityRenderer::new);
-
 
 
         Geomancy.logInfo("Finished Initializing Geomancy Client");

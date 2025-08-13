@@ -28,6 +28,7 @@ import org.oxytocina.geomancy.entity.ExtraEntitySettings;
 import org.oxytocina.geomancy.items.artifacts.*;
 import org.oxytocina.geomancy.items.jewelry.*;
 import org.oxytocina.geomancy.loottables.ModLootTables;
+import org.oxytocina.geomancy.registries.ModItemTags;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
 import org.oxytocina.geomancy.util.LeadUtil;
 
@@ -221,6 +222,7 @@ public class ModItems {
     public static final SpellStoringItem SPELLSTORAGE_MEDIUM = register("spellstorage_medium",new SpellStoringItem(new FabricItemSettings(),5,5));
     public static final SpellStoringItem SPELLSTORAGE_LARGE = register("spellstorage_large",new SpellStoringItem(new FabricItemSettings(),7,7));
     public static final SpellComponentStoringItem SPELLCOMPONENT = register("spellcomponent",new SpellComponentStoringItem(new FabricItemSettings()),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
+    public static final StorageItem COMPONENT_POUCH = register("component_pouch",new StorageItem(new FabricItemSettings().maxCount(1),9*3, ModItemTags.COMPONENT_STORING));
 
     // geodes
     // if something else goes terribly wrong, this place is usually where the exception gets thrown

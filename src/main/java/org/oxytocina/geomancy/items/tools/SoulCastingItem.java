@@ -7,52 +7,33 @@ import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventories;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.screen.NamedScreenHandlerFactory;
-import net.minecraft.screen.PropertyDelegate;
-import net.minecraft.screen.ScreenHandler;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import org.oxytocina.geomancy.client.screen.SpellstorerItemScreenHandler;
-import org.oxytocina.geomancy.client.screen.SpellstorerScreenHandler;
-import org.oxytocina.geomancy.inventories.ImplementedInventory;
 import org.oxytocina.geomancy.items.*;
 import org.oxytocina.geomancy.networking.ModMessages;
+import org.oxytocina.geomancy.registries.ModItemTags;
 import org.oxytocina.geomancy.spells.SpellGrid;
 import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-public class SoulCastingItem extends Item implements IManaStoringItem, ICastingItem, IScrollListenerItem, ICustomRarityItem, ExtendedScreenHandlerFactory {
+public class SoulCastingItem extends StorageItem implements IManaStoringItem, IScrollListenerItem, ICustomRarityItem {
 
-    public static final HashMap<ItemStack,DefaultedList<ItemStack>> inventories = new HashMap<>();
-    public static final HashMap<ItemStack,Inventory> actualInventories = new HashMap<>();
-
-    public int spellStorageSize = SpellstorerScreenHandler.STORAGE_DISPLAY_SLOTS;
-
-    public SoulCastingItem(Settings settings, int spellStorageSize) {
-        super(settings);
-        this.spellStorageSize=spellStorageSize;
-
-        // TODO
-        this.spellStorageSize = SpellstorerScreenHandler.STORAGE_DISPLAY_SLOTS;
+    public SoulCastingItem(Settings settings, int storageSize) {
+        super(settings, storageSize,ModItemTags.SPELL_STORING);
     }
 
     @Override
@@ -112,23 +93,11 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
         }
     }
 
-    public ArrayList<ItemStack> getAllSpellItems(ItemStack stack){
-        if(!(stack.getItem() instanceof  SoulCastingItem)) return null;
-
-        ArrayList<ItemStack> res = new ArrayList<>();
-        for (int i = 0; i < getSize(stack); i++) {
-            var spell = getStack(stack,i);
-            if(!(spell.getItem() instanceof SpellStoringItem)) continue;
-            res.add(spell);
-        }
-        return res;
-    }
-
     public ArrayList<ItemStack> getCastableSpellItems(ItemStack stack){
         if(!(stack.getItem() instanceof  SoulCastingItem)) return null;
 
         ArrayList<ItemStack> res = new ArrayList<>();
-        for (int i = 0; i < getSize(stack); i++) {
+        for (int i = 0; i < getStorageSize(stack); i++) {
             var spell = getStack(stack,i);
             if(!(spell.getItem() instanceof SpellStoringItem storer)) continue;
             var grid = SpellStoringItem.readGrid(spell);
@@ -141,31 +110,6 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
     @Override
     public float getBaseSoulCapacity(ItemStack stack) {
         return 0;
-    }
-
-    @Override
-    public DefaultedList<ItemStack> readInventoryFromNbt(ItemStack stack) {
-        DefaultedList<ItemStack> stacks = DefaultedList.ofSize(spellStorageSize,ItemStack.EMPTY);
-        Inventories.readNbt(stack.getOrCreateNbt(),stacks);
-        return stacks;
-    }
-
-    @Override
-    public void saveInventoryToNbt(ItemStack stack) {
-        stack.getOrCreateNbt().remove("Items");
-        Inventories.writeNbt(stack.getOrCreateNbt(),getItems(stack));
-        clearCache(stack);
-    }
-
-    public void clearCache(ItemStack stack){
-        inventories.remove(stack);
-        actualInventories.remove(stack);
-    }
-
-    public void setInventory(ItemStack stack, NbtCompound nbt){
-        clearCache(stack);
-        stack.setSubNbt("Items",nbt.getList("Items",NbtElement.COMPOUND_TYPE));
-        clearCache(stack);
     }
 
     public int getSelectedSpellIndex(ItemStack stack){
@@ -191,7 +135,7 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
     public static SpellGrid getSpell(ItemStack casterItem,String name){
         if(!(casterItem.getItem() instanceof  SoulCastingItem caster)) return null;
 
-        for (int i = 0; i < caster.getSize(casterItem); i++) {
+        for (int i = 0; i < caster.getStorageSize(casterItem); i++) {
             var contender = caster.getStack(casterItem,i);
             if(!(contender.getItem() instanceof SpellStoringItem storer)) continue;
             var grid = SpellStoringItem.readGrid(contender);
@@ -201,139 +145,6 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
 
         return null;
     }
-
-    // Inventory
-
-    public int getSize(ItemStack stack){
-        return getItems(stack).size();
-    }
-
-    @Override
-    public DefaultedList<ItemStack> getItems(ItemStack stack) {
-        if(inventories.containsKey(stack)) return inventories.get(stack);
-
-        // generate and cache inventory
-        DefaultedList<ItemStack> inv = readInventoryFromNbt(stack);
-        inventories.put(stack,inv);
-
-        return inv;
-    }
-
-    public static Inventory getInventory(ItemStack stack){
-        if(actualInventories.containsKey(stack)) return actualInventories.get(stack);
-
-        // generate and cache inventory
-        Inventory inv = ImplementedInventory.of(((SoulCastingItem) stack.getItem()).getItems(stack));
-        actualInventories.put(stack,inv);
-
-        return inv;
-    }
-
-    public boolean insertSpellStorage(ItemStack key, ItemStack storage) {
-        // TODO
-        setStack(key,0,storage);
-        return true;
-    }
-
-    /**
-     * Returns the inventory size.
-     *
-     * <p>The default implementation returns the size of {@link #getItems(ItemStack)}.
-     *
-     * @return the inventory size
-     */
-    public int size(ItemStack key) {
-        return getItems(key).size();
-    }
-
-    /**
-     * @return true if this inventory has only empty stacks, false otherwise
-     */
-    public boolean isEmpty(ItemStack key) {
-        for (int i = 0; i < size(key); i++) {
-            ItemStack stack = getStack(key,i);
-            if (!stack.isEmpty()) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Gets the item in the slot.
-     *
-     * @param slot the slot
-     * @return the item in the slot
-     */
-    public ItemStack getStack(ItemStack key,int slot) {
-        return getItems(key).get(slot);
-    }
-
-    /**
-     * Takes a stack of the size from the slot.
-     *
-     * <p>(default implementation) If there are less items in the slot than what are requested,
-     * takes all items in that slot.
-     *
-     * @param slot the slot
-     * @param count the item count
-     * @return a stack
-     */
-    public ItemStack removeStack(ItemStack key,int slot, int count) {
-        ItemStack result = Inventories.splitStack(getItems(key), slot, count);
-        if (!result.isEmpty()) {
-            markDirty(key);
-        }
-
-        return result;
-    }
-
-    /**
-     * Removes the current stack in the {@code slot} and returns it.
-     *
-     * <p>The default implementation uses {@link Inventories#removeStack(List, int)}
-     *
-     * @param slot the slot
-     * @return the removed stack
-     */
-    public ItemStack removeStack(ItemStack key,int slot) {
-        return Inventories.removeStack(getItems(key), slot);
-    }
-
-    /**
-     * Replaces the current stack in the {@code slot} with the provided stack.
-     *
-     * <p>If the stack is too big for this inventory ({@link Inventory#getMaxCountPerStack()}),
-     * it gets resized to this inventory's maximum amount.
-     *
-     * @param slot the slot
-     * @param stack the stack
-     */
-    public void setStack(ItemStack key,int slot, ItemStack stack) {
-        getItems(key).set(slot, stack);
-        if (stack.getCount() > getMaxCountPerStack(key)) {
-            stack.setCount(getMaxCountPerStack(key));
-        }
-        markDirty(key);
-    }
-
-    private int getMaxCountPerStack(ItemStack key) {
-        return 1;
-    }
-
-    /**
-     * Clears {@linkplain #getItems(ItemStack) the item list}}.
-     */
-    public void clear(ItemStack key) {
-        getItems(key).clear();
-    }
-
-    public void markDirty(ItemStack key) {
-        // Override if you want behavior.
-        saveInventoryToNbt(key);
-    }
-
 
     @Override
     public Text getName(ItemStack stack) {
@@ -346,7 +157,7 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
             var nextIndex=getSelectedSpellIndex(stack);
             var spellItem = spells.get(nextIndex);
             var grid = SpellStoringItem.readGrid(spellItem);
-            MutableText indexText = Text.literal((nextIndex+1)+"/"+spells.size()+"/"+spellStorageSize+": ").formatted(Formatting.GRAY);
+            MutableText indexText = Text.literal((nextIndex+1)+"/"+spells.size()+"/"+getStorageSize(stack)+": ").formatted(Formatting.GRAY);
             if(grid==null)
             {
                 spellText = indexText.append(Text.translatable("geomancy.spellstorage.empty").formatted(Formatting.GRAY));
@@ -394,7 +205,7 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
         else{
             var spellItem = spells.get(index);
             var grid = SpellStoringItem.readGrid(spellItem);
-            MutableText indexText = Text.literal((index+1)+"/"+spells.size()+"/"+spellStorageSize+": ").formatted(Formatting.GRAY);
+            MutableText indexText = Text.literal((index+1)+"/"+spells.size()+"/"+getStorageSize(stack)+": ").formatted(Formatting.GRAY);
             if(grid==null)
             {
                 player.sendMessage(indexText.append(Text.translatable("geomancy.spellstorage.empty").formatted(Formatting.GRAY)),true);
@@ -421,42 +232,6 @@ public class SoulCastingItem extends Item implements IManaStoringItem, ICastingI
     @Override
     public Text getDisplayName() {
         return Text.translatable("container.geomancy.spellstorer_block");
-    }
-
-    @Override
-    public @Nullable ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-        var stack = player.getStackInHand(player.getActiveHand());
-        if(!(stack.getItem() instanceof SoulCastingItem sci)) return null;
-        return new SpellstorerItemScreenHandler(syncId,playerInventory,stack,new PropertyDelegate() {
-            @Override
-            public int get(int index) {
-                return switch(index) {
-                    //case 0 -> SpellmakerBlockEntity.this.progress;
-                    //case 1 -> SpellmakerBlockEntity.this.maxProgress;
-                    //case 2 -> SpellmakerBlockEntity.this.currentRecipe!=null? SpellmakerBlockEntity.this.currentRecipe.getDifficulty(SpellmakerBlockEntity.this.inputInventory(), SpellmakerBlockEntity.this.getLastHammerStack(), SpellmakerBlockEntity.this.getLastHammerer()):-1;
-                    default -> 0;
-                };
-            }
-
-            @Override
-            public void set(int index, int value) {
-                switch(index) {
-                    //case 0 -> SpellmakerBlockEntity.this.progress = value;
-                    //case 1 -> SpellmakerBlockEntity.this.maxProgress = value;
-                }
-            }
-
-            @Override
-            public int size() {
-                return 3;
-            }
-        });
-    }
-
-    @Override
-    public void writeScreenOpeningData(ServerPlayerEntity serverPlayerEntity, PacketByteBuf packetByteBuf) {
-        var stack = serverPlayerEntity.getStackInHand(serverPlayerEntity.getActiveHand());
-        packetByteBuf.writeInt(serverPlayerEntity.getInventory().getSlotWithStack(stack));
     }
 
     @Override

@@ -101,6 +101,12 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
                         ModItems.SPELLSTORAGE_LARGE
                 );
 
+        // component storing
+        getOrCreateTagBuilder(COMPONENT_STORING).setReplace(false)
+                .add(
+                        ModItems.SPELLCOMPONENT
+                );
+
         // spell casters
         getOrCreateTagBuilder(CASTING_ITEM).setReplace(false)
                 .add(

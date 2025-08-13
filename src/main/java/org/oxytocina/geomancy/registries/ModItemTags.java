@@ -15,6 +15,7 @@ public class ModItemTags {
     public static final TagKey<Item> STELLGE_CURIOUS = register("stellge_curious");
     public static final TagKey<Item> OCTANGULITE = register("octangulite");
     public static final TagKey<Item> SPELL_STORING = register("spell_storing");
+    public static final TagKey<Item> COMPONENT_STORING = register("component_storing");
     public static final TagKey<Item> CASTING_ITEM = register("casting_item");
     public static final TagKey<Item> SOUL_OAK_LOGS = register("soul_oak_logs");
 
