@@ -6,7 +6,6 @@ import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementFrame;
 import net.minecraft.advancement.criterion.CriterionConditions;
 import net.minecraft.advancement.criterion.InventoryChangedCriterion;
-import net.minecraft.advancement.criterion.TravelCriterion;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
@@ -21,7 +20,6 @@ import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 import org.oxytocina.geomancy.items.ModItems;
-import org.oxytocina.geomancy.items.SpellComponentStoringItem;
 import org.oxytocina.geomancy.progression.advancement.LocationCriterion;
 import org.oxytocina.geomancy.progression.advancement.ModAdvancementCriterion;
 import org.oxytocina.geomancy.progression.advancement.SimpleCriterion;
@@ -57,8 +55,8 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                 .build(consumer, Geomancy.MOD_ID + ":main/root");
 
         // progression milestones
-        Advancement milestone_smithery = AddOrMilestoneAdvancement("smithery", Arrays.stream(new String[]{"geomancy:interaction/simple_smithery"}).toList(),ModBlocks.SMITHERY,Geomancy.locate("textures/block/gilded_deepslate.png"));
-        Advancement milestone_souls = AddOrMilestoneAdvancement("souls", Arrays.stream(new String[]{"simple_maddened"}).toList(),ModBlocks.SMITHERY,Geomancy.locate("textures/block/octangulite_block.png"));
+        Advancement milestone_smithery = AddOrMilestoneAdvancement("smithery", List.of("geomancy:interaction/simple_smithery"),ModBlocks.SMITHERY,Geomancy.locate("textures/block/gilded_deepslate.png"));
+        Advancement milestone_souls = AddAndMilestoneAdvancement("souls", List.of("geomancy:main/simple_maddened","geomancy:main/get_spellmaker"),ModBlocks.SMITHERY,Geomancy.locate("textures/block/octangulite_block.png"));
 
         Advancement got_molten_gold = AddGetItemAdvancement(ModFluids.MOLTEN_GOLD_BUCKET,"molten_gold",ModFluids.MOLTEN_GOLD_BUCKET,"main",AdvancementFrame.CHALLENGE,true,false,main);
         Advancement got_mithril = AddGetItemAdvancement(ModItems.RAW_MITHRIL,"mithril",ModItems.RAW_MITHRIL,"main",AdvancementFrame.TASK,true,false,main);
@@ -175,10 +173,17 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
     private Advancement AddOrMilestoneAdvancement(String name, List<String> ORprerequisites,ItemConvertible icon, Identifier bgTexture){
         List<List<String>> AND = new ArrayList<>();
         AND.add(ORprerequisites);
-        return AddAndMilestoneAdvancement(name,AND,icon,bgTexture);
+        return AddFullMilestoneAdvancement(name,AND,icon,bgTexture);
     }
 
-    private Advancement AddAndMilestoneAdvancement(String name, List<List<String>> ANDprerequisites,ItemConvertible icon, Identifier bgTexture){
+    private Advancement AddAndMilestoneAdvancement(String name, List<String> ANDprerequisites,ItemConvertible icon, Identifier bgTexture){
+        List<List<String>> AND = new ArrayList<>();
+        for(var req : ANDprerequisites)
+            AND.add(List.of(req));
+        return AddFullMilestoneAdvancement(name,AND,icon,bgTexture);
+    }
+
+    private Advancement AddFullMilestoneAdvancement(String name, List<List<String>> ANDprerequisites, ItemConvertible icon, Identifier bgTexture){
         Advancement.Builder builder = Advancement.Builder.create();
         String advancementName = Geomancy.MOD_ID + ":milestones/milestone_"+name;
 
@@ -190,7 +195,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                 reqs[i][j] = ORprereqs.get(j);
 
                 CriterionConditions conditions = ModAdvancementCriterion.conditionsFromAdvancement(
-                        new Identifier(reqs[i][j])
+                        Identifier.tryParse(reqs[i][j])
                 );
 
                 builder.criterion(reqs[i][j],conditions);

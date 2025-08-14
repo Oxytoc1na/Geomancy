@@ -1,7 +1,7 @@
 x- tourmaline ore break particles unset
-- spellcomponents without a recipe:
--- imbue
--- function 2
+x- spellcomponents without a recipe:
+x-- imbue
+x-- function 2
 x- guidebook no recipe
 x- smelt times too fast
 - plumbometer missing texture
@@ -22,3 +22,4 @@ x--- i mean it made my life a lot easier testing all the other things but still 
 x- slow madness and lead poisoning
 - status effect icons
 - no gem blocks
+- octangula missing spellmaker

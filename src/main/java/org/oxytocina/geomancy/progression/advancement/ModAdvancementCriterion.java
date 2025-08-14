@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.advancement.AdvancementCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterionConditions;
+import net.minecraft.item.ItemStack;
 import net.minecraft.loot.condition.EntityPropertiesLootCondition;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.predicate.entity.*;
@@ -23,6 +24,10 @@ public class ModAdvancementCriterion extends AbstractCriterion<ModAdvancementCri
         String name = obj.get("advancement").getAsString();
         Conditions conditions = conditionsFromAdvancement(new Identifier(name));
         return conditions;
+    }
+
+    public void trigger(ServerPlayerEntity player, Identifier id) {
+        this.trigger(player, (conditions) -> conditions.requirementsMet(id));
     }
 
     @Override
@@ -58,13 +63,13 @@ public class ModAdvancementCriterion extends AbstractCriterion<ModAdvancementCri
             this.advancement =name;
         }
 
-        boolean requirementsMet(String name) {
-            return Objects.equals(name, this.advancement);
+        boolean requirementsMet(Identifier id) {
+            return Objects.equals(id, getAdvancement());
         }
 
         @Override
         public Identifier getId() {
-            return new Identifier("inventory_changed");
+            return Geomancy.locate("advancement");
         }
 
         @Override
@@ -75,8 +80,5 @@ public class ModAdvancementCriterion extends AbstractCriterion<ModAdvancementCri
         }
     }
 
-    public void trigger(ServerPlayerEntity player,String name) {
-        trigger(player, conditions -> conditions.requirementsMet(name));
-    }
 
 }

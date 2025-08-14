@@ -106,6 +106,11 @@ public class ModRecipeProvider extends FabricRecipeProvider {
             AddOreCompactingRecipes(MOLYBDENUM_NUGGET,MOLYBDENUM_INGOT,ModBlocks.MOLYBDENUM_BLOCK,RAW_MOLYBDENUM,ModBlocks.RAW_MOLYBDENUM_BLOCK);
             AddOreCompactingRecipes(TITANIUM_NUGGET,TITANIUM_INGOT,ModBlocks.TITANIUM_BLOCK,RAW_TITANIUM,ModBlocks.RAW_TITANIUM_BLOCK);
             AddOreCompactingRecipes(LEAD_NUGGET,LEAD_INGOT,ModBlocks.LEAD_BLOCK,RAW_LEAD,ModBlocks.RAW_LEAD_BLOCK);
+
+            AddReversibleCompressionRecipe(AXINITE_BLOCK,AXINITE);
+            AddReversibleCompressionRecipe(ORTHOCLASE_BLOCK,ORTHOCLASE);
+            AddReversibleCompressionRecipe(PERIDOT_BLOCK,PERIDOT);
+            AddReversibleCompressionRecipe(TOURMALINE_BLOCK,TOURMALINE);
         }
 
         // smithing recipes

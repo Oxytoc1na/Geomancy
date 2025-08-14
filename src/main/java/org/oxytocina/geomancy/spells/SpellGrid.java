@@ -1,6 +1,7 @@
 package org.oxytocina.geomancy.spells;
 
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -12,6 +13,7 @@ import org.joml.Vector2i;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.effects.ModStatusEffects;
 import org.oxytocina.geomancy.items.SpellStoringItem;
+import org.oxytocina.geomancy.util.ManaUtil;
 import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.ArrayList;
@@ -94,6 +96,7 @@ public class SpellGrid {
         }
 
         if(context.soulConsumed > 0){
+            ManaUtil.syncMana((PlayerEntity) casterEntity);
             SpellBlocks.playCastSound(context);
         }
 

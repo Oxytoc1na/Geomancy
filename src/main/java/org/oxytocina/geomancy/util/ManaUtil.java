@@ -75,6 +75,9 @@ public class ManaUtil {
     /// call after equipping/unequipping mana storing items, casting spells, etc.
     /// syncs mana
     private static void recalculateMana(PlayerEntity player){
+        recalculateMana(player,true);
+    }
+    private static void recalculateMana(PlayerEntity player, boolean sync){
         if(player==null || !(player instanceof ServerPlayerEntity)) return;
 
         float cap = 0;
@@ -91,7 +94,8 @@ public class ManaUtil {
         setManaCap(player,cap);
         setMana(player,mana);
 
-        syncMana(player);
+        if(sync)
+            syncMana(player);
     }
 
     private static int cacheClearTimer = 0;
@@ -308,6 +312,8 @@ public class ManaUtil {
                 changed=true;
             }
         }
+
+        recalculateMana(player,false);
 
         return true;
     }

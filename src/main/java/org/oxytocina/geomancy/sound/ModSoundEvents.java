@@ -45,6 +45,7 @@ public class ModSoundEvents {
     public static final SoundEvent CAST_SUCCESS_MEDIUM = register("cast_success_medium",new ExtraData().count(1).prefix("geomancy:casting/medium"));
     public static final SoundEvent CAST_SUCCESS_EXPENSIVE = register("cast_success_expensive",new ExtraData().count(1).prefix("geomancy:casting/large"));
 
+    // spellmaker ui
     public static final SoundEvent SPELLMAKER_INSERT_CRADLE = register("spellmaker_insert_cradle",new ExtraData().count(1).prefix("geomancy:spellmaker/insert_cradle"));
     public static final SoundEvent SPELLMAKER_REMOVE_CRADLE = register("spellmaker_remove_cradle",new ExtraData().count(1).prefix("geomancy:spellmaker/remove_cradle"));
     public static final SoundEvent SPELLMAKER_INSERT_COMPONENT = register("spellmaker_insert_component",new ExtraData().count(1).prefix("geomancy:spellmaker/insert_component"));

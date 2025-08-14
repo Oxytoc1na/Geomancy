@@ -14,6 +14,10 @@ import org.oxytocina.geomancy.progression.advancement.ClientAdvancements;
 
 public class AdvancementHelper {
 
+    public static void onAdvancementObtained(ServerPlayerEntity spe, Identifier id){
+
+    }
+
     public static boolean hasAdvancement(PlayerEntity player, Identifier advancementIdentifier){
         // TODO: Client Advancements
         if(player instanceof ClientPlayerEntity clientPlayer && player == MinecraftClient.getInstance().player) return ClientAdvancements.has(advancementIdentifier);

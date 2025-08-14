@@ -21,19 +21,20 @@
       },
       "show_title_separator": true,
       "text": "book.geomancy.guidebook.octangulite.spellcomponents.0.text",
-      "title": "title",
+      "title": "book.geomancy.guidebook.octangulite.spellcomponents.0.title",
       "use_markdown_in_title": false
     },
     {
-      "type": "modonomicon:text",
+      "type": "modonomicon:spotlight",
       "anchor": "",
       "condition": {
         "type": "modonomicon:none"
       },
-      "show_title_separator": true,
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.1.text",
-      "title": "",
-      "use_markdown_in_title": false
+      "item": {
+        "item": "geomancy:spellcomponent"
+      },
+      "text": "book.geomancy.guidebook.octangulite.spellcomponents.spellcomponent.text",
+      "title": ""
     },
     {
       "type": "geomancy:nbt_spotlight",
@@ -531,7 +532,15 @@
       "title": ""
     }
   ],
+  "parents": [
+    {
+      "draw_arrow": true,
+      "entry": "geomancy:octangulite/octangulite_intro",
+      "line_enabled": true,
+      "line_reversed": false
+    }
+  ],
   "show_when_any_parent_unlocked": false,
-  "x": -10,
-  "y": 1
+  "x": -11,
+  "y": -1
 }

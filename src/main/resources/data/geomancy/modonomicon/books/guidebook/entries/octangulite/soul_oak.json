@@ -2,6 +2,10 @@
   "background_u_index": 1,
   "background_v_index": 0,
   "category": "geomancy:octangulite",
+  "condition": {
+    "type": "modonomicon:advancement",
+    "advancement_id": "geomancy:main/get_soul_oak"
+  },
   "description": "book.geomancy.guidebook.octangulite.soul_oak.description",
   "hide_while_locked": true,
   "icon": {
@@ -42,6 +46,6 @@
     }
   ],
   "show_when_any_parent_unlocked": false,
-  "x": -10,
-  "y": -1
+  "x": -13,
+  "y": -3
 }

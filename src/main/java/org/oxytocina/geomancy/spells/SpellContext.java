@@ -52,12 +52,11 @@ public class SpellContext {
         amount*=soulCostMultiplier;
         if(!canAfford(amount)) { couldntAffordSomething = true; return false; }
 
-        availableSoul -= amount;
-
         if(caster instanceof PlayerEntity player){
             if(player.isCreative()) return true;
         }
 
+        availableSoul -= amount;
         return ManaUtil.tryConsumeMana(caster,amount);
     }
 

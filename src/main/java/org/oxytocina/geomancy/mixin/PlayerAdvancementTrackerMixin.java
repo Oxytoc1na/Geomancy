@@ -6,6 +6,8 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.oxytocina.geomancy.networking.packet.S2C.ClientAdvancementS2CPacket;
+import org.oxytocina.geomancy.progression.advancement.ModAdvancementCriterion;
+import org.oxytocina.geomancy.progression.advancement.ModCriteria;
 import org.oxytocina.geomancy.util.StellgeUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -22,5 +24,6 @@ public class PlayerAdvancementTrackerMixin {
     private void geomancy$advancementObtained(Advancement advancement, String criterionName, CallbackInfoReturnable<Boolean> cir) {
         ClientAdvancementS2CPacket.send(this.owner,advancement.getId());
         StellgeUtil.syncKnowledge(this.owner);
+        ModCriteria.ADVANCEMENT.trigger(this.owner,advancement.getId());
     }
 }

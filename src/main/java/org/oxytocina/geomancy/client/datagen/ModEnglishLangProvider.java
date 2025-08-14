@@ -36,6 +36,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         addShort("gb:sm","book.MODID.guidebook.smithing.");
         addShort("gb:oc","book.MODID.guidebook.octangulite.");
         addShort("gb:lr","book.MODID.guidebook.lore.");
+        addShort("gb:sc","book.MODID.guidebook.soulcasting.");
 
         add(KeyInputHandler.LANG_CATEGORY_GEOMANCY,"Geomancy");
         add(KeyInputHandler.LANG_OPEN_SKILLTREE,"Skills");
@@ -381,9 +382,13 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("block.MODID.lead_brick_wall"    , "Lead Brick Wall");
 
             addOres("axinite_ore", "Axinite Ore");
+            add("block.MODID.axinite_block", "Block of Axinite");
             addOres("orthoclase_ore", "Orthoclase Ore");
+            add("block.MODID.orthoclase_block", "Block of Orthoclase");
             addOres("tourmaline_ore", "Tourmaline Ore");
+            add("block.MODID.tourmaline_block", "Block of Tourmaline");
             addOres("peridot_ore", "Peridot Ore");
+            add("block.MODID.peridot_block", "Block of Peridot");
 
             add("block.MODID.soul_oak_log"                  , "Soul Oak Log");
             add("block.MODID.stripped_soul_oak_log"         , "Stripped Soul Oak Log");
@@ -594,8 +599,9 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
                 addGBEntryAndInfo(getS("gb:oc")+"spellcomponents","Spell Components");
                 add(getS("gb:oc")+"spellcomponents.description"  , "");
-                add(getS("gb:oc")+"spellcomponents.0.text"  , "");
-                add(getS("gb:oc")+"spellcomponents.1.text"  , "");
+                add(getS("gb:oc")+"spellcomponents.0.title"  , "Spell Components");
+                add(getS("gb:oc")+"spellcomponents.0.text"  , "These weird hexagonal doodads seem to be able to perform mathematical operations and affect the world, is used correctly.");
+                add(getS("gb:oc")+"spellcomponents.spellcomponent.text"  , "This seems to be the template for all of them.");
             }
 
             add(getS("gb:lr")+"name", "History");
@@ -923,8 +929,27 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                         """);
                 }
 
+                addGBEntryAndInfo(getS("gb:lr")+"stellge","The Stellge");
+                add(getS("gb:lr")+"stellge.description"  , "");
+
+                addGBEntryAndInfo(getS("gb:lr")+"dwarves","The Dwarves");
+                add(getS("gb:lr")+"dwarves.description"  , "");
             }
 
+            add(getS("gb:sc")+"name", "Soulcasting");
+            {
+                for(var cat : new String[]{"oc","sc"})
+                {
+                    addGBEntryAndInfo(getS("gb:"+cat)+"revelation","Revelation");
+                    add(getS("gb:"+cat)+"revelation.description"  , "");
+                    add(getS("gb:"+cat)+"revelation.info.text", "This type of wood is mesmerizing. Its color is inconsistent. I struggle to look away from it.");
+                    add(getS("gb:"+cat)+"revelation.soul_oak_planks.text", "Mesmerizing.");
+
+                    addGBEntryAndInfo(getS("gb:"+cat)+"spellmaker","Spellmaker");
+                    add(getS("gb:"+cat)+"spellmaker.description"  , "");
+                }
+
+            }
 
         }
 
