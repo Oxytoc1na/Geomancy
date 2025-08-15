@@ -3,6 +3,7 @@ package org.oxytocina.geomancy.util;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.PlayerAdvancementTracker;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
@@ -178,6 +179,11 @@ public class Toolbox {
     }
 
     public static GradientBuilder gradient(){return new GradientBuilder();}
+
+    public static void playUISound(SoundEvent event) {
+        if(MinecraftClient.getInstance()==null) return;
+        MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(event, 1.0F));
+    }
 
     public static class GradientBuilder{
         public ArrayList<KeyFrame> keyFrames = new ArrayList<>();

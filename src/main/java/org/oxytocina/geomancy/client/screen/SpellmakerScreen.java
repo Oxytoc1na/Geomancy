@@ -10,6 +10,7 @@ import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ClickableWidget;
+import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.texture.Sprite;
@@ -39,9 +40,7 @@ import org.oxytocina.geomancy.util.Toolbox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
 
@@ -58,7 +57,9 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
     public List<SpellmakerTextInput> textInputs;
 
     public SpellmakerButton[] sideConfigButtons = new SpellmakerButton[12];
-
+    public List<Widget> widgets = new ArrayList<>();
+    public HashMap<Widget,Integer> initialWidgetOffsets = new HashMap<>();
+    public SpellmakerButton[] selectNewCompScrollBtns = new SpellmakerButton[2];
 
     public SpellmakerScreen(SpellmakerScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
@@ -73,6 +74,7 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
         super.handledScreenTick();
         handler.tick();
         for(var t : textInputs) t.tick();
+        tick2();
     }
 
     private void ensureTextEditFinish(){
@@ -120,17 +122,19 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
     protected void init() {
         ensureTextEditFinish();
 
-        this.backgroundWidth = bgWidth + (true||handler.hasGrid()?200:0);
+        this.desiredBgWidth = bgWidth + (handler.hasGrid()?200:0);
+        this.backgroundWidth = (int)currentBgWidth;
         this.backgroundHeight = bgHeight;
+
+        super.init();
 
         //titleX = 0;
         titleY = -1000;
         //playerInventoryTitleX = 0;
         this.playerInventoryTitleY = -1000;//backgroundHeight - 94;
 
-        super.init();
-
         clearChildren();
+        widgets.clear();
 
         // grid properties
         if(!inspecting && handler.hasGrid()){
@@ -160,6 +164,7 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
             });
             textInputs.add(textInput);
             addDrawableChild(textInput);
+            widgets.add(textInput);
 
             // lib
             SpellmakerCheckbox libCheckBox = new SpellmakerCheckbox(this,infoPosX,infoPosY+20,20,20,Text.translatable("geomancy.spellmaker.grid.lib"),handler.currentGrid.library);
@@ -173,6 +178,7 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
                 return true;
             };
             addDrawableChild(libCheckBox);
+            widgets.add(libCheckBox);
         }
 
         // instantiate buttons
@@ -219,6 +225,7 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
                     },ModSoundEvents.SPELLMAKER_CHANGE_VAR);
                     typeBtn.active = conf.modes.size()>1;
                     addDrawableChild(typeBtn);
+                    widgets.add(typeBtn);
                     sideConfigButtons[i*2] = typeBtn;
 
                     // change variable
@@ -275,6 +282,7 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
                             conf.isInput()?component.function.inputs.size()>1
                             : conf.isOutput() && component.function.outputs.size() > 1;
                     addDrawableChild(varBtn);
+                    widgets.add(varBtn);
                     sideConfigButtons[i*2+1] = varBtn;
                 }
 
@@ -349,6 +357,7 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
                                 });
                                 textInputs.add(textInput);
                                 addDrawableChild(textInput);
+                                widgets.add(textInput);
                                 height+=25;
                                 break;
                         }
@@ -373,6 +382,7 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
 
                 },ModSoundEvents.SPELLMAKER_REMOVE_COMPONENT);
                 addDrawableChild(removeBtn);
+                widgets.add(removeBtn);
 
                 // rotate button
                 SpellmakerButton rotateBtn = new SpellmakerButton(this,infoPosX+35,infoPosY+SpellmakerScreenHandler.previewHeight+10,0,0,35,15,Text.translatable("geomancy.spellmaker.rotate"),button -> {
@@ -386,10 +396,69 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
                     ClientPlayNetworking.send(ModMessages.SPELLMAKER_TRY_ROTATE_COMPONENT, data);
                 },ModSoundEvents.SPELLMAKER_ROTATE);
                 addDrawableChild(rotateBtn);
+                widgets.add(rotateBtn);
             }
         }
 
+        // instantiate component scroll buttons
+        {
+            int bgPosX = (width-getBackgroundWidth())/2;
+            int bgPosY = (height-getBackgroundHeight())/2;
 
+            final int spellCompInvPosX = bgPosX+SpellmakerScreenHandler.NEW_COMPONENTS_X + SpellmakerScreenHandler.NEW_COMPONENTS_WIDTH*18;
+            final int spellCompInvPosY = bgPosY+SpellmakerScreenHandler.NEW_COMPONENTS_Y;
+            final int endX = spellCompInvPosX;
+
+            for (int i = 0; i < 2; i++) {
+
+                final int endY = spellCompInvPosY + i *18;
+                String btnText = i==0?"/\\":"\\/";
+                final int scroll = i==0?-1:1;
+                SpellmakerButton scrollBtn = new SpellmakerButton(this,endX,endY,0,0,16,16,Text.literal(btnText), button -> {
+                    handler.changeComponentViewScroll(scroll);
+                    refreshScrollButtons();
+                },ModSoundEvents.SPELLMAKER_ROTATE);
+                scrollBtn.visible = handler.componentScrollVisible();
+                scrollBtn.active = handler.componentScrollActive(i);
+                addDrawableChild(scrollBtn);
+                widgets.add(scrollBtn);
+                selectNewCompScrollBtns[i] = scrollBtn;
+            }
+        }
+    }
+
+    public int desiredBgWidth = bgWidth;
+    public float currentBgWidth = bgWidth;
+    public int shiftHoldOver = 0;
+    void tick2(){
+        int prevW = (int) currentBgWidth;
+        currentBgWidth = MathHelper.lerp(0.5f,currentBgWidth,desiredBgWidth);
+        int newW = (int) currentBgWidth;
+
+        if(newW!=prevW){
+
+            int shift = newW-prevW;
+
+            // wait for a two pixel shift for widgets since x = width/2
+            shiftHoldOver += shift;
+            if(Math.abs(shiftHoldOver) > 1)
+            {
+                int widgetShift = shiftHoldOver/2;
+                shiftHoldOver-=widgetShift*2;
+
+                // shift background
+                this.backgroundWidth = (int) currentBgWidth;
+                super.init();
+
+                // shift widgets
+                for(var w : widgets)
+                {
+                    w.setX(w.getX()-widgetShift);
+                }
+            }
+
+
+        }
     }
 
     @Override
@@ -474,5 +543,11 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
             if(sideConfigButtonHovered(i)) return true;
         }
         return false;
+    }
+
+    public void refreshScrollButtons() {
+        for (int j = 0; j < 2; j++) {
+            selectNewCompScrollBtns[j].active = handler.componentScrollActive(j);
+        }
     }
 }

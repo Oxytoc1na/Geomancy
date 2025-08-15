@@ -31,8 +31,10 @@ import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.SpellComponentStoringItem;
 import org.oxytocina.geomancy.items.SpellStoringItem;
 import org.oxytocina.geomancy.spells.SpellBlock;
+import org.oxytocina.geomancy.spells.SpellBlocks;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class SpellmakerBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory, ImplementedInventory {
 
@@ -120,9 +122,15 @@ public class SpellmakerBlockEntity extends BlockEntity implements ExtendedScreen
         initialized=true;
     }
 
-    public Inventory getComponentItems(Inventory inventory){
-        var comps = getComponentAmountsIn(inventory);
-        DefaultedList<ItemStack> stacksComposed = DefaultedList.ofSize(SpellmakerScreenHandler.NEW_COMPONENTS_SLOT_COUNT,ItemStack.EMPTY);
+    public Inventory getCreativeComponentItems(){
+        LinkedHashMap<SpellBlock,Integer> comps = new LinkedHashMap<>();
+        for(var comp : SpellBlocks.functions.values())
+            comps.put(comp,1);
+        return componentMapToInventory(comps);
+    }
+
+    public Inventory componentMapToInventory(LinkedHashMap<SpellBlock,Integer> comps){
+        DefaultedList<ItemStack> stacksComposed = DefaultedList.ofSize(comps.size(),ItemStack.EMPTY);
         int i = 0;
         for(var block : comps.keySet())
         {
@@ -134,8 +142,13 @@ public class SpellmakerBlockEntity extends BlockEntity implements ExtendedScreen
         return ImplementedInventory.of(stacksComposed);
     }
 
-    public static HashMap<SpellBlock, Integer> getComponentAmountsIn(Inventory inv){
-        HashMap<SpellBlock, Integer> res = new HashMap<>();
+    public Inventory getComponentItems(Inventory inventory){
+        var comps = getComponentAmountsIn(inventory);
+        return componentMapToInventory(comps);
+    }
+
+    public static LinkedHashMap<SpellBlock, Integer> getComponentAmountsIn(Inventory inv){
+        LinkedHashMap<SpellBlock, Integer> res = new LinkedHashMap<>();
 
         for (int i = 0; i < inv.size(); i++) {
             ItemStack contender = inv.getStack(i);
@@ -182,6 +195,7 @@ public class SpellmakerBlockEntity extends BlockEntity implements ExtendedScreen
                 {
                     int taken = Math.min(count,contender.getCount());
                     contender.decrement(taken);
+                    inv.markDirty();
                     count -= taken;
                     if(count <= 0) return 0;
                 }
@@ -190,7 +204,10 @@ public class SpellmakerBlockEntity extends BlockEntity implements ExtendedScreen
             // recursively check
             if(contender.getItem() == ModItems.COMPONENT_POUCH){
                 var inv2 = ModItems.COMPONENT_POUCH.getInventory(contender);
+                int prevCount = count;
                 count = removeComponentFrom(func,count,inv2);
+                if(prevCount!=count)
+                    ModItems.COMPONENT_POUCH.markDirty(contender);
                 if(count <= 0) return count;
             }
         }

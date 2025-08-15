@@ -44,8 +44,12 @@ public class SpellmakerTryAddComponentC2SPacket {
                             SpellStoringItem.writeGrid(storageStack,grid);
 
                             // remove ingredient from player
-                            SpellmakerBlockEntity.removeComponentFrom(function,1,player.getInventory());
-                            player.getInventory().markDirty();
+                            if(!player.isCreative())
+                            {
+                                SpellmakerBlockEntity.removeComponentFrom(function,1,player.getInventory());
+                                player.getInventory().markDirty();
+                            }
+
 
                             // send update package to client
                             PacketByteBuf data = PacketByteBufs.create();
