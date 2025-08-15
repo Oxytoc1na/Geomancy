@@ -97,8 +97,8 @@ public class SpellGrid {
 
         if(context.soulConsumed > 0){
             ManaUtil.syncMana((PlayerEntity) casterEntity);
-            SpellBlocks.playCastSound(context);
         }
+        SpellBlocks.playCastSound(context);
 
     }
 

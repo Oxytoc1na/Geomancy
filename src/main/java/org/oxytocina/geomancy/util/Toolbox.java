@@ -2,6 +2,8 @@ package org.oxytocina.geomancy.util;
 
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.PlayerAdvancementTracker;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
@@ -217,6 +219,10 @@ public class Toolbox {
     }
 
     public static void playSound(SoundEvent event, World world, BlockPos pos, SoundCategory cat, float volume, float pitch){
+        if(world instanceof ClientWorld){
+            world.playSound(MinecraftClient.getInstance().player, pos,event,cat,volume,pitch);
+            return;
+        }
         world.playSound(null,pos,event,cat,volume,pitch);
     }
 

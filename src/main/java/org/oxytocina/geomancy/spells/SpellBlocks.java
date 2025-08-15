@@ -1318,9 +1318,9 @@ public class SpellBlocks {
     public static void playCastSound(SpellContext ctx){
         float fraction = ctx.soulConsumed / ctx.getCasterMaxSoul();
         SoundEvent event = null;
-        if(fraction > 80 && ctx.soulConsumed > 200)
+        if(fraction > 0.7f && ctx.soulConsumed > 200)
             event = ModSoundEvents.CAST_SUCCESS_EXPENSIVE;
-        else if(fraction > 30 && ctx.soulConsumed > 50)
+        else if(fraction > 0.2f && ctx.soulConsumed > 50)
             event = ModSoundEvents.CAST_SUCCESS_MEDIUM;
         else
             event = ModSoundEvents.CAST_SUCCESS_CHEAP;

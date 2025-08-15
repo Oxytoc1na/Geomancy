@@ -52,8 +52,13 @@ public class SpellContext {
         amount*=soulCostMultiplier;
         if(!canAfford(amount)) { couldntAffordSomething = true; return false; }
 
+        soulConsumed += amount;
+
         if(caster instanceof PlayerEntity player){
-            if(player.isCreative()) return true;
+            if(player.isCreative())
+            {
+                return true;
+            }
         }
 
         availableSoul -= amount;
@@ -65,6 +70,7 @@ public class SpellContext {
 
         if(caster instanceof PlayerEntity player){
             availableSoul = ManaUtil.getMana(player);
+            if(player.isCreative()) return true;
             return availableSoul>=amount;
         }
 

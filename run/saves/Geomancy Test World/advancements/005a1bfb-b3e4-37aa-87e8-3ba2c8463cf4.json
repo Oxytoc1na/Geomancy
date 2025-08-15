@@ -83,5 +83,47 @@
     },
     "done": true
   },
+  "geomancy:recipes/misc/jewelry_octangulite_ring": {
+    "criteria": {
+      "has_ingredient": "2025-08-14 15:52:39 +0200"
+    },
+    "done": true
+  },
+  "geomancy:main/get_spellmaker": {
+    "criteria": {
+      "got_spellmaker": "2025-08-14 15:52:39 +0200"
+    },
+    "done": true
+  },
+  "geomancy:main/get_octangulite": {
+    "criteria": {
+      "got_octangulite": "2025-08-14 15:52:39 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/raw_octangulite_compress_to_raw_octangulite_block": {
+    "criteria": {
+      "has_raw_octangulite": "2025-08-14 15:52:39 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/octangulite_ingot_from_smelting_raw_octangulite": {
+    "criteria": {
+      "has_raw_octangulite": "2025-08-14 15:52:39 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/octangulite_ingot_from_blasting_raw_octangulite": {
+    "criteria": {
+      "has_raw_octangulite": "2025-08-14 15:52:39 +0200"
+    },
+    "done": true
+  },
+  "geomancy:milestones/milestone_souls": {
+    "criteria": {
+      "geomancy:main/get_spellmaker": "2025-08-14 15:52:39 +0200"
+    },
+    "done": false
+  },
   "DataVersion": 3465
 }
