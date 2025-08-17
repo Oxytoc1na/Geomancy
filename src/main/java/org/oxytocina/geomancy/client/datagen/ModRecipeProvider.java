@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.predicate.item.ItemPredicate;
+import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
@@ -60,6 +61,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .offerTo(exporter, "guidebook");
 
         // shaped recipes
+        // iron hammer
         ShapedRecipeJsonBuilder.create(
                         RecipeCategory.TOOLS, IRON_HAMMER, 1)
                 .input('#', Items.IRON_INGOT)
@@ -69,15 +71,8 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .pattern(" s ")
                 .criterion(hasItem(Items.IRON_INGOT), conditionsFromItem(Items.IRON_INGOT))
                 .offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(
-                        RecipeCategory.TOOLS, ModBlocks.SMITHERY, 1)
-                .input('i', Blocks.IRON_BLOCK)
-                .input('g', Items.GOLD_INGOT)
-                .pattern("gg")
-                .pattern("ii")
-                .criterion("has_ingredient", conditionsFromItemPredicates(ItemPredicate.Builder.create().items(new ItemConvertible[]{
-                        Items.IRON_INGOT,Blocks.IRON_BLOCK,Items.GOLD_INGOT}).build()))
-                .offerTo(exporter);
+        // component pouch
+        AddSurrounded4(SPELLCOMPONENT,Items.LEATHER,COMPONENT_POUCH,1,RecipeCategory.TOOLS);
 
 
         // smelting recipes
@@ -541,6 +536,18 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 }
             }
 
+            // spellmaker
+            AddShapedSmitheryRecipe(new String[]{
+                            "ooo",
+                            "trt",
+                            "ttt"}
+                    ,new SPatKey[]{
+                            new SPatKey("o",SmithingIngredient.ofItems(1,1,1,OCTANGULITE_INGOT)),
+                            new SPatKey("r",SmithingIngredient.ofItems(1,1,1,Blocks.REDSTONE_BLOCK)),
+                            new SPatKey("t",SmithingIngredient.ofItems(1,1,1,TITANIUM_INGOT)),
+                    },
+                    SPELLMAKER,1,100,50,conditionsFromItem(SPELLMAKER),Geomancy.locate("main/get_spellmaker"));
+
             // spellglove
             AddShapedSmitheryRecipe(new String[]{
                             "ooo",
@@ -561,7 +568,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
             ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, PLUMBOMETER, 1).input('#', LEAD_INGOT)
                     .pattern("#")
                     .pattern("#").criterion("poisoned", ModAdvancementCriterion.conditionsFromAdvancement(Geomancy.locate("main/simple_lead_poisoned"))).offerTo(exporter);
-            AddSurrounded(Items.APPLE,LEAD_INGOT,LEAD_APPLE,1);
+            AddSurrounded(Items.APPLE,LEAD_INGOT,LEAD_APPLE,1,RecipeCategory.TOOLS);
 
             AddToolBatch(TITANIUM_INGOT,TITANIUM_SWORD,TITANIUM_SHOVEL,TITANIUM_PICKAXE,TITANIUM_AXE,TITANIUM_HOE);
             AddToolBatch(MITHRIL_INGOT,MITHRIL_SWORD,MITHRIL_SHOVEL,MITHRIL_PICKAXE,MITHRIL_AXE,MITHRIL_HOE);
@@ -692,13 +699,21 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
     }
 
-    private void AddSurrounded(Item base, Item surrounded, Item output, int outputCount) {
-        ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, output, outputCount)
+    private void AddSurrounded(Item base, Item surrounded, Item output, int outputCount, RecipeCategory cat) {
+        ShapedRecipeJsonBuilder.create(cat, output, outputCount)
                 .input('s', surrounded)
                 .input('#', base)
                 .pattern("sss")
                 .pattern("s#s")
                 .pattern("sss").criterion(hasItem(surrounded), conditionsFromItem(surrounded)).offerTo(exporter);
+    }
+    private void AddSurrounded4(Item base, Item surrounded, Item output, int outputCount, RecipeCategory cat) {
+        ShapedRecipeJsonBuilder.create(cat, output, outputCount)
+                .input('s', surrounded)
+                .input('#', base)
+                .pattern(" s ")
+                .pattern("s#s")
+                .pattern(" s ").criterion(hasItem(surrounded), conditionsFromItem(surrounded)).offerTo(exporter);
     }
 
     private void AddSmeltAndBlastRecipe(List<ItemConvertible> input, ItemConvertible output, float xp, int smeltTime, int blastTime){

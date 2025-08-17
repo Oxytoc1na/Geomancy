@@ -34,6 +34,7 @@ import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.blocks.blockEntities.SmitheryBlockEntity;
 import org.oxytocina.geomancy.blocks.blockEntities.SpellmakerBlockEntity;
+import org.oxytocina.geomancy.client.rendering.ModColorizationHandler;
 import org.oxytocina.geomancy.client.screen.SpellmakerScreen;
 import org.oxytocina.geomancy.client.screen.SpellmakerScreenHandler;
 import org.oxytocina.geomancy.items.SpellComponentStoringItem;
@@ -66,53 +67,157 @@ public class SpellmakerBlockEntityRenderer<T extends SpellmakerBlockEntity> impl
         //                .cuboid(0, 0, 0, 3.0F, 9.0F, 3.0F, new Dilation(0.0F))
         //        , ModelTransform.pivot(0.0F, 0, 0.0F));
 
-        // top
-        var builder = ModelPartBuilder.create()
-                .uv(32-16, 0);
-        builder.cuboidData.add(
-                new ModelCuboidData((String)null,
-                        (float)builder.textureX,
-                        (float)builder.textureY,
-                        -8,8-0.01f,-8,
-                        16,0,16,
-                        new Dilation(0.0F),
-                        builder.mirror, 1.0F, 1.0F,
-                        EnumSet.of(Direction.DOWN)));
-        ModelPartData top = modelPartData.addChild("top",builder,
-                ModelTransform.pivot(0F, 0, 0F));
+        // upper
+        {
+            final int height = 4;
+            final float widthM = 1;
 
-        // bottom
-        builder = ModelPartBuilder.create()
-                .uv(32-16, 0);
-        builder.cuboidData.add(
-                new ModelCuboidData((String)null,
-                        (float)builder.textureX,
-                        (float)builder.textureY,
-                        -8,24+0.01f,-8,
-                        16,0,16,
-                        new Dilation(0.0F),
-                        builder.mirror, 1.0F, 1.0F,
-                        EnumSet.of(Direction.UP)));
-        ModelPartData bottom = modelPartData.addChild("bottom",builder,
-                ModelTransform.pivot(0F, 0, 0F));
-
-        for (int i = 0; i < 6; i++) {
-            builder = ModelPartBuilder.create()
-                    .uv(0, 0);
+            // top
+            var builder = ModelPartBuilder.create()
+                    .uv(32-16, 0);
             builder.cuboidData.add(
                     new ModelCuboidData((String)null,
                             (float)builder.textureX,
                             (float)builder.textureY,
-                            6.9f-2,8,-4,
-                            2,16,8,
+                            -8,8-0.05f,-8,
+                            16,0,16,
                             new Dilation(0.0F),
                             builder.mirror, 1.0F, 1.0F,
-                            EnumSet.of(Direction.EAST,Direction.UP,Direction.DOWN)));
-            ModelPartData driver = modelPartData.addChild("driver"+i,builder,
+                            EnumSet.of(Direction.DOWN)));
+            ModelPartData top = modelPartData.addChild("upper_top",builder,
                     ModelTransform.pivot(0F, 0, 0F));
 
+            // bottom
+            builder = ModelPartBuilder.create()
+                    .uv(32-16, 0);
+            builder.cuboidData.add(
+                    new ModelCuboidData((String)null,
+                            (float)builder.textureX,
+                            (float)builder.textureY,
+                            -8,8+0.05f+height,-8,
+                            16,0,16,
+                            new Dilation(0.0F),
+                            builder.mirror, 1.0F, 1.0F,
+                            EnumSet.of(Direction.UP)));
+            ModelPartData bottom = modelPartData.addChild("upper_bottom",builder,
+                    ModelTransform.pivot(0F, 0, 0F));
+
+            // walls
+            for (int i = 0; i < 6; i++) {
+                builder = ModelPartBuilder.create()
+                        .uv(0, 16);
+                builder.cuboidData.add(
+                        new ModelCuboidData((String)null,
+                                (float)builder.textureX,
+                                (float)builder.textureY,
+                                6.9f-2,8,-4,
+                                2,height/2f,8,
+                                new Dilation(0.0F),
+                                builder.mirror, 1.0F, 1.0F,
+                                EnumSet.of(Direction.EAST,Direction.DOWN)));
+                ModelPartData wall = modelPartData.addChild("upper_wall"+i,builder,
+                        ModelTransform.pivot(0F, 0, 0F));
+            }
+
+            for (int i = 0; i < 6; i++) {
+                builder = ModelPartBuilder.create()
+                        .uv(0, 0);
+                builder.cuboidData.add(
+                        new ModelCuboidData((String)null,
+                                (float)builder.textureX,
+                                (float)builder.textureY,
+                                6.9f-2,8+height/2f,-4,
+                                2,height/2f,8,
+                                new Dilation(0.0F),
+                                builder.mirror, 1.0F, 1.0F,
+                                EnumSet.of(Direction.EAST,Direction.UP)));
+                ModelPartData wall = modelPartData.addChild("upper_wall_oct"+i,builder,
+                        ModelTransform.pivot(0F, 0, 0F));
+            }
         }
-        return TexturedModelData.of(modelData, 128, 128);
+
+        // middle
+        {
+            final int height = 16-4*2;
+            final int width = 7;
+            final int y = 4;
+            final int wallDepth = 0;
+
+            ModelPartBuilder builder = null;
+
+            // walls
+            for (int i = 0; i < 6; i++) {
+                builder = ModelPartBuilder.create()
+                        .uv(0, 48);
+                builder.cuboidData.add(
+                        new ModelCuboidData((String)null,
+                                (float)builder.textureX,
+                                (float)builder.textureY,
+                                (6.9f-wallDepth)*(width/8f),y+8,-width/2f,
+                                wallDepth,height,width,
+                                new Dilation(0.0F),
+                                builder.mirror, 1.0F, 1.0F,
+                                EnumSet.of(Direction.EAST)));
+                ModelPartData wall = modelPartData.addChild("middle_wall"+i,builder,
+                        ModelTransform.pivot(0F, 0, 0F));
+            }
+        }
+
+        // lower
+        {
+            final int height = 4;
+            final float widthM = 1;
+            final int y = 16-height;
+
+            // top
+            var builder = ModelPartBuilder.create()
+                    .uv(32-16, 16);
+            builder.cuboidData.add(
+                    new ModelCuboidData((String)null,
+                            (float)builder.textureX,
+                            (float)builder.textureY,
+                            -8,y+8+-0.05f,-8,
+                            16,0,16,
+                            new Dilation(0.0F),
+                            builder.mirror, 1.0F, 1.0F,
+                            EnumSet.of(Direction.DOWN)));
+            ModelPartData top = modelPartData.addChild("lower_top",builder,
+                    ModelTransform.pivot(0F, 0, 0F));
+
+            // bottom
+            builder = ModelPartBuilder.create()
+                    .uv(32-16, 16);
+            builder.cuboidData.add(
+                    new ModelCuboidData((String)null,
+                            (float)builder.textureX,
+                            (float)builder.textureY,
+                            -8,y+8+0.05f+height,-8,
+                            16,0,16,
+                            new Dilation(0.0F),
+                            builder.mirror, 1.0F, 1.0F,
+                            EnumSet.of(Direction.UP)));
+            ModelPartData bottom = modelPartData.addChild("lower_bottom",builder,
+                    ModelTransform.pivot(0F, 0, 0F));
+
+            // walls
+            for (int i = 0; i < 6; i++) {
+                builder = ModelPartBuilder.create()
+                        .uv(0, 32);
+                builder.cuboidData.add(
+                        new ModelCuboidData((String)null,
+                                (float)builder.textureX,
+                                (float)builder.textureY,
+                                6.9f-2,y+8,-4,
+                                2,height,8,
+                                new Dilation(0.0F),
+                                builder.mirror, 1.0F, 1.0F,
+                                EnumSet.of(Direction.EAST,Direction.UP,Direction.DOWN)));
+                ModelPartData wall = modelPartData.addChild("lower_wall"+i,builder,
+                        ModelTransform.pivot(0F, 0, 0F));
+            }
+        }
+
+        return TexturedModelData.of(modelData, 64, 64);
     }
 
     @Override
@@ -128,12 +233,35 @@ public class SpellmakerBlockEntityRenderer<T extends SpellmakerBlockEntity> impl
         matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-f));
         matrixStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(180));
 
+        // rotate walls
         for (int i = 0; i < 6; i++) {
-            var part = root.getChild("driver"+i);
+            var part = root.getChild("upper_wall"+i);
+            part.yaw = (float)Math.PI*2*i/6f + (float)Math.PI*0.5f;
+        }
+        for (int i = 0; i < 6; i++) {
+            var part = root.getChild("lower_wall"+i);
+            part.yaw = (float)Math.PI*2*i/6f + (float)Math.PI*0.5f;
+        }
+        for (int i = 0; i < 6; i++) {
+            var part = root.getChild("middle_wall"+i);
             part.yaw = (float)Math.PI*2*i/6f + (float)Math.PI*0.5f;
         }
 
+        // render octangulite models
         VertexConsumer vertexConsumer = SPRITE_IDENTIFIER.getVertexConsumer(vertexConsumers, RenderLayer::getEntityCutout);
+
+        for (int i = 0; i < 6; i++) {
+            var part = root.getChild("upper_wall_oct"+i);
+            part.yaw = (float)Math.PI*2*i/6f + (float)Math.PI*0.5f;
+            part.visible=true;
+            var colVec = Toolbox.colorIntToVec(ModColorizationHandler.octanguliteItemBarNoise(1));
+            part.render(matrixStack,vertexConsumer,light,overlay,colVec.x,colVec.y,colVec.z,1);
+            part.visible=false;
+        }
+        var part = root.getChild("upper_top");
+
+
+
         root.render(matrixStack, vertexConsumer, light, overlay);
 
         matrixStack.pop();

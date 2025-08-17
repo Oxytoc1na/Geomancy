@@ -545,5 +545,23 @@
     },
     "done": true
   },
+  "geomancy:recipes/misc/jewelry_octangulite_ring": {
+    "criteria": {
+      "has_ingredient": "2025-08-15 08:53:52 +0200"
+    },
+    "done": true
+  },
+  "geomancy:main/get_spellmaker": {
+    "criteria": {
+      "got_spellmaker": "2025-08-15 08:53:52 +0200"
+    },
+    "done": true
+  },
+  "geomancy:milestones/milestone_souls": {
+    "criteria": {
+      "geomancy:main/get_spellmaker": "2025-08-15 08:53:52 +0200"
+    },
+    "done": false
+  },
   "DataVersion": 3465
 }
