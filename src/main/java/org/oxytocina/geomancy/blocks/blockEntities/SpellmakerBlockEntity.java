@@ -280,4 +280,5 @@ public class SpellmakerBlockEntity extends BlockEntity implements ExtendedScreen
     public ItemStack getOutput(){
         return getStack(SpellmakerBlockEntity.OUTPUT_SLOT);
     }
+    public boolean hasOutput() {return !getOutput().isEmpty();}
 }

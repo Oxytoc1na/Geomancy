@@ -2,18 +2,13 @@ package org.oxytocina.geomancy.client.screen;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.option.*;
-import net.minecraft.client.gui.screen.pack.PackScreen;
 import net.minecraft.client.gui.widget.*;
-import net.minecraft.client.option.GameOptions;
 import net.minecraft.network.packet.c2s.play.UpdateDifficultyC2SPacket;
-import net.minecraft.network.packet.c2s.play.UpdateDifficultyLockC2SPacket;
-import net.minecraft.resource.ResourcePackManager;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 import net.minecraft.world.Difficulty;
+import org.oxytocina.geomancy.client.screen.widgets.FloatSlider;
 import org.oxytocina.geomancy.util.GeomancyConfig;
 
 import java.util.function.Supplier;
@@ -57,9 +52,14 @@ public class ConfigScreen extends Screen {
                         (button, toggle) ->
                                 GeomancyConfig.CONFIG.epilepsyMode.setValue(toggle)));
 
+        // spellmaker ui speed
+        var slider = FloatSlider.create(0,0,150,20,Text.literal("AAA"),
+                GeomancyConfig.CONFIG.spellmakerUiSpeed.value(),0.1f,1f, GeomancyConfig.CONFIG.spellmakerUiSpeed::setValue);
+        adder.add(slider);
+
         //adder.add(EmptyWidget.ofHeight(26), 2);
         //adder.add(this.createButton(ACCESSIBILITY_TEXT, () -> new AccessibilityOptionsScreen(this, this.settings)));
-        adder.add(this.createButton(CREDITS_AND_ATTRIBUTION_TEXT, () -> new CreditsAndAttributionScreen(this)));
+        adder.add(this.createButton(CREDITS_AND_ATTRIBUTION_TEXT, () -> new SimpleGeomancyCreditsScreen(this)));
         adder.add(ButtonWidget.builder(ScreenTexts.DONE, button -> this.client.setScreen(this.parent)).width(200).build(), 2, adder.copyPositioner().marginTop(6));
         gridWidget.refreshPositions();
         SimplePositioningWidget.setPos(gridWidget, 0, this.height / 6 - 12, this.width, this.height, 0.5F, 0.0F);

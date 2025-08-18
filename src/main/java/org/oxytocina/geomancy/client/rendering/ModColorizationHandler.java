@@ -350,10 +350,14 @@ public class ModColorizationHandler {
     }
 
     public static int octanguliteItemBarNoise(float progress){
+        return octanguliteItemBarNoise(progress,1);
+    }
+
+    public static int octanguliteItemBarNoise(float progress, float tickScale){
         float baseX = 0, baseY = 0, baseZ = 0;
         float zoom = 0.008f;
 
-        baseX = GeomancyClient.tick;
+        baseX = GeomancyClient.tick * tickScale;
 
         float x = zoom*baseX * (1+0.3f);
         float y = zoom*baseY * (1+0.3f);
@@ -380,6 +384,7 @@ public class ModColorizationHandler {
         );
 
     }
+
 
     private static int tourmalineNoise(BlockPos pos, int tintIndex, float zoom){
         float x = zoom*(pos.getX() * (1+tintIndex*0.3f) + tintIndex*16);

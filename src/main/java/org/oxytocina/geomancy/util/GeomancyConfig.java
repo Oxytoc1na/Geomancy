@@ -25,4 +25,9 @@ public class GeomancyConfig extends ReflectiveConfig {
     @Comment("if set to true, removes flashy effects like rainbow rarity color cycling")
     @SerializedName("epilepsy_mode")
     public final TrackedValue<Boolean> epilepsyMode = this.value(false);
+
+    @Comment("changes how quickly the spellmaker ui moves")
+    @Comment("valid range: 0.1-1")
+    @SerializedName("spellmaker_ui_speed")
+    public final TrackedValue<Float> spellmakerUiSpeed = this.value(0.5f);
 }

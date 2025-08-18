@@ -1,0 +1,63 @@
+[
+  {
+    "section": "Geomancy",
+    "disciplines": [
+      {
+        "discipline": "Design",
+        "titles": [
+          {
+            "title": "Creative Leads",
+            "names": [
+              "Oxytocina",
+              "Herzogin Maxi"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "Programming",
+        "titles": [
+          {
+            "title": "",
+            "names": [
+              "Oxytocina"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "Visual Artists",
+        "titles": [
+          {
+            "title": "",
+            "names": [
+              "Oxytocina"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "Audio",
+        "titles": [
+          {
+            "title": "Sound Designers",
+            "names": [
+              "Oxytocina"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "Quality Assessment",
+        "titles": [
+          {
+            "title": "Playtesters",
+            "names": [
+              "Oxytocina"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -432,7 +432,7 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
     public int shiftHoldOver = 0;
     void tick2(){
         int prevW = (int) currentBgWidth;
-        currentBgWidth = MathHelper.lerp(0.5f,currentBgWidth,desiredBgWidth);
+        currentBgWidth = MathHelper.lerp(Toolbox.clampF(Geomancy.CONFIG.spellmakerUiSpeed.value(),0.1f,1),currentBgWidth,desiredBgWidth);
         int newW = (int) currentBgWidth;
 
         if(newW!=prevW){

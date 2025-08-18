@@ -110,11 +110,11 @@ public class SpellmakerBlockEntityRenderer<T extends SpellmakerBlockEntity> impl
                         new ModelCuboidData((String)null,
                                 (float)builder.textureX,
                                 (float)builder.textureY,
-                                6.9f-2,8,-4,
+                                6.9f-2,8+height/2f,-4,
                                 2,height/2f,8,
                                 new Dilation(0.0F),
                                 builder.mirror, 1.0F, 1.0F,
-                                EnumSet.of(Direction.EAST,Direction.DOWN)));
+                                EnumSet.of(Direction.EAST,Direction.UP)));
                 ModelPartData wall = modelPartData.addChild("upper_wall"+i,builder,
                         ModelTransform.pivot(0F, 0, 0F));
             }
@@ -126,11 +126,11 @@ public class SpellmakerBlockEntityRenderer<T extends SpellmakerBlockEntity> impl
                         new ModelCuboidData((String)null,
                                 (float)builder.textureX,
                                 (float)builder.textureY,
-                                6.9f-2,8+height/2f,-4,
+                                6.9f-2,8,-4,
                                 2,height/2f,8,
                                 new Dilation(0.0F),
                                 builder.mirror, 1.0F, 1.0F,
-                                EnumSet.of(Direction.EAST,Direction.UP)));
+                                EnumSet.of(Direction.EAST,Direction.DOWN)));
                 ModelPartData wall = modelPartData.addChild("upper_wall_oct"+i,builder,
                         ModelTransform.pivot(0F, 0, 0F));
             }
@@ -249,16 +249,19 @@ public class SpellmakerBlockEntityRenderer<T extends SpellmakerBlockEntity> impl
 
         // render octangulite models
         VertexConsumer vertexConsumer = SPRITE_IDENTIFIER.getVertexConsumer(vertexConsumers, RenderLayer::getEntityCutout);
+        var colVec = Toolbox.colorIntToVec(ModColorizationHandler.octanguliteItemBarNoise(entity.hasOutput()?1:0,0.5f));
 
         for (int i = 0; i < 6; i++) {
             var part = root.getChild("upper_wall_oct"+i);
             part.yaw = (float)Math.PI*2*i/6f + (float)Math.PI*0.5f;
             part.visible=true;
-            var colVec = Toolbox.colorIntToVec(ModColorizationHandler.octanguliteItemBarNoise(1));
             part.render(matrixStack,vertexConsumer,light,overlay,colVec.x,colVec.y,colVec.z,1);
             part.visible=false;
         }
         var part = root.getChild("upper_top");
+        part.visible=true;
+        part.render(matrixStack,vertexConsumer,light,overlay,colVec.x,colVec.y,colVec.z,1);
+        part.visible=false;
 
 
 
