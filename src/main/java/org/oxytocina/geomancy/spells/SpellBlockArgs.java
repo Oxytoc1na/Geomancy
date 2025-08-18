@@ -15,6 +15,10 @@ public class SpellBlockArgs {
         vars = new HashMap<>();
     }
 
+    public static SpellBlockArgs empty(){
+        return new SpellBlockArgs();
+    }
+
     public SpellBlockArgs(HashMap<String,SpellSignal> vars){
         this.vars=vars;
     }

@@ -3,18 +3,6 @@
     "section": "Geomancy",
     "disciplines": [
       {
-        "discipline": "Design",
-        "titles": [
-          {
-            "title": "Creative Leads",
-            "names": [
-              "Oxytocina",
-              "Herzogin Maxi"
-            ]
-          }
-        ]
-      },
-      {
         "discipline": "Programming",
         "titles": [
           {
@@ -26,7 +14,7 @@
         ]
       },
       {
-        "discipline": "Visual Artists",
+        "discipline": "Artists",
         "titles": [
           {
             "title": "",
@@ -37,10 +25,10 @@
         ]
       },
       {
-        "discipline": "Audio",
+        "discipline": "QA",
         "titles": [
           {
-            "title": "Sound Designers",
+            "title": "Playtesters",
             "names": [
               "Oxytocina"
             ]
@@ -48,12 +36,39 @@
         ]
       },
       {
-        "discipline": "Quality Assessment",
+        "discipline": "Freesound.org",
         "titles": [
           {
-            "title": "Playtesters",
+            "title": "",
             "names": [
-              "Oxytocina"
+              "JalynCatbtg",
+              "LiamG_SFX",
+              "Heshl",
+              "RescopicSound"
+            ]
+          }
+        ]
+      },
+      {
+        "discipline": "Special thanks",
+        "titles": [
+          {
+            "title": "Inspiration",
+            "names": [
+              "Spectrum",
+              "Thaumcraft",
+              "Psi",
+              "Hexcasting"
+            ]
+          },
+          {
+            "title": "Dependencies",
+            "names": [
+              "terrablender",
+              "modonomicon",
+              "trinkets",
+              "hugestructureblocks",
+              "additional entity attributes"
             ]
           }
         ]

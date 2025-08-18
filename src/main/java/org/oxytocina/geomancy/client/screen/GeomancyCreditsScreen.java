@@ -178,7 +178,6 @@ public class GeomancyCreditsScreen extends Screen {
             this.addText(Text.literal(string).formatted(Formatting.YELLOW), true);
             this.addText(SEPARATOR_LINE, true);
             this.addEmptyLine();
-            this.addEmptyLine();
 
             for(JsonElement jsonElement2 : jsonObject.getAsJsonArray("disciplines")) {
                 JsonObject jsonObject2 = jsonElement2.getAsJsonObject();
@@ -186,21 +185,20 @@ public class GeomancyCreditsScreen extends Screen {
                 if (StringUtils.isNotEmpty(string2)) {
                     this.addText(Text.literal(string2).formatted(Formatting.YELLOW), true);
                     this.addEmptyLine();
-                    this.addEmptyLine();
                 }
 
                 for(JsonElement jsonElement3 : jsonObject2.getAsJsonArray("titles")) {
                     JsonObject jsonObject3 = jsonElement3.getAsJsonObject();
                     String string3 = jsonObject3.get("title").getAsString();
                     JsonArray jsonArray4 = jsonObject3.getAsJsonArray("names");
-                    this.addText(Text.literal(string3).formatted(Formatting.GRAY), false);
+                    if(StringUtils.isNotEmpty(string3))
+                        this.addText(Text.literal(string3).formatted(Formatting.GRAY), false);
 
                     for(JsonElement jsonElement4 : jsonArray4) {
                         String string4 = jsonElement4.getAsString();
                         this.addText(Text.literal("           ").append(string4).formatted(Formatting.WHITE), false);
                     }
 
-                    this.addEmptyLine();
                     this.addEmptyLine();
                 }
             }
@@ -256,7 +254,7 @@ public class GeomancyCreditsScreen extends Screen {
         context.getMatrices().push();
         context.getMatrices().translate(0.0F, f, 0.0F);
         //this.logoDrawer.draw(context, this.width, 1.0F, j);
-        int k = j + 100;
+        int k = j + 0; //+100
 
         for(int l = 0; l < this.credits.size(); ++l) {
             if (l == this.credits.size() - 1) {

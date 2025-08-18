@@ -193,7 +193,7 @@ public class StorageItem extends Item implements IStorageItem, ExtendedScreenHan
         return getInventoryStatic(stack);
     }
 
-    protected static Inventory getInventoryStatic(ItemStack stack){
+    public static Inventory getInventoryStatic(ItemStack stack){
         if(actualInventories.containsKey(stack)) return actualInventories.get(stack);
 
         // generate and cache inventory

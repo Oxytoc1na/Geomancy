@@ -4,19 +4,12 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.HeightLimitView;
 import net.minecraft.world.Heightmap;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeAccess;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.chunk.Chunk;
@@ -25,9 +18,9 @@ import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.Blender;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
-import net.minecraft.world.gen.chunk.ChunkNoiseSampler;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
 import net.minecraft.world.gen.noise.NoiseConfig;
+import org.oxytocina.geomancy.util.GenUtil;
 import org.oxytocina.geomancy.util.SimplexNoise;
 import org.oxytocina.geomancy.util.Toolbox;
 
@@ -37,7 +30,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 public class NullChunkGenerator extends ChunkGenerator {
-    /* this is a very important field, we will come back to the codec later */
     public static final Codec<NullChunkGenerator> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     BiomeSource.CODEC.fieldOf("biome_source").forGetter(NullChunkGenerator::getBiomeSource),
@@ -146,7 +138,7 @@ public class NullChunkGenerator extends ChunkGenerator {
             for(int i = 0; i < sections.length; i++){
                 var section = sections[i];
                 section.lock();
-                generateSection(chunk,section,i);
+                generateMazeSection(chunk,section,i);
                 section.unlock();
             }
         }
@@ -167,7 +159,7 @@ public class NullChunkGenerator extends ChunkGenerator {
         return chunk;
     }
 
-    private ChunkSection generateSection(Chunk chunk, ChunkSection section, int y){
+    private ChunkSection generateMazeSection(Chunk chunk, ChunkSection section, int y){
         BlockState wall = Blocks.DEEPSLATE_BRICKS.getDefaultState();
         BlockState wireframe = Blocks.STONE.getDefaultState();
         Random random = new Random(chunk.getPos().hashCode()+y*1000);
@@ -184,56 +176,25 @@ public class NullChunkGenerator extends ChunkGenerator {
         final int width = 16;
         final int height = 16;
         final int depth = 16;
+        final int yOff = y*16;
 
         if(directions[0]) // bottom
-            fillSection(section,wall,1,0,1,width-1,0,depth-1);
+            GenUtil.fillBox(chunk,wall,1,yOff+0,1,width-1,yOff+0,depth-1);
         if(directions[1]) // top
-            fillSection(section,wall,1,height-1,1,width-1,height-1,depth-1);
+            GenUtil.fillBox(chunk,wall,1,yOff+height-1,1,width-1,yOff+height-1,depth-1);
         if(directions[2]) // left
-            fillSection(section,wall,0,1,1,0,height-1,depth-1);
+            GenUtil.fillBox(chunk,wall,0,yOff+1,1,0,yOff+height-1,depth-1);
         if(directions[3]) // right
-            fillSection(section,wall,width-1,1,1,width-1,height-1,depth-1);
+            GenUtil.fillBox(chunk,wall,width-1,yOff+1,1,width-1,yOff+height-1,depth-1);
         if(directions[4]) // back
-            fillSection(section,wall,1,1,0,width-1,height-1,0);
+            GenUtil.fillBox(chunk,wall,1,yOff+1,0,width-1,yOff+height-1,0);
         if(directions[5]) // front
-            fillSection(section,wall,1,1,depth-1,width-1,height-1,depth-1);
+            GenUtil.fillBox(chunk,wall,1,yOff+1,depth-1,width-1,yOff+height-1,depth-1);
 
         // wireframe
-
-        // x
-        fillSection(section,wireframe,0,0,0,width-1,0,0);
-        fillSection(section,wireframe,0,height-1,0,width-1,height-1,0);
-        fillSection(section,wireframe,0,0,width-1,width-1,0,width-1);
-        fillSection(section,wireframe,0,height-1,width-1,width-1,height-1,width-1);
-
-        // y
-        fillSection(section,wireframe,0,0,0,0,height-1,0);
-        fillSection(section,wireframe,width-1,0,0,width-1,height-1,0);
-        fillSection(section,wireframe,0,0,depth-1,0,height-1,depth-1);
-        fillSection(section,wireframe,width-1,0,depth-1,width-1,height-1,depth-1);
-
-        // z
-        fillSection(section,wireframe,0,0,0,0,0,depth-1);
-        fillSection(section,wireframe,width-1,0,0,width-1,0,depth-1);
-        fillSection(section,wireframe,0,height-1,0,0,height-1,depth-1);
-        fillSection(section,wireframe,width-1,height-1,0,width-1,height-1,depth-1);
+        GenUtil.fillKeepWireframe(chunk,wireframe,0,yOff,0,width-1,yOff+height-1,depth-1);
 
         return section;
-    }
-
-    private void fillSection(ChunkSection section,BlockState state, int x1, int y1, int z1, int x2, int y2, int z2){
-
-        if(x2<x1){int t = x1;x1 = x2;x2 = t;}
-        if(y2<y1){int t = y1;y1 = y2;y2 = t;}
-        if(z2<z1){int t = z1;z1 = z2;z2 = t;}
-
-        for (int ix = x1; ix <= x2; ix++) {
-            for (int iy = y1; iy <= y2; iy++) {
-                for (int iz = z1; iz <= z2; iz++) {
-                    section.setBlockState(ix,iy,iz,state,false);
-                }
-            }
-        }
     }
 
     @Override

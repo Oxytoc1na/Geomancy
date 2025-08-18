@@ -51,8 +51,5 @@
     "modonomicon": "*",
     "trinkets": "*",
     "hugestructureblocks": "*"
-  },
-  "recommends": {
-    "hugestructureblocks": "*"
   }
 }

@@ -64,7 +64,7 @@ public class SpellGrid {
         return context.referenceResult;
     }
 
-    public void run(ItemStack casterItem, ItemStack containerItem, LivingEntity casterEntity){
+    public void run(ItemStack casterItem, ItemStack containerItem, LivingEntity casterEntity,SpellBlockArgs args){
 
         float costMultiplier = soulCostMultiplier;
         if(casterEntity.hasStatusEffect(ModStatusEffects.REGRETFUL))
@@ -75,6 +75,7 @@ public class SpellGrid {
 
         SpellContext context = new SpellContext(this,casterEntity,casterItem,containerItem,0,costMultiplier,0);
         context.refreshAvailableSoul();
+        context.internalVars = args;
 
         try{
             for (var comp : components.values())

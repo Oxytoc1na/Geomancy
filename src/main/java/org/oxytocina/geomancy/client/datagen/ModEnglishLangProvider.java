@@ -973,6 +973,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         // config
         {
             add("MODID.options.epilepsy","Epilepsy Mode");
+            add("MODID.options.spellmakeruispeed","Spellmaker UI speed");
         }
 
         tb=null;

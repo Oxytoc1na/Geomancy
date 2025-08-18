@@ -8,6 +8,7 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.*;
 import net.minecraft.entity.damage.*;
 import net.minecraft.entity.effect.*;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.*;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
@@ -15,11 +16,13 @@ import net.minecraft.item.*;
 import net.minecraft.nbt.*;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.*;
 import net.minecraft.util.math.*;
 import net.minecraft.world.*;
 import org.jetbrains.annotations.*;
 import org.oxytocina.geomancy.entity.TouchingFluidAware;
+import org.oxytocina.geomancy.items.armor.materials.IListenerArmor;
 import org.oxytocina.geomancy.items.jewelry.IJewelryItem;
 import org.oxytocina.geomancy.items.jewelry.JewelryItem;
 import org.oxytocina.geomancy.mixin.EntityMixin;
@@ -152,6 +155,50 @@ public abstract class LivingEntityMixin {
         return amount;
     }
 
+    // listener armor
+    @Inject(method="Lnet/minecraft/entity/LivingEntity;tryAttack(Lnet/minecraft/entity/Entity;)Z", at = @At(value= "HEAD"))
+    private void geomancy$attack(Entity target, CallbackInfoReturnable<Boolean> cir){
+        if(!(target instanceof LivingEntity targetEnt)) return;
+        LivingEntity thisEntity = (LivingEntity) (Object) this;
+        World world = thisEntity.getWorld();
+        if (!world.isClient) {
+            if (thisEntity instanceof MobEntity thisMobEntity) {
+                for (ItemStack armorItemStack : thisMobEntity.getArmorItems()) {
+                    if (armorItemStack.getItem() instanceof IListenerArmor armorWithHitEffect) {
+                        armorWithHitEffect.onHit(armorItemStack,thisMobEntity, targetEnt);
+                    }
+                }
+            } else if (thisEntity instanceof ServerPlayerEntity thisPlayerEntity) {
+                for (ItemStack armorItemStack : thisPlayerEntity.getArmorItems()) {
+                    if (armorItemStack.getItem() instanceof IListenerArmor armorWithHitEffect) {
+                        armorWithHitEffect.onHit(armorItemStack, thisPlayerEntity,targetEnt);
+                    }
+                }
+            }
+        }
+    }
+
+    @Inject(method="Lnet/minecraft/entity/LivingEntity;jump()V", at = @At(value="HEAD"))
+    private void geomancy$jump(CallbackInfo ci){
+        LivingEntity thisEntity = (LivingEntity) (Object) this;
+        World world = thisEntity.getWorld();
+        if (!world.isClient) {
+            if (thisEntity instanceof MobEntity thisMobEntity) {
+                for (ItemStack armorItemStack : thisMobEntity.getArmorItems()) {
+                    if (armorItemStack.getItem() instanceof IListenerArmor armorWithHitEffect) {
+                        armorWithHitEffect.onJump(armorItemStack,thisMobEntity);
+                    }
+                }
+            } else if (thisEntity instanceof ServerPlayerEntity thisPlayerEntity) {
+                for (ItemStack armorItemStack : thisPlayerEntity.getArmorItems()) {
+                    if (armorItemStack.getItem() instanceof IListenerArmor armorWithHitEffect) {
+                        armorWithHitEffect.onJump(armorItemStack, thisPlayerEntity);
+                    }
+                }
+            }
+        }
+    }
+
     @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;applyDamage(Lnet/minecraft/entity/damage/DamageSource;F)V", ordinal = 0), method = "damage(Lnet/minecraft/entity/damage/DamageSource;F)Z")
     private void geomancy$applyDamage1(LivingEntity instance, DamageSource source, float amount, Operation<Void> original) {
         //if (source.isIn(GeomancyDamageTypeTags.BYPASSES_DIKE)) {
@@ -170,25 +217,26 @@ public abstract class LivingEntityMixin {
         //instance.applyDamage(source, AzureDikeProvider.absorbDamage(instance, amount));
     }
 
+    // listener armor
     @Inject(method = "damage(Lnet/minecraft/entity/damage/DamageSource;F)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isDead()Z", ordinal = 1))
     private void geomancy$TriggerArmorWithHitEffect(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-        //LivingEntity thisEntity = (LivingEntity) (Object) this;
-        //World world = thisEntity.getWorld();
-        //if (!world.isClient) {
-        //    if (thisEntity instanceof MobEntity thisMobEntity) {
-        //        for (ItemStack armorItemStack : thisMobEntity.getArmorItems()) {
-        //            if (armorItemStack.getItem() instanceof ArmorWithHitEffect armorWithHitEffect) {
-        //                armorWithHitEffect.onHit(armorItemStack, source, thisMobEntity, amount);
-        //            }
-        //        }
-        //    } else if (thisEntity instanceof ServerPlayerEntity thisPlayerEntity) {
-        //        for (ItemStack armorItemStack : thisPlayerEntity.getArmorItems()) {
-        //            if (armorItemStack.getItem() instanceof ArmorWithHitEffect armorWithHitEffect) {
-        //                armorWithHitEffect.onHit(armorItemStack, source, thisPlayerEntity, amount);
-        //            }
-        //        }
-        //    }
-        //}
+        LivingEntity thisEntity = (LivingEntity) (Object) this;
+        World world = thisEntity.getWorld();
+        if (!world.isClient) {
+            if (thisEntity instanceof MobEntity thisMobEntity) {
+                for (ItemStack armorItemStack : thisMobEntity.getArmorItems()) {
+                    if (armorItemStack.getItem() instanceof IListenerArmor armorWithHitEffect) {
+                        armorWithHitEffect.onGotHit(armorItemStack,thisMobEntity, source, amount);
+                    }
+                }
+            } else if (thisEntity instanceof ServerPlayerEntity thisPlayerEntity) {
+                for (ItemStack armorItemStack : thisPlayerEntity.getArmorItems()) {
+                    if (armorItemStack.getItem() instanceof IListenerArmor armorWithHitEffect) {
+                        armorWithHitEffect.onGotHit(armorItemStack, thisPlayerEntity,source, amount);
+                    }
+                }
+            }
+        }
     }
 
     @Inject(at = @At("TAIL"), method = "applyFoodEffects(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;)V")
