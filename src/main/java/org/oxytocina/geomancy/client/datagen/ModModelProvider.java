@@ -35,7 +35,7 @@ public class ModModelProvider extends FabricModelProvider {
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
         blockGenerator = blockStateModelGenerator;
 
-        blockStateModelGenerator.registerAnvil(ModBlocks.MITHRIL_ANVIL);
+        //blockStateModelGenerator.registerAnvil(ModBlocks.MITHRIL_ANVIL);
 
         blockStateModelGenerator.registerSimpleState(ModBlocks.SMITHERY);
 

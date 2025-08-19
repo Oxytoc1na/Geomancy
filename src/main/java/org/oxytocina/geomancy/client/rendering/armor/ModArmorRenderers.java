@@ -11,7 +11,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.items.ModItems;
-import org.oxytocina.geomancy.items.armor.materials.OctanguliteArmorItem;
 
 import java.util.*;
 

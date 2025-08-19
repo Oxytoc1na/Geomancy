@@ -1,4 +1,4 @@
-package org.oxytocina.geomancy.blocks;
+package org.oxytocina.geomancy.blocks.blockEntities;
 
 
 import net.minecraft.block.*;
@@ -7,6 +7,7 @@ import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -17,15 +18,13 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import org.oxytocina.geomancy.blocks.blockEntities.ModBlockEntities;
-import org.oxytocina.geomancy.blocks.blockEntities.SmitheryBlockEntity;
 import org.oxytocina.geomancy.util.AdvancementHelper;
 
 public class SmitheryBlock extends BlockWithEntity implements BlockEntityProvider {
 
     private static VoxelShape SHAPE = SmitheryBlock.createCuboidShape(0,0,0,16,16,16);
 
-    protected SmitheryBlock(Settings settings) {
+    public SmitheryBlock(Settings settings) {
         super(settings);
     }
 
@@ -75,5 +74,15 @@ public class SmitheryBlock extends BlockWithEntity implements BlockEntityProvide
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
         return checkType(type, ModBlockEntities.SMITHERY_BLOCK_ENTITY,
                 (world1, pos, state1, blockEntity) -> blockEntity.tick(world1,pos,state1));
+    }
+
+    @Override
+    public boolean hasComparatorOutput(BlockState state) {
+        return true;
+    }
+
+    @Override
+    public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
+        return ScreenHandler.calculateComparatorOutput(world.getBlockEntity(pos));
     }
 }

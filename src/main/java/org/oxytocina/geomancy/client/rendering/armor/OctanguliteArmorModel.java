@@ -7,13 +7,11 @@ import net.minecraft.client.render.entity.model.*;
 import net.minecraft.client.util.math.*;
 import net.minecraft.entity.*;
 import net.minecraft.entity.decoration.*;
-import net.minecraft.entity.player.*;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
 import net.minecraft.util.math.*;
 import org.oxytocina.geomancy.client.GeomancyClient;
 import org.oxytocina.geomancy.client.rendering.ModColorizationHandler;
-import org.oxytocina.geomancy.items.armor.materials.OctanguliteArmorItem;
+import org.oxytocina.geomancy.items.armor.OctanguliteArmorItem;
 import org.oxytocina.geomancy.util.SimplexNoise;
 import org.oxytocina.geomancy.util.Toolbox;
 

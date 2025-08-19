@@ -42,10 +42,10 @@ public class ModColorizationHandler {
                 ModBlocks.SOUL_OAK_PRESSURE_PLATE,
                 ModBlocks.SOUL_OAK_FENCE,
                 ModBlocks.SOUL_OAK_FENCE_GATE,
-                ModBlocks.SOUL_OAK_SIGN,
-                ModBlocks.SOUL_OAK_HANGING_SIGN,
-                ModBlocks.SOUL_OAK_WALL_SIGN,
-                ModBlocks.SOUL_OAK_WALL_HANGING_SIGN,
+                //ModBlocks.SOUL_OAK_SIGN,
+                //ModBlocks.SOUL_OAK_HANGING_SIGN,
+                //ModBlocks.SOUL_OAK_WALL_SIGN,
+                //ModBlocks.SOUL_OAK_WALL_HANGING_SIGN,
                 ModBlocks.SOUL_OAK_SLAB,
                 ModBlocks.SOUL_OAK_STAIRS,
                 ModBlocks.SOUL_OAK_TRAPDOOR,
@@ -111,8 +111,8 @@ public class ModColorizationHandler {
         addOctanguliteItem(ModBlocks.SOUL_OAK_SAPLING.asItem(),0.03F,false,t->2-t);
         addOctanguliteItem(ModBlocks.SOUL_OAK_LEAVES.asItem(),0.03F,false,t->t+2);
         //addOctanguliteItem(ModBlocks.POTTED_SOUL_OAK_SAPLING.asItem(),0.03F,false);
-        addOctanguliteItem(ModBlocks.SOUL_OAK_SIGN.asItem(),0.03F,false);
-        addOctanguliteItem(ModBlocks.SOUL_OAK_HANGING_SIGN.asItem(),0.03F,false);
+        //addOctanguliteItem(ModBlocks.SOUL_OAK_SIGN.asItem(),0.03F,false);
+        //addOctanguliteItem(ModBlocks.SOUL_OAK_HANGING_SIGN.asItem(),0.03F,false);
         addOctanguliteItem(ModBlocks.SOUL_OAK_STAIRS.asItem(),0.03F,false);
         addOctanguliteItem(ModBlocks.SOUL_OAK_SLAB.asItem(),0.03F,false);
 

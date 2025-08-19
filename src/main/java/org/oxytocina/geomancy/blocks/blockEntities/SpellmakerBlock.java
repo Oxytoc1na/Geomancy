@@ -1,4 +1,4 @@
-package org.oxytocina.geomancy.blocks;
+package org.oxytocina.geomancy.blocks.blockEntities;
 
 
 import net.minecraft.block.*;
@@ -7,23 +7,21 @@ import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import org.oxytocina.geomancy.blocks.blockEntities.ModBlockEntities;
-import org.oxytocina.geomancy.blocks.blockEntities.SpellmakerBlockEntity;
 
 public class SpellmakerBlock extends BlockWithEntity implements BlockEntityProvider {
 
     private static VoxelShape SHAPE = SpellmakerBlock.createCuboidShape(0,0,0,16,16,16);
 
-    protected SpellmakerBlock(Settings settings) {
+    public SpellmakerBlock(Settings settings) {
         super(settings);
     }
 
@@ -58,10 +56,10 @@ public class SpellmakerBlock extends BlockWithEntity implements BlockEntityProvi
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 
         if(!world.isClient){
-            NamedScreenHandlerFactory screenHandlerFactory =  (SpellmakerBlockEntity) world.getBlockEntity(pos);
-
-            if(screenHandlerFactory!=null){
-                player.openHandledScreen(screenHandlerFactory);
+            var blockEntity = (SpellmakerBlockEntity) world.getBlockEntity(pos);
+            if(blockEntity!=null){
+                blockEntity.tryQuickInsertCradle(player.getStackInHand(hand));
+                player.openHandledScreen(blockEntity);
             }
         }
 
@@ -72,5 +70,15 @@ public class SpellmakerBlock extends BlockWithEntity implements BlockEntityProvi
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
         return checkType(type, ModBlockEntities.SPELLMAKER_BLOCK_ENTITY,
                 (world1, pos, state1, blockEntity) -> blockEntity.tick(world1,pos,state1));
+    }
+
+    @Override
+    public boolean hasComparatorOutput(BlockState state) {
+        return true;
+    }
+
+    @Override
+    public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
+        return ((SpellmakerBlockEntity)world.getBlockEntity(pos)).getOutput().isEmpty()?0:15;
     }
 }

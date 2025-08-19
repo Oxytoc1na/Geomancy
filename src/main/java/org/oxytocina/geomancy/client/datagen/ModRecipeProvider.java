@@ -595,7 +595,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
             // wood
             offerBarkBlockRecipe(exporter,SOUL_OAK_WOOD,SOUL_OAK_LOG);
-            offerHangingSignRecipe(exporter,SOUL_OAK_HANGING_SIGN,SOUL_OAK_PLANKS);
+            //offerHangingSignRecipe(exporter,SOUL_OAK_HANGING_SIGN,STRIPPED_SOUL_OAK_WOOD);
             offerPlanksRecipe(exporter,SOUL_OAK_PLANKS, ModItemTags.SOUL_OAK_LOGS,4);
             offerPressurePlateRecipe(exporter,SOUL_OAK_PRESSURE_PLATE,SOUL_OAK_PLANKS);
             offerSlabRecipe(exporter,RecipeCategory.BUILDING_BLOCKS,SOUL_OAK_SLAB,SOUL_OAK_PLANKS);

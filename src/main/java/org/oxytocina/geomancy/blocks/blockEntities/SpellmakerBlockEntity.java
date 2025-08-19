@@ -18,6 +18,7 @@ import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.Hand;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -30,6 +31,7 @@ import org.oxytocina.geomancy.inventories.ImplementedInventory;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.SpellComponentStoringItem;
 import org.oxytocina.geomancy.items.SpellStoringItem;
+import org.oxytocina.geomancy.registries.ModItemTags;
 import org.oxytocina.geomancy.spells.SpellBlock;
 import org.oxytocina.geomancy.spells.SpellBlocks;
 
@@ -43,8 +45,8 @@ public class SpellmakerBlockEntity extends BlockEntity implements ExtendedScreen
     protected final PropertyDelegate propertyDelegate;
     private boolean initialized = false;
 
-    public static final int SLOT_COUNT = 10;
-    public static final int OUTPUT_SLOT = 9;
+    public static final int SLOT_COUNT = 1;
+    public static final int OUTPUT_SLOT = 0;
 
     public SpellmakerBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.SPELLMAKER_BLOCK_ENTITY, pos, state);
@@ -110,6 +112,7 @@ public class SpellmakerBlockEntity extends BlockEntity implements ExtendedScreen
     public static Function4<Integer, PlayerInventory, SpellmakerBlockEntity, PropertyDelegate,ScreenHandler> getHandler = (a, b, c, d) -> null;
     public static void SetScreenHandler(Function4<Integer, PlayerInventory, SpellmakerBlockEntity, PropertyDelegate,ScreenHandler> f){getHandler=f;}
 
+    @Override
     public DefaultedList<ItemStack> getItems() {
         return inventory;
     }
@@ -239,20 +242,14 @@ public class SpellmakerBlockEntity extends BlockEntity implements ExtendedScreen
 
     @Override
     public boolean canExtract(int slot, ItemStack stack, Direction side) {
-        return false;
-        //return ImplementedInventory.super.canExtract(slot, stack, side);
+        if(slot!=OUTPUT_SLOT) return false;
+        return true;
     }
 
     @Override
     public boolean canInsert(int slot, ItemStack stack, @Nullable Direction side) {
-        return false;
-        //return ImplementedInventory.super.canInsert(slot, stack, side);
-    }
-
-    @Override
-    public boolean canTransferTo(Inventory hopperInventory, int slot, ItemStack stack) {
-        return false;
-        //return ImplementedInventory.super.canTransferTo(hopperInventory, slot, stack);
+        if(slot!=OUTPUT_SLOT) return false;
+        return stack.isIn(ModItemTags.SPELL_STORING);
     }
 
     @Override
@@ -281,4 +278,10 @@ public class SpellmakerBlockEntity extends BlockEntity implements ExtendedScreen
         return getStack(SpellmakerBlockEntity.OUTPUT_SLOT);
     }
     public boolean hasOutput() {return !getOutput().isEmpty();}
+
+    public void tryQuickInsertCradle(ItemStack stack) {
+        if(!getOutput().isEmpty()) return;
+        if(!stack.isIn(ModItemTags.SPELL_STORING)) return;
+        setStack(OUTPUT_SLOT,stack.copyAndEmpty());
+    }
 }

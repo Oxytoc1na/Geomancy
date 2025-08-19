@@ -19,6 +19,8 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import org.jetbrains.annotations.NotNull;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.blocks.blockEntities.SmitheryBlock;
+import org.oxytocina.geomancy.blocks.blockEntities.SpellmakerBlock;
 import org.oxytocina.geomancy.blocks.fluids.GoldFluidBlock;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 import org.oxytocina.geomancy.items.ExtraItemSettings;
@@ -123,7 +125,7 @@ public class ModBlocks {
     public static final Block AXINITE_BLOCK = register("axinite_block", Block::new,AbstractBlock.Settings.create().mapColor(MapColor.TERRACOTTA_BROWN).instrument(Instrument.BELL).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.METAL),ExtraBlockSettings.create().mineableByPickaxe().miningLevel(1),new FabricItemSettings().rarity(Rarity.COMMON).fireproof());
 
     // mithril anvil
-    public static final Block MITHRIL_ANVIL = register("mithril_anvil",AnvilBlock::new,AbstractBlock.Settings.create().mapColor(MapColor.IRON_GRAY).requiresTool().strength(5.0F, 1200.0F).sounds(BlockSoundGroup.ANVIL).pistonBehavior(PistonBehavior.BLOCK),ExtraBlockSettings.create().mineableByPickaxe().notSimpleCube(),new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof());
+    //public static final Block MITHRIL_ANVIL = register("mithril_anvil",AnvilBlock::new,AbstractBlock.Settings.create().mapColor(MapColor.IRON_GRAY).requiresTool().strength(5.0F, 1200.0F).sounds(BlockSoundGroup.ANVIL).pistonBehavior(PistonBehavior.BLOCK),ExtraBlockSettings.create().mineableByPickaxe().notSimpleCube(),new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof());
 
     // wood
     public static final OctangulitePillarBlock SOUL_OAK_LOG = register("soul_oak_log",(s)->new OctangulitePillarBlock(s,0.3f),AbstractBlock.Settings.create().mapColor((state) -> state.get(PillarBlock.AXIS) == Direction.Axis.Y ? MapColor.OAK_TAN : MapColor.SPRUCE_BROWN).instrument(Instrument.BASS).strength(2.0F).sounds(BlockSoundGroup.WOOD).burnable(),ExtraBlockSettings.create().noModels().mineableByAxe(), new Item.Settings());
@@ -132,10 +134,10 @@ public class ModBlocks {
     public static final OctangulitePillarBlock STRIPPED_SOUL_OAK_WOOD = register("stripped_soul_oak_wood", s->new OctangulitePillarBlock(s,0.3f),AbstractBlock.Settings.create().mapColor(MapColor.OAK_TAN).instrument(Instrument.BASS).strength(2.0F).sounds(BlockSoundGroup.WOOD).burnable(),ExtraBlockSettings.create().tintedModels().mineableByAxe());
     public static final OctanguliteBlock SOUL_OAK_PLANKS = register("soul_oak_planks",(s)->new OctanguliteBlock(s,0.3f),AbstractBlock.Settings.copy(Blocks.OAK_PLANKS),ExtraBlockSettings.create().tintedModels().mineableByAxe(), new Item.Settings());
     public static final Block SOUL_OAK_LEAVES = register("soul_oak_leaves",Blocks.createLeavesBlock(BlockSoundGroup.GRASS),ExtraBlockSettings.create().tintedModels().notRegularDrop().mineableByHoe(),new FabricItemSettings());
-    public static final Block SOUL_OAK_SIGN = register("soul_oak_sign",s->new SignBlock(s, ModWoodTypes.SOUL_OAK),AbstractBlock.Settings.create().mapColor(SOUL_OAK_PLANKS.getDefaultMapColor()).solid().instrument(Instrument.BASS).noCollision().strength(1.0F).burnable(),ExtraBlockSettings.create().itemHasOwnName().tintedModels().mineableByAxe());
-    public static final Block SOUL_OAK_WALL_SIGN = register("soul_oak_wall_sign",s->new WallSignBlock(s, ModWoodTypes.SOUL_OAK),AbstractBlock.Settings.create().mapColor(SOUL_OAK_PLANKS.getDefaultMapColor()).solid().instrument(Instrument.BASS).noCollision().strength(1.0F).burnable(),ExtraBlockSettings.create().itemHasOwnName().tintedModels().mineableByAxe().dontGroupItem());
-    public static final Block SOUL_OAK_HANGING_SIGN = register("soul_oak_hanging_sign",s->new HangingSignBlock(s, ModWoodTypes.SOUL_OAK),AbstractBlock.Settings.create().mapColor(SOUL_OAK_PLANKS.getDefaultMapColor()).solid().instrument(Instrument.BASS).noCollision().strength(1.0F).burnable(),ExtraBlockSettings.create().itemHasOwnName().tintedModels().mineableByAxe());
-    public static final Block SOUL_OAK_WALL_HANGING_SIGN = register("soul_oak_wall_hanging_sign",s->new WallHangingSignBlock(s, ModWoodTypes.SOUL_OAK),AbstractBlock.Settings.create().mapColor(SOUL_OAK_PLANKS.getDefaultMapColor()).solid().instrument(Instrument.BASS).noCollision().strength(1.0F).burnable(),ExtraBlockSettings.create().itemHasOwnName().tintedModels().mineableByAxe().dontGroupItem());
+    //public static final Block SOUL_OAK_SIGN = register("soul_oak_sign",s->new SignBlock(s, ModWoodTypes.SOUL_OAK),AbstractBlock.Settings.create().mapColor(SOUL_OAK_PLANKS.getDefaultMapColor()).solid().instrument(Instrument.BASS).noCollision().strength(1.0F).burnable(),ExtraBlockSettings.create().itemHasOwnName().tintedModels().mineableByAxe());
+    //public static final Block SOUL_OAK_WALL_SIGN = register("soul_oak_wall_sign",s->new WallSignBlock(s, ModWoodTypes.SOUL_OAK),AbstractBlock.Settings.create().mapColor(SOUL_OAK_PLANKS.getDefaultMapColor()).solid().instrument(Instrument.BASS).noCollision().strength(1.0F).burnable(),ExtraBlockSettings.create().itemHasOwnName().tintedModels().mineableByAxe().dontGroupItem());
+    //public static final Block SOUL_OAK_HANGING_SIGN = register("soul_oak_hanging_sign",s->new HangingSignBlock(s, ModWoodTypes.SOUL_OAK),AbstractBlock.Settings.create().mapColor(SOUL_OAK_PLANKS.getDefaultMapColor()).solid().instrument(Instrument.BASS).noCollision().strength(1.0F).burnable(),ExtraBlockSettings.create().itemHasOwnName().tintedModels().mineableByAxe());
+    //public static final Block SOUL_OAK_WALL_HANGING_SIGN = register("soul_oak_wall_hanging_sign",s->new WallHangingSignBlock(s, ModWoodTypes.SOUL_OAK),AbstractBlock.Settings.create().mapColor(SOUL_OAK_PLANKS.getDefaultMapColor()).solid().instrument(Instrument.BASS).noCollision().strength(1.0F).burnable(),ExtraBlockSettings.create().itemHasOwnName().tintedModels().mineableByAxe().dontGroupItem());
     public static final Block SOUL_OAK_PRESSURE_PLATE = register("soul_oak_pressure_plate",s->new PressurePlateBlock(PressurePlateBlock.ActivationRule.EVERYTHING,s,ModBlockSetTypes.SOUL_OAK),AbstractBlock.Settings.create().mapColor(SOUL_OAK_PLANKS.getDefaultMapColor()).solid().instrument(Instrument.BASS).noCollision().strength(0.5f).burnable(),ExtraBlockSettings.create().pressurePlate(SOUL_OAK_PLANKS).tintedModels().mineableByAxe());
     public static final SaplingBlock SOUL_OAK_SAPLING = register("soul_oak_sapling", s->new SaplingBlock(new SoulOakSaplingGenerator(),s),AbstractBlock.Settings.create().mapColor(MapColor.PINK).noCollision().ticksRandomly().breakInstantly().sounds(BlockSoundGroup.GRASS).pistonBehavior(PistonBehavior.DESTROY),ExtraBlockSettings.create().noModels().mineableByAxe().cutout());
     public static final Block POTTED_SOUL_OAK_SAPLING = register("potted_soul_oak_sapling",Blocks.createFlowerPotBlock(SOUL_OAK_SAPLING),ExtraBlockSettings.create().notSimpleCube().cutout().dontGroupItem(),new FabricItemSettings());
@@ -184,8 +186,8 @@ public class ModBlocks {
 
 
     // block entities
-    public static final SmitheryBlock SMITHERY = (SmitheryBlock) register("smithery_block", SmitheryBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe());
-    public static final SpellmakerBlock SPELLMAKER = (SpellmakerBlock) register("spellmaker_block", SpellmakerBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe());
+    public static final SmitheryBlock SMITHERY = register("smithery_block", SmitheryBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe());
+    public static final SpellmakerBlock SPELLMAKER = register("spellmaker_block", SpellmakerBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe());
 
     // fluids
     private static AbstractBlock.Settings fluid(MapColor mapColor) {

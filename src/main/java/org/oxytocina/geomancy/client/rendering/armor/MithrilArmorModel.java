@@ -1,6 +1,5 @@
 package org.oxytocina.geomancy.client.rendering.armor;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
@@ -14,14 +13,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import org.oxytocina.geomancy.client.GeomancyClient;
-import org.oxytocina.geomancy.client.rendering.ModColorizationHandler;
-import org.oxytocina.geomancy.items.armor.materials.MithrilArmorItem;
-import org.oxytocina.geomancy.items.armor.materials.OctanguliteArmorItem;
+import org.oxytocina.geomancy.items.armor.MithrilArmorItem;
 import org.oxytocina.geomancy.items.jewelry.IJewelryItem;
-import org.oxytocina.geomancy.util.SimplexNoise;
 import org.oxytocina.geomancy.util.Toolbox;
 
 public class MithrilArmorModel extends BipedEntityModel<LivingEntity> {

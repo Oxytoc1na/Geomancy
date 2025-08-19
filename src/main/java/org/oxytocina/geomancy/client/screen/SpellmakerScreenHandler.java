@@ -65,6 +65,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
     public SpellmakerScreen screen;
 
     private boolean dragging = false;
+    private boolean dragEnabled = false; // if clicked inide the field, allow dragging
     private double draggedX = 0;
     private double draggedY = 0;
 
@@ -267,7 +268,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
 
 
     public void mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-        if(!mouseInField(mouseX,mouseY)) return;
+        if(!dragEnabled) return;
 
         draggedX+=deltaX;
         draggedY+=deltaY;
@@ -346,7 +347,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
     }
 
     public void mouseClicked(double mouseX, double mouseY, int button) {
-
+        dragEnabled = mouseInField(mouseX,mouseY);
     }
 
     public void mouseReleased(double mouseX, double mouseY, int button){
@@ -359,6 +360,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
         }
 
         dragging = false;
+        dragEnabled = false;
         draggedX = 0;
         draggedY=0;
     }

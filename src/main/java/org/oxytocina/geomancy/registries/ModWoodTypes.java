@@ -1,9 +1,11 @@
 package org.oxytocina.geomancy.registries;
 
+import net.fabricmc.fabric.api.registry.StrippableBlockRegistry;
 import net.minecraft.block.BlockSetType;
 import net.minecraft.block.WoodType;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundEvents;
+import org.oxytocina.geomancy.blocks.ModBlocks;
 
 public class ModWoodTypes {
 
@@ -11,5 +13,10 @@ public class ModWoodTypes {
 
     private static WoodType register(WoodType type) {
         return type;
+    }
+
+    public static void registerStrippables(){
+        StrippableBlockRegistry.register(ModBlocks.SOUL_OAK_LOG,ModBlocks.STRIPPED_SOUL_OAK_LOG);
+        StrippableBlockRegistry.register(ModBlocks.SOUL_OAK_WOOD,ModBlocks.STRIPPED_SOUL_OAK_WOOD);
     }
 }
