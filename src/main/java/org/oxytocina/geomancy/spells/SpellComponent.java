@@ -167,6 +167,13 @@ public class SpellComponent {
             iterationResult.add(result.iterationVarName,i);
             iterationResult.refreshSignalDepths();
             pushSignals(iterationResult.vars);
+
+            // sub results
+            if(iterationResult.subResults!=null){
+                for(var subRes : iterationResult.subResults){
+                    pushSignals(subRes.vars);
+                }
+            }
         }
         this.receivedSignals.clear();
     }

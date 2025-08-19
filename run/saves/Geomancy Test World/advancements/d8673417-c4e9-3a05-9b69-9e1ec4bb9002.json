@@ -101,5 +101,29 @@
     },
     "done": true
   },
+  "geomancy:recipes/misc/jewelry_octangulite_ring": {
+    "criteria": {
+      "has_ingredient": "2025-08-19 10:11:58 +0200"
+    },
+    "done": true
+  },
+  "geomancy:main/get_spellmaker": {
+    "criteria": {
+      "got_spellmaker": "2025-08-19 10:11:58 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_spellmaker_block": {
+    "criteria": {
+      "default_conditions": "2025-08-19 10:11:58 +0200"
+    },
+    "done": true
+  },
+  "geomancy:milestones/milestone_souls": {
+    "criteria": {
+      "geomancy:main/get_spellmaker": "2025-08-19 10:11:58 +0200"
+    },
+    "done": false
+  },
   "DataVersion": 3465
 }

@@ -320,6 +320,7 @@ public class SpellBlock {
         Provider,
         Arithmetic,
         Effector,
-        Reference
+        Reference,
+        Lists
     }
 }

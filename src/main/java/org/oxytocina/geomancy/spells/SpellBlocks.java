@@ -87,10 +87,12 @@ public class SpellBlocks {
     public static final SpellBlock VECTOR_ENTITYSPAWN;
     public static final SpellBlock VECTOR_ENTITYEYEPOS;
     public static final SpellBlock VECTOR_ENTITYDIR;
+    public static final SpellBlock VECTOR_ENTITYVEL;
     public static final SpellBlock RAYCAST_POS;
     public static final SpellBlock RAYCAST_DIR;
     public static final SpellBlock BOOL_ENTITYGROUNDED;
     public static final SpellBlock ENTITY_NEAREST;
+    public static final SpellBlock INVERT;
 
     // effectors
     public static final SpellBlock PRINT;
@@ -111,6 +113,15 @@ public class SpellBlocks {
     public static final SpellBlock FUNCTION2;
     public static final SpellBlock REF_OUTPUT;
     public static final SpellBlock REF_INPUT;
+
+    // lists
+    public static final SpellBlock FOREACH;
+    public static final SpellBlock SPLIT;
+    //public static final SpellBlock MERGE; TODO: add merging lists to the add component
+    public static final SpellBlock POP;
+    public static final SpellBlock SIZE;
+    public static final SpellBlock GET_ELEMENT;
+    public static final SpellBlock SET_ELEMENT;
 
 
     private static SpellBlock.Category cat;
@@ -206,7 +217,7 @@ public class SpellBlocks {
                     })
                     .post((component) ->
                     {
-                        if(!component.castClearedData.containsKey("prevent")) return;
+                        if(component.castClearedData.containsKey("prevent")) return;
 
                         SpellBlockResult res = new SpellBlockResult();
                         res.depth=component.context.highestRecordedDepth;
@@ -469,6 +480,29 @@ public class SpellBlocks {
                         })
                         .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
+
+                INVERT = register(SpellBlock.Builder.create("invert")
+                        .inputs(SpellSignal.createAny().named("signal"))
+                        .outputs(SpellSignal.createAny().named("langis"))
+                        .parameters()
+                        .func((comp,vars) -> {
+                            SpellBlockResult res = SpellBlockResult.empty();
+                            var sig = vars.get("signal");
+                            switch(sig.type){
+                                case Text: res.add("langis",new StringBuilder(sig.getTextValue()).reverse().toString()); break;
+                                case Number: res.add("langis",-sig.getNumberValue()); break;
+                                case Vector: res.add("langis",sig.getVectorValue().negate()); break;
+                                case Boolean: res.add("langis",!sig.getBooleanValue()); break;
+                                case List:{
+                                    if(sig.getListValue()!=null)
+                                        res.add("langis",Toolbox.reverseList(sig.getListValue()));
+                                } break;
+                                default:break;
+                            }
+                            return res;
+                        })
+                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
+                        .category(cat).build());
             }
 
             // entities
@@ -487,18 +521,7 @@ public class SpellBlocks {
                             res.add(SpellSignal.createVector(playerSpawn.toCenterPos()).named("position"));
                             return res;
                         })
-                        .sideConfigGetter((comp) -> {
-                            SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
-                            for (int i = 0; i < 3; i++) {
-                                res[i] = SpellComponent.SideConfig.createToggleableInput(comp,SpellComponent.directions[i]);
-                                res[i].varName="entity";
-                            }
-                            for (int i = 3; i < 6; i++) {
-                                res[i] = SpellComponent.SideConfig.createToggleableOutput(comp,SpellComponent.directions[i]);
-                                res[i].varName="position";
-                            }
-                            return res;
-                        })
+                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
                 VECTOR_ENTITYPOS = register(SpellBlock.Builder.create("vector_entitypos")
@@ -511,18 +534,20 @@ public class SpellBlocks {
                             res.add("position",entity.getPos());
                             return res;
                         })
-                        .sideConfigGetter((comp) -> {
-                            SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
-                            for (int i = 0; i < 3; i++) {
-                                res[i] = SpellComponent.SideConfig.createToggleableInput(comp,SpellComponent.directions[i]);
-                                res[i].varName="entity";
-                            }
-                            for (int i = 3; i < 6; i++) {
-                                res[i] = SpellComponent.SideConfig.createToggleableOutput(comp,SpellComponent.directions[i]);
-                                res[i].varName="position";
-                            }
+                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
+                        .category(cat).build());
+
+                VECTOR_ENTITYVEL = register(SpellBlock.Builder.create("vector_entityvel")
+                        .inputs(SpellSignal.createUUID(null).named("entity"))
+                        .outputs(SpellSignal.createVector(null).named("velocity"))
+                        .parameters()
+                        .func((component, vars) -> {
+                            SpellBlockResult res = new SpellBlockResult();
+                            if(!(vars.get("entity").getEntity(component.world()) instanceof LivingEntity entity)) return res;
+                            res.add("velocity",entity.getVelocity());
                             return res;
                         })
+                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
                 VECTOR_ENTITYEYEPOS = register(SpellBlock.Builder.create("vector_entityeyepos")
@@ -535,18 +560,7 @@ public class SpellBlocks {
                             res.add("eye position",entity.getEyePos());
                             return res;
                         })
-                        .sideConfigGetter((comp) -> {
-                            SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
-                            for (int i = 0; i < 3; i++) {
-                                res[i] = SpellComponent.SideConfig.createToggleableInput(comp,SpellComponent.directions[i]);
-                                res[i].varName="entity";
-                            }
-                            for (int i = 3; i < 6; i++) {
-                                res[i] = SpellComponent.SideConfig.createToggleableOutput(comp,SpellComponent.directions[i]);
-                                res[i].varName="eye position";
-                            }
-                            return res;
-                        })
+                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
                 VECTOR_ENTITYDIR = register(SpellBlock.Builder.create("vector_entitydir")
@@ -559,18 +573,7 @@ public class SpellBlocks {
                             res.add("direction",entity.getRotationVector());
                             return res;
                         })
-                        .sideConfigGetter((comp) -> {
-                            SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
-                            for (int i = 0; i < 3; i++) {
-                                res[i] = SpellComponent.SideConfig.createToggleableInput(comp,SpellComponent.directions[i]);
-                                res[i].varName="entity";
-                            }
-                            for (int i = 3; i < 6; i++) {
-                                res[i] = SpellComponent.SideConfig.createToggleableOutput(comp,SpellComponent.directions[i]);
-                                res[i].varName="direction";
-                            }
-                            return res;
-                        })
+                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
                 BOOL_ENTITYGROUNDED = register(SpellBlock.Builder.create("bool_entitygrounded")
@@ -1210,6 +1213,115 @@ public class SpellBlocks {
                     })
                     .sideConfigGetter((c)->SpellBlock.SideUtil.sidesInput(c,"var"))
                     .category(cat).build());
+        }
+
+        // lists
+        cat = SpellBlock.Category.Lists;
+        {
+            FOREACH = register(SpellBlock.Builder.create("foreach")
+                    .inputs(SpellSignal.createList().named("list"))
+                    .outputs(SpellSignal.createAny().named("signal"))
+                    .func((component, args) ->
+                    {
+                        SpellBlockResult res = SpellBlockResult.empty();
+                        var list = args.getList("list");
+                        if(list==null) return res;
+                        for(var s : list)
+                        {
+                            var subRes = SpellBlockResult.empty();
+                            subRes.add(s.clone());
+                            res.addSubResult(subRes);
+                        }
+                        return res;
+                    })
+                    .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
+                    .category(cat)
+                    .build());
+
+            SPLIT = register(SpellBlock.Builder.create("split")
+                    .inputs(SpellSignal.createList().named("list"),SpellSignal.createNumber().named("index"))
+                    .outputs(SpellSignal.createList().named("a"),SpellSignal.createList().named("b"))
+                    .func((component, args) ->
+                    {
+                        SpellBlockResult res = SpellBlockResult.empty();
+                        var list = args.getList("list");
+                        if(list==null) return res;
+                        int index = args.getInt("index");
+                        index = Toolbox.clampI(index,0,list.size()-1);
+                        var listA = list.subList(0,index);
+                        var listB = list.subList(index,list.size());
+                        res.add("a",listA);
+                        res.add("b",listB);
+                        return res;
+                    })
+                    .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
+                    .category(cat)
+                    .build());
+
+            POP = register(SpellBlock.Builder.create("pop")
+                    .inputs(SpellSignal.createList().named("list"))
+                    .outputs(SpellSignal.createAny().named("signal"),SpellSignal.createList().named("list"))
+                    .func((component, args) ->
+                    {
+                        SpellBlockResult res = SpellBlockResult.empty();
+                        var list = args.getList("list");
+                        if(list==null || list.isEmpty()) return res;
+                        res.add(list.remove(0).named("signal"));
+                        res.add("list",list);
+                        return res;
+                    })
+                    .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
+                    .category(cat)
+                    .build());
+
+            SIZE = register(SpellBlock.Builder.create("size")
+                    .inputs(SpellSignal.createList().named("list"))
+                    .outputs(SpellSignal.createNumber().named("size"))
+                    .func((component, args) ->
+                    {
+                        SpellBlockResult res = SpellBlockResult.empty();
+                        var list = args.getList("list");
+                        res.add("size",list==null?0:list.size());
+                        return res;
+                    })
+                    .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
+                    .category(cat)
+                    .build());
+
+            GET_ELEMENT = register(SpellBlock.Builder.create("get_element")
+                    .inputs(SpellSignal.createList().named("list"),SpellSignal.createNumber().named("index"))
+                    .outputs(SpellSignal.createAny().named("signal"))
+                    .func((component, args) ->
+                    {
+                        SpellBlockResult res = SpellBlockResult.empty();
+                        var list = args.getList("list");
+                        if(list==null || list.isEmpty()) return res;
+                        int index = args.getInt("index");
+                        if(index<0||index>=list.size()) return res;
+                        res.add(list.get(index).named("signal"));
+                        return res;
+                    })
+                    .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
+                    .category(cat)
+                    .build());
+
+            SET_ELEMENT = register(SpellBlock.Builder.create("set_element")
+                    .inputs(SpellSignal.createList().named("list"),SpellSignal.createNumber().named("index"),SpellSignal.createAny().named("signal"))
+                    .outputs(SpellSignal.createList().named("list"))
+                    .func((component, args) ->
+                    {
+                        SpellBlockResult res = SpellBlockResult.empty();
+                        var list = args.getList("list");
+                        if(list==null || list.isEmpty()) return res;
+                        int index = args.getInt("index");
+                        if(index<0||index>=list.size()) return res;
+                        list.set(index,args.get("signal"));
+                        res.add("list",list);
+                        return res;
+                    })
+                    .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
+                    .category(cat)
+                    .build());
         }
     }
     // sin, cos, tan

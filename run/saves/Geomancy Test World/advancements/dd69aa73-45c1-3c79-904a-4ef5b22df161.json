@@ -347,5 +347,95 @@
     },
     "done": true
   },
+  "geomancy:recipes/misc/spellcomponent_place": {
+    "criteria": {
+      "gotten_base": "2025-08-19 15:21:06 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_caster_slot": {
+    "criteria": {
+      "gotten_base": "2025-08-19 15:21:06 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/jewelry_octangulite_ring": {
+    "criteria": {
+      "has_ingredient": "2025-08-19 15:21:06 +0200"
+    },
+    "done": true
+  },
+  "geomancy:main/get_spellmaker": {
+    "criteria": {
+      "got_spellmaker": "2025-08-19 15:21:05 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_bool_entitygrounded": {
+    "criteria": {
+      "gotten_base": "2025-08-19 15:21:06 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_break": {
+    "criteria": {
+      "gotten_base": "2025-08-19 15:21:06 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_function_two": {
+    "criteria": {
+      "gotten_base": "2025-08-19 15:21:06 +0200"
+    },
+    "done": true
+  },
+  "geomancy:main/get_molten_gold": {
+    "criteria": {
+      "got_molten_gold": "2025-08-19 15:21:06 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_entity_nearest": {
+    "criteria": {
+      "gotten_base": "2025-08-19 15:21:06 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_spellmaker_block": {
+    "criteria": {
+      "default_conditions": "2025-08-19 15:21:05 +0200"
+    },
+    "done": true
+  },
+  "geomancy:milestones/milestone_souls": {
+    "criteria": {
+      "geomancy:main/get_spellmaker": "2025-08-19 15:21:05 +0200"
+    },
+    "done": false
+  },
+  "minecraft:story/lava_bucket": {
+    "criteria": {
+      "lava_bucket": "2025-08-19 15:21:06 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_provider": {
+    "criteria": {
+      "gotten_base": "2025-08-19 15:21:06 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_imbue": {
+    "criteria": {
+      "gotten_base": "2025-08-19 15:21:06 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/spellcomponent_log": {
+    "criteria": {
+      "gotten_base": "2025-08-19 15:21:06 +0200"
+    },
+    "done": true
+  },
   "DataVersion": 3465
 }

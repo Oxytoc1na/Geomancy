@@ -21,9 +21,11 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.spells.SpellSignal;
 
 import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public class Toolbox {
 
@@ -183,6 +185,14 @@ public class Toolbox {
     public static void playUISound(SoundEvent event) {
         if(MinecraftClient.getInstance()==null) return;
         MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(event, 1.0F));
+    }
+
+    public static <T> List<T> reverseList(List<T> list) {
+        List<T> res = new ArrayList<>();
+        for (int i = list.size()-1; i >= 0; i--) {
+            res.add(list.get(i));
+        }
+        return res;
     }
 
     public static class GradientBuilder{

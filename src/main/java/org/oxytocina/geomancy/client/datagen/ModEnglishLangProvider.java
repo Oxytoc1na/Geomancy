@@ -67,6 +67,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.spellmaker.types.text",      "Text");
             add("MODID.spellmaker.types.uuid",      "Entity");
             add("MODID.spellmaker.types.vector",    "Vector");
+            add("MODID.spellmaker.types.list",      "List");
             add("MODID.spellmaker.abouttoplace1",   "You are about to place");
             add("MODID.spellmaker.abouttoplace2",   "this component.");
 
@@ -75,6 +76,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.spellcomponent.category.arithmetic",     "Arithmetic");
             add("MODID.spellcomponent.category.effector",       "Effector");
             add("MODID.spellcomponent.category.reference",      "Reference");
+            add("MODID.spellcomponent.category.lists",          "Lists");
 
             // flow control
             addSpell("conveyor","Conveyor","outputs its input");
@@ -108,6 +110,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("raycast_dir","Raycast Dir.","returns the block face hit by a ray");
             addSpell("bool_entitygrounded","Entity Grounded","returns if an entity is on the ground");
             addSpell("entity_nearest","Nearest Entity","returns the entity closest to the position");
+            addSpell("invert","Invert","returns an inversion of the input");
             // effectors
             addSpell("print","Print","outputs a value to the casters chat");
             addSpell("fireball","Fireball","summons a fireball");
@@ -126,7 +129,13 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("ref_input","Ref. Input","sets a call result variable");
             addSpell("function","Function","calls a spell and returns a result");
             addSpell("function_two","Function 2","calls a spell with two arguments and returns a result");
-
+            // lists
+            addSpell("foreach","Foreach","individually sends out the elements of a list");
+            addSpell("split","Split","splits a list into two at the given index");
+            addSpell("pop","Pop","returns the first element of a list, and the list without it");
+            addSpell("size","Size","returns the count of elements in a list");
+            addSpell("get_element","Get Element","returns the element in a list at a given position");
+            addSpell("set_element","Set Element","sets the element in a list at a given position");
 
             add("MODID.spells.debug.error","Error in spell component %1$s: %2$s");
             add("MODID.spells.debug.broke","Couldn't afford spell %1$s. Cost: %2$f, available: %3$f");

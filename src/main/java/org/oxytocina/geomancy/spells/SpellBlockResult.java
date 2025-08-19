@@ -2,13 +2,16 @@ package org.oxytocina.geomancy.spells;
 
 import net.minecraft.util.math.Vec3d;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 public class SpellBlockResult {
     public HashMap<String,SpellSignal> vars;
     public int iterations = 1;
     public String iterationVarName = "i";
+    public List<SpellBlockResult> subResults = null;
 
     /// increases by 1 every time signals are pushed after block execution
     public int depth = 0;
@@ -54,6 +57,10 @@ public class SpellBlockResult {
         add(SpellSignal.createVector(value).named(name));
     }
 
+    public void add(String name, List<SpellSignal> value) { add(SpellSignal.createList(value).named(name)); }
+
+    public void addSubResult(SpellBlockResult res) { if(subResults==null) subResults = new ArrayList<>(); res.depth=depth; subResults.add(res); }
+
     public static SpellBlockResult empty(){
         return new SpellBlockResult();
     }
@@ -63,6 +70,11 @@ public class SpellBlockResult {
         res.vars.putAll(vars);
         res.iterationVarName=iterationVarName;
         res.depth=depth;
+        if(subResults!=null){
+            res.subResults = new ArrayList<>();
+            for(var r : subResults)
+                res.subResults.add(r.clone());
+        }
         return res;
     }
 

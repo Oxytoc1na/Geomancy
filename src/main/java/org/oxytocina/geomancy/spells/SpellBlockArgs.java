@@ -3,6 +3,7 @@ package org.oxytocina.geomancy.spells;
 import net.minecraft.util.math.Vec3d;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 public class SpellBlockArgs {
@@ -53,4 +54,6 @@ public class SpellBlockArgs {
     public Vec3d getVector(String name){
         return get(name).getVectorValue();
     }
+
+    public List<SpellSignal> getList(String name) { return get(name).getListValue(); }
 }
