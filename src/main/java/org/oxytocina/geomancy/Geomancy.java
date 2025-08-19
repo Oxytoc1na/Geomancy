@@ -21,7 +21,7 @@ import org.oxytocina.geomancy.effects.ModStatusEffects;
 import org.oxytocina.geomancy.enchantments.ModEnchantments;
 import org.oxytocina.geomancy.entity.ModEntityAttributes;
 import org.oxytocina.geomancy.entity.ModEntityTypes;
-import org.oxytocina.geomancy.event.PlayerTickHandler;
+import org.oxytocina.geomancy.event.ServerTickHandler;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 import org.oxytocina.geomancy.items.SpellComponentStoringItem;
@@ -33,6 +33,7 @@ import org.oxytocina.geomancy.particles.ModParticleFactories;
 import org.oxytocina.geomancy.particles.ModParticleTypes;
 import org.oxytocina.geomancy.progression.advancement.ModCriteria;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
+import org.oxytocina.geomancy.registries.ModWoodTypes;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
 import org.oxytocina.geomancy.util.GeomancyConfig;
 import org.oxytocina.geomancy.world.dimension.ModDimensions;
@@ -114,29 +115,35 @@ public class Geomancy implements ModInitializer {
             ModItems.register();
             IJewelryItem.populateItemGroup();
             SpellComponentStoringItem.populateItemGroup();
+
             ModBlocks.register();
+            ModWoodTypes.registerStrippables();
             ModFluids.register();
+            ModBlockEntities.register();
+
             ModRecipeTypes.registerSerializer();
             ModSoundEvents.register();
             ModLootFunctionTypes.register();
             ModLootTables.register();
             ModCriteria.register();
-            ModBlockEntities.register();
             ModEnchantments.register();
             ModParticleTypes.register();
             ModParticleFactories.register();
             ModMessages.registerC2SPackets();
             ModCommands.register();
+
             ModEntityTypes.register();
             ModEntityAttributes.register();
+
             GeomancyIntegrationPacks.register();
             ModStatusEffects.register();
+
             ModWorldGeneration.generateModWorldGen();
             ModTrunkPlacerTypes.register();
             ModFoliagePlacerTypes.register();
             ModDimensions.register();
 
-            ServerTickEvents.START_SERVER_TICK.register(new PlayerTickHandler());
+            ServerTickEvents.START_SERVER_TICK.register(new ServerTickHandler());
 
         } catch (Throwable t) {
             RuntimeException exception = new RuntimeException(String.format("Geomancy Initialization failed!",

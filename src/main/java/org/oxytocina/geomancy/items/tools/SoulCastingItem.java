@@ -84,19 +84,28 @@ public class SoulCastingItem extends StorageItem implements IManaStoringItem, IS
         var selectedSpellIndex = getSelectedSpellIndex(stack);
         var spells = getCastableSpellItems(stack);
         if(!spells.isEmpty())
+        {
             selectedSpellIndex = selectedSpellIndex%spells.size();
-        for (int i = 0; i < spells.size(); i++) {
-            var spell = spells.get(i);
-            var grid = SpellStoringItem.readGrid(spell);
-            String selectedString = "  ";
-            if(selectedSpellIndex == i) selectedString = "> ";
-            tooltip.add(
-                    Text.literal(selectedString).formatted(Formatting.DARK_AQUA).append(
-                            grid==null?Text.translatable("geomancy.spellstorage.empty").formatted(Formatting.DARK_GRAY)
-                                    :grid.name==""?Text.translatable("geomancy.spellstorage.unnamed").formatted(Formatting.GRAY)
-                            : Text.literal(grid.name).formatted(Formatting.GRAY)));
+            for (int i = 0; i < spells.size(); i++) {
+                var spell = spells.get(i);
+                var grid = SpellStoringItem.readGrid(spell);
+                String selectedString = "  ";
+                if(selectedSpellIndex == i) selectedString = "> ";
+                tooltip.add(
+                        Text.literal(selectedString).formatted(Formatting.DARK_AQUA).append(
+                                grid==null?Text.translatable("geomancy.spellstorage.empty").formatted(Formatting.DARK_GRAY)
+                                        :grid.name==""?Text.translatable("geomancy.spellstorage.unnamed").formatted(Formatting.GRAY)
+                                        : Text.literal(grid.name).formatted(Formatting.GRAY)));
 
+            }
         }
+        else{
+            tooltip.add(Text.translatable("geomancy.caster.emptyhint1").formatted(Formatting.DARK_GRAY));
+            tooltip.add(Text.translatable("geomancy.caster.emptyhint2").formatted(Formatting.DARK_GRAY));
+            tooltip.add(Text.translatable("geomancy.caster.emptyhint3").formatted(Formatting.DARK_GRAY));
+            tooltip.add(Text.translatable("geomancy.caster.emptyhint4").formatted(Formatting.DARK_GRAY));
+        }
+
     }
 
     public ArrayList<ItemStack> getCastableSpellItems(ItemStack stack){

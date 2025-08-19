@@ -32,7 +32,7 @@ public class SpellmakerTryAddComponentC2SPacket {
                 var function = component.function;
                 // look for matching components in player inventory
                 var availableComponents = SpellmakerBlockEntity.getComponentAmountsIn(player.getInventory());
-                boolean canAfford = availableComponents.containsKey(function) && availableComponents.get(function) >= 1;
+                boolean canAfford = player.isCreative() || availableComponents.containsKey(function) && availableComponents.get(function) >= 1;
 
                 if(canAfford){
                     ItemStack storageStack = spellmaker.getOutput();

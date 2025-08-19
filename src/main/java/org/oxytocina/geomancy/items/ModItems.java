@@ -21,6 +21,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.items.armor.*;
 import org.oxytocina.geomancy.items.armor.materials.*;
 import org.oxytocina.geomancy.items.tools.*;
 import org.oxytocina.geomancy.items.tools.materials.ModToolMaterials;
@@ -158,7 +159,7 @@ public class ModItems {
     public static final LeadHoeItem LEAD_HOE =          register("lead_hoe",        new LeadHoeItem     (ModToolMaterials.LEAD, -1, -2.0F,      new Item.Settings(),1),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
     public static final LeadArmorItem LEAD_HELMET =     register("lead_helmet",     new LeadArmorItem   (ModArmorMaterials.LEAD, ArmorItem.Type.HELMET,        new Item.Settings(),1));
     public static final LeadArmorItem LEAD_CHESTPLATE = register("lead_chestplate", new LeadArmorItem   (ModArmorMaterials.LEAD, ArmorItem.Type.CHESTPLATE,    new Item.Settings(),1));
-    public static final LeadArmorItem LEAD_LEGGINGS =   register("lead_leggings",   new LeadArmorItem   (ModArmorMaterials.LEAD, ArmorItem.Type.LEGGINGS,      new Item.Settings(),1));
+    public static final LeadArmorItem LEAD_LEGGINGS =   register("lead_leggings",   new LeadArmorItem(ModArmorMaterials.LEAD, ArmorItem.Type.LEGGINGS,      new Item.Settings(),1));
     public static final LeadArmorItem LEAD_BOOTS =      register("lead_boots",      new LeadArmorItem   (ModArmorMaterials.LEAD, ArmorItem.Type.BOOTS,         new Item.Settings(),1));
     public static final Plumbometer PLUMBOMETER =       register("plumbometer",     new Plumbometer     (new FabricItemSettings().maxCount(1).rarity(Rarity.UNCOMMON)),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom));
 
@@ -203,7 +204,7 @@ public class ModItems {
     public static final OctanguliteAxeItem OCTANGULITE_AXE =            register("octangulite_axe",         new OctanguliteAxeItem      (ModToolMaterials.OCTANGULITE, 7.0F, -3.2F, new Item.Settings(),1),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom));
     public static final OctanguliteHoeItem OCTANGULITE_HOE =            register("octangulite_hoe",         new OctanguliteHoeItem      (ModToolMaterials.OCTANGULITE, -1, -2.0F,   new Item.Settings(),1),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom));
     public static final OctanguliteArmorItem OCTANGULITE_HELMET =       register("octangulite_helmet",      new OctanguliteArmorItem    (ModArmorMaterials.OCTANGULITE, ArmorItem.Type.HELMET,      new Item.Settings(),1));
-    public static final OctanguliteArmorItem OCTANGULITE_CHESTPLATE =   register("octangulite_chestplate",  new OctanguliteArmorItem    (ModArmorMaterials.OCTANGULITE, ArmorItem.Type.CHESTPLATE,  new Item.Settings(),1));
+    public static final OctanguliteArmorItem OCTANGULITE_CHESTPLATE =   register("octangulite_chestplate",  new OctanguliteArmorItem(ModArmorMaterials.OCTANGULITE, ArmorItem.Type.CHESTPLATE,  new Item.Settings(),1));
     public static final OctanguliteArmorItem OCTANGULITE_LEGGINGS =     register("octangulite_leggings",    new OctanguliteArmorItem    (ModArmorMaterials.OCTANGULITE, ArmorItem.Type.LEGGINGS,    new Item.Settings(),1));
     public static final OctanguliteArmorItem OCTANGULITE_BOOTS =        register("octangulite_boots",       new OctanguliteArmorItem    (ModArmorMaterials.OCTANGULITE, ArmorItem.Type.BOOTS,       new Item.Settings(),1));
 
@@ -222,10 +223,10 @@ public class ModItems {
 
     // caster items
     //public static final SoulCastingItem CASTER_TEST = register("caster_test",new SoulCastingItem(new FabricItemSettings(),1));
-    public static final SoulCastingItem SPELLGLOVE =                register("spellglove",          new SoulCastingItem(new FabricItemSettings(),9*3),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
-    public static final SpellStoringItem SPELLSTORAGE_SMALL =       register("spellstorage_small",  new SpellStoringItem(new FabricItemSettings(),3,3));
-    public static final SpellStoringItem SPELLSTORAGE_MEDIUM =      register("spellstorage_medium", new SpellStoringItem(new FabricItemSettings(),5,5));
-    public static final SpellStoringItem SPELLSTORAGE_LARGE =       register("spellstorage_large",  new SpellStoringItem(new FabricItemSettings(),7,7));
+    public static final SoulCastingItem SPELLGLOVE =                register("spellglove",          new SoulCastingItem(new FabricItemSettings().maxCount(1),9*3),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
+    public static final SpellStoringItem SPELLSTORAGE_SMALL =       register("spellstorage_small",  new SpellStoringItem(new FabricItemSettings().maxCount(8),3,3));
+    public static final SpellStoringItem SPELLSTORAGE_MEDIUM =      register("spellstorage_medium", new SpellStoringItem(new FabricItemSettings().maxCount(8),5,5));
+    public static final SpellStoringItem SPELLSTORAGE_LARGE =       register("spellstorage_large",  new SpellStoringItem(new FabricItemSettings().maxCount(8),7,7));
     public static final SpellComponentStoringItem SPELLCOMPONENT =  register("spellcomponent",      new SpellComponentStoringItem(new FabricItemSettings()),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
     public static final StorageItem COMPONENT_POUCH =               register("component_pouch",     new StorageItem(new FabricItemSettings().maxCount(1),9*3, ModItemTags.COMPONENT_STORING,true));
 

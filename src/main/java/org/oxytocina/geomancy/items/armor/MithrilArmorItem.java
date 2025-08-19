@@ -1,4 +1,4 @@
-package org.oxytocina.geomancy.items.armor.materials;
+package org.oxytocina.geomancy.items.armor;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -7,7 +7,6 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
@@ -15,8 +14,6 @@ import org.jetbrains.annotations.NotNull;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.client.registries.ModModelLayers;
 import org.oxytocina.geomancy.client.rendering.armor.MithrilArmorModel;
-import org.oxytocina.geomancy.client.rendering.armor.OctanguliteArmorModel;
-import org.oxytocina.geomancy.items.IMaddeningItem;
 import org.oxytocina.geomancy.items.jewelry.JewelryArmorItem;
 import org.oxytocina.geomancy.items.jewelry.JewelryItemSettings;
 

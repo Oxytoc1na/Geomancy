@@ -1,6 +1,7 @@
-package org.oxytocina.geomancy.items.armor.materials;
+package org.oxytocina.geomancy.items.armor;
 
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,7 +19,9 @@ import net.minecraft.registry.tag.TagKey;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.collection.DefaultedList;
@@ -29,9 +32,11 @@ import org.oxytocina.geomancy.items.*;
 import org.oxytocina.geomancy.items.tools.SoulCastingItem;
 import org.oxytocina.geomancy.items.tools.StorageItem;
 import org.oxytocina.geomancy.spells.SpellBlockArgs;
+import org.oxytocina.geomancy.spells.SpellGrid;
 import org.oxytocina.geomancy.spells.SpellSignal;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.oxytocina.geomancy.items.tools.StorageItem.getInventoryStatic;
 
@@ -77,12 +82,7 @@ public class CastingArmorItem extends ArmorItem implements IMaddeningItem, IStor
     }
 
     public int getSelectedSpellIndex(ItemStack stack){
-        if(!stack.getOrCreateNbt().contains("selected", NbtElement.INT_TYPE)) return 0;
-        int res = stack.getNbt().getInt("selected");
-        int installed = getInstalledSpellsCount(stack);
-        if(installed<=0)return 0;
-        res = ((res%installed)+installed)%installed;
-        return res;
+        return 0;
     }
 
     public int getInstalledSpellsCount(ItemStack stack){
@@ -90,7 +90,7 @@ public class CastingArmorItem extends ArmorItem implements IMaddeningItem, IStor
     }
 
     public ArrayList<ItemStack> getCastableSpellItems(ItemStack stack){
-        if(!(stack.getItem() instanceof SoulCastingItem)) return null;
+        if(!(stack.getItem() instanceof CastingArmorItem)) return null;
 
         ArrayList<ItemStack> res = new ArrayList<>();
         for (int i = 0; i < getStorageSize(stack); i++) {
@@ -138,7 +138,7 @@ public class CastingArmorItem extends ArmorItem implements IMaddeningItem, IStor
     @Override
     public @Nullable ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
         var stack = player.getStackInHand(player.getActiveHand());
-        if(!(stack.getItem() instanceof StorageItem sci)) return null;
+        if(stack.getItem()!=this) return null;
         return new StorageItemScreenHandler(syncId,playerInventory,stack,getStorableTag(),new PropertyDelegate() {
             @Override
             public int get(int index) {
@@ -280,5 +280,35 @@ public class CastingArmorItem extends ArmorItem implements IMaddeningItem, IStor
             args.vars.put("target", SpellSignal.createUUID(target.getUuid()));
             cast(stack,wearer,args);
         }
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
+
+        var spells = getCastableSpellItems(stack);
+        if(!spells.isEmpty())
+        {
+            var spell = spells.get(0);
+            var grid = SpellStoringItem.readGrid(spell);
+            tooltip.add(getTriggerText().formatted(Formatting.DARK_GRAY));
+            tooltip.add(Text.translatable("geomancy.caster.willcast",SpellGrid.getName(grid)).formatted(Formatting.DARK_GRAY));
+        }
+        else{
+            tooltip.add(Text.translatable("geomancy.caster.emptyhint1").formatted(Formatting.DARK_GRAY));
+            tooltip.add(getTriggerText().formatted(Formatting.DARK_GRAY));
+            tooltip.add(Text.translatable("geomancy.caster.emptyhint4").formatted(Formatting.DARK_GRAY));
+        }
+
+    }
+
+    public MutableText getTriggerText(){
+        return Text.translatable("geomancy.caster.trigger."+switch(type){
+            case BOOTS -> "boots";
+            case LEGGINGS -> "jump";
+            case CHESTPLATE -> "gethit";
+            case HELMET -> "hit";
+            default->"ERROR";
+        });
     }
 }

@@ -231,4 +231,9 @@ public class SpellGrid {
             return xDiffToEdges>=(diffToMidYIndex-ySkew)/2;
         }
     }
+
+    public static MutableText getName(SpellGrid grid){
+        if(grid==null) return Text.translatable("geomancy.spellstorage.empty").formatted(Formatting.DARK_GRAY);
+        return grid.getName().formatted(Formatting.GRAY);
+    }
 }

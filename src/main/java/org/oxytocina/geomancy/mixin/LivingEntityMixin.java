@@ -3,32 +3,32 @@ package org.oxytocina.geomancy.mixin;
 import com.llamalad7.mixinextras.injector.*;
 import com.llamalad7.mixinextras.injector.wrapoperation.*;
 
-import net.minecraft.enchantment.EnchantmentHelper;
+import io.netty.buffer.ByteBuf;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.*;
 import net.minecraft.entity.damage.*;
 import net.minecraft.entity.effect.*;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.*;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.*;
 import net.minecraft.nbt.*;
-import net.minecraft.registry.tag.FluidTags;
-import net.minecraft.registry.tag.TagKey;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.*;
 import net.minecraft.util.math.*;
 import net.minecraft.world.*;
 import org.jetbrains.annotations.*;
 import org.oxytocina.geomancy.entity.TouchingFluidAware;
-import org.oxytocina.geomancy.items.armor.materials.IListenerArmor;
+import org.oxytocina.geomancy.items.armor.IListenerArmor;
 import org.oxytocina.geomancy.items.jewelry.IJewelryItem;
-import org.oxytocina.geomancy.items.jewelry.JewelryItem;
-import org.oxytocina.geomancy.mixin.EntityMixin;
+import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.registries.ModFluidTags;
+import org.oxytocina.geomancy.util.EntityUtil;
 import org.spongepowered.asm.mixin.*;
-import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.*;
 
@@ -178,22 +178,19 @@ public abstract class LivingEntityMixin {
         }
     }
 
-    @Inject(method="Lnet/minecraft/entity/LivingEntity;jump()V", at = @At(value="HEAD"))
-    private void geomancy$jump(CallbackInfo ci){
-        LivingEntity thisEntity = (LivingEntity) (Object) this;
-        World world = thisEntity.getWorld();
-        if (!world.isClient) {
-            if (thisEntity instanceof MobEntity thisMobEntity) {
-                for (ItemStack armorItemStack : thisMobEntity.getArmorItems()) {
-                    if (armorItemStack.getItem() instanceof IListenerArmor armorWithHitEffect) {
-                        armorWithHitEffect.onJump(armorItemStack,thisMobEntity);
-                    }
-                }
-            } else if (thisEntity instanceof ServerPlayerEntity thisPlayerEntity) {
-                for (ItemStack armorItemStack : thisPlayerEntity.getArmorItems()) {
-                    if (armorItemStack.getItem() instanceof IListenerArmor armorWithHitEffect) {
-                        armorWithHitEffect.onJump(armorItemStack, thisPlayerEntity);
-                    }
+    @Inject(method="Lnet/minecraft/entity/LivingEntity;tickMovement()V", at = @At(value="INVOKE", target="Lnet/minecraft/entity/LivingEntity;isOnGround()Z",ordinal=2))
+    private void geomancy$prejump(CallbackInfo ci){
+        if(this.jumpingCooldown<=0){
+            LivingEntity thisEntity = (LivingEntity) (Object) this;
+            World world = thisEntity.getWorld();
+            if (!world.isClient) {
+                EntityUtil.onJump(thisEntity);
+            }
+            else{
+                if(thisEntity instanceof ClientPlayerEntity cpe){
+                    // send jump packet
+                    // i really wish i didnt have to do it like this but oh well
+                    ClientPlayNetworking.send(ModMessages.PLAYER_JUMP, PacketByteBufs.create());
                 }
             }
         }
@@ -259,6 +256,8 @@ public abstract class LivingEntityMixin {
 
     @Shadow
     abstract protected boolean shouldSwimInFluids();
+
+    @Shadow private int jumpingCooldown;
 
     @Inject(method = "travel", at = @At("HEAD"), cancellable = true)
     public void geomancy$travel(Vec3d movementInput, CallbackInfo ci) {

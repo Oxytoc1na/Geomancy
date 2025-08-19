@@ -1,4 +1,4 @@
-package org.oxytocina.geomancy.items.armor.materials;
+package org.oxytocina.geomancy.items.armor;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;

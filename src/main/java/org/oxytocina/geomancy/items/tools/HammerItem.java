@@ -20,7 +20,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.Geomancy;
-import org.oxytocina.geomancy.blocks.SmitheryBlock;
+import org.oxytocina.geomancy.blocks.blockEntities.SmitheryBlock;
 import org.oxytocina.geomancy.blocks.blockEntities.SmitheryBlockEntity;
 import org.oxytocina.geomancy.enchantments.ModEnchantments;
 

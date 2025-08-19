@@ -140,6 +140,15 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
 
             add("MODID.caster.nospells","No spells installed");
+            add("MODID.caster.emptyhint1","Shift + use to insert spells");
+            add("MODID.caster.emptyhint2","Shift + scroll to select spell");
+            add("MODID.caster.emptyhint3","Use to cast selected spell");
+            add("MODID.caster.emptyhint4","Spells may need souls to cast");
+
+            add("MODID.caster.trigger.gethit","Get hit to cast first spell");
+            add("MODID.caster.trigger.hit","Attack to cast first spell");
+            add("MODID.caster.trigger.jump","Jump to cast first spell");
+            add("MODID.caster.willcast","Will cast: %1$s");
         }
 
         // Items
@@ -223,6 +232,11 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("item.MODID.octangulite_leggings"       , "Octangulite Leggings");
             add("item.MODID.octangulite_chestplate"     , "Octangulite Chestplate");
             add("item.MODID.octangulite_helmet"         , "Octangulite Helmet");
+
+            add("item.MODID.casting_boots"          , "Soulcasting Boots");
+            add("item.MODID.casting_leggings"       , "Soulcasting Leggings");
+            add("item.MODID.casting_chestplate"     , "Soulcasting Chestplate");
+            add("item.MODID.casting_helmet"         , "Soulcasting Helmet");
 
             add("item.MODID.tourmaline" , "Tourmaline");
             add("item.MODID.orthoclase" , "Orthoclase");

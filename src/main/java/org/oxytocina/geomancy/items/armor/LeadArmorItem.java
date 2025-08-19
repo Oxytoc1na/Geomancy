@@ -1,9 +1,7 @@
-package org.oxytocina.geomancy.items.armor.materials;
+package org.oxytocina.geomancy.items.armor;
 
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
-import net.minecraft.item.PickaxeItem;
-import net.minecraft.item.ToolMaterial;
 import org.oxytocina.geomancy.items.ILeadPoisoningItem;
 
 public class LeadArmorItem extends ArmorItem implements ILeadPoisoningItem {

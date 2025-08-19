@@ -1,4 +1,4 @@
-package org.oxytocina.geomancy.items.armor.materials;
+package org.oxytocina.geomancy.items.armor;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
