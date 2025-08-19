@@ -53,9 +53,11 @@ public class GeomancyCreditsScreen extends Screen {
     private final float baseSpeed;
     private int speedMultiplier;
     private final LogoDrawer logoDrawer = new LogoDrawer(false);
+    private final Screen parent;
 
-    public GeomancyCreditsScreen(boolean endCredits, Runnable finishAction) {
+    public GeomancyCreditsScreen(Screen parent, boolean endCredits, Runnable finishAction) {
         super(NarratorManager.EMPTY);
+        this.parent=parent;
         this.endCredits = endCredits;
         this.finishAction = finishAction;
         if (!endCredits) {
@@ -118,6 +120,7 @@ public class GeomancyCreditsScreen extends Screen {
 
     private void closeScreen() {
         this.finishAction.run();
+        this.client.setScreen(parent);
     }
 
     protected void init() {

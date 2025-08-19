@@ -3,6 +3,7 @@ package org.oxytocina.geomancy.spells;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.Vec3d;
@@ -122,7 +123,11 @@ public class SpellSignal {
     }
 
     public Text toText(){
-        return Text.translatable("geomancy.spellmaker.types."+type.toString().toLowerCase()).formatted(Formatting.DARK_AQUA).append(Text.literal(" "+name).formatted(Formatting.GRAY));
+        return getTypeText().append(Text.literal(" "+name).formatted(Formatting.GRAY));
+    }
+
+    public MutableText getTypeText(){
+        return Text.translatable("geomancy.spellmaker.types."+type.toString().toLowerCase()).formatted(Formatting.DARK_AQUA);
     }
 
     public int getDepth() {

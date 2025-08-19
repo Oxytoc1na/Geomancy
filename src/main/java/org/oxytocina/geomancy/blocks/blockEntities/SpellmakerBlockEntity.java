@@ -150,6 +150,10 @@ public class SpellmakerBlockEntity extends BlockEntity implements ExtendedScreen
         return componentMapToInventory(comps);
     }
 
+    public Inventory getComponentItemsFromPlayer(PlayerEntity player){
+        return player.isCreative() ? this.getCreativeComponentItems() : this.getComponentItems(player.getInventory());
+    }
+
     public static LinkedHashMap<SpellBlock, Integer> getComponentAmountsIn(Inventory inv){
         LinkedHashMap<SpellBlock, Integer> res = new LinkedHashMap<>();
 

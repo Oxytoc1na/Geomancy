@@ -360,7 +360,7 @@ public class SpellComponent {
             modes = parent.function.getDefaultSideConfigs(parent)[
                     (getDirIndex(dir)+parent.rotation+6)%6
                     ].modes;
-            sanityCheckVarName();
+            sanityCheckVarName(true);
         }
 
         public SideConfig(SpellComponent parent,String dir, String varName, Mode[] modes){
@@ -423,7 +423,7 @@ public class SpellComponent {
             if(selectedMode==index) return;
             selectedMode=index;
             // set variable to fitting one
-            sanityCheckVarName();
+            sanityCheckVarName(false);
         }
 
         public Mode activeMode(){
@@ -477,17 +477,19 @@ public class SpellComponent {
             };
         }
 
-        private void sanityCheckVarName() {
+        private void sanityCheckVarName(boolean reportErrors) {
             switch(activeMode()){
                 case Input:
                     if(parent.function.inputs.containsKey(varName)) return;
-                    Geomancy.logError("variable name sanity check failed! in: "+varName+", parent: "+parent.function.identifier.toString()+", side: "+dir);
+                    if(reportErrors)
+                        Geomancy.logError("variable name sanity check failed! in: "+varName+", parent: "+parent.function.identifier.toString()+", side: "+dir);
                     setVar(
                             parent.function.inputs.keySet().stream().findFirst().orElse(""));
                     return;
                 case Output:
                     if(parent.function.outputs.containsKey(varName)) return;
-                    Geomancy.logError("variable name sanity check failed! out: "+varName+", parent: "+parent.function.identifier.toString()+", side: "+dir);
+                    if(reportErrors)
+                        Geomancy.logError("variable name sanity check failed! out: "+varName+", parent: "+parent.function.identifier.toString()+", side: "+dir);
                     setVar(parent.function.outputs.keySet().stream().findFirst().orElse(""));
                     return;
                 case Blocked: varName="";return;

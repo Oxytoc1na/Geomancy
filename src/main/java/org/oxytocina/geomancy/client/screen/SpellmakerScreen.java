@@ -30,6 +30,7 @@ import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.glfw.GLFW;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.client.GeomancyClient;
 import org.oxytocina.geomancy.client.screen.widgets.SpellmakerButton;
 import org.oxytocina.geomancy.client.screen.widgets.SpellmakerCheckbox;
 import org.oxytocina.geomancy.client.screen.widgets.SpellmakerTextInput;
@@ -53,6 +54,7 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
     public final static int bgHeight=189;
 
     private boolean inspecting = false;
+    private boolean placingNewComponent = false;
 
     public List<SpellmakerTextInput> textInputs;
 
@@ -136,8 +138,14 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
         clearChildren();
         widgets.clear();
 
+        // new component preview
+        if(placingNewComponent && handler.hasGrid())
+        {
+            // sorry! no buttons!
+        }
+
         // grid properties
-        if(!inspecting && handler.hasGrid()){
+        if(!placingNewComponent && !inspecting && handler.hasGrid()){
             int bgPosX = (width-getBackgroundWidth())/2;
             int bgPosY = (height-getBackgroundHeight())/2;
             final int infoPosX = bgPosX+SpellmakerScreen.bgWidth+10;
@@ -182,7 +190,7 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
         }
 
         // instantiate buttons
-        if(inspecting){
+        if(!placingNewComponent && inspecting){
             if(handler.selectedComponent!=null){
                 int bgPosX = (width-getBackgroundWidth())/2;
                 int bgPosY = (height-getBackgroundHeight())/2;
@@ -507,6 +515,32 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         renderBackground(context);//,mouseX,mouseY,delta);
         super.render(context, mouseX, mouseY, delta);
+
+        // render cursor stack for new components...
+        ItemStack cursorStack = this.touchDragStack.isEmpty() ? this.handler.getCursorStack() : this.touchDragStack;
+        if (cursorStack.isEmpty()) {
+
+            RenderSystem.disableDepthTest();
+            context.getMatrices().push();
+            context.getMatrices().translate((float)this.x, (float)this.y, 0.0F);
+
+            // ...only if there isnt already a cursor stack being drawn
+            cursorStack = handler.getHeldNewComponentStack();
+            String text = Formatting.DARK_AQUA + "+";
+            //int section = (int)((GeomancyClient.tick/5)%4);
+            //text += switch(section){
+            //    case 0->"/";
+            //    case 1->"-";
+            //    case 2->"\\";
+            //    case 3->"|";
+            //    default->"";
+            //};
+            this.drawItem(context, cursorStack, mouseX - this.x - 8, mouseY - this.y - 8, text);
+
+            context.getMatrices().pop();
+            RenderSystem.enableDepthTest();
+        }
+
         drawMouseoverTooltip(context,mouseX,mouseY);
         handler.render(context, mouseX, mouseY, delta);
     }
@@ -549,5 +583,10 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
         for (int j = 0; j < 2; j++) {
             selectNewCompScrollBtns[j].active = handler.componentScrollActive(j);
         }
+    }
+
+    public void setNewComponentSelected(boolean b) {
+        this.placingNewComponent = b;
+        init();
     }
 }

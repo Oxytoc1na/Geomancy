@@ -67,6 +67,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.spellmaker.types.text",      "Text");
             add("MODID.spellmaker.types.uuid",      "Entity");
             add("MODID.spellmaker.types.vector",    "Vector");
+            add("MODID.spellmaker.abouttoplace1",   "You are about to place");
+            add("MODID.spellmaker.abouttoplace2",   "this component.");
 
             add("MODID.spellcomponent.category.flowcontrol",    "Flow control");
             add("MODID.spellcomponent.category.provider",       "Provider");
