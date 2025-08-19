@@ -2,6 +2,7 @@ package org.oxytocina.geomancy.blocks;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.enums.Instrument;
 import net.minecraft.block.piston.PistonBehavior;
@@ -23,6 +24,7 @@ import org.oxytocina.geomancy.blocks.blockEntities.SmitheryBlock;
 import org.oxytocina.geomancy.blocks.blockEntities.SpellmakerBlock;
 import org.oxytocina.geomancy.blocks.fluids.GoldFluidBlock;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
+import org.oxytocina.geomancy.blocks.fluids.MoltenGoldCauldronBlock;
 import org.oxytocina.geomancy.items.ExtraItemSettings;
 import org.oxytocina.geomancy.items.LeadBlockItem;
 import org.oxytocina.geomancy.items.ModItems;
@@ -195,7 +197,7 @@ public class ModBlocks {
     }
 
     public static final Block MOLTEN_GOLD = register("molten_gold", settings -> new GoldFluidBlock(ModFluids.MOLTEN_GOLD,null,settings),fluid(MapColor.GOLD).luminance(value -> 15).replaceable(),ExtraBlockSettings.create().fluid());
-
+    public static final Block MOLTEN_GOLD_CAULDRON = register("molten_gold_cauldron", MoltenGoldCauldronBlock::new,AbstractBlock.Settings.copy(Blocks.CAULDRON).luminance(state -> 15),ExtraBlockSettings.create().dontGroupItem().notSimpleCube());
 
     public static void register(){
         ItemGroupEvents.modifyEntriesEvent(ModItems.MAIN_ITEM_GROUP_KEY).register((itemGroup) -> {
@@ -204,6 +206,7 @@ public class ModBlocks {
                 itemGroup.add(b.asItem());
             }
         });
+
     }
 
     private static <T extends Block> T register(String name, Function<AbstractBlock.Settings, T> blockFactory, AbstractBlock.Settings settings) {

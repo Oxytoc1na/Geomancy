@@ -1,5 +1,6 @@
 package org.oxytocina.geomancy.registries;
 
+import net.minecraft.block.dispenser.DispenserBehavior;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.recipe.*;
 import net.minecraft.recipe.*;
@@ -50,6 +51,8 @@ public class ModRecipeTypes {
 
         GEODE_SERIALIZER = registerSerializer(GEODE_ID, new GeodeRecipeSerializer<>(GeodeRecipe::new));
         GEODE = registerRecipeType(GEODE_ID);
+
+        DispenserBehavior.registerDefaults();
     }
 
 }

@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.impl.util.log.Log;
 import net.fabricmc.loader.impl.util.log.LogCategory;
+import net.minecraft.block.CauldronBlock;
 import net.minecraft.item.Item;
 import net.minecraft.recipe.RecipeManager;
 import net.minecraft.registry.tag.TagKey;
@@ -32,6 +33,8 @@ import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.particles.ModParticleFactories;
 import org.oxytocina.geomancy.particles.ModParticleTypes;
 import org.oxytocina.geomancy.progression.advancement.ModCriteria;
+import org.oxytocina.geomancy.registries.ModCauldronBehaviors;
+import org.oxytocina.geomancy.registries.ModDispenserBehaviors;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
 import org.oxytocina.geomancy.registries.ModWoodTypes;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
@@ -142,6 +145,9 @@ public class Geomancy implements ModInitializer {
             ModTrunkPlacerTypes.register();
             ModFoliagePlacerTypes.register();
             ModDimensions.register();
+
+            ModDispenserBehaviors.register();
+            ModCauldronBehaviors.register();
 
             ServerTickEvents.START_SERVER_TICK.register(new ServerTickHandler());
 

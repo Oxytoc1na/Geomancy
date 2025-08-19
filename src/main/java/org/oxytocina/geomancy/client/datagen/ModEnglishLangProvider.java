@@ -351,11 +351,12 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("block.MODID.molten_gold"           , "Molten Gold");
             add("block.MODID.mithril_anvil"         , "Mithril Anvil");
             add("block.MODID.gilded_deepslate"      , "Gilded Deepslate");
+            add("block.MODID.molten_gold_cauldron"  , "Molten Gold Cauldron");
             add("block.MODID.decorated_gilded_deepslate", "Decorated Gilded Deepslate");
 
             add("block.MODID.smithery_block"            , "Smithery");
             add("container.MODID.smithery_block"        , "Smithery");
-            add("message.MODID.smithery.fail.break"     ,"that didn't sound good...");
+            add("message.MODID.smithery_block.json.fail.break"     ,"that didn't sound good...");
 
             add("block.MODID.spellmaker_block"            , "Spellmaker");
             add("container.MODID.spellmaker_block"        , "Spellmaker");
