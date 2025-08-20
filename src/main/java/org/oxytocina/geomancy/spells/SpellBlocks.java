@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.impl.lib.sat4j.core.Vec;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.Enchantments;
@@ -24,6 +25,7 @@ import net.minecraft.item.Items;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -49,8 +51,10 @@ import org.oxytocina.geomancy.sound.ModSoundEvents;
 import org.oxytocina.geomancy.util.BlockHelper;
 import org.oxytocina.geomancy.util.Toolbox;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -92,7 +96,12 @@ public class SpellBlocks {
     public static final SpellBlock RAYCAST_DIR;
     public static final SpellBlock BOOL_ENTITYGROUNDED;
     public static final SpellBlock ENTITY_NEAREST;
+    public static final SpellBlock TEXT_ENTITY_ID;
     public static final SpellBlock INVERT;
+    public static final SpellBlock AND;
+    public static final SpellBlock EQUALS;
+    public static final SpellBlock OR;
+    public static final SpellBlock XOR;
 
     // effectors
     public static final SpellBlock PRINT;
@@ -117,12 +126,11 @@ public class SpellBlocks {
     // lists
     public static final SpellBlock FOREACH;
     public static final SpellBlock SPLIT;
-    //public static final SpellBlock MERGE; TODO: add merging lists to the add component
     public static final SpellBlock POP;
     public static final SpellBlock SIZE;
     public static final SpellBlock GET_ELEMENT;
     public static final SpellBlock SET_ELEMENT;
-
+    public static final SpellBlock ENTITIES_NEAR;
 
     private static SpellBlock.Category cat;
 
@@ -301,14 +309,51 @@ public class SpellBlocks {
                         .parameters()
                         .func((comp,vars) -> {
                             SpellBlockResult res = SpellBlockResult.empty();
-                            if(vars.get("a").type == vars.get("b").type){
-                                switch(vars.get("a").type){
+                            var a = vars.get("a");
+                            var b = vars.get("b");
+                            // summing signals of identical types
+                            if(a.type == b.type){
+                                switch(a.type){
                                     case Vector:
-                                        res.add(SpellSignal.createVector(vars.getVector("a").add(vars.getVector("b"))).named("sum"));
+                                        res.add(SpellSignal.createVector(a.getVectorValue().add(b.getVectorValue())).named("sum"));
                                         break;
                                     case Number:
-                                        res.add(SpellSignal.createNumber(vars.getNumber("a")+vars.getNumber("b")).named("sum"));
+                                        res.add(SpellSignal.createNumber(a.getNumberValue()+b.getNumberValue()).named("sum"));
                                         break;
+                                    case Text:
+                                        res.add(SpellSignal.createText(a.getTextValue()+b.getTextValue()).named("sum"));
+                                        break;
+                                    case List:
+                                        var newlist = a.getListValueOrEmpty();
+                                        newlist.addAll(b.getListValueOrEmpty());
+                                        res.add(SpellSignal.createList(newlist).named("sum"));
+                                        break;
+                                    case Boolean:
+                                        res.add("sum",a.getBooleanValue() || b.getBooleanValue());
+                                        break;
+                                }
+                            }
+                            else{
+                                // append signal to list
+                                if(a.type == SpellSignal.Type.List || b.type== SpellSignal.Type.List){
+                                    if(b.type== SpellSignal.Type.List){
+                                        var temp = a;
+                                        a=b;
+                                        b=temp;
+                                    }
+                                    var resList = a.getListValueOrEmpty();
+                                    resList.add(b);
+                                    res.add("sum",resList);
+                                }
+                                // append generic to text
+                                else if(a.type == SpellSignal.Type.Text || b.type== SpellSignal.Type.Text)
+                                {
+                                    if(b.type== SpellSignal.Type.Text){
+                                        var temp = a;
+                                        a=b;
+                                        b=temp;
+                                    }
+                                    res.add("sum",a.getTextValue()+b.getTextValue());
                                 }
                             }
                             return res;
@@ -323,14 +368,58 @@ public class SpellBlocks {
                         .parameters()
                         .func((comp,vars) -> {
                             SpellBlockResult res = SpellBlockResult.empty();
-                            if(vars.get("a").type == vars.get("b").type){
-                                switch(vars.get("a").type){
+                            var a = vars.get("a");
+                            var b = vars.get("b");
+                            // subtracting equal types
+                            if(a.type == b.type){
+                                switch(a.type){
                                     case Vector:
-                                        res.add(SpellSignal.createVector(vars.getVector("a").subtract(vars.getVector("b"))).named("diff"));
+                                        res.add(SpellSignal.createVector(a.getVectorValue().subtract(b.getVectorValue())).named("diff"));
                                         break;
                                     case Number:
-                                        res.add(SpellSignal.createNumber(vars.getNumber("a")-vars.getNumber("b")).named("diff"));
+                                        res.add(SpellSignal.createNumber(a.getNumberValue()-b.getNumberValue()).named("diff"));
                                         break;
+                                    case Boolean:
+                                        res.add("diff",a.getBooleanValue() && !b.getBooleanValue());
+                                        break;
+                                    case Text:
+                                        res.add("diff",a.getTextValue().replaceAll(b.getTextValue(),""));
+                                        break;
+                                    case List:
+                                        var reslist = a.getListValueOrEmpty();
+                                        var sublist = b.getListValueOrEmpty();
+                                        reslist.removeAll(sublist);
+                                        res.add("diff",reslist);
+                                        break;
+                                }
+                            }
+                            else{
+                                // remove signal from list
+                                if(a.type == SpellSignal.Type.List || b.type== SpellSignal.Type.List){
+                                    if(b.type== SpellSignal.Type.List){
+                                        var temp = a;
+                                        a=b;
+                                        b=temp;
+                                    }
+                                    var resList = a.getListValueOrEmpty();
+                                    for(int i = 0; i < resList.size();i++){
+                                        if(resList.get(i).equals(b))
+                                        {
+                                            resList.remove(i);
+                                            break;
+                                        }
+                                    }
+                                    res.add("diff",resList);
+                                }
+                                // remove generic from text
+                                else if(a.type == SpellSignal.Type.Text || b.type== SpellSignal.Type.Text)
+                                {
+                                    if(b.type== SpellSignal.Type.Text){
+                                        var temp = a;
+                                        a=b;
+                                        b=temp;
+                                    }
+                                    res.add("diff",a.getTextValue().replaceAll(b.getTextValue(),""));
                                 }
                             }
                             return res;
@@ -362,16 +451,19 @@ public class SpellBlocks {
                                 }
                             }
                             else{
-                                if(b.type == SpellSignal.Type.Vector && a.type == SpellSignal.Type.Number)
-                                {
-                                    var temp = a;
-                                    a = b;
-                                    b = temp;
+                                if(a.type== SpellSignal.Type.Vector||b.type== SpellSignal.Type.Vector){
+                                    if(b.type == SpellSignal.Type.Vector && a.type == SpellSignal.Type.Number)
+                                    {
+                                        var temp = a;
+                                        a = b;
+                                        b = temp;
+                                    }
+
+                                    if(a.type == SpellSignal.Type.Vector && b.type == SpellSignal.Type.Number){
+                                        res.add(SpellSignal.createVector(a.getVectorValue().multiply(b.getNumberValue())).named("product"));
+                                    }
                                 }
 
-                                if(a.type == SpellSignal.Type.Vector && b.type == SpellSignal.Type.Number){
-                                    res.add(SpellSignal.createVector(a.getVectorValue().multiply(b.getNumberValue())).named("product"));
-                                }
                             }
                             return res;
                         })
@@ -607,6 +699,19 @@ public class SpellBlocks {
                         .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
+                TEXT_ENTITY_ID = register(SpellBlock.Builder.create("text_entityid")
+                        .inputs(SpellSignal.createUUID().named("entity"))
+                        .outputs(SpellSignal.createText().named("id"))
+                        .parameters()
+                        .func((component, vars) -> {
+                            SpellBlockResult res = new SpellBlockResult();
+                            if(!(vars.get("entity").getEntity(component.world()) instanceof LivingEntity entity)) return res;
+                            res.add("id",Registries.ENTITY_TYPE.getId(entity.getType()).toString());
+                            return res;
+                        })
+                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
+                        .category(cat).build());
+
             }
 
             // vector math
@@ -663,6 +768,159 @@ public class SpellBlocks {
                             res[5] = SpellComponent.SideConfig.createToggleableInput(comp, SpellComponent.directions[5]).named("z");
                             return res;
                         })
+                        .category(cat).build());
+            }
+
+            // bit math
+            {
+                AND = register(SpellBlock.Builder.create("and")
+                        .inputs(SpellSignal.createAny().named("a"),
+                                SpellSignal.createAny().named("b"))
+                        .outputs(SpellSignal.createAny().named("res"))
+                        .parameters()
+                        .func((comp,vars) -> {
+                            SpellBlockResult res = SpellBlockResult.empty();
+                            var a = vars.get("a");
+                            var b = vars.get("b");
+                            // summing signals of identical types
+                            if(a.type == b.type){
+                                switch(a.type){
+                                    case Number:
+                                        res.add(SpellSignal.createNumber(a.getIntValue()&b.getIntValue()).named("res"));
+                                        break;
+                                    case List:
+                                        var alist = a.getListValueOrEmpty();
+                                        var blist = b.getListValueOrEmpty();
+                                        List<SpellSignal> reslist = new ArrayList<>();
+                                        for(var as : alist){
+                                            for(var bs : blist){
+                                                if(as.equals(bs))
+                                                {
+                                                    reslist.add(as);
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        res.add(SpellSignal.createList(reslist).named("res"));
+                                        break;
+                                    case Boolean:
+                                        res.add("res",a.getBooleanValue() && b.getBooleanValue());
+                                        break;
+                                }
+                            }
+                            else{
+                                if(a.type == SpellSignal.Type.Boolean || b.type== SpellSignal.Type.Boolean){
+                                    if(b.type== SpellSignal.Type.Boolean){
+                                        var temp = a;
+                                        a=b;
+                                        b=temp;
+                                    }
+                                    if(a.getBooleanValue())
+                                        res.add(b.named("res"));
+                                }
+                            }
+                            return res;
+                        })
+                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
+                        .category(cat).build());
+
+                OR = register(SpellBlock.Builder.create("or")
+                        .inputs(SpellSignal.createAny().named("a"),
+                                SpellSignal.createAny().named("b"))
+                        .outputs(SpellSignal.createAny().named("res"))
+                        .parameters()
+                        .func((comp,vars) -> {
+                            SpellBlockResult res = SpellBlockResult.empty();
+                            var a = vars.get("a");
+                            var b = vars.get("b");
+                            // summing signals of identical types
+                            if(a.type == b.type){
+                                switch(a.type){
+                                    case Number:
+                                        res.add(SpellSignal.createNumber(a.getIntValue()|b.getIntValue()).named("res"));
+                                        break;
+                                    case List:
+                                        var reslist = a.getListValueOrEmpty();
+                                        var blist = b.getListValueOrEmpty();
+                                        for(var bs : blist){
+                                            boolean added = false;
+                                            for(var as : reslist){
+                                                if(bs.equals(as))
+                                                {
+                                                    added = true;
+                                                    break;
+                                                }
+                                            }
+                                            if(!added)
+                                                reslist.add(bs);
+                                        }
+                                        res.add(SpellSignal.createList(reslist).named("res"));
+                                        break;
+                                    case Boolean:
+                                        res.add("res",a.getBooleanValue() || b.getBooleanValue());
+                                        break;
+                                }
+                            }
+                            return res;
+                        })
+                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
+                        .category(cat).build());
+
+                XOR = register(SpellBlock.Builder.create("xor")
+                        .inputs(SpellSignal.createAny().named("a"),
+                                SpellSignal.createAny().named("b"))
+                        .outputs(SpellSignal.createAny().named("res"))
+                        .parameters()
+                        .func((comp,vars) -> {
+                            SpellBlockResult res = SpellBlockResult.empty();
+                            var a = vars.get("a");
+                            var b = vars.get("b");
+                            // summing signals of identical types
+                            if(a.type == b.type){
+                                switch(a.type){
+                                    case Number:
+                                        res.add(SpellSignal.createNumber(a.getIntValue()^b.getIntValue()).named("res"));
+                                        break;
+                                    case List:
+                                        var reslist = a.getListValueOrEmpty();
+                                        var blist = b.getListValueOrEmpty();
+                                        for(var bs : blist){
+                                            boolean added = false;
+                                            for(var as : reslist){
+                                                if(bs.equals(as))
+                                                {
+                                                    added = true;
+                                                    break;
+                                                }
+                                            }
+                                            if(!added)
+                                                reslist.add(bs);
+                                        }
+                                        res.add(SpellSignal.createList(reslist).named("res"));
+                                        break;
+                                    case Boolean:
+                                        res.add("res",a.getBooleanValue() ^ b.getBooleanValue());
+                                        break;
+                                }
+                            }
+                            return res;
+                        })
+                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
+                        .category(cat).build());
+
+                EQUALS = register(SpellBlock.Builder.create("equals")
+                        .inputs(SpellSignal.createAny().named("a"),
+                                SpellSignal.createAny().named("b"))
+                        .outputs(SpellSignal.createAny().named("res"))
+                        .parameters()
+                        .func((comp,vars) -> {
+                            SpellBlockResult res = SpellBlockResult.empty();
+                            var a = vars.get("a");
+                            var b = vars.get("b");
+                            res.add("res",a.equals(b));
+                            return res;
+                        })
+                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
             }
         }
@@ -817,32 +1075,41 @@ public class SpellBlocks {
 
             DIMHOP = register(SpellBlock.Builder.create("dimhop")
                     .inputs(
-                            SpellSignal.createUUID(null).named("entity"),
-                            SpellSignal.createNumber(0).named("dimension")
+                            SpellSignal.createUUID().named("entity"),
+                            SpellSignal.createText().named("dimension")
                     )
                     .outputs()
                     .parameters()
                     .func((comp,vars) -> {
                         var uuid = vars.getUUID("entity");
-                        var dim = vars.getNumber("dimension");
+                        var dim = vars.getText("dimension");
                         Entity ent = comp.world() instanceof ServerWorld sw ? sw.getEntity(uuid) : null;
                         if(ent==null) return SpellBlockResult.empty();
 
-                        float manaCost = 100;
+                        float manaCost = 200;
+
+                        Identifier destinationID = Identifier.tryParse(dim);
+                        if(destinationID==null) try
+                        { destinationID = new Identifier(Identifier.DEFAULT_NAMESPACE,dim); } catch (Exception ignored) {}
+
+                        // malformed destination identifier
+                        if(destinationID==null) return SpellBlockResult.empty();
+                        if(!(comp.world() instanceof ServerWorld sw)) return SpellBlockResult.empty();
+
+                        ServerWorld destination = null;
+                        for(var worldKey : sw.getServer().getWorldRegistryKeys()){
+                            if(worldKey.getValue().equals(destinationID)){
+                                destination = sw.getServer().getWorld(worldKey);
+                                break;
+                            }
+                        }
+
+                        // non-existent destination
+                        if(destination == null) return SpellBlockResult.empty();
+                        // trying to travel to the dimension we're already in
+                        if(sw.getRegistryKey() == destination.getRegistryKey()) return SpellBlockResult.empty();
 
                         if(trySpendSoul(comp,manaCost)){
-
-                            if(!(comp.world() instanceof ServerWorld sw)) return SpellBlockResult.empty();
-
-                            ServerWorld destination = switch (Math.round(dim)) {
-                                case 1 -> sw.getServer().getWorld(World.END);
-                                case -1 -> sw.getServer().getWorld(World.NETHER);
-                                default -> sw.getServer().getOverworld();
-                            };
-
-                            if(destination==null) return SpellBlockResult.empty();
-                            if(sw.getRegistryKey() == destination.getRegistryKey()) return SpellBlockResult.empty();
-
                             spawnCastParticles(comp,CastParticleData.genericSuccess(comp,ent.getPos()));
                             ent.teleport(destination,ent.getX(),ent.getY(),ent.getZ(),null,ent.getYaw(),ent.getPitch());
                         }
@@ -1322,6 +1589,29 @@ public class SpellBlocks {
                     .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                     .category(cat)
                     .build());
+
+            ENTITIES_NEAR = register(SpellBlock.Builder.create("entities_near")
+                    .inputs(SpellSignal.createVector().named("position"),SpellSignal.createNumber().named("range"))
+                    .outputs(SpellSignal.createList().named("entities"))
+                    .parameters()
+                    .func((comp, vars) -> {
+                        SpellBlockResult res = SpellBlockResult.empty();
+                        var pos = vars.getVector("position");
+                        var range = vars.getNumber("range");
+
+                        var ents = comp.world().getEntitiesByClass(LivingEntity.class,Box.of(pos,range,range,range), le -> true);
+                        if(ents==null||ents.isEmpty()) return res;
+
+                        List<SpellSignal> sigs = new ArrayList<>();
+                        for(var ent : ents){
+                            sigs.add(SpellSignal.createUUID(ent.getUuid()));
+                        }
+
+                        res.add("entities",sigs);
+                        return res;
+                    })
+                    .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
+                    .category(cat).build());
         }
     }
     // sin, cos, tan
@@ -1428,13 +1718,15 @@ public class SpellBlocks {
     }
 
     public static void playCastSound(SpellContext ctx){
+        if(ctx.soundBehavior == SpellContext.SoundBehavior.Silent) return;
+
         float fraction = ctx.soulConsumed / ctx.getCasterMaxSoul();
         SoundEvent event = null;
         if(fraction > 0.7f && ctx.soulConsumed > 200)
             event = ModSoundEvents.CAST_SUCCESS_EXPENSIVE;
         else if(fraction > 0.2f && ctx.soulConsumed > 50)
             event = ModSoundEvents.CAST_SUCCESS_MEDIUM;
-        else
+        else if(ctx.soundBehavior == SpellContext.SoundBehavior.Full || ctx.soulConsumed>0)
             event = ModSoundEvents.CAST_SUCCESS_CHEAP;
         Toolbox.playSound(event,ctx.caster.getWorld(), ctx.caster.getBlockPos(), SoundCategory.PLAYERS,1,0.8f+Toolbox.random.nextFloat()*0.4f);
     }

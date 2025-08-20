@@ -16,6 +16,7 @@ import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class SpellSignal {
@@ -108,6 +109,10 @@ public class SpellSignal {
         return 0;
     }
 
+    public int getIntValue() {
+        return Math.round(getNumberValue());
+    }
+
     public Vec3d getVectorValue(){
         return vectorValue;
     }
@@ -171,6 +176,7 @@ public class SpellSignal {
     public void setDepth(int depth){
         this.depth=depth;
     }
+
 
     public enum Type{
         None,
@@ -263,5 +269,39 @@ public class SpellSignal {
         }
 
         return from==onto;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        SpellSignal that = (SpellSignal) o;
+        return
+                Float.compare(numberValue, that.numberValue) == 0
+                        && depth == that.depth
+                        && type == that.type
+                        && Objects.equals(name, that.name)
+                        && Objects.equals(textValue, that.textValue)
+                        && Objects.equals(uuidValue, that.uuidValue)
+                        && Objects.equals(vectorValue, that.vectorValue)
+                        && listValuesAreEqual(this,that);
+    }
+
+    private static boolean listValuesAreEqual(SpellSignal a, SpellSignal b){
+        var lva = a.getListValue();
+        var lvb = b.getListValue();
+        if(lva == null && lvb != null) return false;
+        if(lva==null) return true;
+        if(lva.size()!=lvb.size()) return false;
+
+        for (int i = 0; i < lva.size(); i++) {
+            if(!lva.get(i).equals(lvb.get(i))) return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, name, numberValue, textValue, uuidValue, vectorValue, listValue, depth);
     }
 }

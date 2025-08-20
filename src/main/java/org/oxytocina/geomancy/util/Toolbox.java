@@ -235,6 +235,7 @@ public class Toolbox {
     }
 
     public static void playSound(SoundEvent event, World world, BlockPos pos, SoundCategory cat, float volume, float pitch){
+        if(event==null) return;
         if(world instanceof ClientWorld){
             world.playSound(MinecraftClient.getInstance().player, pos,event,cat,volume,pitch);
             return;

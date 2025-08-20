@@ -111,6 +111,11 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("bool_entitygrounded","Entity Grounded","returns if an entity is on the ground");
             addSpell("entity_nearest","Nearest Entity","returns the entity closest to the position");
             addSpell("invert","Invert","returns an inversion of the input");
+            addSpell("and","And","returns the result of a AND b");
+            addSpell("or","Or","returns the result of a OR b");
+            addSpell("xor","Xor","returns the result of a XOR b");
+            addSpell("equals","Equals","returns true if a equals b");
+            addSpell("text_entityid","Entity ID","returns the Identifier of the entity");
             // effectors
             addSpell("print","Print","outputs a value to the casters chat");
             addSpell("fireball","Fireball","summons a fireball");
@@ -136,6 +141,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("size","Size","returns the count of elements in a list");
             addSpell("get_element","Get Element","returns the element in a list at a given position");
             addSpell("set_element","Set Element","sets the element in a list at a given position");
+            addSpell("entities_near","Entities Near","returns a list containing all entities within the specified area");
 
             add("MODID.spells.debug.error","Error in spell component %1$s: %2$s");
             add("MODID.spells.debug.broke","Couldn't afford spell %1$s. Cost: %2$f, available: %3$f");

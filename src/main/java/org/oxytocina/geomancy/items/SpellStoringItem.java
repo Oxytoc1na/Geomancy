@@ -15,10 +15,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
 import org.oxytocina.geomancy.enchantments.ModEnchantments;
-import org.oxytocina.geomancy.spells.SpellBlockArgs;
-import org.oxytocina.geomancy.spells.SpellBlocks;
-import org.oxytocina.geomancy.spells.SpellComponent;
-import org.oxytocina.geomancy.spells.SpellGrid;
+import org.oxytocina.geomancy.spells.*;
 
 import java.util.List;
 import java.util.Objects;
@@ -68,10 +65,10 @@ public class SpellStoringItem extends Item {
         stack.setSubNbt("spell",spellCompound);
     }
 
-    public void cast(ItemStack caster, ItemStack spellstorage, LivingEntity user, SpellBlockArgs args){
+    public void cast(ItemStack caster, ItemStack spellstorage, LivingEntity user, SpellBlockArgs args,SpellContext.SoundBehavior soundBehavior){
         SpellGrid grid = getOrCreateGrid(spellstorage);
         if(grid==null) return;
-        grid.run(caster,spellstorage,user,args);
+        grid.run(caster,spellstorage,user,args, soundBehavior);
     }
 
     public float getSoulCostMultiplier(ItemStack stack) {

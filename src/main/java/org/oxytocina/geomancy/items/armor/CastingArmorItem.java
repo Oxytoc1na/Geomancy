@@ -32,6 +32,7 @@ import org.oxytocina.geomancy.items.*;
 import org.oxytocina.geomancy.items.tools.SoulCastingItem;
 import org.oxytocina.geomancy.items.tools.StorageItem;
 import org.oxytocina.geomancy.spells.SpellBlockArgs;
+import org.oxytocina.geomancy.spells.SpellContext;
 import org.oxytocina.geomancy.spells.SpellGrid;
 import org.oxytocina.geomancy.spells.SpellSignal;
 
@@ -78,7 +79,7 @@ public class CastingArmorItem extends ArmorItem implements IMaddeningItem, IStor
 
         if(!(spellContainer.getItem() instanceof SpellStoringItem storer)) return;
 
-        storer.cast(key,spellContainer,user,args);
+        storer.cast(key,spellContainer,user,args, SpellContext.SoundBehavior.Reduced);
     }
 
     public int getSelectedSpellIndex(ItemStack stack){

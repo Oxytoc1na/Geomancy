@@ -24,6 +24,7 @@ import org.oxytocina.geomancy.items.*;
 import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.registries.ModItemTags;
 import org.oxytocina.geomancy.spells.SpellBlockArgs;
+import org.oxytocina.geomancy.spells.SpellContext;
 import org.oxytocina.geomancy.spells.SpellGrid;
 import org.oxytocina.geomancy.util.Toolbox;
 
@@ -74,7 +75,7 @@ public class SoulCastingItem extends StorageItem implements IManaStoringItem, IS
 
         if(!(spellContainer.getItem() instanceof SpellStoringItem storer)) return;
 
-        storer.cast(key,spellContainer,user, SpellBlockArgs.empty());
+        storer.cast(key,spellContainer,user, SpellBlockArgs.empty(), SpellContext.SoundBehavior.Full);
     }
 
     @Override

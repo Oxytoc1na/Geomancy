@@ -20,6 +20,7 @@ public class SpellContext {
     public boolean depthLimitReached = false;
     public boolean couldntAffordSomething = false;
     public SpellGrid grid;
+    public SoundBehavior soundBehavior;
 
     // reference calls
     public SpellContext parentCall;
@@ -34,7 +35,8 @@ public class SpellContext {
             ItemStack spellStorage,
             float availableSoul,
             float soulCostMultiplier,
-            float soulConsumed
+            float soulConsumed,
+            SoundBehavior soundBehavior
     ){
         this.grid=grid;
         this.caster = caster;
@@ -44,6 +46,7 @@ public class SpellContext {
         this.stage = Stage.PreInit;
         this.soulCostMultiplier=soulCostMultiplier;
         this.soulConsumed=soulConsumed;
+        this.soundBehavior=soundBehavior;
     }
 
     public boolean tryConsumeSoul(float amount){
@@ -100,7 +103,7 @@ public class SpellContext {
     }
 
     public SpellContext createReferenced(SpellComponent comp){
-        SpellContext res = new SpellContext(this.grid,caster,casterItem,spellStorage,availableSoul,soulCostMultiplier,soulConsumed);
+        SpellContext res = new SpellContext(this.grid,caster,casterItem,spellStorage,availableSoul,soulCostMultiplier,soulConsumed,soundBehavior);
         res.parentCall = this;
         res.referenceCallingFrom = comp;
         res.internalVars=new SpellBlockArgs();
@@ -120,5 +123,11 @@ public class SpellContext {
     public static enum Stage{
         PreInit,
         Run
+    }
+
+    public enum SoundBehavior{
+        Full,
+        Reduced,
+        Silent
     }
 }
