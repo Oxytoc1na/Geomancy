@@ -115,6 +115,10 @@ public class SpellBlock {
         return stack;
     }
 
+    public ItemStack copyItemStack() {
+        return stack.copy();
+    }
+
     public static class Builder{
 
         final Identifier identifier;

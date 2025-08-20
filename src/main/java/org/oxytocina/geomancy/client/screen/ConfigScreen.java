@@ -52,6 +52,15 @@ public class ConfigScreen extends Screen {
                         (button, toggle) ->
                                 GeomancyConfig.CONFIG.epilepsyMode.setValue(toggle)));
 
+        // spellmaker move
+        adder.add(CyclingButtonWidget.<Boolean>builder(b->Text.literal(b.toString()))
+                .values(true,false)
+                .initially(GeomancyConfig.CONFIG.noSpellmakerMove.value())
+                .build(0,0, 150, 20,
+                        Text.translatable("geomancy.options.no_spellmaker_move"),
+                        (button, toggle) ->
+                                GeomancyConfig.CONFIG.noSpellmakerMove.setValue(toggle)));
+
         // spellmaker ui speed
         var slider = FloatSlider.create(0,0,150,20,Text.translatable("geomancy.options.spellmakeruispeed"),
                 GeomancyConfig.CONFIG.spellmakerUiSpeed.value(),0.1f,1f, GeomancyConfig.CONFIG.spellmakerUiSpeed::setValue);

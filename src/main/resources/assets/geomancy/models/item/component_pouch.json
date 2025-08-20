@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "geomancy:item/component_pouch_string",
+    "layer1": "geomancy:item/component_pouch_base"
+  }
+}

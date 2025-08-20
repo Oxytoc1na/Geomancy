@@ -1,10 +1,12 @@
 package org.oxytocina.geomancy.util;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.world.World;
 import org.oxytocina.geomancy.items.armor.IListenerArmor;
 
 import java.util.HashMap;
@@ -62,6 +64,26 @@ public class EntityUtil {
                 setCooldown(spe,10);
             }
 
+        }
+    }
+
+    public static void onAttacking(LivingEntity thisEntity, Entity target){
+        if(!(target instanceof LivingEntity targetEnt)) return;
+        World world = thisEntity.getWorld();
+        if (!world.isClient) {
+            if (thisEntity instanceof MobEntity thisMobEntity) {
+                for (ItemStack armorItemStack : thisMobEntity.getArmorItems()) {
+                    if (armorItemStack.getItem() instanceof IListenerArmor armorWithHitEffect) {
+                        armorWithHitEffect.onHit(armorItemStack,thisMobEntity, targetEnt);
+                    }
+                }
+            } else if (thisEntity instanceof ServerPlayerEntity thisPlayerEntity) {
+                for (ItemStack armorItemStack : thisPlayerEntity.getArmorItems()) {
+                    if (armorItemStack.getItem() instanceof IListenerArmor armorWithHitEffect) {
+                        armorWithHitEffect.onHit(armorItemStack, thisPlayerEntity,targetEnt);
+                    }
+                }
+            }
         }
     }
 }

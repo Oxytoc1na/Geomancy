@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.impl.lib.sat4j.core.Vec;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -37,6 +38,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.BlockBox;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.LocalRandom;
@@ -44,6 +47,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.blocks.IMaddeningBlock;
 import org.oxytocina.geomancy.client.GeomancyClient;
 import org.oxytocina.geomancy.items.tools.SoulCastingItem;
 import org.oxytocina.geomancy.networking.ModMessages;
@@ -97,11 +101,14 @@ public class SpellBlocks {
     public static final SpellBlock BOOL_ENTITYGROUNDED;
     public static final SpellBlock ENTITY_NEAREST;
     public static final SpellBlock TEXT_ENTITY_ID;
+    public static final SpellBlock TEXT_BLOCK_ID;
     public static final SpellBlock INVERT;
     public static final SpellBlock AND;
     public static final SpellBlock EQUALS;
     public static final SpellBlock OR;
     public static final SpellBlock XOR;
+    public static final SpellBlock ENTITY_HAS_EFFECT;
+    public static final SpellBlock ENTITY_HEALTH;
 
     // effectors
     public static final SpellBlock PRINT;
@@ -131,6 +138,7 @@ public class SpellBlocks {
     public static final SpellBlock GET_ELEMENT;
     public static final SpellBlock SET_ELEMENT;
     public static final SpellBlock ENTITIES_NEAR;
+    public static final SpellBlock BLOCK_BOX;
 
     private static SpellBlock.Category cat;
 
@@ -321,7 +329,7 @@ public class SpellBlocks {
                                         res.add(SpellSignal.createNumber(a.getNumberValue()+b.getNumberValue()).named("sum"));
                                         break;
                                     case Text:
-                                        res.add(SpellSignal.createText(a.getTextValue()+b.getTextValue()).named("sum"));
+                                        res.add(SpellSignal.createText(a.getTextValue(comp.context)+b.getTextValue(comp.context)).named("sum"));
                                         break;
                                     case List:
                                         var newlist = a.getListValueOrEmpty();
@@ -353,7 +361,7 @@ public class SpellBlocks {
                                         a=b;
                                         b=temp;
                                     }
-                                    res.add("sum",a.getTextValue()+b.getTextValue());
+                                    res.add("sum",a.getTextValue(comp.context)+b.getTextValue(comp.context));
                                 }
                             }
                             return res;
@@ -383,7 +391,7 @@ public class SpellBlocks {
                                         res.add("diff",a.getBooleanValue() && !b.getBooleanValue());
                                         break;
                                     case Text:
-                                        res.add("diff",a.getTextValue().replaceAll(b.getTextValue(),""));
+                                        res.add("diff",a.getTextValue(comp.context).replaceAll(b.getTextValue(comp.context),""));
                                         break;
                                     case List:
                                         var reslist = a.getListValueOrEmpty();
@@ -419,7 +427,7 @@ public class SpellBlocks {
                                         a=b;
                                         b=temp;
                                     }
-                                    res.add("diff",a.getTextValue().replaceAll(b.getTextValue(),""));
+                                    res.add("diff",a.getTextValue(comp.context).replaceAll(b.getTextValue(comp.context),""));
                                 }
                             }
                             return res;
@@ -581,7 +589,7 @@ public class SpellBlocks {
                             SpellBlockResult res = SpellBlockResult.empty();
                             var sig = vars.get("signal");
                             switch(sig.type){
-                                case Text: res.add("langis",new StringBuilder(sig.getTextValue()).reverse().toString()); break;
+                                case Text: res.add("langis",new StringBuilder(sig.getTextValue(comp.context)).reverse().toString()); break;
                                 case Number: res.add("langis",-sig.getNumberValue()); break;
                                 case Vector: res.add("langis",sig.getVectorValue().negate()); break;
                                 case Boolean: res.add("langis",!sig.getBooleanValue()); break;
@@ -707,6 +715,49 @@ public class SpellBlocks {
                             SpellBlockResult res = new SpellBlockResult();
                             if(!(vars.get("entity").getEntity(component.world()) instanceof LivingEntity entity)) return res;
                             res.add("id",Registries.ENTITY_TYPE.getId(entity.getType()).toString());
+                            return res;
+                        })
+                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
+                        .category(cat).build());
+
+                ENTITY_HAS_EFFECT = register(SpellBlock.Builder.create("entity_has_effect")
+                        .inputs(SpellSignal.createUUID().named("entity"),SpellSignal.createText().named("effect"))
+                        .outputs(SpellSignal.createBoolean().named("present"),
+                                SpellSignal.createNumber().named("amp"),
+                                SpellSignal.createNumber().named("duration"))
+                        .parameters()
+                        .func((component, vars) -> {
+                            SpellBlockResult res = new SpellBlockResult();
+                            if(!(vars.get("entity").getEntity(component.world()) instanceof LivingEntity entity)) return res;
+                            Identifier id = Identifier.tryParse(vars.getText("effect"));
+                            if(id==null) { tryLogDebugNoSuchEffect(component,vars.getText("effect")); return SpellBlockResult.empty();  } // invalid status effect
+                            var effect = Registries.STATUS_EFFECT.get(id);
+                            var inst = entity.getStatusEffect(effect);
+                            res.add("present",inst!=null);
+                            if(inst==null) return res;
+                            res.add("amp",inst.getAmplifier());
+                            res.add("duration",inst.getDuration()/20f);
+                            return res;
+                        })
+                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
+                        .category(cat).build());
+
+                ENTITY_HEALTH = register(SpellBlock.Builder.create("entity_health")
+                        .inputs(SpellSignal.createUUID().named("entity"))
+                        .outputs(SpellSignal.createNumber().named("health"),
+                                SpellSignal.createNumber().named("maxHealth"),
+                                SpellSignal.createNumber().named("air"),
+                                SpellSignal.createNumber().named("maxAir"),
+                                SpellSignal.createNumber().named("absorption"))
+                        .parameters()
+                        .func((component, vars) -> {
+                            SpellBlockResult res = new SpellBlockResult();
+                            if(!(vars.get("entity").getEntity(component.world()) instanceof LivingEntity entity)) return res;
+                            res.add("health",entity.getHealth());
+                            res.add("maxHealth",entity.getMaxHealth());
+                            res.add("absorption",entity.getAbsorptionAmount());
+                            res.add("air",entity.getAir()/20f);
+                            res.add("maxAir",entity.getAir()/20f);
                             return res;
                         })
                         .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
@@ -923,6 +974,24 @@ public class SpellBlocks {
                         .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
             }
+
+            //blocks
+            {
+                TEXT_BLOCK_ID = register(SpellBlock.Builder.create("text_blockid")
+                        .inputs(SpellSignal.createVector().named("position"))
+                        .outputs(SpellSignal.createText().named("id"))
+                        .parameters()
+                        .func((component, vars) -> {
+                            SpellBlockResult res = new SpellBlockResult();
+                            var pos = vars.getBlockPos("position");
+                            var state = component.world().getBlockState(pos);
+                            if(state==null) return res;
+                            res.add("id",Registries.BLOCK.getId(state.getBlock()).toString());
+                            return res;
+                        })
+                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
+                        .category(cat).build());
+            }
         }
 
         // effectors
@@ -938,11 +1007,11 @@ public class SpellBlocks {
                             World world = comp.context.caster.getWorld();
                             if(world instanceof ServerWorld serverWorld){
                                 if(comp.context.caster instanceof ServerPlayerEntity player)
-                                    player.sendMessage(Text.literal(vars.get("val").toString()));
+                                    player.sendMessage(Text.literal(vars.get("val").toString(comp.context)));
                             }
                             else if(world instanceof ClientWorld clientWorld){
                                 if(comp.context.caster instanceof ClientPlayerEntity player)
-                                    player.sendMessage(Text.literal(vars.get("val").toString()));
+                                    player.sendMessage(Text.literal(vars.get("val").toString(comp.context)));
                             }
                         }
 
@@ -1317,8 +1386,8 @@ public class SpellBlocks {
             addImbueData(StatusEffects.MINING_FATIGUE,new ImbueData(10,2));
             addImbueData(StatusEffects.ABSORPTION,new ImbueData(10,1,1.5f));
             addImbueData(StatusEffects.HEALTH_BOOST,new ImbueData(10,1,1.5f));
-            addImbueData(StatusEffects.INSTANT_HEALTH,new ImbueData(10,1,1f,true));
-            addImbueData(StatusEffects.INSTANT_DAMAGE,new ImbueData(10,2,1f,true));
+            addImbueData(StatusEffects.INSTANT_HEALTH,new ImbueData(10,50,1f,true));
+            addImbueData(StatusEffects.INSTANT_DAMAGE,new ImbueData(10,70,1f,true));
             IMBUE = register(SpellBlock.Builder.create("imbue")
                     .inputs(
                             SpellSignal.createUUID(null).named("entity"),
@@ -1340,7 +1409,7 @@ public class SpellBlocks {
                         if(!imbueData.containsKey(id)) { tryLogDebugUnimbuableEffect(comp,Registries.STATUS_EFFECT.get(id).getName()); return SpellBlockResult.empty();  } // unimbuable status effect;
                         var data = imbueData.get(id);
                         amp = Toolbox.clampI(amp,0,data.maxAmp);
-                        if(data.instant) duration = 1/20f;
+                        if(data.instant) duration = 1f;
 
                         float manaCost = 0.5f + data.getCost(amp,duration);
 
@@ -1496,7 +1565,7 @@ public class SpellBlocks {
                         for(var s : list)
                         {
                             var subRes = SpellBlockResult.empty();
-                            subRes.add(s.clone());
+                            subRes.add(s.clone().named("signal"));
                             res.addSubResult(subRes);
                         }
                         return res;
@@ -1612,6 +1681,33 @@ public class SpellBlocks {
                     })
                     .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                     .category(cat).build());
+
+            BLOCK_BOX = register(SpellBlock.Builder.create("block_box")
+                    .inputs(SpellSignal.createVector().named("start"),SpellSignal.createVector().named("end"))
+                    .outputs(SpellSignal.createList().named("positions"))
+                    .parameters()
+                    .func((comp, vars) -> {
+                        SpellBlockResult res = SpellBlockResult.empty();
+                        var start = vars.getBlockPos("start");
+                        var end = vars.getBlockPos("end");
+
+                        List<SpellSignal> sigs = new ArrayList<>();
+                        var box = new Box(start,end);
+                        var vol = box.getXLength() * box.getYLength() * box.getZLength();
+                        if(vol > 10000)
+                        {
+                            tryLogDebugTooBig(comp,vol);
+                            return res;
+                        }
+
+                        BlockPos.stream(box)
+                                .forEach((blockPos -> sigs.add(SpellSignal.createVector(blockPos.toCenterPos()))));
+
+                        res.add("positions",sigs);
+                        return res;
+                    })
+                    .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
+                    .category(cat).build());
         }
     }
     // sin, cos, tan
@@ -1709,6 +1805,12 @@ public class SpellBlocks {
         tryLogDebug(comp,Text.translatable("geomancy.spells.debug.notimbuable",
                 comp.getRuntimeName(),text));
     }
+
+    private static void tryLogDebugTooBig(SpellComponent comp, double vol){
+        tryLogDebug(comp,Text.translatable("geomancy.spells.debug.toobig",
+                comp.getRuntimeName(),vol));
+    }
+
 
     private static void spawnCastParticles(SpellComponent comp,CastParticleData data){
         PacketByteBuf buf = PacketByteBufs.create();

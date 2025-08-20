@@ -47,7 +47,7 @@ public class SpellComponent {
     }
 
     public World world(){
-        return context.caster.getWorld();
+        return context.getWorld();
     }
 
     public LivingEntity caster(){

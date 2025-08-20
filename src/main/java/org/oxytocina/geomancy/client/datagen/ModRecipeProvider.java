@@ -466,6 +466,24 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                             SmithingIngredient.ofItems(1,1,Items.NAME_TAG),
                     }).toList(),SpellBlocks.TEXT_ENTITY_ID,true);
 
+                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,baseIngot),
+                            SmithingIngredient.ofItems(1,1,Items.OAK_SIGN),
+                    }).toList(),SpellBlocks.TEXT_BLOCK_ID,true);
+
+                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,baseIngot),
+                            SmithingIngredient.ofItems(1,1,Items.BLAZE_POWDER),
+                    }).toList(),SpellBlocks.ENTITY_HAS_EFFECT,true);
+
+                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,baseIngot),
+                            SmithingIngredient.ofItems(1,1,Items.GHAST_TEAR),
+                    }).toList(),SpellBlocks.ENTITY_HEALTH,true);
+
                 }
 
                 // effectors
@@ -617,12 +635,61 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.LEAD),
                     }).toList(),SpellBlocks.ENTITIES_NEAR,true);
+
+                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,baseIngot),
+                            SmithingIngredient.ofItems(1,1,Items.WOODEN_PICKAXE),
+                    }).toList(),SpellBlocks.BLOCK_BOX,true);
                 }
 
                 for(var block : SpellBlocks.functions.values()){
                     if(!spellComponentRecipesBuilt.contains(block))
                         Geomancy.logWarning("no recipe for spell component "+block.identifier.getPath());
                 }
+
+                // casting armor
+                AddShapedSmitheryRecipe(new String[]{
+                                " r ",
+                                "obo",
+                                " o "}
+                        ,new SPatKey[]{
+                                new SPatKey("b",SmithingIngredient.ofItems(1,1,1,OCTANGULITE_HELMET)),
+                                new SPatKey("o",SmithingIngredient.ofItems(1,1,1, OCTANGULITE_BLOCK.asItem())),
+                                new SPatKey("r",SmithingIngredient.ofItems(1,1,1,Blocks.REDSTONE_BLOCK)),
+                        },
+                        CASTER_HELMET,1,100,50,conditionsFromItem(OCTANGULITE_INGOT),Geomancy.locate("milestones/milestone_souls"));
+                AddShapedSmitheryRecipe(new String[]{
+                                " r ",
+                                "obo",
+                                " o "}
+                        ,new SPatKey[]{
+                                new SPatKey("b",SmithingIngredient.ofItems(1,1,1,OCTANGULITE_CHESTPLATE)),
+                                new SPatKey("o",SmithingIngredient.ofItems(1,1,1, OCTANGULITE_BLOCK.asItem())),
+                                new SPatKey("r",SmithingIngredient.ofItems(1,1,1,Blocks.REDSTONE_BLOCK)),
+                        },
+                        CASTER_CHESTPLATE,1,100,50,conditionsFromItem(OCTANGULITE_INGOT),Geomancy.locate("milestones/milestone_souls"));
+                AddShapedSmitheryRecipe(new String[]{
+                                " r ",
+                                "obo",
+                                " o "}
+                        ,new SPatKey[]{
+                                new SPatKey("b",SmithingIngredient.ofItems(1,1,1,OCTANGULITE_LEGGINGS)),
+                                new SPatKey("o",SmithingIngredient.ofItems(1,1,1, OCTANGULITE_BLOCK.asItem())),
+                                new SPatKey("r",SmithingIngredient.ofItems(1,1,1,Blocks.REDSTONE_BLOCK)),
+                        },
+                        CASTER_LEGGINGS,1,100,50,conditionsFromItem(OCTANGULITE_INGOT),Geomancy.locate("milestones/milestone_souls"));
+                AddShapedSmitheryRecipe(new String[]{
+                                " r ",
+                                "obo",
+                                " o "}
+                        ,new SPatKey[]{
+                                new SPatKey("b",SmithingIngredient.ofItems(1,1,1,OCTANGULITE_BOOTS)),
+                                new SPatKey("o",SmithingIngredient.ofItems(1,1,1, OCTANGULITE_BLOCK.asItem())),
+                                new SPatKey("r",SmithingIngredient.ofItems(1,1,1,Blocks.REDSTONE_BLOCK)),
+                        },
+                        CASTER_BOOTS,1,100,50,conditionsFromItem(OCTANGULITE_INGOT),Geomancy.locate("milestones/milestone_souls"));
+
             }
 
             // spellmaker

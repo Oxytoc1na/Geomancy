@@ -161,7 +161,7 @@ public class ModItems {
     public static final LeadArmorItem LEAD_CHESTPLATE = register("lead_chestplate", new LeadArmorItem   (ModArmorMaterials.LEAD, ArmorItem.Type.CHESTPLATE,    new Item.Settings(),1));
     public static final LeadArmorItem LEAD_LEGGINGS =   register("lead_leggings",   new LeadArmorItem(ModArmorMaterials.LEAD, ArmorItem.Type.LEGGINGS,      new Item.Settings(),1));
     public static final LeadArmorItem LEAD_BOOTS =      register("lead_boots",      new LeadArmorItem   (ModArmorMaterials.LEAD, ArmorItem.Type.BOOTS,         new Item.Settings(),1));
-    public static final Plumbometer PLUMBOMETER =       register("plumbometer",     new Plumbometer     (new FabricItemSettings().maxCount(1).rarity(Rarity.UNCOMMON)),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom));
+    public static final Plumbometer PLUMBOMETER =       register("plumbometer",     new Plumbometer     (new FabricItemSettings().maxCount(1).rarity(Rarity.UNCOMMON)),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
 
     // mithril
     public static final SwordItem MITHRIL_SWORD =               register("mithril_sword",       new SwordItem       (ModToolMaterials.MITHRIL, 3, -2.4F,    new Item.Settings()),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Handheld));
@@ -228,7 +228,7 @@ public class ModItems {
     public static final SpellStoringItem SPELLSTORAGE_MEDIUM =      register("spellstorage_medium", new SpellStoringItem(new FabricItemSettings().maxCount(8),5,5));
     public static final SpellStoringItem SPELLSTORAGE_LARGE =       register("spellstorage_large",  new SpellStoringItem(new FabricItemSettings().maxCount(8),7,7));
     public static final SpellComponentStoringItem SPELLCOMPONENT =  register("spellcomponent",      new SpellComponentStoringItem(new FabricItemSettings()),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
-    public static final StorageItem COMPONENT_POUCH =               register("component_pouch",     new StorageItem(new FabricItemSettings().maxCount(1),9*3, ModItemTags.COMPONENT_STORING,true));
+    public static final StorageItem COMPONENT_POUCH =               register("component_pouch",     new StorageItem(new FabricItemSettings().maxCount(1),9*3, ModItemTags.COMPONENT_STORING,true),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom));
 
     // geodes
     // if something else goes terribly wrong, this place is usually where the exception gets thrown
@@ -238,9 +238,6 @@ public class ModItems {
     // VVV swap commented out lines to see if it "solves" it (its a clue!) VVV
     //public static final Item STONE_GEODE = register("stone_geode",new Item(new FabricItemSettings()));
     public static final GeodeItem STONE_GEODE = register("stone_geode",new GeodeItem(new FabricItemSettings(),ModLootTables.GEODE_STONE));
-
-    // test alien tooltip
-    public static final StellgeTooltippedItem TEST = register("stellge_test",new StellgeTooltippedItem(new FabricItemSettings(),10));
 
     public static final FoodItem LEAD_APPLE = register("lead_apple",new FoodItem(new FabricItemSettings().food(new FoodComponent.Builder().alwaysEdible().hunger(4).build()),le->{
         LeadUtil.addPoisoning((PlayerEntity) le,100);

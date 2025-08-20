@@ -158,6 +158,12 @@ public class SpellmakerScreenHandler extends ScreenHandler {
         currentGrid = SpellStoringItem.getOrCreateGrid(newOutput);
         selectedComponentChanged();
         updateAvailableComponents();
+
+        if(!hasGrid() && selectedComponent!=null)
+        {
+            selectedComponentPosition=null;
+            selectedComponentChanged();
+        }
     }
 
     public void updateAvailableComponents(){
@@ -168,6 +174,15 @@ public class SpellmakerScreenHandler extends ScreenHandler {
             availableComponents.setStack(i,from.size() > index ? from.getStack(index) : ItemStack.EMPTY);
         }
         maxComponentSelectScroll = Math.round((float)Math.ceil((from.size()-NEW_COMPONENTS_SLOT_COUNT)/(float)NEW_COMPONENTS_WIDTH));
+
+        if(availableComponentSlots!=null)
+            for(var s : availableComponentSlots)
+                s.setEnabled(hasGrid());
+
+        if(!hasGrid() && selectedNewComponent!=null){
+            selectedNewComponentIndex=-1;
+            selectedNewComponentChanged();
+        }
     }
 
     public ItemStack getOutput(){
@@ -181,14 +196,20 @@ public class SpellmakerScreenHandler extends ScreenHandler {
 
         // clicked on one of the component slots
         if(newCompSlotIndex < availableComponents.size() && newCompSlotIndex >= 0){
-            if(selectedNewComponentIndex==newCompSlotIndex){
-                // deselect
-                selectedNewComponentIndex = -1;
-                selectedNewComponentChanged();
+            if(hasGrid()){
+                if(selectedNewComponentIndex==newCompSlotIndex){
+                    // deselect
+                    selectedNewComponentIndex = -1;
+                    selectedNewComponentChanged();
+                }
+                else{
+                    // select
+                    selectedNewComponentIndex = newCompSlotIndex;
+                    selectedNewComponentChanged();
+                }
             }
             else{
-                // select
-                selectedNewComponentIndex = newCompSlotIndex;
+                selectedNewComponentIndex = -1;
                 selectedNewComponentChanged();
             }
 
@@ -1093,6 +1114,8 @@ public class SpellmakerScreenHandler extends ScreenHandler {
                 return;
             }
         }
+
+        if(!hasGrid()) return;
 
         var from = this.blockEntity.getComponentItemsFromPlayer(player);
         for (int i = 0; i < from.size(); i++) {

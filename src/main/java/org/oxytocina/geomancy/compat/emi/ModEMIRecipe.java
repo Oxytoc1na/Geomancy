@@ -9,6 +9,7 @@ import net.minecraft.registry.*;
 import net.minecraft.text.*;
 import net.minecraft.util.*;
 import org.jetbrains.annotations.*;
+import org.oxytocina.geomancy.compat.GeomancyIntegrationPacks;
 import org.oxytocina.geomancy.util.AdvancementHelper;
 import org.oxytocina.geomancy.util.Toolbox;
 
@@ -36,7 +37,7 @@ public abstract class ModEMIRecipe implements EmiRecipe {
     }
 
     public boolean isUnlocked() {
-        return recipeTypeUnlockIdentifier == null || hasAdvancement(recipeTypeUnlockIdentifier);
+        return GeomancyIntegrationPacks.isCreative() || recipeTypeUnlockIdentifier == null || hasAdvancement(recipeTypeUnlockIdentifier);
     }
 
     public boolean hasAdvancement(Identifier advancement) {

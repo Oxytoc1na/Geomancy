@@ -59,5 +59,11 @@
     },
     "done": true
   },
+  "geomancy:recipes/misc/jewelry_octangulite_ring": {
+    "criteria": {
+      "has_ingredient": "2025-08-20 12:46:47 +0200"
+    },
+    "done": true
+  },
   "DataVersion": 3465
 }

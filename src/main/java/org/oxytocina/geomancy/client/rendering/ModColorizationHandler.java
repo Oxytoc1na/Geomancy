@@ -128,6 +128,9 @@ public class ModColorizationHandler {
         addOctanguliteArmorItem(ModItems.OCTANGULITE_LEGGINGS);
         addOctanguliteArmorItem(ModItems.OCTANGULITE_CHESTPLATE);
         addOctanguliteArmorItem(ModItems.OCTANGULITE_HELMET);
+
+        ColorProviderRegistry.ITEM.register(
+                (stack, tintIndex) -> tintIndex==0?0xFFFFFFFF:octanguliteItemNoise(stack, tintIndex, 0.03F,true),ModItems.COMPONENT_POUCH);
     }
 
     private static void addOctanguliteItem(Item item,float zoom,boolean withSlotOffset){

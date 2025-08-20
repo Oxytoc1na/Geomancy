@@ -3,7 +3,6 @@ package org.oxytocina.geomancy.mixin;
 import com.llamalad7.mixinextras.injector.*;
 import com.llamalad7.mixinextras.injector.wrapoperation.*;
 
-import io.netty.buffer.ByteBuf;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -16,7 +15,6 @@ import net.minecraft.entity.player.*;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.*;
 import net.minecraft.nbt.*;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.*;
 import net.minecraft.util.math.*;
@@ -158,24 +156,8 @@ public abstract class LivingEntityMixin {
     // listener armor
     @Inject(method="Lnet/minecraft/entity/LivingEntity;tryAttack(Lnet/minecraft/entity/Entity;)Z", at = @At(value= "HEAD"))
     private void geomancy$attack(Entity target, CallbackInfoReturnable<Boolean> cir){
-        if(!(target instanceof LivingEntity targetEnt)) return;
         LivingEntity thisEntity = (LivingEntity) (Object) this;
-        World world = thisEntity.getWorld();
-        if (!world.isClient) {
-            if (thisEntity instanceof MobEntity thisMobEntity) {
-                for (ItemStack armorItemStack : thisMobEntity.getArmorItems()) {
-                    if (armorItemStack.getItem() instanceof IListenerArmor armorWithHitEffect) {
-                        armorWithHitEffect.onHit(armorItemStack,thisMobEntity, targetEnt);
-                    }
-                }
-            } else if (thisEntity instanceof ServerPlayerEntity thisPlayerEntity) {
-                for (ItemStack armorItemStack : thisPlayerEntity.getArmorItems()) {
-                    if (armorItemStack.getItem() instanceof IListenerArmor armorWithHitEffect) {
-                        armorWithHitEffect.onHit(armorItemStack, thisPlayerEntity,targetEnt);
-                    }
-                }
-            }
-        }
+        EntityUtil.onAttacking(thisEntity,target);
     }
 
     @Inject(method="Lnet/minecraft/entity/LivingEntity;tickMovement()V", at = @At(value="INVOKE", target="Lnet/minecraft/entity/LivingEntity;isOnGround()Z",ordinal=2))
@@ -233,6 +215,10 @@ public abstract class LivingEntityMixin {
                     }
                 }
             }
+        }
+
+        if(source.getAttacker() instanceof PlayerEntity le){
+            EntityUtil.onAttacking(le,thisEntity);
         }
     }
 

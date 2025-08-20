@@ -122,9 +122,24 @@ public class SpellSignal {
     }
 
     public String getTextValue(){
+        return getTextValue(null);
+    }
+
+    public String getTextValue(SpellContext ctx){
         switch(type){
             case Text: return textValue;
-            case UUID: return uuidValue.toString();
+            case UUID: {
+                // attempt to fetch entity
+                Entity ent = null;
+                if(ctx!=null && ctx.getWorld() instanceof ServerWorld sw){
+                    ent = sw.getEntity(uuidValue);
+                }
+                if(ent!=null){
+                    var entName = ent.getName().getString();
+                    return entName;
+                }
+                return uuidValue.toString();
+            }
             case Number: return Float.toString(getNumberValue());
             case Boolean: return getBooleanValue()?"true":"false";
             case Vector: return getVectorValue().toString();
@@ -132,7 +147,7 @@ public class SpellSignal {
                 String res = "[";
                 var lv = getListValue();
                 for (int i = 0; i < lv.size(); i++) {
-                    res+=lv.get(i).getTextValue();
+                    res+=lv.get(i).getTextValue(ctx);
                     if(i<lv.size()-1) res+=",";
                 }
                 res+="]";
@@ -159,6 +174,10 @@ public class SpellSignal {
     @Override
     public String toString() {
         return type.toString()+":"+getTextValue();
+    }
+
+    public String toString(SpellContext ctx) {
+        return type.toString()+":"+getTextValue(ctx);
     }
 
     public Text toText(){

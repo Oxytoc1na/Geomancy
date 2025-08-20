@@ -8,6 +8,7 @@ import org.oxytocina.geomancy.client.screen.SpellmakerScreenHandler;
 
 public class SpellComponentSelectionSlot extends Slot {
     private final SpellmakerScreenHandler handler;
+    private boolean enabled = true;
     public SpellComponentSelectionSlot(Inventory inventory, int index, int x, int y,SpellmakerScreenHandler handler) {
         super(inventory, index, x, y);
         this.handler=handler;
@@ -21,5 +22,14 @@ public class SpellComponentSelectionSlot extends Slot {
     @Override
     public boolean canInsert(ItemStack stack) {
         return false;
+    }
+
+    public void setEnabled(boolean b) {
+        enabled=b;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 }

@@ -1,6 +1,8 @@
 package org.oxytocina.geomancy.spells;
 
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.HashMap;
 import java.util.List;
@@ -44,7 +46,11 @@ public class SpellBlockArgs {
     }
 
     public String getText(String name){
-        return get(name).getTextValue();
+        return getText(name,null);
+    }
+
+    public String getText(String name,SpellContext ctx){
+        return get(name).getTextValue(ctx);
     }
 
     public UUID getUUID(String name){
@@ -56,4 +62,12 @@ public class SpellBlockArgs {
     }
 
     public List<SpellSignal> getList(String name) { return get(name).getListValue(); }
+
+    public BlockPos getBlockPos(String name) {
+        return Toolbox.posToBlockPos(getVector(name));
+    }
+
+    public boolean has(String varName) {
+        return vars.containsKey(varName);
+    }
 }

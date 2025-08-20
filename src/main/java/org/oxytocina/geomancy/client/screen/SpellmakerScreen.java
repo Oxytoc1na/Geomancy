@@ -8,15 +8,14 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.ClickableWidget;
-import net.minecraft.client.gui.widget.Widget;
+import net.minecraft.client.gui.widget.*;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
@@ -34,9 +33,12 @@ import org.oxytocina.geomancy.client.GeomancyClient;
 import org.oxytocina.geomancy.client.screen.widgets.SpellmakerButton;
 import org.oxytocina.geomancy.client.screen.widgets.SpellmakerCheckbox;
 import org.oxytocina.geomancy.client.screen.widgets.SpellmakerTextInput;
+import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
+import org.oxytocina.geomancy.spells.SpellBlocks;
 import org.oxytocina.geomancy.spells.SpellComponent;
+import org.oxytocina.geomancy.util.TextUtil;
 import org.oxytocina.geomancy.util.Toolbox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,6 +64,19 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
     public List<Widget> widgets = new ArrayList<>();
     public HashMap<Widget,Integer> initialWidgetOffsets = new HashMap<>();
     public SpellmakerButton[] selectNewCompScrollBtns = new SpellmakerButton[2];
+
+    public boolean moving = !Geomancy.CONFIG.noSpellmakerMove.value();
+
+    public static final HashMap<ItemStack,String> hints = new LinkedHashMap<>();
+    public Pair<ItemStack,String> currentHint = null;
+
+    static{
+        hints.put(SpellBlocks.FUNCTION.copyItemStack(),"references");
+        hints.put(SpellBlocks.SUM.copyItemStack(),"sum");
+        hints.put(SpellBlocks.DIMHOP.copyItemStack(),"dimhop");
+        hints.put(ModItems.CASTER_LEGGINGS.getDefaultStack(),"casterleggings");
+        hints.put(Items.STONE.getDefaultStack(),"rockandstone");
+    }
 
     public SpellmakerScreen(SpellmakerScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
@@ -124,8 +139,8 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
     protected void init() {
         ensureTextEditFinish();
 
-        this.desiredBgWidth = bgWidth + (handler.hasGrid()?200:0);
-        this.backgroundWidth = (int)currentBgWidth;
+        this.desiredBgWidth = bgWidth + (handler.hasGrid()||!moving?200:0);
+        this.backgroundWidth = moving ? (int)currentBgWidth : desiredBgWidth;
         this.backgroundHeight = bgHeight;
 
         super.init();
@@ -408,6 +423,49 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
             }
         }
 
+        // silly placeholder
+        if(!handler.hasGrid() && !moving){
+            repickHint();
+
+            int bgPosX = (width-getBackgroundWidth())/2;
+            int bgPosY = (height-getBackgroundHeight())/2;
+
+            final int infoPosX = bgPosX+SpellmakerScreen.bgWidth+10;
+            final int infoPosY = bgPosY+10;
+
+            var tipWidget = new TextWidget(infoPosX,infoPosY-10,150,15,Text.translatable("geomancy.spellmaker.tip").formatted(Formatting.DARK_AQUA),MinecraftClient.getInstance().textRenderer);
+            addDrawableChild(tipWidget);
+            widgets.add(tipWidget);
+
+            var nameWidget = new TextWidget(infoPosX,infoPosY,150,15,Text.translatable("geomancy.spellmaker.tip."+currentHint.getSecond()),MinecraftClient.getInstance().textRenderer);
+            addDrawableChild(nameWidget);
+            widgets.add(nameWidget);
+
+            int i = 0;
+            for(var t : TextUtil.wrapString(Text.translatable("geomancy.spellmaker.tip."+currentHint.getSecond()+".desc").getString(),150,MinecraftClient.getInstance().textRenderer))
+            {
+                var textWidget = new TextWidget(infoPosX,infoPosY+48+10*i,150,10,Text.literal(t).formatted(Formatting.GRAY),MinecraftClient.getInstance().textRenderer);
+                addDrawableChild(textWidget);
+                widgets.add(textWidget);
+                i++;
+            }
+
+        }
+
+        // hint text for insertion
+        if(!handler.hasGrid()){
+
+            int bgPosX = (width-getBackgroundWidth())/2;
+            int bgPosY = (height-getBackgroundHeight())/2;
+
+            final int gridPosX = bgPosX+SpellmakerScreenHandler.fieldPosX;
+            final int gridPosY = bgPosY+SpellmakerScreenHandler.fieldPosY;
+
+            var tipWidget = new TextWidget(gridPosX,gridPosY,SpellmakerScreenHandler.fieldWidth,SpellmakerScreenHandler.fieldHeight,Text.translatable("geomancy.spellmaker.insertiontip"),MinecraftClient.getInstance().textRenderer);
+            addDrawableChild(tipWidget);
+            widgets.add(tipWidget);
+        }
+
         // instantiate component scroll buttons
         {
             int bgPosX = (width-getBackgroundWidth())/2;
@@ -439,6 +497,8 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
     public float currentBgWidth = bgWidth;
     public int shiftHoldOver = 0;
     void tick2(){
+        if(!moving) return;
+
         int prevW = (int) currentBgWidth;
         currentBgWidth = MathHelper.lerp(Toolbox.clampF(Geomancy.CONFIG.spellmakerUiSpeed.value(),0.1f,1),currentBgWidth,desiredBgWidth);
         int newW = (int) currentBgWidth;
@@ -541,6 +601,23 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
             RenderSystem.enableDepthTest();
         }
 
+        // render hint item
+        if (currentHint!=null && !handler.hasGrid() && !moving) {
+            RenderSystem.disableDepthTest();
+
+            int bgPosX = (width-getBackgroundWidth())/2;
+            int bgPosY = (height-getBackgroundHeight())/2;
+
+            final int infoPosX = bgPosX+SpellmakerScreen.bgWidth+10;
+            final int infoPosY = bgPosY+10;
+
+            var stack = currentHint.getFirst();
+            this.drawItem(context, stack, infoPosX-8+150/2, infoPosY+15, null);
+
+            RenderSystem.enableDepthTest();
+        }
+
+
         drawMouseoverTooltip(context,mouseX,mouseY);
         handler.render(context, mouseX, mouseY, delta);
     }
@@ -588,5 +665,11 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
     public void setNewComponentSelected(boolean b) {
         this.placingNewComponent = b;
         init();
+    }
+
+    public void repickHint(){
+        var list = hints.keySet().stream().toList();
+        var key= list.get(Toolbox.random.nextInt(list.size()));
+        currentHint = new Pair<>(key,hints.get(key));
     }
 }

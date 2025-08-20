@@ -3,6 +3,7 @@ package org.oxytocina.geomancy.spells;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import org.oxytocina.geomancy.util.ManaUtil;
 
 public class SpellContext {
@@ -116,8 +117,12 @@ public class SpellContext {
     }
 
     public SpellSignal getParentVar(String varName){
-        if(!isChild()) return null;
+        if(internalVars==null||!internalVars.has(varName)) return null;
         return internalVars.get(varName) ;
+    }
+
+    public World getWorld() {
+        return caster.getWorld();
     }
 
     public static enum Stage{

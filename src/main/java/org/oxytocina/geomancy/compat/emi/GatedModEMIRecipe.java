@@ -5,6 +5,7 @@ import dev.emi.emi.api.stack.*;
 import dev.emi.emi.api.widget.*;
 import net.minecraft.text.*;
 import org.jetbrains.annotations.*;
+import org.oxytocina.geomancy.compat.GeomancyIntegrationPacks;
 import org.oxytocina.geomancy.recipe.GatedRecipe;
 
 import java.util.*;
@@ -27,12 +28,12 @@ public abstract class GatedModEMIRecipe<T extends GatedRecipe<?>> extends ModEMI
 
     @Override
     public boolean isUnlocked() {
-        return hasAdvancement(recipe.getRequiredAdvancementIdentifier()) && super.isUnlocked();
+        return GeomancyIntegrationPacks.isCreative() || (hasAdvancement(recipe.getRequiredAdvancementIdentifier()) && super.isUnlocked());
     }
 
     @Override
     public boolean hideCraftable() {
-        return recipe.isSecret() || super.hideCraftable();
+        return !GeomancyIntegrationPacks.isCreative() && (recipe.isSecret() || super.hideCraftable());
     }
 
     @Override

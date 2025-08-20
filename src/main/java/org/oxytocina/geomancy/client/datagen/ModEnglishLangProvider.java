@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryWrapper;
 import org.oxytocina.geomancy.Geomancy;
@@ -12,9 +13,13 @@ import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.event.KeyInputHandler;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.jewelry.GemSlot;
+import org.oxytocina.geomancy.spells.SpellBlock;
+import org.oxytocina.geomancy.spells.SpellBlocks;
 import org.oxytocina.geomancy.util.Toolbox;
 
+import java.util.Dictionary;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
@@ -70,6 +75,16 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.spellmaker.types.list",      "List");
             add("MODID.spellmaker.abouttoplace1",   "You are about to place");
             add("MODID.spellmaker.abouttoplace2",   "this component.");
+            add("MODID.spellmaker.insertiontip",    "Insert a Spellcradle");
+            add("MODID.spellmaker.tip",             "Spellmaking Tip");
+            // tips
+            {
+                addSpellmakerTip("references","References","Components with copper as a background allow you to interact with other spells installed in a casting item!");
+                addSpellmakerTip("sum","The versatility of summation","The sum component can sum up numbers and vectors, acts as an OR for booleans, concatenates texts and lists, inserts signals into lists, and appends the text representation of most things to texts.\nA true multitalent!");
+                addSpellmakerTip("dimhop","Dimensional hopping","Known dimensional identifiers are \"minecraft:overworld\", \"minecraft:the_nether\" and \"minecraft:the_end\". You'll appear at the same coordinates you're currently at, just in a different dimension.");
+                addSpellmakerTip("casterleggings","Leggings and groundedness","If you jump while wearing Caster Leggings, any \"Entity Grounded\" component inside the triggered spell will output true for you if you weren't airborne at the time.");
+                addSpellmakerTip("rockandstone","Rock and stone!","What is the difference?\nPerhaps that rocking is more legal than stoning.\nWe may never know.");
+            }
 
             add("MODID.spellcomponent.category.flowcontrol",    "Flow control");
             add("MODID.spellcomponent.category.provider",       "Provider");
@@ -116,6 +131,9 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("xor","Xor","returns the result of a XOR b");
             addSpell("equals","Equals","returns true if a equals b");
             addSpell("text_entityid","Entity ID","returns the Identifier of the entity");
+            addSpell("text_blockid","Block ID","returns the Identifier of the block at the given position");
+            addSpell("entity_has_effect","Has Effect","returns if an entity has a specified status effect");
+            addSpell("entity_health","Entity Health","returns the health, max health, air, max air, and absorption of an entity");
             // effectors
             addSpell("print","Print","outputs a value to the casters chat");
             addSpell("fireball","Fireball","summons a fireball");
@@ -142,6 +160,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("get_element","Get Element","returns the element in a list at a given position");
             addSpell("set_element","Set Element","sets the element in a list at a given position");
             addSpell("entities_near","Entities Near","returns a list containing all entities within the specified area");
+            addSpell("block_box","Block Box","returns a list containing all block positions in the area");
 
             add("MODID.spells.debug.error","Error in spell component %1$s: %2$s");
             add("MODID.spells.debug.broke","Couldn't afford spell %1$s. Cost: %2$f, available: %3$f");
@@ -153,6 +172,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.spells.debug.notreplacable","Component %1$s tried to replace non-replaceable block %2$t");
             add("MODID.spells.debug.invalideffect","Component %1$s tried to imbue non-existent status effect %2$t");
             add("MODID.spells.debug.notimbuable","Component %1$s tried to imbue incompatible status effect %2$t");
+            add("MODID.spells.debug.toobig","Component %1$s tried to create a list with too many entries: %2$f/10000");
             add("MODID.spells.debug.depthlimit","Component %1$s: Depth limit reached!");
 
 
@@ -1006,6 +1026,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         {
             add("MODID.options.epilepsy","Epilepsy Mode");
             add("MODID.options.spellmakeruispeed","Spellmaker UI speed");
+            add("MODID.options.no_spellmaker_move","No Spellmaker UI movement");
         }
 
         tb=null;
@@ -1113,5 +1134,10 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
     void addArtifact(String of, String name, String desc){
         add("item.MODID.artifact_of_"+of, name);
         add("item.MODID.artifact_of_"+of+".desc", desc);
+    }
+
+    void addSpellmakerTip(String name, String text,String description){
+        add("MODID.spellmaker.tip."+name,text);
+        add("MODID.spellmaker.tip."+name+".desc",description);
     }
 }

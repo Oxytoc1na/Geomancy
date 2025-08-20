@@ -1,5 +1,6 @@
 package org.oxytocina.geomancy.compat;
 
+import net.minecraft.client.MinecraftClient;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.compat.*;
 
@@ -65,5 +66,10 @@ public class GeomancyIntegrationPacks {
 	public static boolean isIntegrationPackActive(String modId) {
 		return INTEGRATION_PACKS.containsKey(modId);
 	}
-	
+
+	public static boolean isCreative(){
+		if(MinecraftClient.getInstance()!=null && MinecraftClient.getInstance().player!=null) return MinecraftClient.getInstance().player.isCreative();
+		return false;
+	}
+
 }
