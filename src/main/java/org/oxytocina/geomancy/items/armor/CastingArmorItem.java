@@ -75,7 +75,9 @@ public class CastingArmorItem extends ArmorItem implements IMaddeningItem, IStor
 
     public void cast(ItemStack key, LivingEntity user, SpellBlockArgs args){
         int index = getSelectedSpellIndex(key);
-        ItemStack spellContainer = getStack(key,index);
+        var spells = getCastableSpellItems(key);
+        if(spells.isEmpty()) return;
+        ItemStack spellContainer = spells.get(index);
 
         if(!(spellContainer.getItem() instanceof SpellStoringItem storer)) return;
 

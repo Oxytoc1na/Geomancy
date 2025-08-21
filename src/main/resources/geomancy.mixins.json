@@ -18,6 +18,7 @@
     "compat.connector.absent.EntityApplyFluidsMixinNoSinytra"
   ],
   "client": [
+    "MinecraftClientMixin",
     "client.AbstractClientEntityMixin",
     "client.BlockOverlayRendererMixin",
     "client.InGameHudMixin",

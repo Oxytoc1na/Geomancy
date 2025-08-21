@@ -179,6 +179,9 @@ public class Toolbox {
     public static int sign(float f){
         return f>0?1:f<0?-1:0;
     }
+    public static int signD(double f){
+        return f>0?1:f<0?-1:0;
+    }
 
     public static GradientBuilder gradient(){return new GradientBuilder();}
 

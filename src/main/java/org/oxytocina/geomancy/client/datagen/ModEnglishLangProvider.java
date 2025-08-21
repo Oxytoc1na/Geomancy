@@ -43,8 +43,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         addShort("gb:lr","book.MODID.guidebook.lore.");
         addShort("gb:sc","book.MODID.guidebook.soulcasting.");
 
-        add(KeyInputHandler.LANG_CATEGORY_GEOMANCY,"Geomancy");
-        add(KeyInputHandler.LANG_OPEN_SKILLTREE,"Skills");
+
 
         // Spells
         {
@@ -83,6 +82,10 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                 addSpellmakerTip("sum","The versatility of summation","The sum component can sum up numbers and vectors, acts as an OR for booleans, concatenates texts and lists, inserts signals into lists, and appends the text representation of most things to texts.\nA true multitalent!");
                 addSpellmakerTip("dimhop","Dimensional hopping","Known dimensional identifiers are \"minecraft:overworld\", \"minecraft:the_nether\" and \"minecraft:the_end\". You'll appear at the same coordinates you're currently at, just in a different dimension.");
                 addSpellmakerTip("casterleggings","Leggings and groundedness","If you jump while wearing Caster Leggings, any \"Entity Grounded\" component inside the triggered spell will output true for you if you weren't airborne at the time.");
+                addSpellmakerTip("degrading","Degrading","The degrade block component can turn metal to ore, ore to stone, stone to cobblestone, cobblestone to gravel, gravel to sand, and sand to dirt! It also does other things, like damage anvils! Why would you need this?");
+                addSpellmakerTip("nearbyentities","Nearby Entities","The nearby entities component returns a list of entities, sorted by their distance to the center. The closest entity gets listed first!");
+                addSpellmakerTip("debugging","Debug your spells!","Putting a debug component somewhere in your grid will cause things that go wrong to tell you about themselves instead of staying silent. Be aware of the fact that this only applies to the grid it's placed in, not other grids referenced from it.");
+
                 addSpellmakerTip("rockandstone","Rock and stone!","What is the difference?\nPerhaps that rocking is more legal than stoning.\nWe may never know.");
             }
 
@@ -134,6 +137,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("text_blockid","Block ID","returns the Identifier of the block at the given position");
             addSpell("entity_has_effect","Has Effect","returns if an entity has a specified status effect");
             addSpell("entity_health","Entity Health","returns the health, max health, air, max air, and absorption of an entity");
+            addSpell("random","Random Integer","returns a random integer between 0 and the argument");
             // effectors
             addSpell("print","Print","outputs a value to the casters chat");
             addSpell("fireball","Fireball","summons a fireball");
@@ -145,6 +149,9 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("place","Place","attempts to place a block from an inventory slot");
             addSpell("break","Break","attempts to destroy a block at a position");
             addSpell("imbue","Imbue","grants a configurable status effect");
+            addSpell("set_spell","Set Spell","sets the selected spell of the caster item");
+            addSpell("degrade_block","Degrade Block","degrades a targeted block into something else");
+            addSpell("replace","Replace","a combination of the break and place components");
             // reference
             addSpell("action","Action","calls another installed spell");
             addSpell("provider","Provider","automatically returns the result of a spell");
@@ -152,6 +159,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("ref_input","Ref. Input","sets a call result variable");
             addSpell("function","Function","calls a spell and returns a result");
             addSpell("function_two","Function 2","calls a spell with two arguments and returns a result");
+            addSpell("var_output","Var. Output","gets a variable from installed variable storage items");
+            addSpell("var_input","Var. Input","sets a variable to an installed variable storage item");
             // lists
             addSpell("foreach","Foreach","individually sends out the elements of a list");
             addSpell("split","Split","splits a list into two at the given index");
@@ -350,6 +359,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("tooltip.geomancy.jewelry.unsmith"  ,"Salvages gems");
             add("tooltip.geomancy.jewelry.quality"  ,"Quality");
 
+            add("item.MODID.geode_preview",                 "Who knows?");
             add("item.MODID.stone_geode"            ,       "Stone Geode");
             add("tooltip.MODID.geodes"              ,       "Can be hammered open...if you're careful.");
             add("item.MODID.explorers_map.ancient_hall",    "Directions home");
@@ -358,11 +368,17 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("item.MODID.spellstorage_small",        "Minute Spellcradle");
             add("item.MODID.spellstorage_medium",       "Mundane Spellcradle");
             add("item.MODID.spellstorage_large",        "Spacious Spellcradle");
+            add("item.MODID.varstorage_small",          "Minute Varpot");
+            add("item.MODID.varstorage_medium",         "Mundane Varpot");
+            add("item.MODID.varstorage_large",          "Spacious Varpot");
             add("item.MODID.spellcomponent",            "Spell Component");
 
             add("MODID.spellcomponent.empty",               "empty");
             add("MODID.spellstorage.empty",                 "empty");
             add("MODID.spellstorage.unnamed",               "unnamed");
+
+            add("MODID.varstorage.storage", "Stored Variables: ");
+            add("MODID.varstorage.prefix",  "Accessor Prefix: ");
 
             add("item.MODID.spellglove",        "Spellglove");
             add("item.MODID.component_pouch","Component Pouch");
@@ -474,6 +490,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("effect.MODID.ecstatic"    , "Ecstatic");
 
         }
+
         // Enchantments
         add("enchantment.MODID.skillful"    , "Skillful");
         add("enchantment.MODID.mighty"      , "Mighty");
@@ -499,6 +516,13 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("geomancy.message.madness.ecstasy",     "You feel wonderful!");
             add("geomancy.message.madness.nausea",      "Your head is spinning...");
             add("geomancy.message.madness.paranoia",    "Did you hear something?");
+
+            add(KeyInputHandler.LANG_CATEGORY_GEOMANCY,"Geomancy");
+            add(KeyInputHandler.LANG_OPEN_SKILLTREE,"Skills");
+            add(KeyInputHandler.LANG_CAST_1,"Cast Trinket 1");
+            add(KeyInputHandler.LANG_CAST_2,"Cast Trinket 2");
+            add(KeyInputHandler.LANG_CAST_3,"Cast Trinket 3");
+            add(KeyInputHandler.LANG_ACTIVATE_SPELLS,"Trinket Hotbar Casting");
         }
 
 

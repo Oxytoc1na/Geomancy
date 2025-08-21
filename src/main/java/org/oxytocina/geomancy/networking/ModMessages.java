@@ -58,6 +58,7 @@ public class ModMessages {
     public static final Identifier SPELLSTORER_ITEM_TRY_UPDATE_CASTER = Geomancy.locate("spellstorer_item_try_update_caster");
     public static final Identifier CASTER_CHANGE_SELECTED_SPELL =       Geomancy.locate("caster_change_selected_spell");
     public static final Identifier PLAYER_JUMP =                        Geomancy.locate("player_jump");
+    public static final Identifier CAST_SPELL_PRESSED =                 Geomancy.locate("cast_spell_pressed");
 
     public static void registerC2SPackets(){
         ServerPlayNetworking.registerGlobalReceiver(CLIENT_JOINED,                      ClientJoinedC2SPacket::receive);
@@ -72,6 +73,7 @@ public class ModMessages {
         ServerPlayNetworking.registerGlobalReceiver(STORAGE_ITEM_TRY_UPDATE,            StorageItemTryUpdateC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(CASTER_CHANGE_SELECTED_SPELL,       CasterChangeSelectedSpellC2S::receive);
         ServerPlayNetworking.registerGlobalReceiver(PLAYER_JUMP,                        PlayerJumpC2SPacket::receive);
+        ServerPlayNetworking.registerGlobalReceiver(CAST_SPELL_PRESSED,                 CastSpellPressedC2S::receive);
 
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
             server.execute(() -> {

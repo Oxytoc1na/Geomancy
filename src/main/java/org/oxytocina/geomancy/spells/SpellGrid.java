@@ -19,6 +19,7 @@ import org.oxytocina.geomancy.util.Toolbox;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class SpellGrid {
     public int width;
@@ -65,6 +66,7 @@ public class SpellGrid {
     }
 
     public void run(ItemStack casterItem, ItemStack containerItem, LivingEntity casterEntity, SpellBlockArgs args, SpellContext.SoundBehavior soundBehavior){
+        long startTime = System.nanoTime();
 
         float costMultiplier = soulCostMultiplier;
         if(casterEntity.hasStatusEffect(ModStatusEffects.REGRETFUL))
@@ -90,6 +92,7 @@ public class SpellGrid {
         }
         catch(Exception ignored){
             Geomancy.logError("AAAAA!!!! Spells threw an exception! DEBUG ME!");
+            Geomancy.logError(ignored.getMessage());
         }
 
         if(context.depthLimitReached && context.debugging){
@@ -101,6 +104,13 @@ public class SpellGrid {
         }
         SpellBlocks.playCastSound(context);
 
+        long msTaken = TimeUnit.NANOSECONDS.toMillis(System.nanoTime()-startTime);
+        if(msTaken>2){
+            Geomancy.logWarning(name+" Spell execution time: "+msTaken);
+        }
+        else{
+            Geomancy.logInfo(name+" Spell execution time: "+msTaken);
+        }
     }
 
     public boolean tryRemoveComponent(Vector2i position){

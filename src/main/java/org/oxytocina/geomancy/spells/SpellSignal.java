@@ -196,6 +196,12 @@ public class SpellSignal {
         this.depth=depth;
     }
 
+    public NbtCompound toNBT() {
+        NbtCompound res = new NbtCompound();
+        writeNbt(res);
+        return res;
+    }
+
 
     public enum Type{
         None,

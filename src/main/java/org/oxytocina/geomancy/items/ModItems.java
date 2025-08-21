@@ -208,10 +208,12 @@ public class ModItems {
     public static final OctanguliteArmorItem OCTANGULITE_LEGGINGS =     register("octangulite_leggings",    new OctanguliteArmorItem    (ModArmorMaterials.OCTANGULITE, ArmorItem.Type.LEGGINGS,    new Item.Settings(),1));
     public static final OctanguliteArmorItem OCTANGULITE_BOOTS =        register("octangulite_boots",       new OctanguliteArmorItem    (ModArmorMaterials.OCTANGULITE, ArmorItem.Type.BOOTS,       new Item.Settings(),1));
 
-    public static final CastingArmorItem CASTER_HELMET =        register("casting_helmet",      new CastingArmorItem(ModArmorMaterials.OCTANGULITE, ArmorItem.Type.HELMET,      new Item.Settings(),1,5,ModItemTags.SPELL_STORING,false));
-    public static final CastingArmorItem CASTER_CHESTPLATE =    register("casting_chestplate",  new CastingArmorItem(ModArmorMaterials.OCTANGULITE, ArmorItem.Type.CHESTPLATE,  new Item.Settings(),1,5,ModItemTags.SPELL_STORING,false));
-    public static final CastingArmorItem CASTER_LEGGINGS =      register("casting_leggings",    new CastingArmorItem(ModArmorMaterials.OCTANGULITE, ArmorItem.Type.LEGGINGS,    new Item.Settings(),1,5,ModItemTags.SPELL_STORING,false));
-    public static final CastingArmorItem CASTER_BOOTS =         register("casting_boots",       new CastingArmorItem(ModArmorMaterials.OCTANGULITE, ArmorItem.Type.BOOTS,       new Item.Settings(),1,5,ModItemTags.SPELL_STORING,false));
+    public static final CastingArmorItem CASTER_HELMET =        register("casting_helmet",      new CastingArmorItem(ModArmorMaterials.OCTANGULITE, ArmorItem.Type.HELMET,      new Item.Settings(),1,5,ModItemTags.FITS_IN_CASTERS,false));
+    public static final CastingArmorItem CASTER_CHESTPLATE =    register("casting_chestplate",  new CastingArmorItem(ModArmorMaterials.OCTANGULITE, ArmorItem.Type.CHESTPLATE,  new Item.Settings(),1,5,ModItemTags.FITS_IN_CASTERS,false));
+    public static final CastingArmorItem CASTER_LEGGINGS =      register("casting_leggings",    new CastingArmorItem(ModArmorMaterials.OCTANGULITE, ArmorItem.Type.LEGGINGS,    new Item.Settings(),1,5,ModItemTags.FITS_IN_CASTERS,false));
+    public static final CastingArmorItem CASTER_BOOTS =         register("casting_boots",       new CastingArmorItem(ModArmorMaterials.OCTANGULITE, ArmorItem.Type.BOOTS,       new Item.Settings(),1,5,ModItemTags.FITS_IN_CASTERS,false));
+
+    public static final CastingTrinketItem CASTER_CORE =    register("caster_core",new CastingTrinketItem(new Item.Settings().maxCount(1), 9*3,ModItemTags.FITS_IN_CASTERS,false),new ExtraItemSettings());
 
 
     public static final HammerItem IRON_HAMMER = register("iron_hammer",new HammerItem(5,-3.3f,
@@ -230,7 +232,12 @@ public class ModItems {
     public static final SpellComponentStoringItem SPELLCOMPONENT =  register("spellcomponent",      new SpellComponentStoringItem(new FabricItemSettings()),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
     public static final StorageItem COMPONENT_POUCH =               register("component_pouch",     new StorageItem(new FabricItemSettings().maxCount(1),9*3, ModItemTags.COMPONENT_STORING,true),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom));
 
+    public static final VariableStoringItem VARSTORAGE_SMALL =       register("varstorage_small",  new VariableStoringItem(new FabricItemSettings().maxCount(8),1));
+    public static final VariableStoringItem VARSTORAGE_MEDIUM =      register("varstorage_medium", new VariableStoringItem(new FabricItemSettings().maxCount(8),4));
+    public static final VariableStoringItem VARSTORAGE_LARGE =       register("varstorage_large",  new VariableStoringItem(new FabricItemSettings().maxCount(8),16));
+
     // geodes
+    public static final Item GEODE_PREVIEW = register("geode_preview",new Item(new FabricItemSettings()),new ExtraItemSettings().dontGroupItem());
     // if something else goes terribly wrong, this place is usually where the exception gets thrown
     // instead of somewhere where it would make more sense. no clue why, but it's sort of a little useful.
     // check your initializations!

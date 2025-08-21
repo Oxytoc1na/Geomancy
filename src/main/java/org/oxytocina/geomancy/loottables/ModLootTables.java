@@ -2,6 +2,7 @@ package org.oxytocina.geomancy.loottables;
 
 import com.google.common.collect.Sets;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -14,6 +15,7 @@ import net.minecraft.loot.LootTables;
 import net.minecraft.loot.condition.LootCondition;
 import net.minecraft.loot.condition.LootConditionTypes;
 import net.minecraft.loot.condition.RandomChanceLootCondition;
+import net.minecraft.loot.condition.RandomChanceWithLootingLootCondition;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.function.*;
 import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
@@ -167,19 +169,39 @@ public class ModLootTables {
         {
             GEODE_STONE = register("geodes/stone", LootTable.builder()
                     .pool(LootPool.builder()
-                            .rolls(UniformLootNumberProvider.create(1.0F, 1.0F))
-                            .with(ItemEntry.builder(
-                                            Items.EMERALD)
-                                    .weight(5)
+                            .rolls(ConstantLootNumberProvider.create(1))
+                            .with(ItemEntry.builder(Items.COBBLESTONE).weight(100)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
+                            .with(ItemEntry.builder(Items.COAL).weight(100)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
+                            .with(ItemEntry.builder(Items.IRON_ORE).weight(50)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
+                            .with(ItemEntry.builder(Items.GOLD_ORE).weight(50)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
+                            .with(ItemEntry.builder(Items.LAPIS_LAZULI).weight(50)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
+                            .with(ItemEntry.builder(ModItems.TOURMALINE).weight(50)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
+                            .with(ItemEntry.builder(ModItems.AXINITE).weight(50)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
+                            .with(ItemEntry.builder(ModItems.ORTHOCLASE).weight(50)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
+                            .with(ItemEntry.builder(ModItems.PERIDOT).weight(50)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
+                            .with(ItemEntry.builder(Items.REDSTONE).weight(50)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 8.0F))))
+                            .with(ItemEntry.builder(Items.EMERALD).weight(40)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
-                            .with(ItemEntry.builder(
-                                            Items.DIAMOND)
-                                    .weight(5)
+                            .with(ItemEntry.builder(Items.DIAMOND).weight(20)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 2.0F))))
-                            .with(ItemEntry.builder(
-                                            Items.LAPIS_LAZULI)
-                                    .weight(5)
-                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))));
+                            .with(ItemEntry.builder(Items.NETHERITE_SCRAP).weight(10)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 2.0F))))
+                            .with(ItemEntry.builder(ModItems.MUSIC_DISC_DIGGY).weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
+                            .with(ItemEntry.builder(Items.NETHER_STAR).weight(1)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 1.0F))))
+                    )
+            );
         }
 
         // ANCIENT_HALL_SMITHERY_CHEST
@@ -822,7 +844,18 @@ public class ModLootTables {
     }
 
     public static void register() {
+        // register stone geodes
+        LootTableEvents.MODIFY.register((resourceManager, lootManager, id, tableBuilder, source) -> {
+            // Let's only modify built-in loot tables and leave data pack loot tables untouched by checking the source.
+            // We also check that the loot table ID is equal to the ID we want.
+            if (source.isBuiltin() && Blocks.STONE.getLootTableId().equals(id)) {
+                LootPool.Builder poolBuilder = LootPool.builder().with(ItemEntry.builder(ModItems.STONE_GEODE)
+                        .conditionally(RandomChanceLootCondition.builder(1/300f))
+                );
 
+                tableBuilder.pool(poolBuilder);
+            }
+        });
     }
 
     private static LootPool.Builder spellComponentsBuilder(){

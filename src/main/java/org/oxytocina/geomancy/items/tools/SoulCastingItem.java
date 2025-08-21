@@ -32,10 +32,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class SoulCastingItem extends StorageItem implements IManaStoringItem, IScrollListenerItem, ICustomRarityItem {
+public class SoulCastingItem extends StorageItem implements IManaStoringItem, IScrollListenerItem, ICustomRarityItem, ISpellSelector {
 
     public SoulCastingItem(Settings settings, int storageSize) {
-        super(settings, storageSize,ModItemTags.SPELL_STORING,false);
+        super(settings, storageSize,ModItemTags.FITS_IN_CASTERS,false);
     }
 
     @Override
@@ -71,7 +71,9 @@ public class SoulCastingItem extends StorageItem implements IManaStoringItem, IS
 
     public void cast(ItemStack key, LivingEntity user){
         int index = getSelectedSpellIndex(key);
-        ItemStack spellContainer = getStack(key,index);
+        var spells = getCastableSpellItems(key);
+        if(spells.isEmpty()) return;
+        ItemStack spellContainer = spells.get(index);
 
         if(!(spellContainer.getItem() instanceof SpellStoringItem storer)) return;
 
@@ -109,57 +111,9 @@ public class SoulCastingItem extends StorageItem implements IManaStoringItem, IS
 
     }
 
-    public ArrayList<ItemStack> getCastableSpellItems(ItemStack stack){
-        if(!(stack.getItem() instanceof  SoulCastingItem)) return null;
-
-        ArrayList<ItemStack> res = new ArrayList<>();
-        for (int i = 0; i < getStorageSize(stack); i++) {
-            var spell = getStack(stack,i);
-            if(!(spell.getItem() instanceof SpellStoringItem storer)) continue;
-            var grid = SpellStoringItem.readGrid(spell);
-            if(grid==null||grid.library) continue;
-            res.add(spell);
-        }
-        return res;
-    }
-
     @Override
     public float getBaseSoulCapacity(ItemStack stack) {
         return 0;
-    }
-
-    public int getSelectedSpellIndex(ItemStack stack){
-        if(!stack.getOrCreateNbt().contains("selected", NbtElement.INT_TYPE)) return 0;
-        int res = stack.getNbt().getInt("selected");
-        int installed = getInstalledSpellsCount(stack);
-        if(installed<=0)return 0;
-        res = ((res%installed)+installed)%installed;
-        return res;
-    }
-
-    public void setSelectedSpellIndex(ItemStack stack,int index){
-        int installed = getInstalledSpellsCount(stack);
-        if(installed<=0)index=0;
-        else index = ((index%installed)+installed)%installed;
-        stack.getOrCreateNbt().putInt("selected",index);
-    }
-
-    public int getInstalledSpellsCount(ItemStack stack){
-        return getCastableSpellItems(stack).size();
-    }
-
-    public static SpellGrid getSpell(ItemStack casterItem,String name){
-        if(!(casterItem.getItem() instanceof  SoulCastingItem caster)) return null;
-
-        for (int i = 0; i < caster.getStorageSize(casterItem); i++) {
-            var contender = caster.getStack(casterItem,i);
-            if(!(contender.getItem() instanceof SpellStoringItem storer)) continue;
-            var grid = SpellStoringItem.readGrid(contender);
-            if(grid==null) continue;
-            if(Objects.equals(grid.name, name)) return grid;
-        }
-
-        return null;
     }
 
     @Override
@@ -254,6 +208,4 @@ public class SoulCastingItem extends StorageItem implements IManaStoringItem, IS
     public Rarity getRarity() {
         return Rarity.None;
     }
-
-
 }

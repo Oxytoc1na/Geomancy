@@ -256,11 +256,13 @@ public class SpellBlock {
                     SpellComponent.SideConfig.Mode.Blocked},"");
         }
 
+        public static SpellComponent.SideConfig[] sidesInput(SpellComponent parent){return sidesInput(parent,"");}
         public static SpellComponent.SideConfig[] sidesInput(SpellComponent parent,String varName){
             return sidesUniform(parent,new SpellComponent.SideConfig.Mode[]{
                     SpellComponent.SideConfig.Mode.Input,SpellComponent.SideConfig.Mode.Blocked},varName);
         }
 
+        public static SpellComponent.SideConfig[] sidesOutput(SpellComponent parent){return sidesOutput(parent,"");}
         public static SpellComponent.SideConfig[] sidesOutput(SpellComponent parent,String varName){
             return sidesUniform(parent,new SpellComponent.SideConfig.Mode[]{
                     SpellComponent.SideConfig.Mode.Output,SpellComponent.SideConfig.Mode.Blocked},varName);

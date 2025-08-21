@@ -4,6 +4,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.util.ManaUtil;
 
 public class SpellContext {
@@ -29,6 +30,8 @@ public class SpellContext {
     public SpellBlockResult referenceResult = SpellBlockResult.empty();
     public SpellBlockArgs internalVars;
 
+    private World worldOverride = null;
+
     public SpellContext(
             SpellGrid grid,
             LivingEntity caster,
@@ -48,6 +51,13 @@ public class SpellContext {
         this.soulCostMultiplier=soulCostMultiplier;
         this.soulConsumed=soulConsumed;
         this.soundBehavior=soundBehavior;
+    }
+
+    /// to be used SOLELY for stringifying spell signals!!
+    public static SpellContext ofWorld(@Nullable World world) {
+        var res = new SpellContext(null,null,null,null,0,0,0,null);
+        res.worldOverride = world;
+        return res;
     }
 
     public boolean tryConsumeSoul(float amount){
@@ -122,7 +132,7 @@ public class SpellContext {
     }
 
     public World getWorld() {
-        return caster.getWorld();
+        return caster!=null?caster.getWorld():worldOverride;
     }
 
     public static enum Stage{

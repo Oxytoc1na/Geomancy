@@ -101,6 +101,20 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
                         ModItems.SPELLSTORAGE_LARGE
                 );
 
+        // variable storing
+        getOrCreateTagBuilder(VARIABLE_STORING).setReplace(false)
+                .add(
+                        ModItems.VARSTORAGE_SMALL,
+                        ModItems.VARSTORAGE_MEDIUM,
+                        ModItems.VARSTORAGE_LARGE
+                );
+
+        // fits in casters
+        getOrCreateTagBuilder(FITS_IN_CASTERS)
+                .forceAddTag(SPELL_STORING)
+                .forceAddTag(VARIABLE_STORING)
+                        ;
+
         // component storing
         getOrCreateTagBuilder(COMPONENT_STORING).setReplace(false)
                 .add(
@@ -124,6 +138,10 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
         //this.getOrCreateTagBuilder(accessory("head/hat")).add(
         //this.getOrCreateTagBuilder(accessory("legs/belt")).add(
 
+        this.getOrCreateTagBuilder(accessory("all")).add(
+                ModItems.CASTER_CORE
+        );
+
         for(JewelryItem any : ModItems.JewelryAnySlotItems)
         {
             this.getOrCreateTagBuilder(accessory("all")).add(any);
@@ -146,7 +164,6 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
                     artifact
             );
         }
-
     }
 
     private static TagKey<Item> accessory(String name) {

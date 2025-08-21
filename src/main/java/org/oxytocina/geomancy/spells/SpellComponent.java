@@ -367,7 +367,7 @@ public class SpellComponent {
             modes = parent.function.getDefaultSideConfigs(parent)[
                     (getDirIndex(dir)+parent.rotation+6)%6
                     ].modes;
-            sanityCheckVarName(true);
+            sanityCheckVarName(false);
         }
 
         public SideConfig(SpellComponent parent,String dir, String varName, Mode[] modes){
@@ -477,11 +477,17 @@ public class SpellComponent {
         }
 
         public SpellSignal getSignal(SpellComponent component){
-            return switch (activeMode()) {
+            var res = switch (activeMode()) {
                 case Blocked -> SpellSignal.createNone();
                 case Input -> component.function.inputs.get(varName);
                 case Output -> component.function.outputs.get(varName);
             };
+            if(res==null){
+                // something fishy is going on...
+                sanityCheckVarName(true);
+                return SpellSignal.createNone();
+            }
+            return res;
         }
 
         private void sanityCheckVarName(boolean reportErrors) {

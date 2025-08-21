@@ -30,4 +30,32 @@ public class BlockHelper {
         }
         return false;
     }
+
+    public static boolean replaceBlockWithDrops(PlayerEntity player, ItemStack stack, World world, BlockPos pos, BlockState newState, Predicate<BlockState> filter) {
+        ChunkPos chunkPos = world.getChunk(pos).getPos();
+        if (world.isChunkLoaded(chunkPos.x, chunkPos.z)) {
+            BlockState blockstate = world.getBlockState(pos);
+            if (!world.isClient && !blockstate.isAir() && blockstate.calcBlockBreakingDelta(player, world, pos) > 0 && filter.test(blockstate)) {
+                ItemStack save = player.getMainHandStack();
+                player.setStackInHand(Hand.MAIN_HAND, stack);
+                ((ServerPlayerEntity) player).networkHandler.sendPacket(new WorldEventS2CPacket(WorldEvents.BLOCK_BROKEN, pos, Block.getRawIdFromState(blockstate), false));
+                ((ServerPlayerEntity) player).interactionManager.tryBreakBlock(pos);
+                world.setBlockState(pos,newState);
+                player.setStackInHand(Hand.MAIN_HAND, save);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean replaceBlock(World world, BlockPos pos, BlockState newState){
+        ChunkPos chunkPos = world.getChunk(pos).getPos();
+        if (world.isChunkLoaded(chunkPos.x, chunkPos.z)) {
+            if (!world.isClient) {
+                world.setBlockState(pos,newState);
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -110,8 +110,6 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
         // smithing recipes
         {
-
-
             // generic jewelry recipes
             GenJewelryRecData[] mats = new GenJewelryRecData[]{
                     new GenJewelryRecData("iron",Items.IRON_INGOT,30,15),
@@ -193,7 +191,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         conditionsFromItem(EMPTY_ARTIFACT),null);
             }
 
-            // spell storage
+            // spell and variable storage
             {
                 // small
                 AddShapedSmitheryRecipe(new String[]{
@@ -230,6 +228,40 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         },
                         SPELLSTORAGE_LARGE,1,300,20,conditionsFromItem(OCTANGULITE_INGOT),null);
 
+                // small
+                AddShapedSmitheryRecipe(new String[]{
+                                " t ",
+                                " m ",
+                                " g "}
+                        ,new SPatKey[]{
+                                new SPatKey("t",SmithingIngredient.ofItems(1,1,TITANIUM_INGOT)),
+                                new SPatKey("m",SmithingIngredient.ofItems(1,1,MITHRIL_INGOT)),
+                                new SPatKey("g",SmithingIngredient.ofItems(1,1,Items.DIAMOND)),
+                        },
+                        VARSTORAGE_SMALL,1,100,12,conditionsFromItem(MITHRIL_INGOT),null);
+
+                // medium
+                AddShapedSmitheryRecipe(new String[]{
+                                " m ",
+                                " o ",
+                                " g "}
+                        ,new SPatKey[]{
+                                new SPatKey("m",SmithingIngredient.ofItems(1,1,MITHRIL_INGOT)),
+                                new SPatKey("o",SmithingIngredient.ofItems(1,1,OCTANGULITE_INGOT)),
+                                new SPatKey("g",SmithingIngredient.ofItems(1,1,Items.DIAMOND)),
+                        },
+                        VARSTORAGE_MEDIUM,1,200,15,conditionsFromItem(OCTANGULITE_INGOT),null);
+
+                // large
+                AddShapedSmitheryRecipe(new String[]{
+                                " o ",
+                                " o ",
+                                " g "}
+                        ,new SPatKey[]{
+                                new SPatKey("o",SmithingIngredient.ofItems(1,1,OCTANGULITE_INGOT)),
+                                new SPatKey("g",SmithingIngredient.ofItems(1,1,Items.DIAMOND)),
+                        },
+                        VARSTORAGE_LARGE,1,300,20,conditionsFromItem(OCTANGULITE_INGOT),null);
             }
 
             // spellcomponents
@@ -484,6 +516,12 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                             SmithingIngredient.ofItems(1,1,Items.GHAST_TEAR),
                     }).toList(),SpellBlocks.ENTITY_HEALTH,true);
 
+                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,baseIngot),
+                            SmithingIngredient.ofItems(1,1,Items.DROPPER),
+                    }).toList(),SpellBlocks.RANDOM,true);
+
                 }
 
                 // effectors
@@ -548,6 +586,25 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.IRON_PICKAXE),
                     }).toList(),SpellBlocks.BREAK,true);
+
+                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,baseIngot),
+                            SmithingIngredient.ofItems(1,1,OCTANGULITE_NUGGET),
+                    }).toList(),SpellBlocks.SET_SPELL,true);
+
+                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,baseIngot),
+                            SmithingIngredient.ofItems(1,1,Items.COBBLESTONE),
+                    }).toList(),SpellBlocks.DEGRADE_BLOCK,true);
+
+                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,baseIngot),
+                            SmithingIngredient.ofItems(1,1,Items.IRON_PICKAXE),
+                            SmithingIngredient.ofItems(1,1,Items.CRAFTING_TABLE),
+                    }).toList(),SpellBlocks.REPLACE,true);
                 }
 
                 // reference
@@ -589,6 +646,18 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.DROPPER),
                     }).toList(),SpellBlocks.PROVIDER,true);
+
+                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,baseIngot),
+                            SmithingIngredient.ofItems(1,1,Items.BOOK),
+                    }).toList(),SpellBlocks.VAR_OUTPUT,true);
+
+                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,baseIngot),
+                            SmithingIngredient.ofItems(1,1,Items.FEATHER),
+                    }).toList(),SpellBlocks.VAR_INPUT,true);
                 }
 
                 // lists
@@ -643,10 +712,14 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     }).toList(),SpellBlocks.BLOCK_BOX,true);
                 }
 
+                String builtSpellComps = "";
                 for(var block : SpellBlocks.functions.values()){
                     if(!spellComponentRecipesBuilt.contains(block))
                         Geomancy.logWarning("no recipe for spell component "+block.identifier.getPath());
+
+                    builtSpellComps += "\""+block.identifier.getPath()+"\",\n";
                 }
+                Geomancy.logInfo("Spellblocks:\n"+builtSpellComps);
 
                 // casting armor
                 AddShapedSmitheryRecipe(new String[]{
