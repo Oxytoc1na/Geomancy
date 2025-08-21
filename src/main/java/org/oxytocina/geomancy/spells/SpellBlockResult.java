@@ -29,37 +29,37 @@ public class SpellBlockResult {
         vars.putAll(args.vars);
     }
 
-    public void add(SpellSignal signal){
-        vars.put(signal.name,signal);
+    public SpellBlockResult add(SpellSignal signal){
+        vars.put(signal.name,signal); return this;
     }
 
-    public void add(String name, float value){
-        add(SpellSignal.createNumber(value).named(name));
+    public SpellBlockResult add(String name, float value){
+        add(SpellSignal.createNumber(value).named(name)); return this;
     }
 
-    public void add(String name, double value){
-        add(name,(float)value);
+    public SpellBlockResult add(String name, double value){
+        add(name,(float)value); return this;
     }
 
-    public void add(String name, boolean value){
-        add(SpellSignal.createBoolean(value).named(name));
+    public SpellBlockResult add(String name, boolean value){
+        add(SpellSignal.createBoolean(value).named(name)); return this;
     }
 
-    public void add(String name, String value){
-        add(SpellSignal.createText(value).named(name));
+    public SpellBlockResult add(String name, String value){
+        add(SpellSignal.createText(value).named(name)); return this;
     }
 
-    public void add(String name, UUID value){
-        add(SpellSignal.createUUID(value).named(name));
+    public SpellBlockResult add(String name, UUID value){
+        add(SpellSignal.createUUID(value).named(name)); return this;
     }
 
-    public void add(String name, Vec3d value){
-        add(SpellSignal.createVector(value).named(name));
+    public SpellBlockResult add(String name, Vec3d value){
+        add(SpellSignal.createVector(value).named(name)); return this;
     }
 
-    public void add(String name, List<SpellSignal> value) { add(SpellSignal.createList(value).named(name)); }
+    public SpellBlockResult add(String name, List<SpellSignal> value) { add(SpellSignal.createList(value).named(name)); return this; }
 
-    public void addSubResult(SpellBlockResult res) { if(subResults==null) subResults = new ArrayList<>(); res.depth=depth; subResults.add(res); }
+    public SpellBlockResult addSubResult(SpellBlockResult res) { if(subResults==null) subResults = new ArrayList<>(); res.depth=depth; subResults.add(res); return this; }
 
     public static SpellBlockResult empty(){
         return new SpellBlockResult();

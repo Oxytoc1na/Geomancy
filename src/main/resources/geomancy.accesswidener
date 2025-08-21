@@ -39,3 +39,6 @@ accessible field net/minecraft/client/gui/screen/ingame/HandledScreen touchDropY
 accessible field net/minecraft/client/gui/screen/ingame/HandledScreen touchDropOriginSlot Lnet/minecraft/screen/slot/Slot;
 accessible method net/minecraft/client/gui/screen/ingame/HandledScreen isPointOverSlot (Lnet/minecraft/screen/slot/Slot;DD)Z
 accessible field net/minecraft/screen/ScreenHandler revision I
+
+accessible field net/minecraft/block/entity/AbstractFurnaceBlockEntity burnTime I
+accessible field net/minecraft/block/entity/AbstractFurnaceBlockEntity fuelTime I

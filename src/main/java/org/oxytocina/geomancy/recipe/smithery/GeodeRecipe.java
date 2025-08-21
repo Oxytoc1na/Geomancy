@@ -83,11 +83,11 @@ public class GeodeRecipe extends GatedModRecipe<Inventory> implements SmitheryRe
                     var loot = lootTable.generateLoot(new LootContextParameterSet.Builder(serverWorld).build(LootContextType.create().build()));
                     res.addAll(loot);
                 }
-                else res.add(Items.DIAMOND.getDefaultStack());
+                else res.add(ModItems.GEODE_PREVIEW.getDefaultStack());
             }
         }
         else{
-            res.add(Items.DIAMOND.getDefaultStack());
+            res.add(ModItems.GEODE_PREVIEW.getDefaultStack());
         }
 
         if(removeIngredients) baseStack.decrement(1);
