@@ -45,6 +45,14 @@ public class VariableStoringItem extends Item implements IVariableStoringItem{
     public static boolean setSignalStatic(ItemStack storage,SpellSignal signal){
         var list = storage.getOrCreateSubNbt("signals");
 
+        if(signal.type== SpellSignal.Type.None){
+            if(list.contains(signal.name)) {
+                list.remove(signal.name);
+                return true;
+            }
+            return false;
+        }
+
         // item is full
         if(list.getSize() + (list.contains(signal.name)?0:1) > ((VariableStoringItem)storage.getItem()).capacity) return false;
 

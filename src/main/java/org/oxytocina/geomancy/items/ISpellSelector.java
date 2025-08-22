@@ -97,22 +97,21 @@ public interface ISpellSelector {
         ArrayList<ItemStack> res = new ArrayList<>();
         for (int i = 0; i < getStorageSize(stack); i++) {
             var contender = getStack(stack,i);
-            if(!(contender.getItem() instanceof VariableStoringItem)) continue;
+            if(!(contender.getItem() instanceof IVariableStoringItem)) continue;
             res.add(contender);
         }
         return res;
     }
 
-    default ItemStack getVariableStorageItem(ItemStack stack, String name){
-        var contenders = getVariableStorageItems(stack);
-        for (int i = 0; i < contenders.size(); i++) {
-            var contender = contenders.get(i);
-            if(!(contender.getItem() instanceof IVariableStoringItem varStorer)) continue;
-            var prefix = varStorer.getAccessorPrefix(contender);
-            if(Objects.equals(prefix, name)){
-                return contender;
-            }
+    default ItemStack getVariableStorageItem(ItemStack stack, String name) {
+        var items = getVariableStorageItems(stack);
+        for (int i = 0; i < items.size(); i++) {
+            var item = items.get(i);
+            var itemItem = (IVariableStoringItem) item.getItem();
+            if(itemItem.getAccessorPrefix(item).equals(name)) return item;
         }
         return null;
     }
+
+    void markDirty(ItemStack casterItem);
 }

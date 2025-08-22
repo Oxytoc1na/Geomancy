@@ -136,6 +136,8 @@ public class SpellBlocks {
     public static final SpellBlock REF_INPUT;
     public static final SpellBlock VAR_OUTPUT;
     public static final SpellBlock VAR_INPUT;
+    public static final SpellBlock VAR_DELETE;
+    public static final SpellBlock VAR_EXISTS;
 
     // lists
     public static final SpellBlock FOREACH;
@@ -991,7 +993,7 @@ public class SpellBlocks {
                             SpellBlockResult res = SpellBlockResult.empty();
                             var a = vars.get("a");
                             var b = vars.get("b");
-                            res.add("res",a.equals(b));
+                            res.add("res",a.softEquals(b));
                             return res;
                         })
                         .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
@@ -1919,10 +1921,54 @@ public class SpellBlocks {
                         var varName = splitID[1];
                         var varStorerStack = sps.getVariableStorageItem(comp.context.casterItem,varPrefix);
                         if(varStorerStack==null) return SpellBlockResult.empty();
-                        ((IVariableStoringItem) varStorerStack.getItem()).setSignal(varStorerStack,sig.named(varName));
+                        if(((IVariableStoringItem) varStorerStack.getItem()).setSignal(varStorerStack,sig.named(varName))){
+                            sps.markDirty(comp.context.casterItem);
+                        }
                         return SpellBlockResult.empty();
                     })
                     .sideConfigGetter(SpellBlock.SideUtil::sidesInput)
+                    .category(cat).build());
+
+            // removes a signal from a var storage item
+            VAR_DELETE = register(SpellBlock.Builder.create("var_delete")
+                    .inputs(SpellSignal.createText().named("varID"))
+                    .outputs()
+                    .parameters()
+                    .func((comp,vars) -> {
+                        if(!(comp.context.casterItem.getItem() instanceof ISpellSelector sps)) return SpellBlockResult.empty();
+                        var varID = vars.getText("varID");
+                        if(!varID.contains(":")) varID="default:"+varID;
+                        var splitID = varID.split(":");
+                        var varPrefix = splitID[0];
+                        var varName = splitID[1];
+                        var varStorerStack = sps.getVariableStorageItem(comp.context.casterItem,varPrefix);
+                        if(varStorerStack==null) return SpellBlockResult.empty();
+                        if(((IVariableStoringItem) varStorerStack.getItem()).setSignal(varStorerStack,SpellSignal.createNone().named(varName))){
+                            sps.markDirty(comp.context.casterItem);
+                        }
+                        return SpellBlockResult.empty();
+                    })
+                    .sideConfigGetter(SpellBlock.SideUtil::sidesInput)
+                    .category(cat).build());
+
+            // checks if a signal from a var storage item exists
+            VAR_EXISTS = register(SpellBlock.Builder.create("var_exists")
+                    .inputs(SpellSignal.createText().named("varID"))
+                    .outputs(SpellSignal.createBoolean().named("exists"))
+                    .parameters()
+                    .func((comp,vars) -> {
+                        if(!(comp.context.casterItem.getItem() instanceof ISpellSelector sps)) return SpellBlockResult.empty();
+                        var varID = vars.getText("varID");
+                        if(!varID.contains(":")) varID="default:"+varID;
+                        var splitID = varID.split(":");
+                        var varPrefix = splitID[0];
+                        var varName = splitID[1];
+                        var varStorerStack = sps.getVariableStorageItem(comp.context.casterItem,varPrefix);
+                        if(varStorerStack==null) return SpellBlockResult.empty();
+                        var sig = ((IVariableStoringItem) varStorerStack.getItem()).getSignal(varStorerStack,varName);
+                        return SpellBlockResult.empty().add("exists",sig!=null);
+                    })
+                    .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                     .category(cat).build());
         }
 

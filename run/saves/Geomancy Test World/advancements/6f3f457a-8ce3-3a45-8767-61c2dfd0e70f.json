@@ -83,6 +83,18 @@
     },
     "done": true
   },
+  "geomancy:recipes/misc/jewelry_octangulite_pendant": {
+    "criteria": {
+      "has_ingredient": "2025-08-09 17:52:23 +0200"
+    },
+    "done": true
+  },
+  "geomancy:interaction/simple_smithery": {
+    "criteria": {
+      "simple_smithery": "2025-08-09 17:52:55 +0200"
+    },
+    "done": true
+  },
   "geomancy:recipes/misc/smithing_octangulite_ring": {
     "criteria": {
       "default_conditions": "2025-08-09 17:52:57 +0200"
@@ -95,12 +107,6 @@
     },
     "done": true
   },
-  "geomancy:recipes/misc/jewelry_octangulite_ring": {
-    "criteria": {
-      "has_ingredient": "2025-08-09 17:53:15 +0200"
-    },
-    "done": true
-  },
   "geomancy:recipes/tools/octangulite_chestplate": {
     "criteria": {
       "has_octangulite_ingot": "2025-08-09 17:52:57 +0200"
@@ -110,18 +116,6 @@
   "geomancy:recipes/misc/smithing_octangulite_necklace": {
     "criteria": {
       "default_conditions": "2025-08-09 17:52:57 +0200"
-    },
-    "done": true
-  },
-  "geomancy:recipes/misc/jewelry_octangulite_pendant": {
-    "criteria": {
-      "has_ingredient": "2025-08-09 17:52:23 +0200"
-    },
-    "done": true
-  },
-  "geomancy:interaction/simple_smithery": {
-    "criteria": {
-      "simple_smithery": "2025-08-09 17:52:55 +0200"
     },
     "done": true
   },
@@ -200,6 +194,42 @@
   "geomancy:recipes/tools/octangulite_helmet": {
     "criteria": {
       "has_octangulite_ingot": "2025-08-09 17:52:57 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/jewelry_octangulite_ring": {
+    "criteria": {
+      "has_ingredient": "2025-08-09 17:53:15 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/diamond": {
+    "criteria": {
+      "has_diamond_block": "2025-08-21 19:33:29 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/smoker": {
+    "criteria": {
+      "has_furnace": "2025-08-21 19:33:29 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/food/cooked_porkchop_from_campfire_cooking": {
+    "criteria": {
+      "has_porkchop": "2025-08-21 19:33:29 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/food/cooked_porkchop": {
+    "criteria": {
+      "has_porkchop": "2025-08-21 19:33:29 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/food/cooked_porkchop_from_smoking": {
+    "criteria": {
+      "has_porkchop": "2025-08-21 19:33:29 +0200"
     },
     "done": true
   },

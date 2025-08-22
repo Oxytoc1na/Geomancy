@@ -105,11 +105,8 @@ public class SpellGrid {
         SpellBlocks.playCastSound(context);
 
         long msTaken = TimeUnit.NANOSECONDS.toMillis(System.nanoTime()-startTime);
-        if(msTaken>2){
+        if(msTaken>10){
             Geomancy.logWarning(name+" Spell execution time: "+msTaken);
-        }
-        else{
-            Geomancy.logInfo(name+" Spell execution time: "+msTaken);
         }
     }
 

@@ -86,4 +86,13 @@ public class EntityUtil {
             }
         }
     }
+
+    public static void onMessageSent(ServerPlayerEntity spe, String message)
+    {
+        for (ItemStack armorItemStack : spe.getArmorItems()) {
+            if (armorItemStack.getItem() instanceof IListenerArmor armorWithHitEffect) {
+                armorWithHitEffect.onMessageSent(armorItemStack,spe, message);
+            }
+        }
+    }
 }

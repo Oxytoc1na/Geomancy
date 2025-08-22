@@ -21,7 +21,7 @@ public abstract class MinecraftClientMixin {
         if(player==null) return;
         for (int i = 0; i < 9; i++) {
             if (inst.options.hotbarKeys[i].wasPressed()) {
-                if (!player.isSpectator() && !player.isCreative()) {
+                if (!player.isSpectator()) {
                     KeyInputHandler.castPressed(i);
                 }
             }

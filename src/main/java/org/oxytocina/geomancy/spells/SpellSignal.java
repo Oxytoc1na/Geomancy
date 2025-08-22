@@ -1,5 +1,6 @@
 package org.oxytocina.geomancy.spells;
 
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -134,6 +135,18 @@ public class SpellSignal {
                 if(ctx!=null && ctx.getWorld() instanceof ServerWorld sw){
                     ent = sw.getEntity(uuidValue);
                 }
+                if(ctx!=null && ctx.getWorld() instanceof ClientWorld sw){
+
+                    ent = sw.getPlayerByUuid(uuidValue);
+
+                    if(ent==null)
+                        for(var contender : sw.getEntities())
+                            if(contender.getUuid().equals(uuidValue))
+                            {
+                                ent = contender;
+                                break;
+                            }
+                }
                 if(ent!=null){
                     var entName = ent.getName().getString();
                     return entName;
@@ -173,11 +186,11 @@ public class SpellSignal {
 
     @Override
     public String toString() {
-        return type.toString()+":"+getTextValue();
+        return /*type.toString()+":"+*/getTextValue();
     }
 
     public String toString(SpellContext ctx) {
-        return type.toString()+":"+getTextValue(ctx);
+        return /*type.toString()+":"+*/getTextValue(ctx);
     }
 
     public Text toText(){
@@ -267,7 +280,7 @@ public class SpellSignal {
             case Boolean: numberValue = nbt.getBoolean("val")?1:0; break;
             case Text: textValue = nbt.getString("val"); break;
             case UUID: uuidValue = nbt.getUuid("val"); break;
-            case Vector: vectorValue = NbtHelper.vectorFromNbt(nbt); break;
+            case Vector: vectorValue = NbtHelper.vectorFromNbt(nbt.getCompound("val")); break;
             case List: listValue = listFromNbt(nbt.getList("val", NbtElement.COMPOUND_TYPE));
         }
 
@@ -309,6 +322,17 @@ public class SpellSignal {
                         && Objects.equals(uuidValue, that.uuidValue)
                         && Objects.equals(vectorValue, that.vectorValue)
                         && listValuesAreEqual(this,that);
+    }
+
+    public boolean softEquals(SpellSignal o){
+        if(o==null) return false;
+        return type==o.type
+                && Float.compare(numberValue, o.numberValue) == 0
+                && Objects.equals(textValue, o.textValue)
+                && Objects.equals(uuidValue, o.uuidValue)
+                && Objects.equals(vectorValue, o.vectorValue)
+                && listValuesAreEqual(this,o);
+
     }
 
     private static boolean listValuesAreEqual(SpellSignal a, SpellSignal b){

@@ -286,6 +286,16 @@ public class CastingArmorItem extends ArmorItem implements IMaddeningItem, IStor
     }
 
     @Override
+    public void onMessageSent(ItemStack armorItemStack, ServerPlayerEntity spe, String message) {
+        if(type==Type.BOOTS)
+        {
+            var args = new SpellBlockArgs();
+            args.vars.put("message", SpellSignal.createText(message));
+            cast(armorItemStack,spe,args);
+        }
+    }
+
+    @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         super.appendTooltip(stack, world, tooltip, context);
 

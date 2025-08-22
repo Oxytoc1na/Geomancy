@@ -6,6 +6,8 @@ import dev.emi.trinkets.api.TrinketsApi;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -69,7 +71,7 @@ public class CastingTrinketItem extends TrinketItem implements IStorageItem, Ext
         if(storageStack==null) return;
         if(!(storageStack.getItem() instanceof SpellStoringItem storer)) return;
 
-        storer.cast(storageStack,stack,player,SpellBlockArgs.empty(), SpellContext.SoundBehavior.Full);
+        storer.cast(stack,storageStack,player,SpellBlockArgs.empty(), SpellContext.SoundBehavior.Full);
     }
 
     @Override
@@ -276,7 +278,7 @@ public class CastingTrinketItem extends TrinketItem implements IStorageItem, Ext
 
     @Override
     public void tick(ItemStack stack, SlotReference slot, LivingEntity entity) {
-        if(MinecraftClient.getInstance()!=null){
+        if(entity.getWorld() instanceof ClientWorld){
             // client only
 
         }
@@ -285,5 +287,10 @@ public class CastingTrinketItem extends TrinketItem implements IStorageItem, Ext
             // TODO: performance...?
             trigger(stack,entity,SpellBlockArgs.empty());
         }
+    }
+
+    @Override
+    public void markDirty(ItemStack stack) {
+        IStorageItem.super.markDirty(stack);
     }
 }

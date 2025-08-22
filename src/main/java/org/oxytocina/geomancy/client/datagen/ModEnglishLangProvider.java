@@ -161,6 +161,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("function_two","Function 2","calls a spell with two arguments and returns a result");
             addSpell("var_output","Var. Output","gets a variable from installed variable storage items");
             addSpell("var_input","Var. Input","sets a variable to an installed variable storage item");
+            addSpell("var_delete","Delete Var.","removes a variable from an installed variable storage item");
+            addSpell("var_exists","Var. Exists","returns if a variable from an installed variable storage item exists");
             // lists
             addSpell("foreach","Foreach","individually sends out the elements of a list");
             addSpell("split","Split","splits a list into two at the given index");
