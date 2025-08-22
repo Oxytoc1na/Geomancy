@@ -6,9 +6,12 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.WorldEventS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
 
@@ -16,6 +19,11 @@ import java.util.function.Predicate;
 
 public class BlockHelper {
     public static boolean breakBlockWithDrops(PlayerEntity player, ItemStack stack, World world, BlockPos pos, Predicate<BlockState> filter) {
+        if(player==null){
+            // TODO : for block casters
+            return false;
+        }
+
         ChunkPos chunkPos = world.getChunk(pos).getPos();
         if (world.isChunkLoaded(chunkPos.x, chunkPos.z)) {
             BlockState blockstate = world.getBlockState(pos);
@@ -32,6 +40,11 @@ public class BlockHelper {
     }
 
     public static boolean replaceBlockWithDrops(PlayerEntity player, ItemStack stack, World world, BlockPos pos, BlockState newState, Predicate<BlockState> filter) {
+        if(player==null){
+            // TODO : casting blocks
+            return false;
+        }
+
         ChunkPos chunkPos = world.getChunk(pos).getPos();
         if (world.isChunkLoaded(chunkPos.x, chunkPos.z)) {
             BlockState blockstate = world.getBlockState(pos);

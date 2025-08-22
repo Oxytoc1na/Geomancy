@@ -8,6 +8,7 @@ public class ModScreens {
         HandledScreens.register(ModScreenHandlers.SMITHERY_SCREEN_HANDLER, SmitheryScreen::new);
         HandledScreens.register(ModScreenHandlers.SPELLMAKER_SCREEN_HANDLER, SpellmakerScreen::new);
         HandledScreens.register(ModScreenHandlers.STORAGE_ITEM_SCREEN_HANDLER, StorageItemScreen::new);
+        HandledScreens.register(ModScreenHandlers.SPELL_SELECT_SCREEN_HANDLER, SpellSelectScreen::new);
 
     }
 }

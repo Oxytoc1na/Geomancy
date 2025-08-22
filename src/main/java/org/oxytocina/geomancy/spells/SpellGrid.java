@@ -2,9 +2,11 @@ package org.oxytocina.geomancy.spells;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtHelper;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -18,6 +20,7 @@ import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -28,9 +31,10 @@ public class SpellGrid {
     public boolean library; // if true, hides spell from spell selection
     public HashMap<Vector2i,SpellComponent> components;
     public float soulCostMultiplier = 1;
+    public ItemStack displayStack = null;
 
     public SpellGrid(ItemStack stack, NbtCompound nbt){
-        this.components=new HashMap<>();
+        this.components=new LinkedHashMap<>();
         readNbt(nbt);
         // soul saver
         if(stack.getItem() instanceof SpellStoringItem storer)
@@ -42,7 +46,7 @@ public class SpellGrid {
         this.height=height;
         this.name="";
         this.library=false;
-        this.components=new HashMap<>();
+        this.components=new LinkedHashMap<>();
     }
 
     public SpellBlockResult runReferenced(SpellContext parent,SpellComponent casterComp,SpellBlockArgs args){
@@ -75,7 +79,7 @@ public class SpellGrid {
             costMultiplier *= 1+(amp+1)*0.5f;
         }
 
-        SpellContext context = new SpellContext(this,casterEntity,casterItem,containerItem,0,costMultiplier,0,soundBehavior);
+        SpellContext context = new SpellContext(this,casterEntity,null,casterItem,containerItem,0,costMultiplier,0,soundBehavior);
         context.refreshAvailableSoul();
         context.internalVars = args;
 
@@ -204,6 +208,13 @@ public class SpellGrid {
             compsNbt.add(cComp);
         }
         nbt.put("components",compsNbt);
+
+        if(displayStack!=null&&!displayStack.isEmpty())
+        {
+            var displayNbt = new NbtCompound();
+            displayStack.writeNbt(displayNbt);
+            nbt.put("displayStack",displayNbt);
+        }
     }
 
     public void readNbt(NbtCompound nbt){
@@ -219,6 +230,9 @@ public class SpellGrid {
             SpellComponent comp = new SpellComponent(this,nbtComp);
             tryAddComponent(comp);
         }
+
+        if(nbt.contains("displayStack"))
+            displayStack = ItemStack.fromNbt(nbt.getCompound("displayStack"));
     }
 
     // cuts off hexagonal edges
@@ -242,5 +256,14 @@ public class SpellGrid {
     public static MutableText getName(SpellGrid grid){
         if(grid==null) return Text.translatable("geomancy.spellstorage.empty").formatted(Formatting.DARK_GRAY);
         return grid.getName().formatted(Formatting.GRAY);
+    }
+
+    public ItemStack getDisplayStack(ItemStack storage) {
+        var base = displayStack;
+        if(base==null||base.isEmpty()) base = storage;
+        base = base.copy();
+        base.setNbt(null);
+        base.setCustomName(getName());
+        return base;
     }
 }

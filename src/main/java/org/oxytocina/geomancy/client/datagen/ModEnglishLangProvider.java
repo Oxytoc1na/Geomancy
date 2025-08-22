@@ -51,6 +51,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.spellmaker.rotate",  "rotate");
             add("MODID.spellmaker.grid.name","Spell name");
             add("MODID.spellmaker.grid.lib","Library Spell");
+            add("MODID.spellmaker.grid.appearance","Menu Appearance");
+            add("MODID.spellmaker.grid.displaysas","Displays as");
             add("MODID.spellmaker.dir.ne",  "Northeast");
             add("MODID.spellmaker.dir.e",   "East");
             add("MODID.spellmaker.dir.se",  "Southeast");
@@ -152,6 +154,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("set_spell","Set Spell","sets the selected spell of the caster item");
             addSpell("degrade_block","Degrade Block","degrades a targeted block into something else");
             addSpell("replace","Replace","a combination of the break and place components");
+            addSpell("ignite","Ignite","heats a given block position up");
             // reference
             addSpell("action","Action","calls another installed spell");
             addSpell("provider","Provider","automatically returns the result of a spell");
@@ -378,6 +381,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.spellcomponent.empty",               "empty");
             add("MODID.spellstorage.empty",                 "empty");
             add("MODID.spellstorage.unnamed",               "unnamed");
+            add("MODID.spellstorage.open_storage",          "Open Storage");
 
             add("MODID.varstorage.storage", "Stored Variables: ");
             add("MODID.varstorage.prefix",  "Accessor Prefix: ");

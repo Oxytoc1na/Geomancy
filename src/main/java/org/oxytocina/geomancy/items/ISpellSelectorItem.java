@@ -1,18 +1,14 @@
 package org.oxytocina.geomancy.items;
 
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtElement;
 import org.oxytocina.geomancy.items.tools.IVariableStoringItem;
-import org.oxytocina.geomancy.items.tools.SoulCastingItem;
-import org.oxytocina.geomancy.items.tools.VariableStoringItem;
-import org.oxytocina.geomancy.spells.SpellContext;
 import org.oxytocina.geomancy.spells.SpellGrid;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
-public interface ISpellSelector {
+public interface ISpellSelectorItem {
     default boolean setSelectedSpell(ItemStack stack, String spellName){
         var selectable = getCastableSpellItems(stack);
         for (int i = 0; i < selectable.size(); i++) {
@@ -27,7 +23,7 @@ public interface ISpellSelector {
     }
 
     default ArrayList<ItemStack> getCastableSpellItems(ItemStack stack){
-        if(!(stack.getItem() instanceof ISpellSelector)) return null;
+        if(!(stack.getItem() instanceof ISpellSelectorItem)) return null;
 
         ArrayList<ItemStack> res = new ArrayList<>();
         for (int i = 0; i < getStorageSize(stack); i++) {
@@ -64,7 +60,7 @@ public interface ISpellSelector {
     }
 
     default SpellGrid getSpell(ItemStack casterItem, String name){
-        if(!(casterItem.getItem() instanceof ISpellSelector caster)) return null;
+        if(!(casterItem.getItem() instanceof ISpellSelectorItem caster)) return null;
 
         for (int i = 0; i < caster.getStorageSize(casterItem); i++) {
             var contender = caster.getStack(casterItem,i);
@@ -78,7 +74,7 @@ public interface ISpellSelector {
     }
 
     default ItemStack getSpellStorageStack(ItemStack casterItem, String name){
-        if(!(casterItem.getItem() instanceof ISpellSelector caster)) return null;
+        if(!(casterItem.getItem() instanceof ISpellSelectorItem caster)) return null;
 
         for (int i = 0; i < caster.getStorageSize(casterItem); i++) {
             var contender = caster.getStack(casterItem,i);
@@ -92,7 +88,7 @@ public interface ISpellSelector {
     }
 
     default ArrayList<ItemStack> getVariableStorageItems(ItemStack stack){
-        if(!(stack.getItem() instanceof ISpellSelector)) return null;
+        if(!(stack.getItem() instanceof ISpellSelectorItem)) return null;
 
         ArrayList<ItemStack> res = new ArrayList<>();
         for (int i = 0; i < getStorageSize(stack); i++) {

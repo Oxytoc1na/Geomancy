@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.entity.BlastFurnaceBlockEntity;
 import net.minecraft.block.entity.FurnaceBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -42,11 +43,12 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.LocalRandom;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.client.GeomancyClient;
-import org.oxytocina.geomancy.items.ISpellSelector;
+import org.oxytocina.geomancy.items.ISpellSelectorItem;
 import org.oxytocina.geomancy.items.tools.IVariableStoringItem;
 import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
@@ -77,6 +79,7 @@ public class SpellBlocks {
     public static final SpellBlock CONST_TEXT;
     public static final SpellBlock CONST_BOOLEAN;
     public static final SpellBlock ENTITY_CASTER;
+    public static final SpellBlock BLOCKPOS_CASTER;
     public static final SpellBlock CASTER_SLOT;
 
     // arithmetic
@@ -109,7 +112,7 @@ public class SpellBlocks {
     public static final SpellBlock XOR;
     public static final SpellBlock ENTITY_HAS_EFFECT;
     public static final SpellBlock ENTITY_HEALTH;
-    public static final SpellBlock RANDOM;
+    public static final SpellBlock RANDOM_INTEGER;
 
     // effectors
     public static final SpellBlock PRINT;
@@ -305,13 +308,36 @@ public class SpellBlocks {
                     .sideConfigGetter((c)->SpellBlock.SideUtil.sidesOutput(c,"caster"))
                     .category(cat).build());
 
+            BLOCKPOS_CASTER = register(SpellBlock.Builder.create("blockpos_caster")
+                    .inputs()
+                    .outputs(SpellSignal.createVector(null).named("position"))
+                    .func((component, stringSpellSignalHashMap) -> {
+                        SpellBlockResult res = new SpellBlockResult();
+                        if(component.context.casterBlock!=null) res.add("position",component.context.casterBlock.getPos());return res;
+                    })
+                    .sideConfigGetter(SpellBlock.SideUtil::sidesOutput)
+                    .category(cat).build());
+
             CASTER_SLOT = register(SpellBlock.Builder.create("caster_slot")
                     .inputs()
                     .outputs(SpellSignal.createNumber(0).named("slot"))
                     .func((component, stringSpellSignalHashMap) -> {
                         SpellBlockResult res = new SpellBlockResult();
-                        if(component.context.caster instanceof PlayerEntity pe && component.context.casterItem != null)
-                            res.add("slot",pe.getInventory().getSlotWithStack(component.context.casterItem));return res;
+                        switch(component.context.sourceType)
+                        {
+                            case Caster : {
+                                if(component.context.caster instanceof PlayerEntity pe && component.context.casterItem != null)
+                                    res.add("slot",pe.getInventory().getSlotWithStack(component.context.casterItem));
+                                break;
+                            }
+
+                            case Block : {
+                                if(component.context.casterItem != null)
+                                    res.add("slot",component.context.casterBlock.getSlotWithStack(component.context.casterItem));
+                                break;
+                            }
+                        }
+                        return res;
                     })
                     .sideConfigGetter((c)->SpellBlock.SideUtil.sidesOutput(c,"slot"))
                     .category(cat).build());
@@ -616,7 +642,7 @@ public class SpellBlocks {
                         .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
-                RANDOM = register(SpellBlock.Builder.create("random")
+                RANDOM_INTEGER = register(SpellBlock.Builder.create("random_integer")
                         .inputs(SpellSignal.createNumber().named("exclusivemax"))
                         .outputs(SpellSignal.createNumber().named("random"))
                         .parameters()
@@ -1155,7 +1181,7 @@ public class SpellBlocks {
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,comp.caster().getPos()));
+                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,comp.context.getOriginPos()));
                         }
 
                         return SpellBlockResult.empty();
@@ -1210,7 +1236,7 @@ public class SpellBlocks {
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,comp.caster().getPos()));
+                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,comp.context.getOriginPos()));
                         }
 
                         return SpellBlockResult.empty();
@@ -1249,7 +1275,7 @@ public class SpellBlocks {
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,comp.caster().getPos()));
+                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,comp.context.getOriginPos()));
                         }
 
                         return SpellBlockResult.empty();
@@ -1268,13 +1294,27 @@ public class SpellBlocks {
                     )
                     .outputs().parameters()
                     .func((comp,vars) -> {
-                        if(!(comp.context.caster instanceof PlayerEntity pe)) return SpellBlockResult.empty(); // not a player
                         var pos = vars.getVector("position");
                         var slot = vars.getNumber("slot");
                         int slotInt = Math.round(slot);
-                        if(slotInt <0||slotInt>=pe.getInventory().size()) { tryLogDebugSlotOOB(comp,slotInt); return SpellBlockResult.empty();} // slot OOB
-                        var stack = pe.getInventory().getStack(slotInt);
-                        if(!(stack.getItem() instanceof BlockItem bi)) { tryLogDebugNotPlaceable(comp,stack); return SpellBlockResult.empty(); } // not a block
+                        ItemStack stack = ItemStack.EMPTY;
+                        BlockItem bi = null;
+                        switch (comp.context.sourceType){
+                            case Caster :
+                                if(!(comp.caster() instanceof PlayerEntity pe)) break;
+                                if(slotInt <0||slotInt>=pe.getInventory().size()) { tryLogDebugSlotOOB(comp,slotInt); return SpellBlockResult.empty();} // slot OOB
+                                stack = pe.getInventory().getStack(slotInt);
+                                if(!(stack.getItem() instanceof BlockItem)) { tryLogDebugNotPlaceable(comp,stack); return SpellBlockResult.empty(); } // not a block
+                                bi = (BlockItem)stack.getItem();
+                                break;
+                            case Block:
+                                if(slotInt <0||slotInt>=comp.context.casterBlock.size()) { tryLogDebugSlotOOB(comp,slotInt); return SpellBlockResult.empty();} // slot OOB
+                                stack = comp.context.casterBlock.getStack(slotInt);
+                                if(!(stack.getItem() instanceof BlockItem)) { tryLogDebugNotPlaceable(comp,stack); return SpellBlockResult.empty(); } // not a block
+                                bi = (BlockItem)stack.getItem();
+                                break;
+                        }
+                        if(stack.isEmpty()) return SpellBlockResult.empty();
 
                         float manaCost = 1
                                 +castOffsetSoulCost(comp,pos,0.05f);
@@ -1294,7 +1334,7 @@ public class SpellBlocks {
                             comp.world().setBlockState(Toolbox.posToBlockPos(pos), bi.getBlock().getDefaultState());
 
                             // remove block from inventory
-                            if(!pe.isCreative())
+                            if(!(comp.context.sourceType== SpellContext.SourceType.Caster && ((PlayerEntity)comp.caster()).isCreative()))
                                 stack.decrement(1);
 
                             Toolbox.playSound(bi.getBlock().getSoundGroup(targetState).getPlaceSound(),comp.world(),blockPos, SoundCategory.BLOCKS,1,1);
@@ -1323,7 +1363,6 @@ public class SpellBlocks {
                     )
                     .outputs().parameters()
                     .func((comp,vars) -> {
-                        if(!(comp.context.caster instanceof PlayerEntity pe)) return SpellBlockResult.empty(); // not a player
                         var pos = vars.getVector("position");
                         var silkTouch = vars.getBoolean("silk touch");
                         var blockPos = Toolbox.posToBlockPos(pos);
@@ -1359,6 +1398,11 @@ public class SpellBlocks {
                                 return SpellBlockResult.empty();
                             }
 
+                            PlayerEntity pe = switch(comp.context.sourceType){
+                                case Caster -> (PlayerEntity) comp.caster();
+                                default->null;
+                            };
+
                             if(!BlockHelper.breakBlockWithDrops(pe,stack,comp.world(),blockPos,minableBlocksPredicate)){
                                 // couldnt mine... again?
                                 tryLogDebugNotbreakable(comp,targetState);
@@ -1390,7 +1434,7 @@ public class SpellBlocks {
                     .outputs().parameters()
                     .func((comp,vars) -> {
                         var spell = vars.getText("spell");
-                        if(!(comp.context.casterItem.getItem() instanceof ISpellSelector sps)) return SpellBlockResult.empty();
+                        if(!(comp.context.casterItem.getItem() instanceof ISpellSelectorItem sps)) return SpellBlockResult.empty();
                         final float manaCost = 3;
                         if(canAfford(comp,manaCost)){
                             if(!sps.setSelectedSpell(comp.context.casterItem,spell))
@@ -1401,12 +1445,12 @@ public class SpellBlocks {
                             }
 
                             trySpendSoul(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericSuccess(comp,comp.caster().getPos()));
+                            spawnCastParticles(comp,CastParticleData.genericSuccess(comp,comp.context.getOriginPos()));
                         }
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,comp.caster().getPos()));
+                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,comp.context.getOriginPos()));
                         }
                         return SpellBlockResult.empty();
                     })
@@ -1466,7 +1510,6 @@ public class SpellBlocks {
                     )
                     .outputs().parameters()
                     .func((comp,vars) -> {
-                        if(!(comp.context.caster instanceof PlayerEntity pe)) return SpellBlockResult.empty(); // not a player
                         if(!(comp.world() instanceof ServerWorld sw)) return SpellBlockResult.empty(); // not in a server world
                         var pos = vars.getVector("position");
                         var blockPos = vars.getBlockPos("position");
@@ -1514,7 +1557,7 @@ public class SpellBlocks {
                                 }
 
                                 // fetch replacement state
-                                var droppedStacks = Block.getDroppedStacks(targetState,sw,blockPos,null,comp.caster(),stack);
+                                var droppedStacks = Block.getDroppedStacks(targetState,sw,blockPos,comp.context.casterBlock,comp.caster(),stack);
                                 BlockState replacementState = Blocks.AIR.getDefaultState();
                                 for(var droppedStack:droppedStacks){
                                     if(!(droppedStack.getItem() instanceof BlockItem bi)) continue;
@@ -1615,7 +1658,7 @@ public class SpellBlocks {
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,comp.caster().getPos()));
+                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,comp.context.getOriginPos()));
                         }
 
                         return SpellBlockResult.empty();
@@ -1635,13 +1678,27 @@ public class SpellBlocks {
                     )
                     .outputs().parameters()
                     .func((comp,vars) -> {
-                        if(!(comp.context.caster instanceof PlayerEntity pe)) return SpellBlockResult.empty(); // not a player
                         var pos = vars.getVector("position");
                         var silkTouch = vars.getBoolean("silk touch");
-                        var slot = vars.getInt("slot");
-                        if(slot <0||slot>=pe.getInventory().size()) { tryLogDebugSlotOOB(comp,slot); return SpellBlockResult.empty();} // slot OOB
-                        var replaceWithStack = pe.getInventory().getStack(slot);
-                        if(!(replaceWithStack.getItem() instanceof BlockItem bi)) { tryLogDebugNotPlaceable(comp,replaceWithStack); return SpellBlockResult.empty(); } // not a block
+                        var slotInt = vars.getInt("slot");
+                        ItemStack replaceWithStack = ItemStack.EMPTY;
+                        BlockItem bi = null;
+                        switch (comp.context.sourceType){
+                            case Caster :
+                                if(!(comp.caster() instanceof PlayerEntity pe)) break;
+                                if(slotInt <0||slotInt>=pe.getInventory().size()) { tryLogDebugSlotOOB(comp,slotInt); return SpellBlockResult.empty();} // slot OOB
+                                replaceWithStack = pe.getInventory().getStack(slotInt);
+                                if(!(replaceWithStack.getItem() instanceof BlockItem)) { tryLogDebugNotPlaceable(comp,replaceWithStack); return SpellBlockResult.empty(); } // not a block
+                                bi = (BlockItem)replaceWithStack.getItem();
+                                break;
+                            case Block:
+                                if(slotInt <0||slotInt>=comp.context.casterBlock.size()) { tryLogDebugSlotOOB(comp,slotInt); return SpellBlockResult.empty();} // slot OOB
+                                replaceWithStack = comp.context.casterBlock.getStack(slotInt);
+                                if(!(replaceWithStack.getItem() instanceof BlockItem)) { tryLogDebugNotPlaceable(comp,replaceWithStack); return SpellBlockResult.empty(); } // not a block
+                                bi = (BlockItem)replaceWithStack.getItem();
+                                break;
+                        }
+                        if(replaceWithStack.isEmpty()) return SpellBlockResult.empty();
 
                         var blockPos = Toolbox.posToBlockPos(pos);
 
@@ -1673,6 +1730,12 @@ public class SpellBlocks {
                                 tryLogDebugNotbreakable(comp,targetState);
                                 return SpellBlockResult.empty();
                             }
+
+                            PlayerEntity pe = switch (comp.context.sourceType){
+                                case Caster -> (PlayerEntity) comp.caster();
+                                default->null;
+                            };
+
                             if(!BlockHelper.replaceBlockWithDrops(pe,stack,comp.world(),blockPos,bi.getBlock().getDefaultState(),minableBlocksPredicate)){
                                 // couldnt mine... again?
                                 tryLogDebugNotbreakable(comp,targetState);
@@ -1699,7 +1762,13 @@ public class SpellBlocks {
 
                 addIgniteBehavior(b->b.isOf(Blocks.FURNACE),(comp,vars)->{
                     var be = ((FurnaceBlockEntity)(comp.world().getBlockEntity(vars.getBlockPos("position"))));
-                    if(be.burnTime<800) {be.burnTime=800;be.fuelTime=800;}
+                    if(be.burnTime<800) {be.burnTime=800;be.fuelTime=800;be.markDirty();}
+                    playUseSound.accept(comp.world(),vars.getBlockPos("position"));
+                    return SpellBlockResult.empty();
+                });
+                addIgniteBehavior(b->b.isOf(Blocks.BLAST_FURNACE),(comp,vars)->{
+                    var be = ((BlastFurnaceBlockEntity)(comp.world().getBlockEntity(vars.getBlockPos("position"))));
+                    if(be.burnTime<800) {be.burnTime=800;be.fuelTime=800;be.markDirty();}
                     playUseSound.accept(comp.world(),vars.getBlockPos("position"));
                     return SpellBlockResult.empty();
                 });
@@ -1737,7 +1806,6 @@ public class SpellBlocks {
                     .inputs(SpellSignal.createVector().named("position"))
                     .outputs().parameters()
                     .func((comp,vars) -> {
-                        if(!(comp.context.caster instanceof PlayerEntity pe)) return SpellBlockResult.empty(); // not a player
                         var pos = vars.getVector("position");
                         var blockPos = vars.getBlockPos("position");
 
@@ -1777,7 +1845,7 @@ public class SpellBlocks {
                     .outputs()
                     .parameters(SpellBlock.Parameter.createText("function","helloworld"))
                     .func((comp,vars) -> {
-                        if(!(comp.context.casterItem.getItem() instanceof ISpellSelector sps)) return SpellBlockResult.empty();
+                        if(!(comp.context.casterItem.getItem() instanceof ISpellSelectorItem sps)) return SpellBlockResult.empty();
                         var funcName = vars.getText("function");
                         // check if specified function exists
                         var refSpell = sps.getSpell(comp.context.casterItem,funcName);
@@ -1798,7 +1866,7 @@ public class SpellBlocks {
                     .outputs(SpellSignal.createAny().named("res"))
                     .parameters(SpellBlock.Parameter.createText("function","helloworld"))
                     .func((comp,vars) -> {
-                        if(!(comp.context.casterItem.getItem() instanceof ISpellSelector sps)) return SpellBlockResult.empty();
+                        if(!(comp.context.casterItem.getItem() instanceof ISpellSelectorItem sps)) return SpellBlockResult.empty();
                         var funcName = vars.getText("function");
                         // check if specified function exists
                         var refSpell = sps.getSpell(comp.context.casterItem,funcName);
@@ -1819,7 +1887,7 @@ public class SpellBlocks {
                     .outputs(SpellSignal.createAny().named("res"))
                     .parameters(SpellBlock.Parameter.createText("spell","helloworld"))
                     .func((comp,vars) -> {
-                        if(!(comp.context.casterItem.getItem() instanceof ISpellSelector sps)) return SpellBlockResult.empty();
+                        if(!(comp.context.casterItem.getItem() instanceof ISpellSelectorItem sps)) return SpellBlockResult.empty();
                         var funcName = vars.getText("spell");
                         // check if specified function exists
                         var refSpell = sps.getSpell(comp.context.casterItem,funcName);
@@ -1840,7 +1908,7 @@ public class SpellBlocks {
                     .outputs(SpellSignal.createAny().named("res"))
                     .parameters(SpellBlock.Parameter.createText("spell","helloworld"))
                     .func((comp,vars) -> {
-                        if(!(comp.context.casterItem.getItem() instanceof ISpellSelector sps)) return SpellBlockResult.empty();
+                        if(!(comp.context.casterItem.getItem() instanceof ISpellSelectorItem sps)) return SpellBlockResult.empty();
                         var funcName = vars.getText("spell");
                         // check if specified function exists
                         var refSpell = sps.getSpell(comp.context.casterItem,funcName);
@@ -1890,7 +1958,7 @@ public class SpellBlocks {
                     .outputs(SpellSignal.createAny().named("var"))
                     .parameters()
                     .func((comp,vars) -> {
-                        if(!(comp.context.casterItem.getItem() instanceof ISpellSelector sps)) return SpellBlockResult.empty();
+                        if(!(comp.context.casterItem.getItem() instanceof ISpellSelectorItem sps)) return SpellBlockResult.empty();
                         var varID = vars.getText("varID");
                         if(!varID.contains(":")) varID="default:"+varID;
                         var splitID = varID.split(":");
@@ -1912,7 +1980,7 @@ public class SpellBlocks {
                     .outputs()
                     .parameters()
                     .func((comp,vars) -> {
-                        if(!(comp.context.casterItem.getItem() instanceof ISpellSelector sps)) return SpellBlockResult.empty();
+                        if(!(comp.context.casterItem.getItem() instanceof ISpellSelectorItem sps)) return SpellBlockResult.empty();
                         var varID = vars.getText("varID");
                         var sig = vars.get("var");
                         if(!varID.contains(":")) varID="default:"+varID;
@@ -1935,7 +2003,7 @@ public class SpellBlocks {
                     .outputs()
                     .parameters()
                     .func((comp,vars) -> {
-                        if(!(comp.context.casterItem.getItem() instanceof ISpellSelector sps)) return SpellBlockResult.empty();
+                        if(!(comp.context.casterItem.getItem() instanceof ISpellSelectorItem sps)) return SpellBlockResult.empty();
                         var varID = vars.getText("varID");
                         if(!varID.contains(":")) varID="default:"+varID;
                         var splitID = varID.split(":");
@@ -1957,7 +2025,7 @@ public class SpellBlocks {
                     .outputs(SpellSignal.createBoolean().named("exists"))
                     .parameters()
                     .func((comp,vars) -> {
-                        if(!(comp.context.casterItem.getItem() instanceof ISpellSelector sps)) return SpellBlockResult.empty();
+                        if(!(comp.context.casterItem.getItem() instanceof ISpellSelectorItem sps)) return SpellBlockResult.empty();
                         var varID = vars.getText("varID");
                         if(!varID.contains(":")) varID="default:"+varID;
                         var splitID = varID.split(":");
@@ -2153,10 +2221,25 @@ public class SpellBlocks {
         var from = vars.getVector("from");
         var dir = vars.getVector("dir");
         var length = vars.getNumber("length");
-        RaycastContext ctx = new RaycastContext(from,from.add(dir.multiply(length)), RaycastContext.ShapeType.VISUAL, RaycastContext.FluidHandling.ANY,comp.caster());
-        var hit = comp.world().raycast(ctx);
-        return hit;
+        switch(comp.context.sourceType){
+            case Caster :{
+                var ctx = new RaycastContext(from,from.add(dir.multiply(length)), RaycastContext.ShapeType.VISUAL, RaycastContext.FluidHandling.ANY,comp.caster());
+                var hit = comp.world().raycast(ctx);
+                return hit;
+            }
+
+            case Block:{
+                var blockPos = vars.getBlockPos("from");
+                var dirV = comp.context.casterBlock.getDirection().getVector();
+                Vec3d end = from.add(dirV.getX()*length,dirV.getY()*length,dirV.getZ()*length);
+                var state = comp.world().getBlockState(comp.context.casterBlock.getPos());
+                return comp.world().raycastBlock(from,end,blockPos, VoxelShapes.cuboid(Box.from(from)),state);
+            }
+        }
+
+        return BlockHitResult.createMissed(from,Direction.NORTH,Toolbox.posToBlockPos(from));
     }
+
 
     private static void logDebug(LivingEntity player, Text text){
         if(player != null)
@@ -2175,7 +2258,7 @@ public class SpellBlocks {
 
     public static void tryLogDebug(SpellComponent comp, Text msg){
         if(!comp.context.debugging) return;
-        logDebug(comp.context.caster,msg);
+        logDebug(comp.caster(),msg);
     }
 
     public static void tryLogDebugWrongSignal(SpellComponent comp, SpellSignal.Type got, SpellSignal.Type expected){
@@ -2254,7 +2337,12 @@ public class SpellBlocks {
             event = ModSoundEvents.CAST_SUCCESS_MEDIUM;
         else if(ctx.soundBehavior == SpellContext.SoundBehavior.Full || ctx.soulConsumed>0)
             event = ModSoundEvents.CAST_SUCCESS_CHEAP;
-        Toolbox.playSound(event,ctx.caster.getWorld(), ctx.caster.getBlockPos(), SoundCategory.PLAYERS,1,0.8f+Toolbox.random.nextFloat()*0.4f);
+        Toolbox.playSound(event,ctx.getWorld(), ctx.getOriginBlockPos(), switch(ctx.sourceType){
+            case Caster -> SoundCategory.PLAYERS;
+
+            case Block -> SoundCategory.BLOCKS;
+            default -> SoundCategory.PLAYERS;
+        },1,0.8f+Toolbox.random.nextFloat()*0.4f);
     }
 
     private static boolean trySpendSoul(SpellComponent comp, float amount){
@@ -2270,8 +2358,7 @@ public class SpellBlocks {
     }
 
     private static float distanceToCaster(SpellContext context, Vec3d pos){
-        if(context.caster==null) return 0;
-        return (float)context.caster.getPos().subtract(pos).length();
+        return (float)context.getOriginPos().subtract(pos).length();
     }
 
     public static void register(){

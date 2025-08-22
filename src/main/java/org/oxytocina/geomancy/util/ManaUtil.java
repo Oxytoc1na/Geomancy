@@ -8,12 +8,14 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -21,6 +23,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.ILeadPoisoningBlock;
+import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlockEntity;
 import org.oxytocina.geomancy.effects.ModStatusEffect;
 import org.oxytocina.geomancy.effects.ModStatusEffects;
 import org.oxytocina.geomancy.entity.ManaStoringItemData;
@@ -66,6 +69,15 @@ public class ManaUtil {
 
     public static float getMana(PlayerEntity player){
         return PlayerData.from(player).mana;
+    }
+
+    public static float getMana(World world, Inventory inv){
+        var items = getAllSoulStoringItems(inv);
+        float res = 0;
+        for (ItemStack s : items) {
+            res += ((IManaStoringItem) s.getItem()).getMana(world, s);
+        }
+        return res;
     }
 
     public static float getMaxMana(PlayerEntity player){
@@ -250,6 +262,18 @@ public class ManaUtil {
         return res;
     }
 
+    public static List<ItemStack> getAllSoulStoringItems(Inventory inv){
+        List<ItemStack> res = new ArrayList<>();
+        if(inv!=null){
+            for(int i = 0; i < inv.size();i++)
+            {
+                var s = inv.getStack(i);
+                if(canStoreMana(s)) res.add(s);
+            }
+        }
+        return res;
+    }
+
     private static boolean tickMana(ItemStack soulStorage, ServerPlayerEntity player, float ambientMana, float regenSpeed){
         boolean changed = false;
 
@@ -291,11 +315,27 @@ public class ManaUtil {
         if(!(entity instanceof ServerPlayerEntity player)) return true;
 
         if(getMana(player) < amount) return false;
-
         var storers = getAllSoulStoringItems(player);
+        removeMana(storers,amount,player.getWorld());
+        recalculateMana(player,false);
+
+        return true;
+    }
+
+    public static boolean tryConsumeMana(AutocasterBlockEntity casterBlock, float amount) {
+        if(getMana(casterBlock.getWorld(),casterBlock) < amount) return false;
+        var storers = getAllSoulStoringItems(casterBlock);
+        removeMana(storers,amount,casterBlock.getWorld());
+
+        for(var storer:storers)
+            syncItemMana(casterBlock.getWorld(),storer);
+
+        return true;
+    }
+
+    private static float removeMana(List<ItemStack> storers, float amount, World world){
         float left = amount;
         boolean changed=true;
-        World world = player.getWorld();
         while(left>0){
             if(!changed) break;
             changed=false;
@@ -312,9 +352,16 @@ public class ManaUtil {
                 changed=true;
             }
         }
+        return left;
+    }
 
-        recalculateMana(player,false);
-
-        return true;
+    public static float getMaxMana(World world, AutocasterBlockEntity casterBlock) {
+        float res = 0;
+        var storers = getAllSoulStoringItems(casterBlock);
+        for(var storer:storers)
+        {
+            res += ((IManaStoringItem) storer.getItem()).getCapacity(world,storer);
+        }
+        return res;
     }
 }

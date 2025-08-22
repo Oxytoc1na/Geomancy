@@ -156,7 +156,6 @@ x copper : engineers
 - molybdenum :
 
 PROGRAMMING
-TODO: signals are delayed
 TODO: programmable armor
 - helmet
 -- casts when hit something, passes entity
@@ -167,13 +166,20 @@ TODO: programmable armor
 - boots
 -- casts when ?
 
-PREMADE SPELLS
-x hello world
+TODO PREMADE SPELLS
 
-EFFECT BLOCKS
+TODO EFFECT BLOCKS
 - taming entities
 - bonemeal spell
-til- sin, cos, tan, exp, log
+- sound events
+- time
+- weather
+- delegate entity
+
+autocaster
+- set block redstone level
+- get block redstone level
+- get block facing position
 
 NULL DIMENSION
 - endless maze
@@ -184,3 +190,9 @@ TODO MODONOMICON
 -- spellbuilding concepts
 -- stellge enemies and structures
 -- null dimension
+
+TODO textures
+- caster core
+- varpots
+- geode preview
+- status effects
