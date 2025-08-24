@@ -1,5 +1,7 @@
 package org.oxytocina.geomancy.items.tools;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
@@ -68,12 +70,14 @@ public class StorageItem extends Item implements IStorageItem, ExtendedScreenHan
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         super.appendTooltip(stack, world, tooltip, context);
         if(showContentsInTooltip)
             appendContentsTooltip(stack,world,tooltip,context);
     }
 
+    @Environment(EnvType.CLIENT)
     public void appendContentsTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context){
         var containedStacks = getAllItems(stack);
         for (int i = 0; i < containedStacks.size(); i++) {

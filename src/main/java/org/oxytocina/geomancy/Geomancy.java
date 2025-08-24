@@ -155,10 +155,10 @@ public class Geomancy implements ModInitializer {
             ServerTickEvents.START_SERVER_TICK.register(new ServerTickHandler());
 
         } catch (Throwable t) {
-            //RuntimeException exception = new RuntimeException(String.format("Geomancy Initialization failed!",
-            //        t.fillInStackTrace(), Arrays.toString(t.getStackTrace())));
-//
-            //Log.debug(LogCategory.ENTRYPOINT, "Geomancy");
+            RuntimeException exception = new RuntimeException(String.format("Geomancy Initialization failed!",
+                    t.fillInStackTrace(), Arrays.toString(t.getStackTrace())));
+            
+            Log.debug(LogCategory.ENTRYPOINT, "Geomancy");
             throw t;
         }
 

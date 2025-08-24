@@ -1,5 +1,7 @@
 package org.oxytocina.geomancy.items.tools;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.item.TooltipContext;
@@ -78,6 +80,7 @@ public class SoulCastingItem extends StorageItem implements IManaStoringItem, IS
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         super.appendTooltip(stack, world, tooltip, context);
 
@@ -141,6 +144,7 @@ public class SoulCastingItem extends StorageItem implements IManaStoringItem, IS
 
 
     @Override
+    @Environment(EnvType.CLIENT)
     public boolean onScrolled(ItemStack stack, float delta,PlayerEntity player) {
         if(!player.isSneaking()) return false;
 
@@ -163,6 +167,7 @@ public class SoulCastingItem extends StorageItem implements IManaStoringItem, IS
         return true;
     }
 
+    @Environment(EnvType.CLIENT)
     public void displaySelectedSpell(ItemStack stack, PlayerEntity player, int index){
         // display selected spell
         var spells = getCastableSpellItems(stack);
@@ -185,6 +190,7 @@ public class SoulCastingItem extends StorageItem implements IManaStoringItem, IS
 
     // display selected spell if sneaking
     @Override
+    @Environment(EnvType.CLIENT)
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
         if(selected && entity instanceof ClientPlayerEntity player && player.isSneaking())
@@ -192,6 +198,7 @@ public class SoulCastingItem extends StorageItem implements IManaStoringItem, IS
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public boolean shouldBlockScrolling(ItemStack stack, PlayerEntity player) {
         return player.isSneaking();
     }
@@ -230,6 +237,7 @@ public class SoulCastingItem extends StorageItem implements IManaStoringItem, IS
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public void onSpellChanged(ItemStack stack, ClientPlayerEntity player, int spellIndex) {
         displaySelectedSpell(stack,player,spellIndex);
     }

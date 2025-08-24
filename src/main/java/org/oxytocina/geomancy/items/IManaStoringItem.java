@@ -89,6 +89,7 @@ public interface IManaStoringItem {
 
     float getBaseSoulCapacity(ItemStack stack);
 
+    @Environment(EnvType.CLIENT)
     default void addManaTooltip(World world, ItemStack stack, List<Text> tooltip){
         if(world==null) world=MinecraftClient.getInstance().world;
         if(world==null) return;
