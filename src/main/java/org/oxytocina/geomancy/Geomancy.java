@@ -46,6 +46,7 @@ import org.oxytocina.geomancy.world.tree.ModTrunkPlacerTypes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -115,6 +116,7 @@ public class Geomancy implements ModInitializer {
 
             CONFIG = GeomancyConfig.create();
 
+
             ModItems.register();
             IJewelryItem.populateItemGroup();
             SpellComponentStoringItem.populateItemGroup();
@@ -131,7 +133,6 @@ public class Geomancy implements ModInitializer {
             ModCriteria.register();
             ModEnchantments.register();
             ModParticleTypes.register();
-            ModParticleFactories.register();
             ModMessages.registerC2SPackets();
             ModCommands.register();
 
@@ -152,10 +153,11 @@ public class Geomancy implements ModInitializer {
             ServerTickEvents.START_SERVER_TICK.register(new ServerTickHandler());
 
         } catch (Throwable t) {
-            RuntimeException exception = new RuntimeException(String.format("Geomancy Initialization failed!",
-                    t.fillInStackTrace()));
-            Log.debug(LogCategory.ENTRYPOINT, "Geomancy");
-            throw exception;
+            //RuntimeException exception = new RuntimeException(String.format("Geomancy Initialization failed!",
+            //        t.fillInStackTrace(), Arrays.toString(t.getStackTrace())));
+//
+            //Log.debug(LogCategory.ENTRYPOINT, "Geomancy");
+            throw t;
         }
         LOGGER.info("Finished Loading Geomancy");
 

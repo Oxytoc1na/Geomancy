@@ -1,18 +1,14 @@
 package org.oxytocina.geomancy.blocks.fluids;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ItemEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.registry.tag.FluidTags;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -29,11 +25,13 @@ public class GoldFluidBlock extends ModFluidBlock {
 
 
     @Override
+    @Environment(EnvType.CLIENT)
     public DefaultParticleType getSplashParticle() {
         return null;
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public Pair<DefaultParticleType, DefaultParticleType> getFishingParticles() {
         return null;
     }

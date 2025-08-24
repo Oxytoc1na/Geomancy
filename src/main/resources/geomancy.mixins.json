@@ -23,7 +23,9 @@
     "client.AbstractClientEntityMixin",
     "client.BlockOverlayRendererMixin",
     "client.InGameHudMixin",
-    "client.MouseMixin"
+    "client.LivingEntityClientMixin",
+    "client.MouseMixin",
+    "client.PlayerInventoryClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1

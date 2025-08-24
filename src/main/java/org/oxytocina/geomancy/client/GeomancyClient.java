@@ -22,6 +22,7 @@ import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 import org.oxytocina.geomancy.compat.GeomancyIntegrationPacks;
 import org.oxytocina.geomancy.event.KeyInputHandler;
 import org.oxytocina.geomancy.networking.ModMessages;
+import org.oxytocina.geomancy.particles.ModParticleFactories;
 import org.oxytocina.geomancy.world.dimension.ModDimensions;
 
 public class GeomancyClient implements ClientModInitializer {
@@ -47,6 +48,7 @@ public class GeomancyClient implements ClientModInitializer {
         ModArmorRenderers.register();
         ModModelLayers.register();
         ModDimensions.registerClient();
+        ModParticleFactories.register();
 
         ClientTickEvents.START_CLIENT_TICK.register(new ClientPlayerTickHandler());
         ClientPlayConnectionEvents.JOIN.register(new ClientPlayConnectionJoin());

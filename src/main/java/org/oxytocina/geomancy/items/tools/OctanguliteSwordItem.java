@@ -1,6 +1,5 @@
 package org.oxytocina.geomancy.items.tools;
 
-import net.minecraft.item.HoeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;

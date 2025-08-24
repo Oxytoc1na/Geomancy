@@ -2,6 +2,8 @@ package org.oxytocina.geomancy.items.jewelry;
 
 import com.google.common.collect.Multimap;
 import dev.emi.trinkets.api.*;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
@@ -82,6 +84,7 @@ public class JewelryItem extends TrinketItem implements IJewelryItem {
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> list, TooltipContext context) {
 
         if(isPendant())

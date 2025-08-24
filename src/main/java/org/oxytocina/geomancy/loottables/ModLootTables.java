@@ -1433,6 +1433,7 @@ public class ModLootTables {
         var res = LootPool.builder();
 
         HashMap<JewelryItem,Integer> weighted = new HashMap<>();
+        /*
         weighted.put(ModItems.COPPER_NECKLACE,100);
         weighted.put(ModItems.COPPER_PENDANT,100);
         weighted.put(ModItems.COPPER_RING,100);
@@ -1454,6 +1455,8 @@ public class ModLootTables {
         weighted.put(ModItems.MITHRIL_NECKLACE,1);
         weighted.put(ModItems.MITHRIL_PENDANT,1);
         weighted.put(ModItems.MITHRIL_RING,1);
+
+         */
 
         for(var jewelryItem : weighted.keySet()){
             int weight = weighted.get(jewelryItem);

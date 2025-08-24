@@ -1,5 +1,7 @@
 package org.oxytocina.geomancy.items;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
@@ -72,6 +74,7 @@ public interface IManaStoringItem {
         return uuid;
     }
 
+    @Environment(EnvType.CLIENT)
     default int getBarColor(ItemStack stack){
         if(MinecraftClient.getInstance()==null) return 0xFFFFFFFF;
 

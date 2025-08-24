@@ -1,12 +1,9 @@
 package org.oxytocina.geomancy.mixin;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
-import org.oxytocina.geomancy.event.ScrollTracker;
-import org.oxytocina.geomancy.items.IScrollListenerItem;
 import org.oxytocina.geomancy.util.LeadUtil;
 import org.oxytocina.geomancy.util.MadnessUtil;
 import org.oxytocina.geomancy.util.ManaUtil;
@@ -55,28 +52,6 @@ public abstract class PlayerInventoryMixin {
     @Inject(method = "dropSelectedItem", at = @At("TAIL"))
     public void geomancy$dropSelectedItem(boolean entireStack, CallbackInfoReturnable<ItemStack> cir){
         geomancy$checkInfluencers(this.getStack(this.selectedSlot));
-    }
-
-    @Inject(method="scrollInHotbar", at = @At("HEAD"), cancellable = true)
-    public void geomancy$scrollInHotbar(double scrollAmount, CallbackInfo ci){
-        // prevent scrolling while scrolling is consumed by scrolling listeners
-        if(scrollAmount!=0){
-            if(MinecraftClient.getInstance().player!=null){
-                boolean cancel = false;
-                var items = MinecraftClient.getInstance().player.getHandItems();
-                for(var stack: items){
-                    if(!(stack.getItem() instanceof IScrollListenerItem listener)) continue;
-                    if(listener.shouldBlockScrolling(stack,MinecraftClient.getInstance().player))
-                    {
-                        cancel=true;
-                    }
-                }
-
-                if(cancel)
-                    ci.cancel();
-            }
-        }
-
     }
 
     @Unique

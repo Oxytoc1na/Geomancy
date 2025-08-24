@@ -1,15 +1,14 @@
 package org.oxytocina.geomancy.util;
 
-import net.minecraft.advancement.Advancement;
-import net.minecraft.advancement.PlayerAdvancementTracker;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.ServerAdvancementLoader;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
@@ -21,7 +20,6 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.oxytocina.geomancy.Geomancy;
-import org.oxytocina.geomancy.spells.SpellSignal;
 
 import java.awt.*;
 import java.util.*;
@@ -185,6 +183,7 @@ public class Toolbox {
 
     public static GradientBuilder gradient(){return new GradientBuilder();}
 
+    @Environment(EnvType.CLIENT)
     public static void playUISound(SoundEvent event) {
         if(MinecraftClient.getInstance()==null) return;
         MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(event, 1.0F));
@@ -238,6 +237,15 @@ public class Toolbox {
     }
 
     public static void playSound(SoundEvent event, World world, BlockPos pos, SoundCategory cat, float volume, float pitch){
+        if(event==null) return;
+        if(!(world instanceof ServerWorld)){
+            return;
+        }
+        world.playSound(null,pos,event,cat,volume,pitch);
+    }
+
+    @Environment(EnvType.CLIENT)
+    public static void playSoundClient(SoundEvent event, World world, BlockPos pos, SoundCategory cat, float volume, float pitch){
         if(event==null) return;
         if(world instanceof ClientWorld){
             world.playSound(MinecraftClient.getInstance().player, pos,event,cat,volume,pitch);

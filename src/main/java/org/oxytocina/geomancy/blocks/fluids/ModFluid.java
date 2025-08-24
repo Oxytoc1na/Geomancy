@@ -1,5 +1,7 @@
 package org.oxytocina.geomancy.blocks.fluids;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -101,6 +103,7 @@ public abstract class ModFluid extends FlowableFluid {
         return 100.0F;
     }
 
+    @Environment(EnvType.CLIENT)
     public abstract ParticleEffect getSplashParticle();
 
     public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {

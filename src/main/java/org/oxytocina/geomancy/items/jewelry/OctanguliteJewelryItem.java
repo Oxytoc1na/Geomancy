@@ -1,6 +1,8 @@
 package org.oxytocina.geomancy.items.jewelry;
 
 import dev.emi.trinkets.api.SlotReference;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
@@ -70,6 +72,7 @@ public class OctanguliteJewelryItem extends JewelryItem implements IManaStoringI
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public boolean isItemBarVisible(ItemStack stack) {
         return true;
     }
@@ -80,6 +83,7 @@ public class OctanguliteJewelryItem extends JewelryItem implements IManaStoringI
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public int getItemBarStep(ItemStack stack) {
         if(MinecraftClient.getInstance()==null) return 0;
 

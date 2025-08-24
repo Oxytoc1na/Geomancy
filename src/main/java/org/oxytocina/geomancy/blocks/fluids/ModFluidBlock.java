@@ -1,5 +1,7 @@
 package org.oxytocina.geomancy.blocks.fluids;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.*;
 import net.minecraft.entity.*;
 import net.minecraft.fluid.*;
@@ -22,8 +24,10 @@ public abstract class ModFluidBlock extends FluidBlock {
         this.modFluid=fluid;
     }
 
+    @Environment(EnvType.CLIENT)
     public abstract DefaultParticleType getSplashParticle();
 
+    @Environment(EnvType.CLIENT)
     public abstract Pair<DefaultParticleType, DefaultParticleType> getFishingParticles();
 
     @Override

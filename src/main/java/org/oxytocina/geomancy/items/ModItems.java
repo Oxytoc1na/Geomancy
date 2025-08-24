@@ -120,6 +120,7 @@ public class ModItems {
 
     // jewelry
     // rings
+
     public static final JewelryItem IRON_RING =                         register("iron_ring",       new JewelryItem             (new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.RING).withGemCount(1)),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
     public static final JewelryItem GOLD_RING =                         register("gold_ring",       new JewelryItem             (new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.RING).withGemCount(2)),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
     public static final JewelryItem MITHRIL_RING =                      register("mithril_ring",    new JewelryItem             (new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.RING).withGemCount(2)),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
@@ -147,7 +148,32 @@ public class ModItems {
     public static final LeadJewelryItem LEAD_PENDANT =                  register("lead_pendant",        new LeadJewelryItem         (new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(2).setPendant(),1,5),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
     public static final OctanguliteJewelryItem OCTANGULITE_PENDANT =    register("octangulite_pendant", new OctanguliteJewelryItem  (new Item.Settings().maxCount(1), JewelryItemSettings.createOf(JewelryItemSettings.TrinketSlot.NECKLACE).withGemCount(4).setPendant(),100,1,4),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Jewelry));
 
-
+/*
+    public static final Item IRON_RING =                         register("iron_ring",           new Item(new Item.Settings()));
+    public static final Item GOLD_RING =                         register("gold_ring",           new Item(new Item.Settings()));
+    public static final Item MITHRIL_RING =                      register("mithril_ring",        new Item(new Item.Settings()));
+    public static final Item COPPER_RING =                       register("copper_ring",         new Item(new Item.Settings()));
+    public static final Item MOLYBDENUM_RING =                   register("molybdenum_ring",     new Item(new Item.Settings()));
+    public static final Item TITANIUM_RING =                     register("titanium_ring",       new Item(new Item.Settings()));
+    public static final Item LEAD_RING =                         register("lead_ring",           new Item(new Item.Settings()));
+    public static final Item OCTANGULITE_RING =                  register("octangulite_ring",    new Item(new Item.Settings()));
+    public static final Item IRON_NECKLACE =                     register("iron_necklace",       new Item(new Item.Settings()));
+    public static final Item GOLD_NECKLACE =                     register("gold_necklace",       new Item(new Item.Settings()));
+    public static final Item MITHRIL_NECKLACE =                  register("mithril_necklace",    new Item(new Item.Settings()));
+    public static final Item COPPER_NECKLACE =                   register("copper_necklace",     new Item(new Item.Settings()));
+    public static final Item MOLYBDENUM_NECKLACE =               register("molybdenum_necklace", new Item(new Item.Settings()));
+    public static final Item TITANIUM_NECKLACE =                 register("titanium_necklace",   new Item(new Item.Settings()));
+    public static final Item LEAD_NECKLACE =                     register("lead_necklace",       new Item(new Item.Settings()));
+    public static final Item OCTANGULITE_NECKLACE =              register("octangulite_necklace",new Item(new Item.Settings()));
+    public static final Item IRON_PENDANT =                      register("iron_pendant",        new Item(new Item.Settings()));
+    public static final Item GOLD_PENDANT =                      register("gold_pendant",        new Item(new Item.Settings()));
+    public static final Item MITHRIL_PENDANT =                   register("mithril_pendant",     new Item(new Item.Settings()));
+    public static final Item COPPER_PENDANT =                    register("copper_pendant",      new Item(new Item.Settings()));
+    public static final Item MOLYBDENUM_PENDANT =                register("molybdenum_pendant",  new Item(new Item.Settings()));
+    public static final Item TITANIUM_PENDANT =                  register("titanium_pendant",    new Item(new Item.Settings()));
+    public static final Item LEAD_PENDANT =                      register("lead_pendant",        new Item(new Item.Settings()));
+    public static final Item OCTANGULITE_PENDANT =               register("octangulite_pendant", new Item(new Item.Settings()));
+*/
     // tools
     // NOTE: ModToolMaterials may only be called after all the required repair ingredients have been initialized above!!
 
@@ -285,7 +311,7 @@ public class ModItems {
 
     public static final RegistryKey<ItemGroup> JEWELRY_ITEM_GROUP_KEY = RegistryKey.of(Registries.ITEM_GROUP.getKey(), new Identifier(Geomancy.MOD_ID, "jewelry_item_group"));
     public static final ItemGroup JEWELRY_ITEM_GROUP = FabricItemGroup.builder()
-            .icon(() -> IRON_RING.addSlot(new ItemStack(ModItems.IRON_RING),new GemSlot(Items.DIAMOND,1)))
+            .icon(() -> IRON_RING.getDefaultStack()/*IRON_RING.addSlot(new ItemStack(ModItems.IRON_RING),new GemSlot(Items.DIAMOND,1))*/)
             .displayName(Text.translatable("itemGroup."+Geomancy.MOD_ID+".jewelry"))
             .build();
 

@@ -34,11 +34,13 @@ public class MithrilArmorItem extends JewelryArmorItem {
     }
 
     // this takes the "unused" stack, so addons can mixin into it
+    @Environment(EnvType.CLIENT)
     public RenderLayer getRenderLayer(ItemStack stack) {
         return RenderLayer.getEntitySolid(ModModelLayers.MITHRIL_ARMOR_MAIN_ID);
     }
 
     @NotNull
+    @Environment(EnvType.CLIENT)
     public Identifier getArmorTexture(ItemStack stack, EquipmentSlot slot) {
         return Geomancy.locate("textures/armor/mithril_armor_main.png");
     }

@@ -1,5 +1,7 @@
 package org.oxytocina.geomancy.world.dimension;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.DimensionRenderingRegistry;
 import net.minecraft.registry.*;
 import net.minecraft.registry.tag.BlockTags;
@@ -44,6 +46,7 @@ public class ModDimensions {
         Registry.register(Registries.CHUNK_GENERATOR, Geomancy.locate("null"), NullChunkGenerator.CODEC);
     }
 
+    @Environment(EnvType.CLIENT)
     public static void registerClient(){
         DimensionRenderingRegistry.registerSkyRenderer(NULL_LEVEL_KEY, new NullSkyRenderer());
         DimensionRenderingRegistry.registerCloudRenderer(NULL_LEVEL_KEY, c->{});

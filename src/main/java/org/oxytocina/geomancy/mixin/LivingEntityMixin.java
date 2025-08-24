@@ -3,7 +3,7 @@ package org.oxytocina.geomancy.mixin;
 import com.llamalad7.mixinextras.injector.*;
 import com.llamalad7.mixinextras.injector.wrapoperation.*;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+//import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.*;
@@ -167,13 +167,6 @@ public abstract class LivingEntityMixin {
             World world = thisEntity.getWorld();
             if (!world.isClient) {
                 EntityUtil.onJump(thisEntity);
-            }
-            else{
-                if(thisEntity instanceof ClientPlayerEntity cpe){
-                    // send jump packet
-                    // i really wish i didnt have to do it like this but oh well
-                    ClientPlayNetworking.send(ModMessages.PLAYER_JUMP, PacketByteBufs.create());
-                }
             }
         }
     }

@@ -1,10 +1,8 @@
 package org.oxytocina.geomancy.blocks.fluids;
 
-import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
-import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
 import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
 import net.minecraft.client.render.RenderLayer;
@@ -22,9 +20,6 @@ import org.oxytocina.geomancy.items.ModItems;
 
 public class ModFluids {
 
-    // RenderHandler storage for compatibility purposes
-    public static final Object2ObjectArrayMap<FluidRenderHandler, Fluid[]> HANDLER_MAP = new Object2ObjectArrayMap<>(4);
-
     public static ModFluid MOLTEN_GOLD = new GoldFluid.Still();
     public static ModFluid FLOWING_MOLTEN_GOLD = new GoldFluid.Flowing();
     public static Item MOLTEN_GOLD_BUCKET;
@@ -36,7 +31,6 @@ public class ModFluids {
     static{
         registerFluid("molten_gold", MOLTEN_GOLD, FLOWING_MOLTEN_GOLD);
         MOLTEN_GOLD_BUCKET = ModItems.register("gold_bucket",new BucketItem(MOLTEN_GOLD, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1)));
-
     }
 
     public static void register() {
@@ -61,7 +55,6 @@ public class ModFluids {
                 tint
         );
 
-        HANDLER_MAP.put(handler, new Fluid[]{stillFluid, flowingFluid});
         FluidRenderHandlerRegistry.INSTANCE.register(stillFluid, flowingFluid, handler);
 
         BlockRenderLayerMap.INSTANCE.putFluids(RenderLayer.getTranslucent(), stillFluid, flowingFluid);

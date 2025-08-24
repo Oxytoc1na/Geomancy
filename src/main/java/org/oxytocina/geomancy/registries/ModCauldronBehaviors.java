@@ -1,6 +1,5 @@
 package org.oxytocina.geomancy.registries;
 
-import net.minecraft.block.Blocks;
 import net.minecraft.block.cauldron.CauldronBehavior;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
