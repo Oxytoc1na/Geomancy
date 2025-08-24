@@ -143,7 +143,9 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("text_blockid","Block ID","returns the Identifier of the block at the given position");
             addSpell("entity_has_effect","Has Effect","returns if an entity has a specified status effect");
             addSpell("entity_health","Entity Health","returns the health, max health, air, max air, and absorption of an entity");
-            addSpell("random","Random Integer","returns a random integer between 0 and the argument");
+            addSpell("random_integer","Random Integer","returns a random integer between 0 and the argument");
+            addSpell("parse","Parse","attempt to turn a text into a signal of a different type");
+            addSpell("to_text","To Text","returns the text representation of a signal");
             // effectors
             addSpell("print","Print","outputs a value to the casters chat");
             addSpell("fireball","Fireball","summons a fireball");
@@ -348,6 +350,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("tooltip.geomancy.jewelry.nogems"   ,"No Gems");
             add("tooltip.geomancy.jewelry.pendant1" ,"Empowers other worn gems of the");
             add("tooltip.geomancy.jewelry.pendant2" ,"same type as slotted in this item");
+            add("item.MODID.caster_core","Caster Core");
 
             add("tooltip.geomancy.jewelry.gemeffect.diamond"        ,"provides %1$s armor");
             add("tooltip.geomancy.jewelry.gemeffect.lapis_lazuli"   ,"increases XP drops by %1$s%%");
@@ -421,6 +424,9 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
             add("block.MODID.spellmaker_block"            , "Spellmaker");
             add("container.MODID.spellmaker_block"        , "Spellmaker");
+
+            add("block.MODID.autocaster"            , "Autocaster");
+            add("MODID.autocaster"        , "Autocaster");
 
             addOres("octangulite_ore", "Octangulite Ore");
             add("block.MODID.raw_octangulite_block"     , "Octangulite Scrap");

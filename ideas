@@ -184,7 +184,7 @@ autocaster
 - get block redstone level
 - get block facing position
 
-NULL DIMENSION
+TODO NULL DIMENSION
 - endless maze
 
 TODO MODONOMICON
@@ -196,6 +196,4 @@ TODO MODONOMICON
 
 TODO textures
 - caster core
-- varpots
-- geode preview
 - status effects

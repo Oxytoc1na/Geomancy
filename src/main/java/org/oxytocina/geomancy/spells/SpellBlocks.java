@@ -45,6 +45,7 @@ import net.minecraft.util.math.random.LocalRandom;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockStateRaycastContext;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import org.oxytocina.geomancy.blocks.ModBlocks;
@@ -56,16 +57,16 @@ import org.oxytocina.geomancy.sound.ModSoundEvents;
 import org.oxytocina.geomancy.util.BlockHelper;
 import org.oxytocina.geomancy.util.Toolbox;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class SpellBlocks {
+
+    // WARNING: this file is large and i'm sorry
+
     public static LinkedHashMap<Identifier, SpellBlock> functions = new LinkedHashMap<>();
     public static LinkedHashMap<Identifier, Integer> functionOrder = new LinkedHashMap<>();
 
@@ -117,6 +118,8 @@ public class SpellBlocks {
     public static final SpellBlock ENTITY_HAS_EFFECT;
     public static final SpellBlock ENTITY_HEALTH;
     public static final SpellBlock RANDOM_INTEGER;
+    public static final SpellBlock PARSE;
+    public static final SpellBlock TO_TEXT;
 
     // effectors
     public static final SpellBlock PRINT;
@@ -705,6 +708,60 @@ public class SpellBlocks {
                             SpellBlockResult res = SpellBlockResult.empty();
                             var exclusivemax = vars.getInt("exclusivemax");
                             res.add("random",Toolbox.random.nextInt(exclusivemax));
+                            return res;
+                        })
+                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
+                        .category(cat).build());
+
+                PARSE = register(SpellBlock.Builder.create("parse")
+                        .inputs(SpellSignal.createText().named("text"))
+                        .outputs(SpellSignal.createAny().named("res"))
+                        .parameters()
+                        .func((comp,vars) -> {
+                            SpellBlockResult res = SpellBlockResult.empty();
+                            var text = vars.getText("text");
+
+                            // parse number
+                            try{
+                                float f = Float.parseFloat(text);
+                                res.add("res",f);
+                                return res;
+                            }
+                            catch(Exception ignored){}
+
+                            // parse vector
+                            try{
+                                var temp = text.replaceAll("[()]","");
+                                var args = temp.split(",");
+                                float[] argsF = new float[3];
+                                for (int i = 0; i < 3; i++) {
+                                    argsF[i] = Float.parseFloat(args[i]);
+                                }
+                                res.add("res",new Vec3d(argsF[0],argsF[1],argsF[22]));
+                                return res;
+                            }
+                            catch(Exception ignored){}
+
+                            // parse uuid
+                            try{
+                                var temp = UUID.fromString(text);
+                                res.add("res",temp);
+                                return res;
+                            }
+                            catch(Exception ignored){}
+
+                            return res;
+                        })
+                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
+                        .category(cat).build());
+
+                TO_TEXT = register(SpellBlock.Builder.create("to_text")
+                        .inputs(SpellSignal.createAny().named("signal"))
+                        .outputs(SpellSignal.createText().named("res"))
+                        .parameters()
+                        .func((comp,vars) -> {
+                            SpellBlockResult res = SpellBlockResult.empty();
+                            res.add("res",vars.get("signal").getTextValue());
                             return res;
                         })
                         .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
@@ -2288,13 +2345,24 @@ public class SpellBlocks {
                 Vec3d end = from.add(dirV.getX()*length,dirV.getY()*length,dirV.getZ()*length);
 
                 var ctx = new BlockStateRaycastContext(from,end,b->!b.isAir());
-                return comp.world().raycast(ctx);
+                return raycast(comp.world(),ctx);
             }
         }
 
         return BlockHitResult.createMissed(from,Direction.NORTH,Toolbox.posToBlockPos(from));
     }
 
+    private static BlockHitResult raycast(World world, BlockStateRaycastContext context) {
+        BlockView view = world;
+        return (BlockHitResult)BlockView.raycast(context.getStart(), context.getEnd(), context, (innerContext, pos) -> {
+            BlockState blockState = view.getBlockState(pos);
+            Vec3d vec3d = innerContext.getStart().subtract(innerContext.getEnd());
+            return innerContext.getStatePredicate().test(blockState) ? new BlockHitResult(pos.toCenterPos(), Direction.getFacing(vec3d.x, vec3d.y, vec3d.z), pos, false) : null;
+        }, (innerContext) -> {
+            Vec3d vec3d = innerContext.getStart().subtract(innerContext.getEnd());
+            return BlockHitResult.createMissed(innerContext.getEnd(), Direction.getFacing(vec3d.x, vec3d.y, vec3d.z), BlockPos.ofFloored(innerContext.getEnd()));
+        });
+    }
 
     private static void logDebug(LivingEntity player, Text text){
         if(player != null)

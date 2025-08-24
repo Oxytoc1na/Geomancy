@@ -516,6 +516,18 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                             SmithingIngredient.ofItems(1,1,Items.DROPPER),
                     }).toList(),SpellBlocks.RANDOM_INTEGER,true);
 
+                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,baseIngot),
+                            SmithingIngredient.ofItems(1,1,Items.NAME_TAG),
+                    }).toList(),SpellBlocks.PARSE,true);
+
+                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,baseIngot),
+                            SmithingIngredient.ofItems(1,1,Items.BIRCH_SIGN),
+                    }).toList(),SpellBlocks.TO_TEXT,true);
+
                 }
 
                 // effectors
