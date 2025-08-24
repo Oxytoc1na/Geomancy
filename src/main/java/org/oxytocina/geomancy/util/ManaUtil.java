@@ -142,11 +142,13 @@ public class ManaUtil {
         if(!(world instanceof ServerWorld svw)) return;
         if(!(stack.getItem() instanceof IManaStoringItem)) return;
 
+        IManaStoringItem.init(world,stack);
         ManaStoringItemData data = ManaStoringItemData.from(world,stack, IManaStoringItem.getUUID(stack));
 
         PacketByteBuf buf = PacketByteBufs.create();
         data.writeBuf(buf);
 
+        // TODO: dont send unneeded packets!!
         ModMessages.sendToAllClients(svw.getServer(),ModMessages.ITEM_MANA_SYNC,buf);
 
     }
@@ -218,7 +220,13 @@ public class ManaUtil {
 
     private static boolean tickPlayerMana(ServerPlayerEntity player){
         // channeling souls
-        boolean changed = tickStorage(player.getWorld(),player.getInventory(),player.getBlockPos());
+        var storers = getAllSoulStoringItems(player);
+        boolean changed = false;
+        // trinkets
+        for (var stack : storers){
+            changed = tickStack(player.getWorld(),stack,player.getBlockPos()) || changed;
+        }
+
         if(!changed) return changed;
 
         // calculate available mana
@@ -368,5 +376,11 @@ public class ManaUtil {
         if(!canStoreMana(stack)) return false;
 
         return tickManaRegen(stack,world,getAmbientSoulsPerBlock(world,pos),1,null);
+    }
+
+    public static void syncItemMana(ServerPlayerEntity player) {
+        var items = getAllSoulStoringItems(player);
+        for (var stack : items)
+            syncItemMana(player.getWorld(),stack);
     }
 }

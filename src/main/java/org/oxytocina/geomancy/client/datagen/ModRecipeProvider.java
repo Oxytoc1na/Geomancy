@@ -617,6 +617,12 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.FLINT_AND_STEEL),
                     }).toList(),SpellBlocks.IGNITE,true);
+
+                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
+                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
+                            SmithingIngredient.ofItems(1,1,baseIngot),
+                            SmithingIngredient.ofItems(1,1,Items.NOTE_BLOCK),
+                    }).toList(),SpellBlocks.PLAY_SOUND,true);
                 }
 
                 // reference

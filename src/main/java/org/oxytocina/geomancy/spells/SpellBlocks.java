@@ -10,10 +10,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LightningEntity;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -43,7 +40,6 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.LocalRandom;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockStateRaycastContext;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.RaycastContext;
@@ -136,6 +132,7 @@ public class SpellBlocks {
     public static final SpellBlock DEGRADE_BLOCK;
     public static final SpellBlock REPLACE;
     public static final SpellBlock IGNITE;
+    public static final SpellBlock PLAY_SOUND;
 
     // reference
     public static final SpellBlock ACTION;
@@ -1471,12 +1468,14 @@ public class SpellBlocks {
             BREAK = register(SpellBlock.Builder.create("break")
                     .inputs(
                             SpellSignal.createVector().named("position"),
-                            SpellSignal.createBoolean(true).named("silk touch")
+                            SpellSignal.createBoolean(true).named("silk touch"),
+                            SpellSignal.createBoolean(true).named("autocollect")
                     )
                     .outputs().parameters()
                     .func((comp,vars) -> {
                         var pos = vars.getVector("position");
                         var silkTouch = vars.getBoolean("silk touch");
+                        var autocollect = vars.getBoolean("autocollect");
                         var blockPos = Toolbox.posToBlockPos(pos);
 
                         // calculate breaking cost
@@ -1484,6 +1483,7 @@ public class SpellBlocks {
 
                         float manaCost = 0.2f
                                 +targetState.getBlock().getHardness()/5f* (silkTouch?2:1)
+                                +(autocollect?0.2f:0f)
                                 +castOffsetSoulCost(comp,pos,0.05f);
 
                         if(canAfford(comp,manaCost)){
@@ -1515,10 +1515,40 @@ public class SpellBlocks {
                                 default->null;
                             };
 
-                            if(!BlockHelper.breakBlockWithDrops(pe,stack,comp.world(),blockPos,minableBlocksPredicate)){
+                            boolean broke = BlockHelper.breakBlock(pe,stack,comp.world(),blockPos,minableBlocksPredicate,!autocollect);
+
+                            if(!broke){
                                 // couldnt mine... again?
                                 tryLogDebugNotbreakable(comp,targetState);
                                 return SpellBlockResult.empty();
+                            }
+
+                            if(autocollect){
+                                // give the caster the drops
+                                var stacks = Block.getDroppedStacks(targetState,(ServerWorld)comp.world(),blockPos,comp.world().getBlockEntity(blockPos),comp.caster(),stack);
+                                var casterPos = comp.context.getOriginPos();
+                                switch(comp.context.sourceType){
+                                    case Block:
+                                    {
+                                        for(var s : stacks){
+                                            s = comp.context.casterBlock.tryCollect(s);
+                                            if(s.isEmpty()) continue;
+
+                                            ItemEntity ie = new ItemEntity(comp.world(),casterPos.x,casterPos.y,casterPos.z,s);
+                                            comp.world().spawnEntity(ie);
+                                        }
+                                        break;
+                                    }
+
+                                    default : {
+                                        for(var s : stacks){
+                                            ItemEntity ie = new ItemEntity(comp.world(),casterPos.x,casterPos.y,casterPos.z,s);
+                                            comp.world().spawnEntity(ie);
+                                        }
+                                        break;
+                                    }
+                                }
+
                             }
 
                             trySpendSoul(comp,manaCost);
@@ -1532,11 +1562,7 @@ public class SpellBlocks {
 
                         return SpellBlockResult.empty();
                     })
-                    .sideConfigGetter((comp)->{
-                        SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
-                        for(int i = 0; i <6; i++) res[i] = SpellComponent.SideConfig.createToggleableInput(comp,SpellComponent.getDir(i)).named(i%2==0?"position":"silk touch");
-                        return res;
-                    })
+                    .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                     .category(cat).build());
 
             SET_SPELL = register(SpellBlock.Builder.create("set_spell")
@@ -1947,6 +1973,50 @@ public class SpellBlocks {
                     .sideConfigGetter(SpellBlock.SideUtil::sidesInput)
                     .category(cat).build());
 
+            PLAY_SOUND = register(SpellBlock.Builder.create("play_sound")
+                    .inputs(
+                            SpellSignal.createVector().named("position"),
+                            SpellSignal.createText().named("sound"),
+                            SpellSignal.createNumber().named("volume"),
+                            SpellSignal.createNumber().named("pitch")
+                    )
+                    .outputs().parameters()
+                    .func((comp,vars) -> {
+                        var soundID = vars.getIdentifier("sound");
+                        if(soundID==null) return SpellBlockResult.empty();
+                        var soundEvent = Registries.SOUND_EVENT.get(soundID);
+                        if(soundEvent==null) return SpellBlockResult.empty();
+                        var pos = vars.getVector("position");
+                        var blockPos = vars.getBlockPos("position");
+                        var vol = Toolbox.clampF(vars.getNumber("volume"),0,2);
+                        var pitch = vars.getNumber("pitch");
+
+                        // calculate cost
+                        float manaCost = 1f
+                                +vol*10
+                                +castOffsetSoulCost(comp,pos,0.05f);
+
+                        if(canAfford(comp,manaCost)){
+
+                            Toolbox.playSound(soundEvent,comp.world(),blockPos,
+                                    switch(comp.context.sourceType){
+                                        case Block -> SoundCategory.BLOCKS;
+                                        default->SoundCategory.PLAYERS;
+                                    },vol,pitch);
+
+                            trySpendSoul(comp,manaCost);
+                            spawnCastParticles(comp,CastParticleData.genericSuccess(comp,pos));
+                        }
+                        else{
+                            // too broke
+                            tryLogDebugBroke(comp,manaCost);
+                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,pos));
+                        }
+
+                        return SpellBlockResult.empty();
+                    })
+                    .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
+                    .category(cat).build());
         }
 
         // reference

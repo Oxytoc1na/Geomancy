@@ -207,5 +207,27 @@ public class AutocasterBlockEntity extends LootableContainerBlockEntity implemen
         }
     }
 
+    public ItemStack tryCollect(ItemStack s) {
+        for (int i = 0; i < size(); i++) {
+            var onto = getStack(i);
+
+            // onto empty stack
+            if(onto.isEmpty())
+            {
+                setStack(i,s.copyAndEmpty());
+                return s;
+            }
+
+            // trying to stack until its empty
+            if(onto.isStackable() && ItemStack.canCombine(s,onto)){
+                int max = onto.getMaxCount();
+                int taken = Math.min(s.getCount(),max-onto.getCount());
+                onto.increment(taken);
+                s.decrement(taken);
+                if(s.isEmpty()) return s;
+            }
+        }
+        return s;
+    }
 }
 

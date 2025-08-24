@@ -1,5 +1,6 @@
 package org.oxytocina.geomancy.spells;
 
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import org.oxytocina.geomancy.util.Toolbox;
@@ -47,6 +48,10 @@ public class SpellBlockArgs {
 
     public String getText(String name){
         return getText(name,null);
+    }
+
+    public Identifier getIdentifier(String name){
+        return Identifier.tryParse(getText(name));
     }
 
     public String getText(String name,SpellContext ctx){

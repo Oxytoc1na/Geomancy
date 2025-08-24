@@ -88,9 +88,7 @@ public class ModMessages {
                     ServerPlayNetworking.send(handler.getPlayer(), INITIAL_SYNC, data);
 
                     // send item mana data to player
-                    for(var stack : ManaStoringItemData.stackMap.values()){
-                        ManaUtil.syncItemMana(handler.getPlayer().getWorld(),stack);
-                    }
+                    ManaUtil.syncItemMana(handler.getPlayer());
 
                     // sync various other things
                     StellgeUtil.syncKnowledge(handler.getPlayer());

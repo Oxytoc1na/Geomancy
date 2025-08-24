@@ -4,40 +4,43 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.client.rendering.ModColorizationHandler;
 import org.oxytocina.geomancy.entity.ManaStoringItemData;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface IManaStoringItem {
-    static void init(ItemStack stack){
+    static void init(World world, ItemStack stack){
         if(stack.getSubNbt("soul")!=null) return;
         NbtCompound soul = new NbtCompound();
-        soul.putUuid("uuid", UUID.randomUUID());
+        soul.putUuid("uuid", ManaStoringItemData.getNextUUID());
         stack.setSubNbt("soul",soul);
     }
 
     static ManaStoringItemData getData(World world, ItemStack stack){
-        init(stack);
+        init(world,stack);
         return ManaStoringItemData.from(world,stack,getUUID(stack));
     }
 
     default float getCapacity(World world, ItemStack stack){
-        init(stack);
+        init(world,stack);
         return getData(world,stack).maxMana;
     }
     default float getRechargeSpeedMultiplier(World world, ItemStack stack, LivingEntity entity){
-        init(stack);
+        init(world,stack);
         return getData(world,stack).speedMultiplier;
     }
     default void setRechargeSpeedMultiplier(World world, ItemStack stack, float speed){
-        init(stack);
+        init(world,stack);
         getData(world,stack).speedMultiplier = speed;
     }
     default float getMana(World world, ItemStack stack){
-        init(stack);
+        init(world,stack);
 
         float mana = getData(world,stack).mana;
         if(Float.isNaN(mana))
@@ -49,11 +52,11 @@ public interface IManaStoringItem {
         return getData(world,stack).mana;
     }
     default void setCapacity(World world, ItemStack stack, float capacity){
-        init(stack);
+        init(world,stack);
         getData(world,stack).maxMana = capacity;
     }
     default void setMana(World world, ItemStack stack, float mana){
-        init(stack);
+        init(world,stack);
         getData(world,stack).mana = mana;
     }
     static void setUUID(ItemStack stack, UUID uuid){
@@ -62,7 +65,7 @@ public interface IManaStoringItem {
         stack.setSubNbt("soul",soul);
     }
     static UUID getUUID(ItemStack stack){
-        init(stack);
+        //init(stack);
         NbtCompound soul = stack.getOrCreateSubNbt("soul");
         UUID uuid = soul.containsUuid("uuid")? soul.getUuid("uuid") : null;
         if(uuid==null){
@@ -82,4 +85,14 @@ public interface IManaStoringItem {
     }
 
     float getBaseSoulCapacity(ItemStack stack);
+
+    default void addManaTooltip(World world, ItemStack stack, List<Text> tooltip){
+        if(world==null) world=MinecraftClient.getInstance().world;
+        if(world==null) return;
+        float mana = getMana(world,stack);
+        float cap = getCapacity(world,stack);
+        if(cap<=0) return;
+        float fraction = mana/cap;
+        tooltip.add(Text.translatable("geomancy.soul_storage.tooltip",Math.round(mana),Math.round(cap),Math.round(fraction*100)).formatted(Formatting.DARK_GRAY));
+    }
 }

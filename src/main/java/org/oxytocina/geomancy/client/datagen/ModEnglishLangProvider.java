@@ -161,6 +161,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("degrade_block","Degrade Block","degrades a targeted block into something else");
             addSpell("replace","Replace","a combination of the break and place components");
             addSpell("ignite","Ignite","heats a given block position up");
+            addSpell("play_sound","Play Sound","plays a sound in the world");
             // reference
             addSpell("action","Action","calls another installed spell");
             addSpell("provider","Provider","automatically returns the result of a spell");
@@ -294,6 +295,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("item.MODID.casting_leggings"       , "Soulcasting Leggings");
             add("item.MODID.casting_chestplate"     , "Soulcasting Chestplate");
             add("item.MODID.casting_helmet"         , "Soulcasting Helmet");
+
+            add("MODID.soul_storage.tooltip","Soul: %1$s/%2$s (%3$s%%)");
 
             add("item.MODID.tourmaline" , "Tourmaline");
             add("item.MODID.orthoclase" , "Orthoclase");

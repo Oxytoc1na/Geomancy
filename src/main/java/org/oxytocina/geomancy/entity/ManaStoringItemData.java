@@ -66,6 +66,10 @@ public class ManaStoringItemData {
         return res;
     }
 
+    public static UUID getNextUUID() {
+        return UUID.randomUUID();
+    }
+
 
     public void writeNbt(NbtCompound nbt){
         nbt.putUuid("uuid",uuid);
@@ -85,6 +89,7 @@ public class ManaStoringItemData {
 
         if(world.isClient){
             if(clientMap.containsKey(uuid)) return clientMap.get(uuid);
+            return new ManaStoringItemData(0,0,0);
         }
 
         if(stackMap.containsKey(uuid) && stackMap.get(uuid) != stack){

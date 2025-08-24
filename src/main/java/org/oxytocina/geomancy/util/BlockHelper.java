@@ -4,19 +4,14 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.OperatorBlock;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.pattern.CachedBlockPosition;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.WorldEventS2CPacket;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.GameMode;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
 import net.minecraft.world.event.GameEvent;
@@ -24,7 +19,8 @@ import net.minecraft.world.event.GameEvent;
 import java.util.function.Predicate;
 
 public class BlockHelper {
-    public static boolean breakBlockWithDrops(PlayerEntity player, ItemStack stack, World world, BlockPos pos, Predicate<BlockState> filter) {
+
+    public static boolean breakBlock(PlayerEntity player, ItemStack stack, World world, BlockPos pos, Predicate<BlockState> filter, boolean drop) {
         if(world.isClient) return false;
         ChunkPos chunkPos = world.getChunk(pos).getPos();
         if (!world.isChunkLoaded(chunkPos.x, chunkPos.z)) return false;
@@ -32,7 +28,11 @@ public class BlockHelper {
         if(blockstate.isAir()) return false;
 
         if(player==null){
-            return tryBreakBlock((ServerWorld) world,pos,stack);
+            return tryBreakBlock((ServerWorld) world,pos,stack,drop);
+        }
+
+        if(!drop){
+            return tryBreakBlockAsPlayer((ServerPlayerEntity) player,pos,stack,drop);
         }
 
         if (blockstate.calcBlockBreakingDelta(player, world, pos) > 0 && filter.test(blockstate)) {
@@ -48,8 +48,7 @@ public class BlockHelper {
 
     public static boolean replaceBlockWithDrops(PlayerEntity player, ItemStack stack, World world, BlockPos pos, BlockState newState, Predicate<BlockState> filter) {
         if(player==null){
-            // TODO : casting blocks
-            tryBreakBlock((ServerWorld) world,pos,stack);
+            tryBreakBlock((ServerWorld) world,pos,stack,true);
             world.setBlockState(pos,newState);
             return false;
         }
@@ -81,7 +80,32 @@ public class BlockHelper {
         return false;
     }
 
-    public static boolean tryBreakBlock(ServerWorld world, BlockPos pos, ItemStack tool) {
+    public static boolean tryBreakBlockAsPlayer(ServerPlayerEntity player,BlockPos pos, ItemStack tool, boolean drop){
+        var world = player.getWorld();
+        BlockState blockState = world.getBlockState(pos);
+        if (!tool.getItem().canMine(blockState, world, pos, player)) {
+            return false;
+        } else {
+            BlockEntity blockEntity = world.getBlockEntity(pos);
+            Block block = blockState.getBlock();
+            if (block instanceof OperatorBlock && !player.isCreativeLevelTwoOp()) {
+                world.updateListeners(pos, blockState, blockState, 3);
+                return false;
+            } else if (player.isBlockBreakingRestricted(world, pos, player.interactionManager.getGameMode())) {
+                return false;
+            }
+        }
+
+        boolean broke = tryBreakBlock((ServerWorld) world,pos,tool,drop);
+
+        if(broke){
+            // TODO: player statistics
+        }
+
+        return broke;
+    }
+
+    public static boolean tryBreakBlock(ServerWorld world, BlockPos pos, ItemStack tool, boolean drop) {
         BlockState blockState = world.getBlockState(pos);
         Block block = blockState.getBlock();
         if (block instanceof OperatorBlock) {
@@ -94,7 +118,8 @@ public class BlockHelper {
             if (removed) {
                 block.onBroken(world, pos, blockState);
                 BlockEntity blockEntity = blockState.hasBlockEntity() ? world.getBlockEntity(pos) : null;
-                Block.dropStacks(blockState, world, pos, blockEntity, null, tool);
+                if(drop)
+                    Block.dropStacks(blockState, world, pos, blockEntity, null, tool);
             }
 
             //tool.postMine(world, blockState, pos, this.player);
