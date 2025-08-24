@@ -1,11 +1,21 @@
 package org.oxytocina.geomancy.util;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.*;
+import net.minecraft.client.render.model.BakedModel;
+import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.crash.CrashException;
+import net.minecraft.util.crash.CrashReport;
+import net.minecraft.util.crash.CrashReportSection;
 import net.minecraft.util.math.ColorHelper;
+import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 
@@ -59,6 +69,40 @@ public class DrawHelper {
         bufferBuilder.vertex(matrix4f, x2, y2, z).texture(u2, v2).next();
         bufferBuilder.vertex(matrix4f, x2, y1, z).texture(u2, v1).next();
         BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
+    }
+
+    public static void drawItem(DrawContext ctx,@Nullable LivingEntity entity, @Nullable World world, ItemStack stack, float x, float y, int seed, float z, float r, float g, float b) {
+        if (!stack.isEmpty()) {
+            BakedModel bakedModel = MinecraftClient.getInstance().getItemRenderer().getModel(stack, world, entity, seed);
+            ctx.getMatrices().push();
+            ctx.getMatrices().translate((x + 8), (y + 8), (150 + (bakedModel.hasDepth() ? z : 0)));
+
+            try {
+                ctx.getMatrices().multiplyPositionMatrix((new Matrix4f()).scaling(1.0F, -1.0F, 1.0F));
+                ctx.getMatrices().scale(16.0F, 16.0F, 16.0F);
+                boolean bl = !bakedModel.isSideLit();
+                if (bl) {
+                    DiffuseLighting.disableGuiDepthLighting();
+                }
+
+                RenderSystem.setShaderColor(r,g,b,1);
+                MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformationMode.GUI, false, ctx.getMatrices(), ctx.getVertexConsumers(), 15728880, OverlayTexture.DEFAULT_UV, bakedModel);
+                ctx.draw();
+                if (bl) {
+                    DiffuseLighting.enableGuiDepthLighting();
+                }
+            } catch (Throwable throwable) {
+                CrashReport crashReport = CrashReport.create(throwable, "Rendering item");
+                CrashReportSection crashReportSection = crashReport.addElement("Item being rendered");
+                crashReportSection.add("Item Type", () -> String.valueOf(stack.getItem()));
+                crashReportSection.add("Item Damage", () -> String.valueOf(stack.getDamage()));
+                crashReportSection.add("Item NBT", () -> String.valueOf(stack.getNbt()));
+                crashReportSection.add("Item Foil", () -> String.valueOf(stack.hasGlint()));
+                throw new CrashException(crashReport);
+            }
+
+            ctx.getMatrices().pop();
+        }
     }
 
 }

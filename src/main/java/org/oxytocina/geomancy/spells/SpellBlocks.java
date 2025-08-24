@@ -44,6 +44,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.LocalRandom;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.BlockStateRaycastContext;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import org.oxytocina.geomancy.blocks.ModBlocks;
@@ -80,6 +81,9 @@ public class SpellBlocks {
     public static final SpellBlock CONST_BOOLEAN;
     public static final SpellBlock ENTITY_CASTER;
     public static final SpellBlock BLOCKPOS_CASTER;
+    public static final SpellBlock POS_CASTER;
+    public static final SpellBlock EYEPOS_CASTER;
+    public static final SpellBlock DIR_CASTER;
     public static final SpellBlock CASTER_SLOT;
 
     // arithmetic
@@ -310,7 +314,7 @@ public class SpellBlocks {
 
             BLOCKPOS_CASTER = register(SpellBlock.Builder.create("blockpos_caster")
                     .inputs()
-                    .outputs(SpellSignal.createVector(null).named("position"))
+                    .outputs(SpellSignal.createVector().named("position"))
                     .func((component, stringSpellSignalHashMap) -> {
                         SpellBlockResult res = new SpellBlockResult();
                         if(component.context.casterBlock!=null) res.add("position",component.context.casterBlock.getPos());return res;
@@ -340,6 +344,57 @@ public class SpellBlocks {
                         return res;
                     })
                     .sideConfigGetter((c)->SpellBlock.SideUtil.sidesOutput(c,"slot"))
+                    .category(cat).build());
+
+            POS_CASTER = register(SpellBlock.Builder.create("pos_caster")
+                    .inputs()
+                    .outputs(SpellSignal.createVector().named("position"))
+                    .func((component, stringSpellSignalHashMap) -> {
+                        SpellBlockResult res = new SpellBlockResult();
+                        res.add("position",component.context.getOriginPos());
+                        return res;
+                    })
+                    .sideConfigGetter(SpellBlock.SideUtil::sidesOutput)
+                    .category(cat).build());
+
+            EYEPOS_CASTER = register(SpellBlock.Builder.create("eyepos_caster")
+                    .inputs()
+                    .outputs(SpellSignal.createVector().named("position"))
+                    .func((component, stringSpellSignalHashMap) -> {
+                        SpellBlockResult res = new SpellBlockResult();
+                        switch(component.context.sourceType)
+                        {
+                            case Caster:
+                                res.add("position",component.caster().getEyePos());
+                                break;
+                            case Block:
+                            default:
+                                res.add("position",component.context.getOriginPos());
+                                break;
+                        }
+                        return res;
+                    })
+                    .sideConfigGetter(SpellBlock.SideUtil::sidesOutput)
+                    .category(cat).build());
+
+            DIR_CASTER = register(SpellBlock.Builder.create("dir_caster")
+                    .inputs()
+                    .outputs(SpellSignal.createVector().named("direction"))
+                    .func((component, stringSpellSignalHashMap) -> {
+                        SpellBlockResult res = new SpellBlockResult();
+                        switch(component.context.sourceType)
+                        {
+                            case Caster:
+                                res.add("direction",component.caster().getRotationVector());
+                                break;
+                            case Block:
+                            default:
+                                res.add("direction",component.context.casterBlock.getDirection().getVector());
+                                break;
+                        }
+                        return res;
+                    })
+                    .sideConfigGetter(SpellBlock.SideUtil::sidesOutput)
                     .category(cat).build());
         }
 
@@ -478,7 +533,7 @@ public class SpellBlocks {
                                 SpellSignal.createAny().named("b"))
                         .outputs(SpellSignal.createAny().named("product"),
                                 SpellSignal.createNumber(0).named("dotproduct"),
-                                SpellSignal.createVector(null).named("crossproduct")
+                                SpellSignal.createVector().named("crossproduct")
                                 )
                         .parameters()
                         .func((comp,vars) -> {
@@ -584,10 +639,10 @@ public class SpellBlocks {
                         .category(cat).build());
 
                 RAYCAST_POS = register(SpellBlock.Builder.create("raycast_pos")
-                        .inputs(SpellSignal.createVector(null).named("from"),
-                                SpellSignal.createVector(null).named("dir"),
+                        .inputs(SpellSignal.createVector().named("from"),
+                                SpellSignal.createVector().named("dir"),
                                 SpellSignal.createNumber(0).named("length"))
-                        .outputs(SpellSignal.createVector(null).named("hitPos"))
+                        .outputs(SpellSignal.createVector().named("hitPos"))
                         .parameters()
                         .func((comp,vars) -> {
                             SpellBlockResult res = SpellBlockResult.empty();
@@ -602,10 +657,10 @@ public class SpellBlocks {
                         .category(cat).build());
 
                 RAYCAST_DIR = register(SpellBlock.Builder.create("raycast_dir")
-                        .inputs(SpellSignal.createVector(null).named("from"),
-                                SpellSignal.createVector(null).named("dir"),
+                        .inputs(SpellSignal.createVector().named("from"),
+                                SpellSignal.createVector().named("dir"),
                                 SpellSignal.createNumber(0).named("length"))
-                        .outputs(SpellSignal.createVector(null).named("hitDir"))
+                        .outputs(SpellSignal.createVector().named("hitDir"))
                         .parameters()
                         .func((comp,vars) -> {
                             SpellBlockResult res = SpellBlockResult.empty();
@@ -660,7 +715,7 @@ public class SpellBlocks {
             {
                 VECTOR_ENTITYSPAWN = register(SpellBlock.Builder.create("vector_entityspawn")
                         .inputs(SpellSignal.createUUID(null).named("entity"))
-                        .outputs(SpellSignal.createVector(null).named("position"))
+                        .outputs(SpellSignal.createVector().named("position"))
                         .parameters()
                         .func((component, vars) -> {
                             SpellBlockResult res = SpellBlockResult.empty();
@@ -677,7 +732,7 @@ public class SpellBlocks {
 
                 VECTOR_ENTITYPOS = register(SpellBlock.Builder.create("vector_entitypos")
                         .inputs(SpellSignal.createUUID(null).named("entity"))
-                        .outputs(SpellSignal.createVector(null).named("position"))
+                        .outputs(SpellSignal.createVector().named("position"))
                         .parameters()
                         .func((component, vars) -> {
                             SpellBlockResult res = new SpellBlockResult();
@@ -690,7 +745,7 @@ public class SpellBlocks {
 
                 VECTOR_ENTITYVEL = register(SpellBlock.Builder.create("vector_entityvel")
                         .inputs(SpellSignal.createUUID(null).named("entity"))
-                        .outputs(SpellSignal.createVector(null).named("velocity"))
+                        .outputs(SpellSignal.createVector().named("velocity"))
                         .parameters()
                         .func((component, vars) -> {
                             SpellBlockResult res = new SpellBlockResult();
@@ -703,7 +758,7 @@ public class SpellBlocks {
 
                 VECTOR_ENTITYEYEPOS = register(SpellBlock.Builder.create("vector_entityeyepos")
                         .inputs(SpellSignal.createUUID(null).named("entity"))
-                        .outputs(SpellSignal.createVector(null).named("eye position"))
+                        .outputs(SpellSignal.createVector().named("eye position"))
                         .parameters()
                         .func((component, vars) -> {
                             SpellBlockResult res = new SpellBlockResult();
@@ -716,7 +771,7 @@ public class SpellBlocks {
 
                 VECTOR_ENTITYDIR = register(SpellBlock.Builder.create("vector_entitydir")
                         .inputs(SpellSignal.createUUID(null).named("entity"))
-                        .outputs(SpellSignal.createVector(null).named("direction"))
+                        .outputs(SpellSignal.createVector().named("direction"))
                         .parameters()
                         .func((component, vars) -> {
                             SpellBlockResult res = new SpellBlockResult();
@@ -741,7 +796,7 @@ public class SpellBlocks {
                         .category(cat).build());
 
                 ENTITY_NEAREST = register(SpellBlock.Builder.create("entity_nearest")
-                        .inputs(SpellSignal.createVector(null).named("position"))
+                        .inputs(SpellSignal.createVector().named("position"))
                         .outputs(SpellSignal.createUUID(null).named("entity"))
                         .parameters(SpellBlock.Parameter.createNumber("range",5,0,20))
                         .func((comp, vars) -> {
@@ -819,7 +874,7 @@ public class SpellBlocks {
             // vector math
             {
                 VECTOR_SPLIT = register(SpellBlock.Builder.create("vector_split")
-                        .inputs(SpellSignal.createVector(null).named("vector"))
+                        .inputs(SpellSignal.createVector().named("vector"))
                         .outputs(SpellSignal.createNumber(0).named("x"),
                                 SpellSignal.createNumber(0).named("y"),
                                 SpellSignal.createNumber(0).named("z"))
@@ -848,7 +903,7 @@ public class SpellBlocks {
                         .inputs(SpellSignal.createNumber(0).named("x"),
                                 SpellSignal.createNumber(0).named("y"),
                                 SpellSignal.createNumber(0).named("z"))
-                        .outputs(SpellSignal.createVector(null).named("vec"))
+                        .outputs(SpellSignal.createVector().named("vec"))
                         .parameters()
                         .func((component, vars) -> {
                             SpellBlockResult res = new SpellBlockResult();
@@ -1081,8 +1136,8 @@ public class SpellBlocks {
                     .category(cat).build());
 
             FIREBALL = register(SpellBlock.Builder.create("fireball")
-                    .inputs(SpellSignal.createVector(null).named("position"),
-                            SpellSignal.createVector(null).named("direction"),
+                    .inputs(SpellSignal.createVector().named("position"),
+                            SpellSignal.createVector().named("direction"),
                             SpellSignal.createNumber(0).named("speed"),
                             SpellSignal.createNumber(0).named("power"))
                     .outputs()
@@ -1125,7 +1180,7 @@ public class SpellBlocks {
                     .category(cat).build());
 
             LIGHTNING = register(SpellBlock.Builder.create("lightning")
-                    .inputs(SpellSignal.createVector(null).named("position"))
+                    .inputs(SpellSignal.createVector().named("position"))
                     .outputs()
                     .parameters()
                     .func((comp,vars) -> {
@@ -1159,7 +1214,7 @@ public class SpellBlocks {
             TELEPORT = register(SpellBlock.Builder.create("teleport")
                     .inputs(
                             SpellSignal.createUUID(null).named("entity"),
-                            SpellSignal.createVector(null).named("position")
+                            SpellSignal.createVector().named("position")
                     )
                     .outputs()
                     .parameters()
@@ -1251,7 +1306,7 @@ public class SpellBlocks {
             PUSH = register(SpellBlock.Builder.create("push")
                     .inputs(
                             SpellSignal.createUUID(null).named("entity"),
-                            SpellSignal.createVector(null).named("velocity")
+                            SpellSignal.createVector().named("velocity")
                     )
                     .outputs()
                     .parameters()
@@ -1358,7 +1413,7 @@ public class SpellBlocks {
 
             BREAK = register(SpellBlock.Builder.create("break")
                     .inputs(
-                            SpellSignal.createVector(null).named("position"),
+                            SpellSignal.createVector().named("position"),
                             SpellSignal.createBoolean(true).named("silk touch")
                     )
                     .outputs().parameters()
@@ -1506,7 +1561,7 @@ public class SpellBlocks {
             }
             DEGRADE_BLOCK = register(SpellBlock.Builder.create("degrade_block")
                     .inputs(
-                            SpellSignal.createVector(null).named("position")
+                            SpellSignal.createVector().named("position")
                     )
                     .outputs().parameters()
                     .func((comp,vars) -> {
@@ -2229,11 +2284,11 @@ public class SpellBlocks {
             }
 
             case Block:{
-                var blockPos = vars.getBlockPos("from");
                 var dirV = comp.context.casterBlock.getDirection().getVector();
                 Vec3d end = from.add(dirV.getX()*length,dirV.getY()*length,dirV.getZ()*length);
-                var state = comp.world().getBlockState(comp.context.casterBlock.getPos());
-                return comp.world().raycastBlock(from,end,blockPos, VoxelShapes.cuboid(Box.from(from)),state);
+
+                var ctx = new BlockStateRaycastContext(from,end,b->!b.isAir());
+                return comp.world().raycast(ctx);
             }
         }
 

@@ -69,7 +69,7 @@ public class SpellStoringItem extends Item {
     public void cast(ItemStack caster, ItemStack spellstorage, LivingEntity user, SpellBlockArgs args,SpellContext.SoundBehavior soundBehavior){
         SpellGrid grid = getOrCreateGrid(spellstorage);
         if(grid==null) return;
-        grid.run(caster,spellstorage,user,args, soundBehavior);
+        grid.run(caster,spellstorage,user,null,args, soundBehavior);
     }
 
     public float getSoulCostMultiplier(ItemStack stack) {

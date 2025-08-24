@@ -13,15 +13,13 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.joml.Vector2i;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlockEntity;
 import org.oxytocina.geomancy.effects.ModStatusEffects;
 import org.oxytocina.geomancy.items.SpellStoringItem;
 import org.oxytocina.geomancy.util.ManaUtil;
 import org.oxytocina.geomancy.util.Toolbox;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class SpellGrid {
@@ -69,17 +67,17 @@ public class SpellGrid {
         return context.referenceResult;
     }
 
-    public void run(ItemStack casterItem, ItemStack containerItem, LivingEntity casterEntity, SpellBlockArgs args, SpellContext.SoundBehavior soundBehavior){
+    public void run(ItemStack casterItem, ItemStack spellStorage, LivingEntity casterEntity, AutocasterBlockEntity blockEntity, SpellBlockArgs args, SpellContext.SoundBehavior soundBehavior){
         long startTime = System.nanoTime();
 
         float costMultiplier = soulCostMultiplier;
-        if(casterEntity.hasStatusEffect(ModStatusEffects.REGRETFUL))
+        if(casterEntity!=null&&casterEntity.hasStatusEffect(ModStatusEffects.REGRETFUL))
         {
             var amp = casterEntity.getStatusEffect(ModStatusEffects.REGRETFUL).getAmplifier();
             costMultiplier *= 1+(amp+1)*0.5f;
         }
 
-        SpellContext context = new SpellContext(this,casterEntity,null,casterItem,containerItem,0,costMultiplier,0,soundBehavior);
+        SpellContext context = new SpellContext(this,casterEntity,blockEntity,casterItem,spellStorage,0,costMultiplier,0,soundBehavior);
         context.refreshAvailableSoul();
         context.internalVars = args;
 
@@ -97,6 +95,7 @@ public class SpellGrid {
         catch(Exception ignored){
             Geomancy.logError("AAAAA!!!! Spells threw an exception! DEBUG ME!");
             Geomancy.logError(ignored.getMessage());
+            Geomancy.logError(Arrays.toString(ignored.getStackTrace()));
         }
 
         if(context.depthLimitReached && context.debugging){
@@ -104,7 +103,13 @@ public class SpellGrid {
         }
 
         if(context.soulConsumed > 0){
-            ManaUtil.syncMana((PlayerEntity) casterEntity);
+            switch(context.sourceType)
+            {
+                case Caster :
+                    ManaUtil.syncMana((PlayerEntity) casterEntity); break;
+                case Block:
+                    break;
+            }
         }
         SpellBlocks.playCastSound(context);
 

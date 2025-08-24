@@ -175,6 +175,9 @@ TODO EFFECT BLOCKS
 - time
 - weather
 - delegate entity
+- translate text
+- parse number
+- nbt manipulation
 
 autocaster
 - set block redstone level

@@ -19,9 +19,9 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import org.oxytocina.geomancy.client.screen.SpellSelectScreenHandler;
 import org.oxytocina.geomancy.items.*;
 import org.oxytocina.geomancy.networking.ModMessages;
+import org.oxytocina.geomancy.networking.packet.S2C.OpenSpellSelectScreenS2CPacket;
 import org.oxytocina.geomancy.registries.ModItemTags;
 import org.oxytocina.geomancy.spells.SpellBlockArgs;
 import org.oxytocina.geomancy.spells.SpellContext;
@@ -206,10 +206,14 @@ public class SoulCastingItem extends StorageItem implements IManaStoringItem, IS
         return Rarity.None;
     }
 
+    public boolean tempOpenStorageScreenOverride = false;
     @Override
     public @Nullable ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
         var stack = player.getStackInHand(player.getActiveHand());
         if(!(stack.getItem() instanceof StorageItem sci)) return null;
+
+        if(tempOpenStorageScreenOverride)
+            return super.createMenu(syncId,playerInventory,player);
 
         // if there are no spells installed, open the storage screen straight away
         if(stack.getItem() instanceof ISpellSelectorItem sps){
@@ -220,6 +224,13 @@ public class SoulCastingItem extends StorageItem implements IManaStoringItem, IS
         }
 
         // open spell selection screen
-        return new SpellSelectScreenHandler(syncId,playerInventory,stack);
+        if(player instanceof ServerPlayerEntity spe)
+            OpenSpellSelectScreenS2CPacket.send(spe,stack,playerInventory.getSlotWithStack(stack));
+        return null;
+    }
+
+    @Override
+    public void onSpellChanged(ItemStack stack, ClientPlayerEntity player, int spellIndex) {
+        displaySelectedSpell(stack,player,spellIndex);
     }
 }

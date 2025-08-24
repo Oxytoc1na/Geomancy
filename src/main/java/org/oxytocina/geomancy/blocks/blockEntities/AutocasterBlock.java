@@ -25,6 +25,7 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
@@ -69,7 +70,9 @@ public class AutocasterBlock extends BlockWithEntity implements BlockEntityProvi
         boolean receivingRedstone = world.isReceivingRedstonePower(pos) || world.isReceivingRedstonePower(pos.up());
         boolean isTriggered = (Boolean)state.get(TRIGGERED);
         if (receivingRedstone && !isTriggered) {
-            world.scheduleBlockTick(pos, this, SCHEDULED_TICK_DELAY);
+            if(world instanceof ServerWorld sw)
+                this.cast(sw, pos);
+            //world.scheduleBlockTick(pos, this, SCHEDULED_TICK_DELAY);
             world.setBlockState(pos, (BlockState)state.with(TRIGGERED, true), 4);
         } else if (!receivingRedstone && isTriggered) {
             world.setBlockState(pos, (BlockState)state.with(TRIGGERED, false), 4);
@@ -79,7 +82,7 @@ public class AutocasterBlock extends BlockWithEntity implements BlockEntityProvi
 
     @Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        this.cast(world, pos);
+        //this.cast(world, pos);
     }
 
     @Override
@@ -158,5 +161,11 @@ public class AutocasterBlock extends BlockWithEntity implements BlockEntityProvi
         FACING = FacingBlock.FACING;
         TRIGGERED = Properties.TRIGGERED;
         BEHAVIORS = (Map)Util.make(new Object2ObjectOpenHashMap(), (map) -> map.defaultReturnValue(new ItemDispenserBehavior()));
+    }
+
+    @Override
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        return checkType(type, ModBlockEntities.AUTOCASTER_BLOCK_ENTITY,
+                (world1, pos, state1, blockEntity) -> blockEntity.tick(world1,pos,state1));
     }
 }

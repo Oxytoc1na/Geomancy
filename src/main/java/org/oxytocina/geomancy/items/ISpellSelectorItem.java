@@ -1,5 +1,6 @@
 package org.oxytocina.geomancy.items;
 
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtElement;
 import org.oxytocina.geomancy.items.tools.IVariableStoringItem;
@@ -10,16 +11,23 @@ import java.util.Objects;
 
 public interface ISpellSelectorItem {
     default boolean setSelectedSpell(ItemStack stack, String spellName){
+        int index = getSpellIndexOfSpell(stack,spellName);
+        if(index==-1) return false;
+        setSelectedSpellIndex(stack,index);
+        return true;
+    }
+
+    default int getSpellIndexOfSpell(ItemStack stack, String spellName){
         var selectable = getCastableSpellItems(stack);
         for (int i = 0; i < selectable.size(); i++) {
             var spell = SpellStoringItem.readGrid(selectable.get(i));
             if(spell!=null&& Objects.equals(spell.name, spellName)){
                 setSelectedSpellIndex(stack,i);
-                return true;
+                return i;
             }
         }
 
-        return false;
+        return -1;
     }
 
     default ArrayList<ItemStack> getCastableSpellItems(ItemStack stack){
@@ -110,4 +118,5 @@ public interface ISpellSelectorItem {
     }
 
     void markDirty(ItemStack casterItem);
+    void onSpellChanged(ItemStack stack, ClientPlayerEntity player, int spellIndex);
 }

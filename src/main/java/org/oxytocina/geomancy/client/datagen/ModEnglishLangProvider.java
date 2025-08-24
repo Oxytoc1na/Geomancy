@@ -110,6 +110,10 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("constant_number","Constant Number","returns a configurable number");
             addSpell("constant_vector","Constant Vector","returns a configurable vector");
             addSpell("caster_slot","Caster Slot","returns the slot ID the caster item is in");
+            addSpell("blockpos_caster","Caster Block Pos.","returns the block position of the casting block");
+            addSpell("pos_caster","Caster Pos.","returns the position of the casting entity or block");
+            addSpell("eyepos_caster","Caster Eye Pos.","returns the eye position of the casting entity or block");
+            addSpell("dir_caster","Caster Dir.","returns the facing direction of the casting entity or block");
             // arithmetic
             addSpell("vector_entityspawn","Entity Spawn","returns the respawn point of the entity");
             addSpell("vector_entitypos","Entity Pos.","returns the position of the entity");

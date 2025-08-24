@@ -10,6 +10,7 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import org.joml.Vector3f;
 import org.oxytocina.geomancy.helpers.NbtHelper;
@@ -82,7 +83,8 @@ public class SpellSignal {
         return new SpellSignal(Type.UUID,"uuid",0,"",defaultValue,null,null);
     }
 
-    public static SpellSignal createVector() { return createVector(null);}
+    public static SpellSignal createVector() { return createVector((Vec3d)null);}
+    public static SpellSignal createVector(Vec3i vec) { return createVector(new Vec3d(vec.getX(), vec.getY(), vec.getZ()));}
     public static SpellSignal createVector(Vec3d defaultValue) {
         return new SpellSignal(Type.Vector,"vec",0,"",null,defaultValue,null);
     }
