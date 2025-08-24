@@ -4,7 +4,6 @@ import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketItem;
 import dev.emi.trinkets.api.TrinketsApi;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
@@ -39,7 +38,7 @@ import java.util.List;
 
 import static org.oxytocina.geomancy.items.tools.StorageItem.getInventoryStatic;
 
-public class CastingTrinketItem extends TrinketItem implements IStorageItem, ExtendedScreenHandlerFactory, IManaStoringItem, ICustomRarityItem, ICastingTrinket, ISpellSelector {
+public class CastingTrinketItem extends TrinketItem implements IStorageItem, ExtendedScreenHandlerFactory, IManaStoringItem, ICustomRarityItem, ICastingTrinket, ISpellSelectorItem {
 
     public int storageSize = StorageItemScreenHandler.STORAGE_DISPLAY_SLOTS;
     public final TagKey<Item> storableTag;
@@ -292,5 +291,10 @@ public class CastingTrinketItem extends TrinketItem implements IStorageItem, Ext
     @Override
     public void markDirty(ItemStack stack) {
         IStorageItem.super.markDirty(stack);
+    }
+
+    @Override
+    public void onSpellChanged(ItemStack stack, ClientPlayerEntity player, int spellIndex) {
+
     }
 }

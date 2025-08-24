@@ -1,0 +1,26 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "geomancy:block/autocaster_vertical",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "geomancy:block/autocaster",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "geomancy:block/autocaster"
+    },
+    "facing=south": {
+      "model": "geomancy:block/autocaster",
+      "y": 180
+    },
+    "facing=up": {
+      "model": "geomancy:block/autocaster_vertical"
+    },
+    "facing=west": {
+      "model": "geomancy:block/autocaster",
+      "y": 270
+    }
+  }
+}

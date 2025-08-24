@@ -51,6 +51,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.spellmaker.rotate",  "rotate");
             add("MODID.spellmaker.grid.name","Spell name");
             add("MODID.spellmaker.grid.lib","Library Spell");
+            add("MODID.spellmaker.grid.appearance","Menu Appearance");
+            add("MODID.spellmaker.grid.displaysas","Displays as");
             add("MODID.spellmaker.dir.ne",  "Northeast");
             add("MODID.spellmaker.dir.e",   "East");
             add("MODID.spellmaker.dir.se",  "Southeast");
@@ -108,6 +110,10 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("constant_number","Constant Number","returns a configurable number");
             addSpell("constant_vector","Constant Vector","returns a configurable vector");
             addSpell("caster_slot","Caster Slot","returns the slot ID the caster item is in");
+            addSpell("blockpos_caster","Caster Block Pos.","returns the block position of the casting block");
+            addSpell("pos_caster","Caster Pos.","returns the position of the casting entity or block");
+            addSpell("eyepos_caster","Caster Eye Pos.","returns the eye position of the casting entity or block");
+            addSpell("dir_caster","Caster Dir.","returns the facing direction of the casting entity or block");
             // arithmetic
             addSpell("vector_entityspawn","Entity Spawn","returns the respawn point of the entity");
             addSpell("vector_entitypos","Entity Pos.","returns the position of the entity");
@@ -137,7 +143,9 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("text_blockid","Block ID","returns the Identifier of the block at the given position");
             addSpell("entity_has_effect","Has Effect","returns if an entity has a specified status effect");
             addSpell("entity_health","Entity Health","returns the health, max health, air, max air, and absorption of an entity");
-            addSpell("random","Random Integer","returns a random integer between 0 and the argument");
+            addSpell("random_integer","Random Integer","returns a random integer between 0 and the argument");
+            addSpell("parse","Parse","attempt to turn a text into a signal of a different type");
+            addSpell("to_text","To Text","returns the text representation of a signal");
             // effectors
             addSpell("print","Print","outputs a value to the casters chat");
             addSpell("fireball","Fireball","summons a fireball");
@@ -152,6 +160,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("set_spell","Set Spell","sets the selected spell of the caster item");
             addSpell("degrade_block","Degrade Block","degrades a targeted block into something else");
             addSpell("replace","Replace","a combination of the break and place components");
+            addSpell("ignite","Ignite","heats a given block position up");
+            addSpell("play_sound","Play Sound","plays a sound in the world");
             // reference
             addSpell("action","Action","calls another installed spell");
             addSpell("provider","Provider","automatically returns the result of a spell");
@@ -286,6 +296,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("item.MODID.casting_chestplate"     , "Soulcasting Chestplate");
             add("item.MODID.casting_helmet"         , "Soulcasting Helmet");
 
+            add("MODID.soul_storage.tooltip","Soul: %1$s/%2$s (%3$s%%)");
+
             add("item.MODID.tourmaline" , "Tourmaline");
             add("item.MODID.orthoclase" , "Orthoclase");
             add("item.MODID.peridot"    , "Peridot");
@@ -341,6 +353,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("tooltip.geomancy.jewelry.nogems"   ,"No Gems");
             add("tooltip.geomancy.jewelry.pendant1" ,"Empowers other worn gems of the");
             add("tooltip.geomancy.jewelry.pendant2" ,"same type as slotted in this item");
+            add("item.MODID.caster_core","Caster Core");
 
             add("tooltip.geomancy.jewelry.gemeffect.diamond"        ,"provides %1$s armor");
             add("tooltip.geomancy.jewelry.gemeffect.lapis_lazuli"   ,"increases XP drops by %1$s%%");
@@ -378,6 +391,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.spellcomponent.empty",               "empty");
             add("MODID.spellstorage.empty",                 "empty");
             add("MODID.spellstorage.unnamed",               "unnamed");
+            add("MODID.spellstorage.open_storage",          "Open Storage");
 
             add("MODID.varstorage.storage", "Stored Variables: ");
             add("MODID.varstorage.prefix",  "Accessor Prefix: ");
@@ -413,6 +427,9 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
             add("block.MODID.spellmaker_block"            , "Spellmaker");
             add("container.MODID.spellmaker_block"        , "Spellmaker");
+
+            add("block.MODID.autocaster"            , "Autocaster");
+            add("MODID.autocaster"        , "Autocaster");
 
             addOres("octangulite_ore", "Octangulite Ore");
             add("block.MODID.raw_octangulite_block"     , "Octangulite Scrap");

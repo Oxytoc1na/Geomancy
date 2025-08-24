@@ -21,6 +21,7 @@ public class ModScreenHandlers {
             Registry.register(Registries.SCREEN_HANDLER, new Identifier(Geomancy.MOD_ID, "storage_item.json"),
                     new ExtendedScreenHandlerType<>(StorageItemScreenHandler::new));
 
+
     // TODO: clean up this mess
     public static void register() {
         SmitheryBlockEntity.SetScreenHandler(SmitheryScreenHandler::new);

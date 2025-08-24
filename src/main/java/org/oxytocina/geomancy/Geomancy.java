@@ -50,6 +50,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 public class Geomancy implements ModInitializer {
 
@@ -111,6 +112,7 @@ public class Geomancy implements ModInitializer {
         // Proceed with mild caution.
 
         LOGGER.info("Loading Geomancy");
+        long startTime = System.nanoTime();
 
         try {
 
@@ -159,7 +161,9 @@ public class Geomancy implements ModInitializer {
             //Log.debug(LogCategory.ENTRYPOINT, "Geomancy");
             throw t;
         }
-        LOGGER.info("Finished Loading Geomancy");
+
+        long msTaken = TimeUnit.NANOSECONDS.toMillis(System.nanoTime()-startTime);
+        LOGGER.info("Finished Loading Geomancy. ms:"+msTaken);
 
         finishedInitialization=true;
         initializing = false;

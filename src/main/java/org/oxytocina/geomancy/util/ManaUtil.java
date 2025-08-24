@@ -8,6 +8,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -20,14 +21,12 @@ import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import org.oxytocina.geomancy.Geomancy;
-import org.oxytocina.geomancy.blocks.ILeadPoisoningBlock;
-import org.oxytocina.geomancy.effects.ModStatusEffect;
+import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlockEntity;
 import org.oxytocina.geomancy.effects.ModStatusEffects;
 import org.oxytocina.geomancy.entity.ManaStoringItemData;
 import org.oxytocina.geomancy.entity.PlayerData;
 import org.oxytocina.geomancy.items.IManaStoringItem;
 import org.oxytocina.geomancy.items.jewelry.IJewelryItem;
-import org.oxytocina.geomancy.items.jewelry.JewelryItem;
 import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.registries.ModBiomeTags;
 import org.oxytocina.geomancy.registries.ModBlockTags;
@@ -68,6 +67,15 @@ public class ManaUtil {
         return PlayerData.from(player).mana;
     }
 
+    public static float getMana(World world, Inventory inv){
+        var items = getAllSoulStoringItems(inv);
+        float res = 0;
+        for (ItemStack s : items) {
+            res += ((IManaStoringItem) s.getItem()).getMana(world, s);
+        }
+        return res;
+    }
+
     public static float getMaxMana(PlayerEntity player){
         return PlayerData.from(player).maxMana;
     }
@@ -101,7 +109,7 @@ public class ManaUtil {
     private static int cacheClearTimer = 0;
     public static void tick(MinecraftServer server){
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-            ManaUtil.tickMana(player);
+            ManaUtil.tickPlayerMana(player);
         }
 
         // recalc mana
@@ -132,12 +140,15 @@ public class ManaUtil {
 
     public static void syncItemMana(World world, ItemStack stack){
         if(!(world instanceof ServerWorld svw)) return;
+        if(!(stack.getItem() instanceof IManaStoringItem)) return;
 
+        IManaStoringItem.init(world,stack);
         ManaStoringItemData data = ManaStoringItemData.from(world,stack, IManaStoringItem.getUUID(stack));
 
         PacketByteBuf buf = PacketByteBufs.create();
         data.writeBuf(buf);
 
+        // TODO: dont send unneeded packets!!
         ModMessages.sendToAllClients(svw.getServer(),ModMessages.ITEM_MANA_SYNC,buf);
 
     }
@@ -207,19 +218,19 @@ public class ManaUtil {
         return res;
     }
 
-    private static boolean tickMana(ServerPlayerEntity player){
+    private static boolean tickPlayerMana(ServerPlayerEntity player){
         // channeling souls
-        float ambientMana = getAmbientSoulsPerBlock(player);
-        float playerRegenSpeed = getRegenSpeedMultiplier(player);
+        var storers = getAllSoulStoringItems(player);
         boolean changed = false;
-
-        var items = getAllSoulStoringItems(player);
-        for(var i : items){
-            changed=tickMana(i,player,ambientMana,playerRegenSpeed)||changed;
+        // trinkets
+        for (var stack : storers){
+            changed = tickStack(player.getWorld(),stack,player.getBlockPos()) || changed;
         }
 
-        if(changed) queueRecalculateMana(player);
+        if(!changed) return changed;
 
+        // calculate available mana
+        queueRecalculateMana(player);
         return changed;
     }
 
@@ -250,16 +261,27 @@ public class ManaUtil {
         return res;
     }
 
-    private static boolean tickMana(ItemStack soulStorage, ServerPlayerEntity player, float ambientMana, float regenSpeed){
-        boolean changed = false;
+    public static List<ItemStack> getAllSoulStoringItems(Inventory inv){
+        List<ItemStack> res = new ArrayList<>();
+        if(inv!=null){
+            for(int i = 0; i < inv.size();i++)
+            {
+                var s = inv.getStack(i);
+                if(canStoreMana(s)) res.add(s);
+            }
+        }
+        return res;
+    }
 
-        var data = IManaStoringItem.getData(player.getWorld(),soulStorage);
-        var item = (IManaStoringItem) soulStorage.getItem();
+    private static boolean tickManaRegen(ItemStack stack, World world,float ambientMana, float regenSpeed, PlayerEntity player){
+        var changed = false;
+        var item = (IManaStoringItem) stack.getItem();
+        var data = IManaStoringItem.getData(world,stack);
 
         // per tick
         float actualRegenSpeed = 0.0005f *
                 (regenSpeed
-                        +item.getRechargeSpeedMultiplier(player.getWorld(),soulStorage,player))
+                        +item.getRechargeSpeedMultiplier(world,stack,player))
                 * ambientMana;
 
         // make regen less effective the fuller the item is
@@ -281,7 +303,7 @@ public class ManaUtil {
         }
 
         if(changed)
-            syncItemMana(player.getWorld(),soulStorage);
+            syncItemMana(world,stack);
         return changed;
     }
 
@@ -291,11 +313,27 @@ public class ManaUtil {
         if(!(entity instanceof ServerPlayerEntity player)) return true;
 
         if(getMana(player) < amount) return false;
-
         var storers = getAllSoulStoringItems(player);
+        removeMana(storers,amount,player.getWorld());
+        recalculateMana(player,false);
+
+        return true;
+    }
+
+    public static boolean tryConsumeMana(AutocasterBlockEntity casterBlock, float amount) {
+        if(getMana(casterBlock.getWorld(),casterBlock) < amount) return false;
+        var storers = getAllSoulStoringItems(casterBlock);
+        removeMana(storers,amount,casterBlock.getWorld());
+
+        for(var storer:storers)
+            syncItemMana(casterBlock.getWorld(),storer);
+
+        return true;
+    }
+
+    private static float removeMana(List<ItemStack> storers, float amount, World world){
         float left = amount;
         boolean changed=true;
-        World world = player.getWorld();
         while(left>0){
             if(!changed) break;
             changed=false;
@@ -312,9 +350,37 @@ public class ManaUtil {
                 changed=true;
             }
         }
+        return left;
+    }
 
-        recalculateMana(player,false);
+    public static float getMaxMana(World world, AutocasterBlockEntity casterBlock) {
+        float res = 0;
+        var storers = getAllSoulStoringItems(casterBlock);
+        for(var storer:storers)
+        {
+            res += ((IManaStoringItem) storer.getItem()).getCapacity(world,storer);
+        }
+        return res;
+    }
 
-        return true;
+    public static boolean tickStorage(World world, Inventory inv,BlockPos pos) {
+        boolean res = false;
+        for (int i = 0; i < inv.size(); i++) {
+            var stack = inv.getStack(i);
+            res = tickStack(world,stack,pos) || res;
+        }
+        return res;
+    }
+
+    private static boolean tickStack(World world, ItemStack stack,BlockPos pos) {
+        if(!canStoreMana(stack)) return false;
+
+        return tickManaRegen(stack,world,getAmbientSoulsPerBlock(world,pos),1,null);
+    }
+
+    public static void syncItemMana(ServerPlayerEntity player) {
+        var items = getAllSoulStoringItems(player);
+        for (var stack : items)
+            syncItemMana(player.getWorld(),stack);
     }
 }

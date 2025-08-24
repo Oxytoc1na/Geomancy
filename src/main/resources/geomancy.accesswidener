@@ -42,3 +42,5 @@ accessible field net/minecraft/screen/ScreenHandler revision I
 
 accessible field net/minecraft/block/entity/AbstractFurnaceBlockEntity burnTime I
 accessible field net/minecraft/block/entity/AbstractFurnaceBlockEntity fuelTime I
+
+accessible method net/minecraft/block/Block spawnBreakParticles (Lnet/minecraft/world/World;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;)V

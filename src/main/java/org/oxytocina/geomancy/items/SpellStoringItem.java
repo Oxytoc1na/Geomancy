@@ -17,6 +17,7 @@ import org.joml.Vector2i;
 import org.oxytocina.geomancy.enchantments.ModEnchantments;
 import org.oxytocina.geomancy.spells.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -68,7 +69,7 @@ public class SpellStoringItem extends Item {
     public void cast(ItemStack caster, ItemStack spellstorage, LivingEntity user, SpellBlockArgs args,SpellContext.SoundBehavior soundBehavior){
         SpellGrid grid = getOrCreateGrid(spellstorage);
         if(grid==null) return;
-        grid.run(caster,spellstorage,user,args, soundBehavior);
+        grid.run(caster,spellstorage,user,null,args, soundBehavior);
     }
 
     public float getSoulCostMultiplier(ItemStack stack) {
@@ -103,9 +104,34 @@ public class SpellStoringItem extends Item {
             tooltip.add(Text.translatable("geomancy.spellmaker.grid.lib").formatted(Formatting.DARK_GRAY));
         }
 
-        for(var comp : grid.components.values()){
-            tooltip.add(Text.translatable("geomancy.spellcomponent."+comp.function.identifier.getPath()).formatted(Formatting.GRAY));
+        if(grid.displayStack!=null){
+            tooltip.add(Text.translatable("geomancy.spellmaker.grid.displaysas").append(" ").append(grid.displayStack.getName().getString()).formatted(Formatting.DARK_GRAY));
         }
+
+        int i = 0;
+        List<Text> texts = new ArrayList<>();
+        // list effectors first
+        for(var comp : grid.components.values()){
+            if(i>=8){
+                tooltip.add(Text.translatable("geomancy.storage_item.more",grid.components.size()-8).formatted(Formatting.GRAY));
+                break;
+            }
+
+            if(comp.function.category != SpellBlock.Category.Effector) continue;
+            texts.add(Text.translatable("geomancy.spellcomponent."+comp.function.identifier.getPath()).formatted(Formatting.GRAY));
+            i++;
+        }
+        // list the rest after
+        if(i<8)
+            for(var comp : grid.components.values()){
+                if(i>=8){
+                    tooltip.add(Text.translatable("geomancy.storage_item.more",grid.components.size()-8).formatted(Formatting.GRAY));
+                    break;
+                }
+                if(comp.function.category == SpellBlock.Category.Effector) continue;
+                tooltip.add(Text.translatable("geomancy.spellcomponent."+comp.function.identifier.getPath()).formatted(Formatting.GRAY));
+                i++;
+            }
     }
 
 }

@@ -621,6 +621,19 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
             RenderSystem.enableDepthTest();
         }
 
+        // appearance slot
+        if(handler.hasGrid() && !inspecting){
+            final int infoPosX = x+SpellmakerScreen.bgWidth+10;
+
+            RenderSystem.setShader(GameRenderer::getPositionTexProgram);
+            RenderSystem.setShaderColor(1,1,1,1);
+            RenderSystem.setShaderTexture(0, SpellSelectScreen.SLOT_BG);
+
+            context.drawTexture(SpellSelectScreen.SLOT_BG,infoPosX,y+SpellmakerScreenHandler.appearanceSlotYOffset,0,0,18,18,18,18);
+            if (focusedSlot==handler.appearanceSlot) {
+                drawSlotHighlight(context, infoPosX+1,y+SpellmakerScreenHandler.appearanceSlotYOffset+1, 0);
+            }
+        }
 
         drawMouseoverTooltip(context,mouseX,mouseY);
         handler.render(context, mouseX, mouseY, delta);

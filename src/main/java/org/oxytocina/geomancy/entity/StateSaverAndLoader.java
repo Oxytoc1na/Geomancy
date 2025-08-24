@@ -113,12 +113,10 @@ public class StateSaverAndLoader extends PersistentState {
 
         // Either get the player by the uuid, or we don't have data for them yet, make a new player state
         ManaStoringItemData state = serverState.manaStoringItemData.computeIfAbsent(uuid, (uuid1 -> new ManaStoringItemData(uuid1,stack)));
-
         return state;
     }
 
     public static void setManaStoringItemData(World world,UUID uuid, ManaStoringItemData data) {
-
         if(!(world instanceof ServerWorld serverWorld)) return;
 
         StateSaverAndLoader serverState = getServerState(serverWorld);

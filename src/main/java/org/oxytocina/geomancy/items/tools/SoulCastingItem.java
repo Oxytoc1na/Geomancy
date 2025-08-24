@@ -2,16 +2,15 @@ package org.oxytocina.geomancy.items.tools;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.registry.tag.TagKey;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -22,17 +21,15 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.items.*;
 import org.oxytocina.geomancy.networking.ModMessages;
+import org.oxytocina.geomancy.networking.packet.S2C.OpenSpellSelectScreenS2CPacket;
 import org.oxytocina.geomancy.registries.ModItemTags;
 import org.oxytocina.geomancy.spells.SpellBlockArgs;
 import org.oxytocina.geomancy.spells.SpellContext;
-import org.oxytocina.geomancy.spells.SpellGrid;
 import org.oxytocina.geomancy.util.Toolbox;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-public class SoulCastingItem extends StorageItem implements IManaStoringItem, IScrollListenerItem, ICustomRarityItem, ISpellSelector {
+public class SoulCastingItem extends StorageItem implements IManaStoringItem, IScrollListenerItem, ICustomRarityItem, ISpellSelectorItem {
 
     public SoulCastingItem(Settings settings, int storageSize) {
         super(settings, storageSize,ModItemTags.FITS_IN_CASTERS,false);
@@ -49,7 +46,7 @@ public class SoulCastingItem extends StorageItem implements IManaStoringItem, IS
 
             if(user.isSneaking())
             {
-                // open spell storing interface
+                // open spell selection
                 if(user instanceof ServerPlayerEntity sp){
                     var stack = user.getStackInHand(hand);
                     sp.openHandledScreen((SoulCastingItem) stack.getItem());
@@ -190,7 +187,7 @@ public class SoulCastingItem extends StorageItem implements IManaStoringItem, IS
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-        if(selected && entity instanceof PlayerEntity player && player.isSneaking())
+        if(selected && entity instanceof ClientPlayerEntity player && player.isSneaking())
             displaySelectedSpell(stack,player,getSelectedSpellIndex(stack));
     }
 
@@ -207,5 +204,33 @@ public class SoulCastingItem extends StorageItem implements IManaStoringItem, IS
     @Override
     public Rarity getRarity() {
         return Rarity.None;
+    }
+
+    public boolean tempOpenStorageScreenOverride = false;
+    @Override
+    public @Nullable ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+        var stack = player.getStackInHand(player.getActiveHand());
+        if(!(stack.getItem() instanceof StorageItem sci)) return null;
+
+        if(tempOpenStorageScreenOverride)
+            return super.createMenu(syncId,playerInventory,player);
+
+        // if there are no spells installed, open the storage screen straight away
+        if(stack.getItem() instanceof ISpellSelectorItem sps){
+            var castables = sps.getCastableSpellItems(stack);
+            if(castables.isEmpty()){
+                return super.createMenu(syncId,playerInventory,player);
+            }
+        }
+
+        // open spell selection screen
+        if(player instanceof ServerPlayerEntity spe)
+            OpenSpellSelectScreenS2CPacket.send(spe,stack,playerInventory.getSlotWithStack(stack));
+        return null;
+    }
+
+    @Override
+    public void onSpellChanged(ItemStack stack, ClientPlayerEntity player, int spellIndex) {
+        displaySelectedSpell(stack,player,spellIndex);
     }
 }

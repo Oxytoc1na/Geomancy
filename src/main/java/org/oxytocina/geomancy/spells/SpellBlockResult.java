@@ -1,6 +1,8 @@
 package org.oxytocina.geomancy.spells;
 
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,6 +57,14 @@ public class SpellBlockResult {
 
     public SpellBlockResult add(String name, Vec3d value){
         add(SpellSignal.createVector(value).named(name)); return this;
+    }
+
+    public SpellBlockResult add(String name, Vec3i value){
+        add(SpellSignal.createVector(value).named(name)); return this;
+    }
+
+    public SpellBlockResult add(String name, BlockPos value){
+        add(SpellSignal.createVector(value.toCenterPos()).named(name)); return this;
     }
 
     public SpellBlockResult add(String name, List<SpellSignal> value) { add(SpellSignal.createList(value).named(name)); return this; }

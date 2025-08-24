@@ -1,16 +1,4 @@
 {
-  "minecraft:recipes/combat/leather_helmet": {
-    "criteria": {
-      "has_leather": "2025-06-23 17:52:24 +0200"
-    },
-    "done": true
-  },
-  "minecraft:recipes/combat/leather_leggings": {
-    "criteria": {
-      "has_leather": "2025-06-23 17:52:24 +0200"
-    },
-    "done": true
-  },
   "minecraft:story/obtain_armor": {
     "criteria": {
       "iron_chestplate": "2025-06-23 17:51:56 +0200"
@@ -23,33 +11,9 @@
     },
     "done": true
   },
-  "geomancy:recipes/misc/mithril_ingot_decompress_to_mithril_nugget": {
-    "criteria": {
-      "has_mithril_ingot": "2025-06-23 17:53:17 +0200"
-    },
-    "done": true
-  },
   "geomancy:recipes/misc/smithing_artifact_of_iron": {
     "criteria": {
       "default_conditions": "2025-06-23 17:51:56 +0200"
-    },
-    "done": true
-  },
-  "geomancy:recipes/misc/smithing_empty_artifact": {
-    "criteria": {
-      "default_conditions": "2025-06-23 17:53:17 +0200"
-    },
-    "done": true
-  },
-  "minecraft:recipes/decorations/item_frame": {
-    "criteria": {
-      "has_leather": "2025-06-23 17:52:24 +0200"
-    },
-    "done": true
-  },
-  "minecraft:recipes/combat/leather_chestplate": {
-    "criteria": {
-      "has_leather": "2025-06-23 17:52:24 +0200"
     },
     "done": true
   },
@@ -65,12 +29,6 @@
     },
     "done": true
   },
-  "geomancy:recipes/misc/mithril_ingot_compress_to_mithril_block": {
-    "criteria": {
-      "has_mithril_ingot": "2025-06-23 17:53:17 +0200"
-    },
-    "done": true
-  },
   "minecraft:recipes/decorations/chest": {
     "criteria": {
       "has_lots_of_items": "2025-06-23 17:51:56 +0200"
@@ -80,6 +38,36 @@
   "minecraft:recipes/misc/iron_nugget_from_blasting": {
     "criteria": {
       "has_iron_chestplate": "2025-06-23 17:51:56 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/anvil": {
+    "criteria": {
+      "has_iron_block": "2025-06-23 17:51:56 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/leather_helmet": {
+    "criteria": {
+      "has_leather": "2025-06-23 17:52:24 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/leather_leggings": {
+    "criteria": {
+      "has_leather": "2025-06-23 17:52:24 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/item_frame": {
+    "criteria": {
+      "has_leather": "2025-06-23 17:52:24 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/combat/leather_chestplate": {
+    "criteria": {
+      "has_leather": "2025-06-23 17:52:24 +0200"
     },
     "done": true
   },
@@ -95,9 +83,51 @@
     },
     "done": true
   },
-  "minecraft:recipes/decorations/anvil": {
+  "geomancy:recipes/misc/mithril_ingot_decompress_to_mithril_nugget": {
     "criteria": {
-      "has_iron_block": "2025-06-23 17:51:56 +0200"
+      "has_mithril_ingot": "2025-06-23 17:53:17 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_empty_artifact": {
+    "criteria": {
+      "default_conditions": "2025-06-23 17:53:17 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/mithril_ingot_compress_to_mithril_block": {
+    "criteria": {
+      "has_mithril_ingot": "2025-06-23 17:53:17 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/jewelry_octangulite_ring": {
+    "criteria": {
+      "has_ingredient": "2025-08-23 11:03:19 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/smoker": {
+    "criteria": {
+      "has_furnace": "2025-08-23 11:03:19 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/food/cooked_porkchop_from_campfire_cooking": {
+    "criteria": {
+      "has_porkchop": "2025-08-23 11:03:19 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/food/cooked_porkchop": {
+    "criteria": {
+      "has_porkchop": "2025-08-23 11:03:19 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/food/cooked_porkchop_from_smoking": {
+    "criteria": {
+      "has_porkchop": "2025-08-23 11:03:19 +0200"
     },
     "done": true
   },

@@ -4,16 +4,21 @@ import dev.emi.trinkets.api.SlotReference;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.items.ICustomRarityItem;
 import org.oxytocina.geomancy.items.IMaddeningItem;
 import org.oxytocina.geomancy.items.IManaStoringItem;
 import org.oxytocina.geomancy.util.MadnessUtil;
 import org.oxytocina.geomancy.util.ManaUtil;
+
+import java.util.List;
 
 public class OctanguliteJewelryItem extends JewelryItem implements IManaStoringItem, IMaddeningItem, ICustomRarityItem {
 
@@ -109,5 +114,17 @@ public class OctanguliteJewelryItem extends JewelryItem implements IManaStoringI
     @Override
     public Rarity getRarity() {
         return Rarity.Octangulite;
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> list, TooltipContext context) {
+        super.appendTooltip(stack, world, list, context);
+        IManaStoringItem.super.addManaTooltip(world,stack,list);
+    }
+
+    @Override
+    public void onCraft(ItemStack stack, World world, PlayerEntity player) {
+        super.onCraft(stack, world, player);
+        IManaStoringItem.init(world,stack);
     }
 }

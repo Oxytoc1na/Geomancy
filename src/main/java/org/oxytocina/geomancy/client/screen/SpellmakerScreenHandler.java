@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.*;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.util.math.MatrixStack;
@@ -26,6 +27,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.MathHelper;
 import org.joml.Matrix4f;
@@ -35,6 +37,7 @@ import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.blockEntities.SpellmakerBlockEntity;
 import org.oxytocina.geomancy.client.GeomancyClient;
 import org.oxytocina.geomancy.client.screen.slots.SpellComponentSelectionSlot;
+import org.oxytocina.geomancy.client.screen.slots.SpellmakerAppearanceSlot;
 import org.oxytocina.geomancy.client.screen.slots.SpellmakerHotbarSlot;
 import org.oxytocina.geomancy.client.screen.slots.TagFilterSlot;
 import org.oxytocina.geomancy.inventories.ImplementedInventory;
@@ -46,6 +49,7 @@ import org.oxytocina.geomancy.sound.ModSoundEvents;
 import org.oxytocina.geomancy.spells.SpellBlock;
 import org.oxytocina.geomancy.spells.SpellComponent;
 import org.oxytocina.geomancy.spells.SpellGrid;
+import org.oxytocina.geomancy.util.DrawHelper;
 import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.ArrayList;
@@ -60,6 +64,8 @@ public class SpellmakerScreenHandler extends ScreenHandler {
     private final PropertyDelegate propertyDelegate;
     public final SpellmakerBlockEntity blockEntity;
     public final PlayerEntity player;
+    public SpellmakerAppearanceSlot appearanceSlot;
+    private Inventory appearanceInventory;
 
     public List<SpellComponentSelectionSlot> availableComponentSlots;
 
@@ -122,6 +128,10 @@ public class SpellmakerScreenHandler extends ScreenHandler {
         // 10-(10+14) // NEW_COMPONENTS_SLOT_OFFSET
         availableComponentSlots = addInventory(availableComponents,0,NEW_COMPONENTS_SLOT_COUNT,NEW_COMPONENTS_WIDTH,NEW_COMPONENTS_X,NEW_COMPONENTS_Y);
 
+        // appearance
+        appearanceInventory = ImplementedInventory.of(DefaultedList.ofSize(1,ItemStack.EMPTY));
+        appearanceSlot = (SpellmakerAppearanceSlot)addSlot(new SpellmakerAppearanceSlot(appearanceInventory,0,SpellmakerScreen.bgWidth+10+1,appearanceSlotYOffset+1,this));
+
         addProperties(arrayPropertyDelegate);
 
         addListener(new ScreenHandlerListener() {
@@ -164,6 +174,8 @@ public class SpellmakerScreenHandler extends ScreenHandler {
             selectedComponentPosition=null;
             selectedComponentChanged();
         }
+
+        updateAppearanceSlot();
     }
 
     public void updateAvailableComponents(){
@@ -528,6 +540,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
     public static final int parametersYOffset = 10;
     public static final int parameterEditsYOffset = 15;
     public static final int gridPropXOffset = -100;
+    public static final int appearanceSlotYOffset = 70;
 
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         int bgPosX = getBgPosX();
@@ -611,7 +624,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
                 var bgTexture = component.getHexBackTexture();
                 RenderSystem.setShaderColor(1,1,1,1);
 
-                drawTexture(context.getMatrices(),bgTexture,
+                DrawHelper.drawTexture(context.getMatrices(),bgTexture,
                         drawPositions.get(i).x,
                         drawPositions.get(i).y,
                         scaledHexWidth,
@@ -624,7 +637,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
                         hexBGTextureSize
                 );
 
-                drawTexture(context.getMatrices(),fgTexture,
+                DrawHelper.drawTexture(context.getMatrices(),fgTexture,
                         drawPositions.get(i).x,
                         drawPositions.get(i).y,
                         scaledHexWidth,
@@ -642,7 +655,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
                     var tex = conf.getTexture();
                     if(tex!=null){
                         conf.setShaderColor();
-                        drawTexture(context.getMatrices(),
+                        DrawHelper.drawTexture(context.getMatrices(),
                                 tex,
                                 drawPositions.get(i).x,
                                 drawPositions.get(i).y,
@@ -668,7 +681,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
                     var bgTexture = component.getHexBackTexture();
                     RenderSystem.setShaderColor(1,1,1,1);
 
-                    drawTexture(context.getMatrices(),bgTexture,
+                    DrawHelper.drawTexture(context.getMatrices(),bgTexture,
                             drawPositions.get(i).x,
                             drawPositions.get(i).y,
                             scaledHexWidth,
@@ -681,7 +694,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
                             hexBGTextureSize
                     );
 
-                    drawTexture(context.getMatrices(),fgTexture,
+                    DrawHelper.drawTexture(context.getMatrices(),fgTexture,
                             drawPositions.get(i).x,
                             drawPositions.get(i).y,
                             scaledHexWidth,
@@ -725,7 +738,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
                         RenderSystem.setShaderColor(0.5f,0.5f,0.5f,1);
                     }
 
-                    drawTexture(context.getMatrices(),hexBGTexture,
+                    DrawHelper.drawTexture(context.getMatrices(),hexBGTexture,
                             drawPositions.get(i).x,
                             drawPositions.get(i).y,
                             scaledHexWidth,
@@ -872,7 +885,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
                 {
                     final int centerPreviewPosX = infoPosX + previewWidth/2;
                     final int centerPreviewPosY = infoPosY + previewHeight/2;
-                    drawLine(context,dp.x,dp.y,centerPreviewPosX,centerPreviewPosY,0.7f + 0.2f*thicknessMod,Toolbox.colorFromRGBA(0.8f,1,1,0.5f+0.3f*thicknessMod));
+                    DrawHelper.drawLine(context,dp.x,dp.y,centerPreviewPosX,centerPreviewPosY,0.7f + 0.2f*thicknessMod,Toolbox.colorFromRGBA(0.8f,1,1,0.5f+0.3f*thicknessMod));
                 }
             }
 
@@ -944,7 +957,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
                 final float endY = infoPosY+(i+0.5f)*spacePerSideConfigButtons;
 
                 if(screen.hoveredOverSideConfig(i))
-                    drawLine(context,startX,startY,endX,endY,0.5f + 0.2f*thicknessMod,Toolbox.colorFromRGBA(0.8f,1,1,0.5f+0.3f*thicknessMod));
+                    DrawHelper.drawLine(context,startX,startY,endX,endY,0.5f + 0.2f*thicknessMod,Toolbox.colorFromRGBA(0.8f,1,1,0.5f+0.3f*thicknessMod));
 
             }
 
@@ -997,61 +1010,13 @@ public class SpellmakerScreenHandler extends ScreenHandler {
             RenderSystem.setShaderColor(1,1,1,1);
             context.drawText(MinecraftClient.getInstance().textRenderer, Text.translatable("geomancy.spellmaker.grid.name"),infoPosX,infoPosY,0xFFFFFFFF,true);
 
+            // appearance
+            context.drawText(MinecraftClient.getInstance().textRenderer, Text.translatable("geomancy.spellmaker.grid.appearance"),infoPosX+25,infoPosY-10+appearanceSlotYOffset+(18-10)/2,0xFFFFFFFF,true);
+
         }
 
         RenderSystem.setShaderColor(1,1,1,1);
 
-    }
-
-    void drawLine(DrawContext context, float x1, float y1, float x2, float y2, float thickness, int color) {
-        Vector2f pos1 = new Vector2f(x1,y1);
-        Vector2f pos2 = new Vector2f(x2,y2);
-        Vector2f direction = new Vector2f(pos2.x-pos1.x,pos2.y-pos1.y).normalize();
-        Vector2f negDir = new Vector2f(direction).negate();
-        Vector2f dirPep = new Vector2f(direction).perpendicular();
-
-        Vector2f v1 = new Vector2f(pos1).add(new Vector2f(negDir).mul(thickness)).add(new Vector2f(dirPep).mul(thickness));
-        Vector2f v2 = new Vector2f(pos1).add(new Vector2f(negDir).mul(thickness)).add(new Vector2f(dirPep).mul(-thickness));
-        Vector2f v3 = new Vector2f(pos2).add(new Vector2f(direction).mul(thickness)).add(new Vector2f(dirPep).mul(thickness));
-        Vector2f v4 = new Vector2f(pos2).add(new Vector2f(direction).mul(thickness)).add(new Vector2f(dirPep).mul(-thickness));
-
-        Matrix4f matrix4f = context.getMatrices().peek().getPositionMatrix();
-
-        float f = (float) ColorHelper.Argb.getAlpha(color) / 255.0F;
-        float g = (float) ColorHelper.Argb.getRed(color) / 255.0F;
-        float h = (float) ColorHelper.Argb.getGreen(color) / 255.0F;
-        float j = (float) ColorHelper.Argb.getBlue(color) / 255.0F;
-        VertexConsumer vertexConsumer = context.getVertexConsumers().getBuffer(RenderLayer.getGui());
-        vertexConsumer.vertex(matrix4f, v1.x,v1.y, 0).color(g, h, j, f).next();
-        vertexConsumer.vertex(matrix4f, v2.x,v2.y, 0).color(g, h, j, f).next();
-        vertexConsumer.vertex(matrix4f, v4.x,v4.y, 0).color(g, h, j, f).next();
-        vertexConsumer.vertex(matrix4f, v3.x,v3.y, 0).color(g, h, j, f).next();
-        context.draw();
-    }
-
-    void drawTexture(
-            MatrixStack matrices,Identifier texture, float x, float y, float width, float height, float u, float v, int regionWidth, int regionHeight, int textureWidth, int textureHeight
-    ) {
-        drawTexture(matrices,texture, x, x + width, y, y + height, 0, regionWidth, regionHeight, u, v, textureWidth, textureHeight);
-    }
-    void drawTexture(
-            MatrixStack matrices,Identifier texture, float x1, float x2, float y1, float y2, float z, float regionWidth, float regionHeight, float u, float v, int textureWidth, int textureHeight
-    ) {
-        drawTexturedQuad(
-                matrices,texture, x1, x2, y1, y2, z, (u + 0.0F) / textureWidth, (u + regionWidth) / textureWidth, (v + 0.0F) / textureHeight, (v + regionHeight) / textureHeight
-        );
-    }
-    void drawTexturedQuad(MatrixStack matrices, Identifier texture, float x1, float x2, float y1, float y2, float z, float u1, float u2, float v1, float v2) {
-        RenderSystem.setShaderTexture(0, texture);
-        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-        Matrix4f matrix4f = matrices.peek().getPositionMatrix();
-        BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
-        bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
-        bufferBuilder.vertex(matrix4f, x1, y1, z).texture(u1, v1).next();
-        bufferBuilder.vertex(matrix4f, x1, y2, z).texture(u1, v2).next();
-        bufferBuilder.vertex(matrix4f, x2, y2, z).texture(u2, v2).next();
-        bufferBuilder.vertex(matrix4f, x2, y1, z).texture(u2, v1).next();
-        BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
     }
 
     public void playUISound(SoundEvent event) {
@@ -1149,5 +1114,24 @@ public class SpellmakerScreenHandler extends ScreenHandler {
     public ItemStack getHeldNewComponentStack() {
         if(selectedNewComponent==null) return ItemStack.EMPTY;
         return selectedNewComponent.getItemStack();
+    }
+
+    public void onAppearanceSlotClicked(SpellmakerAppearanceSlot spellmakerAppearanceSlot, ItemStack heldStack) {
+        if(player instanceof ClientPlayerEntity) return;
+        currentGrid = SpellStoringItem.getOrCreateGrid(getOutput());
+        if(!hasGrid()) return;
+        currentGrid.displayStack = heldStack.copy();
+        SpellStoringItem.writeGrid(getOutput(),currentGrid);
+    }
+
+    public void updateAppearanceSlot(){
+        appearanceSlot.setEnabled(hasGrid());
+        if(!hasGrid()){
+            appearanceInventory.setStack(0,ItemStack.EMPTY);
+            return;
+        }
+        var appearanceStack = currentGrid.displayStack;
+        if(appearanceStack==null) appearanceStack=ItemStack.EMPTY;
+        appearanceInventory.setStack(0,appearanceStack);
     }
 }

@@ -32,6 +32,8 @@ public class ModMessages {
     public static final Identifier SPELLMAKER_REFRESH =     Geomancy.locate("spellmaker_refresh");
     public static final Identifier CAST_PARTICLES =         Geomancy.locate("cast_particles");
     public static final Identifier CLIENT_ADVANCEMENT =     Geomancy.locate("client_advancement");
+    public static final Identifier OPEN_SPELL_SELECT_SCREEN=Geomancy.locate("open_spell_select_screen");
+    public static final Identifier CASTER_SPELL_CHANGED =   Geomancy.locate("caster_spell_changed");
 
     // client to server
 
@@ -59,6 +61,7 @@ public class ModMessages {
     public static final Identifier CASTER_CHANGE_SELECTED_SPELL =       Geomancy.locate("caster_change_selected_spell");
     public static final Identifier PLAYER_JUMP =                        Geomancy.locate("player_jump");
     public static final Identifier CAST_SPELL_PRESSED =                 Geomancy.locate("cast_spell_pressed");
+    public static final Identifier OPEN_STORAGE_ITEM_SCREEN =           Geomancy.locate("open_storage_item_screen");
 
     public static void registerC2SPackets(){
         ServerPlayNetworking.registerGlobalReceiver(CLIENT_JOINED,                      ClientJoinedC2SPacket::receive);
@@ -74,6 +77,7 @@ public class ModMessages {
         ServerPlayNetworking.registerGlobalReceiver(CASTER_CHANGE_SELECTED_SPELL,       CasterChangeSelectedSpellC2S::receive);
         ServerPlayNetworking.registerGlobalReceiver(PLAYER_JUMP,                        PlayerJumpC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(CAST_SPELL_PRESSED,                 CastSpellPressedC2S::receive);
+        ServerPlayNetworking.registerGlobalReceiver(OPEN_STORAGE_ITEM_SCREEN,           OpenStorageItemScreenC2SPacket::receive);
 
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
             server.execute(() -> {
@@ -84,9 +88,7 @@ public class ModMessages {
                     ServerPlayNetworking.send(handler.getPlayer(), INITIAL_SYNC, data);
 
                     // send item mana data to player
-                    for(var stack : ManaStoringItemData.stackMap.values()){
-                        ManaUtil.syncItemMana(handler.getPlayer().getWorld(),stack);
-                    }
+                    ManaUtil.syncItemMana(handler.getPlayer());
 
                     // sync various other things
                     StellgeUtil.syncKnowledge(handler.getPlayer());
@@ -109,6 +111,8 @@ public class ModMessages {
         ClientPlayNetworking.registerGlobalReceiver(SPELLMAKER_REFRESH, SpellmakerRefreshS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(CAST_PARTICLES, CastParticlesS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(CLIENT_ADVANCEMENT, ClientAdvancementS2CPacket::receive);
+        ClientPlayNetworking.registerGlobalReceiver(OPEN_SPELL_SELECT_SCREEN, OpenSpellSelectScreenS2CPacket::receive);
+        ClientPlayNetworking.registerGlobalReceiver(CASTER_SPELL_CHANGED, CasterSpellChangedS2CPacket::receive);
     }
 
     public static void sendToAllClients(MinecraftServer server, Identifier id, PacketByteBuf buf){

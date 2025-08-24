@@ -2,23 +2,24 @@ package org.oxytocina.geomancy.spells;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtHelper;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.joml.Vector2i;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlockEntity;
 import org.oxytocina.geomancy.effects.ModStatusEffects;
 import org.oxytocina.geomancy.items.SpellStoringItem;
 import org.oxytocina.geomancy.util.ManaUtil;
 import org.oxytocina.geomancy.util.Toolbox;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class SpellGrid {
@@ -28,9 +29,10 @@ public class SpellGrid {
     public boolean library; // if true, hides spell from spell selection
     public HashMap<Vector2i,SpellComponent> components;
     public float soulCostMultiplier = 1;
+    public ItemStack displayStack = null;
 
     public SpellGrid(ItemStack stack, NbtCompound nbt){
-        this.components=new HashMap<>();
+        this.components=new LinkedHashMap<>();
         readNbt(nbt);
         // soul saver
         if(stack.getItem() instanceof SpellStoringItem storer)
@@ -42,7 +44,7 @@ public class SpellGrid {
         this.height=height;
         this.name="";
         this.library=false;
-        this.components=new HashMap<>();
+        this.components=new LinkedHashMap<>();
     }
 
     public SpellBlockResult runReferenced(SpellContext parent,SpellComponent casterComp,SpellBlockArgs args){
@@ -65,17 +67,17 @@ public class SpellGrid {
         return context.referenceResult;
     }
 
-    public void run(ItemStack casterItem, ItemStack containerItem, LivingEntity casterEntity, SpellBlockArgs args, SpellContext.SoundBehavior soundBehavior){
+    public void run(ItemStack casterItem, ItemStack spellStorage, LivingEntity casterEntity, AutocasterBlockEntity blockEntity, SpellBlockArgs args, SpellContext.SoundBehavior soundBehavior){
         long startTime = System.nanoTime();
 
         float costMultiplier = soulCostMultiplier;
-        if(casterEntity.hasStatusEffect(ModStatusEffects.REGRETFUL))
+        if(casterEntity!=null&&casterEntity.hasStatusEffect(ModStatusEffects.REGRETFUL))
         {
             var amp = casterEntity.getStatusEffect(ModStatusEffects.REGRETFUL).getAmplifier();
             costMultiplier *= 1+(amp+1)*0.5f;
         }
 
-        SpellContext context = new SpellContext(this,casterEntity,casterItem,containerItem,0,costMultiplier,0,soundBehavior);
+        SpellContext context = new SpellContext(this,casterEntity,blockEntity,casterItem,spellStorage,0,costMultiplier,0,soundBehavior);
         context.refreshAvailableSoul();
         context.internalVars = args;
 
@@ -93,6 +95,7 @@ public class SpellGrid {
         catch(Exception ignored){
             Geomancy.logError("AAAAA!!!! Spells threw an exception! DEBUG ME!");
             Geomancy.logError(ignored.getMessage());
+            Geomancy.logError(Arrays.toString(ignored.getStackTrace()));
         }
 
         if(context.depthLimitReached && context.debugging){
@@ -100,7 +103,13 @@ public class SpellGrid {
         }
 
         if(context.soulConsumed > 0){
-            ManaUtil.syncMana((PlayerEntity) casterEntity);
+            switch(context.sourceType)
+            {
+                case Caster :
+                    ManaUtil.syncMana((PlayerEntity) casterEntity); break;
+                case Block:
+                    break;
+            }
         }
         SpellBlocks.playCastSound(context);
 
@@ -204,6 +213,13 @@ public class SpellGrid {
             compsNbt.add(cComp);
         }
         nbt.put("components",compsNbt);
+
+        if(displayStack!=null&&!displayStack.isEmpty())
+        {
+            var displayNbt = new NbtCompound();
+            displayStack.writeNbt(displayNbt);
+            nbt.put("displayStack",displayNbt);
+        }
     }
 
     public void readNbt(NbtCompound nbt){
@@ -219,6 +235,9 @@ public class SpellGrid {
             SpellComponent comp = new SpellComponent(this,nbtComp);
             tryAddComponent(comp);
         }
+
+        if(nbt.contains("displayStack"))
+            displayStack = ItemStack.fromNbt(nbt.getCompound("displayStack"));
     }
 
     // cuts off hexagonal edges
@@ -242,5 +261,14 @@ public class SpellGrid {
     public static MutableText getName(SpellGrid grid){
         if(grid==null) return Text.translatable("geomancy.spellstorage.empty").formatted(Formatting.DARK_GRAY);
         return grid.getName().formatted(Formatting.GRAY);
+    }
+
+    public ItemStack getDisplayStack(ItemStack storage) {
+        var base = displayStack;
+        if(base==null||base.isEmpty()) base = storage;
+        base = base.copy();
+        base.setNbt(null);
+        base.setCustomName(getName());
+        return base;
     }
 }
