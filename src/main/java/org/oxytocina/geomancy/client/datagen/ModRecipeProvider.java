@@ -274,412 +274,101 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 // flow control
                 {
                     Item baseIngot = MITHRIL_INGOT;
-                    AddGenericSpellcomponentRecipe(SpellBlocks.FOR,Items.LEVER,baseIngot);
-                    AddGenericSpellcomponentRecipe(SpellBlocks.GATE,Items.OAK_DOOR,baseIngot);
-                    AddGenericSpellcomponentRecipe(SpellBlocks.NOT,Items.REDSTONE_TORCH,baseIngot);
-                    AddGenericSpellcomponentRecipe(SpellBlocks.CONVEYOR,Items.HOPPER,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.FOR          ,Items.LEVER            ,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.GATE         ,Items.OAK_DOOR         ,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.NOT          ,Items.REDSTONE_TORCH   ,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.CONVEYOR     ,Items.HOPPER           ,baseIngot);
                 }
 
                 // providers
                 {
                     Item baseIngot = MOLYBDENUM_INGOT;
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.LEVER),
-                    }).toList(),SpellBlocks.CONST_BOOLEAN,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.COMPARATOR),
-                    }).toList(),SpellBlocks.CONST_NUM,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.OAK_SIGN),
-                    }).toList(),SpellBlocks.CONST_TEXT,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.DIRT),
-                    }).toList(),SpellBlocks.ENTITY_CASTER,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.CHEST),
-                    }).toList(),SpellBlocks.CASTER_SLOT,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.STONE),
-                    }).toList(),SpellBlocks.BLOCKPOS_CASTER,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.OAK_PRESSURE_PLATE),
-                    }).toList(),SpellBlocks.POS_CASTER,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.SPIDER_EYE),
-                    }).toList(),SpellBlocks.EYEPOS_CASTER,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.ARROW),
-                    }).toList(),SpellBlocks.DIR_CASTER,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.LIGHTNING_ROD),
-                    }).toList(),SpellBlocks.GET_WEATHER,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.CLOCK),
-                    }).toList(),SpellBlocks.GET_TIME,true);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.CONST_BOOLEAN        ,Items.LEVER                ,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.CONST_NUM            ,Items.COMPARATOR           ,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.CONST_TEXT           ,Items.OAK_SIGN             ,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.ENTITY_CASTER        ,Items.DIRT                 ,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.CASTER_SLOT          ,Items.CHEST                ,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.BLOCKPOS_CASTER      ,Items.STONE                ,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.POS_CASTER           ,Items.OAK_PRESSURE_PLATE   ,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.EYEPOS_CASTER        ,Items.SPIDER_EYE           ,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.DIR_CASTER           ,Items.ARROW                ,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.GET_WEATHER          ,Items.LIGHTNING_ROD        ,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.GET_TIME             ,Items.CLOCK                ,baseIngot);
                 }
 
                 // arithmetic
                 {
                     Item baseIngot = LEAD_INGOT;
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.REDSTONE),
-                    }).toList(),SpellBlocks.SUM,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.COMPARATOR),
-                    }).toList(),SpellBlocks.SUBTRACT,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.REPEATER),
-                    }).toList(),SpellBlocks.MULTIPLY,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.WOODEN_AXE),
-                    }).toList(),SpellBlocks.DIVIDE,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.REDSTONE_BLOCK),
-                    }).toList(),SpellBlocks.EXP,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.OAK_LOG),
-                    }).toList(),SpellBlocks.LOG,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.WOODEN_SWORD),
-                    }).toList(),SpellBlocks.MOD,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.OAK_STAIRS),
-                    }).toList(),SpellBlocks.SIN,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.COBBLESTONE_STAIRS),
-                    }).toList(),SpellBlocks.COS,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.STONE_STAIRS),
-                    }).toList(),SpellBlocks.TAN,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.CRAFTING_TABLE),
-                    }).toList(),SpellBlocks.VECTOR_BUILD,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.STONE_PRESSURE_PLATE),
-                    }).toList(),SpellBlocks.VECTOR_ENTITYPOS,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.SUGAR),
-                    }).toList(),SpellBlocks.VECTOR_ENTITYVEL,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.SPIDER_EYE),
-                    }).toList(),SpellBlocks.VECTOR_ENTITYEYEPOS,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.ARROW),
-                    }).toList(),SpellBlocks.VECTOR_ENTITYDIR,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.STONE_AXE),
-                    }).toList(),SpellBlocks.VECTOR_SPLIT,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.RED_BED),
-                    }).toList(),SpellBlocks.VECTOR_ENTITYSPAWN,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.ENDER_EYE),
-                    }).toList(),SpellBlocks.RAYCAST_POS,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.SLIME_BALL),
-                    }).toList(),SpellBlocks.RAYCAST_DIR,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.STONE),
-                    }).toList(),SpellBlocks.BOOL_ENTITYGROUNDED,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.LEAD),
-                    }).toList(),SpellBlocks.ENTITY_NEAREST,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.REDSTONE_TORCH),
-                    }).toList(),SpellBlocks.INVERT,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.LIGHT_WEIGHTED_PRESSURE_PLATE),
-                    }).toList(),SpellBlocks.AND,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.OAK_PRESSURE_PLATE),
-                    }).toList(),SpellBlocks.OR,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.HEAVY_WEIGHTED_PRESSURE_PLATE),
-                    }).toList(),SpellBlocks.XOR,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.EMERALD),
-                    }).toList(),SpellBlocks.EQUALS,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.NAME_TAG),
-                    }).toList(),SpellBlocks.TEXT_ENTITY_ID,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.OAK_SIGN),
-                    }).toList(),SpellBlocks.TEXT_BLOCK_ID,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.BLAZE_POWDER),
-                    }).toList(),SpellBlocks.ENTITY_HAS_EFFECT,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.GHAST_TEAR),
-                    }).toList(),SpellBlocks.ENTITY_HEALTH,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.DROPPER),
-                    }).toList(),SpellBlocks.RANDOM_INTEGER,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.NAME_TAG),
-                    }).toList(),SpellBlocks.PARSE,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.BIRCH_SIGN),
-                    }).toList(),SpellBlocks.TO_TEXT,true);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.SUM,Items.REDSTONE,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.SUBTRACT,Items.COMPARATOR,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.MULTIPLY,Items.REPEATER,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.DIVIDE,Items.WOODEN_AXE,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.EXP,Items.REDSTONE_BLOCK,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.LOG,Items.OAK_LOG,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.MOD,Items.WOODEN_SWORD,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.SIN,Items.OAK_STAIRS,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.COS,Items.COBBLESTONE_STAIRS,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.TAN,Items.STONE_STAIRS,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.VECTOR_BUILD,Items.CRAFTING_TABLE,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.VECTOR_ENTITYPOS,Items.STONE_PRESSURE_PLATE,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.VECTOR_ENTITYVEL,Items.SUGAR,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.VECTOR_ENTITYEYEPOS,Items.SPIDER_EYE,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.VECTOR_ENTITYDIR,Items.ARROW,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.VECTOR_SPLIT,Items.STONE_AXE,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.VECTOR_ENTITYSPAWN,Items.RED_BED,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.RAYCAST_POS,Items.ENDER_EYE,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.RAYCAST_DIR,Items.SLIME_BALL,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.BOOL_ENTITYGROUNDED,Items.STONE,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.ENTITY_NEAREST,Items.LEAD,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.INVERT,Items.REDSTONE_TORCH,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.AND,Items.LIGHT_WEIGHTED_PRESSURE_PLATE,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.OR,Items.OAK_PRESSURE_PLATE,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.XOR,Items.HEAVY_WEIGHTED_PRESSURE_PLATE,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.EQUALS,Items.EMERALD,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.TEXT_ENTITY_ID,Items.NAME_TAG,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.TEXT_BLOCK_ID,Items.OAK_SIGN,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.ENTITY_HAS_EFFECT,Items.BLAZE_POWDER,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.ENTITY_HEALTH,Items.GHAST_TEAR,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.RANDOM_INTEGER,Items.DROPPER,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.PARSE,Items.FEATHER,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.TO_TEXT,Items.BIRCH_SIGN,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.GREATER,Items.OAK_LEAVES,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.LESS,Items.OAK_SAPLING,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.TRANSLATE,Items.SPRUCE_SIGN,baseIngot);
 
                 }
 
                 // effectors
                 {
                     Item baseIngot = OCTANGULITE_INGOT;
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.TRIPWIRE_HOOK),
-                    }).toList(),SpellBlocks.DEBUG,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.OAK_SIGN),
-                    }).toList(),SpellBlocks.PRINT,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.LIGHTNING_ROD),
-                    }).toList(),SpellBlocks.LIGHTNING,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.FIRE_CHARGE),
-                    }).toList(),SpellBlocks.FIREBALL,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.ENDER_PEARL),
-                    }).toList(),SpellBlocks.TELEPORT,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.CHORUS_FLOWER),
-                    }).toList(),SpellBlocks.DIMHOP,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.FIREWORK_ROCKET),
-                    }).toList(),SpellBlocks.PUSH,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.EXPERIENCE_BOTTLE),
-                    }).toList(),SpellBlocks.IMBUE,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.CRAFTING_TABLE),
-                    }).toList(),SpellBlocks.PLACE,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.IRON_PICKAXE),
-                    }).toList(),SpellBlocks.BREAK,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,OCTANGULITE_NUGGET),
-                    }).toList(),SpellBlocks.SET_SPELL,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.COBBLESTONE),
-                    }).toList(),SpellBlocks.DEGRADE_BLOCK,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.IRON_PICKAXE),
-                            SmithingIngredient.ofItems(1,1,Items.CRAFTING_TABLE),
-                    }).toList(),SpellBlocks.REPLACE,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.FLINT_AND_STEEL),
-                    }).toList(),SpellBlocks.IGNITE,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.NOTE_BLOCK),
-                    }).toList(),SpellBlocks.PLAY_SOUND,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.CLOCK),
-                    }).toList(),SpellBlocks.DELEGATE,true);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.DEBUG,Items.TRIPWIRE_HOOK,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.PRINT,Items.OAK_SIGN,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.LIGHTNING,Items.LIGHTNING_ROD,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.FIREBALL,Items.FIRE_CHARGE,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.TELEPORT,Items.ENDER_PEARL,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.DIMHOP,Items.CHORUS_FLOWER,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.PUSH,Items.FIREWORK_ROCKET,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.IMBUE,Items.EXPERIENCE_BOTTLE,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.PLACE,Items.CRAFTING_TABLE,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.BREAK,Items.IRON_PICKAXE,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.SET_SPELL,OCTANGULITE_NUGGET,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.DEGRADE_BLOCK,Items.COBBLESTONE,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.REPLACE,Items.CRAFTING_TABLE,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.IGNITE,Items.FLINT_AND_STEEL,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.PLAY_SOUND,Items.NOTE_BLOCK,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.DELEGATE,Items.ARMOR_STAND,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.SET_TIME,Items.CLOCK,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.SET_WEATHER,Items.CAULDRON,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.GROW,Items.BONE_BLOCK,baseIngot);
                 }
 
                 // reference
                 {
                     Item baseIngot = Items.COPPER_INGOT;
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.STICKY_PISTON),
-                    }).toList(),SpellBlocks.REF_OUTPUT,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.PISTON),
-                    }).toList(),SpellBlocks.REF_INPUT,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.REDSTONE),
-                    }).toList(),SpellBlocks.ACTION,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.REDSTONE_BLOCK),
-                    }).toList(),SpellBlocks.FUNCTION,true);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.REF_OUTPUT,Items.STICKY_PISTON,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.REF_INPUT,Items.PISTON,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.ACTION,Items.REDSTONE,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.FUNCTION,Items.REDSTONE_BLOCK,baseIngot);
 
                     AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
                             SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
@@ -688,87 +377,24 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                             SmithingIngredient.ofItems(1,1,Items.REDSTONE_BLOCK),
                     }).toList(),SpellBlocks.FUNCTION2,true);
 
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.DROPPER),
-                    }).toList(),SpellBlocks.PROVIDER,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.BOOK),
-                    }).toList(),SpellBlocks.VAR_OUTPUT,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.FEATHER),
-                    }).toList(),SpellBlocks.VAR_INPUT,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.TNT),
-                    }).toList(),SpellBlocks.VAR_DELETE,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.BARREL),
-                    }).toList(),SpellBlocks.VAR_EXISTS,true);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.PROVIDER,Items.DROPPER,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.VAR_OUTPUT,Items.BOOK,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.VAR_INPUT,Items.FEATHER,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.VAR_DELETE,Items.TNT,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.VAR_EXISTS,Items.BARREL,baseIngot);
                 }
 
                 // lists
                 {
                     Item baseIngot = Items.GOLD_INGOT;
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.DROPPER),
-                    }).toList(),SpellBlocks.FOREACH,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.WOODEN_AXE),
-                    }).toList(),SpellBlocks.SPLIT,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.POPPY),
-                    }).toList(),SpellBlocks.POP,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.LIGHT_WEIGHTED_PRESSURE_PLATE),
-                    }).toList(),SpellBlocks.SIZE,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.DISPENSER),
-                    }).toList(),SpellBlocks.GET_ELEMENT,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.HOPPER),
-                    }).toList(),SpellBlocks.SET_ELEMENT,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.LEAD),
-                    }).toList(),SpellBlocks.ENTITIES_NEAR,true);
-
-                    AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
-                            SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
-                            SmithingIngredient.ofItems(1,1,baseIngot),
-                            SmithingIngredient.ofItems(1,1,Items.WOODEN_PICKAXE),
-                    }).toList(),SpellBlocks.BLOCK_BOX,true);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.FOREACH,Items.DROPPER,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.SPLIT,Items.WOODEN_AXE,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.POP,Items.POPPY,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.SIZE,Items.LIGHT_WEIGHTED_PRESSURE_PLATE,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.GET_ELEMENT,Items.DISPENSER,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.SET_ELEMENT,Items.HOPPER,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.ENTITIES_NEAR,Items.LEAD,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.BLOCK_BOX,Items.WOODEN_PICKAXE,baseIngot);
                 }
 
                 String builtSpellComps = "";

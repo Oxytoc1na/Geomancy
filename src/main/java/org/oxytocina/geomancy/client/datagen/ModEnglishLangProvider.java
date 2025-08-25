@@ -114,6 +114,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("pos_caster","Caster Pos.","returns the position of the casting entity or block");
             addSpell("eyepos_caster","Caster Eye Pos.","returns the eye position of the casting entity or block");
             addSpell("dir_caster","Caster Dir.","returns the facing direction of the casting entity or block");
+            addSpell("get_weather","Weather","returns 1 if raining, 2 if thundering, and 0 otherwise");
+            addSpell("get_time","Weather","returns how progressed the current day is");
             // arithmetic
             addSpell("vector_entityspawn","Entity Spawn","returns the respawn point of the entity");
             addSpell("vector_entitypos","Entity Pos.","returns the position of the entity");
@@ -130,6 +132,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("tan","Tangent","returns the tangent of the input");
             addSpell("exp","Exponent","returns a number to the power of another number");
             addSpell("log","Log","returns the logarithm to a base of a number");
+            addSpell("mod","Modulo","returns the remainder of a division");
             addSpell("raycast_pos","Raycast Pos.","returns the block position hit by a ray");
             addSpell("raycast_dir","Raycast Dir.","returns the block face hit by a ray");
             addSpell("bool_entitygrounded","Entity Grounded","returns if an entity is on the ground");
@@ -146,6 +149,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("random_integer","Random Integer","returns a random integer between 0 and the argument");
             addSpell("parse","Parse","attempt to turn a text into a signal of a different type");
             addSpell("to_text","To Text","returns the text representation of a signal");
+            addSpell("translate","Translate","returns the translation of a translation key");
             // effectors
             addSpell("print","Print","outputs a value to the casters chat");
             addSpell("fireball","Fireball","summons a fireball");
@@ -163,6 +167,9 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("ignite","Ignite","heats a given block position up");
             addSpell("play_sound","Play Sound","plays a sound in the world");
             addSpell("delegate","Delegate","runs a spell with a specified delay");
+            addSpell("set_weather","Set Weather","sets weather. 0 clears, 1 rains, 2 thunders");
+            addSpell("set_time","Set Time","changes the progress of the current day cycle");
+            addSpell("grow","Grow","accelerates growth at a target position");
             // reference
             addSpell("action","Action","calls another installed spell");
             addSpell("provider","Provider","automatically returns the result of a spell");
