@@ -1,8 +1,9 @@
 package org.oxytocina.geomancy.util;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.advancement.Advancement;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -83,6 +84,7 @@ public class StellgeUtil {
     }
 
     /// client method only used by sync packets
+    @Environment(EnvType.CLIENT)
     public static void setAdvancementKnowledge(float amount)
     {
         if(clientAdvancementKnowledge<amount)
