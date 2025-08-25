@@ -74,8 +74,8 @@ public class CasterDelegateEntity extends Entity {
     }
 
     public void cast(){
-
         // make sure the parents still exist
+        if(parent==null || parent.grid==null) {destroy();return;}
         if(parent.casterBlock!=null && parent.casterBlock.isRemoved()) {destroy(); return;}
         if(parent.caster!=null && parent.caster.isRemoved()) {destroy(); return;}
         // make sure the caster item still exists

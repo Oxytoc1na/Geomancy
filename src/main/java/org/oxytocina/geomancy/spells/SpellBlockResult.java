@@ -1,5 +1,7 @@
 package org.oxytocina.geomancy.spells;
 
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
@@ -91,5 +93,25 @@ public class SpellBlockResult {
     public void refreshSignalDepths() {
         for(var sig : vars.values())
             sig.setDepth(depth);
+    }
+
+    public void writeNbt(NbtCompound temp) {
+        temp.putInt("iterations",iterations);
+        temp.putInt("depth",depth);
+        temp.putString("iterationVarName",iterationVarName);
+
+        NbtList subResultsNbt = new NbtList();
+        for(var s : subResults){
+            var temp2 = new NbtCompound();
+            s.writeNbt(temp2);
+            subResultsNbt.add(temp2);
+        }
+        temp.put("subResults",subResultsNbt);
+
+        var varsNbt = new NbtCompound();
+        for(var s : vars.keySet()){
+            varsNbt.put(s,vars.get(s).toNBT());
+        }
+        temp.put("vars",varsNbt);
     }
 }

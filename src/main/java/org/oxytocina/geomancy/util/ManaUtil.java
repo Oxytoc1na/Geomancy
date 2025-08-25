@@ -15,6 +15,7 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -332,6 +333,13 @@ public class ManaUtil {
     }
 
     private static float removeMana(List<ItemStack> storers, float amount, World world){
+
+        // generate prioritized lists
+        HashMap<Integer,List<Pair<ItemStack,IManaStoringItem>>> storerPriorityMap = new HashMap<>();
+        for(var storer : storers){
+            var pair = new Pair<>(storer,(IMana));
+        }
+
         float left = amount;
         boolean changed=true;
         while(left>0){
@@ -347,6 +355,7 @@ public class ManaUtil {
                 float taken = Math.min(mana,amountPerStack);
                 left-=taken;
                 storer.setMana(world,stack,mana-taken);
+                if(mana-taken<=0) storer.onDepleted(stack);
                 changed=true;
             }
         }

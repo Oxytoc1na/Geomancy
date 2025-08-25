@@ -1,5 +1,6 @@
 package org.oxytocina.geomancy.spells;
 
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -11,9 +12,6 @@ import java.util.UUID;
 
 public class SpellBlockArgs {
     public HashMap<String,SpellSignal> vars;
-    public int iterations = 1;
-
-    public int depth = 0;
 
     public SpellBlockArgs(){
         vars = new HashMap<>();
@@ -74,5 +72,13 @@ public class SpellBlockArgs {
 
     public boolean has(String varName) {
         return vars.containsKey(varName);
+    }
+
+    public void writeNbt(NbtCompound temp) {
+        var varsNbt = new NbtCompound();
+        for(var s : vars.keySet()){
+            varsNbt.put(s,vars.get(s).toNBT());
+        }
+        temp.put("vars",varsNbt);
     }
 }

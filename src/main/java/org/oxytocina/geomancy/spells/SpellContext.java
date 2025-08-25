@@ -5,6 +5,9 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtHelper;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -73,6 +76,59 @@ public class SpellContext {
                 : caster!=null?SourceType.Caster
                 : casterBlock!=null?SourceType.Block
         : SourceType.Caster;
+    }
+
+    public NbtCompound toNbt(){
+        NbtCompound res = new NbtCompound();
+        writeNbt(res);
+        return res;
+    }
+
+    public void writeNbt(NbtCompound nbt){
+        if(caster!=null) nbt.putUuid("caster",caster.getUuid());
+        if(casterBlock!=null) nbt.put("casterBlock",NbtHelper.fromBlockPos(casterBlock.getPos()));
+        if(delegate!=null) nbt.putUuid("delegate",delegate.getUuid());
+        if(casterItem!=null){ NbtCompound temp = new NbtCompound(); casterItem.writeNbt(temp); nbt.put("casterItem", temp);}
+        if(spellStorage!=null){ NbtCompound temp = new NbtCompound(); spellStorage.writeNbt(temp); nbt.put("spellStorage", temp);}
+        nbt.putFloat("availableSoul",availableSoul);
+        nbt.putFloat("soulConsumed",soulConsumed);
+        nbt.putFloat("soulCostMultiplier",soulCostMultiplier);
+        nbt.putString("stage", stage.name());
+        nbt.putBoolean("debugging", debugging);
+        nbt.putInt("depthLimit",depthLimit);
+        nbt.putInt("baseDepth",baseDepth);
+        nbt.putInt("highestRecordedDepth",highestRecordedDepth);
+        nbt.putBoolean("depthLimitReached",depthLimitReached);
+        nbt.putBoolean("couldntAffordSomething",couldntAffordSomething);
+        if(grid!=null){ NbtCompound temp = new NbtCompound(); grid.writeNbt(temp); nbt.put("grid", temp);}
+        nbt.putString("soundBehavior", soundBehavior.name());
+        nbt.putString("sourceType", sourceType.name());
+
+        if(isChild()){
+            NbtCompound parentNbt = parentCall.toNbt();
+            nbt.put("parent",parentNbt);
+        }
+        if(referenceCallingFrom!=null){ NbtCompound temp = new NbtCompound(); referenceCallingFrom.writeNbt(temp); nbt.put("referenceCallingFrom", temp);}
+        if(referenceResult!=null){ NbtCompound temp = new NbtCompound(); referenceResult.writeNbt(temp); nbt.put("referenceResult", temp);}
+        if(internalVars!=null){ NbtCompound temp = new NbtCompound(); internalVars.writeNbt(temp); nbt.put("internalVars", temp);}
+
+    }
+
+    public static SpellContext fromNbt(ServerWorld world, NbtCompound nbt){
+        var casterItem = nbt.contains("casterItem") ? ItemStack.fromNbt(nbt.getCompound("casterItem")) : null;
+        var spellStorage = nbt.contains("spellStorage") ? ItemStack.fromNbt(nbt.getCompound("spellStorage")) : null;
+        var caster = nbt.contains("caster") ? world.getEntity(nbt.getUuid("caster")) : null;
+        var casterBlock = nbt.contains("casterBlock") ? world.getBlockEntity(NbtHelper.toBlockPos(nbt.getCompound("casterBlock"))) : null;
+        var delegate = nbt.contains("delegate") ? world.getEntity(nbt.getUuid("delegate")) : null;
+        var res =new SpellContext(
+                nbt.contains("grid")?new SpellGrid(casterItem,nbt.getCompound("grid")):null,
+                (LivingEntity) caster,(AutocasterBlockEntity) casterBlock,(CasterDelegateEntity) delegate,casterItem,spellStorage,
+                nbt.getFloat("availableSoul"),nbt.getFloat("soulCostMultiplier"),nbt.getFloat("soulConsumed"),Enum.valueOf(SoundBehavior.class,nbt.getString("soundBehavior"))
+        );
+        res.debugging=nbt.getBoolean("debugging");
+        res.stage = Enum.valueOf(Stage.class,nbt.getString("stage"));
+        // TODO im tired of this serialization bs
+        return res;
     }
 
     /// to be used SOLELY for stringifying spell signals!!

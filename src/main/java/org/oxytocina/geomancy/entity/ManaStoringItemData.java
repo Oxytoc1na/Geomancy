@@ -39,7 +39,7 @@ public class ManaStoringItemData {
 
     public ManaStoringItemData(UUID uuid, ItemStack base){
         this.uuid=uuid;
-        mana=0;
+        mana=((IManaStoringItem)base.getItem()).getInitialMana(base);
         maxMana = ((IManaStoringItem)base.getItem()).getBaseSoulCapacity(base);
     }
 

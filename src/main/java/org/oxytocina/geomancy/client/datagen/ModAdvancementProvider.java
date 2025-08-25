@@ -88,7 +88,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                 ModItems.LORE_LOG_EXPEDITION_5,
         };
         for (var item : loreItems) {
-            AddGetItemAdvancement(item, Registries.ITEM.getId(item).getPath(),item,"lore",AdvancementFrame.TASK,false,true,null);
+            AddGetItemAdvancement(null, Registries.ITEM.getId(item).getPath(),item,"lore",AdvancementFrame.TASK,false,true,null);
         }
 
         // interaction (hidden)
@@ -116,22 +116,22 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
     private Advancement AddGetItemAdvancement(ItemConvertible item,String name, ItemConvertible[] conditionItems, String category, AdvancementFrame frame, boolean announce, boolean hidden, Advancement parent)
     {
 
-        Advancement res = Advancement.Builder.create()
-                .display(
-                        item, // The display icon
-                        Text.translatable("advancement."+Geomancy.MOD_ID+"."+category+".get_"+name+".name"), // The title
-                        Text.translatable("advancement."+Geomancy.MOD_ID+"."+category+".get_"+name+".description"), // The title
-                        null,
-                        frame, // TASK, CHALLENGE, or GOAL
-                        announce, // Show the toast when completing it
-                        announce, // Announce it to chat
-                        hidden // Hide it in the advancement tab until it's achieved
-                )
+        var res = Advancement.Builder.create()
                 .criterion("got_"+name, InventoryChangedCriterion.Conditions.items(conditionItems))
-                .parent(parent)
-                .build(consumer, Geomancy.MOD_ID + ":"+category+"/get_"+name);
+                .parent(parent);
 
-        return res;
+        if(item!=null) res = res.display(
+            item, // The display icon
+            Text.translatable("advancement."+Geomancy.MOD_ID+"."+category+".get_"+name+".name"), // The title
+            Text.translatable("advancement."+Geomancy.MOD_ID+"."+category+".get_"+name+".description"), // The title
+            null,
+            frame, // TASK, CHALLENGE, or GOAL
+            announce, // Show the toast when completing it
+            announce, // Announce it to chat
+            hidden // Hide it in the advancement tab until it's achieved
+            );
+
+        return res.build(consumer, Geomancy.MOD_ID + ":"+category+"/get_"+name);
     }
 
     private Advancement AddGetItemWithNbtAdvancement(ItemConvertible item, NbtCompound nbt, String name, String category)

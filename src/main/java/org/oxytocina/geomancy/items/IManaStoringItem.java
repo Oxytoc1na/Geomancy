@@ -29,6 +29,19 @@ public interface IManaStoringItem {
         return ManaStoringItemData.from(world,stack,getUUID(stack));
     }
 
+    default float getInitialMana(ItemStack base){
+        return 0;
+    }
+
+    default void onDepleted(ItemStack stack){
+
+    }
+
+    /// higher priority items deplete first
+    default int depletionPriority(ItemStack stack){
+        return 0;
+    }
+
     default float getCapacity(World world, ItemStack stack){
         init(world,stack);
         return getData(world,stack).maxMana;

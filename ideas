@@ -170,10 +170,6 @@ TODO PREMADE SPELLS
 
 TODO EFFECT BLOCKS
 - taming entities
-- bonemeal spell
-- time
-- weather
-- translate text
 - nbt manipulation
 - collect items on ground
 
@@ -197,7 +193,7 @@ TODO textures
 - status effects
 
 TODO ITEMS
-- non-rechargeable mana storage?
+- non-rechargeable octangulite mana storage?
 - refined octangulite nuggets
 
 TODO DEBUG

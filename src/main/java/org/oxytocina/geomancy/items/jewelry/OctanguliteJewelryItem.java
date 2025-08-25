@@ -117,6 +117,7 @@ public class OctanguliteJewelryItem extends JewelryItem implements IManaStoringI
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> list, TooltipContext context) {
         super.appendTooltip(stack, world, list, context);
         IManaStoringItem.super.addManaTooltip(world,stack,list);
