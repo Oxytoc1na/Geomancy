@@ -907,6 +907,7 @@ public class SpellBlocks {
                             var range = vars.getNumber("range");
 
                             var ents = comp.world().getEntitiesByClass(LivingEntity.class, Box.from(pos).expand(range),entity -> true);
+                            if(ents==null||ents.isEmpty()) return res;
                             LivingEntity ent = null;
                             double minDist = 1000000;
                             for(var cont : ents){
