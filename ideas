@@ -172,6 +172,7 @@ TODO EFFECT BLOCKS
 - taming entities
 - nbt manipulation
 - collect items on ground
+- silent execution
 
 autocaster
 - set block redstone level
@@ -199,7 +200,7 @@ TODO ITEMS
 TODO DEBUG
 - the fucking mana storage items synchronize very strangely
 - premade spells side configs are fucked
-- remove skilltree popup test
+- bone meal component fix
 
 fixed
 - crash when clicking on component in hotbar

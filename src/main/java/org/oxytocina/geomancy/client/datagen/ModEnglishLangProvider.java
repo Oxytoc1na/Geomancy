@@ -109,12 +109,13 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("eyepos_caster","Caster Eye Pos.","returns the eye position of the casting entity or block");
             addSpell("dir_caster","Caster Dir.","returns the facing direction of the casting entity or block");
             addSpell("get_weather","Weather","returns 1 if raining, 2 if thundering, and 0 otherwise");
-            addSpell("get_time","Weather","returns how progressed the current day is");
+            addSpell("get_time","Time","returns how progressed the current day is");
             // arithmetic
             addSpell("vector_entityspawn","Entity Spawn","returns the respawn point of the entity");
             addSpell("vector_entitypos","Entity Pos.","returns the position of the entity");
             addSpell("vector_entityeyepos","Entity Eye Pos.","returns the position of the eyes of the entity");
             addSpell("vector_entitydir","Entity Dir.","returns the direction the entity is looking in");
+            addSpell("vector_entityvel","Entity Vel.","returns the velocity of an entity");
             addSpell("vector_split","Split Vec.","returns a vectors components");
             addSpell("vector_build","Build Vec.","constructs a vector from three numbers");
             addSpell("sum","Sum","adds two numbers or vectors");
@@ -144,6 +145,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("parse","Parse","attempt to turn a text into a signal of a different type");
             addSpell("to_text","To Text","returns the text representation of a signal");
             addSpell("translate","Translate","returns the translation of a translation key");
+            addSpell("greater","Greater","returns if a > b");
+            addSpell("less","Less","returns if a < b");
             // effectors
             addSpell("print","Print","outputs a value to the casters chat");
             addSpell("fireball","Fireball","summons a fireball");

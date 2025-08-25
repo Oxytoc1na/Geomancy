@@ -9,6 +9,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
@@ -137,17 +138,20 @@ public class SpellSignal {
                 if(ctx!=null && ctx.getWorld() instanceof ServerWorld sw){
                     ent = sw.getEntity(uuidValue);
                 }
-                if(ctx!=null && ctx.getWorld() instanceof ClientWorld sw){
+                if(ctx!=null && !(ctx.getWorld() instanceof ServerWorld)){
 
-                    ent = sw.getPlayerByUuid(uuidValue);
-
+                    ent = ctx.getWorld().getPlayerByUuid(uuidValue);
                     if(ent==null)
-                        for(var contender : sw.getEntities())
+                    {
+                        var ents = ctx.getWorld().getEntitiesByClass(Entity.class, Box.from(ctx.caster.getPos()).expand(1000),entity -> true);
+                        for(var contender : ents)
                             if(contender.getUuid().equals(uuidValue))
                             {
                                 ent = contender;
                                 break;
                             }
+                    }
+
                 }
                 if(ent!=null){
                     var entName = ent.getName().getString();

@@ -906,7 +906,14 @@ public class SpellBlocks {
                             var pos = vars.getVector("position");
                             var range = vars.getNumber("range");
 
-                            var ent = comp.world().getClosestEntity(LivingEntity.class, TargetPredicate.DEFAULT,null,pos.x,pos.y,pos.z, Box.of(pos,range,range,range));
+                            var ents = comp.world().getEntitiesByClass(LivingEntity.class, Box.from(pos).expand(range),entity -> true);
+                            LivingEntity ent = null;
+                            double minDist = 1000000;
+                            for(var cont : ents){
+                                double dist = cont.getPos().subtract(pos).length();
+                                if(ent==null) {ent=cont;minDist=dist;continue;}
+                                if(dist<minDist){minDist=dist;ent=cont;}
+                            }
                             if(ent==null) return res;
 
                             res.add("entity",ent.getUuid());
