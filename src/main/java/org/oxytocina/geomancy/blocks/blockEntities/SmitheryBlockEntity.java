@@ -34,6 +34,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.client.screen.SmitheryScreenHandler;
 import org.oxytocina.geomancy.util.Toolbox;
 import org.oxytocina.geomancy.blocks.MultiblockCrafter;
 import org.oxytocina.geomancy.inventories.AutoCraftingInventory;
@@ -124,10 +125,8 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
 
     @Nullable
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-        return getHandler.apply(syncId, playerInventory, this, this.propertyDelegate);
+        return new SmitheryScreenHandler(syncId, playerInventory, this, this.propertyDelegate);
     }
-    public static Function4<Integer, PlayerInventory,SmitheryBlockEntity, PropertyDelegate,ScreenHandler> getHandler = (a, b, c, d) -> null;
-    public static void SetScreenHandler(Function4<Integer, PlayerInventory,SmitheryBlockEntity, PropertyDelegate,ScreenHandler> f){getHandler=f;}
 
     public DefaultedList<ItemStack> getItems() {
         return inventory;

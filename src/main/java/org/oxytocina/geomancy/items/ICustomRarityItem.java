@@ -15,7 +15,7 @@ public interface ICustomRarityItem {
     default int getRarityColor(ItemStack stack, int index){
         return switch (getRarity()){
             case Rainbow ->Toolbox.colorFromHSV((((Geomancy.CONFIG.epilepsyMode.value()?0:GeomancyClient.tick)+index*5)/20f/2)%1,0.5f,1);
-            case Octangulite -> ModColorizationHandler.octanguliteToolNoise(stack,index);
+            case Octangulite -> ModColorizationHandler.octanguliteRarityNoise(stack,index);
             default->0xFFFFFFFF;
         };
     }

@@ -1,8 +1,9 @@
 package org.oxytocina.geomancy.util;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.PlayerAdvancementTracker;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.ServerAdvancementLoader;
@@ -18,10 +19,12 @@ public class AdvancementHelper {
 
     }
 
-    public static boolean hasAdvancement(PlayerEntity player, Identifier advancementIdentifier){
-        // TODO: Client Advancements
-        if(player instanceof ClientPlayerEntity clientPlayer && player == MinecraftClient.getInstance().player) return ClientAdvancements.has(advancementIdentifier);
+    @Environment(EnvType.CLIENT)
+    public static boolean hasAdvancementClient(ClientPlayerEntity player, Identifier advancement){
+        return ClientAdvancements.has(advancement);
+    }
 
+    public static boolean hasAdvancementServer(PlayerEntity player, Identifier advancementIdentifier){
         if(!(player instanceof ServerPlayerEntity serverPlayerEntity)) return false;
 
         if(serverPlayerEntity.getServer()==null) return false;

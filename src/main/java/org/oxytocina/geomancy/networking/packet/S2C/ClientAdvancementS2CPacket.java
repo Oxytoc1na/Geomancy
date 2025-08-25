@@ -1,21 +1,21 @@
 package org.oxytocina.geomancy.networking.packet.S2C;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.progression.advancement.ClientAdvancements;
-import org.oxytocina.geomancy.util.ManaUtil;
 
 public class ClientAdvancementS2CPacket {
 
+    @Environment(EnvType.CLIENT)
     public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler,
                                PacketByteBuf buf, PacketSender responseSender) {
         int count = buf.readInt();

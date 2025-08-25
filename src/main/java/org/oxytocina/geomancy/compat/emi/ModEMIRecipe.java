@@ -11,7 +11,6 @@ import net.minecraft.util.*;
 import org.jetbrains.annotations.*;
 import org.oxytocina.geomancy.compat.GeomancyIntegrationPacks;
 import org.oxytocina.geomancy.util.AdvancementHelper;
-import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.*;
 
@@ -42,7 +41,7 @@ public abstract class ModEMIRecipe implements EmiRecipe {
 
     public boolean hasAdvancement(Identifier advancement) {
         MinecraftClient client = MinecraftClient.getInstance();
-        return AdvancementHelper.hasAdvancement(client.player, advancement);
+        return AdvancementHelper.hasAdvancementClient(client.player, advancement);
     }
 
     protected static Text getCraftingTimeText(int time) {

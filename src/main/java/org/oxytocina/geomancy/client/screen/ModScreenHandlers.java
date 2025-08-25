@@ -22,9 +22,7 @@ public class ModScreenHandlers {
                     new ExtendedScreenHandlerType<>(StorageItemScreenHandler::new));
 
 
-    // TODO: clean up this mess
     public static void register() {
-        SmitheryBlockEntity.SetScreenHandler(SmitheryScreenHandler::new);
-        SpellmakerBlockEntity.SetScreenHandler(SpellmakerScreenHandler::new);
+
     }
 }

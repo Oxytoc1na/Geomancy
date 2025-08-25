@@ -1,5 +1,7 @@
 package org.oxytocina.geomancy.client.rendering;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
@@ -184,6 +186,7 @@ public class ModColorizationHandler {
 
     }
 
+    @Environment(EnvType.CLIENT)
     public static int octanguliteItemNoise(ItemStack stack, int tintIndex,float zoom, boolean withSlotOffset){
         float baseX, baseY, baseZ;
 
@@ -253,9 +256,11 @@ public class ModColorizationHandler {
 
     }
 
+    @Environment(EnvType.CLIENT)
     public static int octanguliteToolNoise(ItemStack stack){
         return octanguliteToolNoise(stack,0);
     }
+    @Environment(EnvType.CLIENT)
     public static int octanguliteToolNoise(ItemStack stack,int index){
 
         final float zoom = 0.03f;
@@ -434,5 +439,72 @@ public class ModColorizationHandler {
             case 5: return Toolbox.colorFromRGB(value, p, q);
             default: throw new RuntimeException("Something went wrong when converting from HSV to RGB. Input was " + hue + ", " + saturation + ", " + value);
         }
+    }
+
+    public static int octanguliteRarityNoise(ItemStack stack, int index) {
+        final float zoom = 0.03f;
+        final float speed = 0.01f;
+        final float offset = index/3f;
+        final boolean withSlotOffset = true;
+
+        float hue = 0;
+        float sat = 1;
+        float val = 1;
+
+        float baseX, baseY, baseZ;
+
+        if(stack.getHolder()!=null){
+            Vec3d pos = stack.getHolder().getPos();
+
+            if(withSlotOffset && stack.getHolder() instanceof PlayerEntity player){
+
+                int slot = player.getInventory().getSlotWithStack(stack);
+
+                baseX = (float)pos.getX()+slot;
+                baseY = (float)pos.getY()+13+slot*2;
+                baseZ = (float)pos.getZ()+54+slot*3;
+            }
+            else{
+                baseX = (float)pos.getX();
+                baseY = (float)pos.getY();
+                baseZ = (float)pos.getZ();
+            }
+        }
+        else{
+            baseX = 0;
+            baseY = 0;
+            baseZ = 0;
+        }
+
+        baseX += speed*GeomancyClient.tick;
+        baseZ += offset;
+
+        float x = zoom*baseX;
+        float y = zoom*baseY;
+        float z = zoom*baseZ;
+
+        float x2 = zoom*1.5f*(baseX+230);
+        float y2 = zoom*1.5f*(baseY+590);
+        float z2 = zoom*1.5f*(baseZ+367);
+
+        float x3 = zoom*2f*(baseX+129);
+        float y3 = zoom*2f*(baseY+395);
+        float z3 = zoom*2f*(baseZ+529);
+
+        final float hueShift = 83/360f;
+
+        hue = (float)(org.oxytocina.geomancy.util.SimplexNoise.noise(x,y,z)+1)/2*(1-hueShift) + hueShift;
+        sat = (float) (1-Math.pow(1F-((SimplexNoise.noise(x2,y2,z2)+1)/2),2));
+        val = (float) (1-Math.pow(1F-((SimplexNoise.noise(x3,y3,z3)+1)/2),2));
+
+        float durability = 1;
+        if(stack.isDamageable()){
+            durability = 1f-(stack.getDamage()/(float)stack.getMaxDamage());
+        }
+        hue = MathHelper.lerp(durability,0,hue);
+
+        return hsvToRgb(
+                hue,sat,val
+        );
     }
 }

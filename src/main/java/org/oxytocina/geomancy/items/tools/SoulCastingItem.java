@@ -4,6 +4,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
@@ -232,7 +233,12 @@ public class SoulCastingItem extends StorageItem implements IManaStoringItem, IS
 
         // open spell selection screen
         if(player instanceof ServerPlayerEntity spe)
-            OpenSpellSelectScreenS2CPacket.send(spe,stack,playerInventory.getSlotWithStack(stack));
+        {
+            PacketByteBuf buf = PacketByteBufs.create();
+            buf.writeItemStack(stack);
+            buf.writeInt(playerInventory.getSlotWithStack(stack));
+            ServerPlayNetworking.send(spe, ModMessages.OPEN_SPELL_SELECT_SCREEN,buf);
+        }
         return null;
     }
 

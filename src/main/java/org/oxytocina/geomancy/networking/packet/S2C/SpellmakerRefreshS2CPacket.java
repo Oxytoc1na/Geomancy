@@ -1,5 +1,7 @@
 package org.oxytocina.geomancy.networking.packet.S2C;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -9,6 +11,7 @@ import org.oxytocina.geomancy.client.screen.SpellmakerScreenHandler;
 
 public class SpellmakerRefreshS2CPacket {
 
+    @Environment(EnvType.CLIENT)
     public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler,
                                PacketByteBuf buf, PacketSender responseSender) {
         var pos = buf.readBlockPos();

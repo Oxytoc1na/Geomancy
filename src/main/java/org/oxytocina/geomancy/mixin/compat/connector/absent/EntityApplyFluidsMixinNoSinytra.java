@@ -1,5 +1,7 @@
 package org.oxytocina.geomancy.mixin.compat.connector.absent;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.entity.*;
 import net.minecraft.fluid.*;
 import net.minecraft.particle.*;
@@ -40,6 +42,7 @@ public class EntityApplyFluidsMixinNoSinytra {
     }
 
     @ModifyArg(method = "onSwimmingStart()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;addParticle(Lnet/minecraft/particle/ParticleEffect;DDDDDD)V"), index = 0)
+    @Environment(EnvType.CLIENT)
     private ParticleEffect geomancy$modifySwimmingStartParticles(ParticleEffect particleEffect) {
         Fluid fluid = ((Entity) (Object) this).getWorld().getFluidState(((Entity) (Object) this).getBlockPos()).getFluid();
         if (fluid instanceof ModFluid modFluid) {

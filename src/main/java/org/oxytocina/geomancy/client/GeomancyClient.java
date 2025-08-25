@@ -35,7 +35,6 @@ public class GeomancyClient implements ClientModInitializer {
         if(initialized) return;
         Geomancy.logInfo("Initializing Geomancy Client");
 
-        ModScreenHandlers.register();
         ModScreens.register();
         ModColorizationHandler.register();
         ModBlockTransparency.register();

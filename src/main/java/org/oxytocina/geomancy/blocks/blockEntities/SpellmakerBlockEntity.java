@@ -107,10 +107,8 @@ public class SpellmakerBlockEntity extends BlockEntity implements ExtendedScreen
 
     @Nullable
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-        return getHandler.apply(syncId, playerInventory, this, this.propertyDelegate);
+        return new SpellmakerScreenHandler(syncId, playerInventory, this, this.propertyDelegate);
     }
-    public static Function4<Integer, PlayerInventory, SpellmakerBlockEntity, PropertyDelegate,ScreenHandler> getHandler = (a, b, c, d) -> null;
-    public static void SetScreenHandler(Function4<Integer, PlayerInventory, SpellmakerBlockEntity, PropertyDelegate,ScreenHandler> f){getHandler=f;}
 
     @Override
     public DefaultedList<ItemStack> getItems() {

@@ -5,7 +5,6 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -29,10 +28,12 @@ public class StellgeUtil {
         return t.setStyle(t.getStyle().withFont(Geomancy.locate("stellgian")));
     }
 
+    @Environment(EnvType.CLIENT)
     public static MutableText stellgify(MutableText t, float knowledgeRequired){
         return stellgify(t,knowledgeRequired,0);
     }
 
+    @Environment(EnvType.CLIENT)
     public static MutableText stellgify(MutableText t, float knowledgeRequired, float knowledgeBonus){
         if(MinecraftClient.getInstance()==null||MinecraftClient.getInstance().player==null) return t;
         return stellgify(t,knowledgeRequired,knowledgeBonus, MinecraftClient.getInstance().player);
@@ -104,13 +105,11 @@ public class StellgeUtil {
     }
 
     public static float getAdvancementKnowledge(PlayerEntity player){
-        if(player instanceof ClientPlayerEntity) return clientAdvancementKnowledge;
-
         if(player instanceof ServerPlayerEntity spe){
             return calculateAdvancementKnowledge(spe);
         }
 
-        return 0;
+        return clientAdvancementKnowledge;
     }
 
     private static float calculateAdvancementKnowledge(ServerPlayerEntity spe){
@@ -136,7 +135,7 @@ public class StellgeUtil {
 
         for(var s : vals.keySet())
         {
-            if(AdvancementHelper.hasAdvancement(spe, Identifier.tryParse(s)))
+            if(AdvancementHelper.hasAdvancementServer(spe, Identifier.tryParse(s)))
                 res+=vals.get(s);
         }
         return res;

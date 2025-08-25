@@ -1,5 +1,7 @@
 package org.oxytocina.geomancy.networking.packet.S2C;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -11,6 +13,7 @@ import org.oxytocina.geomancy.items.ISpellSelectorItem;
 import org.oxytocina.geomancy.networking.ModMessages;
 
 public class CasterSpellChangedS2CPacket {
+    @Environment(EnvType.CLIENT)
     public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler,
                                PacketByteBuf buf, PacketSender responseSender) {
         int slot = buf.readInt();

@@ -1,7 +1,5 @@
 package org.oxytocina.geomancy.recipe;
 
-//import de.dafuqs.revelationary.api.advancements.*;
-//import de.dafuqs.spectrum.progression.*;
 import net.fabricmc.api.*;
 import net.fabricmc.loader.api.*;
 import net.minecraft.entity.player.*;
@@ -22,8 +20,8 @@ public interface GatedRecipe<C extends Inventory> extends Recipe<C> {
     String getRecipeTypeShortID();
 
     default boolean canPlayerCraft(PlayerEntity playerEntity) {
-        return AdvancementHelper.hasAdvancement(playerEntity, getRecipeTypeUnlockIdentifier())
-                && AdvancementHelper.hasAdvancement(playerEntity, getRequiredAdvancementIdentifier());
+        return AdvancementHelper.hasAdvancementServer(playerEntity, getRecipeTypeUnlockIdentifier())
+                && AdvancementHelper.hasAdvancementServer(playerEntity, getRequiredAdvancementIdentifier());
     }
 
     default Text getSingleUnlockToastString() {

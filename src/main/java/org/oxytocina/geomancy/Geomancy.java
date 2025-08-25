@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.blocks.blockEntities.ModBlockEntities;
+import org.oxytocina.geomancy.client.screen.ModScreenHandlers;
 import org.oxytocina.geomancy.commands.ModCommands;
 import org.oxytocina.geomancy.compat.GeomancyIntegrationPacks;
 import org.oxytocina.geomancy.effects.ModStatusEffects;
@@ -127,6 +128,7 @@ public class Geomancy implements ModInitializer {
             ModWoodTypes.registerStrippables();
             ModFluids.register();
             ModBlockEntities.register();
+            ModScreenHandlers.register();
 
             ModRecipeTypes.registerSerializer();
             ModSoundEvents.register();
