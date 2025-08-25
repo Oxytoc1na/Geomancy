@@ -1,8 +1,8 @@
 package org.oxytocina.geomancy.entity;
 
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.PersistentState;
 
@@ -91,7 +91,7 @@ public class StateSaverAndLoader extends PersistentState {
     }
 
     public static PlayerData getPlayerState(LivingEntity player) {
-        if(player instanceof ClientPlayerEntity){
+        if(!(player instanceof ServerPlayerEntity)){
             return PlayerData.getOrCreate(player.getUuid());
         }
 

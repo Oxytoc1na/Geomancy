@@ -9,6 +9,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.World;
 import org.oxytocina.geomancy.items.armor.IListenerArmor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -17,6 +18,7 @@ public class EntityUtil {
     public static final HashMap<UUID,Integer> playerjumpCooldowns = new HashMap<>();
 
     public static void tick(MinecraftServer server){
+        var toBeRemoved = new ArrayList<>();
         for(var uuid : playerjumpCooldowns.keySet())
         {
             var spe = server.getPlayerManager().getPlayer(uuid);
@@ -26,13 +28,15 @@ public class EntityUtil {
                 if(c>0)
                     setCooldown(spe,c);
                 else{
-                    playerjumpCooldowns.remove(uuid);
+                    toBeRemoved.add(uuid);
                 }
             }
             else{
-                playerjumpCooldowns.remove(uuid);
+                toBeRemoved.add(uuid);
             }
         }
+        for(var uuid : toBeRemoved)
+            playerjumpCooldowns.remove(uuid);
     }
 
     public static int getCooldown(ServerPlayerEntity spe){
