@@ -32,9 +32,7 @@ import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.registries.ModBiomeTags;
 import org.oxytocina.geomancy.registries.ModBlockTags;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class ManaUtil {
 
@@ -337,28 +335,37 @@ public class ManaUtil {
         // generate prioritized lists
         HashMap<Integer,List<Pair<ItemStack,IManaStoringItem>>> storerPriorityMap = new HashMap<>();
         for(var storer : storers){
-            var pair = new Pair<>(storer,(IMana));
+            var pair = new Pair<>(storer,(IManaStoringItem)storer.getItem());
+            int priority = pair.getRight().depletionPriority(storer);
+            if(!storerPriorityMap.containsKey(priority)) storerPriorityMap.put(priority,new ArrayList<>());
+            storerPriorityMap.get(priority).add(pair);
         }
+        List<Integer> keys = new ArrayList<>(storerPriorityMap.keySet());
+        keys.sort(Comparator.comparingInt(o -> o));
 
         float left = amount;
-        boolean changed=true;
-        while(left>0){
-            if(!changed) break;
-            changed=false;
-            int stacksWithMana = 0;
-            for(var stack : storers){if(((IManaStoringItem)stack.getItem()).getMana(world,stack) > 0 ) stacksWithMana++;}
-            float amountPerStack = left/stacksWithMana;
-            for(var stack : storers){
-                if(!(stack.getItem() instanceof IManaStoringItem storer)) continue;
-                float mana = storer.getMana(world,stack);
-                if(mana<=0) continue;
-                float taken = Math.min(mana,amountPerStack);
-                left-=taken;
-                storer.setMana(world,stack,mana-taken);
-                if(mana-taken<=0) storer.onDepleted(stack);
-                changed=true;
+        for (int i = 0; i < keys.size(); i++) {
+            if(left<=0) break;
+            var prioStorers = storerPriorityMap.get(keys.get(i));
+            boolean changed=true;
+            while(left>0){
+                if(!changed) break;
+                changed=false;
+                int stacksWithMana = 0;
+                for(var pair : prioStorers){if(pair.getRight().getMana(world,pair.getLeft()) > 0 ) stacksWithMana++;}
+                float amountPerStack = left/stacksWithMana;
+                for(var pair : prioStorers){
+                    float mana = pair.getRight().getMana(world,pair.getLeft());
+                    if(mana<=0) continue;
+                    float taken = Math.min(mana,amountPerStack);
+                    left-=taken;
+                    pair.getRight().setMana(world,pair.getLeft(),mana-taken);
+                    if(mana-taken<=0) pair.getRight().onDepleted(pair.getLeft());
+                    changed=true;
+                }
             }
         }
+
         return left;
     }
 

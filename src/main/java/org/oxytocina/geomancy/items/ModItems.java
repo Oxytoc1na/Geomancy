@@ -216,11 +216,9 @@ public class ModItems {
     public static final CastingTrinketItem CASTER_CORE =    register("caster_core",new CastingTrinketItem(new Item.Settings().maxCount(1), 9*3,ModItemTags.FITS_IN_CASTERS,false),new ExtraItemSettings());
 
 
-    public static final HammerItem IRON_HAMMER = register("iron_hammer",new HammerItem(5,-3.3f,
-            ToolMaterials.IRON, TagKey.of(RegistryKeys.BLOCK,new Identifier(Geomancy.MOD_ID,"hammer_mineable")),
-            new FabricItemSettings(),10,1,10,20),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Handheld));
-    public static final HammerItem MITHRIL_HAMMER = register("mithril_hammer",new HammerItem(7,-3.3f,
-            ModToolMaterials.MITHRIL, TagKey.of(RegistryKeys.BLOCK,new Identifier(Geomancy.MOD_ID,"hammer_mineable")),new FabricItemSettings(),
+    public static final HammerItem IRON_HAMMER = register("iron_hammer",new HammerItem(5,-3.3f,ToolMaterials.IRON, TagKey.of(RegistryKeys.BLOCK,new Identifier(Geomancy.MOD_ID,"hammer_mineable")), new FabricItemSettings(),
+            10,1,10,20),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final HammerItem MITHRIL_HAMMER = register("mithril_hammer",new HammerItem(7,-3.3f,ModToolMaterials.MITHRIL, TagKey.of(RegistryKeys.BLOCK,new Identifier(Geomancy.MOD_ID,"hammer_mineable")),new FabricItemSettings(),
             1000,100,50,10),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Handheld));
 
     // caster items
@@ -235,6 +233,10 @@ public class ModItems {
     public static final VariableStoringItem VARSTORAGE_SMALL =       register("varstorage_small",  new VariableStoringItem(new FabricItemSettings().maxCount(8),1));
     public static final VariableStoringItem VARSTORAGE_MEDIUM =      register("varstorage_medium", new VariableStoringItem(new FabricItemSettings().maxCount(8),4));
     public static final VariableStoringItem VARSTORAGE_LARGE =       register("varstorage_large",  new VariableStoringItem(new FabricItemSettings().maxCount(8),16));
+
+    public static final SoulStorageItem SOULSTORAGE_SMALL =       register("soulstorage_small",  new SoulStorageItem(new FabricItemSettings().maxCount(1),100,0.5f));
+    public static final SoulStorageItem SOULSTORAGE_MEDIUM =      register("soulstorage_medium", new SoulStorageItem(new FabricItemSettings().maxCount(1),400,0.75f));
+    public static final SoulStorageItem SOULSTORAGE_LARGE =       register("soulstorage_large",  new SoulStorageItem(new FabricItemSettings().maxCount(1),1600,1f));
 
     // geodes
     public static final Item GEODE_PREVIEW = register("geode_preview",new Item(new FabricItemSettings()),new ExtraItemSettings().dontGroupItem());

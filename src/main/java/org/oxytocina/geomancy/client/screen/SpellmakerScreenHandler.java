@@ -1,15 +1,13 @@
 package org.oxytocina.geomancy.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.render.*;
-import net.minecraft.client.sound.PositionedSoundInstance;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -22,15 +20,13 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
-import net.minecraft.sound.SoundCategory;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.MathHelper;
-import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
 import org.oxytocina.geomancy.Geomancy;
@@ -542,6 +538,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
     public static final int gridPropXOffset = -100;
     public static final int appearanceSlotYOffset = 70;
 
+    @Environment(EnvType.CLIENT)
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         int bgPosX = getBgPosX();
         int bgPosY = getBgPosY();
@@ -1117,7 +1114,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
     }
 
     public void onAppearanceSlotClicked(SpellmakerAppearanceSlot spellmakerAppearanceSlot, ItemStack heldStack) {
-        if(player instanceof ClientPlayerEntity) return;
+        if(!(player instanceof ServerPlayerEntity)) return;
         currentGrid = SpellStoringItem.getOrCreateGrid(getOutput());
         if(!hasGrid()) return;
         currentGrid.displayStack = heldStack.copy();

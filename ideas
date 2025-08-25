@@ -198,3 +198,9 @@ TODO ITEMS
 
 TODO DEBUG
 - the fucking mana storage items synchronize very strangely
+- premade spells side configs are fucked
+- remove skilltree popup test
+
+fixed
+- crash when clicking on component in hotbar
+- crash when using appearance slot

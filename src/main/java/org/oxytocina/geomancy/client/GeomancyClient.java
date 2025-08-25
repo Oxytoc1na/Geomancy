@@ -20,7 +20,7 @@ import org.oxytocina.geomancy.client.rendering.armor.ModArmorRenderers;
 import org.oxytocina.geomancy.client.screen.*;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 import org.oxytocina.geomancy.compat.GeomancyIntegrationPacks;
-import org.oxytocina.geomancy.event.KeyInputHandler;
+import org.oxytocina.geomancy.client.event.KeyInputHandler;
 import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.particles.ModParticleFactories;
 import org.oxytocina.geomancy.world.dimension.ModDimensions;

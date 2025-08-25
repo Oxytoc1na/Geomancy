@@ -1,5 +1,7 @@
 package org.oxytocina.geomancy.spells;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -7,8 +9,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlastFurnaceBlockEntity;
 import net.minecraft.block.entity.FurnaceBlockEntity;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.TargetPredicate;
@@ -16,7 +16,6 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.BlockItem;
@@ -44,7 +43,6 @@ import net.minecraft.world.BlockStateRaycastContext;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
-import net.minecraft.world.level.ServerWorldProperties;
 import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.client.GeomancyClient;
 import org.oxytocina.geomancy.items.ISpellSelectorItem;
@@ -1281,12 +1279,7 @@ public class SpellBlocks {
                                 if(comp.context.caster instanceof ServerPlayerEntity player)
                                     player.sendMessage(Text.literal(vars.get("val").toString(comp.context)));
                             }
-                            else if(world instanceof ClientWorld clientWorld){
-                                if(comp.context.caster instanceof ClientPlayerEntity player)
-                                    player.sendMessage(Text.literal(vars.get("val").toString(comp.context)));
-                            }
                         }
-
                         return SpellBlockResult.empty();
                     })
                     .sideConfigGetter((c)->SpellBlock.SideUtil.sidesInput(c,"val"))
@@ -2738,10 +2731,6 @@ public class SpellBlocks {
                 if(player instanceof ServerPlayerEntity p2)
                     p2.sendMessage(text);
             }
-            else if(world instanceof ClientWorld){
-                if(player instanceof ClientPlayerEntity p3)
-                    p3.sendMessage(text);
-            }
         }
     }
 
@@ -2981,6 +2970,7 @@ public class SpellBlocks {
             return new CastParticleData(type,amount,pos,world,dispersion);
         }
 
+        @Environment(EnvType.CLIENT)
         public void run(){
             World worldObj = MinecraftClient.getInstance().world;
             if(!worldObj.getRegistryKey().getValue().equals(world)) return; // ignore particle spawns in different worlds

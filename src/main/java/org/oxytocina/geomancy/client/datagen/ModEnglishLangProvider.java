@@ -2,24 +2,18 @@ package org.oxytocina.geomancy.client.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryWrapper;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.ModBlocks;
-import org.oxytocina.geomancy.event.KeyInputHandler;
+import org.oxytocina.geomancy.client.event.KeyInputHandler;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.jewelry.GemSlot;
-import org.oxytocina.geomancy.spells.SpellBlock;
-import org.oxytocina.geomancy.spells.SpellBlocks;
 import org.oxytocina.geomancy.util.Toolbox;
 
-import java.util.Dictionary;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
@@ -545,7 +539,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("geomancy.message.madness.paranoia",    "Did you hear something?");
 
             add(KeyInputHandler.LANG_CATEGORY_GEOMANCY,"Geomancy");
-            add(KeyInputHandler.LANG_OPEN_SKILLTREE,"Skills");
+            //add(KeyInputHandler.LANG_OPEN_SKILLTREE,"Skills");
             add(KeyInputHandler.LANG_CAST_1,"Cast Trinket 1");
             add(KeyInputHandler.LANG_CAST_2,"Cast Trinket 2");
             add(KeyInputHandler.LANG_CAST_3,"Cast Trinket 3");

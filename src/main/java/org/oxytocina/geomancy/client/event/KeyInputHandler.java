@@ -1,25 +1,24 @@
-package org.oxytocina.geomancy.event;
+package org.oxytocina.geomancy.client.event;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.client.util.Window;
 import org.lwjgl.glfw.GLFW;
 import org.oxytocina.geomancy.client.toast.GeomancyToast;
 import org.oxytocina.geomancy.client.toast.StellgeKnowledgeToast;
-import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.networking.ModMessages;
 
+@Environment(EnvType.CLIENT)
 public class KeyInputHandler {
     public static final String LANG_CATEGORY_GEOMANCY = "key.category.geomancy";
 
-    public static final String LANG_OPEN_SKILLTREE = "key.geomancy.skilltree";
-    public static KeyBinding KEY_OPEN_SKILLTREE;
+    //public static final String LANG_OPEN_SKILLTREE = "key.geomancy.skilltree";
+    //public static KeyBinding KEY_OPEN_SKILLTREE;
 
     public static final String LANG_CAST_1 = "key.geomancy.cast.1";
     public static KeyBinding KEY_CAST_1;
@@ -33,10 +32,7 @@ public class KeyInputHandler {
 
     private static void registerKeyInputs(){
         ClientTickEvents.END_CLIENT_TICK.register(minecraftClient -> {
-            if(KEY_OPEN_SKILLTREE.wasPressed()){
-                GeomancyToast.show(new StellgeKnowledgeToast());
-            }
-            else if(KEY_CAST_1.wasPressed()) castPressed(0);
+            if(KEY_CAST_1.wasPressed()) castPressed(0);
             else if(KEY_CAST_2.wasPressed()) castPressed(1);
             else if(KEY_CAST_3.wasPressed()) castPressed(2);
         });
@@ -49,12 +45,12 @@ public class KeyInputHandler {
     }
 
     public static void register(){
-        KEY_OPEN_SKILLTREE = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                LANG_OPEN_SKILLTREE,
-                InputUtil.Type.KEYSYM,
-                GLFW.GLFW_KEY_X,
-                LANG_CATEGORY_GEOMANCY
-        ));
+        //KEY_OPEN_SKILLTREE = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+        //        LANG_OPEN_SKILLTREE,
+        //        InputUtil.Type.KEYSYM,
+        //        GLFW.GLFW_KEY_X,
+        //        LANG_CATEGORY_GEOMANCY
+        //));
 
         KEY_CAST_1 = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 LANG_CAST_1,

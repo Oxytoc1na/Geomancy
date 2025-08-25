@@ -1,5 +1,8 @@
 package org.oxytocina.geomancy.items.tools;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageSources;
@@ -15,10 +18,12 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.registries.ModDamageTypes;
 import org.oxytocina.geomancy.util.LeadUtil;
 
 import java.text.Normalizer;
+import java.util.List;
 import java.util.UUID;
 
 public class Plumbometer extends Item {
@@ -101,5 +106,12 @@ public class Plumbometer extends Item {
             finishMeasurement(stack,null);
         }
 
+    }
+
+    @Override
+    @Environment(EnvType.CLIENT)
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
+        tooltip.add(Text.translatable("item.geomancy.plumbometer.desc"));
     }
 }
