@@ -2,22 +2,22 @@ package org.oxytocina.geomancy.spells;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtHelper;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.math.Vec2f;
+import net.minecraft.util.math.Vec3d;
 import org.joml.Vector2i;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlockEntity;
 import org.oxytocina.geomancy.effects.ModStatusEffects;
+import org.oxytocina.geomancy.entity.CasterDelegateEntity;
 import org.oxytocina.geomancy.items.SpellStoringItem;
 import org.oxytocina.geomancy.util.ManaUtil;
-import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -47,6 +47,12 @@ public class SpellGrid {
         this.components=new LinkedHashMap<>();
     }
 
+    public CasterDelegateEntity spawnDelegate(SpellContext parent, Vec3d pos, Vec2f rot, int delay){
+        CasterDelegateEntity res = new CasterDelegateEntity(parent,this,pos,rot,delay);
+        parent.getWorld().spawnEntity(res);
+        return res;
+    }
+
     public SpellBlockResult runReferenced(SpellContext parent,SpellComponent casterComp,SpellBlockArgs args){
         SpellContext context = parent.createReferenced(casterComp);
         context.internalVars = args;
@@ -67,7 +73,7 @@ public class SpellGrid {
         return context.referenceResult;
     }
 
-    public void run(ItemStack casterItem, ItemStack spellStorage, LivingEntity casterEntity, AutocasterBlockEntity blockEntity, SpellBlockArgs args, SpellContext.SoundBehavior soundBehavior){
+    public void run(ItemStack casterItem, ItemStack spellStorage, LivingEntity casterEntity, AutocasterBlockEntity blockEntity,CasterDelegateEntity delegate, SpellBlockArgs args, SpellContext.SoundBehavior soundBehavior){
         long startTime = System.nanoTime();
 
         float costMultiplier = soulCostMultiplier;
@@ -77,7 +83,7 @@ public class SpellGrid {
             costMultiplier *= 1+(amp+1)*0.5f;
         }
 
-        SpellContext context = new SpellContext(this,casterEntity,blockEntity,casterItem,spellStorage,0,costMultiplier,0,soundBehavior);
+        SpellContext context = new SpellContext(this,casterEntity,blockEntity,delegate,casterItem,spellStorage,0,costMultiplier,0,soundBehavior);
         context.refreshAvailableSoul();
         context.internalVars = args;
 

@@ -3,6 +3,7 @@ package org.oxytocina.geomancy.spells;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -10,12 +11,15 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlock;
 import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlockEntity;
+import org.oxytocina.geomancy.entity.CasterDelegateEntity;
+import org.oxytocina.geomancy.items.ISpellSelectorItem;
 import org.oxytocina.geomancy.util.ManaUtil;
 import org.oxytocina.geomancy.util.Toolbox;
 
 public class SpellContext {
     public LivingEntity caster;
     public AutocasterBlockEntity casterBlock;
+    public CasterDelegateEntity delegate;
     public ItemStack casterItem;
     public ItemStack spellStorage;
     protected float availableSoul;
@@ -45,6 +49,7 @@ public class SpellContext {
             SpellGrid grid,
             LivingEntity caster,
             AutocasterBlockEntity casterBlock,
+            CasterDelegateEntity delegate,
             ItemStack casterItem,
             ItemStack spellStorage,
             float availableSoul,
@@ -55,6 +60,7 @@ public class SpellContext {
         this.grid=grid;
         this.caster = caster;
         this.casterBlock = casterBlock;
+        this.delegate = delegate;
         this.casterItem=casterItem;
         this.spellStorage=spellStorage;
         this.availableSoul=availableSoul;
@@ -63,14 +69,15 @@ public class SpellContext {
         this.soulConsumed=soulConsumed;
         this.soundBehavior=soundBehavior;
 
-        sourceType = caster!=null?SourceType.Caster
-        : casterBlock!=null?SourceType.Block
-        : SourceType.Delegate;
+        sourceType = delegate!=null?SourceType.Delegate
+                : caster!=null?SourceType.Caster
+                : casterBlock!=null?SourceType.Block
+        : SourceType.Caster;
     }
 
     /// to be used SOLELY for stringifying spell signals!!
     public static SpellContext ofWorld(@Nullable World world) {
-        var res = new SpellContext(null,null,null,null,null,0,0,0,null);
+        var res = new SpellContext(null,null,null,null,null,null,0,0,0,null);
         res.worldOverride = world;
         return res;
     }
@@ -98,7 +105,16 @@ public class SpellContext {
 
             case Delegate:
             default:{
-                break;
+                if(caster!=null){
+                    if(caster instanceof PlayerEntity player && player.isCreative())
+                        return true;
+                    availableSoul -= amount;
+                    return ManaUtil.tryConsumeMana(caster,amount);
+                }
+                if(casterBlock!=null){
+                    availableSoul -= amount;
+                    return ManaUtil.tryConsumeMana(casterBlock,amount);
+                }
             }
         }
 
@@ -127,6 +143,20 @@ public class SpellContext {
 
             case Delegate:
             default:{
+                if(caster!=null){
+                    if(caster instanceof PlayerEntity player){
+                        availableSoul = ManaUtil.getMana(player);
+                        if(player.isCreative()) return true;
+                        return availableSoul>=amount;
+                    }
+
+                    // TODO: livingentity mana
+                    return true;
+                }
+                if(casterBlock!=null){
+                    availableSoul = ManaUtil.getMana(casterBlock.getWorld(),casterBlock);
+                    return availableSoul>=amount;
+                }
                 break;
             }
         }
@@ -153,6 +183,11 @@ public class SpellContext {
 
             case Delegate:
             default:{
+                if(caster instanceof PlayerEntity player){
+                    availableSoul = ManaUtil.getMana(player);
+                    return;
+                }
+                availableSoul = ManaUtil.getMana(casterBlock.getWorld(),casterBlock);
                 break;
             }
         }
@@ -186,7 +221,7 @@ public class SpellContext {
     }
 
     public SpellContext createReferenced(SpellComponent comp){
-        SpellContext res = new SpellContext(this.grid,caster,casterBlock,casterItem,spellStorage,availableSoul,soulCostMultiplier,soulConsumed,soundBehavior);
+        SpellContext res = new SpellContext(this.grid,caster,casterBlock,delegate,casterItem,spellStorage,availableSoul,soulCostMultiplier,soulConsumed,soundBehavior);
         res.parentCall = this;
         res.referenceCallingFrom = comp;
         res.internalVars=new SpellBlockArgs();
@@ -208,6 +243,7 @@ public class SpellContext {
         {
             case Caster -> caster!=null?caster.getWorld():worldOverride;
             case Block -> casterBlock!=null?casterBlock.getWorld():worldOverride;
+            case Delegate -> casterBlock!=null?casterBlock.getWorld():caster!=null?caster.getWorld():worldOverride;
             default -> worldOverride;
         };
     }
@@ -217,12 +253,26 @@ public class SpellContext {
         {
             case Caster -> caster.getPos();
             case Block -> casterBlock.getPos().toCenterPos();
+            case Delegate -> delegate.getPos();
             default-> null;
         };
     }
 
     public BlockPos getOriginBlockPos() {
         return Toolbox.posToBlockPos(getOriginPos());
+    }
+
+    public ISpellSelectorItem getSpellSelector() {
+        return (ISpellSelectorItem)casterItem.getItem();
+    }
+
+    public Inventory getInventory() {
+        return switch(sourceType){
+            case Caster -> (caster instanceof PlayerEntity pe)?pe.getInventory():null;
+            case Block -> casterBlock;
+            case Delegate -> (caster instanceof PlayerEntity pe)?pe.getInventory():casterBlock;
+            default->null;
+        };
     }
 
     public enum SourceType{

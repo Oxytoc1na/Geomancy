@@ -119,4 +119,8 @@ public interface ISpellSelectorItem {
 
     void markDirty(ItemStack casterItem);
     void onSpellChanged(ItemStack stack, ClientPlayerEntity player, int spellIndex);
+
+    default boolean spellPresent(ItemStack stack, String spellName){
+        return getSpellIndexOfSpell(stack,spellName) != -1;
+    }
 }

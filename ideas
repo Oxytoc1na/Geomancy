@@ -171,12 +171,9 @@ TODO PREMADE SPELLS
 TODO EFFECT BLOCKS
 - taming entities
 - bonemeal spell
-- sound events
 - time
 - weather
-- delegate entity
 - translate text
-- parse number
 - nbt manipulation
 - collect items on ground
 

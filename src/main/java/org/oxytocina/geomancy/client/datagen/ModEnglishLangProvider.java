@@ -162,6 +162,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("replace","Replace","a combination of the break and place components");
             addSpell("ignite","Ignite","heats a given block position up");
             addSpell("play_sound","Play Sound","plays a sound in the world");
+            addSpell("delegate","Delegate","runs a spell with a specified delay");
             // reference
             addSpell("action","Action","calls another installed spell");
             addSpell("provider","Provider","automatically returns the result of a spell");

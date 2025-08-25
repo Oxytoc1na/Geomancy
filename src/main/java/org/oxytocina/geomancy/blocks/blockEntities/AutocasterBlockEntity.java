@@ -125,7 +125,7 @@ public class AutocasterBlockEntity extends LootableContainerBlockEntity implemen
         var grid = SpellStoringItem.readGrid(spell);
         if(grid==null) return;
 
-        grid.run(caster,spell,null,this, SpellBlockArgs.empty(), SpellContext.SoundBehavior.Reduced);
+        grid.run(caster,spell,null,this,null, SpellBlockArgs.empty(), SpellContext.SoundBehavior.Reduced);
     }
 
     public void tick(World world, BlockPos pos, BlockState state) {
