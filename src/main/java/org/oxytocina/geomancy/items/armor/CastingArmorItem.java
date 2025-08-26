@@ -1,7 +1,13 @@
 package org.oxytocina.geomancy.items.armor;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.entity.model.BipedEntityModel;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,10 +29,15 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.client.registries.ModModelLayers;
+import org.oxytocina.geomancy.client.rendering.armor.OctanguliteArmorModel;
 import org.oxytocina.geomancy.client.screen.StorageItemScreenHandler;
 import org.oxytocina.geomancy.items.*;
 import org.oxytocina.geomancy.items.tools.SoulCastingItem;
@@ -42,6 +53,8 @@ import java.util.List;
 import static org.oxytocina.geomancy.items.tools.StorageItem.getInventoryStatic;
 
 public class CastingArmorItem extends ArmorItem implements IMaddeningItem, IStorageItem, ExtendedScreenHandlerFactory, IManaStoringItem, ICustomRarityItem, IListenerArmor {
+    @Environment(EnvType.CLIENT)
+    private BipedEntityModel<LivingEntity> model;
 
     private final float maddeningSpeed;
 
@@ -317,11 +330,36 @@ public class CastingArmorItem extends ArmorItem implements IMaddeningItem, IStor
 
     public MutableText getTriggerText(){
         return Text.translatable("geomancy.caster.trigger."+switch(type){
-            case BOOTS -> "boots";
+            case BOOTS -> "chat";
             case LEGGINGS -> "jump";
             case CHESTPLATE -> "gethit";
             case HELMET -> "hit";
             default->"ERROR";
         });
+    }
+
+    @Environment(EnvType.CLIENT)
+    public BipedEntityModel<LivingEntity> getArmorModel() {
+        if (model == null) {
+            model = provideArmorModelForSlot(getSlotType());
+        }
+        return model;
+    }
+
+    // this takes the "unused" stack, so addons can mixin into it
+    public RenderLayer getRenderLayer(ItemStack stack) {
+        return RenderLayer.getEntitySolid(ModModelLayers.CASTING_ARMOR_MAIN_ID);
+    }
+
+    @NotNull
+    public Identifier getArmorTexture(ItemStack stack, EquipmentSlot slot) {
+        return Geomancy.locate("textures/armor/casting_armor_main.png");
+    }
+
+    @Environment(EnvType.CLIENT)
+    protected BipedEntityModel<LivingEntity> provideArmorModelForSlot(EquipmentSlot slot) {
+        var models = MinecraftClient.getInstance().getEntityModelLoader();
+        var root = models.getModelPart(ModModelLayers.MAIN_CASTING_LAYER);
+        return new OctanguliteArmorModel(root, slot);
     }
 }

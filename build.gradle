@@ -143,4 +143,10 @@ publishing {
 
 loom {
     accessWidenerPath = file("src/main/resources/geomancy.accesswidener")
+
+    runs {
+        client {
+            programArgs(["--username", "0xytocina", "--uuid", "4e6350b3-a9c3-4f27-995f-d5f6bd2cebda"])
+        }
+    }
 }

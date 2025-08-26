@@ -17,6 +17,7 @@ public class ModItemTags {
     public static final TagKey<Item> SPELL_STORING = register("spell_storing");
     public static final TagKey<Item> VARIABLE_STORING = register("variable_storing");
     public static final TagKey<Item> FITS_IN_CASTERS = register("fits_in_casters");
+    public static final TagKey<Item> FITS_IN_SOUL_BORE = register("fits_in_soul_bore");
     public static final TagKey<Item> COMPONENT_STORING = register("component_storing");
     public static final TagKey<Item> CASTING_ITEM = register("casting_item");
     public static final TagKey<Item> SOUL_OAK_LOGS = register("soul_oak_logs");

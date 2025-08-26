@@ -130,6 +130,14 @@ public class ModColorizationHandler {
         addOctanguliteArmorItem(ModItems.OCTANGULITE_HELMET);
 
         ColorProviderRegistry.ITEM.register(
+                (stack, tintIndex) -> tintIndex==1?0xFFFFFFFF:octanguliteItemNoise(stack, tintIndex, 0.03F,true),
+                ModItems.CASTER_BOOTS,
+                ModItems.CASTER_LEGGINGS,
+                ModItems.CASTER_CHESTPLATE,
+                ModItems.CASTER_HELMET
+        );
+
+        ColorProviderRegistry.ITEM.register(
                 (stack, tintIndex) -> tintIndex==0?0xFFFFFFFF:octanguliteItemNoise(stack, tintIndex, 0.03F,true),ModItems.COMPONENT_POUCH);
     }
 

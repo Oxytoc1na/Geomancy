@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -132,8 +133,8 @@ public class SpellContext {
     }
 
     /// to be used SOLELY for stringifying spell signals!!
-    public static SpellContext ofWorld(@Nullable World world) {
-        var res = new SpellContext(null,null,null,null,null,null,0,0,0,null);
+    public static SpellContext ofWorld(@Nullable World world, @Nullable PlayerEntity caster) {
+        var res = new SpellContext(null,caster,null,null,null,null,0,0,0,null);
         res.worldOverride = world;
         return res;
     }
@@ -151,12 +152,12 @@ public class SpellContext {
                     return true;
 
                 availableSoul -= amount;
-                return ManaUtil.tryConsumeMana(caster,amount);
+                return ManaUtil.tryConsumeMana(caster,amount,this);
             }
 
             case Block:{
                 availableSoul -= amount;
-                return ManaUtil.tryConsumeMana(casterBlock,amount);
+                return ManaUtil.tryConsumeMana(casterBlock,amount,this);
             }
 
             case Delegate:
@@ -165,11 +166,11 @@ public class SpellContext {
                     if(caster instanceof PlayerEntity player && player.isCreative())
                         return true;
                     availableSoul -= amount;
-                    return ManaUtil.tryConsumeMana(caster,amount);
+                    return ManaUtil.tryConsumeMana(caster,amount,this);
                 }
                 if(casterBlock!=null){
                     availableSoul -= amount;
-                    return ManaUtil.tryConsumeMana(casterBlock,amount);
+                    return ManaUtil.tryConsumeMana(casterBlock,amount,this);
                 }
             }
         }
@@ -329,6 +330,11 @@ public class SpellContext {
             case Delegate -> (caster instanceof PlayerEntity pe)?pe.getInventory():casterBlock;
             default->null;
         };
+    }
+
+    public SoundCategory getSoundCategory() {
+        if(caster!=null) return SoundCategory.PLAYERS;
+        return SoundCategory.BLOCKS;
     }
 
     public enum SourceType{

@@ -255,7 +255,7 @@ public class CastingTrinketItem extends TrinketItem implements IStorageItem, Ext
     }
 
     public MutableText getTriggerText(){
-        return Text.literal("TODO");
+        return Text.translatable("geomancy.caster.trigger.tick");
     }
 
     @Override

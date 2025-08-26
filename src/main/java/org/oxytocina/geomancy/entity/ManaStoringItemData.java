@@ -1,11 +1,14 @@
 package org.oxytocina.geomancy.entity;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.world.World;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.items.IManaStoringItem;
+import org.oxytocina.geomancy.util.ManaUtil;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -100,6 +103,7 @@ public class ManaStoringItemData {
             stackMap.put(newData.uuid,stack);
             uuid = newData.uuid;
             StateSaverAndLoader.setManaStoringItemData(world,uuid,newData);
+            ManaUtil.syncItemMana(world,stack);
             return newData;
         }
         else if(!stackMap.containsKey(uuid)){
@@ -113,6 +117,7 @@ public class ManaStoringItemData {
         return new ManaStoringItemData(mana,maxMana,speedMultiplier);
     }
 
+    @Environment(EnvType.CLIENT)
     public static void setFromBuffer(PacketByteBuf buf){
         ManaStoringItemData newData = fromBuf(buf);
 

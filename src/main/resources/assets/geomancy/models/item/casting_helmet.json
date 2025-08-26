@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "geomancy:item/octangulite_helmet",
+    "layer1": "geomancy:item/casting_helmet"
+  }
+}

@@ -1,5 +1,8 @@
 package org.oxytocina.geomancy.items.tools;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -77,6 +80,7 @@ public class VariableStoringItem extends Item implements IVariableStoringItem{
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         super.appendTooltip(stack, world, tooltip, context);
         var sigs = getSignalsStatic(stack);
@@ -86,9 +90,8 @@ public class VariableStoringItem extends Item implements IVariableStoringItem{
 
         if(sigs!=null)
             for(var sig : sigs.values()){
-                var text = Text.empty().formatted(Formatting.DARK_GRAY).append(sig.toText()).append(" : ").append(sig.toString(SpellContext.ofWorld(world)));
+                var text = Text.empty().formatted(Formatting.DARK_GRAY).append(sig.toText()).append(" : ").append(sig.toString(SpellContext.ofWorld(world, MinecraftClient.getInstance().player)));
                 tooltip.add(text);
             }
-
     }
 }

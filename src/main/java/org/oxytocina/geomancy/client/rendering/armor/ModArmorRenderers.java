@@ -30,9 +30,17 @@ public class ModArmorRenderers {
 					ModItems.MITHRIL_LEGGINGS,
 					ModItems.MITHRIL_BOOTS
 			);
+	public static final List<Item> CASTING_ARMOR =
+			List.of(
+					ModItems.CASTER_HELMET,
+					ModItems.CASTER_CHESTPLATE,
+					ModItems.CASTER_LEGGINGS,
+					ModItems.CASTER_BOOTS
+			);
 	
 	public static void register() {
 		ArmorRenderer.register(OctanguliteArmorModel::renderPartStatic, OCTANGULITE_ARMOR.toArray(new Item[0]));
+		ArmorRenderer.register(CastingArmorModel::renderPartStatic, CASTING_ARMOR.toArray(new Item[0]));
 		ArmorRenderer.register(MithrilArmorModel::renderPartStatic, MITHRIL_ARMOR.toArray(new Item[0]));
 	}
 

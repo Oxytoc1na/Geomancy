@@ -173,6 +173,7 @@ TODO EFFECT BLOCKS
 - nbt manipulation
 - collect items on ground
 - silent execution
+- parent component for delegates
 
 autocaster
 - set block redstone level
@@ -196,11 +197,15 @@ TODO textures
 TODO ITEMS
 - non-rechargeable octangulite mana storage?
 - refined octangulite nuggets
+- hammers
 
 TODO DEBUG
 - the fucking mana storage items synchronize very strangely
 - premade spells side configs are fucked
 - bone meal component fix
+- make foreach affected by depth
+- pool sent packets to improve performance
+- maximum execution time limit
 
 fixed
 - crash when clicking on component in hotbar

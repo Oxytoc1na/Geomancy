@@ -115,6 +115,17 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
                 .forceAddTag(VARIABLE_STORING)
                         ;
 
+        // fits in soul bore
+        getOrCreateTagBuilder(FITS_IN_SOUL_BORE)
+                .add(
+                        ModItems.OCTANGULITE_NUGGET,
+                        ModItems.OCTANGULITE_INGOT,
+                        ModItems.RAW_OCTANGULITE,
+                        ModBlocks.OCTANGULITE_BLOCK.asItem(),
+                        ModBlocks.RAW_OCTANGULITE_BLOCK.asItem()
+                )
+        ;
+
         // component storing
         getOrCreateTagBuilder(COMPONENT_STORING).setReplace(false)
                 .add(

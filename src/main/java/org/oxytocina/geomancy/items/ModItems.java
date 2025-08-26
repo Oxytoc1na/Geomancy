@@ -208,10 +208,10 @@ public class ModItems {
     public static final OctanguliteArmorItem OCTANGULITE_LEGGINGS =     register("octangulite_leggings",    new OctanguliteArmorItem    (ModArmorMaterials.OCTANGULITE, ArmorItem.Type.LEGGINGS,    new Item.Settings(),1));
     public static final OctanguliteArmorItem OCTANGULITE_BOOTS =        register("octangulite_boots",       new OctanguliteArmorItem    (ModArmorMaterials.OCTANGULITE, ArmorItem.Type.BOOTS,       new Item.Settings(),1));
 
-    public static final CastingArmorItem CASTER_HELMET =        register("casting_helmet",      new CastingArmorItem(ModArmorMaterials.OCTANGULITE, ArmorItem.Type.HELMET,      new Item.Settings(),1,5,ModItemTags.FITS_IN_CASTERS,false));
-    public static final CastingArmorItem CASTER_CHESTPLATE =    register("casting_chestplate",  new CastingArmorItem(ModArmorMaterials.OCTANGULITE, ArmorItem.Type.CHESTPLATE,  new Item.Settings(),1,5,ModItemTags.FITS_IN_CASTERS,false));
-    public static final CastingArmorItem CASTER_LEGGINGS =      register("casting_leggings",    new CastingArmorItem(ModArmorMaterials.OCTANGULITE, ArmorItem.Type.LEGGINGS,    new Item.Settings(),1,5,ModItemTags.FITS_IN_CASTERS,false));
-    public static final CastingArmorItem CASTER_BOOTS =         register("casting_boots",       new CastingArmorItem(ModArmorMaterials.OCTANGULITE, ArmorItem.Type.BOOTS,       new Item.Settings(),1,5,ModItemTags.FITS_IN_CASTERS,false));
+    public static final CastingArmorItem CASTER_HELMET =        register("casting_helmet",      new CastingArmorItem(ModArmorMaterials.OCTANGULITE, ArmorItem.Type.HELMET,      new Item.Settings(),1,5,ModItemTags.FITS_IN_CASTERS,false),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom));
+    public static final CastingArmorItem CASTER_CHESTPLATE =    register("casting_chestplate",  new CastingArmorItem(ModArmorMaterials.OCTANGULITE, ArmorItem.Type.CHESTPLATE,  new Item.Settings(),1,5,ModItemTags.FITS_IN_CASTERS,false),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom));
+    public static final CastingArmorItem CASTER_LEGGINGS =      register("casting_leggings",    new CastingArmorItem(ModArmorMaterials.OCTANGULITE, ArmorItem.Type.LEGGINGS,    new Item.Settings(),1,5,ModItemTags.FITS_IN_CASTERS,false),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom));
+    public static final CastingArmorItem CASTER_BOOTS =         register("casting_boots",       new CastingArmorItem(ModArmorMaterials.OCTANGULITE, ArmorItem.Type.BOOTS,       new Item.Settings(),1,5,ModItemTags.FITS_IN_CASTERS,false),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom));
 
     public static final CastingTrinketItem CASTER_CORE =    register("caster_core",new CastingTrinketItem(new Item.Settings().maxCount(1), 9*3,ModItemTags.FITS_IN_CASTERS,false),new ExtraItemSettings());
 
@@ -237,6 +237,9 @@ public class ModItems {
     public static final SoulStorageItem SOULSTORAGE_SMALL =       register("soulstorage_small",  new SoulStorageItem(new FabricItemSettings().maxCount(1),100,0.5f));
     public static final SoulStorageItem SOULSTORAGE_MEDIUM =      register("soulstorage_medium", new SoulStorageItem(new FabricItemSettings().maxCount(1),400,0.75f));
     public static final SoulStorageItem SOULSTORAGE_LARGE =       register("soulstorage_large",  new SoulStorageItem(new FabricItemSettings().maxCount(1),1600,1f));
+
+    public static final SoulBoreItem SOUL_BORE =      register("soul_bore", new SoulBoreItem(new FabricItemSettings().maxCount(1),9*3));
+
 
     // geodes
     public static final Item GEODE_PREVIEW = register("geode_preview",new Item(new FabricItemSettings()),new ExtraItemSettings().dontGroupItem());

@@ -81,7 +81,7 @@ public class ModHudRenderer {
                 drawTexturedQuad(MANA_BAR_TEXTURE,context.getMatrices(),barX,barX+barWidth,barY,barY+barHeight,0,(0)/MANA_BAR_TEXTURE_SIZE,(barWidth)/MANA_BAR_TEXTURE_SIZE,(15)/MANA_BAR_TEXTURE_SIZE,(15+barHeight)/MANA_BAR_TEXTURE_SIZE,colVec.x,colVec.y,colVec.z,alpha);
             }
 
-            String string = Math.round(ManaUtil.getMana(player)) +" / "+ Math.round(ManaUtil.getMaxMana(player));
+            String string = Toolbox.formatNumber(Math.round(ManaUtil.getMana(player))) +" / "+ Toolbox.formatNumber(Math.round(ManaUtil.getMaxMana(player)));
             if(showAmbientMana()){
                 int t = Toolbox.floor(ambientManaArrowProgress*2.999f);
                 string = Math.round(ManaUtil.getAmbientSoulsPerBlock(player.getWorld(),player.getBlockPos()))+" "+(t%3==0?">":"-")+(t%3==1?">":"-")+(t%3==2?">":"-")+" "+string;

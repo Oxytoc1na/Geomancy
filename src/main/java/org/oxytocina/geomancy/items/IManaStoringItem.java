@@ -9,9 +9,11 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.client.rendering.ModColorizationHandler;
 import org.oxytocina.geomancy.entity.ManaStoringItemData;
+import org.oxytocina.geomancy.spells.SpellContext;
 
 import java.util.List;
 import java.util.UUID;
@@ -95,7 +97,8 @@ public interface IManaStoringItem {
         if(MinecraftClient.getInstance()==null) return 0xFFFFFFFF;
 
         var world = MinecraftClient.getInstance().world;
-        float progress = getMana(world,stack)/getCapacity(world,stack);
+        float cap = getCapacity(world,stack);
+        float progress = getMana(world,stack)/Math.max(cap,1);
 
         return ModColorizationHandler.octanguliteItemBarNoise(progress);
     }
@@ -111,5 +114,9 @@ public interface IManaStoringItem {
         if(cap<=0) return;
         float fraction = mana/cap;
         tooltip.add(Text.translatable("geomancy.soul_storage.tooltip",Math.round(mana),Math.round(cap),Math.round(fraction*100)).formatted(Formatting.DARK_GRAY));
+    }
+
+    default void takeMana(World world, ItemStack left, float taken, @Nullable SpellContext ctx){
+        setMana(world,left,getMana(world,left)-taken);
     }
 }

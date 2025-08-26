@@ -13,6 +13,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.Generic3x3ContainerScreenHandler;
 import net.minecraft.screen.GenericContainerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
@@ -27,12 +28,15 @@ import org.oxytocina.geomancy.spells.SpellBlockArgs;
 import org.oxytocina.geomancy.spells.SpellContext;
 import org.oxytocina.geomancy.util.ManaUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AutocasterBlockEntity extends LootableContainerBlockEntity implements ISpellSelectorBlock {
     public static final int INVENTORY_SIZE = 9;
     private DefaultedList<ItemStack> inventory;
     private final ViewerCountManager stateManager;
+
+    private List<PlayerEntity> inspectingPlayers = new ArrayList<>();
 
     protected AutocasterBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
@@ -67,6 +71,7 @@ public class AutocasterBlockEntity extends LootableContainerBlockEntity implemen
     public void onOpen(PlayerEntity player) {
         if (!this.removed) {
             this.stateManager.updateViewerCount(this.getWorld(), this.getPos(), this.getCachedState());
+            inspectingPlayers.add(player);
         }
 
         if (!this.removed && !player.isSpectator()) {
@@ -76,6 +81,7 @@ public class AutocasterBlockEntity extends LootableContainerBlockEntity implemen
     }
 
     public void onClose(PlayerEntity player) {
+        inspectingPlayers.remove(player);
         if (!this.removed && !player.isSpectator()) {
             this.stateManager.closeContainer(player, this.getWorld(), this.getPos(), this.getCachedState());
         }
@@ -86,7 +92,7 @@ public class AutocasterBlockEntity extends LootableContainerBlockEntity implemen
         BlockState blockState = world.getBlockState(pos);
         if (blockState.hasBlockEntity()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof ChestBlockEntity) {
+            if (blockEntity instanceof AutocasterBlockEntity) {
                 return ((AutocasterBlockEntity)blockEntity).stateManager.getViewerCount();
             }
         }
@@ -168,7 +174,6 @@ public class AutocasterBlockEntity extends LootableContainerBlockEntity implemen
 
     @Override
     protected ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory) {
-        syncManaContainers();
         return new Generic3x3ContainerScreenHandler(syncId, playerInventory, this);
     }
 
@@ -202,9 +207,10 @@ public class AutocasterBlockEntity extends LootableContainerBlockEntity implemen
     }
 
     public void syncManaContainers(){
-        for (int i = 0; i < size(); i++) {
-            ManaUtil.syncItemMana(getWorld(),getStack(i));
-        }
+        for(var player : inspectingPlayers)
+            for (int i = 0; i < size(); i++) {
+                ManaUtil.syncItemMana(getWorld(),getStack(i),(ServerPlayerEntity) player);
+            }
     }
 
     public ItemStack tryCollect(ItemStack s) {

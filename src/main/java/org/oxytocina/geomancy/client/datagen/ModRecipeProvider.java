@@ -21,6 +21,7 @@ import org.oxytocina.geomancy.client.datagen.recipes.SmitheryRecipeJsonBuilder;
 import org.oxytocina.geomancy.items.GeodeItem;
 import static org.oxytocina.geomancy.items.ModItems.*;
 import static org.oxytocina.geomancy.blocks.ModBlocks.*;
+import static org.oxytocina.geomancy.items.ModItems.SOULSTORAGE_LARGE;
 
 import org.oxytocina.geomancy.items.SpellComponentStoringItem;
 import org.oxytocina.geomancy.items.jewelry.IJewelryItem;
@@ -185,7 +186,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         conditionsFromItem(EMPTY_ARTIFACT),null);
             }
 
-            // spell and variable storage
+            // spell, soul and variable storage
             {
                 // small
                 AddShapedSmitheryRecipe(new String[]{
@@ -256,6 +257,42 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                                 new SPatKey("g",SmithingIngredient.ofItems(1,1,Items.DIAMOND)),
                         },
                         VARSTORAGE_LARGE,1,300,20,conditionsFromItem(OCTANGULITE_INGOT),null);
+
+                // small
+                AddShapedSmitheryRecipe(new String[]{
+                                "ini",
+                                "non",
+                                "ini"}
+                        ,new SPatKey[]{
+                                new SPatKey("t",SmithingIngredient.ofItems(1,1,TITANIUM_INGOT)),
+                                new SPatKey("i",SmithingIngredient.ofItems(1,1,Items.IRON_INGOT)),
+                                new SPatKey("n",SmithingIngredient.ofItems(1,1,LEAD_INGOT)),
+                        },
+                        SOULSTORAGE_SMALL,1,100,12,conditionsFromItem(MITHRIL_INGOT),null);
+
+                // medium
+                AddShapedSmitheryRecipe(new String[]{
+                                "tnt",
+                                "non",
+                                "tnt"}
+                        ,new SPatKey[]{
+                                new SPatKey("n",SmithingIngredient.ofItems(1,1,OCTANGULITE_NUGGET)),
+                                new SPatKey("o",SmithingIngredient.ofItems(1,1,OCTANGULITE_INGOT)),
+                                new SPatKey("t",SmithingIngredient.ofItems(1,1,TITANIUM_INGOT)),
+                        },
+                        SOULSTORAGE_MEDIUM,1,200,15,conditionsFromItem(OCTANGULITE_INGOT),null);
+
+                // large
+                AddShapedSmitheryRecipe(new String[]{
+                                "mom",
+                                "obo",
+                                "mom"}
+                        ,new SPatKey[]{
+                                new SPatKey("o",SmithingIngredient.ofItems(1,1,OCTANGULITE_INGOT)),
+                                new SPatKey("b",SmithingIngredient.ofItems(1,1,OCTANGULITE_BLOCK)),
+                                new SPatKey("m",SmithingIngredient.ofItems(1,1,MITHRIL_INGOT)),
+                        },
+                        SOULSTORAGE_LARGE,1,300,20,conditionsFromItem(OCTANGULITE_INGOT),null);
             }
 
             // spellcomponents
@@ -474,6 +511,30 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     },
                     SPELLGLOVE,1,100,50,conditionsFromItem(OCTANGULITE_INGOT),Geomancy.locate("milestones/milestone_souls"));
 
+            // soul bore
+            AddShapedSmitheryRecipe(new String[]{
+                            "bab",
+                            "ini",
+                            " t "}
+                    ,new SPatKey[]{
+                            new SPatKey("t",SmithingIngredient.ofItems(1,1,TITANIUM_SWORD)),
+                            new SPatKey("n",SmithingIngredient.ofItems(1,1,Items.TNT)),
+                            new SPatKey("a",SmithingIngredient.ofItems(1,1,Items.ANVIL)),
+                            new SPatKey("b",SmithingIngredient.ofItems(1,1,TITANIUM_BLOCK)),
+                            new SPatKey("i",SmithingIngredient.ofItems(1,1,OCTANGULITE_INGOT)),
+                    },
+                    SOUL_BORE,1,200,15,conditionsFromItem(OCTANGULITE_INGOT),null);
+
+            // caster core
+            AddShapedSmitheryRecipe(new String[]{
+                            " t ",
+                            "tbt",
+                            " t "}
+                    ,new SPatKey[]{
+                            new SPatKey("t",SmithingIngredient.ofItems(1,1,TITANIUM_INGOT)),
+                            new SPatKey("b",SmithingIngredient.ofItems(1,1,OCTANGULITE_BLOCK)),
+                    },
+                    CASTER_CORE,1,200,15,conditionsFromItem(OCTANGULITE_INGOT),null);
         }
 
         // tools and armors

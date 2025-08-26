@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -195,6 +196,33 @@ public class Toolbox {
             res.add(list.get(i));
         }
         return res;
+    }
+
+    public static float randomPitch() {
+        return 0.8f+random.nextFloat()*0.4f;
+    }
+
+    public static String formatNumber(float f) {
+        int decimals = 0;
+        if(f < 10) decimals = 2;
+        else if(f < 100) decimals = 1;
+
+        String suffix = "";
+        if(f>=10000000)
+        {
+            f/=1000000;
+            suffix = "M";
+        }
+        else if(f>=10000)
+        {
+            f/=1000;
+            suffix = "K";
+        }
+
+        int factor = Math.round((float)Math.pow(10,decimals));
+        f = ((int)(f*factor))/(float)factor;
+        String s = decimals == 0 ?Integer.toString(Math.round(f)):Float.toString(f);
+        return s+suffix;
     }
 
     public static class GradientBuilder{

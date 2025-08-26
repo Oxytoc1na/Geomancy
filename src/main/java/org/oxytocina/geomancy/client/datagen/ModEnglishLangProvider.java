@@ -211,6 +211,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.caster.trigger.gethit","Get hit to cast first spell");
             add("MODID.caster.trigger.hit","Attack to cast first spell");
             add("MODID.caster.trigger.jump","Jump to cast first spell");
+            add("MODID.caster.trigger.tick","Casts first spell 20 times a second");
+            add("MODID.caster.trigger.chat","Say something to cast first spell");
             add("MODID.caster.willcast","Will cast: %1$s");
         }
 
@@ -391,6 +393,13 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("item.MODID.varstorage_small",          "Minute Varpot");
             add("item.MODID.varstorage_medium",         "Mundane Varpot");
             add("item.MODID.varstorage_large",          "Spacious Varpot");
+            add("item.MODID.soulstorage_small",         "Regular Attractor");
+            add("item.MODID.soulstorage_medium",        "Captivating Attractor");
+            add("item.MODID.soulstorage_large",         "Mesmerizing Attractor");
+            add("item.MODID.soul_bore",                 "Soul Bore");
+            add("geomancy.soul_bore.tooltip","Turns octangulite into souls");
+            add("geomancy.soul_bore.tooltip.1","Current Fuel: %1$s");
+            add("geomancy.soul_bore.tooltip.2","Available Soul: %1$s");
             add("item.MODID.spellcomponent",            "Spell Component");
 
             add("MODID.spellcomponent.empty",               "empty");
