@@ -11,6 +11,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import org.oxytocina.geomancy.spells.SpellComponent;
 import org.oxytocina.geomancy.spells.SpellContext;
 import org.oxytocina.geomancy.spells.SpellSignal;
 
@@ -39,7 +40,7 @@ public class VariableStoringItem extends Item implements IVariableStoringItem{
         HashMap<String,SpellSignal> res = new LinkedHashMap<>();
         var keys = list.getKeys();
         for(var key : keys){
-            var sig = SpellSignal.fromNBT(list.getCompound(key));
+            var sig = SpellSignal.fromNBT(list.getCompound(key), SpellComponent.CURRENT_DATA_FORMAT_VERSION);
             res.put(key,sig);
         }
         return res;
@@ -59,7 +60,7 @@ public class VariableStoringItem extends Item implements IVariableStoringItem{
         // item is full
         if(list.getSize() + (list.contains(signal.name)?0:1) > ((VariableStoringItem)storage.getItem()).capacity) return false;
 
-        var sigNbt = signal.toNBT();
+        var sigNbt = signal.toNBT(true);
         list.put(signal.name,sigNbt);
         markDirty(storage);
         return true;

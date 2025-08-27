@@ -77,7 +77,7 @@ public class SpellBlockArgs {
     public void writeNbt(NbtCompound temp) {
         var varsNbt = new NbtCompound();
         for(var s : vars.keySet()){
-            varsNbt.put(s,vars.get(s).toNBT());
+            varsNbt.put(s,vars.get(s).toNBT(false));
         }
         temp.put("vars",varsNbt);
     }

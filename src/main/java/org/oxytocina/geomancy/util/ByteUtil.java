@@ -1,6 +1,7 @@
 package org.oxytocina.geomancy.util;
 
 import io.netty.buffer.Unpooled;
+import io.netty.util.CharsetUtil;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.network.PacketByteBuf;
 

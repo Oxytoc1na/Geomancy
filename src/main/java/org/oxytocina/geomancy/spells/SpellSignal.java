@@ -220,9 +220,9 @@ public class SpellSignal {
         this.depth=depth;
     }
 
-    public NbtCompound toNBT() {
+    public NbtCompound toNBT(boolean writeName) {
         NbtCompound res = new NbtCompound();
-        writeNbt(res);
+        writeNbt(res,SpellComponent.CURRENT_DATA_FORMAT_VERSION,writeName);
         return res;
     }
 
@@ -283,42 +283,50 @@ public class SpellSignal {
         return res;
     }
 
-    public void writeNbt(NbtCompound nbt)
+    public void writeNbt(NbtCompound nbt, int version,boolean writeName)
     {
-        nbt.putString("type",type.toString());
-        nbt.putString("name",name);
+        String tKey = version>=1?"t":"type";
+        String nKey = version>=1?"n":"name";
+        String vKey = version>=1?"v":"val";
+
+        nbt.putString(tKey,type.toString());
+        if(writeName)nbt.putString(nKey,name);
         switch(type){
-            case Number: nbt.putFloat("val",getNumberValue()); break;
-            case Boolean: nbt.putBoolean("val",getBooleanValue()); break;
-            case Text: nbt.putString("val",getTextValue()); break;
-            case UUID: nbt.putUuid("val",getUUIDValue()); break;
-            case Vector: nbt.put("val", NbtHelper.vectorToNbt(getVectorValue())); break;
-            case List: nbt.put("val", listToNbt(getListValue())); break;
+            case Number: nbt.putFloat(vKey,getNumberValue()); break;
+            case Boolean: nbt.putBoolean(vKey,getBooleanValue()); break;
+            case Text: nbt.putString(vKey,getTextValue()); break;
+            case UUID: nbt.putUuid(vKey,getUUIDValue()); break;
+            case Vector: nbt.put(vKey, NbtHelper.vectorToNbt(getVectorValue())); break;
+            case List: nbt.put(vKey, listToNbt(getListValue(),version)); break;
         }
 
     }
-    private static NbtList listToNbt(List<SpellSignal> list){
+    private static NbtList listToNbt(List<SpellSignal> list,int v){
         NbtList res = new NbtList();
         for(var s : list){
             NbtCompound nbt = new NbtCompound();
-            s.writeNbt(nbt);
+            s.writeNbt(nbt,v,true);
             res.add(nbt);
         }
         return res;
     }
-    private static List<SpellSignal> listFromNbt(NbtList nbtl){
+    private static List<SpellSignal> listFromNbt(NbtList nbtl, int v){
         List<SpellSignal> res = new ArrayList<>();
         for(int i = 0; i < nbtl.size(); i++){
             NbtCompound nbt = nbtl.getCompound(i);
-            var sig = fromNBT(nbt);
+            var sig = fromNBT(nbt,v);
             res.add(sig);
         }
         return res;
     }
 
-    public static SpellSignal fromNBT(NbtCompound nbt){
+    public static SpellSignal fromNBT(NbtCompound nbt, int version){
 
-        String typeString = nbt.getString("type");
+        String tKey = version>=1?"t":"type";
+        String nKey = version>=1?"n":"name";
+        String vKey = version>=1?"v":"val";
+
+        String typeString = nbt.getString(tKey);
         Type type;
         try {type = Type.valueOf(typeString);}
         catch (Exception ignored){type = Type.None;}
@@ -332,12 +340,12 @@ public class SpellSignal {
         List<SpellSignal> listValue = null;
 
         switch(type){
-            case Number: numberValue = nbt.getFloat("val"); break;
-            case Boolean: numberValue = nbt.getBoolean("val")?1:0; break;
-            case Text: textValue = nbt.getString("val"); break;
-            case UUID: uuidValue = nbt.getUuid("val"); break;
-            case Vector: vectorValue = NbtHelper.vectorFromNbt(nbt.getCompound("val")); break;
-            case List: listValue = listFromNbt(nbt.getList("val", NbtElement.COMPOUND_TYPE));
+            case Number: numberValue = nbt.getFloat(vKey); break;
+            case Boolean: numberValue = nbt.getBoolean(vKey)?1:0; break;
+            case Text: textValue = nbt.getString(vKey); break;
+            case UUID: uuidValue = nbt.getUuid(vKey); break;
+            case Vector: vectorValue = NbtHelper.vectorFromNbt(nbt.getCompound(vKey)); break;
+            case List: listValue = listFromNbt(nbt.getList(vKey, NbtElement.COMPOUND_TYPE),version);
         }
 
         return new SpellSignal(type,name,numberValue,textValue,uuidValue,vectorValue,listValue);

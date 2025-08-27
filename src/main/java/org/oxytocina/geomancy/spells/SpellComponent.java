@@ -19,12 +19,12 @@ import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.util.ByteUtil;
 
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.*;
 
 public class SpellComponent {
+    /// 0: no binary serialization, just nbt, human-readable
+    /// 1: nbt, shortened names, saves space
+    /// 100+: binary serialization, saves space
     public static final int CURRENT_DATA_FORMAT_VERSION = 1;
 
     public SideConfig[] sideConfigs;
@@ -278,45 +278,63 @@ public class SpellComponent {
 
     public void writeNbt(NbtCompound nbt){
         // experimental serialization
-        if(CURRENT_DATA_FORMAT_VERSION>=1){
+        if(CURRENT_DATA_FORMAT_VERSION>=100){
             nbt.putString("data",ByteUtil.bufToString(serialize()));
             return;
         }
 
-        nbt.putInt("rotation",rotation);
-        nbt.putString("func",function.identifier.toString());
+        nbt.putInt("v",CURRENT_DATA_FORMAT_VERSION);
+
+        String rotKey = CURRENT_DATA_FORMAT_VERSION>=1?"r":"rotation";
+        String funcKey = CURRENT_DATA_FORMAT_VERSION>=1?"f":"func";
+        String sidesKey = CURRENT_DATA_FORMAT_VERSION>=1?"s":"sides";
+        String paramsKey = CURRENT_DATA_FORMAT_VERSION>=1?"p":"params";
+
+        if(rotation!=0) nbt.putInt(rotKey,rotation);
+        nbt.putString(funcKey,function.identifier.toString());
         if(position!=null){
             nbt.putInt("x",position.x);
             nbt.putInt("y",position.y);
         }
         NbtList sidesNbt = new NbtList();
-        for (var s : sideConfigs)
-        {
+        var defaultSides = function.getDefaultSideConfigs(this);
+        for (int i = 0; i < 6; i++) {
+            // dont write default configs
+            var s = sideConfigs[i];
+            if(s.equals(defaultSides[i])) continue;
+
             NbtCompound cComp = new NbtCompound();
-            s.writeNbt(cComp);
+            s.writeNbt(cComp,CURRENT_DATA_FORMAT_VERSION);
             sidesNbt.add(cComp);
         }
-        nbt.put("sides",sidesNbt);
+        if(!sidesNbt.isEmpty()) nbt.put(sidesKey,sidesNbt);
         NbtList paramsNbt = new NbtList();
         for (var s : configuredParameters.values())
         {
             NbtCompound cComp = new NbtCompound();
-            s.writeNbt(cComp);
+            s.writeNbt(cComp,CURRENT_DATA_FORMAT_VERSION);
             paramsNbt.add(cComp);
         }
-        nbt.put("params",paramsNbt);
+        if(!paramsNbt.isEmpty()) nbt.put(paramsKey,paramsNbt);
     }
 
     public void readNbt(NbtCompound nbt){
 
         // experimental deserialization
-        if(nbt.contains("data") && CURRENT_DATA_FORMAT_VERSION>=1){
+        if(nbt.contains("data") && CURRENT_DATA_FORMAT_VERSION>=100){
             deserialize(ByteUtil.stringToBuf(nbt.getString("data")));
             return;
         }
 
-        rotation = ByteUtil.intToByte(nbt.getInt("rotation"));
-        function = SpellBlocks.get(nbt.getString("func"));
+        int version = nbt.getInt("v");
+
+        String rotKey = version>=1?"r":"rotation";
+        String funcKey = version>=1?"f":"func";
+        String sidesKey = version>=1?"s":"sides";
+        String paramsKey = version>=1?"p":"params";
+
+        rotation = nbt.contains(rotKey) ? ByteUtil.intToByte(nbt.getInt(rotKey)) : 0;
+        function = SpellBlocks.get(nbt.getString(funcKey));
         if(
                 nbt.contains("x",NbtElement.INT_TYPE) &&
                 nbt.contains("y",NbtElement.INT_TYPE)
@@ -327,25 +345,25 @@ public class SpellComponent {
                 );
         else position=null;
 
-        NbtList sidesNbt = nbt.getList("sides", NbtElement.COMPOUND_TYPE);
+        NbtList sidesNbt = nbt.contains(sidesKey) ? nbt.getList(sidesKey, NbtElement.COMPOUND_TYPE) : new NbtList();
         sideConfigs = function.getDefaultSideConfigs(this);
         for (int i = 0; i < sidesNbt.size(); i++) {
             if(!(sidesNbt.get(i) instanceof NbtCompound comp)) {
                 continue;
             }
-            var conf = SideConfig.createFromNbt(this,comp);
+            var conf = SideConfig.createFromNbt(this,comp,version);
             sideConfigs[ByteUtil.byteToInt(conf.dir)] = conf;
         }
 
         // read configured parameters
-        NbtList paramsNbt = nbt.getList("params", NbtElement.COMPOUND_TYPE);
+        NbtList paramsNbt = nbt.contains(paramsKey) ? nbt.getList(paramsKey, NbtElement.COMPOUND_TYPE) : new NbtList();
         configuredParameters.clear();
         var params = function.parameters;
         for (int i = 0; i < paramsNbt.size(); i++) {
             if(!(paramsNbt.get(i) instanceof NbtCompound comp)) {
                 continue;
             }
-            var param = ConfiguredParameter.fromNbt(function,comp);
+            var param = ConfiguredParameter.fromNbt(function,comp,version);
             // ignore unwanted parameters
             if(param.parameter==null||!params.containsKey(param.parameter.name)) continue;
             configuredParameters.put(param.parameter.name,param);
@@ -443,9 +461,9 @@ public class SpellComponent {
         public ArrayList<Mode> modes;
         public SpellComponent parent;
 
-        private SideConfig(SpellComponent parent, NbtCompound nbt){
+        private SideConfig(SpellComponent parent, NbtCompound nbt, int version){
             this.parent=parent;
-            readNbt(nbt);
+            readNbt(nbt,version);
             modes = parent.function.getDefaultSideConfigs(parent)[
                     (ByteUtil.byteToInt(dir)+parent.rotation+6)%6
                     ].modes;
@@ -492,8 +510,8 @@ public class SpellComponent {
             return new SideConfig(parent,dir,"",new Mode[]{mode});
         }
 
-        public static SideConfig createFromNbt(SpellComponent parent, NbtCompound nbt) {
-            return new SideConfig(parent,nbt);
+        public static SideConfig createFromNbt(SpellComponent parent, NbtCompound nbt, int version) {
+            return new SideConfig(parent,nbt,version);
         }
 
         public boolean isOutput(){
@@ -545,20 +563,39 @@ public class SpellComponent {
             varName=buf.readString();
         }
 
-        public void writeNbt(NbtCompound nbt){
-            nbt.putString("dir",dirString());
-            nbt.putString("var",varName);
-            nbt.putInt("mode",ByteUtil.byteToInt(selectedMode));
+        public void writeNbt(NbtCompound nbt,int version){
+
+            String dKey = version>=1?"d":"dir";
+            String vKey = version>=1?"v":"var";
+            String mKey = version>=1?"m":"mode";
+
+            if(dir!=0)nbt.putByte(dKey,dir);
+            if(varName!=null&&!varName.isEmpty()) nbt.putString(vKey,varName);
+            if(selectedMode!=0) nbt.putByte(mKey,selectedMode);
         }
 
         public String dirString() {
             return directions[ByteUtil.byteToInt(dir)];
         }
 
-        public void readNbt(NbtCompound nbt){
-            setDirFromString(nbt.getString("dir"));
-            varName = nbt.getString("var");
-            selectedMode = ByteUtil.intToByte(nbt.getInt("mode"));
+        public void readNbt(NbtCompound nbt,int version){
+
+            String dKey = version>=1?"d":"dir";
+            String vKey = version>=1?"v":"var";
+            String mKey = version>=1?"m":"mode";
+
+            if(version<1)
+            {
+                setDirFromString(nbt.getString(dKey));
+                varName = nbt.getString(vKey);
+                selectedMode = ByteUtil.intToByte(nbt.getInt(mKey));
+            }
+            else{
+                dir=nbt.contains(dKey)?nbt.getByte(dKey):0;
+                varName = nbt.contains(vKey)?nbt.getString(vKey):"";
+                selectedMode = nbt.contains(mKey)?ByteUtil.intToByte(nbt.getByte(mKey)):0;
+            }
+
         }
 
         public void setDirFromString(String dirString) {
@@ -627,7 +664,23 @@ public class SpellComponent {
             }
         }
 
-
+        public boolean equals(SideConfig o){
+            return
+                    Objects.equals(o.varName, varName)
+                    && dir==o.dir
+                    && this.selectedMode==o.selectedMode
+                    && modesEqual(this.modes,o.modes)
+                    ;
+        }
+        public static boolean modesEqual(List<Mode> a, List<Mode> b){
+            if(a==null&&b==null) return true;
+            if(a==null||b==null) return false;
+            if(a.size()!=b.size()) return false;
+            for (int i = 0; i < a.size(); i++) {
+                if(!a.get(i).equals(b.get(i))) return false;
+            }
+            return true;
+        }
 
         public enum Mode {
             Blocked,
@@ -674,23 +727,31 @@ public class SpellComponent {
             return res;
         }
 
-        public void writeNbt(NbtCompound nbt){
-            nbt.putString("param",parameter.name);
+        public void writeNbt(NbtCompound nbt, int v){
+
+            String pKey = v>=1?"p":"param";
+            String sKey = v>=1?"s":"signal";
+
+            nbt.putString(pKey,parameter.name);
             NbtCompound sigComp = new NbtCompound();
-            signal.writeNbt(sigComp);
-            nbt.put("signal",sigComp);
+            signal.writeNbt(sigComp,v,false);
+            nbt.put(sKey,sigComp);
         }
 
         private ConfiguredParameter(){}
-        public static ConfiguredParameter fromNbt(SpellBlock parent, NbtCompound nbt){
+        public static ConfiguredParameter fromNbt(SpellBlock parent, NbtCompound nbt, int v){
             ConfiguredParameter res = new ConfiguredParameter();
-            res.readNbt(parent,nbt);
+            res.readNbt(parent,nbt,v);
             return res;
         }
 
-        public void readNbt(SpellBlock parent, NbtCompound nbt){
-            this.parameter = parent.getParameter(nbt.getString("param"));
-            setSignal(SpellSignal.fromNBT(nbt.getCompound("signal")));
+        public void readNbt(SpellBlock parent, NbtCompound nbt, int v){
+
+            String pKey = v>=1?"p":"param";
+            String sKey = v>=1?"s":"signal";
+
+            this.parameter = parent.getParameter(nbt.getString(pKey));
+            setSignal(SpellSignal.fromNBT(nbt.getCompound(sKey),v).named(nbt.getString(pKey)));
         }
 
         public boolean canAccept(String val){
@@ -734,5 +795,77 @@ public class SpellComponent {
     public MutableText getRuntimeName(){
         return Text.translatable("geomancy.spellcomponent."+this.function.identifier.getPath()).formatted(Formatting.DARK_AQUA)
                 .append(Text.literal(" ["+context.grid.getRuntimeName(context).getString()+":"+position.x+","+position.y+"]").formatted(Formatting.DARK_GRAY));
+    }
+
+    public static Builder builder(SpellBlock func){return new Builder(func);}
+    public static Builder.ConfBuilder confBuilder(String dir,String name){return new Builder.ConfBuilder(dir,name);}
+    public static Builder.ConfBuilder confBuilder(String dir){return new Builder.ConfBuilder(dir,null);}
+    public static class Builder{
+        public SpellBlock func;
+        public Vector2i pos;
+        public ConfBuilder[] confs;
+        public HashMap<String,ConfiguredParameter> params;
+
+        public Builder(SpellBlock func){
+            this.func=func;
+            confs = new ConfBuilder[6];
+            params=new HashMap<>();
+        }
+
+        public SpellComponent build(SpellGrid parent){
+            var res = new SpellComponent(parent,pos,func,null,params);
+            SideConfig[] confs2 = func.getDefaultSideConfigs(res);
+            for (int i = 0; i < 6; i++) {
+                if(confs[i]==null){
+                    continue;
+                }
+                confs[i].dir = i;
+                confs2[i]=confs[i].build(res,confs2[i].modes.toArray(new SideConfig.Mode[0]));
+            }
+            res.sideConfigs=confs2;
+            return res;
+        }
+
+        public Builder pos(Vector2i p){
+            this.pos=p; return this;
+        }
+
+        public Builder pos(int x, int y){
+            return pos(new Vector2i(x,y));
+        }
+
+        public Builder conf(ConfBuilder conf){
+            this.confs[conf.dir]=conf; return this;
+        }
+
+        public Builder param(String name,SpellSignal sig){
+            var p = new ConfiguredParameter(func.getParameter(name));
+            p.setSignal(sig);
+            this.params.put(name,p);
+            return this;
+        }
+
+        public static class ConfBuilder{
+
+            public String name;
+            public int dir;
+            public SideConfig.Mode mode;
+
+            public ConfBuilder(String dir,String name){
+                this.dir=getDirIndex(dir);
+                this.name=name;
+            }
+
+            public ConfBuilder mode(SideConfig.Mode mode){
+                this.mode=mode; return this;
+            }
+
+            protected SideConfig build(SpellComponent comp,SideConfig.Mode[] modes){
+                var res = new SideConfig(comp,getDirString(dir),"",modes);
+                res.sanityCheckVarName(false);
+                if(mode!=null)res.setMode(mode);
+                return res;
+            }
+        }
     }
 }

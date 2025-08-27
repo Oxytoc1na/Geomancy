@@ -30,7 +30,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class SpellGrid {
-    public static final int CURRENT_DATA_FORMAT_VERSION = 1;
+    public static final int CURRENT_DATA_FORMAT_VERSION = SpellComponent.CURRENT_DATA_FORMAT_VERSION;
 
     public int width;
     public int height;
@@ -299,15 +299,24 @@ public class SpellGrid {
     public void writeNbt(NbtCompound nbt){
 
         // experimental serialization
-        if(CURRENT_DATA_FORMAT_VERSION>=1){
+        if(CURRENT_DATA_FORMAT_VERSION>=100){
             nbt.putString("data",ByteUtil.bufToString(serialize()));
             return;
         }
 
-        nbt.putInt("width",width);
-        nbt.putInt("height",height);
-        nbt.putString("name",name);
-        nbt.putBoolean("lib",library);
+        nbt.putInt("v",CURRENT_DATA_FORMAT_VERSION);
+
+        String wKey = CURRENT_DATA_FORMAT_VERSION>=1?"w":"width";
+        String hKey = CURRENT_DATA_FORMAT_VERSION>=1?"h":"height";
+        String nKey = CURRENT_DATA_FORMAT_VERSION>=1?"n":"name";
+        String lKey = CURRENT_DATA_FORMAT_VERSION>=1?"l":"lib";
+        String cKey = CURRENT_DATA_FORMAT_VERSION>=1?"c":"components";
+        String dKey = CURRENT_DATA_FORMAT_VERSION>=1?"d":"displayStack";
+
+        nbt.putInt(wKey,width);
+        nbt.putInt(hKey,height);
+        if(name!=null&& !name.isEmpty())nbt.putString(nKey,name);
+        if(library) nbt.putBoolean(lKey,library);
         NbtList compsNbt = new NbtList();
         for (var c:components.values())
         {
@@ -315,27 +324,36 @@ public class SpellGrid {
             c.writeNbt(cComp);
             compsNbt.add(cComp);
         }
-        nbt.put("components",compsNbt);
+        if(!compsNbt.isEmpty())nbt.put(cKey,compsNbt);
 
         if(displayStack!=null&&!displayStack.isEmpty())
         {
             var displayNbt = new NbtCompound();
             displayStack.writeNbt(displayNbt);
-            nbt.put("displayStack",displayNbt);
+            nbt.put(dKey,displayNbt);
         }
     }
 
     public void readNbt(NbtCompound nbt){
-        if(nbt.contains("data") && CURRENT_DATA_FORMAT_VERSION>=1){
+        if(nbt.contains("data") && CURRENT_DATA_FORMAT_VERSION>=100){
             deserializeInstance(ByteUtil.stringToBuf(nbt.getString("data")));
             return;
         }
 
-        width=nbt.getInt("width");
-        height=nbt.getInt("height");
-        name=nbt.getString("name");
-        library=nbt.getBoolean("lib");
-        NbtList compsNbt = nbt.getList("components", NbtElement.COMPOUND_TYPE);
+        int version = nbt.getInt("v");
+
+        String wKey = version>=1?"w":"width";
+        String hKey = version>=1?"h":"height";
+        String nKey = version>=1?"n":"name";
+        String lKey = version>=1?"l":"lib";
+        String cKey = version>=1?"c":"components";
+        String dKey = version>=1?"d":"displayStack";
+
+        width=nbt.getInt(wKey);
+        height=nbt.getInt(hKey);
+        name=nbt.contains(nKey)?nbt.getString(nKey):"";
+        library= nbt.contains(lKey) && nbt.getBoolean(lKey);
+        NbtList compsNbt = nbt.contains(cKey)?nbt.getList(cKey, NbtElement.COMPOUND_TYPE):new NbtList();
         for (var c:compsNbt)
         {
             if(!(c instanceof NbtCompound nbtComp)) continue;
@@ -344,8 +362,8 @@ public class SpellGrid {
             tryAddComponent(comp);
         }
 
-        if(nbt.contains("displayStack"))
-            displayStack = ItemStack.fromNbt(nbt.getCompound("displayStack"));
+        if(nbt.contains(dKey))
+            displayStack = ItemStack.fromNbt(nbt.getCompound(dKey));
     }
 
     // cuts off hexagonal edges
@@ -378,5 +396,38 @@ public class SpellGrid {
         base.setNbt(null);
         base.setCustomName(getName());
         return base;
+    }
+
+    public static Builder builder(String name){return new Builder(name);}
+    public static class Builder{
+        public String name = "";
+        public int width = 3;
+        public int height = 3;
+        public HashMap<Vector2i,SpellComponent.Builder> components;
+
+        public Builder(String name){
+            this.name=name;
+            components=new LinkedHashMap<>();
+        }
+
+        public SpellGrid build(){
+            SpellGrid res = new SpellGrid(width,height);
+            res.name=name;
+            for(var b : components.values()){
+                res.tryAddComponent(b.build(res));
+            }
+            return res;
+        }
+
+        public Builder dim(SpellStoringItem storer){
+            width=storer.getWidth();
+            height=storer.getHeight();
+            return this;
+        }
+
+        public Builder add(SpellComponent.Builder builder){
+            components.put(builder.pos,builder);
+            return this;
+        }
     }
 }

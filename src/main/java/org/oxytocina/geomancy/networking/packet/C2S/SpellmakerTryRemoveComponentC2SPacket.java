@@ -44,7 +44,7 @@ public class SpellmakerTryRemoveComponentC2SPacket {
                         // give the player the ingredient back
                         if(!player.isCreative())
                         {
-                            MultiblockCrafter.spawnOutputAsItemEntity(player.getWorld(),blockEntityPos.up(), storer.getDefaultStack());
+                            MultiblockCrafter.spawnOutputAsItemEntity(player.getWorld(),blockEntityPos.up(), component.getItemStack());
                         }
 
                         // send update package to client
