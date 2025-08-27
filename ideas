@@ -200,13 +200,11 @@ TODO ITEMS
 - hammers
 
 TODO DEBUG
-- the fucking mana storage items synchronize very strangely
 - premade spells side configs are fucked
-- bone meal component fix
 - make foreach affected by depth
 - pool sent packets to improve performance
 - maximum execution time limit
 
 fixed
-- crash when clicking on component in hotbar
-- crash when using appearance slot
+- the fucking mana storage items synchronize very strangely
+- bone meal component fix

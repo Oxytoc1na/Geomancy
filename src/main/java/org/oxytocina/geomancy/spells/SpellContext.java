@@ -20,6 +20,8 @@ import org.oxytocina.geomancy.items.ISpellSelectorItem;
 import org.oxytocina.geomancy.util.ManaUtil;
 import org.oxytocina.geomancy.util.Toolbox;
 
+import java.util.concurrent.TimeUnit;
+
 public class SpellContext {
     public LivingEntity caster;
     public AutocasterBlockEntity casterBlock;
@@ -35,6 +37,7 @@ public class SpellContext {
     public int baseDepth = 0;
     public int highestRecordedDepth = 0;
     public boolean depthLimitReached = false;
+    public long startTime;
     public boolean couldntAffordSomething = false;
     public SpellGrid grid;
     public SoundBehavior soundBehavior;
@@ -72,6 +75,7 @@ public class SpellContext {
         this.soulCostMultiplier=soulCostMultiplier;
         this.soulConsumed=soulConsumed;
         this.soundBehavior=soundBehavior;
+        this.startTime = System.nanoTime();
 
         sourceType = delegate!=null?SourceType.Delegate
                 : caster!=null?SourceType.Caster
@@ -335,6 +339,15 @@ public class SpellContext {
     public SoundCategory getSoundCategory() {
         if(caster!=null) return SoundCategory.PLAYERS;
         return SoundCategory.BLOCKS;
+    }
+
+    public int getExecutionTimeMS(){
+        return (int)TimeUnit.NANOSECONDS.toMillis(System.nanoTime()-startTime);
+    }
+
+    public final int TIMEOUT_MS = 1000;
+    public boolean timedOut(){
+        return getExecutionTimeMS() > TIMEOUT_MS;
     }
 
     public enum SourceType{

@@ -128,6 +128,7 @@ public class SpellComponent {
 
     public void tryExecute(){
         if(!canExecute()) return;
+        if(context.timedOut()) return;
 
         HashMap<String,SpellSignal> args = new HashMap<>();
         args.putAll(this.receivedSignals);

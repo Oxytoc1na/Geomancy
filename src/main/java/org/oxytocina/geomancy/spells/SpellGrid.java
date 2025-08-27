@@ -1,11 +1,14 @@
 package org.oxytocina.geomancy.spells;
 
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -18,6 +21,7 @@ import org.oxytocina.geomancy.effects.ModStatusEffects;
 import org.oxytocina.geomancy.entity.CasterDelegateEntity;
 import org.oxytocina.geomancy.items.SpellStoringItem;
 import org.oxytocina.geomancy.util.ManaUtil;
+import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -106,6 +110,30 @@ public class SpellGrid {
 
         if(context.depthLimitReached && context.debugging){
             SpellBlocks.tryLogDebugDepthLimitReached(context);
+        }
+
+        // casting a spell that takes too long
+        if(context.timedOut()){
+            SpellBlocks.tryLogDebugTimedOut(context);
+            // spawn lightning
+            LightningEntity lightning = new LightningEntity(EntityType.LIGHTNING_BOLT,context.getWorld());
+            var pos = context.getOriginPos();
+            lightning.setPos(pos.x,pos.y,pos.z);
+            context.getWorld().spawnEntity(lightning);
+            switch(context.sourceType){
+                case Caster:
+                    break;
+                case Block:
+                    if(Toolbox.random.nextFloat() < 0.2f)
+                    {
+                        // break the caster block
+                        if(context.getWorld() instanceof ServerWorld sw){
+                            sw.breakBlock(context.getOriginBlockPos(),true);
+                        }
+                    }
+                    break;
+                default :break;
+            }
         }
 
         if(context.soulConsumed > 0){

@@ -195,11 +195,12 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.spells.debug.slotoob","Component %1$s referenced non-existing inventory slot %2$i");
             add("MODID.spells.debug.notplaceable","Component %1$s tried to place non-placeable item %2$t");
             add("MODID.spells.debug.notbreakable","Component %1$s tried to break non-breakable block %2$t");
-            add("MODID.spells.debug.notreplacable","Component %1$s tried to replace non-replaceable block %2$t");
+            add("MODID.spells.debug.notreplaceable","Component %1$s tried to replace non-replaceable block %2$t");
             add("MODID.spells.debug.invalideffect","Component %1$s tried to imbue non-existent status effect %2$t");
             add("MODID.spells.debug.notimbuable","Component %1$s tried to imbue incompatible status effect %2$t");
             add("MODID.spells.debug.toobig","Component %1$s tried to create a list with too many entries: %2$f/10000");
             add("MODID.spells.debug.depthlimit","Component %1$s: Depth limit reached!");
+            add("MODID.spells.debug.timeout","Spell %1$s Timed out! Time taken: %2$sms");
 
 
             add("MODID.caster.nospells","No spells installed");

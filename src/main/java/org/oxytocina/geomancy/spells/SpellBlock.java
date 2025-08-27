@@ -153,6 +153,7 @@ public class SpellBlock {
             if(inputs==null) inputs = new SpellSignal[0];
             if(outputs==null) outputs = new SpellSignal[0];
             if(parameters==null) parameters = new Parameter[0];
+            if(sideConfigGetter==null) autoSideConfig();
 
             return new SpellBlock(
                     identifier,
@@ -230,6 +231,18 @@ public class SpellBlock {
             this.sideConfigGetter=func;
             return this;
         }
+
+        public Builder autoSideConfig(){
+            if(this.inputs.length>0 && this.outputs.length>0)
+                sideConfigGetter(SideUtil::sidesFreeform);
+            else if(this.inputs.length>0)
+                sideConfigGetter(SideUtil::sidesInput);
+            else if(this.outputs.length>0)
+                sideConfigGetter(SideUtil::sidesOutput);
+            else
+                sideConfigGetter(SideUtil::sidesBlocked);
+            return this;
+        }
     }
 
     public static class SideUtil{
@@ -259,13 +272,13 @@ public class SpellBlock {
         public static SpellComponent.SideConfig[] sidesInput(SpellComponent parent){return sidesInput(parent,"");}
         public static SpellComponent.SideConfig[] sidesInput(SpellComponent parent,String varName){
             return sidesUniform(parent,new SpellComponent.SideConfig.Mode[]{
-                    SpellComponent.SideConfig.Mode.Input,SpellComponent.SideConfig.Mode.Blocked},varName);
+                    SpellComponent.SideConfig.Mode.Blocked,SpellComponent.SideConfig.Mode.Input},varName);
         }
 
         public static SpellComponent.SideConfig[] sidesOutput(SpellComponent parent){return sidesOutput(parent,"");}
         public static SpellComponent.SideConfig[] sidesOutput(SpellComponent parent,String varName){
             return sidesUniform(parent,new SpellComponent.SideConfig.Mode[]{
-                    SpellComponent.SideConfig.Mode.Output,SpellComponent.SideConfig.Mode.Blocked},varName);
+                    SpellComponent.SideConfig.Mode.Blocked,SpellComponent.SideConfig.Mode.Output},varName);
         }
 
     }

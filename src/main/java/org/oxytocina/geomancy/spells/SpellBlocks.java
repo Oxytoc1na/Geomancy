@@ -11,7 +11,6 @@ import net.minecraft.block.entity.FurnaceBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -76,6 +75,7 @@ public class SpellBlocks {
     public static final SpellBlock CONST_TEXT;
     public static final SpellBlock CONST_BOOLEAN;
     public static final SpellBlock ENTITY_CASTER;
+    public static final SpellBlock ENTITY_DELEGATE;
     public static final SpellBlock BLOCKPOS_CASTER;
     public static final SpellBlock POS_CASTER;
     public static final SpellBlock EYEPOS_CASTER;
@@ -164,13 +164,12 @@ public class SpellBlocks {
     public static final SpellBlock SET_ELEMENT;
     public static final SpellBlock ENTITIES_NEAR;
     public static final SpellBlock BLOCK_BOX;
-
-    private static SpellBlock.Category cat;
-
+    
     private static HashMap<Identifier, ImbueData> imbueData = new HashMap();
     private static HashMap<Function<BlockState,Boolean>, BlockState> degradeBlockData = new LinkedHashMap<>();
     private static HashMap<Function<BlockState,Boolean> , BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult>> igniteBehavior = new LinkedHashMap<>();
 
+    private static SpellBlock.Category cat;
     static{
 
         // flow control
@@ -180,7 +179,6 @@ public class SpellBlocks {
                     .inputs(SpellSignal.createAny().named("signal"))
                     .outputs(SpellSignal.createAny().named("signal"))
                     .func(SpellBlocks::mirrorInToOut)
-                    .sideConfigGetter((c)->freeformSideConfigs(c,"signal"))
                     .category(cat)
                     .build());
 
@@ -193,27 +191,6 @@ public class SpellBlocks {
                         if(!args.vars.get("gate").getBooleanValue()) return res;
                         return args.toRes();
                     })
-                    .sideConfigGetter((comp)->{
-                        SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
-                        for (int i = 0; i < 2; i++) {
-                            res[i] = SpellComponent.SideConfig.createToggleableInput(comp
-                                    ,SpellComponent.directions[i]);
-                        }
-                        res[0].varName="signal";
-                        res[1].varName="gate";
-
-                        for (int i = 2; i < 6; i++) {
-                            res[i] = SpellComponent.SideConfig.createToggleableOutput(comp
-                                    ,SpellComponent.directions[i]);
-                        }
-
-                        res[2].varName="signal";
-                        res[3].varName="signal";
-                        res[4].varName="gate";
-                        res[5].varName="gate";
-
-                        return res;
-                    })
                     .category(cat)
                     .build());
 
@@ -225,27 +202,6 @@ public class SpellBlocks {
                         SpellBlockResult res = new SpellBlockResult();
                         res.add(args.get("signal"));
                         res.iterations=args.getInt("count");
-                        return res;
-                    })
-                    .sideConfigGetter((comp)->{
-                        SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
-                        for (int i = 0; i < 2; i++) {
-                            res[i] = SpellComponent.SideConfig.createToggleableInput(comp
-                                    ,SpellComponent.directions[i]);
-                        }
-                        res[0].varName="count";
-                        res[1].varName="signal";
-
-                        for (int i = 2; i < 6; i++) {
-                            res[i] = SpellComponent.SideConfig.createToggleableOutput(comp
-                                    ,SpellComponent.directions[i]);
-                        }
-
-                        res[2].varName="signal";
-                        res[3].varName="signal";
-                        res[4].varName="i";
-                        res[5].varName="i";
-
                         return res;
                     })
                     .category(cat)
@@ -268,18 +224,6 @@ public class SpellBlocks {
                         res.add(SpellSignal.createBoolean(true).named("signal"));
                         component.pushSignals(res);
                     })
-                    .sideConfigGetter((comp)->{
-                        SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
-                        for (int i = 0; i < 3; i++) {
-                            res[i] = SpellComponent.SideConfig.createToggleableInput(comp
-                                    ,SpellComponent.directions[i]).named("prevent");
-                        }
-                        for (int i = 3; i < 6; i++) {
-                            res[i] = SpellComponent.SideConfig.createToggleableOutput(comp
-                                    ,SpellComponent.directions[i]).named("signal");
-                        }
-                        return res;
-                    })
                     .category(cat)
                     .build());
         }
@@ -288,51 +232,48 @@ public class SpellBlocks {
         cat = SpellBlock.Category.Provider;
         {
             CONST_NUM = register(SpellBlock.Builder.create("constant_number")
-                    .inputs()
                     .outputs(SpellSignal.createNumber(0).named("val"))
                     .parameters(SpellBlock.Parameter.createNumber("val",1,-1000,1000))
                     .func(SpellBlocks::mirrorInToOut)
-                    .sideConfigGetter((c)->SpellBlock.SideUtil.sidesOutput(c,"val"))
                     .category(cat).build());
 
             CONST_TEXT = register(SpellBlock.Builder.create("constant_text")
-                    .inputs()
                     .outputs(SpellSignal.createText("").named("val"))
                     .parameters(SpellBlock.Parameter.createText("val",""))
                     .func(SpellBlocks::mirrorInToOut)
-                    .sideConfigGetter((c)->SpellBlock.SideUtil.sidesOutput(c,"val"))
                     .category(cat).build());
 
             CONST_BOOLEAN = register(SpellBlock.Builder.create("constant_boolean")
-                    .inputs()
                     .outputs(SpellSignal.createBoolean(true).named("val"))
                     .parameters(SpellBlock.Parameter.createBoolean("val",true))
                     .func(SpellBlocks::mirrorInToOut)
-                    .sideConfigGetter((c)->SpellBlock.SideUtil.sidesOutput(c,"val"))
                     .category(cat).build());
 
             ENTITY_CASTER = register(SpellBlock.Builder.create("entity_caster")
-                    .inputs()
                     .outputs(SpellSignal.createUUID(null).named("caster"))
                     .func((component, stringSpellSignalHashMap) -> {
                         SpellBlockResult res = new SpellBlockResult();
                         if(component.context.caster!=null) res.add("caster",component.context.caster.getUuid());return res;
                     })
-                    .sideConfigGetter((c)->SpellBlock.SideUtil.sidesOutput(c,"caster"))
+                    .category(cat).build());
+
+            ENTITY_DELEGATE = register(SpellBlock.Builder.create("entity_delegate")
+                    .outputs(SpellSignal.createUUID(null).named("delegate"))
+                    .func((component, stringSpellSignalHashMap) -> {
+                        SpellBlockResult res = new SpellBlockResult();
+                        if(component.context.delegate!=null) res.add("delegate",component.context.delegate.getUuid());return res;
+                    })
                     .category(cat).build());
 
             BLOCKPOS_CASTER = register(SpellBlock.Builder.create("blockpos_caster")
-                    .inputs()
                     .outputs(SpellSignal.createVector().named("position"))
                     .func((component, stringSpellSignalHashMap) -> {
                         SpellBlockResult res = new SpellBlockResult();
                         if(component.context.casterBlock!=null) res.add("position",component.context.casterBlock.getPos());return res;
                     })
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesOutput)
                     .category(cat).build());
 
             CASTER_SLOT = register(SpellBlock.Builder.create("caster_slot")
-                    .inputs()
                     .outputs(SpellSignal.createNumber(0).named("slot"))
                     .func((component, stringSpellSignalHashMap) -> {
                         SpellBlockResult res = new SpellBlockResult();
@@ -352,22 +293,18 @@ public class SpellBlocks {
                         }
                         return res;
                     })
-                    .sideConfigGetter((c)->SpellBlock.SideUtil.sidesOutput(c,"slot"))
                     .category(cat).build());
 
             POS_CASTER = register(SpellBlock.Builder.create("pos_caster")
-                    .inputs()
                     .outputs(SpellSignal.createVector().named("position"))
                     .func((component, stringSpellSignalHashMap) -> {
                         SpellBlockResult res = new SpellBlockResult();
                         res.add("position",component.context.getOriginPos());
                         return res;
                     })
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesOutput)
                     .category(cat).build());
 
             EYEPOS_CASTER = register(SpellBlock.Builder.create("eyepos_caster")
-                    .inputs()
                     .outputs(SpellSignal.createVector().named("position"))
                     .func((component, stringSpellSignalHashMap) -> {
                         SpellBlockResult res = new SpellBlockResult();
@@ -383,11 +320,9 @@ public class SpellBlocks {
                         }
                         return res;
                     })
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesOutput)
                     .category(cat).build());
 
             DIR_CASTER = register(SpellBlock.Builder.create("dir_caster")
-                    .inputs()
                     .outputs(SpellSignal.createVector().named("direction"))
                     .func((component, stringSpellSignalHashMap) -> {
                         SpellBlockResult res = new SpellBlockResult();
@@ -403,11 +338,9 @@ public class SpellBlocks {
                         }
                         return res;
                     })
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesOutput)
                     .category(cat).build());
 
             GET_WEATHER = register(SpellBlock.Builder.create("get_weather")
-                    .inputs()
                     .outputs(SpellSignal.createNumber().named("rainyness"))
                     .func((component, stringSpellSignalHashMap) -> {
                         SpellBlockResult res = new SpellBlockResult();
@@ -415,11 +348,9 @@ public class SpellBlocks {
                         res.add("rainyness",props.isThundering()?2:props.isRaining()?1:0);
                         return res;
                     })
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesOutput)
                     .category(cat).build());
 
             GET_TIME = register(SpellBlock.Builder.create("get_time")
-                    .inputs()
                     .outputs(SpellSignal.createNumber().named("fraction"))
                     .func((component, stringSpellSignalHashMap) -> {
                         SpellBlockResult res = new SpellBlockResult();
@@ -427,7 +358,6 @@ public class SpellBlocks {
                         res.add("fraction",props.getTimeOfDay()/24000f);
                         return res;
                     })
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesOutput)
                     .category(cat).build());
         }
 
@@ -997,16 +927,7 @@ public class SpellBlocks {
                             res.add("z", vec.z);
                             return res;
                         })
-                        .sideConfigGetter((comp) -> {
-                            SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
-                            for (int i = 0; i < 3; i++) {
-                                res[i] = SpellComponent.SideConfig.createToggleableInput(comp, SpellComponent.directions[i]).named("vector");
-                            }
-                            res[3] = SpellComponent.SideConfig.createToggleableOutput(comp, SpellComponent.directions[3]).named("x");
-                            res[4] = SpellComponent.SideConfig.createToggleableOutput(comp, SpellComponent.directions[4]).named("y");
-                            res[5] = SpellComponent.SideConfig.createToggleableOutput(comp, SpellComponent.directions[5]).named("z");
-                            return res;
-                        })
+                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
                 VECTOR_BUILD = register(SpellBlock.Builder.create("vector_build")
@@ -1025,16 +946,7 @@ public class SpellBlocks {
                             res.add("vec", vec);
                             return res;
                         })
-                        .sideConfigGetter((comp) -> {
-                            SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
-                            for (int i = 0; i < 3; i++) {
-                                res[i] = SpellComponent.SideConfig.createToggleableOutput(comp, SpellComponent.directions[i]).named("vec");
-                            }
-                            res[3] = SpellComponent.SideConfig.createToggleableInput(comp, SpellComponent.directions[3]).named("x");
-                            res[4] = SpellComponent.SideConfig.createToggleableInput(comp, SpellComponent.directions[4]).named("y");
-                            res[5] = SpellComponent.SideConfig.createToggleableInput(comp, SpellComponent.directions[5]).named("z");
-                            return res;
-                        })
+                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
             }
 
@@ -1277,8 +1189,6 @@ public class SpellBlocks {
         {
             PRINT = register(SpellBlock.Builder.create("print")
                     .inputs(SpellSignal.createAny().named("val"))
-                    .outputs()
-                    .parameters()
                     .func((comp,vars) -> {
                         if(comp.context.caster != null)
                         {
@@ -1290,13 +1200,9 @@ public class SpellBlocks {
                         }
                         return SpellBlockResult.empty();
                     })
-                    .sideConfigGetter((c)->SpellBlock.SideUtil.sidesInput(c,"val"))
                     .category(cat).build());
 
             DEBUG = register(SpellBlock.Builder.create("debug")
-                    .inputs()
-                    .outputs()
-                    .parameters()
                     .func((comp,vars) -> SpellBlockResult.empty())
                     .sideConfigGetter(SpellBlock.SideUtil::sidesBlocked)
                     .init(component -> { component.context.debugging=true;})
@@ -1307,8 +1213,6 @@ public class SpellBlocks {
                             SpellSignal.createVector().named("direction"),
                             SpellSignal.createNumber(0).named("speed"),
                             SpellSignal.createNumber(0).named("power"))
-                    .outputs()
-                    .parameters()
                     .func((comp,vars) -> {
                         var dir = vars.getVector("direction");
                         var speed =vars.getNumber("speed");
@@ -1334,22 +1238,10 @@ public class SpellBlocks {
 
                         return SpellBlockResult.empty();
                     })
-                    .sideConfigGetter((comp)->{
-                        SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
-                        res[0] = SpellComponent.SideConfig.createToggleableInput(comp,SpellComponent.getDir(0)).named("position");
-                        res[1] = SpellComponent.SideConfig.createToggleableInput(comp,SpellComponent.getDir(1)).named("direction");
-                        res[2] = SpellComponent.SideConfig.createToggleableInput(comp,SpellComponent.getDir(2)).named("speed");
-                        res[3] = SpellComponent.SideConfig.createToggleableInput(comp,SpellComponent.getDir(3)).named("power");
-                        res[4] = SpellComponent.SideConfig.createToggleableInput(comp,SpellComponent.getDir(4)).disabled();
-                        res[5] = SpellComponent.SideConfig.createToggleableInput(comp,SpellComponent.getDir(5)).disabled();
-                        return res;
-                    })
                     .category(cat).build());
 
             LIGHTNING = register(SpellBlock.Builder.create("lightning")
                     .inputs(SpellSignal.createVector().named("position"))
-                    .outputs()
-                    .parameters()
                     .func((comp,vars) -> {
                         var pos = vars.getVector("position");
 
@@ -1370,12 +1262,6 @@ public class SpellBlocks {
 
                         return SpellBlockResult.empty();
                     })
-                    .sideConfigGetter((comp)->{
-                        SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
-                        res[0] = SpellComponent.SideConfig.createToggleableInput(comp,SpellComponent.getDir(0)).named("position");
-                        for(int i = 1; i <6; i++) res[i] = SpellComponent.SideConfig.createToggleableInput(comp,SpellComponent.getDir(i)).disabled();
-                        return res;
-                    })
                     .category(cat).build());
 
             TELEPORT = register(SpellBlock.Builder.create("teleport")
@@ -1383,8 +1269,6 @@ public class SpellBlocks {
                             SpellSignal.createUUID(null).named("entity"),
                             SpellSignal.createVector().named("position")
                     )
-                    .outputs()
-                    .parameters()
                     .func((comp,vars) -> {
                         var uuid = vars.getUUID("entity");
                         var pos = vars.getVector("position");
@@ -1408,11 +1292,6 @@ public class SpellBlocks {
 
                         return SpellBlockResult.empty();
                     })
-                    .sideConfigGetter((comp)->{
-                        SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
-                        for(int i = 0; i <6; i++) res[i] = SpellComponent.SideConfig.createToggleableInput(comp,SpellComponent.getDir(i)).named(i%2==0?"position":"entity");
-                        return res;
-                    })
                     .category(cat).build());
 
             DIMHOP = register(SpellBlock.Builder.create("dimhop")
@@ -1420,8 +1299,6 @@ public class SpellBlocks {
                             SpellSignal.createUUID().named("entity"),
                             SpellSignal.createText().named("dimension")
                     )
-                    .outputs()
-                    .parameters()
                     .func((comp,vars) -> {
                         var uuid = vars.getUUID("entity");
                         var dim = vars.getText("dimension");
@@ -1463,11 +1340,6 @@ public class SpellBlocks {
 
                         return SpellBlockResult.empty();
                     })
-                    .sideConfigGetter((comp)->{
-                        SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
-                        for(int i = 0; i <6; i++) res[i] = SpellComponent.SideConfig.createToggleableInput(comp,SpellComponent.getDir(i)).named(i%2==0?"dimension":"entity");
-                        return res;
-                    })
                     .category(cat).build());
 
             PUSH = register(SpellBlock.Builder.create("push")
@@ -1475,8 +1347,6 @@ public class SpellBlocks {
                             SpellSignal.createUUID(null).named("entity"),
                             SpellSignal.createVector().named("velocity")
                     )
-                    .outputs()
-                    .parameters()
                     .func((comp,vars) -> {
                         var uuid = vars.getUUID("entity");
                         var vel = vars.getVector("velocity");
@@ -1502,19 +1372,13 @@ public class SpellBlocks {
 
                         return SpellBlockResult.empty();
                     })
-                    .sideConfigGetter((comp)->{
-                        SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
-                        for(int i = 0; i <6; i++) res[i] = SpellComponent.SideConfig.createToggleableInput(comp,SpellComponent.getDir(i)).named(i%2==0?"velocity":"entity");
-                        return res;
-                    })
                     .category(cat).build());
 
             PLACE = register(SpellBlock.Builder.create("place")
                     .inputs(
                             SpellSignal.createVector().named("position"),
                             SpellSignal.createNumber().named("slot")
-                    )
-                    .outputs().parameters()
+                    ).parameters()
                     .func((comp,vars) -> {
                         var pos = vars.getVector("position");
                         var slot = vars.getNumber("slot");
@@ -1579,11 +1443,6 @@ public class SpellBlocks {
 
                         return SpellBlockResult.empty();
                     })
-                    .sideConfigGetter((comp)->{
-                        SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
-                        for(int i = 0; i <6; i++) res[i] = SpellComponent.SideConfig.createToggleableInput(comp,SpellComponent.getDir(i)).named(i%2==0?"position":"slot");
-                        return res;
-                    })
                     .category(cat).build());
 
             BREAK = register(SpellBlock.Builder.create("break")
@@ -1591,8 +1450,7 @@ public class SpellBlocks {
                             SpellSignal.createVector().named("position"),
                             SpellSignal.createBoolean(true).named("silk touch"),
                             SpellSignal.createBoolean(true).named("autocollect")
-                    )
-                    .outputs().parameters()
+                    ).parameters()
                     .func((comp,vars) -> {
                         var pos = vars.getVector("position");
                         var silkTouch = vars.getBoolean("silk touch");
@@ -1707,14 +1565,12 @@ public class SpellBlocks {
 
                         return SpellBlockResult.empty();
                     })
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                     .category(cat).build());
 
             SET_SPELL = register(SpellBlock.Builder.create("set_spell")
                     .inputs(
                             SpellSignal.createText().named("spell")
-                    )
-                    .outputs().parameters()
+                    ).parameters()
                     .func((comp,vars) -> {
                         var spell = vars.getText("spell");
                         if(!(comp.context.casterItem.getItem() instanceof ISpellSelectorItem sps)) return SpellBlockResult.empty();
@@ -1736,11 +1592,6 @@ public class SpellBlocks {
                             spawnCastParticles(comp,CastParticleData.genericBroke(comp,comp.context.getOriginPos()));
                         }
                         return SpellBlockResult.empty();
-                    })
-                    .sideConfigGetter((comp)->{
-                        SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
-                        for(int i = 0; i <6; i++) res[i] = SpellComponent.SideConfig.createToggleableInput(comp,SpellComponent.getDir(i)).named(i%2==0?"position":"slot");
-                        return res;
                     })
                     .category(cat).build());
 
@@ -1790,8 +1641,7 @@ public class SpellBlocks {
             DEGRADE_BLOCK = register(SpellBlock.Builder.create("degrade_block")
                     .inputs(
                             SpellSignal.createVector().named("position")
-                    )
-                    .outputs().parameters()
+                    ).parameters()
                     .func((comp,vars) -> {
                         if(!(comp.world() instanceof ServerWorld sw)) return SpellBlockResult.empty(); // not in a server world
                         var pos = vars.getVector("position");
@@ -1872,7 +1722,6 @@ public class SpellBlocks {
 
                         return SpellBlockResult.empty();
                     })
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesInput)
                     .category(cat).build());
 
             // imbue data
@@ -1914,7 +1763,6 @@ public class SpellBlocks {
                             SpellSignal.createNumber(0).named("amp"),
                             SpellSignal.createNumber(10).named("duration")
                     )
-                    .outputs()
                     .parameters(SpellBlock.Parameter.createText("effect","regeneration"))
                     .func((comp,vars) -> {
                         var uuid = vars.getUUID("entity");
@@ -1958,8 +1806,7 @@ public class SpellBlocks {
                             SpellSignal.createVector().named("position"),
                             SpellSignal.createBoolean(true).named("silk touch"),
                             SpellSignal.createNumber().named("slot")
-                    )
-                    .outputs().parameters()
+                    ).parameters()
                     .func((comp,vars) -> {
                         var pos = vars.getVector("position");
                         var silkTouch = vars.getBoolean("silk touch");
@@ -2043,7 +1890,6 @@ public class SpellBlocks {
 
                         return SpellBlockResult.empty();
                     })
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesInput)
                     .category(cat).build());
 
             // ignite behaviors
@@ -2093,8 +1939,7 @@ public class SpellBlocks {
                 });
             }
             IGNITE = register(SpellBlock.Builder.create("ignite")
-                    .inputs(SpellSignal.createVector().named("position"))
-                    .outputs().parameters()
+                    .inputs(SpellSignal.createVector().named("position")).parameters()
                     .func((comp,vars) -> {
                         var pos = vars.getVector("position");
                         var blockPos = vars.getBlockPos("position");
@@ -2122,7 +1967,6 @@ public class SpellBlocks {
 
                         return SpellBlockResult.empty();
                     })
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesInput)
                     .category(cat).build());
 
             PLAY_SOUND = register(SpellBlock.Builder.create("play_sound")
@@ -2131,8 +1975,7 @@ public class SpellBlocks {
                             SpellSignal.createText().named("sound"),
                             SpellSignal.createNumber().named("volume"),
                             SpellSignal.createNumber().named("pitch")
-                    )
-                    .outputs().parameters()
+                    ).parameters()
                     .func((comp,vars) -> {
                         var soundID = vars.getIdentifier("sound");
                         if(soundID==null) return SpellBlockResult.empty();
@@ -2168,7 +2011,6 @@ public class SpellBlocks {
 
                         return SpellBlockResult.empty();
                     })
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesInput)
                     .category(cat).build());
 
             DELEGATE = register(SpellBlock.Builder.create("delegate")
@@ -2212,14 +2054,12 @@ public class SpellBlocks {
 
                         return SpellBlockResult.empty();
                     })
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                     .category(cat).build());
 
             SET_TIME = register(SpellBlock.Builder.create("set_time")
                     .inputs(
                             SpellSignal.createNumber().named("fraction")
-                    )
-                    .outputs().parameters()
+                    ).parameters()
                     .func((comp,vars) -> {
                         var fraction = ((vars.getNumber("fraction")%1)+1)%1;
 
@@ -2241,14 +2081,12 @@ public class SpellBlocks {
 
                         return SpellBlockResult.empty();
                     })
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesInput)
                     .category(cat).build());
 
             SET_WEATHER = register(SpellBlock.Builder.create("set_weather")
                     .inputs(
                             SpellSignal.createNumber().named("rainyness")
-                    )
-                    .outputs().parameters()
+                    ).parameters()
                     .func((comp,vars) -> {
                         var rainyness = Toolbox.clampI(vars.getInt("rainyness"),0,2);
 
@@ -2276,12 +2114,10 @@ public class SpellBlocks {
 
                         return SpellBlockResult.empty();
                     })
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesInput)
                     .category(cat).build());
 
             GROW = register(SpellBlock.Builder.create("grow")
-                    .inputs(SpellSignal.createVector().named("position"))
-                    .outputs().parameters()
+                    .inputs(SpellSignal.createVector().named("position")).parameters()
                     .func((comp,vars) -> {
                         var pos = vars.getVector("position");
                         var blockPos = vars.getBlockPos("position");
@@ -2293,7 +2129,7 @@ public class SpellBlocks {
                         if(canAfford(comp,manaCost)){
                             ItemStack meal = Items.BONE_MEAL.getDefaultStack();
                             if(!BoneMealItem.useOnFertilizable(meal,comp.world(),blockPos))
-                                BoneMealItem.useOnGround(meal,comp.world(),blockPos,null);
+                                BoneMealItem.useOnGround(meal,comp.world(),blockPos.down(),null);
 
                             trySpendSoul(comp,manaCost);
                             spawnCastParticles(comp,CastParticleData.genericSuccess(comp,comp.context.getOriginPos()));
@@ -2306,7 +2142,6 @@ public class SpellBlocks {
 
                         return SpellBlockResult.empty();
                     })
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesInput)
                     .category(cat).build());
         }
 
@@ -2315,7 +2150,6 @@ public class SpellBlocks {
         {
             ACTION = register(SpellBlock.Builder.create("action")
                     .inputs(SpellSignal.createAny().named("trigger"))
-                    .outputs()
                     .parameters(SpellBlock.Parameter.createText("function","helloworld"))
                     .func((comp,vars) -> {
                         if(!(comp.context.casterItem.getItem() instanceof ISpellSelectorItem sps)) return SpellBlockResult.empty();
@@ -2331,11 +2165,9 @@ public class SpellBlocks {
                         // run referenced
                         return refSpell.runReferenced(comp.context,comp,vars);
                     })
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesInput)
                     .category(cat).build());
 
             PROVIDER = register(SpellBlock.Builder.create("provider")
-                    .inputs()
                     .outputs(SpellSignal.createAny().named("res"))
                     .parameters(SpellBlock.Parameter.createText("function","helloworld"))
                     .func((comp,vars) -> {
@@ -2352,7 +2184,6 @@ public class SpellBlocks {
                         // run referenced
                         return refSpell.runReferenced(comp.context,comp,vars);
                     })
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesOutput)
                     .category(cat).build());
 
             FUNCTION = register(SpellBlock.Builder.create("function")
@@ -2373,7 +2204,6 @@ public class SpellBlocks {
                         // run referenced
                         return refSpell.runReferenced(comp.context,comp,vars);
                     })
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                     .category(cat).build());
 
             FUNCTION2 = register(SpellBlock.Builder.create("function_two")
@@ -2394,12 +2224,10 @@ public class SpellBlocks {
                         // run referenced
                         return refSpell.runReferenced(comp.context,comp,vars);
                     })
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                     .category(cat).build());
 
             // outputs an internal variable from the parent call
             REF_OUTPUT = register(SpellBlock.Builder.create("ref_output")
-                    .inputs()
                     .outputs(SpellSignal.createAny().named("var"))
                     .parameters(SpellBlock.Parameter.createText("varName","a"))
                     .func((comp,vars) -> {
@@ -2409,27 +2237,23 @@ public class SpellBlocks {
                         res.add(parentVar.clone().named("var"));
                         return res;
                     })
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesOutput)
                     .category(cat).build());
 
             // inputs a variable into the reference call result
             REF_INPUT = register(SpellBlock.Builder.create("ref_input")
                     .inputs(SpellSignal.createAny().named("var"))
-                    .outputs()
                     .parameters(SpellBlock.Parameter.createText("varName","a"))
                     .func((comp,vars) -> {
                         if(!comp.context.isChild()) return SpellBlockResult.empty();
                         comp.context.referenceResult.add(vars.get("var").clone().named(vars.getText("varName")));
                         return SpellBlockResult.empty();
                     })
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesInput)
                     .category(cat).build());
 
             // gets a signal from variable storage items
             VAR_OUTPUT = register(SpellBlock.Builder.create("var_output")
                     .inputs(SpellSignal.createText().named("varID"))
                     .outputs(SpellSignal.createAny().named("var"))
-                    .parameters()
                     .func((comp,vars) -> {
                         if(!(comp.context.casterItem.getItem() instanceof ISpellSelectorItem sps)) return SpellBlockResult.empty();
                         var varID = vars.getText("varID");
@@ -2444,14 +2268,11 @@ public class SpellBlocks {
                         if(sig!=null) res.add(sig.named("var"));
                         return res;
                     })
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                     .category(cat).build());
 
             // sets a signal onto a variable storage item
             VAR_INPUT = register(SpellBlock.Builder.create("var_input")
                     .inputs(SpellSignal.createAny().named("var"),SpellSignal.createText().named("varID"))
-                    .outputs()
-                    .parameters()
                     .func((comp,vars) -> {
                         if(!(comp.context.casterItem.getItem() instanceof ISpellSelectorItem sps)) return SpellBlockResult.empty();
                         var varID = vars.getText("varID");
@@ -2467,14 +2288,11 @@ public class SpellBlocks {
                         }
                         return SpellBlockResult.empty();
                     })
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesInput)
                     .category(cat).build());
 
             // removes a signal from a var storage item
             VAR_DELETE = register(SpellBlock.Builder.create("var_delete")
                     .inputs(SpellSignal.createText().named("varID"))
-                    .outputs()
-                    .parameters()
                     .func((comp,vars) -> {
                         if(!(comp.context.casterItem.getItem() instanceof ISpellSelectorItem sps)) return SpellBlockResult.empty();
                         var varID = vars.getText("varID");
@@ -2489,14 +2307,12 @@ public class SpellBlocks {
                         }
                         return SpellBlockResult.empty();
                     })
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesInput)
                     .category(cat).build());
 
             // checks if a signal from a var storage item exists
             VAR_EXISTS = register(SpellBlock.Builder.create("var_exists")
                     .inputs(SpellSignal.createText().named("varID"))
                     .outputs(SpellSignal.createBoolean().named("exists"))
-                    .parameters()
                     .func((comp,vars) -> {
                         if(!(comp.context.casterItem.getItem() instanceof ISpellSelectorItem sps)) return SpellBlockResult.empty();
                         var varID = vars.getText("varID");
@@ -2509,7 +2325,6 @@ public class SpellBlocks {
                         var sig = ((IVariableStoringItem) varStorerStack.getItem()).getSignal(varStorerStack,varName);
                         return SpellBlockResult.empty().add("exists",sig!=null);
                     })
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                     .category(cat).build());
         }
 
@@ -2532,7 +2347,6 @@ public class SpellBlocks {
                         }
                         return res;
                     })
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                     .category(cat)
                     .build());
 
@@ -2552,7 +2366,6 @@ public class SpellBlocks {
                         res.add("b",listB);
                         return res;
                     })
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                     .category(cat)
                     .build());
 
@@ -2568,7 +2381,6 @@ public class SpellBlocks {
                         res.add("list",list);
                         return res;
                     })
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                     .category(cat)
                     .build());
 
@@ -2582,7 +2394,6 @@ public class SpellBlocks {
                         res.add("size",list==null?0:list.size());
                         return res;
                     })
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                     .category(cat)
                     .build());
 
@@ -2599,7 +2410,6 @@ public class SpellBlocks {
                         res.add(list.get(index).named("signal"));
                         return res;
                     })
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                     .category(cat)
                     .build());
 
@@ -2617,14 +2427,12 @@ public class SpellBlocks {
                         res.add("list",list);
                         return res;
                     })
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                     .category(cat)
                     .build());
 
             ENTITIES_NEAR = register(SpellBlock.Builder.create("entities_near")
                     .inputs(SpellSignal.createVector().named("position"),SpellSignal.createNumber().named("range"))
                     .outputs(SpellSignal.createList().named("entities"))
-                    .parameters()
                     .func((comp, vars) -> {
                         SpellBlockResult res = SpellBlockResult.empty();
                         var pos = vars.getVector("position");
@@ -2644,13 +2452,11 @@ public class SpellBlocks {
                         res.add("entities",sigs);
                         return res;
                     })
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                     .category(cat).build());
 
             BLOCK_BOX = register(SpellBlock.Builder.create("block_box")
                     .inputs(SpellSignal.createVector().named("start"),SpellSignal.createVector().named("end"))
                     .outputs(SpellSignal.createList().named("positions"))
-                    .parameters()
                     .func((comp, vars) -> {
                         SpellBlockResult res = SpellBlockResult.empty();
                         var start = vars.getBlockPos("start");
@@ -2671,7 +2477,6 @@ public class SpellBlocks {
                         res.add("positions",sigs);
                         return res;
                     })
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                     .category(cat).build());
         }
     }
@@ -2680,7 +2485,6 @@ public class SpellBlocks {
         return SpellBlock.Builder.create(name)
                 .inputs(SpellSignal.createNumber(0).named("rad"))
                 .outputs(SpellSignal.createNumber(0).named(varName))
-                .parameters()
                 .func((comp,vars) -> {
                     SpellBlockResult res = SpellBlockResult.empty();
                     res.add(SpellSignal.createNumber(function.apply((double)vars.getNumber("rad"))).named(varName));
@@ -2804,6 +2608,9 @@ public class SpellBlocks {
                 comp.getRuntimeName(),vol));
     }
 
+    public static void tryLogDebugTimedOut(SpellContext context) {
+        if(context.debugging)logDebug(context.caster,Text.translatable("geomancy.spells.debug.timeout",context.grid.getRuntimeName(context),context.getExecutionTimeMS()));
+    }
 
     private static void spawnCastParticles(SpellComponent comp,CastParticleData data){
         PacketByteBuf buf = PacketByteBufs.create();
@@ -2901,6 +2708,9 @@ public class SpellBlocks {
     private static void addImbueData(StatusEffect effect, ImbueData data){
         imbueData.put(Registries.STATUS_EFFECT.getId(effect),data);
     }
+
+
+
     public static class ImbueData{
         public final int maxAmp;
         public final float ampExponent;
