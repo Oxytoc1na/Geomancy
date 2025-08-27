@@ -5,6 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -79,13 +80,15 @@ public class SpellSignal {
         return new SpellSignal(Type.Text,"text",0,defaultValue,null,null,null);
     }
 
-    public static SpellSignal createUUID() { return createUUID(null);}
+    public static SpellSignal createUUID() { return createUUID((UUID)null);}
+    public static SpellSignal createUUID(Entity entity) { return createUUID(entity.getUuid());}
     public static SpellSignal createUUID(UUID defaultValue) {
         return new SpellSignal(Type.UUID,"uuid",0,"",defaultValue,null,null);
     }
 
     public static SpellSignal createVector() { return createVector((Vec3d)null);}
     public static SpellSignal createVector(Vec3i vec) { return createVector(new Vec3d(vec.getX(), vec.getY(), vec.getZ()));}
+    public static SpellSignal createVector(Vector3f vec) { return createVector(new Vec3d(vec.x(), vec.y(), vec.z()));}
     public static SpellSignal createVector(Vec3d defaultValue) {
         return new SpellSignal(Type.Vector,"vec",0,"",null,defaultValue,null);
     }
@@ -94,6 +97,8 @@ public class SpellSignal {
     public static SpellSignal createList(List<SpellSignal> defaultValue) {
         return new SpellSignal(Type.List,"list",0,"",null,null,defaultValue);
     }
+
+
 
     public SpellSignal named(String name){
         this.name=name;
@@ -222,6 +227,8 @@ public class SpellSignal {
     }
 
 
+
+
     public enum Type{
         None,
         Any,
@@ -231,6 +238,49 @@ public class SpellSignal {
         UUID,
         Vector,
         List,
+    }
+
+    public void serialize(PacketByteBuf buf) {
+        buf.writeString(type.toString());
+        buf.writeString(name);
+        switch(type){
+            case Number: buf.writeFloat(getNumberValue()); break;
+            case Boolean: buf.writeBoolean(getBooleanValue()); break;
+            case Text: buf.writeString(getTextValue()); break;
+            case UUID: buf.writeUuid(getUUIDValue()); break;
+            case Vector: buf.writeVector3f(getVectorValue().toVector3f()); break;
+            case List: serializeList(getListValue(),buf); break;
+        }
+    }
+    private static void serializeList(List<SpellSignal> list, PacketByteBuf buf){
+        buf.writeInt(list.size());
+        for(var s : list){
+            s.serialize(buf);
+        }
+    }
+
+    public static SpellSignal deserialize(PacketByteBuf buf) {
+        String typeS = buf.readString();
+        Type type = Enum.valueOf(Type.class,typeS);
+        String name = buf.readString();
+        switch(type){
+            case Number: return SpellSignal.createNumber(buf.readFloat()).named(name);
+            case Boolean: return SpellSignal.createBoolean(buf.readBoolean()).named(name);
+            case Text: return SpellSignal.createText(buf.readString()).named(name);
+            case UUID: return SpellSignal.createUUID(buf.readUuid()).named(name);
+            case Vector: return SpellSignal.createVector(buf.readVector3f()).named(name);
+            case List: return SpellSignal.createList(deserializeList(buf)).named(name);
+        }
+
+        return SpellSignal.createNone();
+    }
+    private static List<SpellSignal> deserializeList(PacketByteBuf buf){
+        int size = buf.readInt();
+        List<SpellSignal> res = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            res.add(SpellSignal.deserialize(buf));
+        }
+        return res;
     }
 
     public void writeNbt(NbtCompound nbt)

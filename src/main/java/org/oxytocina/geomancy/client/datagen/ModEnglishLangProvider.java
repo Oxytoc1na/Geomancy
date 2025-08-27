@@ -110,12 +110,13 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("dir_caster","Caster Dir.","returns the facing direction of the casting entity or block");
             addSpell("get_weather","Weather","returns 1 if raining, 2 if thundering, and 0 otherwise");
             addSpell("get_time","Time","returns how progressed the current day is");
+            addSpell("entity_delegate","Get Delegate","in a delegate context, returns the delegate entity");
             // arithmetic
             addSpell("vector_entityspawn","Entity Spawn","returns the respawn point of the entity");
-            addSpell("vector_entitypos","Entity Pos.","returns the position of the entity");
-            addSpell("vector_entityeyepos","Entity Eye Pos.","returns the position of the eyes of the entity");
-            addSpell("vector_entitydir","Entity Dir.","returns the direction the entity is looking in");
-            addSpell("vector_entityvel","Entity Vel.","returns the velocity of an entity");
+            addSpell("vector_entitypos","Entity Position","returns the position of the entity");
+            addSpell("vector_entityeyepos","Entity Eye Position","returns the position of the eyes of the entity");
+            addSpell("vector_entitydir","Entity Direction","returns the direction the entity is looking in");
+            addSpell("vector_entityvel","Entity Velocity","returns the velocity of an entity");
             addSpell("vector_split","Split Vec.","returns a vectors components");
             addSpell("vector_build","Build Vec.","constructs a vector from three numbers");
             addSpell("sum","Sum","adds two numbers or vectors");
@@ -128,8 +129,9 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("exp","Exponent","returns a number to the power of another number");
             addSpell("log","Log","returns the logarithm to a base of a number");
             addSpell("mod","Modulo","returns the remainder of a division");
-            addSpell("raycast_pos","Raycast Pos.","returns the block position hit by a ray");
-            addSpell("raycast_dir","Raycast Dir.","returns the block face hit by a ray");
+            addSpell("raycast_pos","Raycast Position","returns the block position hit by a ray");
+            addSpell("raycast_dir","Raycast Direction","returns the block face hit by a ray");
+            addSpell("raycast_entity","Raycast Entity","returns the entity hit by a ray");
             addSpell("bool_entitygrounded","Entity Grounded","returns if an entity is on the ground");
             addSpell("entity_nearest","Nearest Entity","returns the entity closest to the position");
             addSpell("invert","Invert","returns an inversion of the input");

@@ -44,3 +44,4 @@ accessible field net/minecraft/block/entity/AbstractFurnaceBlockEntity burnTime 
 accessible field net/minecraft/block/entity/AbstractFurnaceBlockEntity fuelTime I
 
 accessible method net/minecraft/block/Block spawnBreakParticles (Lnet/minecraft/world/World;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;)V
+accessible field net/minecraft/block/AbstractBlock collidable Z

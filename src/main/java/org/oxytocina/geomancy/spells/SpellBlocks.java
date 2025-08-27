@@ -34,14 +34,12 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.random.LocalRandom;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.world.BlockStateRaycastContext;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.RaycastContext;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
 import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.client.GeomancyClient;
 import org.oxytocina.geomancy.items.ISpellSelectorItem;
@@ -49,6 +47,7 @@ import org.oxytocina.geomancy.items.tools.IVariableStoringItem;
 import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
 import org.oxytocina.geomancy.util.BlockHelper;
+import org.oxytocina.geomancy.util.EntityUtil;
 import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.*;
@@ -104,6 +103,7 @@ public class SpellBlocks {
     public static final SpellBlock VECTOR_ENTITYVEL;
     public static final SpellBlock RAYCAST_POS;
     public static final SpellBlock RAYCAST_DIR;
+    public static final SpellBlock RAYCAST_ENTITY;
     public static final SpellBlock BOOL_ENTITYGROUNDED;
     public static final SpellBlock ENTITY_NEAREST;
     public static final SpellBlock TEXT_ENTITY_ID;
@@ -250,7 +250,7 @@ public class SpellBlocks {
                     .category(cat).build());
 
             ENTITY_CASTER = register(SpellBlock.Builder.create("entity_caster")
-                    .outputs(SpellSignal.createUUID(null).named("caster"))
+                    .outputs(SpellSignal.createUUID().named("caster"))
                     .func((component, stringSpellSignalHashMap) -> {
                         SpellBlockResult res = new SpellBlockResult();
                         if(component.context.caster!=null) res.add("caster",component.context.caster.getUuid());return res;
@@ -258,7 +258,7 @@ public class SpellBlocks {
                     .category(cat).build());
 
             ENTITY_DELEGATE = register(SpellBlock.Builder.create("entity_delegate")
-                    .outputs(SpellSignal.createUUID(null).named("delegate"))
+                    .outputs(SpellSignal.createUUID().named("delegate"))
                     .func((component, stringSpellSignalHashMap) -> {
                         SpellBlockResult res = new SpellBlockResult();
                         if(component.context.delegate!=null) res.add("delegate",component.context.delegate.getUuid());return res;
@@ -422,7 +422,6 @@ public class SpellBlocks {
                             }
                             return res;
                         })
-                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
                 SUBTRACT = register(SpellBlock.Builder.create("subtract")
@@ -488,7 +487,6 @@ public class SpellBlocks {
                             }
                             return res;
                         })
-                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
                 MULTIPLY = register(SpellBlock.Builder.create("multiply")
@@ -531,7 +529,6 @@ public class SpellBlocks {
                             }
                             return res;
                         })
-                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
                 DIVIDE = register(SpellBlock.Builder.create("divide")
@@ -564,7 +561,6 @@ public class SpellBlocks {
 
                             return res;
                         })
-                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
                 SIN = register(createAngleFunc("sin","sine",Math::sin));
@@ -583,7 +579,6 @@ public class SpellBlocks {
                             res.add(SpellSignal.createNumber(Math.pow(a.getNumberValue(),b.getNumberValue())).named("exp"));
                             return res;
                         })
-                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
                 LOG = register(SpellBlock.Builder.create("log")
@@ -598,7 +593,6 @@ public class SpellBlocks {
                             res.add(SpellSignal.createNumber(Toolbox.log(base.getNumberValue(),a.getNumberValue())).named("log"));
                             return res;
                         })
-                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
                 MOD = register(SpellBlock.Builder.create("mod")
@@ -611,7 +605,6 @@ public class SpellBlocks {
                             res.add("remainder",vars.getNumber("a")%vars.getNumber("b"));
                             return res;
                         })
-                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
                 RAYCAST_POS = register(SpellBlock.Builder.create("raycast_pos")
@@ -629,7 +622,6 @@ public class SpellBlocks {
                             }
                             return res;
                         })
-                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
                 RAYCAST_DIR = register(SpellBlock.Builder.create("raycast_dir")
@@ -647,7 +639,6 @@ public class SpellBlocks {
                             }
                             return res;
                         })
-                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
                 INVERT = register(SpellBlock.Builder.create("invert")
@@ -670,7 +661,6 @@ public class SpellBlocks {
                             }
                             return res;
                         })
-                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
                 RANDOM_INTEGER = register(SpellBlock.Builder.create("random_integer")
@@ -683,7 +673,6 @@ public class SpellBlocks {
                             res.add("random",Toolbox.random.nextInt(exclusivemax));
                             return res;
                         })
-                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
                 PARSE = register(SpellBlock.Builder.create("parse")
@@ -725,7 +714,6 @@ public class SpellBlocks {
 
                             return res;
                         })
-                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
                 TO_TEXT = register(SpellBlock.Builder.create("to_text")
@@ -737,7 +725,6 @@ public class SpellBlocks {
                             res.add("res",vars.get("signal").getTextValue());
                             return res;
                         })
-                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
 
@@ -746,7 +733,7 @@ public class SpellBlocks {
             // entities
             {
                 VECTOR_ENTITYSPAWN = register(SpellBlock.Builder.create("vector_entityspawn")
-                        .inputs(SpellSignal.createUUID(null).named("entity"))
+                        .inputs(SpellSignal.createUUID().named("entity"))
                         .outputs(SpellSignal.createVector().named("position"))
                         .parameters()
                         .func((component, vars) -> {
@@ -759,11 +746,10 @@ public class SpellBlocks {
                             res.add(SpellSignal.createVector(playerSpawn.toCenterPos()).named("position"));
                             return res;
                         })
-                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
                 VECTOR_ENTITYPOS = register(SpellBlock.Builder.create("vector_entitypos")
-                        .inputs(SpellSignal.createUUID(null).named("entity"))
+                        .inputs(SpellSignal.createUUID().named("entity"))
                         .outputs(SpellSignal.createVector().named("position"))
                         .parameters()
                         .func((component, vars) -> {
@@ -772,11 +758,10 @@ public class SpellBlocks {
                             res.add("position",entity.getPos());
                             return res;
                         })
-                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
                 VECTOR_ENTITYVEL = register(SpellBlock.Builder.create("vector_entityvel")
-                        .inputs(SpellSignal.createUUID(null).named("entity"))
+                        .inputs(SpellSignal.createUUID().named("entity"))
                         .outputs(SpellSignal.createVector().named("velocity"))
                         .parameters()
                         .func((component, vars) -> {
@@ -785,11 +770,10 @@ public class SpellBlocks {
                             res.add("velocity",entity.getVelocity());
                             return res;
                         })
-                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
                 VECTOR_ENTITYEYEPOS = register(SpellBlock.Builder.create("vector_entityeyepos")
-                        .inputs(SpellSignal.createUUID(null).named("entity"))
+                        .inputs(SpellSignal.createUUID().named("entity"))
                         .outputs(SpellSignal.createVector().named("eye position"))
                         .parameters()
                         .func((component, vars) -> {
@@ -798,11 +782,10 @@ public class SpellBlocks {
                             res.add("eye position",entity.getEyePos());
                             return res;
                         })
-                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
                 VECTOR_ENTITYDIR = register(SpellBlock.Builder.create("vector_entitydir")
-                        .inputs(SpellSignal.createUUID(null).named("entity"))
+                        .inputs(SpellSignal.createUUID().named("entity"))
                         .outputs(SpellSignal.createVector().named("direction"))
                         .parameters()
                         .func((component, vars) -> {
@@ -811,11 +794,10 @@ public class SpellBlocks {
                             res.add("direction",entity.getRotationVector());
                             return res;
                         })
-                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
                 BOOL_ENTITYGROUNDED = register(SpellBlock.Builder.create("bool_entitygrounded")
-                        .inputs(SpellSignal.createUUID(null).named("entity"))
+                        .inputs(SpellSignal.createUUID().named("entity"))
                         .outputs(SpellSignal.createBoolean(false).named("grounded"))
                         .parameters()
                         .func((component, vars) -> {
@@ -824,12 +806,11 @@ public class SpellBlocks {
                             res.add(SpellSignal.createBoolean(ent.isOnGround()).named("grounded"));
                             return res;
                         })
-                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
                 ENTITY_NEAREST = register(SpellBlock.Builder.create("entity_nearest")
                         .inputs(SpellSignal.createVector().named("position"))
-                        .outputs(SpellSignal.createUUID(null).named("entity"))
+                        .outputs(SpellSignal.createUUID().named("entity"))
                         .parameters(SpellBlock.Parameter.createNumber("range",5,0,20))
                         .func((comp, vars) -> {
                             SpellBlockResult res = SpellBlockResult.empty();
@@ -850,7 +831,6 @@ public class SpellBlocks {
                             res.add("entity",ent.getUuid());
                             return res;
                         })
-                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
                 TEXT_ENTITY_ID = register(SpellBlock.Builder.create("text_entityid")
@@ -863,7 +843,6 @@ public class SpellBlocks {
                             res.add("id",Registries.ENTITY_TYPE.getId(entity.getType()).toString());
                             return res;
                         })
-                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
                 ENTITY_HAS_EFFECT = register(SpellBlock.Builder.create("entity_has_effect")
@@ -885,7 +864,6 @@ public class SpellBlocks {
                             res.add("duration",inst.getDuration()/20f);
                             return res;
                         })
-                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
                 ENTITY_HEALTH = register(SpellBlock.Builder.create("entity_health")
@@ -906,8 +884,25 @@ public class SpellBlocks {
                             res.add("maxAir",entity.getAir()/20f);
                             return res;
                         })
-                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
+
+                RAYCAST_ENTITY = register(SpellBlock.Builder.create("raycast_entity")
+                        .inputs(SpellSignal.createVector().named("from"),
+                                SpellSignal.createVector().named("dir"),
+                                SpellSignal.createNumber().named("length"))
+                        .outputs(SpellSignal.createUUID().named("entity"))
+                        .parameters()
+                        .func((comp,vars) -> {
+                            SpellBlockResult res = SpellBlockResult.empty();
+                            var hit = raycastEntity(comp,vars.getVector("from"),vars.getVector("from").add(vars.getVector("dir").multiply(vars.getNumber("length"))));
+                            if(hit.getType()== HitResult.Type.ENTITY){
+                                var hitEnt = hit.getEntity();
+                                res.add(SpellSignal.createUUID(hitEnt).named("entity"));
+                            }
+                            return res;
+                        })
+                        .category(cat).build());
+
 
             }
 
@@ -927,7 +922,6 @@ public class SpellBlocks {
                             res.add("z", vec.z);
                             return res;
                         })
-                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
                 VECTOR_BUILD = register(SpellBlock.Builder.create("vector_build")
@@ -946,7 +940,6 @@ public class SpellBlocks {
                             res.add("vec", vec);
                             return res;
                         })
-                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
             }
 
@@ -1000,7 +993,6 @@ public class SpellBlocks {
                             }
                             return res;
                         })
-                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
                 OR = register(SpellBlock.Builder.create("or")
@@ -1042,7 +1034,6 @@ public class SpellBlocks {
                             }
                             return res;
                         })
-                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
                 XOR = register(SpellBlock.Builder.create("xor")
@@ -1084,7 +1075,6 @@ public class SpellBlocks {
                             }
                             return res;
                         })
-                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
                 EQUALS = register(SpellBlock.Builder.create("equals")
@@ -1099,7 +1089,6 @@ public class SpellBlocks {
                             res.add("res",a.softEquals(b));
                             return res;
                         })
-                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
                 GREATER = register(SpellBlock.Builder.create("greater")
@@ -1122,7 +1111,6 @@ public class SpellBlocks {
                             }
                             return res;
                         })
-                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
 
                 LESS = register(SpellBlock.Builder.create("less")
@@ -1145,7 +1133,6 @@ public class SpellBlocks {
                             }
                             return res;
                         })
-                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
             }
 
@@ -1163,7 +1150,6 @@ public class SpellBlocks {
                             res.add("id",Registries.BLOCK.getId(state.getBlock()).toString());
                             return res;
                         })
-                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
             }
 
@@ -1179,7 +1165,6 @@ public class SpellBlocks {
                             res.add("translated",Text.translatable(in).getString());
                             return res;
                         })
-                        .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                         .category(cat).build());
             }
         }
@@ -1266,7 +1251,7 @@ public class SpellBlocks {
 
             TELEPORT = register(SpellBlock.Builder.create("teleport")
                     .inputs(
-                            SpellSignal.createUUID(null).named("entity"),
+                            SpellSignal.createUUID().named("entity"),
                             SpellSignal.createVector().named("position")
                     )
                     .func((comp,vars) -> {
@@ -1344,7 +1329,7 @@ public class SpellBlocks {
 
             PUSH = register(SpellBlock.Builder.create("push")
                     .inputs(
-                            SpellSignal.createUUID(null).named("entity"),
+                            SpellSignal.createUUID().named("entity"),
                             SpellSignal.createVector().named("velocity")
                     )
                     .func((comp,vars) -> {
@@ -1759,7 +1744,7 @@ public class SpellBlocks {
             }
             IMBUE = register(SpellBlock.Builder.create("imbue")
                     .inputs(
-                            SpellSignal.createUUID(null).named("entity"),
+                            SpellSignal.createUUID().named("entity"),
                             SpellSignal.createNumber(0).named("amp"),
                             SpellSignal.createNumber(10).named("duration")
                     )
@@ -1796,7 +1781,7 @@ public class SpellBlocks {
                     })
                     .sideConfigGetter((comp)->{
                         SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
-                        for(int i = 0; i <6; i++) res[i] = SpellComponent.SideConfig.createToggleableInput(comp,SpellComponent.getDir(i)).named(i%3==0?"amp":i%3==1?"entity":"duration");
+                        for(int i = 0; i <6; i++) res[i] = SpellComponent.SideConfig.createToggleableInput(comp,SpellComponent.getDirString(i)).named(i%3==0?"amp":i%3==1?"entity":"duration");
                         return res;
                     })
                     .category(cat).build());
@@ -2490,7 +2475,6 @@ public class SpellBlocks {
                     res.add(SpellSignal.createNumber(function.apply((double)vars.getNumber("rad"))).named(varName));
                     return res;
                 })
-                .sideConfigGetter(SpellBlock.SideUtil::sidesFreeform)
                 .category(cat).build();
     }
     // raycasts
@@ -2509,8 +2493,7 @@ public class SpellBlocks {
                 var dirV = comp.context.casterBlock.getDirection().getVector();
                 Vec3d end = from.add(dirV.getX()*length,dirV.getY()*length,dirV.getZ()*length);
 
-                var ctx = new BlockStateRaycastContext(from,end,b->!b.isAir());
-                return raycast(comp.world(),ctx);
+                return BlockHelper.raycastBlock(comp.world(),from,end);
             }
 
             case Delegate:{
@@ -2523,17 +2506,21 @@ public class SpellBlocks {
         return BlockHitResult.createMissed(from,Direction.NORTH,Toolbox.posToBlockPos(from));
     }
 
-    private static BlockHitResult raycast(World world, BlockStateRaycastContext context) {
-        BlockView view = world;
-        return (BlockHitResult)BlockView.raycast(context.getStart(), context.getEnd(), context, (innerContext, pos) -> {
-            BlockState blockState = view.getBlockState(pos);
-            Vec3d vec3d = innerContext.getStart().subtract(innerContext.getEnd());
-            return innerContext.getStatePredicate().test(blockState) ? new BlockHitResult(pos.toCenterPos(), Direction.getFacing(vec3d.x, vec3d.y, vec3d.z), pos, false) : null;
-        }, (innerContext) -> {
-            Vec3d vec3d = innerContext.getStart().subtract(innerContext.getEnd());
-            return BlockHitResult.createMissed(innerContext.getEnd(), Direction.getFacing(vec3d.x, vec3d.y, vec3d.z), BlockPos.ofFloored(innerContext.getEnd()));
-        });
+    private static EntityHitResult raycastEntity(SpellComponent comp, Vec3d start, Vec3d end) {
+        double reachDistance = end.subtract(start).length();
+        HitResult target = BlockHelper.raycastBlock(comp.world(),start,end);
+
+        // cap entity reach by hit blocks, if any
+        double squaredEntityReach = reachDistance;
+        squaredEntityReach *= squaredEntityReach;
+        if (target != null) {
+            squaredEntityReach = target.getPos().squaredDistanceTo(start);
+        }
+
+        Box entityCheckBox = new Box(start,end).expand((double)1.0F, (double)1.0F, (double)1.0F);
+        return EntityUtil.raycast(comp.world(), start, end, entityCheckBox, (entityx) -> !entityx.isSpectator() && entityx.canHit(), squaredEntityReach);
     }
+
 
     private static void logDebug(LivingEntity player, Text text){
         if(player != null)

@@ -6,12 +6,18 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.items.armor.IListenerArmor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 public class EntityUtil {
 
@@ -97,6 +103,39 @@ public class EntityUtil {
             if (armorItemStack.getItem() instanceof IListenerArmor armorWithHitEffect) {
                 armorWithHitEffect.onMessageSent(armorItemStack,spe, message);
             }
+        }
+    }
+
+    @Nullable
+    public static EntityHitResult raycast(World world, Vec3d min, Vec3d max, Box box, Predicate<Entity> predicate, double squaredReach) {
+        double e = squaredReach;
+        Entity resultEntity = null;
+        Vec3d hitPos = null;
+
+        for(Entity contenderEntity : world.getEntitiesByClass(LivingEntity.class, box, predicate)) {
+            Box hitBox = contenderEntity.getBoundingBox().expand((double)contenderEntity.getTargetingMargin());
+            Optional<Vec3d> hitBoxHit = hitBox.raycast(min, max);
+            if (hitBox.contains(min)) {
+                if (e >= (double)0.0F) {
+                    resultEntity = contenderEntity;
+                    hitPos = (Vec3d)hitBoxHit.orElse(min);
+                    e = (double)0.0F;
+                }
+            } else if (hitBoxHit.isPresent()) {
+                Vec3d vec3d2 = (Vec3d)hitBoxHit.get();
+                double f = min.squaredDistanceTo(vec3d2);
+                if (f < e || e == (double)0.0F) {
+                    resultEntity = contenderEntity;
+                    hitPos = vec3d2;
+                    e = f;
+                }
+            }
+        }
+
+        if (resultEntity == null) {
+            return null;
+        } else {
+            return new EntityHitResult(resultEntity, hitPos);
         }
     }
 }

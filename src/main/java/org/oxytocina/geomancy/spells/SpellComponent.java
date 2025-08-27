@@ -1,12 +1,14 @@
 package org.oxytocina.geomancy.spells;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import dev.architectury.mixin.fabric.MixinItemEntity;
+import io.netty.buffer.Unpooled;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -14,18 +16,22 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import org.joml.Vector2i;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.util.ByteUtil;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
 
 public class SpellComponent {
+    public static final int CURRENT_DATA_FORMAT_VERSION = 1;
+
     public SideConfig[] sideConfigs;
 
     public HashMap<String,SpellSignal> receivedSignals = new HashMap<>();
     public HashMap<String,ConfiguredParameter> configuredParameters = new HashMap<>();
-    public HashMap<String,SpellComponent> neighbors = new HashMap<>();
+    public HashMap<Byte,SpellComponent> neighbors = new HashMap<>();
 
     public SpellBlock function;
 
@@ -34,7 +40,7 @@ public class SpellComponent {
 
     public SpellContext context;
 
-    public int rotation = 0;
+    public byte rotation = 0;
 
     public HashMap<String,String> castClearedData = new HashMap<>();
 
@@ -65,6 +71,11 @@ public class SpellComponent {
         }
     }
 
+    private SpellComponent(SpellGrid parent, PacketByteBuf buf){
+        this.parent=parent;
+        deserialize(buf);
+    }
+
     public SpellComponent(SpellGrid parent,NbtCompound nbt){
         this.parent = parent;
         readNbt(nbt);
@@ -84,8 +95,8 @@ public class SpellComponent {
         function.postRun(this);
     }
 
-    public boolean tryAcceptSignalFrom(String dir, SpellSignal signal){
-        String sideConfDir = mirrorDirection(dir);
+    public boolean tryAcceptSignalFrom(byte dir, SpellSignal signal){
+        byte sideConfDir = mirrorDirection(dir);
         var conf = getSideConfig(sideConfDir);
         if(!conf.isInput()) return false;
 
@@ -121,7 +132,7 @@ public class SpellComponent {
         pushSignals(res.vars);
     }
 
-    public void pushSignal(String dir, SpellSignal signal){
+    public void pushSignal(byte dir, SpellSignal signal){
         if(!hasNeighbor(dir)) return; // no neighbor to push to
         getNeighbor(dir).tryAcceptSignalFrom(dir,signal);
     }
@@ -191,23 +202,87 @@ public class SpellComponent {
         return true;
     }
 
-    public SideConfig getSideConfig(String dir){
-        return sideConfigs[getDirIndex(dir)];
+    public SideConfig getSideConfig(byte dir){
+        return sideConfigs[ByteUtil.byteToInt(dir)];
     }
 
-    public void setNeighbor(String dir, SpellComponent comp){
+    public void setNeighbor(byte dir, SpellComponent comp){
         neighbors.put(dir,comp);
     }
 
-    public SpellComponent getNeighbor(String dir){
+    public SpellComponent getNeighbor(byte dir){
         return hasNeighbor(dir)?neighbors.get(dir):null;
     }
 
-    public boolean hasNeighbor(String dir){
+    public boolean hasNeighbor(byte dir){
         return neighbors.containsKey(dir) && neighbors.get(dir) != null;
     }
 
+    public PacketByteBuf serialize(){
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeInt(CURRENT_DATA_FORMAT_VERSION);
+
+        buf.writeByte(rotation);
+        buf.writeIdentifier(function.identifier);
+        buf.writeBoolean(position!=null);
+        if(position!=null){
+            buf.writeInt(position.x);
+            buf.writeInt(position.y);
+        }
+        buf.writeInt(sideConfigs.length);
+        for (var s : sideConfigs)
+        {
+            s.serialize(buf);
+        }
+
+        buf.writeInt(configuredParameters.size());
+        for (var s : configuredParameters.values())
+        {
+            s.serialize(buf);
+        }
+
+        return buf;
+    }
+
+    public static SpellComponent deserialize(SpellGrid parent, PacketByteBuf buf){
+        return new SpellComponent(parent,buf);
+    }
+
+    public void deserialize(PacketByteBuf buf){
+        int formatVersion = buf.readInt();
+
+        rotation = buf.readByte();
+        function = SpellBlocks.get(buf.readIdentifier());
+        sideConfigs = function.getDefaultSideConfigs(this);
+
+        boolean hasPos = buf.readBoolean();
+        if(hasPos){
+            position = new Vector2i(
+                    buf.readInt(),
+                    buf.readInt()
+            );
+        }
+
+        int confLength = buf.readInt();
+        for (int i = 0; i < confLength; i++) {
+            sideConfigs[i].deserialize(buf);
+        }
+
+        int paramsLength = buf.readInt();
+        for (int i = 0; i < paramsLength; i++)
+        {
+            ConfiguredParameter param = ConfiguredParameter.deserialize(function,buf);
+            configuredParameters.put(param.parameter.name,param);
+        }
+    }
+
     public void writeNbt(NbtCompound nbt){
+        // experimental serialization
+        if(CURRENT_DATA_FORMAT_VERSION>=1){
+            nbt.putString("data",ByteUtil.bufToString(serialize()));
+            return;
+        }
+
         nbt.putInt("rotation",rotation);
         nbt.putString("func",function.identifier.toString());
         if(position!=null){
@@ -233,7 +308,14 @@ public class SpellComponent {
     }
 
     public void readNbt(NbtCompound nbt){
-        rotation = nbt.getInt("rotation");
+
+        // experimental deserialization
+        if(nbt.contains("data") && CURRENT_DATA_FORMAT_VERSION>=1){
+            deserialize(ByteUtil.stringToBuf(nbt.getString("data")));
+            return;
+        }
+
+        rotation = ByteUtil.intToByte(nbt.getInt("rotation"));
         function = SpellBlocks.get(nbt.getString("func"));
         if(
                 nbt.contains("x",NbtElement.INT_TYPE) &&
@@ -252,7 +334,7 @@ public class SpellComponent {
                 continue;
             }
             var conf = SideConfig.createFromNbt(this,comp);
-            sideConfigs[getDirIndex(conf.dir)] = conf;
+            sideConfigs[ByteUtil.byteToInt(conf.dir)] = conf;
         }
 
         // read configured parameters
@@ -298,15 +380,14 @@ public class SpellComponent {
 
     // direction helpers
 
-    public static String mirrorDirection(String dir){
+    public static byte mirrorDirection(byte dir){
         return rotateDirection(dir,3);
     }
 
     public final static String[] directions = new String[]{"ne","e","se","sw","w","nw"};
 
-    public static String rotateDirection(String dir, int clockwiseTicks){
-        int newIndex = (getDirIndex(dir)+clockwiseTicks)%directions.length;
-        return directions[newIndex];
+    public static byte rotateDirection(byte dir, int clockwiseTicks){
+        return ByteUtil.intToByte((ByteUtil.byteToInt(dir)+clockwiseTicks)%directions.length);
     }
 
     public static int getDirIndex(String dir){
@@ -316,7 +397,7 @@ public class SpellComponent {
         return 0;
     }
 
-    public static String getDir(int index){return directions[((index%6)+6)%6];}
+    public static String getDirString(int index){return directions[((index%6)+6)%6];}
 
     public boolean hasSignal(String name){
         return receivedSignals.containsKey(name);
@@ -332,13 +413,13 @@ public class SpellComponent {
 
     /// rotates side configs clockwise by specified amount
     public void rotate(int amount){
-        rotation = (rotation-(amount%6)+6)%6;
+        rotation = ByteUtil.intToByte((ByteUtil.byteToInt(rotation)-(amount%6)+6)%6);
 
         SideConfig[] newConfigs = new SideConfig[6];
         for(int i = 0; i < 6; i++)
         {
             newConfigs[i] = sideConfigs[(i-(amount%6)+6)%6];
-            newConfigs[i].dir = getDir(i);
+            newConfigs[i].dir = ByteUtil.intToByte(i);
         }
         sideConfigs = newConfigs;
     }
@@ -356,9 +437,9 @@ public class SpellComponent {
     }
 
     public static class SideConfig{
-        public String dir;
+        public byte dir;
         public String varName;
-        public int selectedMode = 0;
+        public byte selectedMode = 0;
         public ArrayList<Mode> modes;
         public SpellComponent parent;
 
@@ -366,14 +447,14 @@ public class SpellComponent {
             this.parent=parent;
             readNbt(nbt);
             modes = parent.function.getDefaultSideConfigs(parent)[
-                    (getDirIndex(dir)+parent.rotation+6)%6
+                    (ByteUtil.byteToInt(dir)+parent.rotation+6)%6
                     ].modes;
             sanityCheckVarName(false);
         }
 
         public SideConfig(SpellComponent parent,String dir, String varName, Mode[] modes){
             this.parent=parent;
-            this.dir=dir;
+            this.dir=ByteUtil.intToByte(getDirIndex(dir));
             this.varName=varName;
             this.modes=new ArrayList<>();
             this.modes.addAll(Arrays.asList(modes));
@@ -427,7 +508,9 @@ public class SpellComponent {
             setMode(modes.indexOf(mode));
         }
 
-        public void setMode(int index){
+        public void setMode(int index){setMode(ByteUtil.intToByte(index));}
+
+        public void setMode(byte index){
             if(selectedMode==index) return;
             selectedMode=index;
             // set variable to fitting one
@@ -450,16 +533,36 @@ public class SpellComponent {
             return SpellSignal.typesCompatible(type,ownType);
         }
 
+        public void serialize(PacketByteBuf buf) {
+            buf.writeByte(dir);
+            buf.writeByte(selectedMode);
+            buf.writeString(varName);
+        }
+
+        public void deserialize(PacketByteBuf buf) {
+            dir=buf.readByte();
+            selectedMode=buf.readByte();
+            varName=buf.readString();
+        }
+
         public void writeNbt(NbtCompound nbt){
-            nbt.putString("dir",dir);
+            nbt.putString("dir",dirString());
             nbt.putString("var",varName);
-            nbt.putInt("mode",selectedMode);
+            nbt.putInt("mode",ByteUtil.byteToInt(selectedMode));
+        }
+
+        public String dirString() {
+            return directions[ByteUtil.byteToInt(dir)];
         }
 
         public void readNbt(NbtCompound nbt){
-            dir = nbt.getString("dir");
+            setDirFromString(nbt.getString("dir"));
             varName = nbt.getString("var");
-            selectedMode = nbt.getInt("mode");
+            selectedMode = ByteUtil.intToByte(nbt.getInt("mode"));
+        }
+
+        public void setDirFromString(String dirString) {
+            dir=ByteUtil.intToByte(getDirIndex(dirString));
         }
 
         public SideConfig named(String varName){
@@ -474,7 +577,7 @@ public class SpellComponent {
 
         public Identifier getTexture(){
             if(activeMode()==Mode.Blocked) return null;
-            return Geomancy.locate("textures/gui/spells/"+(activeMode()==Mode.Input?"in":"out")+"_"+dir+".png");
+            return Geomancy.locate("textures/gui/spells/"+(activeMode()==Mode.Input?"in":"out")+"_"+getDirString(dir)+".png");
         }
 
         public SpellSignal getSignal(SpellComponent component){
@@ -524,6 +627,8 @@ public class SpellComponent {
             }
         }
 
+
+
         public enum Mode {
             Blocked,
             Input,
@@ -540,6 +645,8 @@ public class SpellComponent {
             setSignal(base.getDefaultSignal());
         }
 
+
+
         public SpellSignal getSignal(){
             return signal;
         }
@@ -553,6 +660,18 @@ public class SpellComponent {
 
         public void setValue(String val){
             signal.textValue=val;
+        }
+
+        public void serialize(PacketByteBuf buf) {
+            buf.writeString(parameter.name);
+            signal.serialize(buf);
+        }
+
+        public static ConfiguredParameter deserialize(SpellBlock parent, PacketByteBuf buf) {
+            String name = buf.readString();
+            var res = new ConfiguredParameter(parent.getParameter(name));
+            res.setSignal(SpellSignal.deserialize(buf));
+            return res;
         }
 
         public void writeNbt(NbtCompound nbt){
@@ -604,6 +723,8 @@ public class SpellComponent {
                     break;
             }
         }
+
+
     }
 
     public SpellComponent clone(){

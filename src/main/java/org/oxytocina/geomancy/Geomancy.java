@@ -8,6 +8,7 @@ import net.fabricmc.loader.impl.util.log.Log;
 import net.fabricmc.loader.impl.util.log.LogCategory;
 import net.minecraft.block.CauldronBlock;
 import net.minecraft.item.Item;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.RecipeManager;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.MinecraftServer;
@@ -40,6 +41,8 @@ import org.oxytocina.geomancy.registries.ModDispenserBehaviors;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
 import org.oxytocina.geomancy.registries.ModWoodTypes;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
+import org.oxytocina.geomancy.spells.SpellBlocks;
+import org.oxytocina.geomancy.spells.SpellComponent;
 import org.oxytocina.geomancy.util.GeomancyConfig;
 import org.oxytocina.geomancy.world.dimension.ModDimensions;
 import org.oxytocina.geomancy.world.gen.ModWorldGeneration;
@@ -120,7 +123,6 @@ public class Geomancy implements ModInitializer {
 
             CONFIG = GeomancyConfig.create();
 
-
             ModItems.register();
             IJewelryItem.populateItemGroup();
             SpellComponentStoringItem.populateItemGroup();
@@ -131,6 +133,7 @@ public class Geomancy implements ModInitializer {
             ModBlockEntities.register();
             ModScreenHandlers.register();
             SoulBoreItem.register();
+            SpellBlocks.register(); // prevent first execution of spells from taking much longer than normal
 
             ModRecipeTypes.registerSerializer();
             ModSoundEvents.register();

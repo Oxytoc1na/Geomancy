@@ -324,6 +324,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     AddGenericSpellcomponentRecipe(SpellBlocks.CONST_NUM            ,Items.COMPARATOR           ,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.CONST_TEXT           ,Items.OAK_SIGN             ,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.ENTITY_CASTER        ,Items.DIRT                 ,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.ENTITY_DELEGATE      ,Items.SNOW_BLOCK           ,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.CASTER_SLOT          ,Items.CHEST                ,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.BLOCKPOS_CASTER      ,Items.STONE                ,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.POS_CASTER           ,Items.OAK_PRESSURE_PLATE   ,baseIngot);
@@ -355,6 +356,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     AddGenericSpellcomponentRecipe(SpellBlocks.VECTOR_ENTITYSPAWN,Items.RED_BED,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.RAYCAST_POS,Items.ENDER_EYE,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.RAYCAST_DIR,Items.SLIME_BALL,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.RAYCAST_ENTITY,Items.SNOWBALL,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.BOOL_ENTITYGROUNDED,Items.STONE,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.ENTITY_NEAREST,Items.LEAD,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.INVERT,Items.REDSTONE_TORCH,baseIngot);

@@ -4,16 +4,20 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.OperatorBlock;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.MarkerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.WorldEventS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldEvents;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.*;
 import net.minecraft.world.event.GameEvent;
 
 import java.util.function.Predicate;
@@ -133,5 +137,22 @@ public class BlockHelper {
 
     public static boolean canHarvest(BlockState state, ItemStack tool){
         return !state.isToolRequired() || tool.isSuitableFor(state);
+    }
+
+    public static BlockHitResult raycastBlock(World world, Vec3d from, Vec3d to ) {
+        return world.raycast(new RaycastContext(from,to, RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE,
+                // i hate having to put this pointless entity here just to have it work
+                // it never even gets used
+                // whats the point
+                // i hate raycasting
+                new MarkerEntity(EntityType.MARKER,world)));
+        //return (BlockHitResult)BlockView.raycast(context.getStart(), context.getEnd(), context, (innerContext, pos) -> {
+        //    BlockState blockState = view.getBlockState(pos);
+        //    Vec3d vec3d = innerContext.getStart().subtract(innerContext.getEnd());
+        //    return innerContext.getStatePredicate().test(blockState) ? new BlockHitResult(pos.toCenterPos(), Direction.getFacing(vec3d.x, vec3d.y, vec3d.z), pos, false) : null;
+        //}, (innerContext) -> {
+        //    Vec3d vec3d = innerContext.getStart().subtract(innerContext.getEnd());
+        //    return BlockHitResult.createMissed(innerContext.getEnd(), Direction.getFacing(vec3d.x, vec3d.y, vec3d.z), BlockPos.ofFloored(innerContext.getEnd()));
+        //});
     }
 }

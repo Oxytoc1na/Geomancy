@@ -1,5 +1,6 @@
 package org.oxytocina.geomancy.spells;
 
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
@@ -8,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -20,6 +22,7 @@ import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlockEntity;
 import org.oxytocina.geomancy.effects.ModStatusEffects;
 import org.oxytocina.geomancy.entity.CasterDelegateEntity;
 import org.oxytocina.geomancy.items.SpellStoringItem;
+import org.oxytocina.geomancy.util.ByteUtil;
 import org.oxytocina.geomancy.util.ManaUtil;
 import org.oxytocina.geomancy.util.Toolbox;
 
@@ -27,6 +30,8 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class SpellGrid {
+    public static final int CURRENT_DATA_FORMAT_VERSION = 1;
+
     public int width;
     public int height;
     public String name;
@@ -49,6 +54,10 @@ public class SpellGrid {
         this.name="";
         this.library=false;
         this.components=new LinkedHashMap<>();
+    }
+
+    private SpellGrid(PacketByteBuf buf){
+        deserializeInstance(buf);
     }
 
     public CasterDelegateEntity spawnDelegate(SpellContext parent, Vec3d pos, Vec2f rot, int delay){
@@ -180,7 +189,7 @@ public class SpellGrid {
         var neighborPosistions = getNeighboringPositions(position);
         for (int i = 0; i < 6; i++) {
             var comp = getComponent(neighborPosistions.get(i));
-            String dir = SpellComponent.getDir(i);
+            byte dir = ByteUtil.intToByte(i);
             if(componentAtThisPosition!=null){
                 componentAtThisPosition.setNeighbor(dir,comp);
             }
@@ -234,7 +243,67 @@ public class SpellGrid {
         return res;
     }
 
+    public PacketByteBuf serialize(){
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeInt(CURRENT_DATA_FORMAT_VERSION);
+
+        buf.writeInt(width);
+        buf.writeInt(height);
+        buf.writeString(name);
+        buf.writeBoolean(library);
+
+        buf.writeInt(components.size());
+        for (var c:components.values())
+        {
+            buf.writeString(ByteUtil.bufToString(c.serialize()));
+        }
+
+        buf.writeBoolean(displayStack!=null&&!displayStack.isEmpty());
+        if(displayStack!=null&&!displayStack.isEmpty())
+        {
+            buf.writeItemStack(displayStack);
+        }
+
+        return buf;
+    }
+
+    public static SpellGrid deserialize(PacketByteBuf buf){
+        return new SpellGrid(buf);
+    }
+
+    public void deserializeInstance(PacketByteBuf buf){
+        int formatVersion = buf.readInt();
+
+        width=buf.readInt();
+        height=buf.readInt();
+        name=buf.readString();
+        library = buf.readBoolean();
+
+        int compsSize = buf.readInt();
+        for (int i = 0; i < compsSize; i++) {
+            try{
+                PacketByteBuf tmpBuf = ByteUtil.stringToBuf(buf.readString());
+                tryAddComponent(SpellComponent.deserialize(this,tmpBuf));
+            }
+            catch(Throwable ignored){
+                return;
+            }
+        }
+
+        if(buf.readBoolean())
+        {
+            displayStack=buf.readItemStack();
+        }
+    }
+
     public void writeNbt(NbtCompound nbt){
+
+        // experimental serialization
+        if(CURRENT_DATA_FORMAT_VERSION>=1){
+            nbt.putString("data",ByteUtil.bufToString(serialize()));
+            return;
+        }
+
         nbt.putInt("width",width);
         nbt.putInt("height",height);
         nbt.putString("name",name);
@@ -257,6 +326,11 @@ public class SpellGrid {
     }
 
     public void readNbt(NbtCompound nbt){
+        if(nbt.contains("data") && CURRENT_DATA_FORMAT_VERSION>=1){
+            deserializeInstance(ByteUtil.stringToBuf(nbt.getString("data")));
+            return;
+        }
+
         width=nbt.getInt("width");
         height=nbt.getInt("height");
         name=nbt.getString("name");
