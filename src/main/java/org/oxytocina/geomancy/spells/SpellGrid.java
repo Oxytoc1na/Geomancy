@@ -127,10 +127,12 @@ public class SpellGrid {
             // spawn lightning
             LightningEntity lightning = new LightningEntity(EntityType.LIGHTNING_BOLT,context.getWorld());
             var pos = context.getOriginPos();
+            if(context.caster!=null)
+                pos = context.caster.getPos();
             lightning.setPos(pos.x,pos.y,pos.z);
-            context.getWorld().spawnEntity(lightning);
             switch(context.sourceType){
                 case Caster:
+                    // TODO: drop caster item
                     break;
                 case Block:
                     if(Toolbox.random.nextFloat() < 0.2f)
@@ -143,6 +145,7 @@ public class SpellGrid {
                     break;
                 default :break;
             }
+            context.getWorld().spawnEntity(lightning);
         }
 
         if(context.soulConsumed > 0){

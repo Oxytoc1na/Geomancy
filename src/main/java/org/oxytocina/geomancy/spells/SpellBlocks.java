@@ -2218,7 +2218,7 @@ public class SpellBlocks {
                                 world.updateNeighborsAlways(blockPos.down(), drb);
                                 world.scheduleBlockTick(blockPos, drb, 20);
                             }
-                            // trigger dispenser, dropper, dispenser
+                            // trigger dispenser, dropper, observers
                             else if(
                                     targetBlock instanceof DispenserBlock
                                             || targetBlock instanceof ObserverBlock
