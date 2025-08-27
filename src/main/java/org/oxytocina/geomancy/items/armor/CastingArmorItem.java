@@ -37,6 +37,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.client.registries.ModModelLayers;
+import org.oxytocina.geomancy.client.rendering.armor.CastingArmorModel;
 import org.oxytocina.geomancy.client.rendering.armor.OctanguliteArmorModel;
 import org.oxytocina.geomancy.client.screen.StorageItemScreenHandler;
 import org.oxytocina.geomancy.items.*;
@@ -360,6 +361,6 @@ public class CastingArmorItem extends ArmorItem implements IMaddeningItem, IStor
     protected BipedEntityModel<LivingEntity> provideArmorModelForSlot(EquipmentSlot slot) {
         var models = MinecraftClient.getInstance().getEntityModelLoader();
         var root = models.getModelPart(ModModelLayers.MAIN_CASTING_LAYER);
-        return new OctanguliteArmorModel(root, slot);
+        return new CastingArmorModel(root, slot);
     }
 }

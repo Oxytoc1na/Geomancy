@@ -38,6 +38,6 @@ public class NonRechargeableSoulStorageItem extends SoulStorageItem {
 
     @Override
     public int depletionPriority(ItemStack stack) {
-        return -1;
+        return 10;
     }
 }

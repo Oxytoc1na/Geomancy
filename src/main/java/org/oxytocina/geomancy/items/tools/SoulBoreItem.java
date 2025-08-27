@@ -52,7 +52,7 @@ public class SoulBoreItem extends StorageItem implements IManaStoringItem, ICust
 
     @Override
     public int depletionPriority(ItemStack stack) {
-        return -1;
+        return 5;
     }
 
     public SoulBoreItem(Settings settings, int storageSize) {

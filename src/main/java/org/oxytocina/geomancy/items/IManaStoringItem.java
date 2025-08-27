@@ -39,7 +39,7 @@ public interface IManaStoringItem {
 
     }
 
-    /// higher priority items deplete first
+    /// lower priority items deplete first
     default int depletionPriority(ItemStack stack){
         return 0;
     }

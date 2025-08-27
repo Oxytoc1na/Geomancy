@@ -412,6 +412,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
             add("item.MODID.spellglove",        "Spellglove");
             add("item.MODID.component_pouch","Component Pouch");
+            add("MODID.storage.tooltip","Use to open");
 
             add("geomancy.storage_item.more","...and %1$s more");
         }

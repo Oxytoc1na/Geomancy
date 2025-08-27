@@ -103,13 +103,12 @@ public class CastingArmorModel extends BipedEntityModel<LivingEntity> {
     public void setAngles(LivingEntity entity, float f, float g, float h, float i, float j) {
         if (!(entity instanceof ArmorStandEntity stand)) {
             super.setAngles(entity, f, g, h, i, j);
-            copyTransform(rightArm,root.getChild("right_arm_gem"));
-            copyTransform(leftArm,root.getChild("left_arm_gem"));
-            copyTransform(rightLeg,rightLeg.getChild("right_leg_gem"));
-            copyTransform(leftLeg,leftLeg.getChild("left_leg_gem"));
-            copyTransform(rightLeg,rightLeg.getChild("right_boot_gem"));
-            copyTransform(leftLeg,leftLeg.getChild("left_boot_gem"));
-            copyTransform(head,root.getChild("head_gem"));
+            copyTransform(rightLeg,rightLeg.getChild("right_leg_overlay"));
+            copyTransform(leftLeg,leftLeg.getChild("left_leg_overlay"));
+            copyTransform(rightLeg,rightLeg.getChild("right_boot_overlay"));
+            copyTransform(leftLeg,leftLeg.getChild("left_boot_overlay"));
+            copyTransform(head,root.getChild("head_overlay"));
+            copyTransform(body,body.getChild("torso_overlay"));
 
 
             return;
@@ -136,13 +135,12 @@ public class CastingArmorModel extends BipedEntityModel<LivingEntity> {
         this.rightLeg.yaw = ((float) Math.PI / 180F) * stand.getRightLegRotation().getYaw();
         this.rightLeg.roll = ((float) Math.PI / 180F) * stand.getRightLegRotation().getRoll();
         this.rightLeg.setPivot(-1.9F, 11.0F, 0.0F);
-        copyTransform(rightArm,root.getChild("right_arm_gem"));
-        copyTransform(leftArm,root.getChild("left_arm_gem"));
-        copyTransform(rightLeg,rightLeg.getChild("right_leg_gem"));
-        copyTransform(leftLeg,leftLeg.getChild("left_leg_gem"));
-        copyTransform(rightLeg,rightLeg.getChild("right_boot_gem"));
-        copyTransform(leftLeg,leftLeg.getChild("left_boot_gem"));
-        copyTransform(head,root.getChild("head_gem"));
+        copyTransform(rightLeg,rightLeg.getChild("right_leg_overlay"));
+        copyTransform(leftLeg,leftLeg.getChild("left_leg_overlay"));
+        copyTransform(rightLeg,rightLeg.getChild("right_boot_overlay"));
+        copyTransform(leftLeg,leftLeg.getChild("left_boot_overlay"));
+        copyTransform(head,root.getChild("head_overlay"));
+        copyTransform(body,body.getChild("torso_overlay"));
 
         this.hat.copyTransform(head);
     }
@@ -207,8 +205,8 @@ public class CastingArmorModel extends BipedEntityModel<LivingEntity> {
                 leftLeg.visible = true;
                 rightLeg.getChild("right_boot").visible = true;
                 leftLeg.getChild("left_boot").visible = true;
-                renderPartColorless(leftBootOverlay,leftLeg.getChild("left_boot"),ms,buffer,light,overlay,a);
-                renderPartColorless(rightBootOverlay,rightLeg.getChild("right_boot"),ms,buffer,light,overlay,a);
+                renderPartColorless(leftBootOverlay,leftLeg,ms,buffer,light,overlay,a);
+                renderPartColorless(rightBootOverlay,rightLeg,ms,buffer,light,overlay,a);
             }
             case MAINHAND, OFFHAND -> {
             }
@@ -231,7 +229,6 @@ public class CastingArmorModel extends BipedEntityModel<LivingEntity> {
 
     public static void renderPart(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, ItemStack stack, Model model, Identifier texture, float r, float g, float b, float a) {
         VertexConsumer vertexConsumer = ItemRenderer.getArmorGlintConsumer(vertexConsumers, RenderLayer.getArmorCutoutNoCull(texture), false, stack.hasGlint());
-        var gems = IJewelryItem.getSlots(stack);
         model.render(matrices, vertexConsumer, light, OverlayTexture.DEFAULT_UV, r,g,b,a);
     }
 

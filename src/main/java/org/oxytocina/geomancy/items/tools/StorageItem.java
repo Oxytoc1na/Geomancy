@@ -73,6 +73,7 @@ public class StorageItem extends Item implements IStorageItem, ExtendedScreenHan
     @Environment(EnvType.CLIENT)
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         super.appendTooltip(stack, world, tooltip, context);
+        tooltip.add(Text.translatable("geomancy.storage.tooltip").formatted(Formatting.GRAY));
         if(showContentsInTooltip)
             appendContentsTooltip(stack,world,tooltip,context);
     }
