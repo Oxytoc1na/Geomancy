@@ -169,6 +169,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("set_weather","Set Weather","sets weather. 0 clears, 1 rains, 2 thunders");
             addSpell("set_time","Set Time","changes the progress of the current day cycle");
             addSpell("grow","Grow","accelerates growth at a target position");
+            addSpell("silent","Mute","makes spell execution silent");
             // reference
             addSpell("action","Action","calls another installed spell");
             addSpell("provider","Provider","automatically returns the result of a spell");
@@ -180,6 +181,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("var_input","Var. Input","sets a variable to an installed variable storage item");
             addSpell("var_delete","Delete Var.","removes a variable from an installed variable storage item");
             addSpell("var_exists","Var. Exists","returns if a variable from an installed variable storage item exists");
+            addSpell("activate","Activate","interacts with certain blocks like doors or droppers");
             // lists
             addSpell("foreach","Foreach","individually sends out the elements of a list");
             addSpell("split","Split","splits a list into two at the given index");

@@ -1,5 +1,7 @@
 package org.oxytocina.geomancy.blocks.fluids;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
@@ -47,11 +49,13 @@ public abstract class GoldFluid extends ModFluid {
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public ParticleEffect getParticle() {
         return ModParticleTypes.DRIPPING_MOLTEN_GOLD;
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public ParticleEffect getSplashParticle() {
         return ModParticleTypes.MOLTEN_GOLD_SPLASH;
     }

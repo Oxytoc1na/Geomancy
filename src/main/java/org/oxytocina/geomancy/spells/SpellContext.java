@@ -33,6 +33,7 @@ public class SpellContext {
     public float soulCostMultiplier = 1;
     public Stage stage;
     public boolean debugging = false;
+    public boolean silent = false;
     public int depthLimit = 100;
     public int baseDepth = 0;
     public int highestRecordedDepth = 0;

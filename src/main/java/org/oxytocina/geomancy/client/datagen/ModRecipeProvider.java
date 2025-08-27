@@ -332,6 +332,8 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     AddGenericSpellcomponentRecipe(SpellBlocks.DIR_CASTER           ,Items.ARROW                ,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.GET_WEATHER          ,Items.LIGHTNING_ROD        ,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.GET_TIME             ,Items.CLOCK                ,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.ACTIVATE             ,Items.OAK_BUTTON           ,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.SILENT               ,Items.WHITE_WOOL           ,baseIngot);
                 }
 
                 // arithmetic

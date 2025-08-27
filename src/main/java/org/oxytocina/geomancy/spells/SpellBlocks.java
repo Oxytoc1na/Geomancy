@@ -3,11 +3,11 @@ package org.oxytocina.geomancy.spells;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlastFurnaceBlockEntity;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.FurnaceBlockEntity;
+import net.minecraft.block.entity.JukeboxBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
@@ -31,6 +31,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
@@ -126,6 +127,7 @@ public class SpellBlocks {
     public static final SpellBlock PRINT;
     public static final SpellBlock FIREBALL;
     public static final SpellBlock DEBUG;
+    public static final SpellBlock SILENT;
     public static final SpellBlock LIGHTNING;
     public static final SpellBlock PLACE;
     public static final SpellBlock BREAK;
@@ -142,6 +144,7 @@ public class SpellBlocks {
     public static final SpellBlock SET_WEATHER;
     public static final SpellBlock SET_TIME;
     public static final SpellBlock GROW;
+    public static final SpellBlock ACTIVATE;
 
     // reference
     public static final SpellBlock ACTION;
@@ -1189,8 +1192,12 @@ public class SpellBlocks {
 
             DEBUG = register(SpellBlock.Builder.create("debug")
                     .func((comp,vars) -> SpellBlockResult.empty())
-                    .sideConfigGetter(SpellBlock.SideUtil::sidesBlocked)
                     .init(component -> { component.context.debugging=true;})
+                    .category(cat).build());
+
+            SILENT = register(SpellBlock.Builder.create("silent")
+                    .func((comp,vars) -> SpellBlockResult.empty())
+                    .init(component -> { component.context.silent=true;})
                     .category(cat).build());
 
             FIREBALL = register(SpellBlock.Builder.create("fireball")
@@ -1205,7 +1212,7 @@ public class SpellBlocks {
                         var pos = vars.getVector("position");
 
                         float manaCost = 2
-                                +castOffsetSoulCost(comp,pos,0.1f)
+                                +normalCastOffsetSoulCost(comp,pos)
                                 +(float)Math.pow(power*1.5,1.5);
 
                         if(trySpendSoul(comp,manaCost)){
@@ -1231,7 +1238,7 @@ public class SpellBlocks {
                         var pos = vars.getVector("position");
 
                         float manaCost = 10
-                                +castOffsetSoulCost(comp,pos,0.1f);
+                                +normalCastOffsetSoulCost(comp,pos);
 
                         if(trySpendSoul(comp,manaCost)){
                             LightningEntity lightning = new LightningEntity(EntityType.LIGHTNING_BOLT,comp.world());
@@ -1261,7 +1268,7 @@ public class SpellBlocks {
                         if(ent==null) return SpellBlockResult.empty();
 
                         float manaCost = 0
-                                +castOffsetSoulCost(comp,pos,0.1f);
+                                +normalCastOffsetSoulCost(comp,pos);
 
                         if(trySpendSoul(comp,manaCost)){
                             //comp.world().setBlockState(Toolbox.posToBlockPos(pos), Blocks.GLOWSTONE.getDefaultState());
@@ -1396,7 +1403,7 @@ public class SpellBlocks {
                         if(stack.isEmpty()) return SpellBlockResult.empty();
 
                         float manaCost = 1
-                                +castOffsetSoulCost(comp,pos,0.05f);
+                                +normalCastOffsetSoulCost(comp,pos);
 
                         if(canAfford(comp,manaCost)){
                             var blockPos = Toolbox.posToBlockPos(pos);
@@ -1448,7 +1455,7 @@ public class SpellBlocks {
                         float manaCost = 0.2f
                                 +targetState.getBlock().getHardness()/5f* (silkTouch?2:1)
                                 +(autocollect?0.2f:0f)
-                                +castOffsetSoulCost(comp,pos,0.05f);
+                                +normalCastOffsetSoulCost(comp,pos);
 
                         if(canAfford(comp,manaCost)){
 
@@ -1637,7 +1644,7 @@ public class SpellBlocks {
 
                         float manaCost = 1f
                                 +targetState.getBlock().getHardness()/10f
-                                +castOffsetSoulCost(comp,pos,0.05f);
+                                +normalCastOffsetSoulCost(comp,pos);
 
                         if(canAfford(comp,manaCost)){
 
@@ -1828,7 +1835,7 @@ public class SpellBlocks {
 
                         float manaCost = 1.2f
                                 +targetState.getBlock().getHardness()/5f* (silkTouch?2:1)
-                                +castOffsetSoulCost(comp,pos,0.05f);
+                                +normalCastOffsetSoulCost(comp,pos);
 
                         if(canAfford(comp,manaCost)){
 
@@ -1903,6 +1910,16 @@ public class SpellBlocks {
                     playUseSound.accept(comp.world(),vars.getBlockPos("position"));
                     return SpellBlockResult.empty();
                 });
+                addIgniteBehavior(b->b.getBlock() instanceof CandleBlock,(comp,vars)->{
+                    comp.world().setBlockState(vars.getBlockPos("position"),comp.world().getBlockState(vars.getBlockPos("position")).with(CandleBlock.LIT, true), 11);
+                    playUseSound.accept(comp.world(),vars.getBlockPos("position"));
+                    return SpellBlockResult.empty();
+                });
+                addIgniteBehavior(b->b.getBlock() instanceof CampfireBlock,(comp,vars)->{
+                    comp.world().setBlockState(vars.getBlockPos("position"),comp.world().getBlockState(vars.getBlockPos("position")).with(CampfireBlock.LIT, true), 11);
+                    playUseSound.accept(comp.world(),vars.getBlockPos("position"));
+                    return SpellBlockResult.empty();
+                });
                 addIgniteBehavior(b->b.isReplaceable(),(comp,vars)->{
                     var pos = vars.getBlockPos("position");
                     var state = comp.world().getBlockState(pos);
@@ -1933,7 +1950,7 @@ public class SpellBlocks {
                         BlockState targetState = comp.world().getBlockState(blockPos);
 
                         float manaCost = 30f
-                                +castOffsetSoulCost(comp,pos,0.05f);
+                                +normalCastOffsetSoulCost(comp,pos);
 
                         if(canAfford(comp,manaCost)){
                             for(var pred : igniteBehavior.keySet()){
@@ -1974,7 +1991,7 @@ public class SpellBlocks {
                         // calculate cost
                         float manaCost = 1f
                                 +vol*10
-                                +castOffsetSoulCost(comp,pos,0.05f);
+                                +normalCastOffsetSoulCost(comp,pos);
 
                         if(canAfford(comp,manaCost)){
 
@@ -2016,7 +2033,7 @@ public class SpellBlocks {
 
                         // calculate cost
                         float manaCost = 3f
-                                +castOffsetSoulCost(comp,pos,0.05f);
+                                +normalCastOffsetSoulCost(comp,pos);
 
                         if(canAfford(comp,manaCost)){
                             // spawn delegate
@@ -2109,7 +2126,7 @@ public class SpellBlocks {
 
                         // calculate cost
                         float manaCost = 10f
-                                +castOffsetSoulCost(comp,pos,0.05f);
+                                +normalCastOffsetSoulCost(comp,pos);
 
                         if(canAfford(comp,manaCost)){
                             ItemStack meal = Items.BONE_MEAL.getDefaultStack();
@@ -2123,6 +2140,121 @@ public class SpellBlocks {
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
                             spawnCastParticles(comp,CastParticleData.genericBroke(comp,comp.context.getOriginPos()));
+                        }
+
+                        return SpellBlockResult.empty();
+                    })
+                    .category(cat).build());
+
+            ACTIVATE = register(SpellBlock.Builder.create("activate")
+                    .inputs(
+                            SpellSignal.createVector().named("position")
+                    ).parameters()
+                    .func((comp,vars) -> {
+                        var pos = vars.getVector("position");
+                        var blockPos = vars.getBlockPos("position");
+
+                        World world = comp.world();
+                        BlockState targetState = world.getBlockState(blockPos);
+                        Block targetBlock = targetState.getBlock();
+                        BlockEntity targetEntity = world.getBlockEntity(blockPos);
+
+                        float manaCost = 5f
+                                +normalCastOffsetSoulCost(comp,pos);
+
+                        if(canAfford(comp,manaCost)){
+
+                            // open doors, trapdoors, press butons, flip levers
+                            if(
+                                    targetBlock instanceof DoorBlock
+                                            || targetBlock instanceof TrapdoorBlock
+                                            || targetBlock instanceof ButtonBlock
+                                            || targetBlock instanceof LeverBlock
+                                            || targetBlock instanceof FenceGateBlock
+                            ){
+                                try{
+                                    targetBlock.onUse(targetState,world,blockPos,(PlayerEntity) comp.caster(),null,null);
+                                }
+                                catch(Exception ignored){
+                                    // some modded variant wanted to use hand, hit, or the caster and errored because of it
+                                }
+                            }
+                            // trigger pressure plates
+                            else if(targetBlock instanceof PressurePlateBlock pp){
+                                world.setBlockState(blockPos,targetState.with(PressurePlateBlock.POWERED,true));
+                                world.scheduleBlockTick(blockPos, pp, pp.getTickRate());
+                            }
+                            // trigger tripwire
+                            else if(targetBlock instanceof TripwireBlock tw){
+                                if(!targetState.get(TripwireBlock.POWERED))
+                                {
+                                    var blockState = targetState.with(TripwireBlock.POWERED, true);
+                                    tw.update(world, blockPos, blockState);
+                                    world.setBlockState(blockPos,targetState.with(TripwireBlock.POWERED,true),3);
+                                    world.scheduleBlockTick(blockPos, tw, 10);
+                                }
+                            }
+                            // trigger tripwire hook
+                            else if(targetBlock instanceof TripwireHookBlock tw){
+                                if(!targetState.get(TripwireHookBlock.POWERED))
+                                {
+                                    var blockState = targetState.with(TripwireHookBlock.POWERED, true);
+                                    tw.update(world, blockPos,blockState,false,true,-1,null);
+                                    world.setBlockState(blockPos,blockState,3);
+                                    world.scheduleBlockTick(blockPos, tw, 10);
+                                }
+                            }
+                            // trigger tnt
+                            else if(targetBlock instanceof TntBlock){
+                                TntBlock.primeTnt(world, blockPos);
+                                world.removeBlock(blockPos, false);
+                            }
+                            // trigger detector rail
+                            else if(targetBlock instanceof DetectorRailBlock drb){
+                                BlockState blockState = (BlockState)targetState.with(DetectorRailBlock.POWERED, true);
+                                world.setBlockState(blockPos, blockState, 3);
+                                drb.updateNearbyRails(world, blockPos, blockState, true);
+                                world.updateNeighborsAlways(blockPos, drb);
+                                world.updateNeighborsAlways(blockPos.down(), drb);
+                                world.scheduleBlockTick(blockPos, drb, 20);
+                            }
+                            // trigger dispenser, dropper, dispenser
+                            else if(
+                                    targetBlock instanceof DispenserBlock
+                                            || targetBlock instanceof ObserverBlock
+                            ){
+                                world.scheduleBlockTick(blockPos, targetBlock, 0);
+                            }
+                            // lamp
+                            else if(targetBlock instanceof RedstoneLampBlock){
+                                world.setBlockState(blockPos, (BlockState)targetState.cycle(RedstoneLampBlock.LIT), 2);
+                            }
+                            // note block
+                            else if(targetBlock instanceof NoteBlock nb){
+                                nb.playNote(null,targetState,world,blockPos);
+                            }
+                            // jukebox
+                            else if(targetBlock instanceof JukeboxBlock){
+                                if ((Boolean)targetState.get(JukeboxBlock.HAS_RECORD)) {
+                                    if (world.getBlockEntity(blockPos) instanceof JukeboxBlockEntity jbe) {
+                                        jbe.dropRecord();
+                                    }
+                                }
+                            }
+                            // bell
+                            else if(targetBlock instanceof BellBlock bb){
+                                bb.ring(world,blockPos,null);
+                            }
+
+
+
+                            trySpendSoul(comp,manaCost);
+                            spawnCastParticles(comp,CastParticleData.genericSuccess(comp,pos));
+                        }
+                        else{
+                            // too broke
+                            tryLogDebugBroke(comp,manaCost);
+                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,pos));
                         }
 
                         return SpellBlockResult.empty();
@@ -2607,7 +2739,7 @@ public class SpellBlocks {
     }
 
     public static void playCastSound(SpellContext ctx){
-        if(ctx.soundBehavior == SpellContext.SoundBehavior.Silent) return;
+        if(ctx.silent||ctx.soundBehavior == SpellContext.SoundBehavior.Silent) return;
 
         float fraction = ctx.soulConsumed / ctx.getCasterMaxSoul();
         SoundEvent event = null;
@@ -2635,6 +2767,10 @@ public class SpellBlocks {
 
     private static float castOffsetSoulCost(SpellComponent comp, Vec3d pos, float perBlock){
         return distanceToCaster(comp.context,pos)*perBlock;
+    }
+
+    private static float normalCastOffsetSoulCost(SpellComponent comp, Vec3d pos){
+        return castOffsetSoulCost(comp,pos,0.1f);
     }
 
     private static float distanceToCaster(SpellContext context, Vec3d pos){

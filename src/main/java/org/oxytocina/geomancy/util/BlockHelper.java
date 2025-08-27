@@ -146,6 +146,7 @@ public class BlockHelper {
                 // whats the point
                 // i hate raycasting
                 new MarkerEntity(EntityType.MARKER,world)));
+
         //return (BlockHitResult)BlockView.raycast(context.getStart(), context.getEnd(), context, (innerContext, pos) -> {
         //    BlockState blockState = view.getBlockState(pos);
         //    Vec3d vec3d = innerContext.getStart().subtract(innerContext.getEnd());

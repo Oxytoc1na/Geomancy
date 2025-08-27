@@ -2,20 +2,10 @@ MODIFIERS
 
 - limited to 1 per item
 
-
 MINERALS
 
-x Mithril
--- hard to work with, many gem slots, quality bonus
 x Lead
--- easy to work with, many gem slots, quality malus, but slowly poisons you (random effects)
 -- lead cleanse drink item
-x Titanium
--- hard to work with, many gem slots
-x Molybdenium
--- normal to work with, medium gem slots
--- magic shielding properties
--- disperses souls
 x Octangulite
 -- alien, exclusively found in ruined alien structures
 -- in the form of scrap, then refined
@@ -52,24 +42,6 @@ JEWELRY
 
 - smithing more gems of the same type increases difficulty
 
-GEMS
-
-can be slotted into jewelry to bestow effects upon the wearer
-- Peridot (farming)
-- Orthoclase (debuff resistance)
-- Emerald (fortune...?)
-- Diamond (armor)
-- Lapis (more xp drops)
-- Axinite (mining)
-- Tourmaline (speed)
-- Amethyst (mana)
-- Nether star (beacon effects, depends on jewelry material)
-- Ender pearl (teleportation via hotkey, quality = range)
-- Prismarine (depth strider)
-- heart of the sea (water breathing)
-- End crystal (regen)
-- ender eye (glowing radius)
-
 SMITHING
 
 - gems break when hit with a hammer unless it has silk touch
@@ -84,7 +56,6 @@ ARTIFACTS
 -- aliens
 --- stellge
 --- reverse engineering crashed and abandoned structures
-//--- experimental treatment for DNA mutation
 
 -- dwarf magic
 --- magical alloys
@@ -95,28 +66,15 @@ ARTIFACTS
 + stone: regenerate mana faster around stone
 + deepslate: regenerate mana faster the deeper you are
 + magma: fire resistance
-X-- journey book (treasures of the deep)
-x-- "mana"
 --- runic crafting
 ---- multiblock for enchanting things with runes
-X--- hit the workpiece with a hammer over and over to do it
-X--- mishaps
 ---- smithing levels to increase speed and proficiency
-x-- ores
 --- oakenshield
-X-- liquid gold
----- upgraded lava for smithing structure
-X-- geodes
-X--- mighty enchant increases break chance
----- skillful reduces it
 --- bimmstone
 --- grimmstone
 --- slag
 --- mithril anvil
-X-- diggy diggy hole record
 --- emerald decoartion
-X-- brilliance enchantment for jewelry
-X--- increases effective quality
 
 MODONOMICON
 
@@ -156,24 +114,14 @@ x copper : engineers
 - molybdenum :
 
 PROGRAMMING
-TODO: programmable armor
-- helmet
--- casts when hit something, passes entity
-- chestplate
--- casts when wearer got hit, passes attacker entity
-- leggings
--- casts when jumping
-- boots
--- casts when ?
-
 TODO PREMADE SPELLS
 
 TODO EFFECT BLOCKS
 - taming entities
 - nbt manipulation
+-- if this gets added, it's got to be getters only
+--- allowing the user to set NBT is an easy way to get literally any item in the game
 - collect items on ground
-- silent execution
-- parent component for delegates
 
 autocaster
 - set block redstone level
@@ -191,19 +139,14 @@ TODO MODONOMICON
 -- null dimension
 
 TODO textures
-- caster core
 - status effects
 
 TODO ITEMS
-- non-rechargeable octangulite mana storage?
-- refined octangulite nuggets
 - hammers
 
 TODO DEBUG
-- premade spells side configs are fucked
 - make foreach affected by depth
 - pool sent packets to improve performance
-- maximum execution time limit
 
 fixed
 - the fucking mana storage items synchronize very strangely

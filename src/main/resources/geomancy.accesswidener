@@ -45,3 +45,7 @@ accessible field net/minecraft/block/entity/AbstractFurnaceBlockEntity fuelTime 
 
 accessible method net/minecraft/block/Block spawnBreakParticles (Lnet/minecraft/world/World;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;)V
 accessible field net/minecraft/block/AbstractBlock collidable Z
+accessible method net/minecraft/block/TripwireBlock update (Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;)V
+accessible method net/minecraft/block/AbstractPressurePlateBlock getTickRate ()I
+accessible method net/minecraft/block/DetectorRailBlock updateNearbyRails (Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Z)V
+accessible method net/minecraft/block/NoteBlock playNote (Lnet/minecraft/entity/Entity;Lnet/minecraft/block/BlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)V

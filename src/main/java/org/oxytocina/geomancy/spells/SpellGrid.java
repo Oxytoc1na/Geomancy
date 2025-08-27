@@ -298,13 +298,13 @@ public class SpellGrid {
 
     public void writeNbt(NbtCompound nbt){
 
+        nbt.putInt("v",CURRENT_DATA_FORMAT_VERSION);
+
         // experimental serialization
         if(CURRENT_DATA_FORMAT_VERSION>=100){
             nbt.putString("data",ByteUtil.bufToString(serialize()));
             return;
         }
-
-        nbt.putInt("v",CURRENT_DATA_FORMAT_VERSION);
 
         String wKey = CURRENT_DATA_FORMAT_VERSION>=1?"w":"width";
         String hKey = CURRENT_DATA_FORMAT_VERSION>=1?"h":"height";
@@ -335,12 +335,12 @@ public class SpellGrid {
     }
 
     public void readNbt(NbtCompound nbt){
-        if(nbt.contains("data") && CURRENT_DATA_FORMAT_VERSION>=100){
+        int version = nbt.getInt("v");
+
+        if(nbt.contains("data") && version>=100){
             deserializeInstance(ByteUtil.stringToBuf(nbt.getString("data")));
             return;
         }
-
-        int version = nbt.getInt("v");
 
         String wKey = version>=1?"w":"width";
         String hKey = version>=1?"h":"height";
