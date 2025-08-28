@@ -6,6 +6,7 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
@@ -146,5 +147,10 @@ public class EntityUtil {
         } else {
             return new EntityHitResult(resultEntity, hitPos);
         }
+    }
+
+    public static Boolean isInRange(LivingEntity le, ServerWorld sw, Vec3d pos, float range) {
+        if(le.getWorld()!=sw) return false;
+        return pos.subtract(le.getPos()).length()<=range;
     }
 }

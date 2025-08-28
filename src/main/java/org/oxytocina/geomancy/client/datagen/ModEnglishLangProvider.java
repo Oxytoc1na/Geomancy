@@ -25,7 +25,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
     private TranslationBuilder tb;
 
-    private HashMap<String,String> shortcuts = new HashMap<>();
+    private final HashMap<String,String> shortcuts = new HashMap<>();
 
     @Override
     public void generateTranslations(TranslationBuilder tb) {
@@ -321,9 +321,13 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("item.MODID.music_disc_diggy.desc"  , "Diggy");
 
             add("item.MODID.iron_hammer"            , "Iron Hammer");
-            add("item.MODID.iron_hammer.desc"       , "Can be used to smith items");
+            add("item.MODID.gold_hammer"            , "Golden Hammer");
+            add("item.MODID.lead_hammer"            , "Lead Hammer");
+            add("item.MODID.molybdenum_hammer"      , "Molybdenum Hammer");
+            add("item.MODID.titanium_hammer"        , "Titanium Hammer");
             add("item.MODID.mithril_hammer"         , "Mithril Hammer");
-            add("item.MODID.mithril_hammer.desc"    , "Can be used to smith items");
+            add("item.MODID.octangulite_hammer"     , "Octangulite Hammer");
+            add("item.MODID.hammer.desc"       , "Can be used to smith items");
 
             add("item.MODID.empty_artifact"         , "Empty Artifact");
             add("item.MODID.empty_artifact.desc"    , "Makes you feel incomplete");
@@ -1072,6 +1076,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         {
             add("entity.MODID.stellge_engineer"         , "Stellge Engineer");
             add("item.MODID.stellge_engineer_spawn_egg" , "Stellge Engineer Spawn Egg");
+            add("entity.MODID.stellge_caster"           , "Stellge Caster");
+            add("item.MODID.stellge_caster_spawn_egg"   , "Stellge Caster Spawn Egg");
         }
 
         // REI, EMI

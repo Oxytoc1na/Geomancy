@@ -845,6 +845,18 @@ public class SpellComponent {
             return this;
         }
 
+        public Builder param(String name,float num){
+            return param(name,SpellSignal.createNumber(num).named(name));
+        }
+
+        public Builder param(String name,String text){
+            return param(name,SpellSignal.createText(text).named(name));
+        }
+
+        public Builder param(String name,boolean bool){
+            return param(name,SpellSignal.createBoolean(bool).named(name));
+        }
+
         public static class ConfBuilder{
 
             public String name;

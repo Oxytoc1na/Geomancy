@@ -1,9 +1,11 @@
 package org.oxytocina.geomancy.blocks.blockEntities;
 
-import com.mojang.datafixers.util.Function4;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -22,10 +24,12 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.CheckedRandom;
 import net.minecraft.util.math.random.LocalRandom;
@@ -34,8 +38,9 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.client.GeomancyClient;
 import org.oxytocina.geomancy.client.screen.SmitheryScreenHandler;
-import org.oxytocina.geomancy.util.EntityUtil;
+import org.oxytocina.geomancy.networking.packet.S2C.SmitheryParticlesS2CPacket;
 import org.oxytocina.geomancy.util.Toolbox;
 import org.oxytocina.geomancy.blocks.MultiblockCrafter;
 import org.oxytocina.geomancy.inventories.AutoCraftingInventory;
@@ -245,7 +250,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
 
     private static final AutoCraftingInventory AUTO_INVENTORY = new AutoCraftingInventory(SLOT_COUNT, 1);
 
-    public void onHitWithHammer(PlayerEntity player, ItemStack hammer,float skill){
+    public void onHitWithHammer(@Nullable PlayerEntity player, ItemStack hammer,float skill){
         HammerItem hammerItem = ((HammerItem)hammer.getItem());
         lastHammerer=player;
         lastHammerStack=hammer;
@@ -257,43 +262,29 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
             // success
             increaseCraftProgress(hammerItem.getHitProgress(player));
 
-            if(world.isClient){
+            if(!world.isClient)
+            {
                 Vec3d particlePos = Vec3d.ofCenter(pos);
-                if(hasCraftingFinished()){
-                    Random rand = new LocalRandom(0);
-                    for (int i = 0; i < 10; i++) {
-                        world.addParticle(ParticleTypes.LAVA,particlePos.getX(),particlePos.getY()+0.6f,particlePos.getZ(),0,0,0);
-                        Vec3d randVel = new Vec3d(0,0,0).addRandom(rand,0.25f);
-                        world.addParticle(ParticleTypes.FLAME,particlePos.getX(),particlePos.getY()+0.6f,particlePos.getZ(),randVel.x,randVel.y,randVel.z);
-                    }
+                if(!hasCraftingFinished())
+                {
+                    world.playSound(null, pos, ModSoundEvents.USE_HAMMER, SoundCategory.NEUTRAL, 0.7F, 0.9F + world.getRandom().nextFloat() * 0.2F);
+                    // send progress particle packet
+                    SmitheryParticlesS2CPacket.send(this,ParticleData.createProgress(this,particlePos));
                 }
                 else{
-                    for (int i = 0; i < 5; i++) {
-                        world.addParticle(ParticleTypes.LAVA,particlePos.getX(),particlePos.getY()+0.6f,particlePos.getZ(),0,0,0);
-                    }
+                    // send finish particle packet
+                    SmitheryParticlesS2CPacket.send(this,ParticleData.createComplete(this,particlePos));
                 }
-            }
-            else{
-                if(!hasCraftingFinished())
-                    world.playSound(null, pos, ModSoundEvents.USE_HAMMER, SoundCategory.NEUTRAL, 0.7F, 0.9F + world.getRandom().nextFloat() * 0.2F);
             }
         }
         else{
             // failure
-            if(world.isClient){
-
-                Vec3d particlePos = Vec3d.ofCenter(pos);
-                for (int i = 0; i < 5; i++) {
-                    world.addParticle(ParticleTypes.LAVA,particlePos.getX(),particlePos.getY()+0.6f,particlePos.getZ(),0,0,0);
-                }
-            }
-
             {
                 boolean playFailSound = true;
 
                 // mishaps
 
-                int[] mishapTypeWeights = {10,1,10,10,5};
+                int[] mishapTypeWeights = {10,1,10,player!=null?10:0,5};
                 int mishapType = Toolbox.selectWeightedRandomIndex(mishapTypeWeights);
 
                 switch(mishapType){
@@ -317,7 +308,8 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
                         if(!world.isClient)
                             world.playSound(null, pos, SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.NEUTRAL, 2F, 0.5F + world.getRandom().nextFloat() * 0.2F);
 
-                        player.sendMessage(Text.translatable("message."+Geomancy.MOD_ID+".smithery_block.json.fail.break"), false);
+                        if(player!=null)
+                            player.sendMessage(Text.translatable("message."+Geomancy.MOD_ID+".smithery_block.json.fail.break"), false);
 
                         break;
                     }
@@ -328,7 +320,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
                         break;
                     // Hammer slip
                     case 3:
-
+                        if(player==null) break;
                         player.dropItem(hammer.copy(),true,true);
                         player.getMainHandStack().setCount(0);
                         playFailSound = false;
@@ -344,7 +336,12 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
                 }
 
                 if(playFailSound && !world.isClient)
+                {
                     world.playSound(null, pos, ModSoundEvents.USE_HAMMER_FAIL, SoundCategory.NEUTRAL, 0.9F, 0.9F + world.getRandom().nextFloat() * 0.2F);
+                    Vec3d particlePos = Vec3d.ofCenter(pos);
+                    // send finish particle packet
+                    SmitheryParticlesS2CPacket.send(this,ParticleData.createFailure(this,particlePos));
+                }
             }
 
             markDirty();
@@ -460,5 +457,99 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
 
     public PlayerEntity getLastHammerer(){
         return lastHammerer;
+    }
+
+    public static class ParticleData {
+        public Type type = Type.PROGRESS;
+        public int amount = 10;
+        public float dispersion = 0.5f;
+        public Vec3d pos;
+        public Vec3d velMin;
+        public Vec3d velMax;
+        public Identifier world;
+
+        private ParticleData(ParticleData.Type type, int amount, Vec3d pos, Vec3d velMin, Vec3d velMax, Identifier world, float dispersion){
+            this.type=type;
+            this.amount=amount;
+            this.pos=pos;
+            this.velMin=velMin;
+            this.velMax=velMax;
+            this.world=world;
+            this.dispersion=dispersion;
+        }
+
+        public static ParticleData createProgress(SmitheryBlockEntity smithery, Vec3d pos){
+            return new ParticleData(Type.PROGRESS, 5,pos.add(0,0.6f,0),new Vec3d(0,0,0),new Vec3d(0,0,0),smithery.getWorld().getRegistryKey().getValue(),0.3f);
+        }
+        public static ParticleData createComplete(SmitheryBlockEntity smithery, Vec3d pos){
+            return new ParticleData(Type.COMPLETE, 10,pos.add(0,0.6f,0),new Vec3d(-0.2f,0,-0.2f),new Vec3d(0.2f,0.4f,0.2f),smithery.getWorld().getRegistryKey().getValue(),0.3f);
+        }
+        public static ParticleData createFailure(SmitheryBlockEntity smithery, Vec3d pos){
+            return new ParticleData(Type.FAILURE, 10,pos.add(0,0.6f,0),new Vec3d(-0.2f,0,-0.2f),new Vec3d(0.1f,0.2f,0.1f),smithery.getWorld().getRegistryKey().getValue(),0.3f);
+        }
+
+        public ParticleData amount(int amount){this.amount = amount;return this;}
+        public ParticleData dispersion(int dispersion){this.dispersion = dispersion;return this;}
+        public ParticleData type(ParticleData.Type type){this.type = type;return this;}
+
+        public void write(PacketByteBuf buf){
+            buf.writeString(type.toString());
+            buf.writeInt(amount);
+            buf.writeFloat(dispersion);
+            buf.writeVector3f(pos.toVector3f());
+            buf.writeVector3f(velMin.toVector3f());
+            buf.writeVector3f(velMax.toVector3f());
+            buf.writeIdentifier(world);
+        }
+
+        public static ParticleData from(PacketByteBuf buf){
+            ParticleData.Type type = ParticleData.Type.valueOf(buf.readString());
+            int amount = buf.readInt();
+            float dispersion = buf.readFloat();
+            Vec3d pos = new Vec3d(buf.readVector3f());
+            Vec3d velMin = new Vec3d(buf.readVector3f());
+            Vec3d velMax = new Vec3d(buf.readVector3f());
+            Identifier world = buf.readIdentifier();
+            return new ParticleData(type,amount,pos,velMin,velMax,world,dispersion);
+        }
+
+        @Environment(EnvType.CLIENT)
+        public void run(){
+            World worldObj = MinecraftClient.getInstance().world;
+            if(!worldObj.getRegistryKey().getValue().equals(world)) return; // ignore particle spawns in different worlds
+            Random rand = new LocalRandom(GeomancyClient.tick);
+            for (int i = 0; i < amount; i++) {
+                Vec3d pPos = new Vec3d(
+                        pos.x+(rand.nextFloat()*2-1)*dispersion,
+                        pos.y+(rand.nextFloat()*2-1)*dispersion,
+                        pos.z+(rand.nextFloat()*2-1)*dispersion);
+                Vec3d vel = new Vec3d(
+                        MathHelper.lerp(rand.nextFloat(),velMin.x,velMax.x),
+                        MathHelper.lerp(rand.nextFloat(),velMin.y,velMax.y),
+                        MathHelper.lerp(rand.nextFloat(),velMin.z,velMax.z)
+                );
+                switch(type){
+                    case PROGRESS:{
+                        worldObj.addParticle(ParticleTypes.LAVA,pPos.x,pPos.y,pPos.z,vel.x,vel.y,vel.z);
+                        break;
+                    }
+                    case COMPLETE:{
+                        worldObj.addParticle(ParticleTypes.LAVA,pPos.x,pPos.y,pPos.z,0,0,0);
+                        worldObj.addParticle(ParticleTypes.FLAME,pPos.x,pPos.y,pPos.z,vel.x,vel.y,vel.z);
+                        break;
+                    }
+                    case FAILURE:{
+                        worldObj.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE,pPos.x,pPos.y,pPos.z,vel.x,vel.y,vel.z);
+                        break;
+                    }
+                }
+            }
+        }
+
+        public enum Type{
+            PROGRESS,
+            COMPLETE,
+            FAILURE
+        }
     }
 }

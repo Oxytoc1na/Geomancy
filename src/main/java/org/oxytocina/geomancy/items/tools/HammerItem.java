@@ -61,7 +61,7 @@ public class HammerItem extends MiningToolItem {
     }
 
     public MutableText getDescription() {
-        return Text.translatable(Registries.ITEM.getId(this).toTranslationKey("item","desc"));
+        return Text.translatable("item.geomancy.hammer.desc");
     }
 
     @Override
@@ -122,7 +122,7 @@ public class HammerItem extends MiningToolItem {
 
 
 
-    public int getHitProgress(PlayerEntity player){
+    public int getHitProgress(@Nullable PlayerEntity player){
         return progressPerHit;
     }
 
@@ -130,7 +130,7 @@ public class HammerItem extends MiningToolItem {
         return cooldown;
     }
 
-    public float getSmithingSkill(SmitheryBlockEntity smithery, PlayerEntity player, ItemStack hammerStack){
+    public float getSmithingSkill(SmitheryBlockEntity smithery, @Nullable PlayerEntity player, ItemStack hammerStack){
         float res = 0;
 
         res+=skillBonus;

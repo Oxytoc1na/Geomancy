@@ -1,29 +1,27 @@
 package org.oxytocina.geomancy.entity;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.RangedAttackMob;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.mob.*;
-import net.minecraft.entity.passive.*;
+import net.minecraft.entity.mob.Angerable;
+import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.TimeHelper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -34,22 +32,36 @@ import net.minecraft.world.*;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.entity.goal.WanderNearHomeGoal;
+import org.oxytocina.geomancy.items.ModItems;
+import org.oxytocina.geomancy.items.SpellStoringItem;
+import org.oxytocina.geomancy.items.tools.SoulCastingItem;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
+import org.oxytocina.geomancy.spells.SpellBlocks;
+import org.oxytocina.geomancy.spells.SpellComponent;
+import org.oxytocina.geomancy.spells.SpellGrid;
 import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.UUID;
 
-public class StellgeEngineerEntity extends StellgeEntity implements Angerable, IModMob, IMobWithHome {
+public class StellgeCasterEntity extends StellgeEntity implements RangedAttackMob {
 
-    public StellgeEngineerEntity(EntityType<? extends HostileEntity> entityType, World world) {
+    public StellgeCasterEntity(EntityType<? extends HostileEntity> entityType, World world) {
         super(entityType,world);
-        this.experiencePoints = 15;
+        this.experiencePoints = 25;
+    }
+
+    public AnimationState ringAnimationState = new AnimationState();
+
+    @Override
+    protected void setupAnimationStates(){
+        super.setupAnimationStates();
+        this.ringAnimationState.startIfNotRunning(this.age);
     }
 
     @Override
     protected void initCustomGoals() {
         super.initCustomGoals();
-        this.goalSelector.add(2,new MeleeAttackGoal(this,1,false));
+        this.goalSelector.add(2,new ProjectileAttackGoal(this,1,40,25));
     }
 
     @Override
@@ -82,6 +94,33 @@ public class StellgeEngineerEntity extends StellgeEntity implements Angerable, I
         return ModSoundEvents.ENTITY_STELLGE_ENGINEER_DEATH;
     }
 
+    @Override
+    protected void initEquipment(Random random, LocalDifficulty localDifficulty) {
+        // build weapon
+        var caster = new ItemStack(ModItems.SPELLGLOVE);
+        var casterItem = (SoulCastingItem) caster.getItem();
+        ItemStack spellStack = new ItemStack(ModItems.SPELLSTORAGE_MEDIUM);
+        SpellGrid grid = switch(getRandom().nextInt(1)){
+            case 0 -> SpellGrid.builder("fireball")
+                    .dim(ModItems.SPELLSTORAGE_MEDIUM)
+                    .add(SpellComponent.builder(SpellBlocks.FIREBALL).pos(2,2)
+                            .conf(SpellComponent.confBuilder("ne","position").mode(SpellComponent.SideConfig.Mode.Input))
+                            .conf(SpellComponent.confBuilder("e","direction").mode(SpellComponent.SideConfig.Mode.Input))
+                            .conf(SpellComponent.confBuilder("se","speed").mode(SpellComponent.SideConfig.Mode.Input))
+                            .conf(SpellComponent.confBuilder("sw","power").mode(SpellComponent.SideConfig.Mode.Input))
+                    )
+                    .add(SpellComponent.builder(SpellBlocks.POS_CASTER).pos(2,1).conf(SpellComponent.confBuilder("sw").mode(SpellComponent.SideConfig.Mode.Output)))
+                    .add(SpellComponent.builder(SpellBlocks.DIR_CASTER).pos(3,2).conf(SpellComponent.confBuilder("w").mode(SpellComponent.SideConfig.Mode.Output)))
+                    .add(SpellComponent.builder(SpellBlocks.CONST_NUM).param("val",1).pos(2,3).conf(SpellComponent.confBuilder("nw").mode(SpellComponent.SideConfig.Mode.Output)))
+                    .add(SpellComponent.builder(SpellBlocks.CONST_NUM).param("val",1).pos(1,3).conf(SpellComponent.confBuilder("ne").mode(SpellComponent.SideConfig.Mode.Output)))
+                    .build();
+            default -> null;
+        };
+        SpellStoringItem.writeGrid(spellStack,grid);
+        casterItem.setStack(caster,0,spellStack);
+        this.equipStack(EquipmentSlot.MAINHAND, caster);
+    }
+
     public static DefaultAttributeContainer.Builder defAttributes() {
         return HostileEntity.createHostileAttributes()
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 35.0)
@@ -89,24 +128,6 @@ public class StellgeEngineerEntity extends StellgeEntity implements Angerable, I
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 5.0)
                 .add(EntityAttributes.GENERIC_ARMOR, 10.0)
                 .add(ModEntityAttributes.STELLGE_SPAWN_REINFORCEMENTS);
-    }
-
-    @Override
-    public boolean tryAttack(Entity target) {
-        boolean bl = super.tryAttack(target);
-        if (bl) {
-            float f = this.getWorld().getLocalDifficulty(this.getBlockPos()).getLocalDifficulty();
-            if (this.getMainHandStack().isEmpty() && this.isOnFire() && this.random.nextFloat() < f * 0.3F) {
-                target.setOnFireFor(2 * (int)f);
-            }
-        }
-
-        return bl;
-    }
-
-    @Override
-    protected SoundEvent getStepSound() {
-        return null;
     }
 
     @Nullable
@@ -121,5 +142,14 @@ public class StellgeEngineerEntity extends StellgeEntity implements Angerable, I
 
         this.applyAttributeModifiers(f);
         return entityData;
+    }
+
+    @Override
+    public void attack(LivingEntity target, float pullProgress) {
+        // cast into target direction
+        var stack = getEquippedStack(EquipmentSlot.MAINHAND);
+        if(stack.isEmpty()) return;
+        if(!(stack.getItem() instanceof SoulCastingItem cs)) return;
+        cs.cast(stack,this);
     }
 }

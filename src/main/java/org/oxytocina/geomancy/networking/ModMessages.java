@@ -34,6 +34,7 @@ public class ModMessages {
     public static final Identifier CLIENT_ADVANCEMENT =     Geomancy.locate("client_advancement");
     public static final Identifier OPEN_SPELL_SELECT_SCREEN=Geomancy.locate("open_spell_select_screen");
     public static final Identifier CASTER_SPELL_CHANGED =   Geomancy.locate("caster_spell_changed");
+    public static final Identifier SMITHERY_PARTICLES =     Geomancy.locate("smithery_particles");
 
     // client to server
 
@@ -113,6 +114,7 @@ public class ModMessages {
         ClientPlayNetworking.registerGlobalReceiver(CLIENT_ADVANCEMENT, ClientAdvancementS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(OPEN_SPELL_SELECT_SCREEN, OpenSpellSelectScreenS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(CASTER_SPELL_CHANGED, CasterSpellChangedS2CPacket::receive);
+        ClientPlayNetworking.registerGlobalReceiver(SMITHERY_PARTICLES, SmitheryParticlesS2CPacket::receive);
     }
 
     public static void sendToAllClients(MinecraftServer server, Identifier id, PacketByteBuf buf){

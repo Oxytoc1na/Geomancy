@@ -29,6 +29,7 @@ import org.oxytocina.geomancy.entity.ExtraEntitySettings;
 import org.oxytocina.geomancy.items.artifacts.*;
 import org.oxytocina.geomancy.items.jewelry.*;
 import org.oxytocina.geomancy.loottables.ModLootTables;
+import org.oxytocina.geomancy.registries.ModBlockTags;
 import org.oxytocina.geomancy.registries.ModItemTags;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
 import org.oxytocina.geomancy.util.LeadUtil;
@@ -216,10 +217,20 @@ public class ModItems {
     public static final CastingTrinketItem CASTER_CORE =    register("caster_core",new CastingTrinketItem(new Item.Settings().maxCount(1), 9*3,ModItemTags.FITS_IN_CASTERS,false),new ExtraItemSettings());
 
 
-    public static final HammerItem IRON_HAMMER = register("iron_hammer",new HammerItem(5,-3.3f,ToolMaterials.IRON, TagKey.of(RegistryKeys.BLOCK,new Identifier(Geomancy.MOD_ID,"hammer_mineable")), new FabricItemSettings(),
+    public static final HammerItem IRON_HAMMER = register("iron_hammer",new HammerItem(5,-3.3f,ToolMaterials.IRON, ModBlockTags.HAMMER_MINEABLES, new FabricItemSettings(),
             10,1,10,20),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Handheld));
-    public static final HammerItem MITHRIL_HAMMER = register("mithril_hammer",new HammerItem(7,-3.3f,ModToolMaterials.MITHRIL, TagKey.of(RegistryKeys.BLOCK,new Identifier(Geomancy.MOD_ID,"hammer_mineable")),new FabricItemSettings(),
-            1000,100,50,10),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final HammerItem GOLD_HAMMER = register("gold_hammer",new HammerItem(5,-3.3f,ToolMaterials.GOLD, ModBlockTags.HAMMER_MINEABLES,new FabricItemSettings(),
+            40,1.2f,20,20),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final HammerItem LEAD_HAMMER = register("lead_hammer",new HammerItem(5,-3.5f,ModToolMaterials.LEAD, ModBlockTags.HAMMER_MINEABLES,new FabricItemSettings(),
+            10,1,10,30),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final HammerItem MOLYBDENUM_HAMMER = register("molybdenum_hammer",new HammerItem(5.5f,-3.3f,ModToolMaterials.MOLYBDENUM, ModBlockTags.HAMMER_MINEABLES,new FabricItemSettings(),
+            15,1,10,15),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final HammerItem TITANIUM_HAMMER = register("titanium_hammer",new HammerItem(7f,-3f,ModToolMaterials.TITANIUM, ModBlockTags.HAMMER_MINEABLES,new FabricItemSettings(),
+            20,1.1f,12,15),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final HammerItem MITHRIL_HAMMER = register("mithril_hammer",new HammerItem(7,-3.3f,ModToolMaterials.MITHRIL, ModBlockTags.HAMMER_MINEABLES,new FabricItemSettings(),
+            30,1.1f,15,20),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Handheld));
+    public static final OctanguliteHammerItem OCTANGULITE_HAMMER = register("octangulite_hammer",new OctanguliteHammerItem(7,-2.5f,ModToolMaterials.OCTANGULITE, ModBlockTags.HAMMER_MINEABLES,new FabricItemSettings(),
+            40,1.2f,20,15,1),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
 
     // caster items
     //public static final SoulCastingItem CASTER_TEST = register("caster_test",new SoulCastingItem(new FabricItemSettings(),1));

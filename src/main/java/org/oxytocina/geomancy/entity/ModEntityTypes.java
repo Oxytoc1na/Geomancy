@@ -17,13 +17,8 @@ import java.util.function.Function;
 
 public class ModEntityTypes {
 
-    /*
-     * Registers our Cube Entity under the ID "entitytesting:cube".
-     *
-     * The entity is registered under the SpawnGroup#CREATURE category, which is what most animals and passive/neutral mobs use.
-     * It has a hitbox size of .75x.75, or 12 "pixels" wide (3/4ths of a block).
-     */
     public static final EntityType<StellgeEngineerEntity> STELLGE_ENGINEER = registerMob("stellge_engineer", StellgeEngineerEntity::new,StellgeEngineerEntity::defAttributes,new ExtraEntitySettings().dim(0.75f,1.5f).group(SpawnGroup.MONSTER).spawnEgg(0xFFFFFF,0xFFFFFF));
+    public static final EntityType<StellgeCasterEntity> STELLGE_CASTER = registerMob("stellge_caster", StellgeCasterEntity::new,StellgeCasterEntity::defAttributes,new ExtraEntitySettings().dim(0.75f,1.5f).group(SpawnGroup.MONSTER).spawnEgg(0xFFFFFF,0xFFFFFF));
     public static final EntityType<CasterDelegateEntity> CASTER_DELEGATE = registerEntity("caster_delegate", CasterDelegateEntity::new,new ExtraEntitySettings().dim(0.75f,1.5f).group(SpawnGroup.MISC));
 
 
