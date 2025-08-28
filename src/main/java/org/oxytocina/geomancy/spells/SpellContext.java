@@ -18,6 +18,7 @@ import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlock;
 import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlockEntity;
 import org.oxytocina.geomancy.entity.CasterDelegateEntity;
 import org.oxytocina.geomancy.items.ISpellSelectorItem;
+import org.oxytocina.geomancy.items.tools.SoulCastingItem;
 import org.oxytocina.geomancy.util.ManaUtil;
 import org.oxytocina.geomancy.util.Toolbox;
 
@@ -375,10 +376,16 @@ public class SpellContext {
     public Vec3d getMuzzlePos() {
         return switch(sourceType)
         {
-            case Caster -> caster.getEyePos();
+            case Caster -> caster.getEyePos().add(getMuzzleOffsetForItem());
             case Block -> casterBlock.getMuzzlePos();
             default->getOriginPos();
         };
+    }
+
+    private Vec3d getMuzzleOffsetForItem(){
+        if(casterItem.getItem() instanceof SoulCastingItem)
+            return caster.getHandPosOffset(casterItem.getItem());
+        return new Vec3d(0,-0.5f,0);
     }
 
     public SpellContext root() {
