@@ -35,6 +35,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.client.screen.SmitheryScreenHandler;
+import org.oxytocina.geomancy.util.EntityUtil;
 import org.oxytocina.geomancy.util.Toolbox;
 import org.oxytocina.geomancy.blocks.MultiblockCrafter;
 import org.oxytocina.geomancy.inventories.AutoCraftingInventory;

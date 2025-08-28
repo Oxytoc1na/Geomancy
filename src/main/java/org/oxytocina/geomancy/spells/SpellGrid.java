@@ -23,6 +23,7 @@ import org.oxytocina.geomancy.effects.ModStatusEffects;
 import org.oxytocina.geomancy.entity.CasterDelegateEntity;
 import org.oxytocina.geomancy.items.SpellStoringItem;
 import org.oxytocina.geomancy.util.ByteUtil;
+import org.oxytocina.geomancy.util.EntityUtil;
 import org.oxytocina.geomancy.util.ManaUtil;
 import org.oxytocina.geomancy.util.Toolbox;
 
@@ -132,7 +133,7 @@ public class SpellGrid {
             lightning.setPos(pos.x,pos.y,pos.z);
             switch(context.sourceType){
                 case Caster:
-                    // TODO: drop caster item
+                    EntityUtil.slipItem(context.caster,context.casterItem);
                     break;
                 case Block:
                     if(Toolbox.random.nextFloat() < 0.2f)

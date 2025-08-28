@@ -106,6 +106,15 @@ public class EntityUtil {
         }
     }
 
+    public static void slipItem(LivingEntity entity, ItemStack heldStack) {
+        if(entity==null) return;
+        if(entity instanceof ServerPlayerEntity spe){
+            int slot = spe.getInventory().getSlotWithStack(heldStack);
+            if(slot==-1) return;
+            spe.dropItem(heldStack.copyAndEmpty(),true,true);
+        }
+    }
+
     @Nullable
     public static EntityHitResult raycast(World world, Vec3d min, Vec3d max, Box box, Predicate<Entity> predicate, double squaredReach) {
         double e = squaredReach;
