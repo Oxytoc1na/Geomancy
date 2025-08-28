@@ -126,7 +126,7 @@ public class HammerItem extends MiningToolItem {
         return progressPerHit;
     }
 
-    public int getCooldown(PlayerEntity player){
+    public int getCooldown(@Nullable PlayerEntity player){
         return cooldown;
     }
 

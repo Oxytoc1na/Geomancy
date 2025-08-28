@@ -74,6 +74,8 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
     private ItemStack lastHammerStack = ItemStack.EMPTY;
     private PlayerEntity lastHammerer = null;
 
+    private int automatedHitCooldown = 0;
+
     public SmitheryBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.SMITHERY_BLOCK_ENTITY, pos, state);
         this.propertyDelegate = new PropertyDelegate() {
@@ -163,6 +165,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
             recipeChanged();
         }
 
+        if(automatedHitCooldown>0)automatedHitCooldown--;
     }
 
     private void initialize(World world, BlockPos pos, BlockState state){
@@ -251,11 +254,14 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
     private static final AutoCraftingInventory AUTO_INVENTORY = new AutoCraftingInventory(SLOT_COUNT, 1);
 
     public void onHitWithHammer(@Nullable PlayerEntity player, ItemStack hammer,float skill){
+        if(world==null) return;
+        if(player==null && automatedHitCooldown>0) return;
+
         HammerItem hammerItem = ((HammerItem)hammer.getItem());
         lastHammerer=player;
         lastHammerStack=hammer;
 
-        if(world==null) return;
+        if(player==null) automatedHitCooldown=hammerItem.getCooldown(null);
 
         // skill check
         if(skillcheckPassed(skill,hammer,player)){

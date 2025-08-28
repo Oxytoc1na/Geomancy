@@ -122,6 +122,7 @@ TODO EFFECT BLOCKS
 -- if this gets added, it's got to be getters only
 --- allowing the user to set NBT is an easy way to get literally any item in the game
 - collect items on ground
+- transfer items to and from storage
 
 autocaster
 - set block redstone level
