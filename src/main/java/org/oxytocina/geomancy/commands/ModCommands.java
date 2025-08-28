@@ -2,12 +2,16 @@ package org.oxytocina.geomancy.commands;
 
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.minecraft.command.argument.BlockPosArgumentType;
 import net.minecraft.command.argument.EntityArgumentType;
+import net.minecraft.command.argument.PosArgument;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.BlockPos;
 import org.oxytocina.geomancy.util.LeadUtil;
 import org.oxytocina.geomancy.util.MadnessUtil;
 import org.oxytocina.geomancy.util.StellgeUtil;
+import org.oxytocina.geomancy.world.dimension.MazeUtil;
 
 import static net.minecraft.server.command.CommandManager.*;
 // getString(ctx, "string")
@@ -102,6 +106,17 @@ public class ModCommands {
                                                     return 1;
                                                 })
                                         )))
+                ));
+
+        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) ->
+                dispatcher.register(literal("maze")
+                        .then(argument("pos", BlockPosArgumentType.blockPos())
+                                .executes(context -> {
+                                    final BlockPos value = BlockPosArgumentType.getBlockPos(context, "pos");
+                                    MazeUtil.generateSection(context.getSource().getWorld(),value,1);
+                                    return 1;
+                                })
+                        )
                 ));
     }
 }

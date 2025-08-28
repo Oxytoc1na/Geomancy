@@ -99,8 +99,6 @@ public class NullChunkGenerator extends ChunkGenerator {
 
         // generate noise
         int genX, genY, genZ;
-        final float mainNoiseScale = 0.03f;
-        final float mainNoiseScaleOctave1 = 0.1431f;
         final float thresholdNoiseScale = 0.004f;
         final float padding = 0.05f; // padding in percent from bottom and top
         BlockState core = Blocks.STONE.getDefaultState();
@@ -115,10 +113,8 @@ public class NullChunkGenerator extends ChunkGenerator {
                     float threshold = Toolbox.clampF((distanceToEnds - padding)*6,0,1)
                             * (0.2f + SimplexNoise.noiseNormalized(genX,genY,genZ,thresholdNoiseScale)*0.6f);
 
-                    float noise =
-                            0.8f * (float)Math.pow(SimplexNoise.noiseNormalized(genX*mainNoiseScale,iy*mainNoiseScale,genZ*mainNoiseScale),3)
-                            + 0.2f * SimplexNoise.noiseNormalized(genX,genY,genZ,mainNoiseScaleOctave1)
-                            ;
+                    float noise = tunnellyNoise(genX,iy,genZ);
+
                     if(noise > threshold)
                         chunk.setBlockState(mutable.set(ix, iy, iz), core, false);
                 }
@@ -127,7 +123,7 @@ public class NullChunkGenerator extends ChunkGenerator {
 
         // generate maze
         final float typeNoiseScale = 0.00742f;
-        final float typeMazeThreshold = 0.5f;
+        final float typeMazeThreshold = 0.0f;
         final float typeNoise =
                 SimplexNoise.noiseNormalized(startX*typeNoiseScale,0,startZ*typeNoiseScale)
                 ;
@@ -157,6 +153,14 @@ public class NullChunkGenerator extends ChunkGenerator {
         }
 
         return chunk;
+    }
+
+    final static float mainNoiseScale = 0.03f;
+    final static float mainNoiseScaleOctave1 = 0.1431f;
+    private float tunnellyNoise(int x, int y, int z){
+        return 0.8f * ((1-(float)Math.pow(SimplexNoise.noiseNormalized(x*mainNoiseScale,y*mainNoiseScale,z*mainNoiseScale),3))*3)%1
+                + 0.2f * SimplexNoise.noiseNormalized(x,y,z,mainNoiseScaleOctave1)
+        ;
     }
 
     private ChunkSection generateMazeSection(Chunk chunk, ChunkSection section, int y){
