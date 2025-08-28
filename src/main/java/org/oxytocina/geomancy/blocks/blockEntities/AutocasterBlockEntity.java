@@ -19,6 +19,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.oxytocina.geomancy.blocks.ISpellSelectorBlock;
@@ -234,6 +235,10 @@ public class AutocasterBlockEntity extends LootableContainerBlockEntity implemen
             }
         }
         return s;
+    }
+
+    public Vec3d getMuzzlePos() {
+        return pos.toCenterPos().add(new Vec3d(getDirection().getUnitVector().mul(0.7f)));
     }
 }
 

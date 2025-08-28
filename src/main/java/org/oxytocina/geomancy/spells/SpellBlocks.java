@@ -46,6 +46,7 @@ import org.oxytocina.geomancy.client.GeomancyClient;
 import org.oxytocina.geomancy.items.ISpellSelectorItem;
 import org.oxytocina.geomancy.items.tools.IVariableStoringItem;
 import org.oxytocina.geomancy.networking.ModMessages;
+import org.oxytocina.geomancy.networking.packet.S2C.CastParticlesS2CPacket;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
 import org.oxytocina.geomancy.util.BlockHelper;
 import org.oxytocina.geomancy.util.EntityUtil;
@@ -329,16 +330,7 @@ public class SpellBlocks {
                     .outputs(SpellSignal.createVector().named("direction"))
                     .func((component, stringSpellSignalHashMap) -> {
                         SpellBlockResult res = new SpellBlockResult();
-                        switch(component.context.sourceType)
-                        {
-                            case Caster:
-                                res.add("direction",component.caster().getRotationVector());
-                                break;
-                            case Block:
-                            default:
-                                res.add("direction",component.context.casterBlock.getDirection().getVector());
-                                break;
-                        }
+                        res.add("direction",component.context.getDirection());
                         return res;
                     })
                     .category(cat).build());
@@ -2732,14 +2724,11 @@ public class SpellBlocks {
     }
 
     private static void spawnCastParticles(SpellComponent comp,CastParticleData data){
-        PacketByteBuf buf = PacketByteBufs.create();
-        data.write(buf);
-        ModMessages.sendToAllClients((comp.world() instanceof ServerWorld sw) ? sw.getServer() : null,ModMessages.CAST_PARTICLES,buf,serverPlayerEntity ->
-                serverPlayerEntity.getWorld().getRegistryKey().getValue().equals(data.world));
+        data.send(comp.world());
     }
 
     public static void playCastSound(SpellContext ctx){
-        if(ctx.silent||ctx.soundBehavior == SpellContext.SoundBehavior.Silent) return;
+        if(ctx.isSilent()) return;
 
         float fraction = ctx.soulConsumed / ctx.getCasterMaxSoul();
         SoundEvent event = null;
@@ -2832,6 +2821,10 @@ public class SpellBlocks {
         imbueData.put(Registries.STATUS_EFFECT.getId(effect),data);
     }
 
+    public static void spawnMuzzleParticles(SpellContext context) {
+        if(context.isSilent()) return;
+        CastParticleData.genericMuzzle(context,context.getMuzzlePos(),context.getDirection()).send(context.getWorld());
+    }
 
 
     public static class ImbueData{
@@ -2864,41 +2857,54 @@ public class SpellBlocks {
         public int amount = 10;
         public float dispersion = 0.5f;
         public Vec3d pos;
+        public Vec3d dir;
         public Identifier world;
 
-        private CastParticleData(Type type, int amount,Vec3d pos, Identifier world,float dispersion){
+        private CastParticleData(Type type, int amount,Vec3d pos,Vec3d dir, Identifier world,float dispersion){
             this.type=type;
             this.amount=amount;
             this.pos=pos;
+            this.dir=dir;
             this.world=world;
             this.dispersion=dispersion;
         }
 
         public static CastParticleData genericSuccess(SpellComponent comp,Vec3d pos){
-            return create(comp,pos).type(Type.SOUL).amount(10);
+            return create(comp.world(),pos).type(Type.SOUL).amount(10);
         }
 
         public static CastParticleData genericBroke(SpellComponent comp,Vec3d pos){
-            return create(comp,pos).type(Type.SOUL_FIRE).amount(10);
+            return create(comp.world(),pos).type(Type.SOUL_FIRE).amount(10);
         }
+
+        public static CastParticleData genericMuzzle(SpellContext ctx,Vec3d pos,Vec3d dir){
+            return create(ctx.getWorld(),pos).type(Type.MUZZLE).amount(10).dir(dir);
+        }
+
 
         public static CastParticleData genericFail(SpellComponent comp,Vec3d pos){
-            return create(comp,pos).type(Type.SOUL_FIRE).amount(10);
+            return create(comp.world(),pos).type(Type.SOUL_FIRE).amount(10);
         }
 
-        public static CastParticleData create(SpellComponent comp,Vec3d pos){
-            return new CastParticleData(Type.SOUL, 10,pos,comp.world().getRegistryKey().getValue(),0.5f);
+        public static CastParticleData create(World world,Vec3d pos){
+            return new CastParticleData(Type.SOUL, 10,pos,new Vec3d(0,0,0),world.getRegistryKey().getValue(),0.5f);
         }
 
         public CastParticleData amount(int amount){this.amount = amount;return this;}
+        public CastParticleData dir(Vec3d dir){this.dir = dir;return this;}
         public CastParticleData dispersion(int dispersion){this.dispersion = dispersion;return this;}
         public CastParticleData type(Type type){this.type = type;return this;}
+
+        public void send(World world){
+            CastParticlesS2CPacket.send(world,this);
+        }
 
         public void write(PacketByteBuf buf){
             buf.writeString(type.toString());
             buf.writeInt(amount);
             buf.writeFloat(dispersion);
             buf.writeVector3f(pos.toVector3f());
+            buf.writeVector3f(dir.toVector3f());
             buf.writeIdentifier(world);
         }
 
@@ -2907,8 +2913,9 @@ public class SpellBlocks {
             int amount = buf.readInt();
             float dispersion = buf.readFloat();
             Vec3d pos = new Vec3d(buf.readVector3f());
+            Vec3d dir = new Vec3d(buf.readVector3f());
             Identifier world = buf.readIdentifier();
-            return new CastParticleData(type,amount,pos,world,dispersion);
+            return new CastParticleData(type,amount,pos,dir,world,dispersion);
         }
 
         @Environment(EnvType.CLIENT)
@@ -2931,6 +2938,11 @@ public class SpellBlocks {
                         worldObj.addParticle(ParticleTypes.SOUL_FIRE_FLAME,pPos.x,pPos.y,pPos.z,randVel.x,randVel.y,randVel.z);
                         break;
                     }
+                    case MUZZLE:{
+                        Vec3d randVel = dir.addRandom(rand,0.08f);
+                        worldObj.addParticle(ParticleTypes.SOUL_FIRE_FLAME,pPos.x,pPos.y,pPos.z,randVel.x,randVel.y,randVel.z);
+                        break;
+                    }
                 }
             }
         }
@@ -2938,6 +2950,7 @@ public class SpellBlocks {
         public enum Type{
             SOUL,
             SOUL_FIRE,
+            MUZZLE,
         }
     }
 }

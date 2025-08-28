@@ -159,6 +159,7 @@ public class SpellGrid {
             }
         }
         SpellBlocks.playCastSound(context);
+        SpellBlocks.spawnMuzzleParticles(context);
 
         long msTaken = TimeUnit.NANOSECONDS.toMillis(System.nanoTime()-startTime);
         if(msTaken>10){

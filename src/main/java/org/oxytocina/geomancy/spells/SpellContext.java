@@ -13,6 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlock;
 import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlockEntity;
 import org.oxytocina.geomancy.entity.CasterDelegateEntity;
@@ -349,6 +350,29 @@ public class SpellContext {
     public final int TIMEOUT_MS = 1000;
     public boolean timedOut(){
         return getExecutionTimeMS() > TIMEOUT_MS;
+    }
+
+    public boolean isSilent() {
+        return silent||soundBehavior == SpellContext.SoundBehavior.Silent;
+    }
+
+    public Vec3d getDirection() {
+        return switch(sourceType)
+        {
+            case Caster->caster.getRotationVector();
+            case Delegate->delegate.getRotationVector();
+            case Block->new Vec3d(casterBlock.getDirection().getUnitVector());
+            default->null;
+        };
+    }
+
+    public Vec3d getMuzzlePos() {
+        return switch(sourceType)
+        {
+            case Caster -> caster.getEyePos();
+            case Block -> casterBlock.getMuzzlePos();
+            default->getOriginPos();
+        };
     }
 
     public enum SourceType{
