@@ -170,6 +170,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("set_time","Set Time","changes the progress of the current day cycle");
             addSpell("grow","Grow","accelerates growth at a target position");
             addSpell("silent","Mute","makes spell execution silent");
+            addSpell("transmute_item","Transmute Item","turns items into other items by infusing them with souls");
             // reference
             addSpell("action","Action","calls another installed spell");
             addSpell("provider","Provider","automatically returns the result of a spell");
@@ -420,6 +421,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.varstorage.prefix",  "Accessor Prefix: ");
 
             add("item.MODID.spellglove",        "Spellglove");
+            add("item.MODID.precomp_caster",    "Precompiled Machine");
             add("item.MODID.component_pouch","Component Pouch");
             add("MODID.storage.tooltip","Use to open");
 

@@ -18,6 +18,7 @@ import org.oxytocina.geomancy.blocks.*;
 import org.oxytocina.geomancy.client.datagen.recipes.GeodeRecipeJsonBuilder;
 import org.oxytocina.geomancy.client.datagen.recipes.JewelryRecipeJsonBuilder;
 import org.oxytocina.geomancy.client.datagen.recipes.SmitheryRecipeJsonBuilder;
+import org.oxytocina.geomancy.client.datagen.recipes.TransmuteRecipeJsonBuilder;
 import org.oxytocina.geomancy.items.GeodeItem;
 import static org.oxytocina.geomancy.items.ModItems.*;
 import static org.oxytocina.geomancy.blocks.ModBlocks.*;
@@ -25,6 +26,7 @@ import static org.oxytocina.geomancy.items.ModItems.SOULSTORAGE_LARGE;
 
 import org.oxytocina.geomancy.items.SpellComponentStoringItem;
 import org.oxytocina.geomancy.items.jewelry.IJewelryItem;
+import org.oxytocina.geomancy.items.tools.SoulBoreItem;
 import org.oxytocina.geomancy.progression.advancement.ModAdvancementCriterion;
 import org.oxytocina.geomancy.recipe.smithery.SmithingIngredient;
 import org.oxytocina.geomancy.registries.ModItemTags;
@@ -389,7 +391,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     AddGenericSpellcomponentRecipe(SpellBlocks.TELEPORT,Items.ENDER_PEARL,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.DIMHOP,Items.CHORUS_FLOWER,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.PUSH,Items.FIREWORK_ROCKET,baseIngot);
-                    AddGenericSpellcomponentRecipe(SpellBlocks.IMBUE,Items.EXPERIENCE_BOTTLE,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.IMBUE,Items.BREWING_STAND,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.PLACE,Items.CRAFTING_TABLE,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.BREAK,Items.IRON_PICKAXE,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.SET_SPELL,OCTANGULITE_NUGGET,baseIngot);
@@ -401,6 +403,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     AddGenericSpellcomponentRecipe(SpellBlocks.SET_TIME,Items.CLOCK,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.SET_WEATHER,Items.CAULDRON,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.GROW,Items.BONE_BLOCK,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.TRANSMUTE_ITEM,Items.EXPERIENCE_BOTTLE,baseIngot);
                 }
 
                 // reference
@@ -606,6 +609,17 @@ public class ModRecipeProvider extends FabricRecipeProvider {
             offerShapelessRecipe(exporter,SOUL_OAK_PLANKS,STRIPPED_SOUL_OAK_WOOD,"misc",4);
         }
 
+        // transmuting
+        {
+            AddTransmutationRecipe(OCTANGULITE_NUGGET,OCTANGULITE_INGOT, SoulBoreItem.INGOT_FUEL_VALUE,SPELLCOMPONENT,null);
+            AddTransmutationRecipe(OCTANGULITE_INGOT,OCTANGULITE_BLOCK, SoulBoreItem.INGOT_FUEL_VALUE*9,SPELLCOMPONENT,null);
+            AddTransmutationRecipe(Items.OAK_SAPLING,SOUL_OAK_SAPLING, 200,SOUL_OAK_SAPLING,null);
+            AddTransmutationRecipe(Items.AMETHYST_SHARD,Items.ECHO_SHARD, 100,Items.ECHO_SHARD,null);
+            AddTransmutationRecipe(Items.GOLDEN_APPLE,Items.ENCHANTED_GOLDEN_APPLE, 100000,Items.GOLDEN_APPLE,null);
+            AddTransmutationRecipe(Items.GLASS_BOTTLE,Items.EXPERIENCE_BOTTLE, 1000,Items.GLASS_BOTTLE,null);
+            AddTransmutationRecipe(Items.ENDER_PEARL,Items.ENDER_EYE, 1000,Items.ENDER_PEARL,null);
+        }
+
         this.exporter=null;
     }
 
@@ -774,6 +788,13 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         ingredients.addAll(input);
         SmitheryRecipeJsonBuilder.create(ingredients,output.asItem(),outputCount, requiredProgress,difficulty,shapeless,RecipeCategory.MISC, requiredAdvancement).criterion(criterionName,conditions).offerTo(exporter,new Identifier(Geomancy.MOD_ID,"smithing_"+getItemName(output)));
 
+    }
+    private void AddTransmutationRecipe(ItemConvertible input, ItemConvertible output, float cost, ItemConvertible unlock, Identifier requiredAdvancement){
+        AddTransmutationRecipe(SmithingIngredient.ofItems(input),output,1,cost,"unlock",conditionsFromItem(unlock),requiredAdvancement);
+    }
+
+    private void AddTransmutationRecipe(SmithingIngredient input, ItemConvertible output, int outputCount, float cost, String criterionName, CriterionConditions conditions, Identifier requiredAdvancement){
+        TransmuteRecipeJsonBuilder.create(input,output.asItem(),outputCount, cost,RecipeCategory.MISC, requiredAdvancement).criterion(criterionName,conditions).offerTo(exporter,new Identifier(Geomancy.MOD_ID,"transmute_"+getItemName(output)));
     }
 
     private void AddSmitheryJewelryRecipe(IJewelryItem base){

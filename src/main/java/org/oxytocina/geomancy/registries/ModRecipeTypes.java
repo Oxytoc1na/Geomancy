@@ -25,6 +25,10 @@ public class ModRecipeTypes {
     public static GeodeRecipeSerializer<GeodeRecipe> GEODE_SERIALIZER;
     public static RecipeType<GeodeRecipe> GEODE;
 
+    public static final String TRANSMUTE_ID = "transmute";
+    public static TransmuteRecipeSerializer<TransmuteRecipe> TRANSMUTE_SERIALIZER;
+    public static RecipeType<TransmuteRecipe> TRANSMUTE;
+
     static <S extends RecipeSerializer<T>, T extends Recipe<?>> S registerSerializer(String id, S serializer) {
         return Registry.register(Registries.RECIPE_SERIALIZER, Geomancy.locate(id), serializer);
     }
@@ -51,6 +55,9 @@ public class ModRecipeTypes {
 
         GEODE_SERIALIZER = registerSerializer(GEODE_ID, new GeodeRecipeSerializer<>(GeodeRecipe::new));
         GEODE = registerRecipeType(GEODE_ID);
+
+        TRANSMUTE_SERIALIZER = registerSerializer(TRANSMUTE_ID, new TransmuteRecipeSerializer<>(TransmuteRecipe::new));
+        TRANSMUTE = registerRecipeType(TRANSMUTE_ID);
 
         DispenserBehavior.registerDefaults();
     }

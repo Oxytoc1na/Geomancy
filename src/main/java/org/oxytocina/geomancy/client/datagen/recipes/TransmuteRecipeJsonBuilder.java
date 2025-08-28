@@ -10,12 +10,9 @@ import net.minecraft.data.server.recipe.CraftingRecipeJsonBuilder;
 import net.minecraft.data.server.recipe.RecipeJsonProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.book.RecipeCategory;
-import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.DefaultedList;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.recipe.CountIngredient;
 import org.oxytocina.geomancy.recipe.RecipeUtils;
@@ -24,41 +21,37 @@ import org.oxytocina.geomancy.registries.ModRecipeTypes;
 
 import java.util.function.Consumer;
 
-public class SmitheryRecipeJsonBuilder {
+public class TransmuteRecipeJsonBuilder {
     private final RecipeCategory category;
-    private final DefaultedList<SmithingIngredient> inputs;
+    private final SmithingIngredient input;
     private final ItemStack output;
     private final int count;
-    private final int progressRequired;
-    private final int difficulty;
-    private final boolean shapeless;
+    private final float cost;
     private final Advancement.Builder advancement = Advancement.Builder.createUntelemetered();
     @Nullable private final Identifier requiredAdvancement;
     private final RecipeSerializer<?> serializer;
 
-    public SmitheryRecipeJsonBuilder(RecipeSerializer<?> serializer, RecipeCategory category, DefaultedList<SmithingIngredient> inputs, ItemStack output, int count, int progressRequired, int difficulty, boolean shapeless, @Nullable Identifier requiredAdvancement) {
+    public TransmuteRecipeJsonBuilder(RecipeSerializer<?> serializer, RecipeCategory category, SmithingIngredient input, ItemStack output, int count, float cost, @Nullable Identifier requiredAdvancement) {
         this.category = category;
         this.serializer = serializer;
-        this.inputs = inputs;
+        this.input = input;
         this.output = output;
         this.count = count;
-        this.progressRequired=progressRequired;
-        this.difficulty=difficulty;
-        this.shapeless=shapeless;
+        this.cost = cost;
         this.requiredAdvancement=requiredAdvancement;
     }
 
-    public static SmitheryRecipeJsonBuilder create(DefaultedList<SmithingIngredient> inputs, Item output,int count, int progressRequired, int difficulty, boolean shapeless, RecipeCategory category, Identifier requiredAdvancement) {
-        return new SmitheryRecipeJsonBuilder(ModRecipeTypes.SMITHING_SERIALIZER, category, inputs, new ItemStack(output),
-                count,progressRequired, difficulty, shapeless, requiredAdvancement);
+    public static TransmuteRecipeJsonBuilder create(SmithingIngredient input, Item output, int count, float cost, RecipeCategory category, Identifier requiredAdvancement) {
+        return new TransmuteRecipeJsonBuilder(ModRecipeTypes.SMITHING_SERIALIZER, category, input, new ItemStack(output),
+                count,cost, requiredAdvancement);
     }
 
-    public static SmitheryRecipeJsonBuilder create(DefaultedList<SmithingIngredient> inputs, ItemStack output, int count, int progressRequired, int difficulty, boolean shapeless, RecipeCategory category, Identifier requiredAdvancement) {
-        return new SmitheryRecipeJsonBuilder(ModRecipeTypes.SMITHING_SERIALIZER, category, inputs, output,
-                count,progressRequired, difficulty, shapeless, requiredAdvancement);
+    public static TransmuteRecipeJsonBuilder create(SmithingIngredient input, ItemStack output, int count, float cost, RecipeCategory category, Identifier requiredAdvancement) {
+        return new TransmuteRecipeJsonBuilder(ModRecipeTypes.SMITHING_SERIALIZER, category, input, output,
+                count,cost, requiredAdvancement);
     }
 
-    public SmitheryRecipeJsonBuilder criterion(String name, CriterionConditions conditions) {
+    public TransmuteRecipeJsonBuilder criterion(String name, CriterionConditions conditions) {
         this.advancement.criterion(name, conditions);
         return this;
     }
@@ -67,8 +60,7 @@ public class SmitheryRecipeJsonBuilder {
         this.validate(recipeId);
         this.advancement.parent(CraftingRecipeJsonBuilder.ROOT).criterion("has_the_recipe", RecipeUnlockedCriterion.create(recipeId)).rewards(net.minecraft.advancement.AdvancementRewards.Builder.recipe(recipeId)).criteriaMerger(CriterionMerger.OR);
         exporter.accept(new Provider(
-                recipeId, this.serializer, this.inputs, this.output, this.count, this.progressRequired,
-                this.difficulty,this.shapeless, this.advancement,
+                recipeId, this.serializer, this.input, this.output, this.count, this.cost, this.advancement,
                 recipeId.withPrefixedPath("recipes/" + this.category.getName() + "/"),requiredAdvancement));
     }
 
@@ -78,28 +70,14 @@ public class SmitheryRecipeJsonBuilder {
         }
     }
 
-    public static record Provider(Identifier id, RecipeSerializer<?> type, DefaultedList<SmithingIngredient> inputs,
-                                  ItemStack output, int count,int progressRequired,int difficulty,boolean shapeless,
+    public static record Provider(Identifier id, RecipeSerializer<?> type, SmithingIngredient input,
+                                  ItemStack output, int count, float cost,
                                   Advancement.Builder advancement, Identifier advancementId, Identifier requiredAdvancement) implements RecipeJsonProvider {
         public void serialize(JsonObject json) {
-            //if (!this.group.isEmpty()) {
-            //    json.addProperty("group", this.group);
-            //}
-
-            JsonArray ingredientsArray = new JsonArray();
-
-            for(CountIngredient ingredient : this.inputs) {
-                JsonObject ingredientElement = ingredient.toJson().getAsJsonObject();
-                ingredientElement.addProperty("count", ingredient.count);
-                ingredientsArray.add(ingredientElement);
-            }
-
-            json.add("ingredients", ingredientsArray);
+            json.add("base", this.input.toJson().getAsJsonObject());
             JsonObject resultObject = new JsonObject();
             resultObject.add("item", RecipeUtils.itemStackWithNbtToJson(output));
-            json.addProperty("cost",this.progressRequired);
-            json.addProperty("difficulty",this.difficulty);
-            json.addProperty("shapeless",this.shapeless);
+            json.addProperty("cost",this.cost);
             json.add("result", resultObject);
             if(requiredAdvancement!=null)json.addProperty("required_advancement",requiredAdvancement.toString());
         }

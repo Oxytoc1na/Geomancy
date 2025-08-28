@@ -37,7 +37,7 @@ public class SmitheryRecipeSerializer<R extends SmitheryRecipe> implements Gated
         }
         ItemStack outputItemStack = RecipeUtils.itemStackWithNbtFromJson(JsonHelper.getObject(JsonHelper.getObject(jsonObject, "result"),"item"));
 
-        int progressRequired = jsonObject.get("progressRequired").getAsInt();
+        int progressRequired = jsonObject.get("cost").getAsInt();
         int difficulty = jsonObject.get("difficulty").getAsInt();
         boolean shapeless = jsonObject.get("shapeless").getAsBoolean();
         return this.recipeFactory.create(identifier, group, secret, requiredAdvancementIdentifier, ingredients, outputItemStack, progressRequired,difficulty,shapeless);

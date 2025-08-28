@@ -28,6 +28,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
+import org.oxytocina.geomancy.util.RecipeUtil;
 
 import java.util.Collections;
 
@@ -112,11 +113,11 @@ public abstract class ModFluid extends FlowableFluid {
             if (entity instanceof ItemEntity itemEntity && !itemEntity.cannotPickup() && !itemEntity.isRemoved()) {
                 if (world.random.nextInt(100) == 0) {
                     ItemStack itemStack = itemEntity.getStack();
-                    FluidConvertingRecipe recipe = getConversionRecipeFor(getDippingRecipeType(), world, itemStack);
+                    FluidConvertingRecipe recipe = RecipeUtil.getConversionRecipeFor(getDippingRecipeType(), world, itemStack);
                     if (recipe != null && !recipe.getOutput(world.getRegistryManager()).isOf(itemStack.getItem())) { // do not try to convert items into itself for performance reasons
                         world.playSound(null, itemEntity.getBlockPos(), SoundEvents.BLOCK_WOOL_BREAK, SoundCategory.NEUTRAL, 1.0F, 0.9F + world.getRandom().nextFloat() * 0.2F);
 
-                        ItemStack result = craft(recipe, itemStack, world);
+                        ItemStack result = RecipeUtil.craft(recipe, itemStack, world);
                         int count = result.getCount() * itemStack.getCount();
                         result.setCount(count);
 
@@ -133,16 +134,4 @@ public abstract class ModFluid extends FlowableFluid {
     }
 
     public abstract RecipeType<? extends FluidConvertingRecipe> getDippingRecipeType();
-
-    private static final AutoCraftingInventory AUTO_INVENTORY = new AutoCraftingInventory(1, 1);
-
-    public <R extends FluidConvertingRecipe> R getConversionRecipeFor(RecipeType<R> recipeType, @NotNull World world, ItemStack itemStack) {
-        AUTO_INVENTORY.setInputInventory(Collections.singletonList(itemStack));
-        return world.getRecipeManager().getFirstMatch(recipeType, AUTO_INVENTORY, world).orElse(null);
-    }
-
-    public ItemStack craft(FluidConvertingRecipe recipe, ItemStack itemStack, World world) {
-        AUTO_INVENTORY.setInputInventory(Collections.singletonList(itemStack));
-        return recipe.craft(AUTO_INVENTORY, world.getRegistryManager());
-    }
 }

@@ -17,10 +17,7 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.BoneMealItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.item.*;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
@@ -34,6 +31,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -43,20 +41,22 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.*;
 import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.client.GeomancyClient;
+import org.oxytocina.geomancy.inventories.ImplementedInventory;
 import org.oxytocina.geomancy.items.ISpellSelectorItem;
+import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.tools.IVariableStoringItem;
+import org.oxytocina.geomancy.items.tools.SoulBoreItem;
 import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.networking.packet.S2C.CastParticlesS2CPacket;
+import org.oxytocina.geomancy.registries.ModRecipeTypes;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
 import org.oxytocina.geomancy.util.BlockHelper;
 import org.oxytocina.geomancy.util.EntityUtil;
+import org.oxytocina.geomancy.util.RecipeUtil;
 import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.*;
-import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import java.util.function.*;
 
 public class SpellBlocks {
 
@@ -146,6 +146,7 @@ public class SpellBlocks {
     public static final SpellBlock SET_TIME;
     public static final SpellBlock GROW;
     public static final SpellBlock ACTIVATE;
+    public static final SpellBlock TRANSMUTE_ITEM;
 
     // reference
     public static final SpellBlock ACTION;
@@ -168,10 +169,11 @@ public class SpellBlocks {
     public static final SpellBlock SET_ELEMENT;
     public static final SpellBlock ENTITIES_NEAR;
     public static final SpellBlock BLOCK_BOX;
-    
-    private static HashMap<Identifier, ImbueData> imbueData = new HashMap();
-    private static HashMap<Function<BlockState,Boolean>, BlockState> degradeBlockData = new LinkedHashMap<>();
-    private static HashMap<Function<BlockState,Boolean> , BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult>> igniteBehavior = new LinkedHashMap<>();
+
+    private static final HashMap<Identifier, ImbueData> imbueData = new HashMap();
+    private static final List<TransmuteData> transmuteData = new ArrayList<>();
+    private static final HashMap<Function<BlockState,Boolean>, BlockState> degradeBlockData = new LinkedHashMap<>();
+    private static final HashMap<Function<BlockState,Boolean> , BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult>> igniteBehavior = new LinkedHashMap<>();
 
     private static SpellBlock.Category cat;
     static{
@@ -749,7 +751,7 @@ public class SpellBlocks {
                         .parameters()
                         .func((component, vars) -> {
                             SpellBlockResult res = new SpellBlockResult();
-                            if(!(vars.get("entity").getEntity(component.world()) instanceof LivingEntity entity)) return res;
+                            var entity = vars.get("entity").getEntity(component.world()); if(entity==null) return res;
                             res.add("position",entity.getPos());
                             return res;
                         })
@@ -761,7 +763,7 @@ public class SpellBlocks {
                         .parameters()
                         .func((component, vars) -> {
                             SpellBlockResult res = new SpellBlockResult();
-                            if(!(vars.get("entity").getEntity(component.world()) instanceof LivingEntity entity)) return res;
+                            var entity = vars.get("entity").getEntity(component.world()); if(entity==null) return res;
                             res.add("velocity",entity.getVelocity());
                             return res;
                         })
@@ -773,7 +775,7 @@ public class SpellBlocks {
                         .parameters()
                         .func((component, vars) -> {
                             SpellBlockResult res = new SpellBlockResult();
-                            if(!(vars.get("entity").getEntity(component.world()) instanceof LivingEntity entity)) return res;
+                            var entity = vars.get("entity").getEntity(component.world()); if(entity==null) return res;
                             res.add("eye position",entity.getEyePos());
                             return res;
                         })
@@ -785,7 +787,7 @@ public class SpellBlocks {
                         .parameters()
                         .func((component, vars) -> {
                             SpellBlockResult res = new SpellBlockResult();
-                            if(!(vars.get("entity").getEntity(component.world()) instanceof LivingEntity entity)) return res;
+                            var entity = vars.get("entity").getEntity(component.world()); if(entity==null) return res;
                             res.add("direction",entity.getRotationVector());
                             return res;
                         })
@@ -797,8 +799,8 @@ public class SpellBlocks {
                         .parameters()
                         .func((component, vars) -> {
                             SpellBlockResult res = SpellBlockResult.empty();
-                            if(!(vars.get("entity").getEntity(component.world()) instanceof LivingEntity ent)) return res;
-                            res.add(SpellSignal.createBoolean(ent.isOnGround()).named("grounded"));
+                            var entity = vars.get("entity").getEntity(component.world()); if(entity==null) return res;
+                            res.add(SpellSignal.createBoolean(entity.isOnGround()).named("grounded"));
                             return res;
                         })
                         .category(cat).build());
@@ -812,9 +814,9 @@ public class SpellBlocks {
                             var pos = vars.getVector("position");
                             var range = vars.getNumber("range");
 
-                            var ents = comp.world().getEntitiesByClass(LivingEntity.class, Box.from(pos).expand(range),entity -> true);
+                            var ents = comp.world().getEntitiesByClass(Entity.class, Box.from(pos).expand(range),entity -> true);
                             if(ents==null||ents.isEmpty()) return res;
-                            LivingEntity ent = null;
+                            Entity ent = null;
                             double minDist = 1000000;
                             for(var cont : ents){
                                 double dist = cont.getPos().subtract(pos).length();
@@ -834,7 +836,7 @@ public class SpellBlocks {
                         .parameters()
                         .func((component, vars) -> {
                             SpellBlockResult res = new SpellBlockResult();
-                            if(!(vars.get("entity").getEntity(component.world()) instanceof LivingEntity entity)) return res;
+                            var entity = vars.get("entity").getEntity(component.world()); if(entity==null) return res;
                             res.add("id",Registries.ENTITY_TYPE.getId(entity.getType()).toString());
                             return res;
                         })
@@ -2252,6 +2254,61 @@ public class SpellBlocks {
                         return SpellBlockResult.empty();
                     })
                     .category(cat).build());
+
+            TRANSMUTE_ITEM = register(SpellBlock.Builder.create("transmute_item")
+                    .inputs(SpellSignal.createUUID().named("item")).parameters()
+                    .func((comp,vars) -> {
+                        var ent = vars.get("item").getEntity(comp.world());
+                        if(!(ent instanceof ItemEntity ient)) return SpellBlockResult.empty();
+
+                        // find recipe
+
+                        // try the special ones first
+                        for(var dat : transmuteData){
+                            if(!dat.test(ient)) continue;
+                            // calculate cost
+                            float manaCost = 5f
+                                    +normalCastOffsetSoulCost(comp,ent.getPos())
+                                    +dat.cost*ient.getStack().getCount();
+                            if(canAfford(comp,manaCost)){
+                                dat.run(ient);
+                                trySpendSoul(comp,manaCost);
+                                spawnCastParticles(comp,CastParticleData.genericSuccess(comp,comp.context.getOriginPos()));
+                            }
+                            else{
+                                // too broke
+                                tryLogDebugBroke(comp,manaCost);
+                                spawnCastParticles(comp,CastParticleData.genericBroke(comp,comp.context.getOriginPos()));
+                            }
+                            return SpellBlockResult.empty();
+                        }
+
+                        // go after recipes
+                        var recipe = RecipeUtil.getConversionRecipeFor(ModRecipeTypes.TRANSMUTE,comp.world(),ient.getStack());
+                        if(recipe!=null){
+                            // calculate cost
+                            float manaCost = 5f
+                                    +normalCastOffsetSoulCost(comp,ent.getPos())
+                                    +recipe.getCost()*ient.getStack().getCount();
+                            if(canAfford(comp,manaCost)){
+                                var resStack = recipe.craft(ImplementedInventory.of(DefaultedList.ofSize(1,ient.getStack())),null);
+                                resStack.setCount(ient.getStack().getCount());
+                                ient.setStack(resStack);
+                                trySpendSoul(comp,manaCost);
+                                spawnCastParticles(comp,CastParticleData.genericSuccess(comp,comp.context.getOriginPos()));
+                            }
+                            else{
+                                // too broke
+                                tryLogDebugBroke(comp,manaCost);
+                                spawnCastParticles(comp,CastParticleData.genericBroke(comp,comp.context.getOriginPos()));
+                            }
+                            return SpellBlockResult.empty();
+                        }
+
+                        // no fitting transmutation recipe found
+                        return SpellBlockResult.empty();
+                    })
+                    .category(cat).build());
         }
 
         // reference
@@ -2348,7 +2405,7 @@ public class SpellBlocks {
                     })
                     .category(cat).build());
 
-            // inputs a variable into the reference call result
+            // input a variable into the reference call result
             REF_INPUT = register(SpellBlock.Builder.create("ref_input")
                     .inputs(SpellSignal.createAny().named("var"))
                     .parameters(SpellBlock.Parameter.createText("varName","a"))
@@ -2547,7 +2604,7 @@ public class SpellBlocks {
                         var pos = vars.getVector("position");
                         var range = vars.getNumber("range");
 
-                        var ents = comp.world().getEntitiesByClass(LivingEntity.class,Box.of(pos,range,range,range), le -> true);
+                        var ents = comp.world().getEntitiesByClass(Entity.class,Box.of(pos,range,range,range), le -> true);
                         if(ents==null||ents.isEmpty()) return res;
                         ents.sort((o1, o2) ->
                                         Toolbox.signD(pos.distanceTo(o1.getPos()) - pos.distanceTo(o2.getPos()))
@@ -2952,6 +3009,40 @@ public class SpellBlocks {
             SOUL,
             SOUL_FIRE,
             MUZZLE,
+        }
+    }
+    public static class TransmuteData{
+        public final float cost;
+        public final Function<ItemEntity,Boolean> predicate;
+        public Consumer<ItemEntity> func;
+
+        public TransmuteData(float cost, Item item){
+            this.cost=cost;
+            this.predicate=e->e.getStack().getItem()==item;
+            func = t->{};
+        }
+
+        public TransmuteData(float cost, Function<ItemEntity,Boolean> predicate){
+            this.cost=cost;
+            this.predicate=predicate;
+            func = t->{};
+        }
+
+        public TransmuteData func(Consumer<ItemEntity> func){this.func=func;return this;}
+        public TransmuteData into(ItemConvertible item){this.func=s->s.setStack(new ItemStack(item,s.getStack().getCount()));return this;}
+        public TransmuteData into(ItemStack item){
+            this.func=s->{
+                ItemStack res = item.copy();
+                res.setCount(s.getStack().getCount());
+                s.setStack(res);
+            };return this;}
+
+        public boolean test(ItemEntity ent){
+            return predicate.apply(ent);
+        }
+
+        public void run(ItemEntity ent){
+            func.accept(ent);
         }
     }
 }
