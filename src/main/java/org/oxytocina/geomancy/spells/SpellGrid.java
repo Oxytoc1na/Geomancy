@@ -88,7 +88,9 @@ public class SpellGrid {
         return context.referenceResult;
     }
 
-    public void run(ItemStack casterItem, ItemStack spellStorage, LivingEntity casterEntity, AutocasterBlockEntity blockEntity,CasterDelegateEntity delegate, SpellBlockArgs args, SpellContext.SoundBehavior soundBehavior){
+    public void run(ItemStack casterItem, ItemStack spellStorage, LivingEntity casterEntity,
+                    AutocasterBlockEntity blockEntity,CasterDelegateEntity delegate, SpellBlockArgs args,
+                    SpellContext.SoundBehavior soundBehavior, boolean activatedByHotkey){
         long startTime = System.nanoTime();
 
         float costMultiplier = soulCostMultiplier;
@@ -99,6 +101,7 @@ public class SpellGrid {
         }
 
         SpellContext context = new SpellContext(this,casterEntity,blockEntity,delegate,casterItem,spellStorage,0,costMultiplier,0,soundBehavior);
+        context.activatedByHotkey = activatedByHotkey;
         context.refreshAvailableSoul();
         context.internalVars = args;
 
@@ -149,6 +152,7 @@ public class SpellGrid {
             }
             context.getWorld().spawnEntity(lightning);
             CamShakeUtil.cause(context.getWorld(),pos,20,2);
+            SpellBlocks.tryUnlockSpellAdvancement(context.caster,"ambition");
         }
 
         if(context.soulConsumed > 0){

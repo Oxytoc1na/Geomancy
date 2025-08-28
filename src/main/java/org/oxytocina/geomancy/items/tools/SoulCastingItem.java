@@ -77,7 +77,7 @@ public class SoulCastingItem extends StorageItem implements IManaStoringItem, IS
 
         if(!(spellContainer.getItem() instanceof SpellStoringItem storer)) return;
 
-        storer.cast(key,spellContainer,user, SpellBlockArgs.empty(), SpellContext.SoundBehavior.Full);
+        storer.cast(key,spellContainer,user, SpellBlockArgs.empty(), SpellContext.SoundBehavior.Full,false);
     }
 
     @Override

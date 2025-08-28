@@ -66,10 +66,10 @@ public class SpellStoringItem extends Item {
         stack.setSubNbt("spell",spellCompound);
     }
 
-    public void cast(ItemStack caster, ItemStack spellstorage, LivingEntity user, SpellBlockArgs args,SpellContext.SoundBehavior soundBehavior){
+    public void cast(ItemStack caster, ItemStack spellstorage, LivingEntity user, SpellBlockArgs args,SpellContext.SoundBehavior soundBehavior,boolean activatedByHotkey){
         SpellGrid grid = getOrCreateGrid(spellstorage);
         if(grid==null) return;
-        grid.run(caster,spellstorage,user,null,null,args, soundBehavior);
+        grid.run(caster,spellstorage,user,null,null,args, soundBehavior,activatedByHotkey);
     }
 
     public float getSoulCostMultiplier(ItemStack stack) {

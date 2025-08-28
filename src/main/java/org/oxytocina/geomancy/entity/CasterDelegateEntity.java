@@ -81,7 +81,7 @@ public class CasterDelegateEntity extends Entity {
         // make sure the caster item still exists
         if(parent.casterItem.isEmpty()) {destroy(); return;}
 
-        grid.run(parent.casterItem,parent.spellStorage,parent.caster,parent.casterBlock,this, SpellBlockArgs.empty(), SpellContext.SoundBehavior.Reduced);
+        grid.run(parent.casterItem,parent.spellStorage,parent.caster,parent.casterBlock,this, SpellBlockArgs.empty(), SpellContext.SoundBehavior.Reduced,false);
         destroy();
     }
 

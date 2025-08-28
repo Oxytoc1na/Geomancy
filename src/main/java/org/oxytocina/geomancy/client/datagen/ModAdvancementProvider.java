@@ -108,6 +108,20 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
             nbt.put("component",component);
             AddGetItemWithNbtAdvancement(ModItems.SPELLCOMPONENT,nbt,id.getPath(),"spellcomponents");
         }
+
+        // tasks
+        var spell_unlocker = got_spellmaker;
+        Advancement spell_ignition =    AddSimpleAdvancement(Items.FLINT_AND_STEEL,"ignition","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_liftoff =     AddSimpleAdvancement(Items.FIREWORK_ROCKET,"liftoff","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_ambition =    AddSimpleAdvancement(Items.COMMAND_BLOCK,"ambition","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_brazilian =   AddSimpleAdvancement(Items.LEATHER_BOOTS,"brazilian","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_celeste =     AddSimpleAdvancement(Items.FEATHER,"celeste","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_long_arms =   AddSimpleAdvancement(null,"long_arms","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_ftl =         AddSimpleAdvancement(null,"ftl","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_bones =       AddSimpleAdvancement(null,"bones","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_fireball =    AddSimpleAdvancement(null,"fireball","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_deception =   AddSimpleAdvancement(null,"deception","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_medic =       AddSimpleAdvancement(null,"medic","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
     }
     private Advancement AddGetItemAdvancement(ItemConvertible item,String name, ItemConvertible conditionItem, String category, AdvancementFrame frame, boolean announce, boolean hidden, Advancement parent){
         return AddGetItemAdvancement(item,name,new Item[]{conditionItem.asItem()},category,frame,announce,hidden,parent);

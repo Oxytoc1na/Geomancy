@@ -41,6 +41,7 @@ public class SpellContext {
     public boolean depthLimitReached = false;
     public long startTime;
     public boolean couldntAffordSomething = false;
+    public boolean activatedByHotkey = false;
     public SpellGrid grid;
     public SoundBehavior soundBehavior;
 
@@ -366,6 +367,11 @@ public class SpellContext {
         };
     }
 
+    public boolean isActivatedByHotkey(){
+        if(isChild()) return parentCall.isActivatedByHotkey();
+        return activatedByHotkey;
+    }
+
     public Vec3d getMuzzlePos() {
         return switch(sourceType)
         {
@@ -373,6 +379,11 @@ public class SpellContext {
             case Block -> casterBlock.getMuzzlePos();
             default->getOriginPos();
         };
+    }
+
+    public SpellContext root() {
+        if(isChild()) return parentCall.root();
+        return this;
     }
 
     public enum SourceType{

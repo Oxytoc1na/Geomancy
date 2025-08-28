@@ -592,6 +592,18 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addAdvancement(".main.simple_lead_poisoned","Delicious","Experience symptoms of heavy metal poisoning");
             addAdvancement(".main.simple_maddened","The silence after sanity","Let the whispers get to you");
 
+            addAdvancement(".spells.simple_ambition","Ambition","Try to cast a spell that is too complex");
+            addAdvancement(".spells.simple_bones","There's magic in my bones!","Use the grow spell component");
+            addAdvancement(".spells.simple_brazilian","Brazilian","Use a push component on yourself while jumping mid-air");
+            addAdvancement(".spells.simple_celeste","Celeste","Use a push component on yourself using a hotkey");
+            addAdvancement(".spells.simple_fireball","Fireball!!","Activate a fireball component in a spell named \"fireball\" by saying its name in chat");
+            addAdvancement(".spells.simple_ftl","FTL transmission","Use an activate component on a block at least 1000 blocks away");
+            addAdvancement(".spells.simple_ignition","Ignition","Use an ignite component");
+            addAdvancement(".spells.simple_liftoff","Liftoff","Use a push component with an upwards velocity of at least 1 block per tick");
+            addAdvancement(".spells.simple_long_arms","Long arms","Place or break a block outside of your normal reach");
+            addAdvancement(".spells.simple_deception","Deception","Use a play sound component from a muted spell");
+            addAdvancement(".spells.simple_medic","Medic!","Heal another player by using an imbue component");
+
             addAdvancement(":milestones/milestone_smithery","The Craft of the Ancients","Obtain the smithery");
             addAdvancement(":milestones/milestone_souls","Soulcraft","Learn of the true nature of octangulite");
 

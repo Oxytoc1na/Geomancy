@@ -44,16 +44,14 @@ import org.oxytocina.geomancy.client.GeomancyClient;
 import org.oxytocina.geomancy.inventories.ImplementedInventory;
 import org.oxytocina.geomancy.items.ISpellSelectorItem;
 import org.oxytocina.geomancy.items.ModItems;
+import org.oxytocina.geomancy.items.armor.CastingArmorItem;
 import org.oxytocina.geomancy.items.tools.IVariableStoringItem;
 import org.oxytocina.geomancy.items.tools.SoulBoreItem;
 import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.networking.packet.S2C.CastParticlesS2CPacket;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
-import org.oxytocina.geomancy.util.BlockHelper;
-import org.oxytocina.geomancy.util.EntityUtil;
-import org.oxytocina.geomancy.util.RecipeUtil;
-import org.oxytocina.geomancy.util.Toolbox;
+import org.oxytocina.geomancy.util.*;
 
 import java.util.*;
 import java.util.function.*;
@@ -1215,6 +1213,13 @@ public class SpellBlocks {
                             fireball.setPosition(pos);
                             comp.world().spawnEntity(fireball);
                             spawnCastParticles(comp,CastParticleData.genericSuccess(comp,pos));
+                            if(comp.context.root().grid.name=="fireball" && comp.context.casterItem.getItem() instanceof CastingArmorItem cai && cai.getType() == ArmorItem.Type.BOOTS)
+                            {
+                                if(comp.context.root().internalVars.has("message") && comp.context.root().internalVars.getText("message").contains("fireball"))
+                                {
+                                    tryUnlockSpellAdvancement(comp,"fireball");
+                                }
+                            }
                         }
                         else{
                             // too broke
@@ -1349,6 +1354,14 @@ public class SpellBlocks {
                             entity.velocityModified=true;
                             entity.velocityDirty=true;
                             spawnCastParticles(comp,CastParticleData.genericSuccess(comp,entity.getPos()));
+                            if(vel.y>=1)
+                                tryUnlockSpellAdvancement(comp,"liftoff");
+                            if(entity==comp.caster()){
+                                if(!entity.isOnGround() && comp.context.casterItem.getItem() instanceof CastingArmorItem cai && cai.getType()== ArmorItem.Type.LEGGINGS)
+                                    tryUnlockSpellAdvancement(comp,"brazilian");
+                                if(comp.context.isActivatedByHotkey())
+                                    tryUnlockSpellAdvancement(comp,"celeste");
+                            }
                         }
                         else{
                             // too broke
@@ -1418,6 +1431,8 @@ public class SpellBlocks {
                                 stack.decrement(1);
 
                             Toolbox.playSound(bi.getBlock().getSoundGroup(targetState).getPlaceSound(),comp.world(),blockPos, SoundCategory.BLOCKS,1,1);
+                            if(comp.caster()!=null && EntityUtil.distanceTo(comp.caster(),pos) >7)
+                                tryUnlockSpellAdvancement(comp,"long_arms");
                             trySpendSoul(comp,manaCost);
                             spawnCastParticles(comp,CastParticleData.genericSuccess(comp,pos));
                         }
@@ -1540,6 +1555,8 @@ public class SpellBlocks {
 
                             }
 
+                            if(comp.caster()!=null && EntityUtil.distanceTo(comp.caster(),pos) >7)
+                                tryUnlockSpellAdvancement(comp,"long_arms");
                             trySpendSoul(comp,manaCost);
                             spawnCastParticles(comp,CastParticleData.genericSuccess(comp,pos));
                         }
@@ -1771,6 +1788,10 @@ public class SpellBlocks {
                             var effectInst = new StatusEffectInstance(Registries.STATUS_EFFECT.get(id),Math.round(duration*20),amp);
                             ent.addStatusEffect(effectInst);
                             spawnCastParticles(comp,CastParticleData.genericSuccess(comp,ent.getPos()));
+
+                            if(ent instanceof PlayerEntity pe && pe!=comp.caster() && List.of(
+                                    StatusEffects.INSTANT_HEALTH,StatusEffects.REGENERATION).contains(effectInst.getEffectType()))
+                                tryUnlockSpellAdvancement(comp,"medic");
                         }
                         else{
                             // too broke
@@ -1865,6 +1886,8 @@ public class SpellBlocks {
                                 return SpellBlockResult.empty();
                             }
 
+                            if(comp.caster()!=null && EntityUtil.distanceTo(comp.caster(),pos) >7)
+                                tryUnlockSpellAdvancement(comp,"long_arms");
                             trySpendSoul(comp,manaCost);
                             spawnCastParticles(comp,CastParticleData.genericSuccess(comp,pos));
                         }
@@ -1952,6 +1975,7 @@ public class SpellBlocks {
                                 igniteBehavior.get(pred).apply(comp,vars);
                                 trySpendSoul(comp,manaCost);
                                 spawnCastParticles(comp,CastParticleData.genericSuccess(comp,pos));
+                                tryUnlockSpellAdvancement(comp,"ignition");
                                 break;
                             }
                         }
@@ -1998,6 +2022,7 @@ public class SpellBlocks {
 
                             trySpendSoul(comp,manaCost);
                             spawnCastParticles(comp,CastParticleData.genericSuccess(comp,pos));
+                            if(comp.context.root().silent) tryUnlockSpellAdvancement(comp,"deception");
                         }
                         else{
                             // too broke
@@ -2128,6 +2153,7 @@ public class SpellBlocks {
                                 BoneMealItem.useOnGround(meal,comp.world(),blockPos.down(),null);
 
                             trySpendSoul(comp,manaCost);
+                            tryUnlockSpellAdvancement(comp,"bones");
                             spawnCastParticles(comp,CastParticleData.genericSuccess(comp,comp.context.getOriginPos()));
                         }
                         else{
@@ -2240,7 +2266,8 @@ public class SpellBlocks {
                                 bb.ring(world,blockPos,null);
                             }
 
-
+                            if(comp.caster()!=null && EntityUtil.distanceTo(comp.caster(),pos) >=1000)
+                                tryUnlockSpellAdvancement(comp,"ftl");
 
                             trySpendSoul(comp,manaCost);
                             spawnCastParticles(comp,CastParticleData.genericSuccess(comp,pos));
@@ -2646,6 +2673,16 @@ public class SpellBlocks {
                     .category(cat).build());
         }
     }
+
+    private static void tryUnlockSpellAdvancement(SpellComponent comp, String name) {
+        tryUnlockSpellAdvancement(comp.caster(),name);
+    }
+
+    public static void tryUnlockSpellAdvancement(LivingEntity entity, String name) {
+        if(!(entity instanceof ServerPlayerEntity spe)) return;
+        AdvancementHelper.grantAdvancementCriterion(spe,"spells/simple_"+name,"simple_"+name);
+    }
+
     // sin, cos, tan
     private static SpellBlock createAngleFunc(String name, String varName, Function<Double,Double> function){
         return SpellBlock.Builder.create(name)

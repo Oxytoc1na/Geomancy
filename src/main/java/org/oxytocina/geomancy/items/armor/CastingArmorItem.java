@@ -92,7 +92,7 @@ public class CastingArmorItem extends ArmorItem implements IMaddeningItem, IStor
 
         if(!(spellContainer.getItem() instanceof SpellStoringItem storer)) return;
 
-        storer.cast(key,spellContainer,user,args, SpellContext.SoundBehavior.Reduced);
+        storer.cast(key,spellContainer,user,args, SpellContext.SoundBehavior.Reduced,false);
     }
 
     public int getSelectedSpellIndex(ItemStack stack){

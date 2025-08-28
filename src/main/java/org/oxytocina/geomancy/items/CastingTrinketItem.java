@@ -67,7 +67,7 @@ public class CastingTrinketItem extends TrinketItem implements IStorageItem, Ext
         if(storageStack==null) return;
         if(!(storageStack.getItem() instanceof SpellStoringItem storer)) return;
 
-        storer.cast(stack,storageStack,player,SpellBlockArgs.empty(), SpellContext.SoundBehavior.Full);
+        storer.cast(stack,storageStack,player,SpellBlockArgs.empty(), SpellContext.SoundBehavior.Full,true);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class CastingTrinketItem extends TrinketItem implements IStorageItem, Ext
 
         if(!(spellContainer.getItem() instanceof SpellStoringItem storer)) return;
 
-        storer.cast(key,spellContainer,user,args, SpellContext.SoundBehavior.Reduced);
+        storer.cast(key,spellContainer,user,args, SpellContext.SoundBehavior.Reduced,false);
     }
 
     @Override
