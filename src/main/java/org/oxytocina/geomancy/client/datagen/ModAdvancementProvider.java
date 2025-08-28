@@ -116,12 +116,13 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         Advancement spell_ambition =    AddSimpleAdvancement(Items.COMMAND_BLOCK,"ambition","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
         Advancement spell_brazilian =   AddSimpleAdvancement(Items.LEATHER_BOOTS,"brazilian","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
         Advancement spell_celeste =     AddSimpleAdvancement(Items.FEATHER,"celeste","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement spell_long_arms =   AddSimpleAdvancement(null,"long_arms","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement spell_ftl =         AddSimpleAdvancement(null,"ftl","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement spell_bones =       AddSimpleAdvancement(null,"bones","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement spell_fireball =    AddSimpleAdvancement(null,"fireball","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement spell_deception =   AddSimpleAdvancement(null,"deception","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement spell_medic =       AddSimpleAdvancement(null,"medic","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_long_arms =   AddSimpleAdvancement(Items.SPYGLASS,"long_arms","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_ftl =         AddSimpleAdvancement(Items.SPYGLASS,"ftl","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_bones =       AddSimpleAdvancement(Items.BONE,"bones","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_fireball =    AddSimpleAdvancement(Items.FIRE_CHARGE,"fireball","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_deception =   AddSimpleAdvancement(Items.NOTE_BLOCK,"deception","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_medic =       AddSimpleAdvancement(Items.ENCHANTED_GOLDEN_APPLE,"medic","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_ulterior_motives = AddSimpleAdvancement(Items.WRITABLE_BOOK,"ulterior_motives","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
     }
     private Advancement AddGetItemAdvancement(ItemConvertible item,String name, ItemConvertible conditionItem, String category, AdvancementFrame frame, boolean announce, boolean hidden, Advancement parent){
         return AddGetItemAdvancement(item,name,new Item[]{conditionItem.asItem()},category,frame,announce,hidden,parent);

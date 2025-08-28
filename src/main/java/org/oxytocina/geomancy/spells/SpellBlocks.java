@@ -14,6 +14,7 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.inventory.Inventory;
@@ -890,7 +891,7 @@ public class SpellBlocks {
                         .func((comp,vars) -> {
                             SpellBlockResult res = SpellBlockResult.empty();
                             var hit = raycastEntity(comp,vars.getVector("from"),vars.getVector("from").add(vars.getVector("dir").multiply(vars.getNumber("length"))));
-                            if(hit.getType()== HitResult.Type.ENTITY){
+                            if(hit!=null && hit.getType()== HitResult.Type.ENTITY){
                                 var hitEnt = hit.getEntity();
                                 res.add(SpellSignal.createUUID(hitEnt).named("entity"));
                             }
@@ -1213,7 +1214,7 @@ public class SpellBlocks {
                             fireball.setPosition(pos);
                             comp.world().spawnEntity(fireball);
                             spawnCastParticles(comp,CastParticleData.genericSuccess(comp,pos));
-                            if(comp.context.root().grid.name=="fireball" && comp.context.casterItem.getItem() instanceof CastingArmorItem cai && cai.getType() == ArmorItem.Type.BOOTS)
+                            if(Objects.equals(comp.context.root().grid.name, "fireball") && comp.context.casterItem.getItem() instanceof CastingArmorItem cai && cai.getType() == ArmorItem.Type.BOOTS)
                             {
                                 if(comp.context.root().internalVars.has("message") && comp.context.root().internalVars.getText("message").contains("fireball"))
                                 {
@@ -1789,7 +1790,7 @@ public class SpellBlocks {
                             ent.addStatusEffect(effectInst);
                             spawnCastParticles(comp,CastParticleData.genericSuccess(comp,ent.getPos()));
 
-                            if(ent instanceof PlayerEntity pe && pe!=comp.caster() && List.of(
+                            if((ent instanceof VillagerEntity || (ent instanceof PlayerEntity pe&&pe!=comp.caster())) && List.of(
                                     StatusEffects.INSTANT_HEALTH,StatusEffects.REGENERATION).contains(effectInst.getEffectType()))
                                 tryUnlockSpellAdvancement(comp,"medic");
                         }
@@ -2478,6 +2479,9 @@ public class SpellBlocks {
                         if(varStorerStack==null) return SpellBlockResult.empty();
                         if(((IVariableStoringItem) varStorerStack.getItem()).setSignal(varStorerStack,sig.named(varName))){
                             sps.markDirty(comp.context.casterItem);
+                            var ent = sig.getEntity(comp.world());
+                            if(ent!=null && (ent instanceof VillagerEntity || (ent instanceof ServerPlayerEntity spe && spe!=comp.caster())))
+                                tryUnlockSpellAdvancement(comp,"ulterior_motives");
                         }
                         return SpellBlockResult.empty();
                     })
@@ -2736,7 +2740,7 @@ public class SpellBlocks {
         }
 
         Box entityCheckBox = new Box(start,end).expand((double)1.0F, (double)1.0F, (double)1.0F);
-        return EntityUtil.raycast(comp.world(), start, end, entityCheckBox, (entityx) -> !entityx.isSpectator() && entityx.canHit(), squaredEntityReach);
+        return EntityUtil.raycast(comp.world(), start, end, entityCheckBox, (entityx) -> !entityx.isSpectator() && entityx.canHit() &&entityx!=comp.caster(), squaredEntityReach);
     }
 
 

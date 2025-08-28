@@ -603,6 +603,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addAdvancement(".spells.simple_long_arms","Long arms","Place or break a block outside of your normal reach");
             addAdvancement(".spells.simple_deception","Deception","Use a play sound component from a muted spell");
             addAdvancement(".spells.simple_medic","Medic!","Heal another player by using an imbue component");
+            addAdvancement(".spells.simple_ulterior_motives","Ulterior Motives","Save a reference to another player onto a varpot");
 
             addAdvancement(":milestones/milestone_smithery","The Craft of the Ancients","Obtain the smithery");
             addAdvancement(":milestones/milestone_souls","Soulcraft","Learn of the true nature of octangulite");
