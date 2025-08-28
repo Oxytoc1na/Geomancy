@@ -58,6 +58,7 @@ public abstract class ItemEntityMixin {
             var contender = inv.getStack(i);
             if(contender.isEmpty()) continue;
             if(contender.getItem() instanceof IStorageItem storageItem){
+                if(!storageItem.autocollects()) continue;
                 storageItem.tryCollect(contender,entity,player,stack);
                 if(stack.isEmpty()) return;
             }

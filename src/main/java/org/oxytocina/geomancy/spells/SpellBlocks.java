@@ -2823,6 +2823,7 @@ public class SpellBlocks {
 
     public static void spawnMuzzleParticles(SpellContext context) {
         if(context.isSilent()) return;
+        if(context.soulConsumed<=0 && context.soundBehavior== SpellContext.SoundBehavior.Reduced) return;
         CastParticleData.genericMuzzle(context,context.getMuzzlePos(),context.getDirection()).send(context.getWorld());
     }
 
@@ -2878,7 +2879,7 @@ public class SpellBlocks {
         }
 
         public static CastParticleData genericMuzzle(SpellContext ctx,Vec3d pos,Vec3d dir){
-            return create(ctx.getWorld(),pos).type(Type.MUZZLE).amount(10).dir(dir);
+            return create(ctx.getWorld(),pos).type(Type.MUZZLE).amount(10).dir(dir).dispersion(0.2f);
         }
 
 
@@ -2892,7 +2893,7 @@ public class SpellBlocks {
 
         public CastParticleData amount(int amount){this.amount = amount;return this;}
         public CastParticleData dir(Vec3d dir){this.dir = dir;return this;}
-        public CastParticleData dispersion(int dispersion){this.dispersion = dispersion;return this;}
+        public CastParticleData dispersion(float dispersion){this.dispersion = dispersion;return this;}
         public CastParticleData type(Type type){this.type = type;return this;}
 
         public void send(World world){
@@ -2930,7 +2931,7 @@ public class SpellBlocks {
                         pos.z+(rand.nextFloat()*2-1)*dispersion);
                 switch(type){
                     case SOUL:{
-                        worldObj.addParticle(ParticleTypes.SOUL,pPos.x,pPos.y,pPos.z,0,0,0);
+                        worldObj.addParticle(ParticleTypes.SCULK_SOUL,pPos.x,pPos.y,pPos.z,0,0,0);
                         break;
                     }
                     case SOUL_FIRE:{
@@ -2939,7 +2940,7 @@ public class SpellBlocks {
                         break;
                     }
                     case MUZZLE:{
-                        Vec3d randVel = dir.addRandom(rand,0.08f);
+                        Vec3d randVel = dir.multiply(0.3f).addRandom(rand,0.08f);
                         worldObj.addParticle(ParticleTypes.SOUL_FIRE_FLAME,pPos.x,pPos.y,pPos.z,randVel.x,randVel.y,randVel.z);
                         break;
                     }

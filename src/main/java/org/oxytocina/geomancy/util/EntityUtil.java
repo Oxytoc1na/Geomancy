@@ -151,6 +151,10 @@ public class EntityUtil {
 
     public static Boolean isInRange(LivingEntity le, ServerWorld sw, Vec3d pos, float range) {
         if(le.getWorld()!=sw) return false;
-        return pos.subtract(le.getPos()).length()<=range;
+        return distanceTo(le,pos)<=range;
+    }
+
+    public static double distanceTo(Entity e, Vec3d pos) {
+        return pos.subtract(e.getPos()).length();
     }
 }

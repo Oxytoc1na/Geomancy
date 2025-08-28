@@ -19,6 +19,7 @@ import net.minecraft.util.math.Vec3d;
 import org.joml.Vector2i;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlockEntity;
+import org.oxytocina.geomancy.client.util.CamShakeUtil;
 import org.oxytocina.geomancy.effects.ModStatusEffects;
 import org.oxytocina.geomancy.entity.CasterDelegateEntity;
 import org.oxytocina.geomancy.items.SpellStoringItem;
@@ -147,6 +148,7 @@ public class SpellGrid {
                 default :break;
             }
             context.getWorld().spawnEntity(lightning);
+            CamShakeUtil.cause(context.getWorld(),pos,20,2);
         }
 
         if(context.soulConsumed > 0){
@@ -401,6 +403,12 @@ public class SpellGrid {
         base.setNbt(null);
         base.setCustomName(getName());
         return base;
+    }
+
+    public ItemStack getAsStack(SpellStoringItem storage){
+        ItemStack res = storage.getDefaultStack();
+        SpellStoringItem.writeGrid(res,this);
+        return res;
     }
 
     public static Builder builder(String name){return new Builder(name);}

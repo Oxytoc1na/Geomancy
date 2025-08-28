@@ -59,7 +59,7 @@ public class CastingArmorItem extends ArmorItem implements IMaddeningItem, IStor
 
     private final float maddeningSpeed;
 
-    public int storageSize = StorageItemScreenHandler.STORAGE_DISPLAY_SLOTS;
+    public int storageSize = 0;
     public final TagKey<Item> storableTag;
     public final boolean showContentsInTooltip;
 
@@ -70,9 +70,6 @@ public class CastingArmorItem extends ArmorItem implements IMaddeningItem, IStor
         this.storageSize = storageSize;
         this.storableTag=storableTag;
         this.showContentsInTooltip=showContentsInTooltip;
-
-        // TODO
-        this.storageSize = StorageItemScreenHandler.STORAGE_DISPLAY_SLOTS;
     }
 
     @Override

@@ -239,7 +239,9 @@ public class ModItems {
     public static final SpellStoringItem SPELLSTORAGE_MEDIUM =      register("spellstorage_medium", new SpellStoringItem(new FabricItemSettings().maxCount(8),5,5));
     public static final SpellStoringItem SPELLSTORAGE_LARGE =       register("spellstorage_large",  new SpellStoringItem(new FabricItemSettings().maxCount(8),7,7));
     public static final SpellComponentStoringItem SPELLCOMPONENT =  register("spellcomponent",      new SpellComponentStoringItem(new FabricItemSettings()),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
-    public static final StorageItem COMPONENT_POUCH =               register("component_pouch",     new StorageItem(new FabricItemSettings().maxCount(1),9*3, ModItemTags.COMPONENT_STORING,true),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom));
+    public static final StorageItem COMPONENT_POUCH =               register("component_pouch",     new StorageItem(new FabricItemSettings().maxCount(1),9*6, ModItemTags.COMPONENT_STORING,true),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom));
+
+    public static final PrecompiledSoulCastingItem PRECOMP_CASTER = register("precomp_caster",      new PrecompiledSoulCastingItem(new FabricItemSettings().maxCount(1),2),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
 
     public static final VariableStoringItem VARSTORAGE_SMALL =       register("varstorage_small",  new VariableStoringItem(new FabricItemSettings().maxCount(8),1));
     public static final VariableStoringItem VARSTORAGE_MEDIUM =      register("varstorage_medium", new VariableStoringItem(new FabricItemSettings().maxCount(8),4));
@@ -249,7 +251,7 @@ public class ModItems {
     public static final SoulStorageItem SOULSTORAGE_MEDIUM =      register("soulstorage_medium", new SoulStorageItem(new FabricItemSettings().maxCount(1),400,0.75f));
     public static final SoulStorageItem SOULSTORAGE_LARGE =       register("soulstorage_large",  new SoulStorageItem(new FabricItemSettings().maxCount(1),1600,1f));
 
-    public static final SoulBoreItem SOUL_BORE =      register("soul_bore", new SoulBoreItem(new FabricItemSettings().maxCount(1),9*3));
+    public static final SoulBoreItem SOUL_BORE =      register("soul_bore", new SoulBoreItem(new FabricItemSettings().maxCount(1),9));
 
 
     // geodes

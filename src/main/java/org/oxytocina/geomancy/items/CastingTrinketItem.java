@@ -40,7 +40,7 @@ import static org.oxytocina.geomancy.items.tools.StorageItem.getInventoryStatic;
 
 public class CastingTrinketItem extends TrinketItem implements IStorageItem, ExtendedScreenHandlerFactory, IManaStoringItem, ICustomRarityItem, ICastingTrinket, ISpellSelectorItem {
 
-    public int storageSize = StorageItemScreenHandler.STORAGE_DISPLAY_SLOTS;
+    public int storageSize = 0;
     public final TagKey<Item> storableTag;
     public final boolean showContentsInTooltip;
 
@@ -50,9 +50,6 @@ public class CastingTrinketItem extends TrinketItem implements IStorageItem, Ext
         this.storageSize = storageSize;
         this.storableTag=storableTag;
         this.showContentsInTooltip=showContentsInTooltip;
-
-        // TODO
-        this.storageSize = StorageItemScreenHandler.STORAGE_DISPLAY_SLOTS;
     }
 
     public static void tryCast(ServerPlayerEntity player, int selected) {

@@ -151,6 +151,12 @@ TODO DEBUG
 - make foreach affected by depth
 - pool sent packets to improve performance
 
+TODO structures
+- small crashed ship
+- soulcasting trials
+-- room that asks you to activate buttons behind unbreakable glass
+-- "precompiled" casting items inside autocasters
+
 fixed
 - the fucking mana storage items synchronize very strangely
 - bone meal component fix

@@ -11,6 +11,7 @@ import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
 import org.oxytocina.geomancy.client.toast.GeomancyToast;
 import org.oxytocina.geomancy.client.toast.StellgeKnowledgeToast;
+import org.oxytocina.geomancy.client.util.CamShakeUtil;
 import org.oxytocina.geomancy.networking.ModMessages;
 
 @Environment(EnvType.CLIENT)
@@ -32,7 +33,7 @@ public class KeyInputHandler {
 
     private static void registerKeyInputs(){
         ClientTickEvents.END_CLIENT_TICK.register(minecraftClient -> {
-            if(KEY_CAST_1.wasPressed()) castPressed(0);
+            if(KEY_CAST_1.wasPressed()){ castPressed(0);}
             else if(KEY_CAST_2.wasPressed()) castPressed(1);
             else if(KEY_CAST_3.wasPressed()) castPressed(2);
         });

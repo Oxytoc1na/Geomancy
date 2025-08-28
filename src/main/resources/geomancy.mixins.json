@@ -22,6 +22,7 @@
     "MinecraftClientMixin",
     "client.AbstractClientEntityMixin",
     "client.BlockOverlayRendererMixin",
+    "client.GameRendererMixin",
     "client.InGameHudMixin",
     "client.LivingEntityClientMixin",
     "client.MouseMixin",

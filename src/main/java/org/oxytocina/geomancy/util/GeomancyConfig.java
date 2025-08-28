@@ -34,4 +34,9 @@ public class GeomancyConfig extends ReflectiveConfig {
     @Comment("if set to true, replaces the moving effect of the spellmaker UI with a silly little guy")
     @SerializedName("no_spellmaker_move")
     public final TrackedValue<Boolean> noSpellmakerMove = this.value(true);
+
+    @Comment("changes intensity of camera shake effects")
+    @Comment("valid range: 0-1")
+    @SerializedName("shake_intensity")
+    public final TrackedValue<Float> shakeIntensity = this.value(1f);
 }

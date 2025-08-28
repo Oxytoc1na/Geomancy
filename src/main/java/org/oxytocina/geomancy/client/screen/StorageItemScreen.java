@@ -19,7 +19,9 @@ public class StorageItemScreen extends HandledScreen<StorageItemScreenHandler> {
     private final StorageItemScreenHandler handler;
 
     public final static int bgWidth=176;
-    public final static int bgHeight=168;
+    public final static int bgHeight=91;
+    public final static int bgPadding=4;
+    public final static int bgPlayerInventoryBuffer=91-bgPadding-1;
 
     public StorageItemScreen(StorageItemScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
@@ -37,7 +39,7 @@ public class StorageItemScreen extends HandledScreen<StorageItemScreenHandler> {
     @Override
     protected void init() {
         this.backgroundWidth = bgWidth;
-        this.backgroundHeight = bgHeight;
+        this.backgroundHeight = handler.getScreenHeight();
 
         //titleX = 0;
         //titleY = 0;
@@ -58,7 +60,8 @@ public class StorageItemScreen extends HandledScreen<StorageItemScreenHandler> {
         int x = (width-backgroundWidth)/2;
         int y = (height-backgroundHeight)/2;
 
-        context.drawTexture(TEXTURE,x,y,0,0,bgWidth,bgHeight);
+        context.drawNineSlicedTexture(TEXTURE,x,y,backgroundWidth,backgroundHeight,
+                bgPadding,bgPadding,bgPadding,bgPlayerInventoryBuffer,bgWidth-bgPadding*2,bgHeight-bgPadding-bgPlayerInventoryBuffer,0,0);
 
         if(Optional.of(handler.getOutput()).orElse(ItemStack.EMPTY).isEmpty()){
             context.drawTexture(TEXTURE,x+7,y+17,0,180,162,54);

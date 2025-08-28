@@ -206,7 +206,7 @@ public class SoulCastingItem extends StorageItem implements IManaStoringItem, IS
 
     @Override
     public Text getDisplayName() {
-        return Text.translatable("container.geomancy.spellstorer_block");
+        return getName();
     }
 
     @Override

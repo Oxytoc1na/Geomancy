@@ -33,6 +33,7 @@ public class StorageItemScreenHandler extends ScreenHandler {
 
     //private final Inventory inventory;
     private final Inventory containedItems;
+    public final int rows;
     public List<StorageItemContainedSlot> containedItemSlots;
     private final PropertyDelegate propertyDelegate;
     public final ItemStack parent;
@@ -45,12 +46,11 @@ public class StorageItemScreenHandler extends ScreenHandler {
     private boolean initialized = false;
 
     public static final int STORAGE_DISPLAY_SLOTS_WIDTH = 9;
-    public static final int STORAGE_DISPLAY_SLOTS = STORAGE_DISPLAY_SLOTS_WIDTH*3;
     public static final int STORAGE_DISPLAY_X = 8;
     public static final int STORAGE_DISPLAY_Y = 18;
 
     public static final int INVENTORY_DISPLAY_X = 8;
-    public static final int INVENTORY_DISPLAY_Y = 86;
+    public static final int INVENTORY_DISPLAY_Y = 8;
 
     public static final int HOTBAR_DISPLAY_Y = 144;
 
@@ -75,8 +75,7 @@ public class StorageItemScreenHandler extends ScreenHandler {
         this.parentSlot = playerInventory.getSlotWithStack(parent);
         this.storableKey=storableKey;
         containedItems = ((IStorageItem)parent.getItem()).getInventory(parent);
-
-        checkSize(getInventory(), ((IStorageItem)parent.getItem()).getStorageSize(parent));
+        rows = Math.round((float)Math.ceil(containedItems.size()/(float)STORAGE_DISPLAY_SLOTS_WIDTH));
 
         addPlayerHotbar(playerInventory);
         addPlayerInventory(playerInventory);
@@ -97,7 +96,7 @@ public class StorageItemScreenHandler extends ScreenHandler {
 
     public void rebuildSlots(){
         if(containedItemSlots ==null){
-            containedItemSlots = addInventory(containedItems,0,STORAGE_DISPLAY_SLOTS,STORAGE_DISPLAY_SLOTS_WIDTH, STORAGE_DISPLAY_X, STORAGE_DISPLAY_Y);
+            containedItemSlots = addInventory(containedItems,0,containedItems.size(),STORAGE_DISPLAY_SLOTS_WIDTH, STORAGE_DISPLAY_X, STORAGE_DISPLAY_Y);
         }
     }
 
@@ -143,14 +142,22 @@ public class StorageItemScreenHandler extends ScreenHandler {
     private void addPlayerInventory(PlayerInventory playerInventory) {
         for (int i = 0; i < 3; ++i) {
             for (int l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, INVENTORY_DISPLAY_X + l * 18, INVENTORY_DISPLAY_Y + i * 18));
+                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, INVENTORY_DISPLAY_X + l * 18, getInventoryOffsetY() + i * 18));
             }
         }
     }
 
+    private int getInventoryOffsetY(){
+        return getScreenHeight()-82;
+    }
+
+    public int getScreenHeight(){
+        return INVENTORY_DISPLAY_Y + (rows*18) + 20 + (18*4+4);
+    }
+
     private void addPlayerHotbar(PlayerInventory playerInventory) {
         for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(playerInventory, i, INVENTORY_DISPLAY_X + i * 18, HOTBAR_DISPLAY_Y));
+            this.addSlot(new Slot(playerInventory, i, INVENTORY_DISPLAY_X + i * 18, getInventoryOffsetY()+18*3+4));
         }
     }
 

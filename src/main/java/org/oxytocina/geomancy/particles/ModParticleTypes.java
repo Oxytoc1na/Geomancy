@@ -17,6 +17,8 @@ public class ModParticleTypes {
     public static DefaultParticleType FALLING_MOLTEN_GOLD = register("falling_molten_gold", false);
     public static DefaultParticleType LANDING_MOLTEN_GOLD = register("landing_molten_gold", false);
 
+    public static DefaultParticleType CASTER_MUZZLE = register("caster_muzzle", false);
+
     // Simple particles
     private static DefaultParticleType register(String name, boolean alwaysShow) {
         return Registry.register(Registries.PARTICLE_TYPE, Geomancy.locate(name), FabricParticleTypes.simple(alwaysShow));

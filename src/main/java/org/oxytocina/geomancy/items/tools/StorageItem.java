@@ -33,7 +33,7 @@ import java.util.List;
 
 public class StorageItem extends Item implements IStorageItem, ExtendedScreenHandlerFactory {
 
-    public int storageSize = StorageItemScreenHandler.STORAGE_DISPLAY_SLOTS;
+    public int storageSize = 0;
     public final TagKey<Item> storableTag;
     public final boolean showContentsInTooltip;
 
@@ -42,9 +42,6 @@ public class StorageItem extends Item implements IStorageItem, ExtendedScreenHan
         this.storageSize = storageSize;
         this.storableTag=storableTag;
         this.showContentsInTooltip=showContentsInTooltip;
-
-        // TODO
-        this.storageSize = StorageItemScreenHandler.STORAGE_DISPLAY_SLOTS;
     }
 
     @Override
