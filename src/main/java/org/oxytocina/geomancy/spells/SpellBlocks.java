@@ -36,6 +36,7 @@ import net.minecraft.util.math.random.LocalRandom;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.*;
 import org.oxytocina.geomancy.blocks.ModBlocks;
+import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlock;
 import org.oxytocina.geomancy.client.GeomancyClient;
 import org.oxytocina.geomancy.inventories.ImplementedInventory;
 import org.oxytocina.geomancy.items.ISpellSelectorItem;
@@ -1457,7 +1458,7 @@ public class SpellBlocks {
 
                             final ItemStack s2 = stack.copy();
 
-                            Predicate<BlockState> minableBlocksPredicate = s -> !s.isToolRequired() || s2.isSuitableFor(s);
+                            Predicate<BlockState> minableBlocksPredicate = s -> s.getBlock().getHardness()>=0&&(!s.isToolRequired() || s2.isSuitableFor(s));
 
                             if (!minableBlocksPredicate.test(targetState)) {
                                 // couldnt mine
@@ -1787,7 +1788,7 @@ public class SpellBlocks {
                                 stack.addEnchantment(Enchantments.SILK_TOUCH,1);
 
                             final ItemStack s2 = stack.copy();
-                            Predicate<BlockState> minableBlocksPredicate = s -> !s.isToolRequired() || s2.isSuitableFor(s);
+                            Predicate<BlockState> minableBlocksPredicate = s -> s.getBlock().getHardness()>=0&&(!s.isToolRequired() || s2.isSuitableFor(s));
                             if (!minableBlocksPredicate.test(targetState)) {
                                 // couldnt mine
                                 tryLogDebugNotbreakable(comp,targetState);
@@ -2154,10 +2155,11 @@ public class SpellBlocks {
                                 world.updateNeighborsAlways(blockPos.down(), drb);
                                 world.scheduleBlockTick(blockPos, drb, 20);
                             }
-                            // trigger dispenser, dropper, observers
+                            // trigger dispenser, dropper, observers, autocasters
                             else if(
                                     targetBlock instanceof DispenserBlock
                                             || targetBlock instanceof ObserverBlock
+                                            || targetBlock instanceof AutocasterBlock
                             ){
                                 world.scheduleBlockTick(blockPos, targetBlock, 0);
                             }

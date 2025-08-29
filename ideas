@@ -1,36 +1,22 @@
 MODIFIERS
 
 - limited to 1 per item
+-- casters:
+--- long-ranged (greatly reduced cost per distance)
+---
 
 MINERALS
 
-x Lead
 -- lead cleanse drink item
-x Octangulite
--- alien, exclusively found in ruined alien structures
--- in the form of scrap, then refined
--- basically magical tungsten
+- Octangulite
 -- properties arent internally consistent (some hard, some soft, some brittle, some dusty, all sticking together, undulating between its states)
--- incredibly difficult to work with, very many gem slots
--- magical abilities, channels soul energy
 -- ore more common in soul sand valley biome
--- lebendes zeug in der umgebung erhöht vpb
 -- octangulite item sprite changes based on position (dust, gem, ball)
 -- madness gated dangeous augmentation
 --- implant octangulite
 --- soldering machine?????????
 
 JEWELRY
-
-- materials
--- iron: 1 base gem slot
-- rings
--- +0 base gem slot
-- necklace
--- +0 base gem slots
-- pendant
--- +1 base gem slots
--- increases effectiveness of other gems of the same type as the inserted ones
 
 - infinity glove mit 5 gem slots
 -- probability glove
@@ -49,15 +35,6 @@ SMITHING
 - skillful enchantment
 
 ARTIFACTS
-
-- Smithing
-- Air
--- double jump
-
--- aliens
---- stellge
---- reverse engineering crashed and abandoned structures
-
 -- dwarf magic
 --- magical alloys
 --- channeling light through quartz (spectral lens)
@@ -67,6 +44,7 @@ ARTIFACTS
 + stone: regenerate mana faster around stone
 + deepslate: regenerate mana faster the deeper you are
 + magma: fire resistance
++ smithing: higher skill
 --- runic crafting
 ---- multiblock for enchanting things with runes
 ---- smithing levels to increase speed and proficiency
@@ -74,7 +52,6 @@ ARTIFACTS
 --- bimmstone
 --- grimmstone
 --- slag
---- mithril anvil
 --- emerald decoartion
 
 MODONOMICON
@@ -145,6 +122,7 @@ TODO textures
 - autocaster
 - glove
 - precomp machine
+- stellge caster
 
 TODO ITEMS
 - hammers
@@ -152,6 +130,7 @@ TODO ITEMS
 TODO DEBUG
 - make foreach affected by depth
 - pool sent packets to improve performance
+- stellge caster direction
 
 TODO ADVANCEMENTS
 - casting spells
@@ -166,4 +145,38 @@ TODO structures
 -- room that asks you to activate buttons behind unbreakable glass
 -- "precompiled" casting items inside autocasters
 
+TODO TESTING
+- transmute
+- logistics
+
 fixed
+
+RITUALISTIC FORGE
+- activated with the activate spell component
+- takes pedestals of mana-storers and ingredients
+- requires rune blocks
+-- may be dwarven (theme: stability)
+-- may be stellgian (theme: cost reduction & bonuses)
+- for high level items such as
+-- large spell gloves, spell cradle, soul storage, and varpot
+-- soul bore
+-- caster core
+-- casting armor
+
+PROGRESSION
+
+start
+-> new ores
+-> smithing
+-> surface structures
+-> octangula
+-> spell components & spellmaker
+-> apprentice spellglove
+-> octangulite
+-> smithing the components necessary for a ritualistic forge
+-> smithing a basic spellglove
+-> activate component unlocked
+
+ender dragon defeated
+-> dimhop component unlocked
+-> null dimension unlocked

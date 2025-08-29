@@ -241,7 +241,7 @@ public class ModItems {
     public static final SpellComponentStoringItem SPELLCOMPONENT =  register("spellcomponent",      new SpellComponentStoringItem(new FabricItemSettings()),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
     public static final StorageItem COMPONENT_POUCH =               register("component_pouch",     new StorageItem(new FabricItemSettings().maxCount(1),9*6, ModItemTags.COMPONENT_STORING,true),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom));
 
-    public static final PrecompiledSoulCastingItem PRECOMP_CASTER = register("precomp_caster",      new PrecompiledSoulCastingItem(new FabricItemSettings().maxCount(1),2),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
+    public static final PrecompiledSoulCastingItem PRECOMP_CASTER = register("precomp_caster",      new PrecompiledSoulCastingItem(new FabricItemSettings().maxCount(1),4),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
 
     public static final VariableStoringItem VARSTORAGE_SMALL =       register("varstorage_small",  new VariableStoringItem(new FabricItemSettings().maxCount(8),1));
     public static final VariableStoringItem VARSTORAGE_MEDIUM =      register("varstorage_medium", new VariableStoringItem(new FabricItemSettings().maxCount(8),4));
