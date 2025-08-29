@@ -330,6 +330,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     AddGenericSpellcomponentRecipe(SpellBlocks.CASTER_SLOT          ,Items.CHEST                ,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.BLOCKPOS_CASTER      ,Items.STONE                ,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.POS_CASTER           ,Items.OAK_PRESSURE_PLATE   ,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.POS_MUZZLE           ,Items.DISPENSER            ,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.EYEPOS_CASTER        ,Items.SPIDER_EYE           ,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.DIR_CASTER           ,Items.ARROW                ,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.GET_WEATHER          ,Items.LIGHTNING_ROD        ,baseIngot);

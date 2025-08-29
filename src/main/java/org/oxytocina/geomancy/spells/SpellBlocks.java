@@ -71,6 +71,7 @@ public class SpellBlocks {
     public static final SpellBlock BLOCKPOS_CASTER;
     public static final SpellBlock POS_CASTER;
     public static final SpellBlock EYEPOS_CASTER;
+    public static final SpellBlock POS_MUZZLE;
     public static final SpellBlock DIR_CASTER;
     public static final SpellBlock CASTER_SLOT;
     public static final SpellBlock GET_WEATHER;
@@ -289,6 +290,15 @@ public class SpellBlocks {
                     .func((component, stringSpellSignalHashMap) -> {
                         SpellBlockResult res = new SpellBlockResult();
                         res.add("position",component.context.getOriginPos());
+                        return res;
+                    })
+                    .category(cat).build());
+
+            POS_MUZZLE = register(SpellBlock.Builder.create("pos_muzzle")
+                    .outputs(SpellSignal.createVector().named("position"))
+                    .func((component, stringSpellSignalHashMap) -> {
+                        SpellBlockResult res = new SpellBlockResult();
+                        res.add("position",component.context.getMuzzlePos());
                         return res;
                     })
                     .category(cat).build());

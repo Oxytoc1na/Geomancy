@@ -875,8 +875,8 @@ public class SpellComponent {
 
             protected SideConfig build(SpellComponent comp,SideConfig.Mode[] modes){
                 var res = new SideConfig(comp,getDirString(dir),name,modes);
-                res.sanityCheckVarName(false);
                 if(mode!=null)res.setMode(mode);
+                res.sanityCheckVarName(false);
                 return res;
             }
         }

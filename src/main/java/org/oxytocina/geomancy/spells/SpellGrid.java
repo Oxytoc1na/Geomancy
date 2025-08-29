@@ -159,7 +159,8 @@ public class SpellGrid {
             switch(context.sourceType)
             {
                 case Caster :
-                    ManaUtil.syncMana((PlayerEntity) casterEntity); break;
+                    if(casterEntity instanceof PlayerEntity pe)
+                        ManaUtil.syncMana(pe); break;
                 case Block:
                     break;
             }

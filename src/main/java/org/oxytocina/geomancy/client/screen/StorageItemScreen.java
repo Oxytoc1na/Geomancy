@@ -66,8 +66,8 @@ public class StorageItemScreen extends HandledScreen<StorageItemScreenHandler> {
         }
 
         // render slot bgs
-        for(var slot : handler.slots){
-            context.drawTexture(SLOT_BG,slot.x,slot.y,0,0,18,18);
+        for(var slot : handler.containedItemSlots){
+            context.drawTexture(SLOT_BG,x+slot.x-1,y+slot.y-1,0,0,18,18,18,18);
         }
 
     }

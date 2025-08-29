@@ -123,8 +123,6 @@ TODO EFFECT BLOCKS
 -- if this gets added, it's got to be getters only
 --- allowing the user to set NBT is an easy way to get literally any item in the game
 - collect items on ground
-- logistics
--- transfer items to and from storage
 
 autocaster
 - set block redstone level
@@ -157,15 +155,7 @@ TODO DEBUG
 
 TODO ADVANCEMENTS
 - casting spells
--- ignition (use ignite)
--- liftoff (use push with y>=1)
--- ambition (timeout a spell)
--- brazilian (use push on yourself in a leg spell while airborne)
--- celeste (use push on yourself in a hotkey spell)
--- long arms (use break or place on a position outside of regular reach)
--- FTL Transmission (use activate on a position >1000 blocks away)
--- there's bones in my magic (use grow)
--- Fireball! (cast a spell named "fireball" that spawns a fireball by saying its name in chat)
+-- De-consciousness (cast a spell that costs at least 10000 soul)
 - obtaining cool items
 -- caster
 - sweaty (hold a spellglove in your main hand for 10 minutes)
@@ -177,5 +167,3 @@ TODO structures
 -- "precompiled" casting items inside autocasters
 
 fixed
-- the fucking mana storage items synchronize very strangely
-- bone meal component fix

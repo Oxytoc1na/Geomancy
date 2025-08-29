@@ -106,6 +106,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("caster_slot","Caster Slot","returns the slot ID the caster item is in");
             addSpell("blockpos_caster","Caster Block Pos.","returns the block position of the casting block");
             addSpell("pos_caster","Caster Pos.","returns the position of the casting entity or block");
+            addSpell("pos_muzzle","Muzzle Pos.","returns the muzzle position of the casting entity or block");
             addSpell("eyepos_caster","Caster Eye Pos.","returns the eye position of the casting entity or block");
             addSpell("dir_caster","Caster Dir.","returns the facing direction of the casting entity or block");
             addSpell("get_weather","Weather","returns 1 if raining, 2 if thundering, and 0 otherwise");

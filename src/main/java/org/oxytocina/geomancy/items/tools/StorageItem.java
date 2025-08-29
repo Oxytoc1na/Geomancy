@@ -102,7 +102,7 @@ public class StorageItem extends Item implements IStorageItem, ExtendedScreenHan
 
     @Override
     public Text getDisplayName() {
-        return Text.empty();
+        return getName();
     }
 
     @Override
