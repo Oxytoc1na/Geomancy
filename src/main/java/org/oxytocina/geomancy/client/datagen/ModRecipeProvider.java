@@ -334,8 +334,6 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     AddGenericSpellcomponentRecipe(SpellBlocks.DIR_CASTER           ,Items.ARROW                ,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.GET_WEATHER          ,Items.LIGHTNING_ROD        ,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.GET_TIME             ,Items.CLOCK                ,baseIngot);
-                    AddGenericSpellcomponentRecipe(SpellBlocks.ACTIVATE             ,Items.OAK_BUTTON           ,baseIngot);
-                    AddGenericSpellcomponentRecipe(SpellBlocks.SILENT               ,Items.WHITE_WOOL           ,baseIngot);
                 }
 
                 // arithmetic
@@ -404,6 +402,11 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     AddGenericSpellcomponentRecipe(SpellBlocks.SET_WEATHER,Items.CAULDRON,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.GROW,Items.BONE_BLOCK,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.TRANSMUTE_ITEM,Items.EXPERIENCE_BOTTLE,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.STORE,Items.HOPPER,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.TAKE,Items.DROPPER,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.TRANSFER,Items.HOPPER_MINECART,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.ACTIVATE,Items.OAK_BUTTON,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.SILENT  ,Items.WHITE_WOOL,baseIngot);
                 }
 
                 // reference

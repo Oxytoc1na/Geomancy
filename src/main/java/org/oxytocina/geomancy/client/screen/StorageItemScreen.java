@@ -15,6 +15,7 @@ import java.util.Optional;
 public class StorageItemScreen extends HandledScreen<StorageItemScreenHandler> {
 
     private static final Identifier TEXTURE = new Identifier(Geomancy.MOD_ID,"textures/gui/storageitem.png");
+    private static final Identifier SLOT_BG = new Identifier(Geomancy.MOD_ID,"textures/gui/slot.png");
 
     private final StorageItemScreenHandler handler;
 
@@ -41,10 +42,7 @@ public class StorageItemScreen extends HandledScreen<StorageItemScreenHandler> {
         this.backgroundWidth = bgWidth;
         this.backgroundHeight = handler.getScreenHeight();
 
-        //titleX = 0;
-        //titleY = 0;
-        //playerInventoryTitleX = 0;
-        this.playerInventoryTitleY = -1000;//backgroundHeight - 94;
+        this.playerInventoryTitleY = this.backgroundHeight - 94;
 
         super.init();
 
@@ -61,10 +59,15 @@ public class StorageItemScreen extends HandledScreen<StorageItemScreenHandler> {
         int y = (height-backgroundHeight)/2;
 
         context.drawNineSlicedTexture(TEXTURE,x,y,backgroundWidth,backgroundHeight,
-                bgPadding,bgPadding,bgPadding,bgPlayerInventoryBuffer,bgWidth-bgPadding*2,bgHeight-bgPadding-bgPlayerInventoryBuffer,0,0);
+                bgPadding,bgPadding,bgPadding,bgPlayerInventoryBuffer,bgWidth,bgHeight,0,0);
 
         if(Optional.of(handler.getOutput()).orElse(ItemStack.EMPTY).isEmpty()){
             context.drawTexture(TEXTURE,x+7,y+17,0,180,162,54);
+        }
+
+        // render slot bgs
+        for(var slot : handler.slots){
+            context.drawTexture(SLOT_BG,slot.x,slot.y,0,0,18,18);
         }
 
     }

@@ -14,6 +14,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2i;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.util.ByteUtil;
@@ -52,7 +53,7 @@ public class SpellComponent {
         this.configuredParameters=configuredParameters;
     }
 
-    public World world(){
+    public @NotNull World world(){
         return context.getWorld();
     }
 
@@ -799,7 +800,7 @@ public class SpellComponent {
 
     public static Builder builder(SpellBlock func){return new Builder(func);}
     public static Builder.ConfBuilder confBuilder(String dir,String name){return new Builder.ConfBuilder(dir,name);}
-    public static Builder.ConfBuilder confBuilder(String dir){return new Builder.ConfBuilder(dir,null);}
+    public static Builder.ConfBuilder confBuilder(String dir){return new Builder.ConfBuilder(dir,"");}
     public static class Builder{
         public SpellBlock func;
         public Vector2i pos;
@@ -873,7 +874,7 @@ public class SpellComponent {
             }
 
             protected SideConfig build(SpellComponent comp,SideConfig.Mode[] modes){
-                var res = new SideConfig(comp,getDirString(dir),"",modes);
+                var res = new SideConfig(comp,getDirString(dir),name,modes);
                 res.sanityCheckVarName(false);
                 if(mode!=null)res.setMode(mode);
                 return res;

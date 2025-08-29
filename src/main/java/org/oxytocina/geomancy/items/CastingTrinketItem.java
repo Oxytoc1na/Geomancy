@@ -83,7 +83,8 @@ public class CastingTrinketItem extends TrinketItem implements IStorageItem, Ext
     }
 
     public void cast(ItemStack key, LivingEntity user, SpellBlockArgs args){
-        int index = getSelectedSpellIndex(key);
+        int index = getSpellIndexOfSpell(key,"auto");
+        if(index<0) return;
         var spells = getCastableSpellItems(key);
         if(spells.isEmpty()) return;
         ItemStack spellContainer = spells.get(index);
@@ -235,24 +236,42 @@ public class CastingTrinketItem extends TrinketItem implements IStorageItem, Ext
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         super.appendTooltip(stack, world, tooltip, context);
 
-        var spells = getCastableSpellItems(stack);
+        var spells = getSpellItems(stack, this::isCastable);
         if(!spells.isEmpty())
         {
-            var spell = spells.get(0);
-            var grid = SpellStoringItem.readGrid(spell);
             tooltip.add(getTriggerText().formatted(Formatting.DARK_GRAY));
-            tooltip.add(Text.translatable("geomancy.caster.willcast",SpellGrid.getName(grid)).formatted(Formatting.DARK_GRAY));
+            tooltip.add(getTriggerText2().formatted(Formatting.DARK_GRAY));
+
+            for(var spell : spells){
+                var grid = SpellStoringItem.readGrid(spell);
+                String selectedString = "  ";
+                tooltip.add(
+                        Text.literal(selectedString).formatted(Formatting.DARK_AQUA).append(
+                                grid==null?Text.translatable("geomancy.spellstorage.empty").formatted(Formatting.DARK_GRAY)
+                                        :grid.name==""?Text.translatable("geomancy.spellstorage.unnamed").formatted(Formatting.GRAY)
+                                        : Text.literal(grid.name).formatted(Formatting.GRAY)));
+            }
         }
         else{
             tooltip.add(Text.translatable("geomancy.caster.emptyhint1").formatted(Formatting.DARK_GRAY));
             tooltip.add(getTriggerText().formatted(Formatting.DARK_GRAY));
+            tooltip.add(getTriggerText2().formatted(Formatting.DARK_GRAY));
             tooltip.add(Text.translatable("geomancy.caster.emptyhint4").formatted(Formatting.DARK_GRAY));
         }
 
     }
 
+    public static List<String> castableNames = List.of("auto","1","2","3","4","5","6","7","8","9");
+    public boolean isCastable(SpellGrid g){
+        return castableNames.contains(g.name);
+    }
+
     public MutableText getTriggerText(){
         return Text.translatable("geomancy.caster.trigger.tick");
+    }
+
+    public MutableText getTriggerText2(){
+        return Text.translatable("geomancy.caster.trigger.hotkey");
     }
 
     @Override

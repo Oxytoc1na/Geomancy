@@ -171,6 +171,9 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("grow","Grow","accelerates growth at a target position");
             addSpell("silent","Mute","makes spell execution silent");
             addSpell("transmute_item","Transmute Item","turns items into other items by infusing them with souls");
+            addSpell("store","Store Item","puts an item held by the caster into a storage block");
+            addSpell("take","Take Item","gives an item from a storage block to the caster");
+            addSpell("transfer","Transfer Item","transfers an item from one storage block to another");
             // reference
             addSpell("action","Action","calls another installed spell");
             addSpell("provider","Provider","automatically returns the result of a spell");
@@ -209,7 +212,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
 
             add("MODID.caster.nospells","No spells installed");
-            add("MODID.caster.emptyhint1","Shift + use to insert spells");
+            add("MODID.caster.emptyhint1","Shift + use to insert and select spells");
             add("MODID.caster.emptyhint2","Shift + scroll to select spell");
             add("MODID.caster.emptyhint3","Use to cast selected spell");
             add("MODID.caster.emptyhint4","Spells may need souls to cast");
@@ -217,7 +220,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.caster.trigger.gethit","Get hit to cast first spell");
             add("MODID.caster.trigger.hit","Attack to cast first spell");
             add("MODID.caster.trigger.jump","Jump to cast first spell");
-            add("MODID.caster.trigger.tick","Casts first spell 20 times a second");
+            add("MODID.caster.trigger.tick","Casts spell named \"auto\" 20 times a second");
+            add("MODID.caster.trigger.hotkey","Casts spells named 1-9 by hotkey");
             add("MODID.caster.trigger.chat","Say something to cast first spell");
             add("MODID.caster.willcast","Will cast: %1$s");
         }

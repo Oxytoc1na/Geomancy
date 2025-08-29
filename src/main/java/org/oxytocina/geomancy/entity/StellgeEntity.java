@@ -357,6 +357,7 @@ public abstract class StellgeEntity extends HostileEntity implements Angerable, 
         this.setCanPickUpLoot(random.nextFloat() < 0.55F * f);
 
         this.applyAttributeModifiers(f);
+        initEquipment(world.getRandom(),difficulty);
         return entityData;
     }
 

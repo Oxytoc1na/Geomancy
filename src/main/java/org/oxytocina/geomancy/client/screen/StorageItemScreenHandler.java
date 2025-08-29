@@ -147,12 +147,12 @@ public class StorageItemScreenHandler extends ScreenHandler {
         }
     }
 
-    private int getInventoryOffsetY(){
+    public int getInventoryOffsetY(){
         return getScreenHeight()-82;
     }
 
     public int getScreenHeight(){
-        return INVENTORY_DISPLAY_Y + (rows*18) + 20 + (18*4+4);
+        return INVENTORY_DISPLAY_Y + (rows*18) + 20+14 + (18*4+4);
     }
 
     private void addPlayerHotbar(PlayerInventory playerInventory) {

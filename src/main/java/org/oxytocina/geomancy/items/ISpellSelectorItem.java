@@ -8,6 +8,7 @@ import org.oxytocina.geomancy.spells.SpellGrid;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.function.Function;
 
 public interface ISpellSelectorItem {
     default boolean setSelectedSpell(ItemStack stack, String spellName){
@@ -30,7 +31,7 @@ public interface ISpellSelectorItem {
         return -1;
     }
 
-    default ArrayList<ItemStack> getCastableSpellItems(ItemStack stack){
+    default ArrayList<ItemStack> getSpellItems(ItemStack stack, Function<SpellGrid,Boolean> predicate){
         if(!(stack.getItem() instanceof ISpellSelectorItem)) return null;
 
         ArrayList<ItemStack> res = new ArrayList<>();
@@ -38,10 +39,14 @@ public interface ISpellSelectorItem {
             var spell = getStack(stack,i);
             if(!(spell.getItem() instanceof SpellStoringItem)) continue;
             var grid = SpellStoringItem.readGrid(spell);
-            if(grid==null||grid.library) continue;
+            if(grid==null||!predicate.apply(grid)) continue;
             res.add(spell);
         }
         return res;
+    }
+
+    default ArrayList<ItemStack> getCastableSpellItems(ItemStack stack){
+        return getSpellItems(stack,g->!g.library);
     }
 
     ItemStack getStack(ItemStack storage, int index);
