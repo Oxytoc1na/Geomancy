@@ -124,6 +124,7 @@ public class ModColorizationHandler {
         addOctanguliteToolItem(ModItems.OCTANGULITE_PICKAXE);
         addOctanguliteToolItem(ModItems.OCTANGULITE_AXE);
         addOctanguliteToolItem(ModItems.OCTANGULITE_HOE);
+        addOctanguliteToolItem(ModItems.OCTANGULITE_HAMMER);
         addOctanguliteArmorItem(ModItems.OCTANGULITE_BOOTS);
         addOctanguliteArmorItem(ModItems.OCTANGULITE_LEGGINGS);
         addOctanguliteArmorItem(ModItems.OCTANGULITE_CHESTPLATE);

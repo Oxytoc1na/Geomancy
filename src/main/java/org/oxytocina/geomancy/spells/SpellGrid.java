@@ -164,6 +164,10 @@ public class SpellGrid {
                 case Block:
                     break;
             }
+
+            // deconsciousness advancements
+            if(context.soulConsumed>=10000)
+                SpellBlocks.tryUnlockSpellAdvancement(context.caster,"deconsciousness");
         }
         SpellBlocks.playCastSound(context);
         SpellBlocks.spawnMuzzleParticles(context);
@@ -417,6 +421,22 @@ public class SpellGrid {
     }
 
     public static Builder builder(String name){return new Builder(name);}
+
+    public int getSlotCount(){
+        int res = height;
+        // height 3: 3 + 2*2
+        // height 5: 5 + 2*4 + 2*3
+        // height 7: 7 + 2*6 + 2*5 + 2*4
+        for (int i = 0; i < height/2; i++) {
+            res+=2*(height-i-1);
+        }
+        return res;
+    }
+
+    public float getFilledFraction() {
+        return components.size()/(float)getSlotCount();
+    }
+
     public static class Builder{
         public String name = "";
         public int width = 3;

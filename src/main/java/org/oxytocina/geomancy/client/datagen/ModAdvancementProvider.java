@@ -123,6 +123,8 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         Advancement spell_deception =   AddSimpleAdvancement(Items.NOTE_BLOCK,"deception","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
         Advancement spell_medic =       AddSimpleAdvancement(Items.ENCHANTED_GOLDEN_APPLE,"medic","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
         Advancement spell_ulterior_motives = AddSimpleAdvancement(Items.WRITABLE_BOOK,"ulterior_motives","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_build_big =   AddSimpleAdvancement(Items.CHEST,"build_big","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_deconsciousness =   AddSimpleAdvancement(Items.SOUL_CAMPFIRE,"deconsciousness","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
     }
     private Advancement AddGetItemAdvancement(ItemConvertible item,String name, ItemConvertible conditionItem, String category, AdvancementFrame frame, boolean announce, boolean hidden, Advancement parent){
         return AddGetItemAdvancement(item,name,new Item[]{conditionItem.asItem()},category,frame,announce,hidden,parent);

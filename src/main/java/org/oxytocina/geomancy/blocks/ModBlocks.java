@@ -19,9 +19,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import org.jetbrains.annotations.NotNull;
 import org.oxytocina.geomancy.Geomancy;
-import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlock;
-import org.oxytocina.geomancy.blocks.blockEntities.SmitheryBlock;
-import org.oxytocina.geomancy.blocks.blockEntities.SpellmakerBlock;
+import org.oxytocina.geomancy.blocks.blockEntities.*;
 import org.oxytocina.geomancy.blocks.fluids.GoldFluidBlock;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 import org.oxytocina.geomancy.blocks.fluids.MoltenGoldCauldronBlock;
@@ -126,9 +124,6 @@ public class ModBlocks {
     public static final Block TOURMALINE_BLOCK = register("tourmaline_block", Block::new,AbstractBlock.Settings.create().mapColor(MapColor.BRIGHT_RED).instrument(Instrument.BELL).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.METAL),ExtraBlockSettings.create().mineableByPickaxe().miningLevel(1),new FabricItemSettings().rarity(Rarity.COMMON).fireproof());
     public static final Block AXINITE_BLOCK = register("axinite_block", Block::new,AbstractBlock.Settings.create().mapColor(MapColor.TERRACOTTA_BROWN).instrument(Instrument.BELL).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.METAL),ExtraBlockSettings.create().mineableByPickaxe().miningLevel(1),new FabricItemSettings().rarity(Rarity.COMMON).fireproof());
 
-    // mithril anvil
-    //public static final Block MITHRIL_ANVIL = register("mithril_anvil",AnvilBlock::new,AbstractBlock.Settings.create().mapColor(MapColor.IRON_GRAY).requiresTool().strength(5.0F, 1200.0F).sounds(BlockSoundGroup.ANVIL).pistonBehavior(PistonBehavior.BLOCK),ExtraBlockSettings.create().mineableByPickaxe().notSimpleCube(),new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof());
-
     // wood
     public static final OctangulitePillarBlock SOUL_OAK_LOG = register("soul_oak_log",(s)->new OctangulitePillarBlock(s,0.3f),AbstractBlock.Settings.create().mapColor((state) -> state.get(PillarBlock.AXIS) == Direction.Axis.Y ? MapColor.OAK_TAN : MapColor.SPRUCE_BROWN).instrument(Instrument.BASS).strength(2.0F).sounds(BlockSoundGroup.WOOD).burnable(),ExtraBlockSettings.create().noModels().mineableByAxe(), new Item.Settings());
     public static final OctangulitePillarBlock STRIPPED_SOUL_OAK_LOG = register("stripped_soul_oak_log",(s)->new OctangulitePillarBlock(s,0.3f),AbstractBlock.Settings.create().mapColor((state) -> state.get(PillarBlock.AXIS) == Direction.Axis.Y ? MapColor.OAK_TAN : MapColor.SPRUCE_BROWN).instrument(Instrument.BASS).strength(2.0F).sounds(BlockSoundGroup.WOOD).burnable(),ExtraBlockSettings.create().tintedModels().mineableByAxe(), new Item.Settings());
@@ -191,6 +186,8 @@ public class ModBlocks {
     public static final SmitheryBlock SMITHERY = register("smithery_block", SmitheryBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe());
     public static final SpellmakerBlock SPELLMAKER = register("spellmaker_block", SpellmakerBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe());
     public static final AutocasterBlock AUTOCASTER = register("autocaster", AutocasterBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe());
+    public static final SoulForgeBlock SOUL_FORGE = register("soul_forge", SoulForgeBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe());
+    public static final PedestalBlock PEDESTAL = register("pedestal", PedestalBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe());
 
     // fluids
     private static AbstractBlock.Settings fluid(MapColor mapColor) {

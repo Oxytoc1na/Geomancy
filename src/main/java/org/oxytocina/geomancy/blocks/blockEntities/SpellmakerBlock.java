@@ -10,6 +10,7 @@ import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
@@ -45,7 +46,7 @@ public class SpellmakerBlock extends BlockWithEntity implements BlockEntityProvi
         if(state.getBlock() != newState.getBlock()){
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if(blockEntity instanceof SpellmakerBlockEntity spellmaker){
-                //ItemScatterer.spawn(world, pos, spellmaker.inputInventory());
+                ItemScatterer.spawn(world, pos, spellmaker.getItems());
                 world.updateComparators(pos,this);
             }
             super.onStateReplaced(state,world,pos,newState,moved);

@@ -42,12 +42,12 @@ public class TransmuteRecipeJsonBuilder {
     }
 
     public static TransmuteRecipeJsonBuilder create(SmithingIngredient input, Item output, int count, float cost, RecipeCategory category, Identifier requiredAdvancement) {
-        return new TransmuteRecipeJsonBuilder(ModRecipeTypes.SMITHING_SERIALIZER, category, input, new ItemStack(output),
+        return new TransmuteRecipeJsonBuilder(ModRecipeTypes.TRANSMUTE_SERIALIZER, category, input, new ItemStack(output),
                 count,cost, requiredAdvancement);
     }
 
     public static TransmuteRecipeJsonBuilder create(SmithingIngredient input, ItemStack output, int count, float cost, RecipeCategory category, Identifier requiredAdvancement) {
-        return new TransmuteRecipeJsonBuilder(ModRecipeTypes.SMITHING_SERIALIZER, category, input, output,
+        return new TransmuteRecipeJsonBuilder(ModRecipeTypes.TRANSMUTE_SERIALIZER, category, input, output,
                 count,cost, requiredAdvancement);
     }
 

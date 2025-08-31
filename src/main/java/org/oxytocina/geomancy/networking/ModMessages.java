@@ -9,7 +9,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
-import org.oxytocina.geomancy.entity.ManaStoringItemData;
 import org.oxytocina.geomancy.entity.PlayerData;
 import org.oxytocina.geomancy.entity.StateSaverAndLoader;
 import org.oxytocina.geomancy.networking.packet.C2S.*;

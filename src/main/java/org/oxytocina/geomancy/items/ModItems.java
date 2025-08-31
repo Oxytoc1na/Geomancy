@@ -14,8 +14,6 @@ import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -219,7 +217,7 @@ public class ModItems {
 
     public static final HammerItem IRON_HAMMER = register("iron_hammer",new HammerItem(5,-3.3f,ToolMaterials.IRON, ModBlockTags.HAMMER_MINEABLES, new FabricItemSettings(),
             10,1,10,20),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Handheld));
-    public static final HammerItem GOLD_HAMMER = register("gold_hammer",new HammerItem(5,-3.3f,ToolMaterials.GOLD, ModBlockTags.HAMMER_MINEABLES,new FabricItemSettings(),
+    public static final HammerItem GOLDEN_HAMMER = register("golden_hammer",new HammerItem(5,-3.3f,ToolMaterials.GOLD, ModBlockTags.HAMMER_MINEABLES,new FabricItemSettings(),
             40,1.2f,20,20),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Handheld));
     public static final HammerItem LEAD_HAMMER = register("lead_hammer",new HammerItem(5,-3.5f,ModToolMaterials.LEAD, ModBlockTags.HAMMER_MINEABLES,new FabricItemSettings(),
             10,1,10,30),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Handheld));
@@ -234,7 +232,11 @@ public class ModItems {
 
     // caster items
     //public static final SoulCastingItem CASTER_TEST = register("caster_test",new SoulCastingItem(new FabricItemSettings(),1));
-    public static final SoulCastingItem SPELLGLOVE =                register("spellglove",          new SoulCastingItem(new FabricItemSettings().maxCount(1),9*3),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
+    public static final SoulCastingItem NOVICE_GLOVE =              register("novice_glove",        new SoulCastingItem(new FabricItemSettings().maxCount(1),5),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
+    public static final SoulCastingItem APPRENTICE_GLOVE =          register("apprentice_glove",    new SoulCastingItem(new FabricItemSettings().maxCount(1),9),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
+    public static final SoulCastingItem JOURNEY_GLOVE =             register("journey_glove",       new SoulCastingItem(new FabricItemSettings().maxCount(1),9*2),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
+    public static final SoulCastingItem EXPERT_GLOVE =              register("expert_glove",        new SoulCastingItem(new FabricItemSettings().maxCount(1),9*4),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
+    public static final SoulCastingItem MASTER_GLOVE =              register("master_glove",        new SoulCastingItem(new FabricItemSettings().maxCount(1),9*6),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
     public static final SpellStoringItem SPELLSTORAGE_SMALL =       register("spellstorage_small",  new SpellStoringItem(new FabricItemSettings().maxCount(8),3,3));
     public static final SpellStoringItem SPELLSTORAGE_MEDIUM =      register("spellstorage_medium", new SpellStoringItem(new FabricItemSettings().maxCount(8),5,5));
     public static final SpellStoringItem SPELLSTORAGE_LARGE =       register("spellstorage_large",  new SpellStoringItem(new FabricItemSettings().maxCount(8),7,7));

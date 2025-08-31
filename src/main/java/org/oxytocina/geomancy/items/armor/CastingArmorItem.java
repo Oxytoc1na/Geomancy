@@ -38,11 +38,8 @@ import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.client.registries.ModModelLayers;
 import org.oxytocina.geomancy.client.rendering.armor.CastingArmorModel;
-import org.oxytocina.geomancy.client.rendering.armor.OctanguliteArmorModel;
 import org.oxytocina.geomancy.client.screen.StorageItemScreenHandler;
 import org.oxytocina.geomancy.items.*;
-import org.oxytocina.geomancy.items.tools.SoulCastingItem;
-import org.oxytocina.geomancy.items.tools.StorageItem;
 import org.oxytocina.geomancy.spells.SpellBlockArgs;
 import org.oxytocina.geomancy.spells.SpellContext;
 import org.oxytocina.geomancy.spells.SpellGrid;
@@ -53,7 +50,7 @@ import java.util.List;
 
 import static org.oxytocina.geomancy.items.tools.StorageItem.getInventoryStatic;
 
-public class CastingArmorItem extends ArmorItem implements IMaddeningItem, IStorageItem, ExtendedScreenHandlerFactory, IManaStoringItem, ICustomRarityItem, IListenerArmor {
+public class CastingArmorItem extends ArmorItem implements IMaddeningItem, IStorageItem, ExtendedScreenHandlerFactory, ISoulStoringItem, ICustomRarityItem, IListenerArmor {
     @Environment(EnvType.CLIENT)
     private BipedEntityModel<LivingEntity> model;
 

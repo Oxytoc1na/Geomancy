@@ -5,11 +5,9 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
-import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -27,7 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class SoulBoreItem extends StorageItem implements IManaStoringItem, ICustomRarityItem {
+public class SoulBoreItem extends StorageItem implements ISoulStoringItem, ICustomRarityItem {
 
     public static final HashMap<Item,Float> fuelItems = new HashMap<>();
     public static void registerFuel(Item item, float fuel){
@@ -204,7 +202,7 @@ public class SoulBoreItem extends StorageItem implements IManaStoringItem, ICust
 
     @Override
     public int getItemBarColor(ItemStack stack) {
-        return ((IManaStoringItem)stack.getItem()).getBarColor(stack);
+        return ((ISoulStoringItem)stack.getItem()).getBarColor(stack);
     }
 
     @Override

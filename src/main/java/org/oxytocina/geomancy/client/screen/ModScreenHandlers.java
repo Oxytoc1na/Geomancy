@@ -21,6 +21,10 @@ public class ModScreenHandlers {
             Registry.register(Registries.SCREEN_HANDLER, new Identifier(Geomancy.MOD_ID, "storage_item.json"),
                     new ExtendedScreenHandlerType<>(StorageItemScreenHandler::new));
 
+    public static final ExtendedScreenHandlerType<RitualForgeScreenHandler> RITUALISTIC_FORGE_SCREEN_HANDLER =
+            Registry.register(Registries.SCREEN_HANDLER, new Identifier(Geomancy.MOD_ID, "ritual_forge.json"),
+                    new ExtendedScreenHandlerType<>(RitualForgeScreenHandler::new));
+
 
     public static void register() {
 

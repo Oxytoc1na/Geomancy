@@ -1,10 +1,8 @@
 package org.oxytocina.geomancy.items.tools;
 
 import net.minecraft.item.HoeItem;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import org.oxytocina.geomancy.items.IMaddeningItem;
-import org.oxytocina.geomancy.items.IManaStoringItem;
 
 public class MolybdenumHoeItem extends HoeItem implements IMaddeningItem {
     private final float maddeningSpeed;

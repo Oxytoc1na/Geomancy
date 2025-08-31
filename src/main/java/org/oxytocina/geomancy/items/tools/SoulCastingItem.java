@@ -24,7 +24,6 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.items.*;
 import org.oxytocina.geomancy.networking.ModMessages;
-import org.oxytocina.geomancy.networking.packet.S2C.OpenSpellSelectScreenS2CPacket;
 import org.oxytocina.geomancy.registries.ModItemTags;
 import org.oxytocina.geomancy.spells.SpellBlockArgs;
 import org.oxytocina.geomancy.spells.SpellContext;
@@ -32,7 +31,7 @@ import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.List;
 
-public class SoulCastingItem extends StorageItem implements IManaStoringItem, IScrollListenerItem, ICustomRarityItem, ISpellSelectorItem {
+public class SoulCastingItem extends StorageItem implements ISoulStoringItem, IScrollListenerItem, ICustomRarityItem, ISpellSelectorItem {
 
     public SoulCastingItem(Settings settings, int storageSize) {
         super(settings, storageSize,ModItemTags.FITS_IN_CASTERS,false);

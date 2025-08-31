@@ -14,13 +14,13 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.items.ICustomRarityItem;
 import org.oxytocina.geomancy.items.IMaddeningItem;
-import org.oxytocina.geomancy.items.IManaStoringItem;
+import org.oxytocina.geomancy.items.ISoulStoringItem;
 import org.oxytocina.geomancy.util.MadnessUtil;
 import org.oxytocina.geomancy.util.ManaUtil;
 
 import java.util.List;
 
-public class OctanguliteJewelryItem extends JewelryItem implements IManaStoringItem, IMaddeningItem, ICustomRarityItem {
+public class OctanguliteJewelryItem extends JewelryItem implements ISoulStoringItem, IMaddeningItem, ICustomRarityItem {
 
     public float baseSoulCapacity;
     public float maddeningSpeed;
@@ -37,7 +37,7 @@ public class OctanguliteJewelryItem extends JewelryItem implements IManaStoringI
     public float getCapacity(World world, ItemStack stack) {
         LivingEntity wearer = null;
         if(stack.getHolder() instanceof LivingEntity le) wearer = le;
-        return baseSoulCapacity * getCapacityMultiplier(world,stack,wearer);
+        return baseSoulCapacity * getCapacityMultiplier(world,stack,wearer) * getCapacityMultiplier(stack);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class OctanguliteJewelryItem extends JewelryItem implements IManaStoringI
 
     @Override
     public int getItemBarColor(ItemStack stack) {
-        return ((IManaStoringItem)stack.getItem()).getBarColor(stack);
+        return ((ISoulStoringItem)stack.getItem()).getBarColor(stack);
     }
 
     @Override
@@ -120,12 +120,12 @@ public class OctanguliteJewelryItem extends JewelryItem implements IManaStoringI
     @Environment(EnvType.CLIENT)
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> list, TooltipContext context) {
         super.appendTooltip(stack, world, list, context);
-        IManaStoringItem.super.addManaTooltip(world,stack,list);
+        ISoulStoringItem.super.addManaTooltip(world,stack,list);
     }
 
     @Override
     public void onCraft(ItemStack stack, World world, PlayerEntity player) {
         super.onCraft(stack, world, player);
-        IManaStoringItem.init(world,stack);
+        ISoulStoringItem.init(world,stack);
     }
 }

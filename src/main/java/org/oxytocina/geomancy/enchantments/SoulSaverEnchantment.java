@@ -4,8 +4,8 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
+import org.oxytocina.geomancy.items.ISoulStoringItem;
 import org.oxytocina.geomancy.items.SpellStoringItem;
-import org.oxytocina.geomancy.items.jewelry.JewelryItem;
 
 public class SoulSaverEnchantment extends Enchantment {
 
@@ -25,6 +25,9 @@ public class SoulSaverEnchantment extends Enchantment {
 
     @Override
     public boolean isAcceptableItem(ItemStack stack) {
-        return stack.getItem() instanceof SpellStoringItem;
+        return
+                stack.getItem() instanceof SpellStoringItem
+                || stack.getItem() instanceof ISoulStoringItem
+                ;
     }
 }

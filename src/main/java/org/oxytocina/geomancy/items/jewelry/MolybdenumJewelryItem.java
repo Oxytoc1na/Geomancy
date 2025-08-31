@@ -1,15 +1,11 @@
 package org.oxytocina.geomancy.items.jewelry;
 
 import dev.emi.trinkets.api.SlotReference;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.world.World;
 import org.oxytocina.geomancy.items.IMaddeningItem;
-import org.oxytocina.geomancy.items.IManaStoringItem;
 import org.oxytocina.geomancy.util.MadnessUtil;
-import org.oxytocina.geomancy.util.ManaUtil;
 
 public class MolybdenumJewelryItem extends JewelryItem implements IMaddeningItem {
 

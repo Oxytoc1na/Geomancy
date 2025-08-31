@@ -12,17 +12,18 @@ import java.util.Objects;
 
 public class ModEnchantments {
 
-    public static final SkillfulEnchantment SKILLFUL = (SkillfulEnchantment) register("skillful",new SkillfulEnchantment());
-    public static final MightyEnchantment MIGHTY = (MightyEnchantment) register("mighty",new MightyEnchantment());
-    public static final BrillianceEnchantment BRILLIANCE = (BrillianceEnchantment) register("brilliance",new BrillianceEnchantment());
-    public static final SoulSaverEnchantment SOUL_SAVER = (SoulSaverEnchantment) register("soul_saver",new SoulSaverEnchantment());
+    public static final SkillfulEnchantment SKILLFUL = register("skillful",new SkillfulEnchantment());
+    public static final MightyEnchantment MIGHTY = register("mighty",new MightyEnchantment());
+    public static final BrillianceEnchantment BRILLIANCE = register("brilliance",new BrillianceEnchantment());
+    public static final SoulSaverEnchantment SOUL_SAVER = register("soul_saver",new SoulSaverEnchantment());
+    public static final MesmerizingEnchantment MESMERIZING = register("mesmerizing",new MesmerizingEnchantment());
 
     public static void register(){
 
     }
 
-    private static Enchantment register(String name, Enchantment enchantment) {
-        return (Enchantment) Registry.register(Registries.ENCHANTMENT, Geomancy.locate(name), enchantment);
+    private static <T extends Enchantment> T register(String name, T enchantment) {
+        return Registry.register(Registries.ENCHANTMENT, Geomancy.locate(name), enchantment);
     }
 
     public static int getLevel(ItemStack stack, String vanillaEnchantment){

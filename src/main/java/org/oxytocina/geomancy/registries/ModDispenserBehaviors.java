@@ -53,7 +53,7 @@ public class ModDispenserBehaviors {
             }
         };
         DispenserBlock.registerBehavior(ModItems.IRON_HAMMER, hammerSmithery);
-        DispenserBlock.registerBehavior(ModItems.GOLD_HAMMER, hammerSmithery);
+        DispenserBlock.registerBehavior(ModItems.GOLDEN_HAMMER, hammerSmithery);
         DispenserBlock.registerBehavior(ModItems.LEAD_HAMMER, hammerSmithery);
         DispenserBlock.registerBehavior(ModItems.MOLYBDENUM_HAMMER, hammerSmithery);
         DispenserBlock.registerBehavior(ModItems.MITHRIL_HAMMER, hammerSmithery);

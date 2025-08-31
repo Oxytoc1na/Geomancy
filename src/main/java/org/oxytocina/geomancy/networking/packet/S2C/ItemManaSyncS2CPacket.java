@@ -6,14 +6,14 @@ import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.PacketByteBuf;
-import org.oxytocina.geomancy.entity.ManaStoringItemData;
+import org.oxytocina.geomancy.entity.SoulStoringItemData;
 
 public class ItemManaSyncS2CPacket {
 
     @Environment(EnvType.CLIENT)
     public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler,
                                PacketByteBuf buf, PacketSender responseSender) {
-        ManaStoringItemData.setFromBuffer(buf);
+        SoulStoringItemData.setFromBuffer(buf);
     }
 
     //public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender){

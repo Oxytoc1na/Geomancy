@@ -1,15 +1,12 @@
 package org.oxytocina.geomancy.items.tools;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.*;
-import net.minecraft.registry.tag.BlockTags;
-import net.minecraft.registry.tag.TagKey;
 import net.minecraft.text.Text;
 import org.oxytocina.geomancy.items.ICustomRarityItem;
 import org.oxytocina.geomancy.items.IMaddeningItem;
-import org.oxytocina.geomancy.items.IManaStoringItem;
+import org.oxytocina.geomancy.items.ISoulStoringItem;
 
-public class OctangulitePickaxeItem extends PickaxeItem implements IMaddeningItem, IManaStoringItem, ICustomRarityItem {
+public class OctangulitePickaxeItem extends PickaxeItem implements IMaddeningItem, ISoulStoringItem, ICustomRarityItem {
     private final float maddeningSpeed;
 
     public OctangulitePickaxeItem(ToolMaterial material, int attackDamage, float attackSpeed, Item.Settings settings, float maddeningSpeed) {

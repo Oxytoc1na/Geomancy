@@ -33,7 +33,7 @@ public class TransmuteRecipe extends GatedModRecipe<Inventory>{
 
     @Override
     public boolean matches(@NotNull Inventory inv, World world) {
-        return craft(inv,null).isEmpty();
+        return !craft(inv,null).isEmpty();
     }
 
     @Override

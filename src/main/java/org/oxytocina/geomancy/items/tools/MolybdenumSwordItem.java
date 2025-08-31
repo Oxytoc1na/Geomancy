@@ -1,10 +1,8 @@
 package org.oxytocina.geomancy.items.tools;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import org.oxytocina.geomancy.items.IMaddeningItem;
-import org.oxytocina.geomancy.items.IManaStoringItem;
 
 public class MolybdenumSwordItem extends SwordItem implements IMaddeningItem {
     private final float maddeningSpeed;

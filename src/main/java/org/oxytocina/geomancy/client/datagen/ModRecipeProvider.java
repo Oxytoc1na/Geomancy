@@ -520,7 +520,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                             new SPatKey("l",SmithingIngredient.ofItems(1,1,1,Items.LEATHER)),
                             new SPatKey("c",SmithingIngredient.ofItems(1,1,1,Items.CHEST)),
                     },
-                    SPELLGLOVE,1,100,50,conditionsFromItem(OCTANGULITE_INGOT),Geomancy.locate("milestones/milestone_souls"));
+                    EXPERT_GLOVE,1,100,50,conditionsFromItem(OCTANGULITE_INGOT),Geomancy.locate("milestones/milestone_souls"));
 
             // soul bore
             AddShapedSmitheryRecipe(new String[]{

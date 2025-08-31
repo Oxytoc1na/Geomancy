@@ -15,7 +15,9 @@ import org.oxytocina.geomancy.blocks.blockEntities.SpellmakerBlockEntity;
 import org.oxytocina.geomancy.items.SpellComponentStoringItem;
 import org.oxytocina.geomancy.items.SpellStoringItem;
 import org.oxytocina.geomancy.networking.ModMessages;
+import org.oxytocina.geomancy.spells.SpellBlocks;
 import org.oxytocina.geomancy.spells.SpellComponent;
+import org.oxytocina.geomancy.util.AdvancementHelper;
 
 public class SpellmakerTryAddComponentC2SPacket {
 
@@ -48,6 +50,12 @@ public class SpellmakerTryAddComponentC2SPacket {
                             {
                                 SpellmakerBlockEntity.removeComponentFrom(function,1,player.getInventory());
                                 player.getInventory().markDirty();
+                            }
+
+                            // check for build big advancement fulfillment
+                            if(grid.height>=7&&grid.getFilledFraction()>=0.75f)
+                            {
+                                SpellBlocks.tryUnlockSpellAdvancement(player,"build_big");
                             }
 
 

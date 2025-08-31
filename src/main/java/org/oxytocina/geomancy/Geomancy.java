@@ -2,6 +2,7 @@ package org.oxytocina.geomancy;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.impl.util.log.Log;
@@ -24,6 +25,7 @@ import org.oxytocina.geomancy.effects.ModStatusEffects;
 import org.oxytocina.geomancy.enchantments.ModEnchantments;
 import org.oxytocina.geomancy.entity.ModEntityAttributes;
 import org.oxytocina.geomancy.entity.ModEntityTypes;
+import org.oxytocina.geomancy.event.ServerStopHandler;
 import org.oxytocina.geomancy.event.ServerTickHandler;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
@@ -160,6 +162,7 @@ public class Geomancy implements ModInitializer {
             ModCauldronBehaviors.register();
 
             ServerTickEvents.START_SERVER_TICK.register(new ServerTickHandler());
+            ServerLifecycleEvents.SERVER_STOPPED.register(new ServerStopHandler());
 
         } catch (Throwable t) {
             RuntimeException exception = new RuntimeException(String.format("Geomancy Initialization failed!",

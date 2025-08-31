@@ -25,9 +25,9 @@ import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlockEntity;
 import org.oxytocina.geomancy.effects.ModStatusEffects;
-import org.oxytocina.geomancy.entity.ManaStoringItemData;
+import org.oxytocina.geomancy.entity.SoulStoringItemData;
 import org.oxytocina.geomancy.entity.PlayerData;
-import org.oxytocina.geomancy.items.IManaStoringItem;
+import org.oxytocina.geomancy.items.ISoulStoringItem;
 import org.oxytocina.geomancy.items.jewelry.IJewelryItem;
 import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.registries.ModBiomeTags;
@@ -72,7 +72,7 @@ public class ManaUtil {
         var items = getAllSoulStoringItems(inv);
         float res = 0;
         for (ItemStack s : items) {
-            res += ((IManaStoringItem) s.getItem()).getMana(world, s);
+            res += ((ISoulStoringItem) s.getItem()).getMana(world, s);
         }
         return res;
     }
@@ -94,7 +94,7 @@ public class ManaUtil {
 
         var items = getAllSoulStoringItems(player);
         for(var item : items){
-            if(item.getItem() instanceof IManaStoringItem storer){
+            if(item.getItem() instanceof ISoulStoringItem storer){
                 cap += storer.getCapacity(player.getWorld(),item);
                 mana += storer.getMana(player.getWorld(),item);
             }
@@ -141,7 +141,7 @@ public class ManaUtil {
 
     public static void syncItemMana(World world, ItemStack stack){
         if(!(world instanceof ServerWorld svw)) return;
-        if(!(stack.getItem() instanceof IManaStoringItem)) return;
+        if(!(stack.getItem() instanceof ISoulStoringItem)) return;
         for(var p : svw.getPlayers())
             syncItemMana(world,stack,p);
     }
@@ -150,10 +150,10 @@ public class ManaUtil {
     public static void syncItemMana(World world, ItemStack stack, ServerPlayerEntity with){
         if(with==null) return;
         if(!(world instanceof ServerWorld svw)) return;
-        if(!(stack.getItem() instanceof IManaStoringItem)) return;
+        if(!(stack.getItem() instanceof ISoulStoringItem)) return;
 
-        IManaStoringItem.init(world,stack);
-        ManaStoringItemData data = ManaStoringItemData.from(world,stack, IManaStoringItem.getUUID(stack));
+        ISoulStoringItem.init(world,stack);
+        SoulStoringItemData data = SoulStoringItemData.from(world,stack, ISoulStoringItem.getUUID(stack));
 
         PacketByteBuf buf = PacketByteBufs.create();
         data.writeBuf(buf);
@@ -245,11 +245,11 @@ public class ManaUtil {
     }
 
     public static boolean canStoreMana(ItemStack stack){
-        return stack.getItem() instanceof IManaStoringItem;// stack.hasNbt() && stack.getNbt().contains("soul");
+        return stack.getItem() instanceof ISoulStoringItem;// stack.hasNbt() && stack.getNbt().contains("soul");
     }
 
     public static ItemStack setItemManaCapacity(World world,ItemStack stack,float capacity){
-        if(stack.getItem() instanceof IManaStoringItem storingItem){
+        if(stack.getItem() instanceof ISoulStoringItem storingItem){
             storingItem.setCapacity(world,stack,capacity);
         }
         return stack;
@@ -285,8 +285,8 @@ public class ManaUtil {
 
     private static boolean tickManaRegen(ItemStack stack, World world,float ambientMana, float regenSpeed, ServerPlayerEntity player){
         var changed = false;
-        var item = (IManaStoringItem) stack.getItem();
-        var data = IManaStoringItem.getData(world,stack);
+        var item = (ISoulStoringItem) stack.getItem();
+        var data = ISoulStoringItem.getData(world,stack);
 
         // per tick
         float actualRegenSpeed = 0.0005f *
@@ -345,9 +345,9 @@ public class ManaUtil {
     private static float removeMana(List<ItemStack> storers, float amount, World world, @Nullable SpellContext ctx){
 
         // generate prioritized lists
-        HashMap<Integer,List<Pair<ItemStack,IManaStoringItem>>> storerPriorityMap = new HashMap<>();
+        HashMap<Integer,List<Pair<ItemStack, ISoulStoringItem>>> storerPriorityMap = new HashMap<>();
         for(var storer : storers){
-            var pair = new Pair<>(storer,(IManaStoringItem)storer.getItem());
+            var pair = new Pair<>(storer,(ISoulStoringItem)storer.getItem());
             int priority = pair.getRight().depletionPriority(storer);
             if(!storerPriorityMap.containsKey(priority)) storerPriorityMap.put(priority,new ArrayList<>());
             storerPriorityMap.get(priority).add(pair);
@@ -386,7 +386,7 @@ public class ManaUtil {
         var storers = getAllSoulStoringItems(casterBlock);
         for(var storer:storers)
         {
-            res += ((IManaStoringItem) storer.getItem()).getCapacity(world,storer);
+            res += ((ISoulStoringItem) storer.getItem()).getCapacity(world,storer);
         }
         return res;
     }

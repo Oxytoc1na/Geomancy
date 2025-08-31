@@ -12,23 +12,24 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.client.rendering.ModColorizationHandler;
-import org.oxytocina.geomancy.entity.ManaStoringItemData;
+import org.oxytocina.geomancy.enchantments.ModEnchantments;
+import org.oxytocina.geomancy.entity.SoulStoringItemData;
 import org.oxytocina.geomancy.spells.SpellContext;
 
 import java.util.List;
 import java.util.UUID;
 
-public interface IManaStoringItem {
+public interface ISoulStoringItem {
     static void init(World world, ItemStack stack){
         if(stack.getSubNbt("soul")!=null) return;
         NbtCompound soul = new NbtCompound();
-        soul.putUuid("uuid", ManaStoringItemData.getNextUUID());
+        soul.putUuid("uuid", SoulStoringItemData.getNextUUID());
         stack.setSubNbt("soul",soul);
     }
 
-    static ManaStoringItemData getData(World world, ItemStack stack){
+    static SoulStoringItemData getData(World world, ItemStack stack){
         init(world,stack);
-        return ManaStoringItemData.from(world,stack,getUUID(stack));
+        return SoulStoringItemData.from(world,stack,getUUID(stack));
     }
 
     default float getInitialMana(ItemStack base){
@@ -44,9 +45,13 @@ public interface IManaStoringItem {
         return 0;
     }
 
+    default float getCapacityMultiplier(ItemStack stack){
+        return 1+ ModEnchantments.getLevel(stack,ModEnchantments.MESMERIZING)*0.5f;
+    }
+
     default float getCapacity(World world, ItemStack stack){
         init(world,stack);
-        return getData(world,stack).maxMana;
+        return getData(world,stack).maxMana * getCapacityMultiplier(stack);
     }
     default float getRechargeSpeedMultiplier(World world, ItemStack stack, LivingEntity entity){
         init(world,stack);

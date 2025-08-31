@@ -1,6 +1,7 @@
 package org.oxytocina.geomancy.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.sun.jna.platform.unix.X11;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -8,6 +9,8 @@ import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.input.Input;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -426,6 +429,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
                 y < bgPosY+NEW_COMPONENTS_Y-1+Math.round((float)Math.ceil(NEW_COMPONENTS_SLOT_COUNT/(float)NEW_COMPONENTS_WIDTH))*18;
     }
 
+    @Environment(EnvType.CLIENT)
     private void hexClicked(){
 
         Vector2i componentPosition = hoveredOverHexagonPos;
@@ -455,12 +459,14 @@ public class SpellmakerScreenHandler extends ScreenHandler {
                     ClientPlayNetworking.send(ModMessages.SPELLMAKER_TRY_ADD_COMPONENT, data);
 
                     // deselect
-                    selectedNewComponentIndex = -1;
-                    selectedNewComponentChanged();
+                    if(!Screen.hasShiftDown()){
+                        selectedNewComponentIndex = -1;
+                        selectedNewComponentChanged();
 
-                    // select now placed component
-                    selectedComponentPosition = componentPosition;
-                    selectedComponentChanged();
+                        // select now placed component
+                        selectedComponentPosition = componentPosition;
+                        selectedComponentChanged();
+                    }
                 }
                 else{
                     // error

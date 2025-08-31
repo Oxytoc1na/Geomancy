@@ -135,8 +135,12 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
         // spell casters
         getOrCreateTagBuilder(CASTING_ITEM).setReplace(false)
                 .add(
-                        //ModItems.CASTER_TEST,
-                        ModItems.SPELLGLOVE
+                        ModItems.NOVICE_GLOVE,
+                        ModItems.APPRENTICE_GLOVE,
+                        ModItems.JOURNEY_GLOVE,
+                        ModItems.EXPERT_GLOVE,
+                        ModItems.MASTER_GLOVE,
+                        ModItems.PRECOMP_CASTER
                         );
 
 

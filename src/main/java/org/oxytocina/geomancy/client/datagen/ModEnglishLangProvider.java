@@ -327,7 +327,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("item.MODID.music_disc_diggy.desc"  , "Diggy");
 
             add("item.MODID.iron_hammer"            , "Iron Hammer");
-            add("item.MODID.gold_hammer"            , "Golden Hammer");
+            add("item.MODID.golden_hammer"          , "Golden Hammer");
             add("item.MODID.lead_hammer"            , "Lead Hammer");
             add("item.MODID.molybdenum_hammer"      , "Molybdenum Hammer");
             add("item.MODID.titanium_hammer"        , "Titanium Hammer");
@@ -425,7 +425,11 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.varstorage.storage", "Stored Variables: ");
             add("MODID.varstorage.prefix",  "Accessor Prefix: ");
 
-            add("item.MODID.spellglove",        "Spellglove");
+            add("item.MODID.novice_glove",          "Novice Spellglove");
+            add("item.MODID.apprentice_glove",      "Apprentice Spellglove");
+            add("item.MODID.journey_glove",         "Journeyman Spellglove");
+            add("item.MODID.expert_glove",          "Expert Spellglove");
+            add("item.MODID.master_glove",          "Master Spellglove");
             add("item.MODID.precomp_caster",    "Precompiled Machine");
             add("item.MODID.component_pouch","Component Pouch");
             add("MODID.storage.tooltip","Use to open");
@@ -461,6 +465,9 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
             add("block.MODID.autocaster"            , "Autocaster");
             add("MODID.autocaster"        , "Autocaster");
+
+            add("block.MODID.pedestal"            , "Pedestal");
+            add("block.MODID.soul_forge"          , "Soul Forge");
 
             addOres("octangulite_ore", "Octangulite Ore");
             add("block.MODID.raw_octangulite_block"     , "Octangulite Scrap");
@@ -546,6 +553,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         add("enchantment.MODID.mighty"      , "Mighty");
         add("enchantment.MODID.brilliance"  , "Brilliance");
         add("enchantment.MODID.soul_saver"  , "Soul Saver");
+        add("enchantment.MODID.mesmerizing" , "Mesmerizing");
 
         // damage types
         add("death.attack.geomancy.duplicate_trinkets", "%1$s felt their own hubris");
@@ -609,6 +617,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addAdvancement(".spells.simple_deception","Deception","Use a play sound component from a muted spell");
             addAdvancement(".spells.simple_medic","Medic!","Heal another player by using an imbue component");
             addAdvancement(".spells.simple_ulterior_motives","Ulterior Motives","Save a reference to another player onto a varpot");
+            addAdvancement(".spells.simple_build_big","Technical debt","Fill three quarters of a spacious spellcradle with components");
+            addAdvancement(".spells.simple_deconsciousness","Deconsciousness","Cast a spell that costs at least 10000 souls");
 
             addAdvancement(":milestones/milestone_smithery","The Craft of the Ancients","Obtain the smithery");
             addAdvancement(":milestones/milestone_souls","Soulcraft","Learn of the true nature of octangulite");

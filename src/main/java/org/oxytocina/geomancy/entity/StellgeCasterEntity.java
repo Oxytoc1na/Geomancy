@@ -1,37 +1,18 @@
 package org.oxytocina.geomancy.entity;
 
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.RangedAttackMob;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.attribute.EntityAttributeInstance;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.mob.Angerable;
 import net.minecraft.entity.mob.HostileEntity;
-import net.minecraft.entity.mob.ZombieEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.predicate.entity.EntityPredicates;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.TimeHelper;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.*;
 import org.jetbrains.annotations.Nullable;
-import org.oxytocina.geomancy.Geomancy;
-import org.oxytocina.geomancy.entity.goal.WanderNearHomeGoal;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.SpellStoringItem;
 import org.oxytocina.geomancy.items.tools.SoulCastingItem;
@@ -39,9 +20,6 @@ import org.oxytocina.geomancy.sound.ModSoundEvents;
 import org.oxytocina.geomancy.spells.SpellBlocks;
 import org.oxytocina.geomancy.spells.SpellComponent;
 import org.oxytocina.geomancy.spells.SpellGrid;
-import org.oxytocina.geomancy.util.Toolbox;
-
-import java.util.UUID;
 
 public class StellgeCasterEntity extends StellgeEntity implements RangedAttackMob {
 
@@ -97,7 +75,7 @@ public class StellgeCasterEntity extends StellgeEntity implements RangedAttackMo
     @Override
     protected void initEquipment(Random random, LocalDifficulty localDifficulty) {
         // build weapon
-        var caster = new ItemStack(ModItems.SPELLGLOVE);
+        var caster = new ItemStack(ModItems.PRECOMP_CASTER);
         var casterItem = (SoulCastingItem) caster.getItem();
         ItemStack spellStack = new ItemStack(ModItems.SPELLSTORAGE_MEDIUM);
         SpellGrid grid = switch(getRandom().nextInt(1)){

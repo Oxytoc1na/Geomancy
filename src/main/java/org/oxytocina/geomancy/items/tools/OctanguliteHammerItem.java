@@ -2,15 +2,14 @@ package org.oxytocina.geomancy.items.tools;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.text.Text;
 import org.oxytocina.geomancy.items.ICustomRarityItem;
 import org.oxytocina.geomancy.items.IMaddeningItem;
-import org.oxytocina.geomancy.items.IManaStoringItem;
+import org.oxytocina.geomancy.items.ISoulStoringItem;
 
-public class OctanguliteHammerItem extends HammerItem implements IMaddeningItem, IManaStoringItem, ICustomRarityItem {
+public class OctanguliteHammerItem extends HammerItem implements IMaddeningItem, ISoulStoringItem, ICustomRarityItem {
     private final float maddeningSpeed;
 
     public OctanguliteHammerItem(float attackDamage, float attackSpeed, ToolMaterial material, TagKey<Block> effectiveBlocks, Settings settings, float skillBonus, float skillMultiplier, int progressPerHit, int cooldown, float maddeningSpeed) {

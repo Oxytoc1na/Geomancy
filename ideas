@@ -118,14 +118,12 @@ TODO MODONOMICON
 
 TODO textures
 - status effects
-- hammers
 - autocaster
 - glove
 - precomp machine
 - stellge caster
 
 TODO ITEMS
-- hammers
 
 TODO DEBUG
 - make foreach affected by depth
@@ -134,7 +132,6 @@ TODO DEBUG
 
 TODO ADVANCEMENTS
 - casting spells
--- De-consciousness (cast a spell that costs at least 10000 soul)
 - obtaining cool items
 -- caster
 - sweaty (hold a spellglove in your main hand for 10 minutes)
@@ -151,7 +148,7 @@ TODO TESTING
 
 fixed
 
-RITUALISTIC FORGE
+SOUL FORGE
 - activated with the activate spell component
 - takes pedestals of mana-storers and ingredients
 - requires rune blocks
@@ -162,6 +159,22 @@ RITUALISTIC FORGE
 -- soul bore
 -- caster core
 -- casting armor
+-- surrounding molten gold increases stability
+
+crafting process concept
+-> put required ingredients around forge in pedestals
+-> put soul storers in pedestals
+-> gui shows three bars: souls available, taken souls/required souls, instability
+-> gui shows which ingredients are subsumed vs which still need to be to complete the craft
+-> cast activate on the main block
+-> hitting the main block with a hammer now consumes soul from each soul-storing pedestal each time
+--> (with a sparkly particle effect!! (make it feel impactful (camshake?)))
+-> depending on progress, items get subsumed
+-> the longer it takes to craft, the more unstable the craft becomes
+--> explosion on full, abort
+--> flood the main block with water to prematurely and more safely cancel the craft
+--> subsumed items up to that point are lost
+
 
 PROGRESSION
 
@@ -176,7 +189,8 @@ start
 -> smithing the components necessary for a ritualistic forge
 -> smithing a basic spellglove
 -> activate component unlocked
+-> ritualistic forge unlocked
 
 ender dragon defeated
--> dimhop component unlocked
+-> dimhop component unlocked, crafted at ritualistic forge
 -> null dimension unlocked

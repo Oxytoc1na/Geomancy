@@ -6,9 +6,9 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
 import org.oxytocina.geomancy.items.ICustomRarityItem;
 import org.oxytocina.geomancy.items.IMaddeningItem;
-import org.oxytocina.geomancy.items.IManaStoringItem;
+import org.oxytocina.geomancy.items.ISoulStoringItem;
 
-public class OctanguliteSwordItem extends SwordItem implements IMaddeningItem, IManaStoringItem, ICustomRarityItem {
+public class OctanguliteSwordItem extends SwordItem implements IMaddeningItem, ISoulStoringItem, ICustomRarityItem {
     private final float maddeningSpeed;
 
     public OctanguliteSwordItem(ToolMaterial material, int attackDamage, float attackSpeed, Settings settings, float maddeningSpeed) {

@@ -11,11 +11,11 @@ import net.minecraft.text.Text;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.items.ICustomRarityItem;
-import org.oxytocina.geomancy.items.IManaStoringItem;
+import org.oxytocina.geomancy.items.ISoulStoringItem;
 
 import java.util.List;
 
-public class SoulStorageItem extends Item implements IManaStoringItem, ICustomRarityItem {
+public class SoulStorageItem extends Item implements ISoulStoringItem, ICustomRarityItem {
 
     public final float capacity;
     public final float rechargeSpeedMultiplier;
@@ -33,7 +33,7 @@ public class SoulStorageItem extends Item implements IManaStoringItem, ICustomRa
 
     @Override
     public float getRechargeSpeedMultiplier(World world, ItemStack stack, LivingEntity entity) {
-        return rechargeSpeedMultiplier*IManaStoringItem.super.getRechargeSpeedMultiplier(world, stack, entity);
+        return rechargeSpeedMultiplier* ISoulStoringItem.super.getRechargeSpeedMultiplier(world, stack, entity);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class SoulStorageItem extends Item implements IManaStoringItem, ICustomRa
 
     @Override
     public int getItemBarColor(ItemStack stack) {
-        return ((IManaStoringItem)stack.getItem()).getBarColor(stack);
+        return ((ISoulStoringItem)stack.getItem()).getBarColor(stack);
     }
 
     @Override
@@ -70,6 +70,6 @@ public class SoulStorageItem extends Item implements IManaStoringItem, ICustomRa
     @Environment(EnvType.CLIENT)
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> list, TooltipContext context) {
         super.appendTooltip(stack, world, list, context);
-        IManaStoringItem.super.addManaTooltip(world,stack,list);
+        ISoulStoringItem.super.addManaTooltip(world,stack,list);
     }
 }

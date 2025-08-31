@@ -3,13 +3,12 @@ package org.oxytocina.geomancy.items.tools;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShovelItem;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.text.Text;
 import org.oxytocina.geomancy.items.ICustomRarityItem;
 import org.oxytocina.geomancy.items.IMaddeningItem;
-import org.oxytocina.geomancy.items.IManaStoringItem;
+import org.oxytocina.geomancy.items.ISoulStoringItem;
 
-public class OctanguliteShovelItem extends ShovelItem implements IMaddeningItem, IManaStoringItem, ICustomRarityItem {
+public class OctanguliteShovelItem extends ShovelItem implements IMaddeningItem, ISoulStoringItem, ICustomRarityItem {
     private final float maddeningSpeed;
 
     public OctanguliteShovelItem(ToolMaterial material, float attackDamage, float attackSpeed, Settings settings, float maddeningSpeed) {

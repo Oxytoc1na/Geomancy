@@ -17,7 +17,7 @@ import org.oxytocina.geomancy.Geomancy;
 public class StateSaverAndLoader extends PersistentState {
 
     public HashMap<UUID, PlayerData> players = new HashMap<>();
-    public HashMap<UUID, ManaStoringItemData> manaStoringItemData = new HashMap<>();
+    public HashMap<UUID, SoulStoringItemData> manaStoringItemData = new HashMap<>();
 
     @Override
     public NbtCompound writeNbt(NbtCompound nbt) {
@@ -54,7 +54,7 @@ public class StateSaverAndLoader extends PersistentState {
 
         NbtCompound manaStoringItemDataNbt = tag.getCompound("manaStoringItemData");
         manaStoringItemDataNbt.getKeys().forEach(key -> {
-            ManaStoringItemData data = ManaStoringItemData.fromNbt(manaStoringItemDataNbt.getCompound(key));
+            SoulStoringItemData data = SoulStoringItemData.fromNbt(manaStoringItemDataNbt.getCompound(key));
             UUID uuid = UUID.fromString(key);
             state.manaStoringItemData.put(uuid, data);
         });
@@ -103,20 +103,20 @@ public class StateSaverAndLoader extends PersistentState {
         return playerState;
     }
 
-    public static ManaStoringItemData getManaStoringItemData(World world, UUID uuid, ItemStack stack) {
+    public static SoulStoringItemData getManaStoringItemData(World world, UUID uuid, ItemStack stack) {
 
         if(!(world instanceof ServerWorld serverWorld)) {
-            return new ManaStoringItemData(uuid);
+            return new SoulStoringItemData(uuid);
         }
 
         StateSaverAndLoader serverState = getServerState(serverWorld);
 
         // Either get the player by the uuid, or we don't have data for them yet, make a new player state
-        ManaStoringItemData state = serverState.manaStoringItemData.computeIfAbsent(uuid, (uuid1 -> new ManaStoringItemData(uuid1,stack)));
+        SoulStoringItemData state = serverState.manaStoringItemData.computeIfAbsent(uuid, (uuid1 -> new SoulStoringItemData(uuid1,stack)));
         return state;
     }
 
-    public static void setManaStoringItemData(World world,UUID uuid, ManaStoringItemData data) {
+    public static void setManaStoringItemData(World world,UUID uuid, SoulStoringItemData data) {
         if(!(world instanceof ServerWorld serverWorld)) return;
 
         StateSaverAndLoader serverState = getServerState(serverWorld);

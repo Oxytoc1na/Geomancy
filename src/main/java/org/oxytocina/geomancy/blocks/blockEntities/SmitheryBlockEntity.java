@@ -110,7 +110,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
     protected void writeNbt(NbtCompound nbt) {
         super.writeNbt(nbt);
         Inventories.writeNbt(nbt,inventory);
-        nbt.putInt("Progress",progress);
+        nbt.putInt("progress",progress);
     }
 
     @Override
@@ -118,7 +118,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
         super.readNbt(nbt);
         clear();
         Inventories.readNbt(nbt,inventory);
-        progress = nbt.getInt("Progress");
+        progress = nbt.getInt("progress");
     }
 
     @Override

@@ -1,19 +1,8 @@
 package org.oxytocina.geomancy.items.tools;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
-import org.oxytocina.geomancy.items.ICustomRarityItem;
-import org.oxytocina.geomancy.items.IManaStoringItem;
-
-import java.util.List;
 
 public class NonRechargeableSoulStorageItem extends SoulStorageItem {
 

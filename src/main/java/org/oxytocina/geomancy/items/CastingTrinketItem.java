@@ -38,7 +38,7 @@ import java.util.List;
 
 import static org.oxytocina.geomancy.items.tools.StorageItem.getInventoryStatic;
 
-public class CastingTrinketItem extends TrinketItem implements IStorageItem, ExtendedScreenHandlerFactory, IManaStoringItem, ICustomRarityItem, ICastingTrinket, ISpellSelectorItem {
+public class CastingTrinketItem extends TrinketItem implements IStorageItem, ExtendedScreenHandlerFactory, ISoulStoringItem, ICustomRarityItem, ICastingTrinket, ISpellSelectorItem {
 
     public int storageSize = 0;
     public final TagKey<Item> storableTag;
