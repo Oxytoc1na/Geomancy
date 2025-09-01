@@ -72,6 +72,7 @@ public class Geomancy implements ModInitializer {
     public static boolean finishedInitialization = false;
 
     public static GeomancyConfig CONFIG = null;
+    public static long tick = 0;
 
     // called from APIs if they so mischievously tried to access geomancys static variables before it got the chance to load itself
     public static void initializeForeign(String from){

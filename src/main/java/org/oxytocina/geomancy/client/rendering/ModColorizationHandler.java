@@ -504,7 +504,7 @@ public class ModColorizationHandler {
 
         hue = (float)(org.oxytocina.geomancy.util.SimplexNoise.noise(x,y,z)+1)/2*(1-hueShift) + hueShift;
         sat = (float) (1-Math.pow(1F-((SimplexNoise.noise(x2,y2,z2)+1)/2),2));
-        val = (float) (1-Math.pow(1F-((SimplexNoise.noise(x3,y3,z3)+1)/2),2));
+        val = 0.2f+0.8f*(float) (1-Math.pow(1F-((SimplexNoise.noise(x3,y3,z3)+1)/2),2));
 
         float durability = 1;
         if(stack.isDamageable()){

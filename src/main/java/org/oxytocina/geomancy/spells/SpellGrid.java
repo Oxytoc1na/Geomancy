@@ -439,6 +439,12 @@ public class SpellGrid {
         return components.size()/(float)getSlotCount();
     }
 
+    public boolean containsComponent(SpellBlock comp) {
+        for(var c : components.values())
+            if(c.function == comp) return true;
+        return false;
+    }
+
     public static class Builder{
         public String name = "";
         public int width = 3;

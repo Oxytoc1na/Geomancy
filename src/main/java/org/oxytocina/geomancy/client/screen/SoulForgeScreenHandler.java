@@ -12,31 +12,34 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import org.oxytocina.geomancy.blocks.blockEntities.SoulForgeBlockEntity;
 import org.oxytocina.geomancy.blocks.blockEntities.SmitheryBlockEntity;
+import org.oxytocina.geomancy.client.screen.slots.PreviewSlot;
 import org.oxytocina.geomancy.client.screen.slots.SmitheryPreviewSlot;
 
-public class RitualForgeScreenHandler extends ScreenHandler {
+public class SoulForgeScreenHandler extends ScreenHandler {
     private final Inventory inventory;
     private final PropertyDelegate propertyDelegate;
-    public final SmitheryBlockEntity blockEntity;
+    public final SoulForgeBlockEntity blockEntity;
 
-    public RitualForgeScreenHandler(int syncID, PlayerInventory inventory, PacketByteBuf buf){
+    public SoulForgeScreenHandler(int syncID, PlayerInventory inventory, PacketByteBuf buf){
         this(syncID,inventory,inventory.player.getWorld().getBlockEntity(buf.readBlockPos()),
                 new ArrayPropertyDelegate(3));
     }
 
-    public RitualForgeScreenHandler(int syncID, PlayerInventory playerInventory, BlockEntity blockEntity, PropertyDelegate arrayPropertyDelegate) {
-        super(ModScreenHandlers.RITUALISTIC_FORGE_SCREEN_HANDLER,syncID);
+    public SoulForgeScreenHandler(int syncID, PlayerInventory playerInventory, BlockEntity blockEntity, PropertyDelegate arrayPropertyDelegate) {
+        super(ModScreenHandlers.SOULFORGE_SCREEN_HANDLER,syncID);
         checkSize((Inventory)blockEntity, SoulForgeBlockEntity.SLOT_COUNT);
         this.inventory = (Inventory) blockEntity;
         playerInventory.onOpen(playerInventory.player);
         this.propertyDelegate = arrayPropertyDelegate;
-        this.blockEntity = (SmitheryBlockEntity) blockEntity;
+        this.blockEntity = (SoulForgeBlockEntity) blockEntity;
 
+        // input slot
+        addInventory(inventory,0,SoulForgeBlockEntity.INPUT_SLOT_COUNT,3,25,18);
 
-        addInventory(inventory,0,9,3,25,18);
+        // preview output slot
+        this.addSlot(new PreviewSlot(inventory,SoulForgeBlockEntity.PREVIEW_SLOT,134,36));
 
-        this.addSlot(new SmitheryPreviewSlot(inventory,SmitheryBlockEntity.OUTPUT_SLOT,134,36));
-
+        // player inventory
         addPlayerInventory(playerInventory);
         addPlayerHotbar(playerInventory);
 

@@ -41,8 +41,8 @@ public class CamShakeUtil {
         final float lerpT = 1;//Math.min(t*10,1);
         float x = lerpT*currentShakeIntensity*getShakeOffset(time,time,speed);
         float y = lerpT*currentShakeIntensity*getShakeOffset(-time,time,speed);
-        float xA = lerpT*currentShakeIntensity*getShakeOffset(time,-time,speed);
-        float zA = lerpT*currentShakeIntensity*getShakeOffset(-time,-time,speed);
+        float xA = 5*lerpT*currentShakeIntensity*getShakeOffset(time,-time,speed);
+        float zA = 5*lerpT*currentShakeIntensity*getShakeOffset(-time,-time,speed);
 
         matrixStack.translate(x,y, 0.0F);
         matrixStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(zA));

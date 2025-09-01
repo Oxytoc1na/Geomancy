@@ -8,6 +8,7 @@ import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.blockEntities.ModBlockEntities;
+import org.oxytocina.geomancy.client.blocks.blockEntities.PedestalBlockEntityRenderer;
 import org.oxytocina.geomancy.client.blocks.blockEntities.SmitheryBlockEntityRenderer;
 import org.oxytocina.geomancy.client.blocks.blockEntities.SpellmakerBlockEntityRenderer;
 import org.oxytocina.geomancy.client.entity.ModEntityRenderers;
@@ -55,6 +56,7 @@ public class GeomancyClient implements ClientModInitializer {
 
         BlockEntityRendererFactories.register(ModBlockEntities.SMITHERY_BLOCK_ENTITY, SmitheryBlockEntityRenderer::new);
         BlockEntityRendererFactories.register(ModBlockEntities.SPELLMAKER_BLOCK_ENTITY, SpellmakerBlockEntityRenderer::new);
+        BlockEntityRendererFactories.register(ModBlockEntities.PEDESTAL_BLOCK_ENTITY, PedestalBlockEntityRenderer::new);
 
 
         Geomancy.logInfo("Finished Initializing Geomancy Client");

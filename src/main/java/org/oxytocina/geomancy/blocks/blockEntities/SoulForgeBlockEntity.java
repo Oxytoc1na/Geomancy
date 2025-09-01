@@ -2,6 +2,7 @@ package org.oxytocina.geomancy.blocks.blockEntities;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -17,9 +18,11 @@ import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -36,15 +39,18 @@ import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.MultiblockCrafter;
 import org.oxytocina.geomancy.client.GeomancyClient;
-import org.oxytocina.geomancy.client.screen.RitualForgeScreenHandler;
+import org.oxytocina.geomancy.client.screen.SoulForgeScreenHandler;
+import org.oxytocina.geomancy.client.util.CamShakeUtil;
 import org.oxytocina.geomancy.inventories.AutoCraftingInventory;
 import org.oxytocina.geomancy.inventories.ImplementedInventory;
 import org.oxytocina.geomancy.items.ISoulStoringItem;
 import org.oxytocina.geomancy.items.tools.HammerItem;
+import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.recipe.soulforge.ISoulForgeRecipe;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
 import org.oxytocina.geomancy.spells.SpellContext;
+import org.oxytocina.geomancy.util.EntityUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,9 +84,8 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
     private PlayerEntity owner = null;
 
     public SoulForgeBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.RITUALISTIC_FORGE_BLOCK_ENTITY, pos, state);
-
-        refreshAvailableIngredients();
+        super(ModBlockEntities.SOULFORGE_BLOCK_ENTITY, pos, state);
+        this.propertyDelegate = new ArrayPropertyDelegate(3);
     }
 
     @Override
@@ -113,17 +118,18 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
 
     @Override
     public Text getDisplayName() {
-        return Text.translatable("container."+Geomancy.MOD_ID+".ritualistic_forge");
+        return Text.translatable("container."+Geomancy.MOD_ID+".soulforge");
     }
 
     @Nullable
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-        return new RitualForgeScreenHandler(syncId, playerInventory, this, this.propertyDelegate);
+        return new SoulForgeScreenHandler(syncId, playerInventory, this, this.propertyDelegate);
     }
 
     public boolean isActive(){return activeRecipe!=null;}
 
 
+    @Override
     public DefaultedList<ItemStack> getItems() {
         return ownInventory;
     }
@@ -184,6 +190,7 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
 
     public void tick(World world, BlockPos pos, BlockState state) {
         if(!initialized) initialize(world,pos,state);
+        if(world.isClient) return;
 
         if(this.isActive()){
             currentResult = activeRecipe.getPreviewOutput(inputInventory());
@@ -196,10 +203,14 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
             if(instability>=1){
                 // instability too high, abort craft
                 this.resetProgress();
+                CamShakeUtil.cause(world,getPos().toCenterPos(),20,2,2,0.5f);
                 // TODO: visual and auditory flair
                 // TODO: toss out all ingredients
                 activeRecipe=null;
             }
+
+            if(Geomancy.tick%4==0)
+                sendUpdatesToNearbyClients();
         }
         else if(previewingRecipe!=null)
             currentResult = previewingRecipe.getPreviewOutput(inputInventory());
@@ -216,6 +227,8 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
         activeRecipe=null;
         markDirty();
         // TODO: visual and auditory flair
+        CamShakeUtil.cause(world,getPos().toCenterPos(),20,2,2,0.5f);
+        sendUpdatesToNearbyClients();
     }
 
     private boolean hasCraftingFinished() {
@@ -227,11 +240,14 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
         if(!world.isClient){
             register();
             registerInArea(world,pos,PEDESTAL_RANGE);
+
+            refreshAvailableIngredients();
         }
     }
     private void resetProgress() {
         progress=0;
         instability=0;
+        sendUpdatesToNearbyClients();
     }
 
     private void spawnResult() {
@@ -322,29 +338,25 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
 
     @Override
     public ItemStack removeStack(int slot) {
-
+        var res = ImplementedInventory.super.removeStack(slot);
         if(slot<INPUT_SLOT_COUNT)
             inventoryChanged();
-
-        return ImplementedInventory.super.removeStack(slot);
+        return res;
     }
 
     @Override
     public ItemStack removeStack(int slot, int count) {
-
+        var res = ImplementedInventory.super.removeStack(slot, count);
         if(slot<INPUT_SLOT_COUNT)
             inventoryChanged();
-
-        return ImplementedInventory.super.removeStack(slot, count);
+        return res;
     }
 
     @Override
     public void setStack(int slot, ItemStack stack) {
-
+        ImplementedInventory.super.setStack(slot, stack);
         if(slot<INPUT_SLOT_COUNT)
             inventoryChanged();
-
-        ImplementedInventory.super.setStack(slot, stack);
     }
 
     @Override
@@ -430,6 +442,13 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
         }
 
         // TODO: visual and auditory flair
+        if(taken<=0){
+            // didnt make progress, soul storers are empty!
+            // make a dud sound
+        }
+        else{
+            // made progress
+        }
     }
 
     @Override
@@ -437,97 +456,33 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
         return isActive();
     }
 
-    public static class ParticleData {
-        public ParticleData.Type type = ParticleData.Type.PROGRESS;
-        public int amount = 10;
-        public float dispersion = 0.5f;
-        public Vec3d pos;
-        public Vec3d velMin;
-        public Vec3d velMax;
-        public Identifier world;
+    public Inventory getDroppedItems() {
+        Inventory res = ImplementedInventory.ofSize(INPUT_SLOT_COUNT);
+        for (int i = 0; i < INPUT_SLOT_COUNT; i++) {
+            res.setStack(i,getStack(i));
+        }
+        return res;
+    }
 
-        private ParticleData(ParticleData.Type type, int amount, Vec3d pos, Vec3d velMin, Vec3d velMax, Identifier world, float dispersion){
-            this.type=type;
-            this.amount=amount;
-            this.pos=pos;
-            this.velMin=velMin;
-            this.velMax=velMax;
-            this.world=world;
-            this.dispersion=dispersion;
-        }
+    public void sendUpdatesToNearbyClients(){
+        if(world==null||!(world instanceof ServerWorld sw)) return;
+        PacketByteBuf buf = PacketByteBufs.create();
 
-        public static ParticleData createProgress(SmitheryBlockEntity smithery, Vec3d pos){
-            return new ParticleData(ParticleData.Type.PROGRESS, 5,pos.add(0,0.6f,0),new Vec3d(0,0,0),new Vec3d(0,0,0),smithery.getWorld().getRegistryKey().getValue(),0.3f);
-        }
-        public static ParticleData createComplete(SmitheryBlockEntity smithery, Vec3d pos){
-            return new ParticleData(ParticleData.Type.COMPLETE, 10,pos.add(0,0.6f,0),new Vec3d(-0.2f,0,-0.2f),new Vec3d(0.2f,0.4f,0.2f),smithery.getWorld().getRegistryKey().getValue(),0.3f);
-        }
-        public static ParticleData createFailure(SmitheryBlockEntity smithery, Vec3d pos){
-            return new ParticleData(ParticleData.Type.FAILURE, 10,pos.add(0,0.6f,0),new Vec3d(-0.2f,0,-0.2f),new Vec3d(0.1f,0.2f,0.1f),smithery.getWorld().getRegistryKey().getValue(),0.3f);
-        }
+        buf.writeBlockPos(getPos());
+        buf.writeBoolean(isActive());
+        if(isActive())
+            buf.writeIdentifier(activeRecipe.getIdentifier());
+        buf.writeFloat(progress);
+        buf.writeFloat(instability);
 
-        public ParticleData amount(int amount){this.amount = amount;return this;}
-        public ParticleData dispersion(int dispersion){this.dispersion = dispersion;return this;}
-        public ParticleData type(ParticleData.Type type){this.type = type;return this;}
+        ModMessages.sendToAllClients(sw.getServer(),ModMessages.UPDATE_SOULFORGE,buf, spe-> EntityUtil.isInRange(spe,sw,getPos().toCenterPos(),100));
+    }
 
-        public void write(PacketByteBuf buf){
-            buf.writeString(type.toString());
-            buf.writeInt(amount);
-            buf.writeFloat(dispersion);
-            buf.writeVector3f(pos.toVector3f());
-            buf.writeVector3f(velMin.toVector3f());
-            buf.writeVector3f(velMax.toVector3f());
-            buf.writeIdentifier(world);
-        }
-
-        public static ParticleData from(PacketByteBuf buf){
-            ParticleData.Type type = ParticleData.Type.valueOf(buf.readString());
-            int amount = buf.readInt();
-            float dispersion = buf.readFloat();
-            Vec3d pos = new Vec3d(buf.readVector3f());
-            Vec3d velMin = new Vec3d(buf.readVector3f());
-            Vec3d velMax = new Vec3d(buf.readVector3f());
-            Identifier world = buf.readIdentifier();
-            return new ParticleData(type,amount,pos,velMin,velMax,world,dispersion);
-        }
-
-        @Environment(EnvType.CLIENT)
-        public void run(){
-            World worldObj = MinecraftClient.getInstance().world;
-            if(!worldObj.getRegistryKey().getValue().equals(world)) return; // ignore particle spawns in different worlds
-            Random rand = new LocalRandom(GeomancyClient.tick);
-            for (int i = 0; i < amount; i++) {
-                Vec3d pPos = new Vec3d(
-                        pos.x+(rand.nextFloat()*2-1)*dispersion,
-                        pos.y+(rand.nextFloat()*2-1)*dispersion,
-                        pos.z+(rand.nextFloat()*2-1)*dispersion);
-                Vec3d vel = new Vec3d(
-                        MathHelper.lerp(rand.nextFloat(),velMin.x,velMax.x),
-                        MathHelper.lerp(rand.nextFloat(),velMin.y,velMax.y),
-                        MathHelper.lerp(rand.nextFloat(),velMin.z,velMax.z)
-                );
-                switch(type){
-                    case PROGRESS:{
-                        worldObj.addParticle(ParticleTypes.LAVA,pPos.x,pPos.y,pPos.z,vel.x,vel.y,vel.z);
-                        break;
-                    }
-                    case COMPLETE:{
-                        worldObj.addParticle(ParticleTypes.LAVA,pPos.x,pPos.y,pPos.z,0,0,0);
-                        worldObj.addParticle(ParticleTypes.FLAME,pPos.x,pPos.y,pPos.z,vel.x,vel.y,vel.z);
-                        break;
-                    }
-                    case FAILURE:{
-                        worldObj.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE,pPos.x,pPos.y,pPos.z,vel.x,vel.y,vel.z);
-                        break;
-                    }
-                }
-            }
-        }
-
-        public enum Type{
-            PROGRESS,
-            COMPLETE,
-            FAILURE
-        }
+    @Environment(EnvType.CLIENT)
+    public void setStatus(Identifier recipe, float progress, float instability) {
+        if(world==null) return;
+        activeRecipe = recipe==null?null:(ISoulForgeRecipe) world.getRecipeManager().get(recipe).orElse(null);
+        this.progress=progress;
+        this.instability=instability;
     }
 }

@@ -1,10 +1,7 @@
 package org.oxytocina.geomancy.spells;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.*;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
 import net.minecraft.entity.effect.StatusEffect;
@@ -15,8 +12,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.*;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -32,17 +27,14 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.*;
-import net.minecraft.util.math.random.LocalRandom;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.*;
 import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlock;
-import org.oxytocina.geomancy.client.GeomancyClient;
+import org.oxytocina.geomancy.blocks.blockEntities.SoulForgeBlock;
 import org.oxytocina.geomancy.inventories.ImplementedInventory;
 import org.oxytocina.geomancy.items.ISpellSelectorItem;
 import org.oxytocina.geomancy.items.armor.CastingArmorItem;
 import org.oxytocina.geomancy.items.tools.IVariableStoringItem;
-import org.oxytocina.geomancy.networking.packet.S2C.CastParticlesS2CPacket;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
 import org.oxytocina.geomancy.util.*;
@@ -1208,7 +1200,7 @@ public class SpellBlocks {
                             FireballEntity fireball = new FireballEntity(comp.world(),comp.context.caster,vel.x,vel.y,vel.z,power);
                             fireball.setPosition(pos);
                             comp.world().spawnEntity(fireball);
-                            spawnCastParticles(comp,CastParticleData.genericSuccess(comp,pos));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
                             if(Objects.equals(comp.context.root().grid.name, "fireball") && comp.context.casterItem.getItem() instanceof CastingArmorItem cai && cai.getType() == ArmorItem.Type.BOOTS)
                             {
                                 if(comp.context.root().internalVars.has("message") && comp.context.root().internalVars.getText("message").contains("fireball"))
@@ -1220,7 +1212,7 @@ public class SpellBlocks {
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,pos));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,pos));
                         }
 
                         return SpellBlockResult.empty();
@@ -1239,12 +1231,12 @@ public class SpellBlocks {
                             LightningEntity lightning = new LightningEntity(EntityType.LIGHTNING_BOLT,comp.world());
                             lightning.setPosition(pos);
                             comp.world().spawnEntity(lightning);
-                            spawnCastParticles(comp,CastParticleData.genericSuccess(comp,pos));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
                         }
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,pos));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,pos));
                         }
 
                         return SpellBlockResult.empty();
@@ -1267,14 +1259,14 @@ public class SpellBlocks {
 
                         if(trySpendSoul(comp,manaCost)){
                             //comp.world().setBlockState(Toolbox.posToBlockPos(pos), Blocks.GLOWSTONE.getDefaultState());
-                            spawnCastParticles(comp,CastParticleData.genericSuccess(comp,ent.getPos()));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,ent.getPos()));
                             ent.teleport(pos.x,pos.y,pos.z);
-                            spawnCastParticles(comp,CastParticleData.genericSuccess(comp,pos));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
                         }
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,comp.context.getOriginPos()));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,comp.context.getOriginPos()));
                         }
 
                         return SpellBlockResult.empty();
@@ -1316,13 +1308,13 @@ public class SpellBlocks {
                         if(sw.getRegistryKey() == destination.getRegistryKey()) return SpellBlockResult.empty();
 
                         if(trySpendSoul(comp,manaCost)){
-                            spawnCastParticles(comp,CastParticleData.genericSuccess(comp,ent.getPos()));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,ent.getPos()));
                             ent.teleport(destination,ent.getX(),ent.getY(),ent.getZ(),null,ent.getYaw(),ent.getPitch());
                         }
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,comp.context.getOriginPos()));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,comp.context.getOriginPos()));
                         }
 
                         return SpellBlockResult.empty();
@@ -1349,7 +1341,7 @@ public class SpellBlocks {
                             entity.setVelocityClient(vel.x,vel.y,vel.z);
                             entity.velocityModified=true;
                             entity.velocityDirty=true;
-                            spawnCastParticles(comp,CastParticleData.genericSuccess(comp,entity.getPos()));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,entity.getPos()));
                             if(vel.y>=1)
                                 tryUnlockSpellAdvancement(comp,"liftoff");
                             if(entity==comp.caster()){
@@ -1362,7 +1354,7 @@ public class SpellBlocks {
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,comp.context.getOriginPos()));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,comp.context.getOriginPos()));
                         }
 
                         return SpellBlockResult.empty();
@@ -1410,12 +1402,12 @@ public class SpellBlocks {
                             if(comp.caster()!=null && EntityUtil.distanceTo(comp.caster(),pos) >7)
                                 tryUnlockSpellAdvancement(comp,"long_arms");
                             trySpendSoul(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericSuccess(comp,pos));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
                         }
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,pos));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,pos));
                         }
 
                         return SpellBlockResult.empty();
@@ -1497,12 +1489,12 @@ public class SpellBlocks {
                             if(comp.caster()!=null && EntityUtil.distanceTo(comp.caster(),pos) >7)
                                 tryUnlockSpellAdvancement(comp,"long_arms");
                             trySpendSoul(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericSuccess(comp,pos));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
                         }
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,pos));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,pos));
                         }
 
                         return SpellBlockResult.empty();
@@ -1526,12 +1518,12 @@ public class SpellBlocks {
                             }
 
                             trySpendSoul(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericSuccess(comp,comp.context.getOriginPos()));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,comp.context.getOriginPos()));
                         }
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,comp.context.getOriginPos()));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,comp.context.getOriginPos()));
                         }
                         return SpellBlockResult.empty();
                     })
@@ -1609,7 +1601,7 @@ public class SpellBlocks {
                                     }
 
                                     trySpendSoul(comp,manaCost);
-                                    spawnCastParticles(comp,CastParticleData.genericSuccess(comp,pos));
+                                    spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
                                     return SpellBlockResult.empty();
                                 }
 
@@ -1653,13 +1645,13 @@ public class SpellBlocks {
                                 }
 
                                 trySpendSoul(comp,manaCost);
-                                spawnCastParticles(comp,CastParticleData.genericSuccess(comp,pos));
+                                spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
                             }
                         }
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,pos));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,pos));
                         }
 
                         return SpellBlockResult.empty();
@@ -1726,7 +1718,7 @@ public class SpellBlocks {
                         if(trySpendSoul(comp,manaCost)){
                             var effectInst = new StatusEffectInstance(Registries.STATUS_EFFECT.get(id),Math.round(duration*20),amp);
                             ent.addStatusEffect(effectInst);
-                            spawnCastParticles(comp,CastParticleData.genericSuccess(comp,ent.getPos()));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,ent.getPos()));
 
                             if((ent instanceof VillagerEntity || (ent instanceof PlayerEntity pe&&pe!=comp.caster())) && List.of(
                                     StatusEffects.INSTANT_HEALTH,StatusEffects.REGENERATION).contains(effectInst.getEffectType()))
@@ -1735,7 +1727,7 @@ public class SpellBlocks {
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,comp.context.getOriginPos()));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,comp.context.getOriginPos()));
                         }
 
                         return SpellBlockResult.empty();
@@ -1806,12 +1798,12 @@ public class SpellBlocks {
                             if(comp.caster()!=null && EntityUtil.distanceTo(comp.caster(),pos) >7)
                                 tryUnlockSpellAdvancement(comp,"long_arms");
                             trySpendSoul(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericSuccess(comp,pos));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
                         }
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,pos));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,pos));
                         }
 
                         return SpellBlockResult.empty();
@@ -1891,7 +1883,7 @@ public class SpellBlocks {
                                 if(!pred.apply(targetState)) continue;
                                 igniteBehavior.get(pred).apply(comp,vars);
                                 trySpendSoul(comp,manaCost);
-                                spawnCastParticles(comp,CastParticleData.genericSuccess(comp,pos));
+                                spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
                                 tryUnlockSpellAdvancement(comp,"ignition");
                                 break;
                             }
@@ -1899,7 +1891,7 @@ public class SpellBlocks {
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,pos));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,pos));
                         }
 
                         return SpellBlockResult.empty();
@@ -1938,13 +1930,13 @@ public class SpellBlocks {
                                     },vol,pitch);
 
                             trySpendSoul(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericSuccess(comp,pos));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
                             if(comp.context.root().silent) tryUnlockSpellAdvancement(comp,"deception");
                         }
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,pos));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,pos));
                         }
 
                         return SpellBlockResult.empty();
@@ -1982,12 +1974,12 @@ public class SpellBlocks {
                             spell.spawnDelegate(comp.context,pos,rot,delay);
 
                             trySpendSoul(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericSuccess(comp,pos));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
                         }
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,pos));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,pos));
                         }
 
                         return SpellBlockResult.empty();
@@ -2009,12 +2001,12 @@ public class SpellBlocks {
                             ((ServerWorld)comp.world()).setTimeOfDay(Math.round(fraction*24000.0));
 
                             trySpendSoul(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericSuccess(comp,comp.context.getOriginPos()));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,comp.context.getOriginPos()));
                         }
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,comp.context.getOriginPos()));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,comp.context.getOriginPos()));
                         }
 
                         return SpellBlockResult.empty();
@@ -2042,12 +2034,12 @@ public class SpellBlocks {
                                     );
 
                             trySpendSoul(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericSuccess(comp,comp.context.getOriginPos()));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,comp.context.getOriginPos()));
                         }
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,comp.context.getOriginPos()));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,comp.context.getOriginPos()));
                         }
 
                         return SpellBlockResult.empty();
@@ -2071,12 +2063,12 @@ public class SpellBlocks {
 
                             trySpendSoul(comp,manaCost);
                             tryUnlockSpellAdvancement(comp,"bones");
-                            spawnCastParticles(comp,CastParticleData.genericSuccess(comp,comp.context.getOriginPos()));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,comp.context.getOriginPos()));
                         }
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,comp.context.getOriginPos()));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,comp.context.getOriginPos()));
                         }
 
                         return SpellBlockResult.empty();
@@ -2183,17 +2175,21 @@ public class SpellBlocks {
                             else if(targetBlock instanceof BellBlock bb){
                                 bb.ring(world,blockPos,null);
                             }
+                            // soul forge
+                            else if(targetBlock instanceof SoulForgeBlock sfb){
+                                sfb.activate(world,blockPos,comp.context);
+                            }
 
                             if(comp.caster()!=null && EntityUtil.distanceTo(comp.caster(),pos) >=1000)
                                 tryUnlockSpellAdvancement(comp,"ftl");
 
                             trySpendSoul(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericSuccess(comp,pos));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
                         }
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,pos));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,pos));
                         }
 
                         return SpellBlockResult.empty();
@@ -2218,12 +2214,12 @@ public class SpellBlocks {
                             if(canAfford(comp,manaCost)){
                                 dat.run(ient);
                                 trySpendSoul(comp,manaCost);
-                                spawnCastParticles(comp,CastParticleData.genericSuccess(comp,comp.context.getOriginPos()));
+                                spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,comp.context.getOriginPos()));
                             }
                             else{
                                 // too broke
                                 tryLogDebugBroke(comp,manaCost);
-                                spawnCastParticles(comp,CastParticleData.genericBroke(comp,comp.context.getOriginPos()));
+                                spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,comp.context.getOriginPos()));
                             }
                             return SpellBlockResult.empty();
                         }
@@ -2240,12 +2236,12 @@ public class SpellBlocks {
                                 resStack.setCount(ient.getStack().getCount());
                                 ient.setStack(resStack);
                                 trySpendSoul(comp,manaCost);
-                                spawnCastParticles(comp,CastParticleData.genericSuccess(comp,comp.context.getOriginPos()));
+                                spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,comp.context.getOriginPos()));
                             }
                             else{
                                 // too broke
                                 tryLogDebugBroke(comp,manaCost);
-                                spawnCastParticles(comp,CastParticleData.genericBroke(comp,comp.context.getOriginPos()));
+                                spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,comp.context.getOriginPos()));
                             }
                             return SpellBlockResult.empty();
                         }
@@ -2293,12 +2289,12 @@ public class SpellBlocks {
                             InventoryUtil.tryInsert(target,insertedStack,toSlot);
                             stack.decrement(amount-insertedStack.getCount());
                             trySpendSoul(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericSuccess(comp,pos));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
                         }
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,pos));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,pos));
                         }
 
                         return SpellBlockResult.empty();
@@ -2342,12 +2338,12 @@ public class SpellBlocks {
                             InventoryUtil.tryInsert(toInv,insertedStack,toSlot);
                             stack.decrement(amount-insertedStack.getCount());
                             trySpendSoul(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericSuccess(comp,pos));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
                         }
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,pos));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,pos));
                         }
 
                         return SpellBlockResult.empty();
@@ -2395,12 +2391,12 @@ public class SpellBlocks {
                             InventoryUtil.tryInsert(toInv,insertedStack,toSlot);
                             stack.decrement(amount-insertedStack.getCount());
                             trySpendSoul(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericSuccess(comp,fromPos));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,fromPos));
                         }
                         else{
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
-                            spawnCastParticles(comp,CastParticleData.genericBroke(comp,fromPos));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,fromPos));
                         }
 
                         return SpellBlockResult.empty();
@@ -2890,8 +2886,8 @@ public class SpellBlocks {
         if(context.debugging)logDebug(context.caster,Text.translatable("geomancy.spells.debug.timeout",context.grid.getRuntimeName(context),context.getExecutionTimeMS()));
     }
 
-    private static void spawnCastParticles(SpellComponent comp,CastParticleData data){
-        data.send(comp.world());
+    private static void spawnCastParticles(SpellComponent comp,ParticleUtil.ParticleData data){
+        data.send();
     }
 
     public static void playCastSound(SpellContext ctx){
@@ -2991,7 +2987,7 @@ public class SpellBlocks {
     public static void spawnMuzzleParticles(SpellContext context) {
         if(context.isSilent()) return;
         if(context.soulConsumed<=0 && context.soundBehavior== SpellContext.SoundBehavior.Reduced) return;
-        CastParticleData.genericMuzzle(context,context.getMuzzlePos(),context.getDirection()).send(context.getWorld());
+        ParticleUtil.ParticleData.createGenericCastMuzzle(context,context.getMuzzlePos(),context.getDirection()).send();
     }
 
 
@@ -3020,107 +3016,7 @@ public class SpellBlocks {
             return (float)Math.pow((amp+1),ampExponent) * duration * costMult * 0.2f;
         }
     }
-    public static class CastParticleData{
-        public Type type = Type.SOUL;
-        public int amount = 10;
-        public float dispersion = 0.5f;
-        public Vec3d pos;
-        public Vec3d dir;
-        public Identifier world;
-
-        private CastParticleData(Type type, int amount,Vec3d pos,Vec3d dir, Identifier world,float dispersion){
-            this.type=type;
-            this.amount=amount;
-            this.pos=pos;
-            this.dir=dir;
-            this.world=world;
-            this.dispersion=dispersion;
-        }
-
-        public static CastParticleData genericSuccess(SpellComponent comp,Vec3d pos){
-            return create(comp.world(),pos).type(Type.SOUL).amount(10);
-        }
-
-        public static CastParticleData genericBroke(SpellComponent comp,Vec3d pos){
-            return create(comp.world(),pos).type(Type.SOUL_FIRE).amount(10);
-        }
-
-        public static CastParticleData genericMuzzle(SpellContext ctx,Vec3d pos,Vec3d dir){
-            return create(ctx.getWorld(),pos).type(Type.MUZZLE).amount(5).dir(dir).dispersion(0.2f);
-        }
-
-
-        public static CastParticleData genericFail(SpellComponent comp,Vec3d pos){
-            return create(comp.world(),pos).type(Type.SOUL_FIRE).amount(10);
-        }
-
-        public static CastParticleData create(World world,Vec3d pos){
-            return new CastParticleData(Type.SOUL, 10,pos,new Vec3d(0,0,0),world.getRegistryKey().getValue(),0.5f);
-        }
-
-        public CastParticleData amount(int amount){this.amount = amount;return this;}
-        public CastParticleData dir(Vec3d dir){this.dir = dir;return this;}
-        public CastParticleData dispersion(float dispersion){this.dispersion = dispersion;return this;}
-        public CastParticleData type(Type type){this.type = type;return this;}
-
-        public void send(World world){
-            CastParticlesS2CPacket.send(world,this);
-        }
-
-        public void write(PacketByteBuf buf){
-            buf.writeString(type.toString());
-            buf.writeInt(amount);
-            buf.writeFloat(dispersion);
-            buf.writeVector3f(pos.toVector3f());
-            buf.writeVector3f(dir.toVector3f());
-            buf.writeIdentifier(world);
-        }
-
-        public static CastParticleData from(PacketByteBuf buf){
-            Type type = Type.valueOf(buf.readString());
-            int amount = buf.readInt();
-            float dispersion = buf.readFloat();
-            Vec3d pos = new Vec3d(buf.readVector3f());
-            Vec3d dir = new Vec3d(buf.readVector3f());
-            Identifier world = buf.readIdentifier();
-            return new CastParticleData(type,amount,pos,dir,world,dispersion);
-        }
-
-        @Environment(EnvType.CLIENT)
-        public void run(){
-            World worldObj = MinecraftClient.getInstance().world;
-            if(!worldObj.getRegistryKey().getValue().equals(world)) return; // ignore particle spawns in different worlds
-            Random rand = new LocalRandom(GeomancyClient.tick);
-            for (int i = 0; i < amount; i++) {
-                Vec3d pPos = new Vec3d(
-                        pos.x+(rand.nextFloat()*2-1)*dispersion,
-                        pos.y+(rand.nextFloat()*2-1)*dispersion,
-                        pos.z+(rand.nextFloat()*2-1)*dispersion);
-                switch(type){
-                    case SOUL:{
-                        worldObj.addParticle(ParticleTypes.SCULK_SOUL,pPos.x,pPos.y,pPos.z,0,0,0);
-                        break;
-                    }
-                    case SOUL_FIRE:{
-                        Vec3d randVel = new Vec3d(0,0,0).addRandom(rand,0.08f);
-                        worldObj.addParticle(ParticleTypes.SOUL_FIRE_FLAME,pPos.x,pPos.y,pPos.z,randVel.x,randVel.y,randVel.z);
-                        break;
-                    }
-                    case MUZZLE:{
-                        Vec3d randVel = dir.multiply(0.2f).addRandom(rand,0.08f);
-                        worldObj.addParticle(ParticleTypes.SOUL_FIRE_FLAME,pPos.x,pPos.y,pPos.z,randVel.x,randVel.y,randVel.z);
-                        break;
-                    }
-                }
-            }
-        }
-
-        public enum Type{
-            SOUL,
-            SOUL_FIRE,
-            MUZZLE,
-        }
-    }
+    
     public static class TransmuteData{
         public final float cost;
         public final Function<ItemEntity,Boolean> predicate;

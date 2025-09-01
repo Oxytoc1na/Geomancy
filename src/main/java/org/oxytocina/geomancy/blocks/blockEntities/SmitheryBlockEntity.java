@@ -40,7 +40,7 @@ import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.client.GeomancyClient;
 import org.oxytocina.geomancy.client.screen.SmitheryScreenHandler;
-import org.oxytocina.geomancy.networking.packet.S2C.SmitheryParticlesS2CPacket;
+import org.oxytocina.geomancy.util.ParticleUtil;
 import org.oxytocina.geomancy.util.Toolbox;
 import org.oxytocina.geomancy.blocks.MultiblockCrafter;
 import org.oxytocina.geomancy.inventories.AutoCraftingInventory;
@@ -276,11 +276,11 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
                 {
                     world.playSound(null, pos, ModSoundEvents.USE_HAMMER, SoundCategory.NEUTRAL, 0.7F, 0.9F + world.getRandom().nextFloat() * 0.2F);
                     // send progress particle packet
-                    SmitheryParticlesS2CPacket.send(this,ParticleData.createProgress(this,particlePos));
+                    ParticleUtil.ParticleData.createSmithingProgress(this,particlePos).send(world);
                 }
                 else{
                     // send finish particle packet
-                    SmitheryParticlesS2CPacket.send(this,ParticleData.createComplete(this,particlePos));
+                    ParticleUtil.ParticleData.createSmithingComplete(this,particlePos).send(world);
                 }
             }
         }
@@ -347,7 +347,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
                     world.playSound(null, pos, ModSoundEvents.USE_HAMMER_FAIL, SoundCategory.NEUTRAL, 0.9F, 0.9F + world.getRandom().nextFloat() * 0.2F);
                     Vec3d particlePos = Vec3d.ofCenter(pos);
                     // send finish particle packet
-                    SmitheryParticlesS2CPacket.send(this,ParticleData.createFailure(this,particlePos));
+                    ParticleUtil.ParticleData.createSmithingFailure(this,particlePos).send(world);
                 }
             }
 
@@ -492,15 +492,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
             this.dispersion=dispersion;
         }
 
-        public static ParticleData createProgress(SmitheryBlockEntity smithery, Vec3d pos){
-            return new ParticleData(Type.PROGRESS, 5,pos.add(0,0.6f,0),new Vec3d(0,0,0),new Vec3d(0,0,0),smithery.getWorld().getRegistryKey().getValue(),0.3f);
-        }
-        public static ParticleData createComplete(SmitheryBlockEntity smithery, Vec3d pos){
-            return new ParticleData(Type.COMPLETE, 10,pos.add(0,0.6f,0),new Vec3d(-0.2f,0,-0.2f),new Vec3d(0.2f,0.4f,0.2f),smithery.getWorld().getRegistryKey().getValue(),0.3f);
-        }
-        public static ParticleData createFailure(SmitheryBlockEntity smithery, Vec3d pos){
-            return new ParticleData(Type.FAILURE, 10,pos.add(0,0.6f,0),new Vec3d(-0.2f,0,-0.2f),new Vec3d(0.1f,0.2f,0.1f),smithery.getWorld().getRegistryKey().getValue(),0.3f);
-        }
+
 
         public ParticleData amount(int amount){this.amount = amount;return this;}
         public ParticleData dispersion(int dispersion){this.dispersion = dispersion;return this;}

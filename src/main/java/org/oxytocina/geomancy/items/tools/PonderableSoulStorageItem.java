@@ -29,9 +29,14 @@ public class PonderableSoulStorageItem extends SoulStorageItem {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if(world.isClient){
-            user.sendMessage(Text.translatable("geomancy.pondering.prefix").formatted(Formatting.LIGHT_PURPLE).append(
-                    Text.translatable("geomancy.pondering."+ Toolbox.random.nextInt(20)).formatted(Formatting.GRAY)
-            ));
+            if(Toolbox.random.nextFloat()<0.001f)
+                user.sendMessage(Text.translatable("geomancy.pondering.prefix").formatted(Formatting.LIGHT_PURPLE).append(
+                        Text.translatable("geomancy.pondering.mishap").formatted(Formatting.GRAY)
+                ));
+            else
+                user.sendMessage(Text.translatable("geomancy.pondering.prefix").formatted(Formatting.LIGHT_PURPLE).append(
+                        Text.translatable("geomancy.pondering."+ Toolbox.random.nextInt(20)).formatted(Formatting.GRAY)
+                ));
         }
         return TypedActionResult.consume(user.getStackInHand(hand));
     }

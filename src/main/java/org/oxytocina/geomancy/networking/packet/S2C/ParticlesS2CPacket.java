@@ -10,23 +10,23 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 import org.oxytocina.geomancy.networking.ModMessages;
-import org.oxytocina.geomancy.spells.SpellBlocks;
 import org.oxytocina.geomancy.util.EntityUtil;
+import org.oxytocina.geomancy.util.ParticleUtil;
 
-public class CastParticlesS2CPacket {
+public class ParticlesS2CPacket {
 
     @Environment(EnvType.CLIENT)
     public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler,
                                PacketByteBuf buf, PacketSender responseSender) {
-        SpellBlocks.CastParticleData data = SpellBlocks.CastParticleData.from(buf);
+        ParticleUtil.ParticleData data = ParticleUtil.ParticleData.from(buf);
         data.run();
     }
 
-    public static void send(World world, SpellBlocks.CastParticleData data){
+    public static void send(World world, ParticleUtil.ParticleData data){
         if(!(world instanceof ServerWorld sw)) return;
         PacketByteBuf buf = PacketByteBufs.create();
         data.write(buf);
-        ModMessages.sendToAllClients(sw.getServer(),ModMessages.CAST_PARTICLES,buf,spe->
+        ModMessages.sendToAllClients(sw.getServer(),ModMessages.PARTICLES,buf, spe->
                 EntityUtil.isInRange(spe,sw,data.pos,50));
     }
 }

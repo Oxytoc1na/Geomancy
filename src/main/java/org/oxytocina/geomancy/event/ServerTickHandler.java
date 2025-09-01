@@ -2,6 +2,7 @@ package org.oxytocina.geomancy.event;
 
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.server.MinecraftServer;
+import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.util.EntityUtil;
 import org.oxytocina.geomancy.util.LeadUtil;
 import org.oxytocina.geomancy.util.MadnessUtil;
@@ -14,5 +15,6 @@ public class ServerTickHandler implements ServerTickEvents.StartTick {
         LeadUtil.tick(server);
         MadnessUtil.tick(server);
         EntityUtil.tick(server);
+        Geomancy.tick++;
     }
 }

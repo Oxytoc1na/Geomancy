@@ -415,6 +415,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             {
                 add("MODID.pondering.tooltip","Ponderable");
                 add("MODID.pondering.prefix","The orb says: ");
+                add("MODID.pondering.mishap","Fuck you.");
                 int i = 0;
                 add("MODID.pondering."+(i++),"It is certain.");
                 add("MODID.pondering."+(i++),"It is decidedly so.");

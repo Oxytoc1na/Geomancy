@@ -8,6 +8,6 @@ public class ModScreens {
         HandledScreens.register(ModScreenHandlers.SMITHERY_SCREEN_HANDLER, SmitheryScreen::new);
         HandledScreens.register(ModScreenHandlers.SPELLMAKER_SCREEN_HANDLER, SpellmakerScreen::new);
         HandledScreens.register(ModScreenHandlers.STORAGE_ITEM_SCREEN_HANDLER, StorageItemScreen::new);
-        HandledScreens.register(ModScreenHandlers.RITUALISTIC_FORGE_SCREEN_HANDLER, RitualForgeScreen::new);
+        HandledScreens.register(ModScreenHandlers.SOULFORGE_SCREEN_HANDLER, SoulForgeScreen::new);
     }
 }

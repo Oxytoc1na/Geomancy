@@ -19,6 +19,7 @@ import org.oxytocina.geomancy.recipe.smithery.SmithingIngredient;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
 import org.oxytocina.geomancy.spells.SpellBlocks;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SoulForgeRecipe extends GatedModRecipe<Inventory> implements ISoulForgeRecipe {
@@ -49,11 +50,14 @@ public class SoulForgeRecipe extends GatedModRecipe<Inventory> implements ISoulF
     }
 
     public boolean inputsPresent(Inventory inv){
+        List<Integer> usedUp = new ArrayList<>();
         for (NbtIngredient input : inputs) {
             boolean present = false;
             for (int j = 0; j < inv.size(); j++) {
+                if(usedUp.contains(j)) continue;
                 if (input.test(inv.getStack(j))) {
                     present = true;
+                    usedUp.add(j);
                     break;
                 }
             }
@@ -133,7 +137,7 @@ public class SoulForgeRecipe extends GatedModRecipe<Inventory> implements ISoulF
 
     @Override
     public ItemStack getPreviewOutput(Inventory inv) {
-        return null;
+        return output;
     }
 
     @Override

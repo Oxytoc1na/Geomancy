@@ -18,7 +18,7 @@ public class ModBlockEntities {
             FabricBlockEntityTypeBuilder.create(SpellmakerBlockEntity::new,ModBlocks.SPELLMAKER).build());
     public static final BlockEntityType<AutocasterBlockEntity> AUTOCASTER_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE,Geomancy.locate("autocaster_be"),
             FabricBlockEntityTypeBuilder.create(AutocasterBlockEntity::new,ModBlocks.AUTOCASTER).build());
-    public static final BlockEntityType<SoulForgeBlockEntity> RITUALISTIC_FORGE_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE,Geomancy.locate("ritualforge_be"),
+    public static final BlockEntityType<SoulForgeBlockEntity> SOULFORGE_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE,Geomancy.locate("soulforge_be"),
             FabricBlockEntityTypeBuilder.create(SoulForgeBlockEntity::new,ModBlocks.SOUL_FORGE).build());
     public static final BlockEntityType<PedestalBlockEntity> PEDESTAL_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE,Geomancy.locate("pedestal_be"),
             FabricBlockEntityTypeBuilder.create(PedestalBlockEntity::new,ModBlocks.PEDESTAL).build());

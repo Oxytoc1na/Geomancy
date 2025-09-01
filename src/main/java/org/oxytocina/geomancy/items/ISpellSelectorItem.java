@@ -128,4 +128,10 @@ public interface ISpellSelectorItem {
     default boolean spellPresent(ItemStack stack, String spellName){
         return getSpellIndexOfSpell(stack,spellName) != -1;
     }
+
+    default SpellGrid getSelectedSpell(ItemStack stack){
+        var spells = getCastableSpellItems(stack);
+        if(spells.isEmpty()) return null;
+        return SpellStoringItem.readGrid(spells.get(getSelectedSpellIndex(stack)));
+    }
 }

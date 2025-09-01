@@ -29,12 +29,12 @@ public class ModMessages {
     public static final Identifier ITEM_MANA_SYNC =         Geomancy.locate("item_mana_sync");
     public static final Identifier INITIAL_SYNC =           Geomancy.locate("initial_sync");
     public static final Identifier SPELLMAKER_REFRESH =     Geomancy.locate("spellmaker_refresh");
-    public static final Identifier CAST_PARTICLES =         Geomancy.locate("cast_particles");
+    public static final Identifier PARTICLES =              Geomancy.locate("particles");
     public static final Identifier CLIENT_ADVANCEMENT =     Geomancy.locate("client_advancement");
     public static final Identifier OPEN_SPELL_SELECT_SCREEN=Geomancy.locate("open_spell_select_screen");
     public static final Identifier CASTER_SPELL_CHANGED =   Geomancy.locate("caster_spell_changed");
-    public static final Identifier SMITHERY_PARTICLES =     Geomancy.locate("smithery_particles");
     public static final Identifier CAM_SHAKE =              Geomancy.locate("cam_shake");
+    public static final Identifier UPDATE_SOULFORGE =       Geomancy.locate("update_soulforge");
 
     // client to server
 
@@ -110,12 +110,12 @@ public class ModMessages {
         ClientPlayNetworking.registerGlobalReceiver(ITEM_MANA_SYNC, ItemManaSyncS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(INITIAL_SYNC, InitialSyncS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(SPELLMAKER_REFRESH, SpellmakerRefreshS2CPacket::receive);
-        ClientPlayNetworking.registerGlobalReceiver(CAST_PARTICLES, CastParticlesS2CPacket::receive);
+        ClientPlayNetworking.registerGlobalReceiver(PARTICLES, ParticlesS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(CLIENT_ADVANCEMENT, ClientAdvancementS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(OPEN_SPELL_SELECT_SCREEN, OpenSpellSelectScreenS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(CASTER_SPELL_CHANGED, CasterSpellChangedS2CPacket::receive);
-        ClientPlayNetworking.registerGlobalReceiver(SMITHERY_PARTICLES, SmitheryParticlesS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(CAM_SHAKE, CamShakeS2CPacket::receive);
+        ClientPlayNetworking.registerGlobalReceiver(UPDATE_SOULFORGE, SoulforgeUpdateS2CPacket::receive);
     }
 
     public static void sendToAllClients(MinecraftServer server, Identifier id, PacketByteBuf buf){

@@ -5,8 +5,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
-import org.oxytocina.geomancy.blocks.blockEntities.SmitheryBlockEntity;
-import org.oxytocina.geomancy.blocks.blockEntities.SpellmakerBlockEntity;
 
 public class ModScreenHandlers {
     public static final ExtendedScreenHandlerType<SmitheryScreenHandler> SMITHERY_SCREEN_HANDLER =
@@ -21,9 +19,9 @@ public class ModScreenHandlers {
             Registry.register(Registries.SCREEN_HANDLER, new Identifier(Geomancy.MOD_ID, "storage_item.json"),
                     new ExtendedScreenHandlerType<>(StorageItemScreenHandler::new));
 
-    public static final ExtendedScreenHandlerType<RitualForgeScreenHandler> RITUALISTIC_FORGE_SCREEN_HANDLER =
-            Registry.register(Registries.SCREEN_HANDLER, new Identifier(Geomancy.MOD_ID, "ritual_forge.json"),
-                    new ExtendedScreenHandlerType<>(RitualForgeScreenHandler::new));
+    public static final ExtendedScreenHandlerType<SoulForgeScreenHandler> SOULFORGE_SCREEN_HANDLER =
+            Registry.register(Registries.SCREEN_HANDLER, new Identifier(Geomancy.MOD_ID, "soulforge.json"),
+                    new ExtendedScreenHandlerType<>(SoulForgeScreenHandler::new));
 
 
     public static void register() {
