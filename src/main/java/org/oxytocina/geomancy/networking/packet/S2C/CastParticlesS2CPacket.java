@@ -4,7 +4,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.PacketByteBuf;
@@ -13,7 +12,6 @@ import net.minecraft.world.World;
 import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.spells.SpellBlocks;
 import org.oxytocina.geomancy.util.EntityUtil;
-import org.oxytocina.geomancy.util.ManaUtil;
 
 public class CastParticlesS2CPacket {
 

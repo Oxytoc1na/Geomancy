@@ -14,7 +14,7 @@ import org.oxytocina.geomancy.entity.StateSaverAndLoader;
 import org.oxytocina.geomancy.networking.packet.C2S.*;
 import org.oxytocina.geomancy.networking.packet.S2C.*;
 import org.oxytocina.geomancy.progression.advancement.ClientAdvancements;
-import org.oxytocina.geomancy.util.ManaUtil;
+import org.oxytocina.geomancy.util.SoulUtil;
 import org.oxytocina.geomancy.util.StellgeUtil;
 
 import java.util.function.Function;
@@ -89,7 +89,7 @@ public class ModMessages {
                     ServerPlayNetworking.send(handler.getPlayer(), INITIAL_SYNC, data);
 
                     // send item mana data to player
-                    ManaUtil.syncItemMana(handler.getPlayer());
+                    SoulUtil.syncItemSoul(handler.getPlayer());
 
                     // sync various other things
                     StellgeUtil.syncKnowledge(handler.getPlayer());

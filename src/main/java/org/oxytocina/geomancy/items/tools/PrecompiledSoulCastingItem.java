@@ -35,8 +35,8 @@ import java.util.List;
 
 public class PrecompiledSoulCastingItem extends SoulCastingItem {
 
-    public PrecompiledSoulCastingItem(Settings settings, int storageSize) {
-        super(settings, storageSize);
+    public PrecompiledSoulCastingItem(Settings settings, int storageSize, float internalSoulStorage, float rechargeSpeedMultiplier) {
+        super(settings, storageSize,internalSoulStorage,rechargeSpeedMultiplier);
     }
 
     @Override

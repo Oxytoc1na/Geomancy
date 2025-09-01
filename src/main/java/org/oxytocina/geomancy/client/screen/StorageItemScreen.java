@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.util.DrawHelper;
 
 import java.util.Optional;
 
@@ -58,7 +59,7 @@ public class StorageItemScreen extends HandledScreen<StorageItemScreenHandler> {
         int x = (width-backgroundWidth)/2;
         int y = (height-backgroundHeight)/2;
 
-        context.drawNineSlicedTexture(TEXTURE,x,y,backgroundWidth,backgroundHeight,
+        DrawHelper.drawNineSlicedTexture(context,TEXTURE,x,y,backgroundWidth,backgroundHeight,
                 bgPadding,bgPadding,bgPadding,bgPlayerInventoryBuffer,bgWidth,bgHeight,0,0);
 
         if(Optional.of(handler.getOutput()).orElse(ItemStack.EMPTY).isEmpty()){

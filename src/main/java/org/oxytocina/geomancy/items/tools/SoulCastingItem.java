@@ -33,8 +33,13 @@ import java.util.List;
 
 public class SoulCastingItem extends StorageItem implements ISoulStoringItem, IScrollListenerItem, ICustomRarityItem, ISpellSelectorItem {
 
-    public SoulCastingItem(Settings settings, int storageSize) {
+    public final float internalSoulStorage;
+    public final float rechargeSpeedMultiplier;
+
+    public SoulCastingItem(Settings settings, int storageSize, float internalSoulStorage,float rechargeSpeedMultiplier) {
         super(settings, storageSize,ModItemTags.FITS_IN_CASTERS,false);
+        this.internalSoulStorage=internalSoulStorage;
+        this.rechargeSpeedMultiplier=rechargeSpeedMultiplier;
     }
 
     @Override
@@ -113,7 +118,12 @@ public class SoulCastingItem extends StorageItem implements ISoulStoringItem, IS
 
     @Override
     public float getBaseSoulCapacity(ItemStack stack) {
-        return 0;
+        return internalSoulStorage;
+    }
+
+    @Override
+    public float getRechargeSpeedMultiplier(World world, ItemStack stack, LivingEntity entity) {
+        return rechargeSpeedMultiplier*ISoulStoringItem.super.getRechargeSpeedMultiplier(world, stack, entity);
     }
 
     @Override

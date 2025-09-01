@@ -24,7 +24,10 @@
     "client.BlockOverlayRendererMixin",
     "client.GameRendererMixin",
     "client.InGameHudMixin",
+    "client.ItemRendererAccessor",
+    "client.ItemRendererMixin",
     "client.LivingEntityClientMixin",
+    "client.ModelLoaderMixin",
     "client.MouseMixin",
     "client.PlayerInventoryClientMixin"
   ],

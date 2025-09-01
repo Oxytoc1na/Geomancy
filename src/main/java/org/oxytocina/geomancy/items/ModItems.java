@@ -232,18 +232,18 @@ public class ModItems {
 
     // caster items
     //public static final SoulCastingItem CASTER_TEST = register("caster_test",new SoulCastingItem(new FabricItemSettings(),1));
-    public static final SoulCastingItem NOVICE_GLOVE =              register("novice_glove",        new SoulCastingItem(new FabricItemSettings().maxCount(1),5),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
-    public static final SoulCastingItem APPRENTICE_GLOVE =          register("apprentice_glove",    new SoulCastingItem(new FabricItemSettings().maxCount(1),9),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
-    public static final SoulCastingItem JOURNEY_GLOVE =             register("journey_glove",       new SoulCastingItem(new FabricItemSettings().maxCount(1),9*2),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
-    public static final SoulCastingItem EXPERT_GLOVE =              register("expert_glove",        new SoulCastingItem(new FabricItemSettings().maxCount(1),9*4),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
-    public static final SoulCastingItem MASTER_GLOVE =              register("master_glove",        new SoulCastingItem(new FabricItemSettings().maxCount(1),9*6),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
+    public static final SoulCastingItem NOVICE_GLOVE =              register("novice_glove",        new SoulCastingItem(new FabricItemSettings().maxCount(1),5,50,0.5f));
+    public static final SoulCastingItem APPRENTICE_GLOVE =          register("apprentice_glove",    new SoulCastingItem(new FabricItemSettings().maxCount(1),9,100,1));
+    public static final SoulCastingItem JOURNEY_GLOVE =             register("journey_glove",       new SoulCastingItem(new FabricItemSettings().maxCount(1),9*2,200,1));
+    public static final SoulCastingItem EXPERT_GLOVE =              register("expert_glove",        new SoulCastingItem(new FabricItemSettings().maxCount(1),9*4,500,1.5f));
+    public static final SoulCastingItem MASTER_GLOVE =              register("master_glove",        new SoulCastingItem(new FabricItemSettings().maxCount(1),9*6,1000,2f));
     public static final SpellStoringItem SPELLSTORAGE_SMALL =       register("spellstorage_small",  new SpellStoringItem(new FabricItemSettings().maxCount(8),3,3));
     public static final SpellStoringItem SPELLSTORAGE_MEDIUM =      register("spellstorage_medium", new SpellStoringItem(new FabricItemSettings().maxCount(8),5,5));
     public static final SpellStoringItem SPELLSTORAGE_LARGE =       register("spellstorage_large",  new SpellStoringItem(new FabricItemSettings().maxCount(8),7,7));
     public static final SpellComponentStoringItem SPELLCOMPONENT =  register("spellcomponent",      new SpellComponentStoringItem(new FabricItemSettings()),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
     public static final StorageItem COMPONENT_POUCH =               register("component_pouch",     new StorageItem(new FabricItemSettings().maxCount(1),9*6, ModItemTags.COMPONENT_STORING,true),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom));
 
-    public static final PrecompiledSoulCastingItem PRECOMP_CASTER = register("precomp_caster",      new PrecompiledSoulCastingItem(new FabricItemSettings().maxCount(1),4),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
+    public static final PrecompiledSoulCastingItem PRECOMP_CASTER = register("precomp_caster",      new PrecompiledSoulCastingItem(new FabricItemSettings().maxCount(1),4,200,2),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom));
 
     public static final VariableStoringItem VARSTORAGE_SMALL =       register("varstorage_small",  new VariableStoringItem(new FabricItemSettings().maxCount(8),1));
     public static final VariableStoringItem VARSTORAGE_MEDIUM =      register("varstorage_medium", new VariableStoringItem(new FabricItemSettings().maxCount(8),4));
@@ -251,7 +251,7 @@ public class ModItems {
 
     public static final SoulStorageItem SOULSTORAGE_SMALL =       register("soulstorage_small",  new SoulStorageItem(new FabricItemSettings().maxCount(1),100,0.5f));
     public static final SoulStorageItem SOULSTORAGE_MEDIUM =      register("soulstorage_medium", new SoulStorageItem(new FabricItemSettings().maxCount(1),400,0.75f));
-    public static final SoulStorageItem SOULSTORAGE_LARGE =       register("soulstorage_large",  new SoulStorageItem(new FabricItemSettings().maxCount(1),1600,1f));
+    public static final PonderableSoulStorageItem SOULSTORAGE_LARGE = register("soulstorage_large",  new PonderableSoulStorageItem(new FabricItemSettings().maxCount(1),1600,1f));
 
     public static final SoulBoreItem SOUL_BORE =      register("soul_bore", new SoulBoreItem(new FabricItemSettings().maxCount(1),9));
 

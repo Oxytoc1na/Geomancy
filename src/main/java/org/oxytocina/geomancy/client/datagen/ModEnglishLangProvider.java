@@ -411,6 +411,34 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("item.MODID.soulstorage_small",         "Regular Attractor");
             add("item.MODID.soulstorage_medium",        "Captivating Attractor");
             add("item.MODID.soulstorage_large",         "Mesmerizing Attractor");
+            // pondering
+            {
+                add("MODID.pondering.tooltip","Ponderable");
+                add("MODID.pondering.prefix","The orb says: ");
+                int i = 0;
+                add("MODID.pondering."+(i++),"It is certain.");
+                add("MODID.pondering."+(i++),"It is decidedly so.");
+                add("MODID.pondering."+(i++),"Without a doubt.");
+                add("MODID.pondering."+(i++),"Yes, definitely.");
+                add("MODID.pondering."+(i++),"You may rely on it.");
+                add("MODID.pondering."+(i++),"Ah, I see it, yes.");
+                add("MODID.pondering."+(i++),"Most likely.");
+                add("MODID.pondering."+(i++),"Outlook good.");
+                add("MODID.pondering."+(i++),"yes.");
+                add("MODID.pondering."+(i++),"Signs point to yes.");
+
+                add("MODID.pondering."+(i++),"Reply hazy, try again.");
+                add("MODID.pondering."+(i++),"Ask again later.");
+                add("MODID.pondering."+(i++),"Better not tell you now.");
+                add("MODID.pondering."+(i++),"Cannot predict now.");
+                add("MODID.pondering."+(i++),"Concentrate and ask again.");
+
+                add("MODID.pondering."+(i++),"Don't count on it.");
+                add("MODID.pondering."+(i++),"My reply is no.");
+                add("MODID.pondering."+(i++),"My sources say no.");
+                add("MODID.pondering."+(i++),"Outlook not so good.");
+                add("MODID.pondering."+(i++),"Very doubtful.");
+            }
             add("item.MODID.soul_bore",                 "Soul Bore");
             add("geomancy.soul_bore.tooltip","Turns octangulite into souls");
             add("geomancy.soul_bore.tooltip.1","Current Fuel: %1$s");

@@ -100,6 +100,7 @@ TODO EFFECT BLOCKS
 -- if this gets added, it's got to be getters only
 --- allowing the user to set NBT is an easy way to get literally any item in the game
 - collect items on ground
+-- this can be done with the entity id, equals and teleport component
 
 autocaster
 - set block redstone level
@@ -177,6 +178,14 @@ crafting process concept
 
 
 PROGRESSION
+
+gloves (number in parentheses is storage capacity):
+- novice (5): leather, titanium, made at smithery, used to initially activate the soulforge
+from hereon out, made at soulforge
+- apprentice (9): leather, titanium, mithril, octangulite
+- journeyman (9*2): previous + phantom membrane, octangulite, stellge tech
+- expert (9*4): previous + end ingredients (dragons breath, shulker shell)
+- master (9*6): TODO null dimension & endgame content
 
 start
 -> new ores

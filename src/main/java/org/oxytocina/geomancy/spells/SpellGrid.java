@@ -25,7 +25,7 @@ import org.oxytocina.geomancy.entity.CasterDelegateEntity;
 import org.oxytocina.geomancy.items.SpellStoringItem;
 import org.oxytocina.geomancy.util.ByteUtil;
 import org.oxytocina.geomancy.util.EntityUtil;
-import org.oxytocina.geomancy.util.ManaUtil;
+import org.oxytocina.geomancy.util.SoulUtil;
 import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.*;
@@ -160,7 +160,7 @@ public class SpellGrid {
             {
                 case Caster :
                     if(casterEntity instanceof PlayerEntity pe)
-                        ManaUtil.syncMana(pe); break;
+                        SoulUtil.syncSoul(pe); break;
                 case Block:
                     break;
             }

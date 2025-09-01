@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.oxytocina.geomancy.util.LeadUtil;
 import org.oxytocina.geomancy.util.MadnessUtil;
-import org.oxytocina.geomancy.util.ManaUtil;
+import org.oxytocina.geomancy.util.SoulUtil;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -60,7 +60,7 @@ public abstract class PlayerInventoryMixin {
         if(!(this.player instanceof ServerPlayerEntity serverPlayer)) return;
 
         //if(stack.getItem() instanceof ManaStoringItem){
-        ManaUtil.queueRecalculateMana(this.player);
+        SoulUtil.queueRecalculateSoul(this.player);
         LeadUtil.queueRecalculatePoisoningSpeed(this.player);
         MadnessUtil.queueRecalculateMadnessSpeed(this.player);
         //}

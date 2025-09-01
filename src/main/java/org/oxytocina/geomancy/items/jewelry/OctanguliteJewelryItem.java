@@ -16,7 +16,7 @@ import org.oxytocina.geomancy.items.ICustomRarityItem;
 import org.oxytocina.geomancy.items.IMaddeningItem;
 import org.oxytocina.geomancy.items.ISoulStoringItem;
 import org.oxytocina.geomancy.util.MadnessUtil;
-import org.oxytocina.geomancy.util.ManaUtil;
+import org.oxytocina.geomancy.util.SoulUtil;
 
 import java.util.List;
 
@@ -60,7 +60,7 @@ public class OctanguliteJewelryItem extends JewelryItem implements ISoulStoringI
 
         if(entity instanceof ServerPlayerEntity player)
         {
-            ManaUtil.queueRecalculateMana(player);
+            SoulUtil.queueRecalculateSoul(player);
             MadnessUtil.queueRecalculateMadnessSpeed(player);
         }
     }
@@ -71,7 +71,7 @@ public class OctanguliteJewelryItem extends JewelryItem implements ISoulStoringI
 
         if(entity instanceof ServerPlayerEntity player)
         {
-            ManaUtil.queueRecalculateMana(player);
+            SoulUtil.queueRecalculateSoul(player);
             MadnessUtil.queueRecalculateMadnessSpeed(player);
         }
     }

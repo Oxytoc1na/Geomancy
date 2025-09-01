@@ -9,7 +9,7 @@ import net.minecraft.util.ClickType;
 import org.oxytocina.geomancy.client.screen.slots.SlotWithOnClickAction;
 import org.oxytocina.geomancy.util.LeadUtil;
 import org.oxytocina.geomancy.util.MadnessUtil;
-import org.oxytocina.geomancy.util.ManaUtil;
+import org.oxytocina.geomancy.util.SoulUtil;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.*;
@@ -36,7 +36,7 @@ public abstract class ItemStackMixin {
         if(!(player instanceof ServerPlayerEntity serverPlayer)) return;
 
         //if(this.getItem() instanceof ManaStoringItem){
-        ManaUtil.queueRecalculateMana(player);
+        SoulUtil.queueRecalculateSoul(player);
         LeadUtil.queueRecalculatePoisoningSpeed(player);
         MadnessUtil.queueRecalculateMadnessSpeed(player);
         //}

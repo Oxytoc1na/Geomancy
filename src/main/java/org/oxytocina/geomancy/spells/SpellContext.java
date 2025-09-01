@@ -1,6 +1,5 @@
 package org.oxytocina.geomancy.spells;
 
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
@@ -13,13 +12,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
-import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlock;
 import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlockEntity;
 import org.oxytocina.geomancy.entity.CasterDelegateEntity;
 import org.oxytocina.geomancy.items.ISpellSelectorItem;
 import org.oxytocina.geomancy.items.tools.SoulCastingItem;
-import org.oxytocina.geomancy.util.ManaUtil;
+import org.oxytocina.geomancy.util.SoulUtil;
 import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.concurrent.TimeUnit;
@@ -160,12 +157,12 @@ public class SpellContext {
                     return true;
 
                 availableSoul -= amount;
-                return ManaUtil.tryConsumeMana(caster,amount,this);
+                return SoulUtil.tryConsumeSoul(caster,amount,this);
             }
 
             case Block:{
                 availableSoul -= amount;
-                return ManaUtil.tryConsumeMana(casterBlock,amount,this);
+                return SoulUtil.tryConsumeSoul(casterBlock,amount,this);
             }
 
             case Delegate:
@@ -174,11 +171,11 @@ public class SpellContext {
                     if(caster instanceof PlayerEntity player && player.isCreative())
                         return true;
                     availableSoul -= amount;
-                    return ManaUtil.tryConsumeMana(caster,amount,this);
+                    return SoulUtil.tryConsumeSoul(caster,amount,this);
                 }
                 if(casterBlock!=null){
                     availableSoul -= amount;
-                    return ManaUtil.tryConsumeMana(casterBlock,amount,this);
+                    return SoulUtil.tryConsumeSoul(casterBlock,amount,this);
                 }
             }
         }
@@ -192,7 +189,7 @@ public class SpellContext {
         switch (sourceType){
             case Caster :{
                 if(caster instanceof PlayerEntity player){
-                    availableSoul = ManaUtil.getMana(player);
+                    availableSoul = SoulUtil.getSoul(player);
                     if(player.isCreative()) return true;
                     return availableSoul>=amount;
                 }
@@ -202,7 +199,7 @@ public class SpellContext {
             }
 
             case Block:{
-                availableSoul = ManaUtil.getMana(casterBlock.getWorld(),casterBlock);
+                availableSoul = SoulUtil.getSoul(casterBlock.getWorld(),casterBlock);
                 return availableSoul>=amount;
             }
 
@@ -210,7 +207,7 @@ public class SpellContext {
             default:{
                 if(caster!=null){
                     if(caster instanceof PlayerEntity player){
-                        availableSoul = ManaUtil.getMana(player);
+                        availableSoul = SoulUtil.getSoul(player);
                         if(player.isCreative()) return true;
                         return availableSoul>=amount;
                     }
@@ -219,7 +216,7 @@ public class SpellContext {
                     return true;
                 }
                 if(casterBlock!=null){
-                    availableSoul = ManaUtil.getMana(casterBlock.getWorld(),casterBlock);
+                    availableSoul = SoulUtil.getSoul(casterBlock.getWorld(),casterBlock);
                     return availableSoul>=amount;
                 }
                 break;
@@ -235,7 +232,7 @@ public class SpellContext {
         switch (sourceType){
             case Caster :{
                 if(caster instanceof PlayerEntity player){
-                    availableSoul = ManaUtil.getMana(player);
+                    availableSoul = SoulUtil.getSoul(player);
                     return;
                 }
                 // TODO: livingentity mana
@@ -243,16 +240,16 @@ public class SpellContext {
             }
 
             case Block:{
-                availableSoul = ManaUtil.getMana(casterBlock.getWorld(),casterBlock);
+                availableSoul = SoulUtil.getSoul(casterBlock.getWorld(),casterBlock);
             }
 
             case Delegate:
             default:{
                 if(caster instanceof PlayerEntity player){
-                    availableSoul = ManaUtil.getMana(player);
+                    availableSoul = SoulUtil.getSoul(player);
                     return;
                 }
-                availableSoul = ManaUtil.getMana(casterBlock.getWorld(),casterBlock);
+                availableSoul = SoulUtil.getSoul(casterBlock.getWorld(),casterBlock);
                 break;
             }
         }
@@ -266,14 +263,14 @@ public class SpellContext {
         switch (sourceType){
             case Caster :{
                 if(caster instanceof PlayerEntity pe){
-                    return ManaUtil.getMaxMana(pe);
+                    return SoulUtil.getMaxSoul(pe);
                 }
                 // TODO: livingentity mana
                 return 100;
             }
 
             case Block:{
-                return ManaUtil.getMaxMana(casterBlock.getWorld(),casterBlock);
+                return SoulUtil.getMaxSoul(casterBlock.getWorld(),casterBlock);
             }
 
             case Delegate:

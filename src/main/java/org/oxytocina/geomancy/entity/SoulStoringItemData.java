@@ -8,7 +8,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.world.World;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.items.ISoulStoringItem;
-import org.oxytocina.geomancy.util.ManaUtil;
+import org.oxytocina.geomancy.util.SoulUtil;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -103,7 +103,7 @@ public class SoulStoringItemData {
             stackMap.put(newData.uuid,stack);
             uuid = newData.uuid;
             StateSaverAndLoader.setManaStoringItemData(world,uuid,newData);
-            ManaUtil.syncItemMana(world,stack);
+            SoulUtil.syncItemSoul(world,stack);
             return newData;
         }
         else if(!stackMap.containsKey(uuid)){

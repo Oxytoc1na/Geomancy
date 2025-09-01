@@ -36,7 +36,7 @@ import org.oxytocina.geomancy.spells.SpellContext;
 
 import java.util.*;
 
-public class ManaUtil {
+public class SoulUtil {
 
     private static final ArrayList<PlayerEntity> queuedRecalcs = new ArrayList<>();
     // cache recently calculated ambient soul values to reduce overhead
@@ -44,7 +44,7 @@ public class ManaUtil {
     private static final HashMap<BlockPos,Float> cachedAmbientSouls = new HashMap<>();
 
     /// DOESNT sync mana
-    public static boolean setMana(PlayerEntity player, float amount){
+    public static boolean setSoul(PlayerEntity player, float amount){
         if(player==null) return false;
         PlayerData data = PlayerData.from(player);
         float old = data.mana;
@@ -55,7 +55,7 @@ public class ManaUtil {
     }
 
     /// DOESNT sync mana
-    public static boolean setManaCap(PlayerEntity player, float newMaxMana){
+    public static boolean setSoulCap(PlayerEntity player, float newMaxMana){
         if(player==null) return false;
         PlayerData data = PlayerData.from(player);
         float old = data.maxMana;
@@ -64,11 +64,11 @@ public class ManaUtil {
         return true;
     }
 
-    public static float getMana(PlayerEntity player){
+    public static float getSoul(PlayerEntity player){
         return PlayerData.from(player).mana;
     }
 
-    public static float getMana(World world, Inventory inv){
+    public static float getSoul(World world, Inventory inv){
         var items = getAllSoulStoringItems(inv);
         float res = 0;
         for (ItemStack s : items) {
@@ -77,16 +77,16 @@ public class ManaUtil {
         return res;
     }
 
-    public static float getMaxMana(PlayerEntity player){
+    public static float getMaxSoul(PlayerEntity player){
         return PlayerData.from(player).maxMana;
     }
 
     /// call after equipping/unequipping mana storing items, casting spells, etc.
     /// syncs mana
-    private static void recalculateMana(PlayerEntity player){
-        recalculateMana(player,true);
+    private static void recalculateSoul(PlayerEntity player){
+        recalculateSoul(player,true);
     }
-    private static void recalculateMana(PlayerEntity player, boolean sync){
+    private static void recalculateSoul(PlayerEntity player, boolean sync){
         if(player==null || !(player instanceof ServerPlayerEntity)) return;
 
         float cap = 0;
@@ -100,22 +100,22 @@ public class ManaUtil {
             }
         }
 
-        setManaCap(player,cap);
-        setMana(player,mana);
+        setSoulCap(player,cap);
+        setSoul(player,mana);
 
         if(sync)
-            syncMana(player);
+            syncSoul(player);
     }
 
     private static int cacheClearTimer = 0;
     public static void tick(MinecraftServer server){
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-            ManaUtil.tickPlayerMana(player);
+            SoulUtil.tickPlayerSoul(player);
         }
 
         // recalc mana
         for(PlayerEntity entity : queuedRecalcs){
-            recalculateMana(entity);
+            recalculateSoul(entity);
         }
         queuedRecalcs.clear();
 
@@ -125,29 +125,29 @@ public class ManaUtil {
         }
     }
 
-    public static void queueRecalculateMana(PlayerEntity player){
+    public static void queueRecalculateSoul(PlayerEntity player){
         if(!queuedRecalcs.contains(player))
             queuedRecalcs.add(player);
     }
 
-    public static void syncMana(PlayerEntity player){
+    public static void syncSoul(PlayerEntity player){
         if(!(player instanceof ServerPlayerEntity spe)) return;
 
         PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeFloat(getMaxMana(player));
-        buf.writeFloat(getMana(player));
+        buf.writeFloat(getMaxSoul(player));
+        buf.writeFloat(getSoul(player));
         ServerPlayNetworking.send(spe,ModMessages.MANA_SYNC,buf);
     }
 
-    public static void syncItemMana(World world, ItemStack stack){
+    public static void syncItemSoul(World world, ItemStack stack){
         if(!(world instanceof ServerWorld svw)) return;
         if(!(stack.getItem() instanceof ISoulStoringItem)) return;
         for(var p : svw.getPlayers())
-            syncItemMana(world,stack,p);
+            syncItemSoul(world,stack,p);
     }
 
 
-    public static void syncItemMana(World world, ItemStack stack, ServerPlayerEntity with){
+    public static void syncItemSoul(World world, ItemStack stack, ServerPlayerEntity with){
         if(with==null) return;
         if(!(world instanceof ServerWorld svw)) return;
         if(!(stack.getItem() instanceof ISoulStoringItem)) return;
@@ -228,7 +228,7 @@ public class ManaUtil {
         return res;
     }
 
-    private static boolean tickPlayerMana(ServerPlayerEntity player){
+    private static boolean tickPlayerSoul(ServerPlayerEntity player){
         // channeling souls
         var storers = getAllSoulStoringItems(player);
         boolean changed = false;
@@ -240,15 +240,15 @@ public class ManaUtil {
         if(!changed) return changed;
 
         // calculate available mana
-        queueRecalculateMana(player);
+        queueRecalculateSoul(player);
         return changed;
     }
 
-    public static boolean canStoreMana(ItemStack stack){
+    public static boolean canStoreSoul(ItemStack stack){
         return stack.getItem() instanceof ISoulStoringItem;// stack.hasNbt() && stack.getNbt().contains("soul");
     }
 
-    public static ItemStack setItemManaCapacity(World world,ItemStack stack,float capacity){
+    public static ItemStack setItemSoulCapacity(World world, ItemStack stack, float capacity){
         if(stack.getItem() instanceof ISoulStoringItem storingItem){
             storingItem.setCapacity(world,stack,capacity);
         }
@@ -261,12 +261,12 @@ public class ManaUtil {
         var trinketComp = TrinketsApi.getTrinketComponent(player);
         var trinketInv = trinketComp.map(TrinketComponent::getAllEquipped).orElse(null);
         if(inv!=null){
-            for(ItemStack s : inv.main) if(canStoreMana(s)) res.add(s);
-            for(ItemStack s : inv.armor) if(canStoreMana(s)) res.add(s);
-            for(ItemStack s : inv.offHand) if(canStoreMana(s)) res.add(s);
+            for(ItemStack s : inv.main) if(canStoreSoul(s)) res.add(s);
+            for(ItemStack s : inv.armor) if(canStoreSoul(s)) res.add(s);
+            for(ItemStack s : inv.offHand) if(canStoreSoul(s)) res.add(s);
         }
         if(trinketInv!=null){
-            for(var pair : trinketInv) if(canStoreMana(pair.getRight())) res.add(pair.getRight());
+            for(var pair : trinketInv) if(canStoreSoul(pair.getRight())) res.add(pair.getRight());
         }
         return res;
     }
@@ -277,16 +277,17 @@ public class ManaUtil {
             for(int i = 0; i < inv.size();i++)
             {
                 var s = inv.getStack(i);
-                if(canStoreMana(s)) res.add(s);
+                if(canStoreSoul(s)) res.add(s);
             }
         }
         return res;
     }
 
-    private static boolean tickManaRegen(ItemStack stack, World world,float ambientMana, float regenSpeed, ServerPlayerEntity player){
+    private static boolean tickSoulRegen(ItemStack stack, World world, float ambientMana, float regenSpeed, ServerPlayerEntity player){
         var changed = false;
         var item = (ISoulStoringItem) stack.getItem();
         var data = ISoulStoringItem.getData(world,stack);
+        float max = item.getCapacity(world,stack);
 
         // per tick
         float actualRegenSpeed = 0.0005f *
@@ -297,10 +298,10 @@ public class ManaUtil {
         // make regen less effective the fuller the item is
         // at 0%, 100% speed
         // at 100%, 50% speed
-        actualRegenSpeed *= 1-0.5f*(data.mana/Math.max(data.maxMana,1));
+        actualRegenSpeed *= 1-0.5f*(data.mana/Math.max(max,1));
 
         // regen from ambiance
-        float newMana = Toolbox.clampF(data.mana + actualRegenSpeed,0,data.maxMana);
+        float newMana = Toolbox.clampF(data.mana + actualRegenSpeed,0,max);
         if(newMana!=data.mana)
         {
             if(Float.isNaN(newMana))
@@ -313,36 +314,36 @@ public class ManaUtil {
         }
 
         if(changed)
-            syncItemMana(world,stack,player);
+            syncItemSoul(world,stack,player);
         return changed;
     }
 
     /// equally takes mana from all equipped mana storing items
-    public static boolean tryConsumeMana(LivingEntity entity, float amount, @Nullable SpellContext ctx){
+    public static boolean tryConsumeSoul(LivingEntity entity, float amount, @Nullable SpellContext ctx){
         // TODO: living entity mana consumption
         if(!(entity instanceof ServerPlayerEntity player)) return true;
 
-        if(getMana(player) < amount) return false;
+        if(getSoul(player) < amount) return false;
         var storers = getAllSoulStoringItems(player);
-        removeMana(storers,amount,player.getWorld(),ctx);
-        recalculateMana(player,false);
+        removeSoul(storers,amount,player.getWorld(),ctx);
+        recalculateSoul(player,false);
 
         return true;
     }
 
-    public static boolean tryConsumeMana(AutocasterBlockEntity casterBlock, float amount, @Nullable SpellContext ctx) {
-        if(getMana(casterBlock.getWorld(),casterBlock) < amount) return false;
+    public static boolean tryConsumeSoul(AutocasterBlockEntity casterBlock, float amount, @Nullable SpellContext ctx) {
+        if(getSoul(casterBlock.getWorld(),casterBlock) < amount) return false;
         var storers = getAllSoulStoringItems(casterBlock);
-        removeMana(storers,amount,casterBlock.getWorld(),ctx);
+        removeSoul(storers,amount,casterBlock.getWorld(),ctx);
 
         if(ctx.caster instanceof  ServerPlayerEntity spe)
         for(var storer:storers)
-            syncItemMana(casterBlock.getWorld(),storer,spe);
+            syncItemSoul(casterBlock.getWorld(),storer,spe);
 
         return true;
     }
 
-    private static float removeMana(List<ItemStack> storers, float amount, World world, @Nullable SpellContext ctx){
+    private static float removeSoul(List<ItemStack> storers, float amount, World world, @Nullable SpellContext ctx){
 
         // generate prioritized lists
         HashMap<Integer,List<Pair<ItemStack, ISoulStoringItem>>> storerPriorityMap = new HashMap<>();
@@ -381,7 +382,7 @@ public class ManaUtil {
         return left;
     }
 
-    public static float getMaxMana(World world, AutocasterBlockEntity casterBlock) {
+    public static float getMaxSoul(World world, AutocasterBlockEntity casterBlock) {
         float res = 0;
         var storers = getAllSoulStoringItems(casterBlock);
         for(var storer:storers)
@@ -401,14 +402,14 @@ public class ManaUtil {
     }
 
     private static boolean tickStack(World world, ItemStack stack,BlockPos pos,@Nullable ServerPlayerEntity player) {
-        if(!canStoreMana(stack)) return false;
+        if(!canStoreSoul(stack)) return false;
 
-        return tickManaRegen(stack,world,getAmbientSoulsPerBlock(world,pos),1,player);
+        return tickSoulRegen(stack,world,getAmbientSoulsPerBlock(world,pos),1,player);
     }
 
-    public static void syncItemMana(ServerPlayerEntity player) {
+    public static void syncItemSoul(ServerPlayerEntity player) {
         var items = getAllSoulStoringItems(player);
         for (var stack : items)
-            syncItemMana(player.getWorld(),stack,player);
+            syncItemSoul(player.getWorld(),stack,player);
     }
 }

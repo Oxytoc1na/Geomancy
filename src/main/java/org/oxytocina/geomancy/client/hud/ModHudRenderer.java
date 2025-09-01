@@ -14,7 +14,7 @@ import org.joml.Matrix4f;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.client.GeomancyClient;
 import org.oxytocina.geomancy.client.rendering.ModColorizationHandler;
-import org.oxytocina.geomancy.util.ManaUtil;
+import org.oxytocina.geomancy.util.SoulUtil;
 import org.oxytocina.geomancy.util.Toolbox;
 
 public class ModHudRenderer {
@@ -55,8 +55,8 @@ public class ModHudRenderer {
         int width = client.getWindow().getScaledWidth();
         int height = client.getWindow().getScaledHeight();
 
-        if (ManaUtil.getMaxMana(player)>0) {
-            float manaFraction = Toolbox.clampF(ManaUtil.getMana(player) / ManaUtil.getMaxMana(player),0,1);
+        if (SoulUtil.getMaxSoul(player)>0) {
+            float manaFraction = Toolbox.clampF(SoulUtil.getSoul(player) / SoulUtil.getMaxSoul(player),0,1);
 
             float fractionDiff = manaFraction-lastManaFraction;
 
@@ -81,10 +81,10 @@ public class ModHudRenderer {
                 drawTexturedQuad(MANA_BAR_TEXTURE,context.getMatrices(),barX,barX+barWidth,barY,barY+barHeight,0,(0)/MANA_BAR_TEXTURE_SIZE,(barWidth)/MANA_BAR_TEXTURE_SIZE,(15)/MANA_BAR_TEXTURE_SIZE,(15+barHeight)/MANA_BAR_TEXTURE_SIZE,colVec.x,colVec.y,colVec.z,alpha);
             }
 
-            String string = Toolbox.formatNumber(Math.round(ManaUtil.getMana(player))) +" / "+ Toolbox.formatNumber(Math.round(ManaUtil.getMaxMana(player)));
+            String string = Toolbox.formatNumber(Math.round(SoulUtil.getSoul(player))) +" / "+ Toolbox.formatNumber(Math.round(SoulUtil.getMaxSoul(player)));
             if(showAmbientMana()){
                 int t = Toolbox.floor(ambientManaArrowProgress*2.999f);
-                string = Math.round(ManaUtil.getAmbientSoulsPerBlock(player.getWorld(),player.getBlockPos()))+" "+(t%3==0?">":"-")+(t%3==1?">":"-")+(t%3==2?">":"-")+" "+string;
+                string = Math.round(SoulUtil.getAmbientSoulsPerBlock(player.getWorld(),player.getBlockPos()))+" "+(t%3==0?">":"-")+(t%3==1?">":"-")+(t%3==2?">":"-")+" "+string;
             }
             float xPos = (width - client.textRenderer.getWidth(string)) / 2f + manaShakeX;
             float yPos = height - 31 - 4 + manaShakeY;
@@ -109,7 +109,7 @@ public class ModHudRenderer {
         if(showAmbientMana()){
             if(MinecraftClient.getInstance() != null && MinecraftClient.getInstance().cameraEntity!=null)
             {
-                ambientManaArrowProgress += 1 / 20f / 400f * ManaUtil.getAmbientSoulsPerBlock(MinecraftClient.getInstance().world, MinecraftClient.getInstance().cameraEntity.getBlockPos());
+                ambientManaArrowProgress += 1 / 20f / 400f * SoulUtil.getAmbientSoulsPerBlock(MinecraftClient.getInstance().world, MinecraftClient.getInstance().cameraEntity.getBlockPos());
                 ambientManaArrowProgress = ambientManaArrowProgress%1;
             }
         }

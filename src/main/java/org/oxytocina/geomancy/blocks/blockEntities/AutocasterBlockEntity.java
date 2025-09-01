@@ -5,7 +5,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.DoubleInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -14,7 +13,6 @@ import net.minecraft.screen.Generic3x3ContainerScreenHandler;
 import net.minecraft.screen.GenericContainerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
@@ -23,11 +21,10 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.oxytocina.geomancy.blocks.ISpellSelectorBlock;
-import org.oxytocina.geomancy.items.ISpellSelectorItem;
 import org.oxytocina.geomancy.items.SpellStoringItem;
 import org.oxytocina.geomancy.spells.SpellBlockArgs;
 import org.oxytocina.geomancy.spells.SpellContext;
-import org.oxytocina.geomancy.util.ManaUtil;
+import org.oxytocina.geomancy.util.SoulUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -136,7 +133,7 @@ public class AutocasterBlockEntity extends LootableContainerBlockEntity implemen
     }
 
     public void tick(World world, BlockPos pos, BlockState state) {
-        if(ManaUtil.tickStorage(world,this,pos) && observed()) syncManaContainers();
+        if(SoulUtil.tickStorage(world,this,pos) && observed()) syncManaContainers();
     }
 
     @Override
@@ -210,7 +207,7 @@ public class AutocasterBlockEntity extends LootableContainerBlockEntity implemen
     public void syncManaContainers(){
         for(var player : inspectingPlayers)
             for (int i = 0; i < size(); i++) {
-                ManaUtil.syncItemMana(getWorld(),getStack(i),(ServerPlayerEntity) player);
+                SoulUtil.syncItemSoul(getWorld(),getStack(i),(ServerPlayerEntity) player);
             }
     }
 
