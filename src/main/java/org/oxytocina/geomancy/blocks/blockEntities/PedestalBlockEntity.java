@@ -18,6 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.inventories.ImplementedInventory;
+import org.oxytocina.geomancy.util.SoulUtil;
 import org.oxytocina.geomancy.util.Toolbox;
 
 public class PedestalBlockEntity extends BlockEntity implements ImplementedInventory {
@@ -69,6 +70,7 @@ public class PedestalBlockEntity extends BlockEntity implements ImplementedInven
 
     public void tick(World world, BlockPos pos,BlockState state){
         initialize();
+        SoulUtil.tickStorage(world,this,pos);
     }
 
     private boolean initized=false;

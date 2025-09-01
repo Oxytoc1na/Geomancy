@@ -6,6 +6,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.LocalRandom;
 import net.minecraft.util.math.random.Random;
@@ -36,6 +37,8 @@ public class ParticleUtil {
             this.world=world;
             this.dispersion=dispersion;
             this.worldObj=worldObj;
+            this.velMin = new Vec3d(0,0,0);
+            this.velMax = new Vec3d(0,0,0);
         }
 
         public static ParticleData createGenericCastSuccess(SpellComponent comp, Vec3d pos){
@@ -55,14 +58,20 @@ public class ParticleUtil {
             return create(comp.world(),pos).type(Type.CAST_SOUL_FIRE).amount(10);
         }
 
-        public static ParticleData createSmithingProgress(SmitheryBlockEntity smithery, Vec3d pos){
-            return create(smithery.getWorld(),pos.add(0,0.6f,0)).type(Type.SMITHING_PROGRESS).amount(5).vel(new Vec3d(0,0,0),new Vec3d(0,0,0)).dispersion(0.3f);
+        public static ParticleData createSmithingProgress(World world, Vec3d pos){
+            return create(world,pos.add(0,0.6f,0)).type(Type.SMITHING_PROGRESS).amount(5).vel(new Vec3d(0,0,0),new Vec3d(0,0,0)).dispersion(0.3f);
         }
-        public static ParticleData createSmithingComplete(SmitheryBlockEntity smithery, Vec3d pos){
-            return create(smithery.getWorld(),pos.add(0,0.6f,0)).type(Type.SMITHING_COMPLETE).amount(10).vel(new Vec3d(-0.2f,0,-0.2f),new Vec3d(0.2f,0.4f,0.2f)).dispersion(0.3f);
+        public static ParticleData createSmithingComplete(World world, Vec3d pos){
+            return create(world,pos.add(0,0.6f,0)).type(Type.SMITHING_COMPLETE).amount(10).vel(new Vec3d(-0.2f,0,-0.2f),new Vec3d(0.2f,0.4f,0.2f)).dispersion(0.3f);
         }
-        public static ParticleData createSmithingFailure(SmitheryBlockEntity smithery, Vec3d pos){
-            return create(smithery.getWorld(),pos.add(0,0.6f,0)).type(Type.SMITHING_FAILURE).amount(10).vel(new Vec3d(-0.2f,0,-0.2f),new Vec3d(0.1f,0.2f,0.1f)).dispersion(0.3f);
+        public static ParticleData createSmithingFailure(World world, Vec3d pos){
+            return create(world,pos.add(0,0.6f,0)).type(Type.SMITHING_FAILURE).amount(10).vel(new Vec3d(-0.2f,0,-0.2f),new Vec3d(0.1f,0.2f,0.1f)).dispersion(0.3f);
+        }
+        public static ParticleData createSoulFlare(World world, Vec3d pos){
+            return create(world,pos.add(0,0.6f,0)).type(Type.SOUL_FLARE).amount(10).vel(new Vec3d(-0.1f,0.05f,-0.1f),new Vec3d(0.1f,0.5f,0.1f)).dispersion(0.3f);
+        }
+        public static ParticleData createSoulDud(World world, Vec3d pos){
+            return create(world,pos.add(0,0.6f,0)).type(Type.SOUL_DUD).amount(10).vel(new Vec3d(-0.1f,0.05f,-0.1f),new Vec3d(0.1f,0.05f,0.1f)).dispersion(0.3f);
         }
         
         public static ParticleData create(World world, Vec3d pos){
@@ -85,6 +94,8 @@ public class ParticleUtil {
             buf.writeFloat(dispersion);
             buf.writeVector3f(pos.toVector3f());
             buf.writeVector3f(dir.toVector3f());
+            buf.writeVector3f(velMin.toVector3f());
+            buf.writeVector3f(velMax.toVector3f());
             buf.writeIdentifier(world);
         }
 
@@ -94,8 +105,13 @@ public class ParticleUtil {
             float dispersion = buf.readFloat();
             Vec3d pos = new Vec3d(buf.readVector3f());
             Vec3d dir = new Vec3d(buf.readVector3f());
+            Vec3d velMin = new Vec3d(buf.readVector3f());
+            Vec3d velMax = new Vec3d(buf.readVector3f());
             Identifier world = buf.readIdentifier();
-            return new ParticleData(type,amount,pos,dir,world,null,dispersion);
+            var res = new ParticleData(type,amount,pos,dir,world,null,dispersion);
+            res.velMin = velMin;
+            res.velMax = velMax;
+            return res;
         }
 
         @Environment(EnvType.CLIENT)
@@ -108,6 +124,10 @@ public class ParticleUtil {
                         pos.x+(rand.nextFloat()*2-1)*dispersion,
                         pos.y+(rand.nextFloat()*2-1)*dispersion,
                         pos.z+(rand.nextFloat()*2-1)*dispersion);
+                Vec3d vel = new Vec3d(
+                        MathHelper.lerp(rand.nextFloat(),velMin.x,velMax.x),
+                        MathHelper.lerp(rand.nextFloat(),velMin.y,velMax.y),
+                        MathHelper.lerp(rand.nextFloat(),velMin.z,velMax.z));
                 switch(type){
                     case CAST_SOUL:{
                         worldObj.addParticle(ParticleTypes.SCULK_SOUL,pPos.x,pPos.y,pPos.z,0,0,0);
@@ -123,6 +143,28 @@ public class ParticleUtil {
                         worldObj.addParticle(ParticleTypes.SOUL_FIRE_FLAME,pPos.x,pPos.y,pPos.z,randVel.x,randVel.y,randVel.z);
                         break;
                     }
+                    case SMITHING_PROGRESS:{
+                        worldObj.addParticle(ParticleTypes.LAVA,pPos.x,pPos.y,pPos.z,vel.x,vel.y,vel.z);
+                        break;
+                    }
+                    case SMITHING_COMPLETE:{
+                        worldObj.addParticle(ParticleTypes.LAVA,pPos.x,pPos.y,pPos.z,0,0,0);
+                        worldObj.addParticle(ParticleTypes.FLAME,pPos.x,pPos.y,pPos.z,vel.x,vel.y,vel.z);
+                        break;
+                    }
+                    case SMITHING_FAILURE:{
+                        worldObj.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE,pPos.x,pPos.y,pPos.z,vel.x,vel.y,vel.z);
+                        break;
+                    }
+                    case SOUL_FLARE:{
+                        worldObj.addParticle(ParticleTypes.SOUL_FIRE_FLAME,pPos.x,pPos.y,pPos.z,vel.x,vel.y,vel.z);
+                        worldObj.addParticle(ParticleTypes.SCULK_SOUL,pPos.x,pPos.y,pPos.z,0,0,0);
+                        break;
+                    }
+                    case SOUL_DUD:{
+                        worldObj.addParticle(ParticleTypes.SOUL_FIRE_FLAME,pPos.x,pPos.y,pPos.z,vel.x,vel.y,vel.z);
+                        break;
+                    }
                 }
             }
         }
@@ -133,7 +175,9 @@ public class ParticleUtil {
             CAST_MUZZLE,
             SMITHING_PROGRESS,
             SMITHING_COMPLETE,
-            SMITHING_FAILURE
+            SMITHING_FAILURE,
+            SOUL_FLARE,
+            SOUL_DUD,
         }
     }
 }

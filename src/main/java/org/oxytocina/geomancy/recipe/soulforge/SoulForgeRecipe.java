@@ -147,7 +147,7 @@ public class SoulForgeRecipe extends GatedModRecipe<Inventory> implements ISoulF
 
     @Override
     public List<NbtIngredient> getNbtIngredients(Inventory inv) {
-        return List.of();
+        return inputs;
     }
 
     @Override

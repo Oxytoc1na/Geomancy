@@ -665,7 +665,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     NbtIngredient.ofItems(OCTANGULITE_INGOT),
                     NbtIngredient.ofItems(OCTANGULITE_INGOT),
                     NbtIngredient.ofItems(OCTANGULITE_INGOT)
-            ),OCTANGULITE_HAMMER,1,10000,1,"",conditionsFromItem(OCTANGULITE_INGOT),null);
+            ),OCTANGULITE_HAMMER,1,500,0.1f,"",conditionsFromItem(OCTANGULITE_INGOT),null);
         }
 
         this.exporter=null;

@@ -40,6 +40,7 @@ import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.client.GeomancyClient;
 import org.oxytocina.geomancy.client.screen.SmitheryScreenHandler;
+import org.oxytocina.geomancy.client.util.CamShakeUtil;
 import org.oxytocina.geomancy.util.ParticleUtil;
 import org.oxytocina.geomancy.util.Toolbox;
 import org.oxytocina.geomancy.blocks.MultiblockCrafter;
@@ -276,11 +277,13 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
                 {
                     world.playSound(null, pos, ModSoundEvents.USE_HAMMER, SoundCategory.NEUTRAL, 0.7F, 0.9F + world.getRandom().nextFloat() * 0.2F);
                     // send progress particle packet
-                    ParticleUtil.ParticleData.createSmithingProgress(this,particlePos).send(world);
+                    ParticleUtil.ParticleData.createSmithingProgress(world,particlePos).send();
+                    CamShakeUtil.cause(world,getPos().toCenterPos(),10,0.5f);
                 }
                 else{
                     // send finish particle packet
-                    ParticleUtil.ParticleData.createSmithingComplete(this,particlePos).send(world);
+                    ParticleUtil.ParticleData.createSmithingComplete(world,particlePos).send();
+                    CamShakeUtil.cause(world,getPos().toCenterPos(),10,0.5f);
                 }
             }
         }
@@ -303,6 +306,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
                         setStack(slotID,ItemStack.EMPTY);
                         Vec3d spos = Vec3d.ofCenter(pos).add(0,0.6f,0);
                         ItemScatterer.spawn(world,spos.x,spos.y,spos.z,stackToDrop);
+                        CamShakeUtil.cause(world,getPos().toCenterPos(),10,0.5f);
 
                         break;
                     }
@@ -313,7 +317,10 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
                         int slotID = getMishapInputItemSlotIndex();
                         setStack(slotID,ItemStack.EMPTY);
                         if(!world.isClient)
+                        {
                             world.playSound(null, pos, SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.NEUTRAL, 2F, 0.5F + world.getRandom().nextFloat() * 0.2F);
+                            CamShakeUtil.cause(world,getPos().toCenterPos(),10,0.5f);
+                        }
 
                         if(player!=null)
                             player.sendMessage(Text.translatable("message."+Geomancy.MOD_ID+".smithery_block.json.fail.break"), false);
@@ -347,7 +354,8 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
                     world.playSound(null, pos, ModSoundEvents.USE_HAMMER_FAIL, SoundCategory.NEUTRAL, 0.9F, 0.9F + world.getRandom().nextFloat() * 0.2F);
                     Vec3d particlePos = Vec3d.ofCenter(pos);
                     // send finish particle packet
-                    ParticleUtil.ParticleData.createSmithingFailure(this,particlePos).send(world);
+                    ParticleUtil.ParticleData.createSmithingFailure(world,particlePos).send();
+                    CamShakeUtil.cause(world,getPos().toCenterPos(),10,0.5f);
                 }
             }
 
@@ -471,91 +479,5 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
     @Override
     public boolean isHammerable() {
         return currentRecipe!=null;
-    }
-
-    public static class ParticleData {
-        public Type type = Type.PROGRESS;
-        public int amount = 10;
-        public float dispersion = 0.5f;
-        public Vec3d pos;
-        public Vec3d velMin;
-        public Vec3d velMax;
-        public Identifier world;
-
-        private ParticleData(ParticleData.Type type, int amount, Vec3d pos, Vec3d velMin, Vec3d velMax, Identifier world, float dispersion){
-            this.type=type;
-            this.amount=amount;
-            this.pos=pos;
-            this.velMin=velMin;
-            this.velMax=velMax;
-            this.world=world;
-            this.dispersion=dispersion;
-        }
-
-
-
-        public ParticleData amount(int amount){this.amount = amount;return this;}
-        public ParticleData dispersion(int dispersion){this.dispersion = dispersion;return this;}
-        public ParticleData type(ParticleData.Type type){this.type = type;return this;}
-
-        public void write(PacketByteBuf buf){
-            buf.writeString(type.toString());
-            buf.writeInt(amount);
-            buf.writeFloat(dispersion);
-            buf.writeVector3f(pos.toVector3f());
-            buf.writeVector3f(velMin.toVector3f());
-            buf.writeVector3f(velMax.toVector3f());
-            buf.writeIdentifier(world);
-        }
-
-        public static ParticleData from(PacketByteBuf buf){
-            ParticleData.Type type = ParticleData.Type.valueOf(buf.readString());
-            int amount = buf.readInt();
-            float dispersion = buf.readFloat();
-            Vec3d pos = new Vec3d(buf.readVector3f());
-            Vec3d velMin = new Vec3d(buf.readVector3f());
-            Vec3d velMax = new Vec3d(buf.readVector3f());
-            Identifier world = buf.readIdentifier();
-            return new ParticleData(type,amount,pos,velMin,velMax,world,dispersion);
-        }
-
-        @Environment(EnvType.CLIENT)
-        public void run(){
-            World worldObj = MinecraftClient.getInstance().world;
-            if(!worldObj.getRegistryKey().getValue().equals(world)) return; // ignore particle spawns in different worlds
-            Random rand = new LocalRandom(GeomancyClient.tick);
-            for (int i = 0; i < amount; i++) {
-                Vec3d pPos = new Vec3d(
-                        pos.x+(rand.nextFloat()*2-1)*dispersion,
-                        pos.y+(rand.nextFloat()*2-1)*dispersion,
-                        pos.z+(rand.nextFloat()*2-1)*dispersion);
-                Vec3d vel = new Vec3d(
-                        MathHelper.lerp(rand.nextFloat(),velMin.x,velMax.x),
-                        MathHelper.lerp(rand.nextFloat(),velMin.y,velMax.y),
-                        MathHelper.lerp(rand.nextFloat(),velMin.z,velMax.z)
-                );
-                switch(type){
-                    case PROGRESS:{
-                        worldObj.addParticle(ParticleTypes.LAVA,pPos.x,pPos.y,pPos.z,vel.x,vel.y,vel.z);
-                        break;
-                    }
-                    case COMPLETE:{
-                        worldObj.addParticle(ParticleTypes.LAVA,pPos.x,pPos.y,pPos.z,0,0,0);
-                        worldObj.addParticle(ParticleTypes.FLAME,pPos.x,pPos.y,pPos.z,vel.x,vel.y,vel.z);
-                        break;
-                    }
-                    case FAILURE:{
-                        worldObj.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE,pPos.x,pPos.y,pPos.z,vel.x,vel.y,vel.z);
-                        break;
-                    }
-                }
-            }
-        }
-
-        public enum Type{
-            PROGRESS,
-            COMPLETE,
-            FAILURE
-        }
     }
 }

@@ -24,6 +24,7 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
@@ -51,6 +52,8 @@ import org.oxytocina.geomancy.registries.ModRecipeTypes;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
 import org.oxytocina.geomancy.spells.SpellContext;
 import org.oxytocina.geomancy.util.EntityUtil;
+import org.oxytocina.geomancy.util.ParticleUtil;
+import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +65,7 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
     private final List<PedestalBlockEntity> surroundingSoulInventories = new ArrayList<>();
     private final List<ItemStack> surroundingIngredients = new ArrayList<>();
     private final List<ItemStack> totalIngredients = new ArrayList<>();
+    private final List<ItemStack> consumedIngredients = new ArrayList<>();
     private ItemStack baseIngredient = ItemStack.EMPTY;
 
     private PropertyDelegate propertyDelegate;
@@ -194,9 +198,6 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
 
         if(this.isActive()){
             currentResult = activeRecipe.getPreviewOutput(inputInventory());
-            if(hasCraftingFinished()){
-                finishCrafting();
-            }
 
             // increase instability
             instability += 1/20f * 0.05f * activeRecipe.getInstability(inputInventory());
@@ -227,6 +228,7 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
         activeRecipe=null;
         markDirty();
         // TODO: visual and auditory flair
+        Toolbox.playSound(SoundEvents.ENTITY_WITHER_DEATH,world,getPos(), SoundCategory.NEUTRAL, 0.5F, Toolbox.randomPitch());
         CamShakeUtil.cause(world,getPos().toCenterPos(),20,2,2,0.5f);
         sendUpdatesToNearbyClients();
     }
@@ -247,6 +249,7 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
     private void resetProgress() {
         progress=0;
         instability=0;
+        consumedIngredients.clear();
         sendUpdatesToNearbyClients();
     }
 
@@ -407,6 +410,7 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
         lastHammerStack=hammer;
         if(player!=null) lastHammerer = player;
         if(!isActive()) return;
+        if(world==null||world.isClient) return;
 
         HammerItem hammerItem = (HammerItem) hammer.getItem();
 
@@ -417,6 +421,7 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
         float soulToConsume = Math.min(availableSoul,hammerItem.getHitProgress(player) * 10 + skill);
         float left = soulToConsume;
         int soulContainers = surroundingSoulInventories.size();
+        List<PedestalBlockEntity> takenFrom = new ArrayList<>();
         boolean changed = true;
         while(changed){
             changed=false;
@@ -427,6 +432,7 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
                 if(thisMana<=0) continue;
                 float taken = Math.min(thisMana,soulToConsume/soulContainers);
                 storer.takeSoul(world,stack,taken,null);
+                takenFrom.add(pedestal);
                 left-=taken;
                 changed=true;
             }
@@ -436,18 +442,119 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
 
         progress += taken/activeRecipe.getSoulCost(inputInventory());
 
-        if(hasCraftingFinished()){
-            finishCrafting();
-            return;
+        // try to consume ingredients
+        if(progress>0){
+            boolean consumedAllIngredients = true;
+
+            var ingredients = activeRecipe.getNbtIngredients(null);
+            int shouldHaveConsumedCount = Math.round((float)Math.ceil(progress*ingredients.size()));
+            boolean changed2=true;
+            while(consumedIngredients.size()<shouldHaveConsumedCount)
+            {
+                if(!changed2) break;
+                changed2=false;
+                List<Integer> accountedForConsumedIngredients = new ArrayList<>();
+
+                for (int i = 1; i < ingredients.size(); i++) {
+                    var ingredient = ingredients.get(i);
+                    // check if this ingredient is consumed
+                    boolean consumedAlready = false;
+                    for (int j = 0; j < consumedIngredients.size(); j++) {
+                        if(accountedForConsumedIngredients.contains(j)) continue;
+                        if(ingredient.test(consumedIngredients.get(j)))
+                        {
+                            consumedAlready = true;
+                            accountedForConsumedIngredients.add(j);
+                            break;
+                        }
+                    }
+                    if(consumedAlready)
+                        continue;
+
+                    // try to consume ingredient
+                    boolean consumed = false;
+                    for (int j = 0; j < surroundingInventories.size(); j++) {
+                        var pedestal = surroundingInventories.get(j);
+                        if(pedestal==null) continue;
+                        var pedestalStack = pedestal.getStack(0);
+                        if(!ingredient.test(pedestalStack)) continue;
+                        // consume stack
+                        consumedIngredients.add(pedestalStack.copyAndEmpty());
+                        pedestal.markDirty();
+                        // TODO: visual and auditory flair
+                        consumed=true;
+                        changed2=true;
+                        break;
+                    }
+                    if(consumed)
+                        break;
+
+                    consumedAllIngredients = false;
+                }
+
+                // consume final ingredient
+                if(progress >= 1 && shouldHaveConsumedCount>=ingredients.size() && consumedIngredients.size() >= ingredients.size()-1)
+                {
+                    var baseIng = ingredients.get(0);
+                    // check if this ingredient is consumed
+                    boolean consumedAlready = false;
+                    for (int j = 0; j < consumedIngredients.size(); j++) {
+                        if(accountedForConsumedIngredients.contains(j)) continue;
+                        if(baseIng.test(consumedIngredients.get(j)))
+                        {
+                            // already consumed...??
+                            consumedAlready = true;
+                            accountedForConsumedIngredients.add(j);
+                            break;
+                        }
+                    }
+                    if(consumedAlready)
+                        continue;
+
+                    // try to consume ingredient
+                    boolean consumed = false;
+                    for (int i = 0; i < size(); i++) {
+                        var baseStack = getStack(i);
+                        if(!baseIng.test(baseStack)) continue;
+                        // consume stack
+                        consumedIngredients.add(baseStack.copyAndEmpty());
+                        markDirty();
+                        // TODO: visual and auditory flair
+                        changed2=true;
+                        consumed=true;
+                        break;
+                    }
+                    if(consumed)
+                        continue;
+
+                    consumedAllIngredients = false;
+                }
+            }
+
+            if(hasCraftingFinished() && consumedAllIngredients){
+                finishCrafting();
+            }
         }
 
-        // TODO: visual and auditory flair
+
+
         if(taken<=0){
             // didnt make progress, soul storers are empty!
             // make a dud sound
+            Toolbox.playSound(ModSoundEvents.USE_HAMMER_FAIL,world,getPos(), SoundCategory.NEUTRAL, 0.7F, Toolbox.randomPitch());
+            for(var pedestal : surroundingSoulInventories){
+                ParticleUtil.ParticleData.createSoulDud(world,pedestal.getPos().toCenterPos()).send();
+            }
         }
         else{
             // made progress
+            Toolbox.playSound(ModSoundEvents.USE_HAMMER,world,getPos(), SoundCategory.NEUTRAL, 0.7F, Toolbox.randomPitch());
+            CamShakeUtil.cause(world,getPos().toCenterPos(),20,0.5f);
+            ParticleUtil.ParticleData.createSmithingProgress(world,getPos().toCenterPos()).send();
+            for(var pedestal : takenFrom){
+                ParticleUtil.ParticleData.createSoulFlare(world,pedestal.getPos().toCenterPos()).send();
+            }
+
         }
     }
 
