@@ -5,8 +5,8 @@ import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.recipe.*;
 import net.minecraft.recipe.*;
 import net.minecraft.registry.*;
-import org.oxytocina.geomancy.recipe.ritualforge.RitualForgeRecipe;
-import org.oxytocina.geomancy.recipe.ritualforge.RitualForgeRecipeSerializer;
+import org.oxytocina.geomancy.recipe.soulforge.SoulForgeRecipe;
+import org.oxytocina.geomancy.recipe.soulforge.SoulForgeRecipeSerializer;
 import org.oxytocina.geomancy.recipe.smithery.*;
 
 public class ModRecipeTypes {
@@ -31,9 +31,9 @@ public class ModRecipeTypes {
     public static TransmuteRecipeSerializer<TransmuteRecipe> TRANSMUTE_SERIALIZER;
     public static RecipeType<TransmuteRecipe> TRANSMUTE;
 
-    public static final String RITUAL_SIMPLE_ID = "ritualforge_simple";
-    public static RitualForgeRecipeSerializer<RitualForgeRecipe> RITUAL_SIMPLE_SERIALIZER;
-    public static RecipeType<RitualForgeRecipe> RITUAL_SIMPLE;
+    public static final String SOULFORGE_SIMPLE_ID = "soulforge_simple";
+    public static SoulForgeRecipeSerializer<SoulForgeRecipe> SOULFORGE_SIMPLE_SERIALIZER;
+    public static RecipeType<SoulForgeRecipe> SOULFORGE_SIMPLE;
 
     static <S extends RecipeSerializer<T>, T extends Recipe<?>> S registerSerializer(String id, S serializer) {
         return Registry.register(Registries.RECIPE_SERIALIZER, Geomancy.locate(id), serializer);
@@ -65,8 +65,8 @@ public class ModRecipeTypes {
         TRANSMUTE_SERIALIZER = registerSerializer(TRANSMUTE_ID, new TransmuteRecipeSerializer<>(TransmuteRecipe::new));
         TRANSMUTE = registerRecipeType(TRANSMUTE_ID);
 
-        RITUAL_SIMPLE_SERIALIZER = registerSerializer(RITUAL_SIMPLE_ID, new RitualForgeRecipeSerializer<>(RitualForgeRecipe::new));
-        RITUAL_SIMPLE = registerRecipeType(RITUAL_SIMPLE_ID);
+        SOULFORGE_SIMPLE_SERIALIZER = registerSerializer(SOULFORGE_SIMPLE_ID, new SoulForgeRecipeSerializer<>(SoulForgeRecipe::new));
+        SOULFORGE_SIMPLE = registerRecipeType(SOULFORGE_SIMPLE_ID);
 
         DispenserBehavior.registerDefaults();
     }

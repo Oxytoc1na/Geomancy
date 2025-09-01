@@ -1,4 +1,4 @@
-package org.oxytocina.geomancy.recipe.ritualforge;
+package org.oxytocina.geomancy.recipe.soulforge;
 
 import com.google.gson.JsonObject;
 import net.minecraft.item.ItemStack;
@@ -9,16 +9,16 @@ import org.oxytocina.geomancy.recipe.GatedRecipeSerializer;
 import org.oxytocina.geomancy.recipe.RecipeUtils;
 import org.oxytocina.geomancy.recipe.smithery.SmithingIngredient;
 
-public class RitualForgeRecipeSerializer<R extends RitualForgeRecipe> implements GatedRecipeSerializer<R> {
+public class SoulForgeRecipeSerializer<R extends SoulForgeRecipe> implements GatedRecipeSerializer<R> {
 
     public final RecipeFactory<R> recipeFactory;
 
-    public RitualForgeRecipeSerializer(RecipeFactory<R> recipeFactory) {
+    public SoulForgeRecipeSerializer(RecipeFactory<R> recipeFactory) {
         this.recipeFactory = recipeFactory;
     }
 
     public interface RecipeFactory<R> {
-        R create(Identifier id, String group, boolean secret, Identifier requiredAdvancementIdentifier, SmithingIngredient base, ItemStack outputItemStack, float cost);
+        R create(Identifier id, String group, boolean secret, Identifier requiredAdvancementIdentifier, SmithingIngredient base, ItemStack outputItemStack, float cost, float instability);
     }
 
     @Override
@@ -30,8 +30,9 @@ public class RitualForgeRecipeSerializer<R extends RitualForgeRecipe> implements
         SmithingIngredient base = SmithingIngredient.fromJson(jsonObject.get("base"));
         ItemStack outputItemStack = RecipeUtils.itemStackWithNbtFromJson(JsonHelper.getObject(JsonHelper.getObject(jsonObject, "result"),"item"));
         float cost = jsonObject.get("cost").getAsFloat();
+        float instability = jsonObject.get("instability").getAsFloat();
 
-        return this.recipeFactory.create(identifier, group, secret, requiredAdvancementIdentifier, base, outputItemStack, cost);
+        return this.recipeFactory.create(identifier, group, secret, requiredAdvancementIdentifier, base, outputItemStack, cost,instability);
     }
 
     @Override
@@ -54,7 +55,8 @@ public class RitualForgeRecipeSerializer<R extends RitualForgeRecipe> implements
         SmithingIngredient base = SmithingIngredient.fromPacket(packetByteBuf);
         ItemStack outputItemStack = packetByteBuf.readItemStack();
         float cost = packetByteBuf.readFloat();
-        return this.recipeFactory.create(identifier, group, secret, requiredAdvancementIdentifier, base,outputItemStack, cost);
+        float instability = packetByteBuf.readFloat();
+        return this.recipeFactory.create(identifier, group, secret, requiredAdvancementIdentifier, base,outputItemStack, cost,instability);
     }
 
 }

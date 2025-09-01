@@ -15,10 +15,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.*;
-import org.oxytocina.geomancy.client.datagen.recipes.GeodeRecipeJsonBuilder;
-import org.oxytocina.geomancy.client.datagen.recipes.JewelryRecipeJsonBuilder;
-import org.oxytocina.geomancy.client.datagen.recipes.SmitheryRecipeJsonBuilder;
-import org.oxytocina.geomancy.client.datagen.recipes.TransmuteRecipeJsonBuilder;
+import org.oxytocina.geomancy.client.datagen.recipes.*;
 import org.oxytocina.geomancy.items.GeodeItem;
 import static org.oxytocina.geomancy.items.ModItems.*;
 import static org.oxytocina.geomancy.blocks.ModBlocks.*;
@@ -28,6 +25,7 @@ import org.oxytocina.geomancy.items.SpellComponentStoringItem;
 import org.oxytocina.geomancy.items.jewelry.IJewelryItem;
 import org.oxytocina.geomancy.items.tools.SoulBoreItem;
 import org.oxytocina.geomancy.progression.advancement.ModAdvancementCriterion;
+import org.oxytocina.geomancy.recipe.NbtIngredient;
 import org.oxytocina.geomancy.recipe.smithery.SmithingIngredient;
 import org.oxytocina.geomancy.registries.ModItemTags;
 import org.oxytocina.geomancy.spells.SpellBlock;
@@ -50,14 +48,8 @@ public class ModRecipeProvider extends FabricRecipeProvider {
     public void generate(Consumer<RecipeJsonProvider> exporter) {
         this.exporter=exporter;
 
-        // shapeless recipes
-        offerShapelessRecipe(exporter, SUSPICIOUS_SUBSTANCE,SUSPICIOUS_SUBSTANCE,null,1);
-        ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, GUIDE_BOOK, 1)
-                .input(Items.PAPER).input(Items.COBBLESTONE).group("misc").criterion(
-                        hasItem(Items.COBBLESTONE), conditionsFromItem(Items.COBBLESTONE))
-                .offerTo(exporter, "guidebook");
-
         // shaped recipes
+
         // iron hammer
         ShapedRecipeJsonBuilder.create(
                         RecipeCategory.TOOLS, IRON_HAMMER, 1)
@@ -68,6 +60,18 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .pattern(" s ")
                 .criterion(hasItem(Items.IRON_INGOT), conditionsFromItem(Items.IRON_INGOT))
                 .offerTo(exporter);
+
+        // lead hammer
+        ShapedRecipeJsonBuilder.create(
+                        RecipeCategory.TOOLS, LEAD_HAMMER, 1)
+                .input('#', LEAD_INGOT)
+                .input('s', Items.STICK)
+                .pattern("###")
+                .pattern("#s#")
+                .pattern(" s ")
+                .criterion(hasItem(LEAD_INGOT), conditionsFromItem(LEAD_INGOT))
+                .offerTo(exporter);
+
         // component pouch
         AddSurrounded4(SPELLCOMPONENT,Items.LEATHER,COMPONENT_POUCH,1,RecipeCategory.TOOLS);
 
@@ -141,16 +145,45 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 AddSmitheryJewelryRecipe((IJewelryItem)item);
             }
 
-            // mithril hammer
-            AddShapedSmitheryRecipe(new String[]{
-                            "ooo",
-                            "oso",
-                            " s "}
-                    ,new SPatKey[]{
-                            new SPatKey("o",SmithingIngredient.ofItems(1,1,1,MITHRIL_INGOT)),
-                            new SPatKey("s",SmithingIngredient.ofItems(1,1,1,Items.STICK)),
-                    },
-                    MITHRIL_HAMMER,1,100,12,conditionsFromItem(MITHRIL_INGOT),null);
+            // hammers
+            {
+                // mithril hammer
+                AddShapedSmitheryRecipe(new String[]{
+                                "ooo",
+                                "oso",
+                                " s "},new SPatKey[]{
+                                new SPatKey("o",SmithingIngredient.ofItems(1,1,1,MITHRIL_INGOT)),
+                                new SPatKey("s",SmithingIngredient.ofItems(1,1,1,Items.STICK)),},
+                        MITHRIL_HAMMER,1,200,25,conditionsFromItem(MITHRIL_INGOT),null);
+
+                // titanium hammer
+                AddShapedSmitheryRecipe(new String[]{
+                                "ooo",
+                                "oso",
+                                " s "},new SPatKey[]{
+                                new SPatKey("o",SmithingIngredient.ofItems(1,1,1,TITANIUM_INGOT)),
+                                new SPatKey("s",SmithingIngredient.ofItems(1,1,1,Items.STICK)),},
+                        TITANIUM_HAMMER,1,200,18,conditionsFromItem(TITANIUM_INGOT),null);
+
+                // molybdenum hammer
+                AddShapedSmitheryRecipe(new String[]{
+                                "ooo",
+                                "oso",
+                                " s "},new SPatKey[]{
+                                new SPatKey("o",SmithingIngredient.ofItems(1,1,1,MOLYBDENUM_INGOT)),
+                                new SPatKey("s",SmithingIngredient.ofItems(1,1,1,Items.STICK)),},
+                        MOLYBDENUM_HAMMER,1,70,12,conditionsFromItem(MOLYBDENUM_INGOT),null);
+
+                // golden hammer
+                AddShapedSmitheryRecipe(new String[]{
+                                "ooo",
+                                "oso",
+                                " s "},new SPatKey[]{
+                                new SPatKey("o",SmithingIngredient.ofItems(1,1,1,Items.GOLD_INGOT)),
+                                new SPatKey("s",SmithingIngredient.ofItems(1,1,1,Items.STICK)),},
+                        GOLDEN_HAMMER,1,70,20,conditionsFromItem(Items.GOLD_INGOT),null);
+            }
+
 
 
             // geode recipes
@@ -624,6 +657,17 @@ public class ModRecipeProvider extends FabricRecipeProvider {
             AddTransmutationRecipe(Items.ENDER_PEARL,Items.ENDER_EYE, 1000,Items.ENDER_PEARL,null);
         }
 
+        // soul forge
+        {
+            // octangulite hammer
+            AddSimpleSoulForgeRecipe(List.of(
+                    NbtIngredient.ofItems(Items.STICK),
+                    NbtIngredient.ofItems(OCTANGULITE_INGOT),
+                    NbtIngredient.ofItems(OCTANGULITE_INGOT),
+                    NbtIngredient.ofItems(OCTANGULITE_INGOT)
+            ),OCTANGULITE_HAMMER,1,10000,1,"",conditionsFromItem(OCTANGULITE_INGOT),null);
+        }
+
         this.exporter=null;
     }
 
@@ -799,6 +843,10 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
     private void AddTransmutationRecipe(SmithingIngredient input, ItemConvertible output, int outputCount, float cost, String criterionName, CriterionConditions conditions, Identifier requiredAdvancement){
         TransmuteRecipeJsonBuilder.create(input,output.asItem(),outputCount, cost,RecipeCategory.MISC, requiredAdvancement).criterion(criterionName,conditions).offerTo(exporter,new Identifier(Geomancy.MOD_ID,"transmute_"+getItemName(output)));
+    }
+
+    private void AddSimpleSoulForgeRecipe(List<NbtIngredient> inputs, ItemConvertible output, int outputCount, float cost,float instability, String criterionName, CriterionConditions conditions, Identifier requiredAdvancement){
+        SoulForgeRecipeJsonBuilder.create(inputs,output.asItem(),outputCount, cost,instability,RecipeCategory.MISC, requiredAdvancement).criterion(criterionName,conditions).offerTo(exporter,new Identifier(Geomancy.MOD_ID,"soulforge_"+getItemName(output)));
     }
 
     private void AddSmitheryJewelryRecipe(IJewelryItem base){

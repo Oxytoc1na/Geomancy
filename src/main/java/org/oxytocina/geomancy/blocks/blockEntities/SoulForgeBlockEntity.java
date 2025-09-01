@@ -31,7 +31,7 @@ import org.oxytocina.geomancy.blocks.MultiblockCrafter;
 import org.oxytocina.geomancy.client.screen.RitualForgeScreenHandler;
 import org.oxytocina.geomancy.inventories.AutoCraftingInventory;
 import org.oxytocina.geomancy.inventories.ImplementedInventory;
-import org.oxytocina.geomancy.recipe.ritualforge.IRitualForgeRecipe;
+import org.oxytocina.geomancy.recipe.soulforge.ISoulForgeRecipe;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
 import org.oxytocina.geomancy.util.Toolbox;
@@ -53,8 +53,8 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
     public static final int INPUT_SLOT_COUNT = 1;
     public static final int PEDESTAL_RANGE = 5;
 
-    public IRitualForgeRecipe previewingRecipe = null;
-    public IRitualForgeRecipe activeRecipe = null;
+    public ISoulForgeRecipe previewingRecipe = null;
+    public ISoulForgeRecipe activeRecipe = null;
     public ItemStack currentResult = ItemStack.EMPTY;
     public float progress;
     public float instability;
@@ -83,7 +83,7 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
         clear();
         Inventories.readNbt(nbt, ownInventory);
         if(nbt.contains("activeRecipe")){
-            activeRecipe=(IRitualForgeRecipe) world.getRecipeManager().get(Identifier.tryParse(nbt.getString("activeRecipe"))).get();
+            activeRecipe=(ISoulForgeRecipe) world.getRecipeManager().get(Identifier.tryParse(nbt.getString("activeRecipe"))).get();
         }
         progress = nbt.getFloat("progress");
         instability = nbt.getFloat("instability");
@@ -115,7 +115,7 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
     public void tick(World world, BlockPos pos, BlockState state) {
         if(!initialized) initialize(world,pos,state);
 
-        IRitualForgeRecipe prevRecipe = activeRecipe;
+        ISoulForgeRecipe prevRecipe = activeRecipe;
         this.activeRecipe =getRecipe();
         ItemStack previousResult = currentResult;
         if(this.hasRecipe()){
@@ -160,7 +160,7 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
     }
 
     private void craftItem() {
-        IRitualForgeRecipe recipe = getRecipe();
+        ISoulForgeRecipe recipe = getRecipe();
         if (recipe != null) {
 
             List<ItemStack> results = craft(recipe, ownInventory, world);
@@ -193,7 +193,7 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
         return activeRecipe != null;
     }
 
-    private IRitualForgeRecipe getRecipe(){
+    private ISoulForgeRecipe getRecipe(){
         return getRecipeFor(world,getItems());
 
     }
@@ -202,10 +202,10 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
         progress+=amount;
     }
 
-    public IRitualForgeRecipe getRecipeFor(@NotNull World world, DefaultedList<ItemStack> inventory) {
+    public ISoulForgeRecipe getRecipeFor(@NotNull World world, DefaultedList<ItemStack> inventory) {
         AUTO_INVENTORY.setInputInventory( inputInventory().getItems() );
 
-        IRitualForgeRecipe res = world.getRecipeManager().getFirstMatch(ModRecipeTypes.RITUAL_SIMPLE, AUTO_INVENTORY, world).orElse(null);
+        ISoulForgeRecipe res = world.getRecipeManager().getFirstMatch(ModRecipeTypes.SOULFORGE_SIMPLE, AUTO_INVENTORY, world).orElse(null);
         return res;
     }
 
@@ -217,7 +217,7 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
         return inputInventory;
     }
 
-    public List<ItemStack> craft(IRitualForgeRecipe recipe, DefaultedList<ItemStack> inventory, World world) {
+    public List<ItemStack> craft(ISoulForgeRecipe recipe, DefaultedList<ItemStack> inventory, World world) {
         AUTO_INVENTORY.setInputInventory(inventory);
         return recipe.getResult(AUTO_INVENTORY, true,false,getOwner());
     }

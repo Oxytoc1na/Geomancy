@@ -44,11 +44,6 @@ public class ModItems {
     public static final ArrayList<GeodeItem> geodeItems = new ArrayList<>();
     public static final HashMap<EntityType<? extends MobEntity>, SpawnEggItem> spawnEggs = new HashMap<>();
 
-    public static final FoodComponent SUSPICIOUS_FOOD_COMPONENT = new FoodComponent.Builder()
-            .hunger(1).alwaysEdible().snack().statusEffect(new StatusEffectInstance(StatusEffects.POISON, 6 * 20, 1), 1.0f).build();
-
-    public static final Item SUSPICIOUS_SUBSTANCE = register("suspicious_substance",new Item(new FabricItemSettings().food(SUSPICIOUS_FOOD_COMPONENT)));
-
     // mithril
     public static final Item RAW_MITHRIL = register("raw_mithril",new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof()));
     public static final Item MITHRIL_INGOT = register("mithril_ingot",new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof()));
@@ -276,11 +271,11 @@ public class ModItems {
         // initialize static fields
         // calling this method is sufficient to do that, actually
         // Add the suspicious substance to the composting registry with a 30% chance of increasing the composter's level.
-        CompostingChanceRegistry.INSTANCE.add(ModItems.SUSPICIOUS_SUBSTANCE, 0.3f);
+        //CompostingChanceRegistry.INSTANCE.add(ModItems.SUSPICIOUS_SUBSTANCE, 0.3f);
         // Add the suspicious substance to the flammable block registry with a burn time of 30 seconds.
         // Remember, Minecraft deals with logical based-time using ticks.
         // 20 ticks = 1 second.
-        FuelRegistry.INSTANCE.add(ModItems.SUSPICIOUS_SUBSTANCE, 30 * 20);
+        //FuelRegistry.INSTANCE.add(ModItems.SUSPICIOUS_SUBSTANCE, 30 * 20);
 
 
         // Register the groups.

@@ -1,7 +1,6 @@
-package org.oxytocina.geomancy.recipe.ritualforge;
+package org.oxytocina.geomancy.recipe.soulforge;
 
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
@@ -9,7 +8,7 @@ import org.oxytocina.geomancy.recipe.NbtIngredient;
 
 import java.util.List;
 
-public interface IRitualForgeRecipe {
+public interface ISoulForgeRecipe {
     List<ItemStack> getResult(Inventory inv, boolean removeItems, boolean preview, LivingEntity owner);
 
     int getProgressRequired(Inventory inv);

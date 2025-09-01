@@ -1,4 +1,4 @@
-package org.oxytocina.geomancy.recipe.ritualforge;
+package org.oxytocina.geomancy.recipe.soulforge;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.Inventory;
@@ -12,6 +12,7 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.recipe.GatedModRecipe;
 import org.oxytocina.geomancy.recipe.NbtIngredient;
 import org.oxytocina.geomancy.recipe.smithery.SmithingIngredient;
@@ -20,17 +21,19 @@ import org.oxytocina.geomancy.spells.SpellBlocks;
 
 import java.util.List;
 
-public class RitualForgeRecipe extends GatedModRecipe<Inventory> implements IRitualForgeRecipe {
+public class SoulForgeRecipe extends GatedModRecipe<Inventory> implements ISoulForgeRecipe {
 
     protected final SmithingIngredient base;
     protected final ItemStack output;
     protected final float cost;
+    protected final float instability;
 
-    public RitualForgeRecipe(Identifier id, String group, boolean secret, Identifier requiredAdvancementIdentifier, @NotNull SmithingIngredient base, ItemStack output, float cost) {
+    public SoulForgeRecipe(Identifier id, String group, boolean secret, Identifier requiredAdvancementIdentifier, @NotNull SmithingIngredient base, ItemStack output, float cost, float instability) {
         super(id,group,secret,requiredAdvancementIdentifier);
         this.base = base;
         this.output=output;
         this.cost = cost;
+        this.instability=instability;
     }
 
     @Override
@@ -65,17 +68,17 @@ public class RitualForgeRecipe extends GatedModRecipe<Inventory> implements IRit
 
     @Override
     public ItemStack createIcon() {
-        return SpellBlocks.TRANSMUTE_ITEM.getItemStack();
+        return ModBlocks.SOUL_FORGE.asItem().getDefaultStack();
     }
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return ModRecipeTypes.TRANSMUTE_SERIALIZER;
+        return ModRecipeTypes.SOULFORGE_SIMPLE_SERIALIZER;
     }
 
     @Override
     public RecipeType<?> getType() {
-        return ModRecipeTypes.TRANSMUTE;
+        return ModRecipeTypes.SOULFORGE_SIMPLE;
     }
 
     @Override
@@ -91,10 +94,11 @@ public class RitualForgeRecipe extends GatedModRecipe<Inventory> implements IRit
 
     @Override
     public String getRecipeTypeShortID() {
-        return ModRecipeTypes.TRANSMUTE_ID;
+        return ModRecipeTypes.SOULFORGE_SIMPLE_ID;
     }
 
     public float getCost(){return cost;}
+    public float getInstability(){return instability;}
 
     @Override
     public List<ItemStack> getResult(Inventory inv, boolean removeItems, boolean preview, LivingEntity owner) {
