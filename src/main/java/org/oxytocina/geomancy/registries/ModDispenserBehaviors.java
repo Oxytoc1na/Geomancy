@@ -10,6 +10,7 @@ import net.minecraft.item.Items;
 import net.minecraft.util.math.BlockPointer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.oxytocina.geomancy.blocks.blockEntities.IHammerable;
 import org.oxytocina.geomancy.blocks.blockEntities.SmitheryBlockEntity;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 import org.oxytocina.geomancy.items.ModItems;
@@ -45,10 +46,10 @@ public class ModDispenserBehaviors {
                 BlockPos smitheryPos = pointer.getPos().offset(pointer.getBlockState().get(DispenserBlock.FACING));
                 World world = pointer.getWorld();
                 BlockEntity entity = world.getBlockEntity(smitheryPos);
-                if(!(entity instanceof SmitheryBlockEntity smithery)) return this.fallbackBehavior.dispense(pointer, stack);
+                if(!(entity instanceof IHammerable hammerable)) return this.fallbackBehavior.dispense(pointer, stack);
 
-                float skill = hammer.getSmithingSkill(smithery,null,stack);
-                smithery.onHitWithHammer(null,stack,skill);
+                float skill = hammer.getSmithingSkill(hammerable,null,stack);
+                hammerable.onHitWithHammer(null,stack,skill);
                 return stack;
             }
         };

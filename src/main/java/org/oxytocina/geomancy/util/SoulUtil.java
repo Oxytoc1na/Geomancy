@@ -372,7 +372,7 @@ public class SoulUtil {
                     if(mana<=0) continue;
                     float taken = Math.min(mana,amountPerStack);
                     left-=taken;
-                    pair.getRight().takeMana(world,pair.getLeft(),taken,ctx);
+                    pair.getRight().takeSoul(world,pair.getLeft(),taken,ctx);
                     if(mana-taken<=0) pair.getRight().onDepleted(pair.getLeft());
                     changed=true;
                 }

@@ -54,7 +54,7 @@ import org.oxytocina.geomancy.sound.ModSoundEvents;
 import java.util.HashMap;
 import java.util.List;
 
-public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory, ImplementedInventory {
+public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory, ImplementedInventory, IHammerable {
 
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(SLOT_COUNT,ItemStack.EMPTY);
     private final CheckedRandom mishapRandom = new CheckedRandom(1);
@@ -253,6 +253,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
 
     private static final AutoCraftingInventory AUTO_INVENTORY = new AutoCraftingInventory(SLOT_COUNT, 1);
 
+    @Override
     public void onHitWithHammer(@Nullable PlayerEntity player, ItemStack hammer,float skill){
         if(world==null) return;
         if(player==null && automatedHitCooldown>0) return;
@@ -457,12 +458,19 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
         ImplementedInventory.super.setStack(slot, stack);
     }
 
+    @Override
     public ItemStack getLastHammerStack(){
         return lastHammerStack;
     }
 
+    @Override
     public PlayerEntity getLastHammerer(){
         return lastHammerer;
+    }
+
+    @Override
+    public boolean isHammerable() {
+        return currentRecipe!=null;
     }
 
     public static class ParticleData {

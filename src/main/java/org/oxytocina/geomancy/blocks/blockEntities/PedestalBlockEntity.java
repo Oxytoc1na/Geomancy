@@ -113,12 +113,14 @@ public class PedestalBlockEntity extends BlockEntity implements ImplementedInven
         if(ownStack.isEmpty()){
             setItem(handStack.copyAndEmpty());
             Toolbox.playSound(SoundEvents.ENTITY_ITEM_PICKUP,world,pos,SoundCategory.BLOCKS,0.3f,Toolbox.randomPitch());
+            IPedestalListener.onPedestalUpdated(this);
             return; // put hand item into pedestal
         }
         if(handStack.isEmpty()){
             player.setStackInHand(hand,ownStack);
             setItem(ItemStack.EMPTY);
             Toolbox.playSound(SoundEvents.ENTITY_ITEM_PICKUP,world,pos,SoundCategory.BLOCKS,0.3f,Toolbox.randomPitch());
+            IPedestalListener.onPedestalUpdated(this);
             return; // take item from pedestal
         }
 
@@ -126,5 +128,6 @@ public class PedestalBlockEntity extends BlockEntity implements ImplementedInven
         setItem(handStack);
         player.setStackInHand(hand,ownStack);
         Toolbox.playSound(SoundEvents.ENTITY_ITEM_PICKUP,world,pos,SoundCategory.BLOCKS,0.3f,Toolbox.randomPitch());
+        IPedestalListener.onPedestalUpdated(this);
     }
 }

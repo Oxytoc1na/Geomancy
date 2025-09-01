@@ -48,7 +48,7 @@ public class SoulForgeBlock extends BlockWithEntity implements BlockEntityProvid
         if(state.getBlock() != newState.getBlock()){
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if(blockEntity instanceof SoulForgeBlockEntity forge){
-                ItemScatterer.spawn(world, pos, forge.inputInventory());
+                ItemScatterer.spawn(world, pos, forge);
                 if(!world.isClient)
                     forge.destroy();
                 world.updateComparators(pos,this);

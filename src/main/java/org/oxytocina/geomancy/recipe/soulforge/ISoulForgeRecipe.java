@@ -11,7 +11,8 @@ import java.util.List;
 public interface ISoulForgeRecipe {
     List<ItemStack> getResult(Inventory inv, boolean removeItems, boolean preview, LivingEntity owner);
 
-    int getProgressRequired(Inventory inv);
+    float getSoulCost(Inventory inv);
+    float getInstability(Inventory inv);
 
     ItemStack getPreviewOutput(Inventory inv);
 

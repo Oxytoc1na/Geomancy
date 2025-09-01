@@ -28,6 +28,11 @@ public interface IPedestalListener {
             l.registerPedestal(pedestal);
     }
 
+    static void onPedestalUpdated(PedestalBlockEntity pedestal){
+        for(var l : LIST)
+            l.pedestalChanged(pedestal);
+    }
+
     static void onPedestalDestroyed(PedestalBlockEntity pedestal){
         for(var l : LIST)
             l.pedestalRemoved(pedestal);
@@ -35,6 +40,7 @@ public interface IPedestalListener {
 
     void registerPedestal(PedestalBlockEntity pedestal);
     void pedestalRemoved(PedestalBlockEntity pedestal);
+    void pedestalChanged(PedestalBlockEntity pedestal);
     default void registerInArea(World world, BlockPos pos, int range){
         BlockPos.iterateOutwards(pos,range,range,range).forEach(p->{
             if(world.getBlockEntity(p) instanceof PedestalBlockEntity pedestal)

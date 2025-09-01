@@ -23,14 +23,14 @@ import java.util.List;
 
 public class SoulForgeRecipe extends GatedModRecipe<Inventory> implements ISoulForgeRecipe {
 
-    protected final SmithingIngredient base;
+    protected final List<NbtIngredient> inputs;
     protected final ItemStack output;
     protected final float cost;
     protected final float instability;
 
-    public SoulForgeRecipe(Identifier id, String group, boolean secret, Identifier requiredAdvancementIdentifier, @NotNull SmithingIngredient base, ItemStack output, float cost, float instability) {
+    public SoulForgeRecipe(Identifier id, String group, boolean secret, Identifier requiredAdvancementIdentifier, List<NbtIngredient> inputs, ItemStack output, float cost, float instability) {
         super(id,group,secret,requiredAdvancementIdentifier);
-        this.base = base;
+        this.inputs = inputs;
         this.output=output;
         this.cost = cost;
         this.instability=instability;
@@ -38,15 +38,30 @@ public class SoulForgeRecipe extends GatedModRecipe<Inventory> implements ISoulF
 
     @Override
     public boolean matches(@NotNull Inventory inv, World world) {
-        return craft(inv,null).isEmpty();
+        return inputsPresent(inv);
     }
 
+    /// the removal of items is done very differently for this kind of recipe.
+    /// see {@link org.oxytocina.geomancy.blocks.blockEntities.SoulForgeBlockEntity} for details
     @Override
     public ItemStack craft(Inventory inventory, DynamicRegistryManager registryManager) {
-        for (int i = 0; i < inventory.size(); i++) {
-            if(base.test(inventory.getStack(i))) return output;
+        return output;
+    }
+
+    public boolean inputsPresent(Inventory inv){
+        for (NbtIngredient input : inputs) {
+            boolean present = false;
+            for (int j = 0; j < inv.size(); j++) {
+                if (input.test(inv.getStack(j))) {
+                    present = true;
+                    break;
+                }
+            }
+            if (!present)
+                return false;
         }
-        return ItemStack.EMPTY;
+
+        return true;
     }
 
     @Override
@@ -62,7 +77,8 @@ public class SoulForgeRecipe extends GatedModRecipe<Inventory> implements ISoulF
     @Override
     public DefaultedList<Ingredient> getIngredients() {
         DefaultedList<Ingredient> res = DefaultedList.of();
-        res.add(base.ingredient);
+        for(var ing : inputs)
+            res.add(ing.ingredient);
         return res;
     }
 
@@ -102,12 +118,17 @@ public class SoulForgeRecipe extends GatedModRecipe<Inventory> implements ISoulF
 
     @Override
     public List<ItemStack> getResult(Inventory inv, boolean removeItems, boolean preview, LivingEntity owner) {
-        return List.of();
+        return List.of(output);
     }
 
     @Override
-    public int getProgressRequired(Inventory inv) {
-        return 0;
+    public float getSoulCost(Inventory inv) {
+        return getCost();
+    }
+
+    @Override
+    public float getInstability(Inventory inv) {
+        return getInstability();
     }
 
     @Override

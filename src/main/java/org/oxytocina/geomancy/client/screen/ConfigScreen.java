@@ -15,15 +15,6 @@ import java.util.function.Supplier;
 
 public class ConfigScreen extends Screen {
 
-    private static final Text SKIN_CUSTOMIZATION_TEXT = Text.translatable("options.skinCustomisation");
-    private static final Text SOUNDS_TEXT = Text.translatable("options.sounds");
-    private static final Text VIDEO_TEXT = Text.translatable("options.video");
-    private static final Text CONTROL_TEXT = Text.translatable("options.controls");
-    private static final Text LANGUAGE_TEXT = Text.translatable("options.language");
-    private static final Text CHAT_TEXT = Text.translatable("options.chat.title");
-    private static final Text RESOURCE_PACK_TEXT = Text.translatable("options.resourcepack");
-    private static final Text ACCESSIBILITY_TEXT = Text.translatable("options.accessibility.title");
-    private static final Text TELEMETRY_TEXT = Text.translatable("options.telemetry");
     private static final Text CREDITS_AND_ATTRIBUTION_TEXT = Text.translatable("options.credits_and_attribution");
 
     private static final int COLUMNS = 2;
@@ -61,14 +52,29 @@ public class ConfigScreen extends Screen {
                         (button, toggle) ->
                                 GeomancyConfig.CONFIG.noSpellmakerMove.setValue(toggle)));
 
+        // spell timeout penalty
+        adder.add(CyclingButtonWidget.<Boolean>builder(b->Text.literal(b.toString()))
+                .values(true,false)
+                .initially(GeomancyConfig.CONFIG.penalizeSpellTimeout.value())
+                .build(0,0, 150, 20,
+                        Text.translatable("geomancy.options.penalize_spell_timeout"),
+                        (button, toggle) ->
+                                GeomancyConfig.CONFIG.penalizeSpellTimeout.setValue(toggle)));
+
         // spellmaker ui speed
         var slider = FloatSlider.create(0,0,150,20,Text.translatable("geomancy.options.spellmakeruispeed"),
                 GeomancyConfig.CONFIG.spellmakerUiSpeed.value(),0.1f,1f, GeomancyConfig.CONFIG.spellmakerUiSpeed::setValue);
         adder.add(slider);
 
-        //adder.add(EmptyWidget.ofHeight(26), 2);
-        //adder.add(this.createButton(ACCESSIBILITY_TEXT, () -> new AccessibilityOptionsScreen(this, this.settings)));
+        // cam shake
+        slider = FloatSlider.create(0,0,150,20,Text.translatable("geomancy.options.shake_intensity"),
+                GeomancyConfig.CONFIG.shakeIntensity.value(),0f,1f, GeomancyConfig.CONFIG.shakeIntensity::setValue);
+        adder.add(slider);
+
+        // credits and attribution
         adder.add(this.createButton(CREDITS_AND_ATTRIBUTION_TEXT, () -> new GeomancyCreditsScreen(this,false,()->{})));
+
+        // done
         adder.add(ButtonWidget.builder(ScreenTexts.DONE, button -> this.client.setScreen(this.parent)).width(200).build(), 2, adder.copyPositioner().marginTop(6));
         gridWidget.refreshPositions();
         SimplePositioningWidget.setPos(gridWidget, 0, this.height / 6 - 12, this.width, this.height, 0.5F, 0.0F);

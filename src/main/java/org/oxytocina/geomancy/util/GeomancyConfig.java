@@ -31,7 +31,7 @@ public class GeomancyConfig extends ReflectiveConfig {
     @SerializedName("spellmaker_ui_speed")
     public final TrackedValue<Float> spellmakerUiSpeed = this.value(0.5f);
 
-    @Comment("if set to true, replaces the moving effect of the spellmaker UI with a silly little guy")
+    @Comment("if set to true, replaces the moving effect of the spellmaker UI with useful spellmaking tips")
     @SerializedName("no_spellmaker_move")
     public final TrackedValue<Boolean> noSpellmakerMove = this.value(true);
 
@@ -39,4 +39,8 @@ public class GeomancyConfig extends ReflectiveConfig {
     @Comment("valid range: 0-1")
     @SerializedName("shake_intensity")
     public final TrackedValue<Float> shakeIntensity = this.value(1f);
+
+    @Comment("toggles if timing out a spell should be penalized")
+    @SerializedName("penalize_spell_timeout")
+    public final TrackedValue<Boolean> penalizeSpellTimeout = this.value(true);
 }

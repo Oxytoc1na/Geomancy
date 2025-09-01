@@ -98,7 +98,7 @@ public class SoulBoreItem extends StorageItem implements ISoulStoringItem, ICust
     }
 
     @Override
-    public void takeMana(World world, ItemStack stack, float amount, @Nullable SpellContext ctx) {
+    public void takeSoul(World world, ItemStack stack, float amount, @Nullable SpellContext ctx) {
         float leftOvers = getLeftoverMana(stack);
         float taken = Math.min(leftOvers,amount);
         amount -= taken;

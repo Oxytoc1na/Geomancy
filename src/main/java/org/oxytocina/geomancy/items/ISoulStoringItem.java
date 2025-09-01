@@ -121,7 +121,7 @@ public interface ISoulStoringItem {
         tooltip.add(Text.translatable("geomancy.soul_storage.tooltip",Math.round(mana),Math.round(cap),Math.round(fraction*100)).formatted(Formatting.DARK_GRAY));
     }
 
-    default void takeMana(World world, ItemStack left, float taken, @Nullable SpellContext ctx){
+    default void takeSoul(World world, ItemStack left, float taken, @Nullable SpellContext ctx){
         setMana(world,left,getMana(world,left)-taken);
     }
 }

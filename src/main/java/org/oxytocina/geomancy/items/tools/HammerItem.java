@@ -20,6 +20,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.blocks.blockEntities.IHammerable;
 import org.oxytocina.geomancy.blocks.blockEntities.SmitheryBlock;
 import org.oxytocina.geomancy.blocks.blockEntities.SmitheryBlockEntity;
 import org.oxytocina.geomancy.enchantments.ModEnchantments;
@@ -91,15 +92,15 @@ public class HammerItem extends MiningToolItem {
         BlockPos pos = context.getBlockPos();
         World world = context.getWorld();
 
-        if(world.getBlockEntity(pos) instanceof SmitheryBlockEntity smithery){
+        if(world.getBlockEntity(pos) instanceof IHammerable hammerable){
 
-            if(smithery.currentRecipe!=null){
+            if(hammerable.isHammerable()){
                 ItemStack hammerStack = context.getStack();
 
                 if(!miner.getItemCooldownManager().isCoolingDown(hammerStack.getItem())){
 
-                    float skill = getSmithingSkill(smithery,miner,hammerStack);
-                    smithery.onHitWithHammer(miner,hammerStack,skill);
+                    float skill = getSmithingSkill(hammerable,miner,hammerStack);
+                    hammerable.onHitWithHammer(miner,hammerStack,skill);
 
                     if(!world.isClient)
                         damageAfterSmithingUse(hammerStack,miner);
@@ -130,7 +131,7 @@ public class HammerItem extends MiningToolItem {
         return cooldown;
     }
 
-    public float getSmithingSkill(SmitheryBlockEntity smithery, @Nullable PlayerEntity player, ItemStack hammerStack){
+    public float getSmithingSkill(IHammerable hammerable, @Nullable PlayerEntity player, ItemStack hammerStack){
         float res = 0;
 
         res+=skillBonus;

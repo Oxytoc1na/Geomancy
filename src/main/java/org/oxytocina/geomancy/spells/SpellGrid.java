@@ -129,30 +129,32 @@ public class SpellGrid {
         // casting a spell that takes too long
         if(context.timedOut()){
             SpellBlocks.tryLogDebugTimedOut(context);
-            // spawn lightning
-            LightningEntity lightning = new LightningEntity(EntityType.LIGHTNING_BOLT,context.getWorld());
-            var pos = context.getOriginPos();
-            if(context.caster!=null)
-                pos = context.caster.getPos();
-            lightning.setPos(pos.x,pos.y,pos.z);
-            switch(context.sourceType){
-                case Caster:
-                    EntityUtil.slipItem(context.caster,context.casterItem);
-                    break;
-                case Block:
-                    if(Toolbox.random.nextFloat() < 0.2f)
-                    {
-                        // break the caster block
-                        if(context.getWorld() instanceof ServerWorld sw){
-                            sw.breakBlock(context.getOriginBlockPos(),true);
-                        }
-                    }
-                    break;
-                default :break;
-            }
-            context.getWorld().spawnEntity(lightning);
-            CamShakeUtil.cause(context.getWorld(),pos,20,2);
             SpellBlocks.tryUnlockSpellAdvancement(context.caster,"ambition");
+            if(Geomancy.CONFIG.penalizeSpellTimeout.value()){
+                // spawn lightning
+                LightningEntity lightning = new LightningEntity(EntityType.LIGHTNING_BOLT,context.getWorld());
+                var pos = context.getOriginPos();
+                if(context.caster!=null)
+                    pos = context.caster.getPos();
+                lightning.setPos(pos.x,pos.y,pos.z);
+                switch(context.sourceType){
+                    case Caster:
+                        EntityUtil.slipItem(context.caster,context.casterItem);
+                        break;
+                    case Block:
+                        if(Toolbox.random.nextFloat() < 0.2f)
+                        {
+                            // break the caster block
+                            if(context.getWorld() instanceof ServerWorld sw){
+                                sw.breakBlock(context.getOriginBlockPos(),true);
+                            }
+                        }
+                        break;
+                    default :break;
+                }
+                context.getWorld().spawnEntity(lightning);
+                CamShakeUtil.cause(context.getWorld(),pos,20,2);
+            }
         }
 
         if(context.soulConsumed > 0){
