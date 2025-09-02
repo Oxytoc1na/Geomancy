@@ -200,7 +200,17 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
             currentResult = activeRecipe.getPreviewOutput(inputInventory());
 
             // increase instability
-            instability += 1/20f * 0.05f * activeRecipe.getInstability(inputInventory());
+            instability += 1/20f * 0.02f * activeRecipe.getInstability(inputInventory());
+
+            // random instability effects
+            float powedInstability = (float)Math.pow(instability,4);
+            if(Geomancy.tick%10==0 && powedInstability > Toolbox.random.nextFloat())
+            {
+                CamShakeUtil.cause(world,getPos().toCenterPos(),20,instability*2,instability*2);
+                Toolbox.playSound(SoundEvents.ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR,world,getPos(), SoundCategory.NEUTRAL, powedInstability*0.8f, 1.2f-0.6f*powedInstability);
+                ParticleUtil.ParticleData.createInstability(world,getPos().toCenterPos()).send();
+            }
+
             if(instability>=1){
                 // instability too high, abort craft
                 this.resetProgress();

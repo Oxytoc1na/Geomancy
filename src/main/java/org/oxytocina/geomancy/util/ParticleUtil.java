@@ -73,6 +73,9 @@ public class ParticleUtil {
         public static ParticleData createSoulDud(World world, Vec3d pos){
             return create(world,pos.add(0,0.6f,0)).type(Type.SOUL_DUD).amount(10).vel(new Vec3d(-0.1f,0.05f,-0.1f),new Vec3d(0.1f,0.05f,0.1f)).dispersion(0.3f);
         }
+        public static ParticleData createInstability(World world, Vec3d pos){
+            return create(world,pos.add(0,0.6f,0)).type(Type.INSTABILITY).amount(10).vel(new Vec3d(-0.1f,0.05f,-0.1f),new Vec3d(0.1f,0.05f,0.1f)).dispersion(0.3f);
+        }
         
         public static ParticleData create(World world, Vec3d pos){
             return new ParticleData(Type.CAST_SOUL, 10,pos,new Vec3d(0,0,0),world.getRegistryKey().getValue(),world,0.5f);
@@ -165,6 +168,11 @@ public class ParticleUtil {
                         worldObj.addParticle(ParticleTypes.SOUL_FIRE_FLAME,pPos.x,pPos.y,pPos.z,vel.x,vel.y,vel.z);
                         break;
                     }
+                    case INSTABILITY:{
+                        worldObj.addParticle(ParticleTypes.FIREWORK,pPos.x,pPos.y,pPos.z,vel.x,vel.y,vel.z);
+                        worldObj.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE,pPos.x,pPos.y,pPos.z,0,0,0);
+                        break;
+                    }
                 }
             }
         }
@@ -178,6 +186,7 @@ public class ParticleUtil {
             SMITHING_FAILURE,
             SOUL_FLARE,
             SOUL_DUD,
+            INSTABILITY,
         }
     }
 }
