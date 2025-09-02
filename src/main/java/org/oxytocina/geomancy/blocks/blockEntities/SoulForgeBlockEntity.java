@@ -40,6 +40,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.blocks.MultiblockCrafter;
 import org.oxytocina.geomancy.client.GeomancyClient;
 import org.oxytocina.geomancy.client.screen.SoulForgeScreenHandler;
@@ -53,10 +54,7 @@ import org.oxytocina.geomancy.recipe.soulforge.ISoulForgeRecipe;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
 import org.oxytocina.geomancy.spells.SpellContext;
-import org.oxytocina.geomancy.util.BlockHelper;
-import org.oxytocina.geomancy.util.EntityUtil;
-import org.oxytocina.geomancy.util.ParticleUtil;
-import org.oxytocina.geomancy.util.Toolbox;
+import org.oxytocina.geomancy.util.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -171,7 +169,7 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
 
     @Override
     public Text getDisplayName() {
-        return Text.translatable("container."+Geomancy.MOD_ID+".soulforge");
+        return ModBlocks.SOUL_FORGE.getName();
     }
 
     @Nullable
@@ -280,7 +278,9 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
                     ),false,getOwner());
                 }
                 activeRecipe=null;
+                refreshAvailableIngredients();
                 this.resetProgress();
+                markDirty();
             }
 
             if(Geomancy.tick%4==0)
@@ -305,12 +305,12 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
 
     private void finishCrafting() {
         this.spawnResult();
-        this.resetProgress();
         activeRecipe=null;
         // TODO: visual and auditory flair
         Toolbox.playSound(SoundEvents.ENTITY_WITHER_DEATH,world,getPos(), SoundCategory.NEUTRAL, 0.5F, Toolbox.randomPitch());
         CamShakeUtil.cause(world,getPos().toCenterPos(),20,2,2,0.5f);
-        sendUpdatesToNearbyClients();
+        refreshAvailableIngredients();
+        this.resetProgress();
         markDirty();
     }
 
@@ -509,8 +509,11 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
     public void onHitWithHammer(@Nullable PlayerEntity player, ItemStack hammer, float skill) {
         lastHammerStack=hammer;
         if(player!=null) lastHammerer = player;
-        if(!isActive()) return;
         if(world==null||world.isClient) return;
+        if(!isActive()) {
+            AdvancementHelper.grantAdvancementCriterion((ServerPlayerEntity) player, "main/simple_tried_to_smith_cold_forge", "simple_tried_to_smith_cold_forge");
+            return;
+        }
 
         HammerItem hammerItem = (HammerItem) hammer.getItem();
 
@@ -518,7 +521,7 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
 
         // take soul
         float availableSoul = getAvailableSoul();
-        float soulToConsume = Math.min(availableSoul,hammerItem.getHitProgress(player) * 10 + skill);
+        float soulToConsume = activeRecipe.getSpeed(inputInventory()) * 0.3f * Math.min(availableSoul,hammerItem.getHitProgress(player) * 10 + skill);
         float left = soulToConsume;
         int soulContainers = surroundingSoulInventories.size();
         List<PedestalBlockEntity> takenFrom = new ArrayList<>();
@@ -581,7 +584,8 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
                         // consume stack
                         consumedIngredients.add(pedestalStack.copyAndEmpty());
                         pedestal.markDirty();
-                        // TODO: visual and auditory flair
+                        ParticleUtil.ParticleData.createForgeConsume(world,getPos().toCenterPos().add(0,0.6f,0),pedestal.getPos().toCenterPos().add(0,0.6f,0)).send();
+                        Toolbox.playSound(SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE,world,pedestal.getPos(),SoundCategory.BLOCKS,0.5f,Toolbox.randomPitch());
                         consumed=true;
                         changed2=true;
                         break;
@@ -648,19 +652,25 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
         }
         else{
             // made progress
-            Toolbox.playSound(ModSoundEvents.USE_HAMMER,world,getPos(), SoundCategory.NEUTRAL, 0.7F, Toolbox.randomPitch());
             CamShakeUtil.cause(world,getPos().toCenterPos(),20,0.5f);
             ParticleUtil.ParticleData.createSmithingProgress(world,getPos().toCenterPos()).send();
             for(var pedestal : takenFrom){
                 ParticleUtil.ParticleData.createSoulFlare(world,pedestal.getPos().toCenterPos()).send();
             }
 
+            if(left>0){
+                // soul is now empty!
+                Toolbox.playSound(ModSoundEvents.USE_HAMMER_FAIL,world,getPos(), SoundCategory.NEUTRAL, 1.3F, Toolbox.randomPitch());
+            }
+            else{
+                Toolbox.playSound(ModSoundEvents.USE_HAMMER,world,getPos(), SoundCategory.NEUTRAL, 0.7F, Toolbox.randomPitch());
+            }
         }
     }
 
     @Override
     public boolean isHammerable() {
-        return isActive();
+        return isActive()||previewingRecipe!=null;
     }
 
     public void updateAvailableSoul(){

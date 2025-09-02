@@ -270,7 +270,7 @@ public class JewelryRecipe extends GatedModRecipe<Inventory> implements Smithery
     }
 
     @Override
-    public List<ItemStack> getSmithingResult(Inventory inv, boolean removeItems, boolean preview, ItemStack hammer, LivingEntity hammerer) {
+    public List<ItemStack> getSmithingResult(Inventory inv, boolean removeItems, boolean preview, ItemStack hammer, LivingEntity hammerer,World world) {
         return getOutput(inv,removeItems,preview);
     }
 }

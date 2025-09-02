@@ -44,17 +44,17 @@ public class GeodeRecipe extends GatedModRecipe<Inventory> implements SmitheryRe
     @Override
     public boolean matches(@NotNull Inventory inv, World world) {
 
-        return !getOutput(inv,false,false,ItemStack.EMPTY,null).isEmpty();
+        return !getOutput(inv,false,false,ItemStack.EMPTY,null,world).isEmpty();
     }
 
     @Override
     public ItemStack craft(Inventory inventory, DynamicRegistryManager registryManager) {
-        List<ItemStack> res = newCraft(inventory);
+        List<ItemStack> res = newCraft(inventory,null);
         return res.isEmpty()?ItemStack.EMPTY:res.get(0);
     }
 
-    public List<ItemStack> newCraft(Inventory inv) {
-        return getOutput(inv, true, false,ItemStack.EMPTY,null);
+    public List<ItemStack> newCraft(Inventory inv,World world) {
+        return getOutput(inv, true, false,ItemStack.EMPTY,null,world);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class GeodeRecipe extends GatedModRecipe<Inventory> implements SmitheryRe
         return null;
     }
 
-    public List<ItemStack> getOutput(Inventory inv, boolean removeIngredients, boolean preview, ItemStack hammer, LivingEntity hammerer) {
+    public List<ItemStack> getOutput(Inventory inv, boolean removeIngredients, boolean preview, ItemStack hammer, LivingEntity hammerer, World world) {
         List<ItemStack> res = new ArrayList<>();
 
         ItemStack baseStack = getRecipeBase(inv);
@@ -79,7 +79,7 @@ public class GeodeRecipe extends GatedModRecipe<Inventory> implements SmitheryRe
             if(baseStack.getItem() instanceof GeodeItem geodeItem){
                 LootTable lootTable = geodeItem.getLootTable();
 
-                if(hammerer != null && hammerer.getWorld() instanceof ServerWorld serverWorld){
+                if(world instanceof ServerWorld serverWorld){
                     var loot = lootTable.generateLoot(new LootContextParameterSet.Builder(serverWorld).build(LootContextType.create().build()));
                     res.addAll(loot);
                 }
@@ -129,7 +129,7 @@ public class GeodeRecipe extends GatedModRecipe<Inventory> implements SmitheryRe
 
     @Override
     public ItemStack getPreviewOutput(Inventory inv) {
-        List<ItemStack> outputs = getOutput(inv,false,true,ItemStack.EMPTY,null);
+        List<ItemStack> outputs = getOutput(inv,false,true,ItemStack.EMPTY,null,null);
         return outputs.isEmpty()?ItemStack.EMPTY:outputs.get(0);
     }
 
@@ -178,7 +178,7 @@ public class GeodeRecipe extends GatedModRecipe<Inventory> implements SmitheryRe
     }
 
     @Override
-    public List<ItemStack> getSmithingResult(Inventory inv, boolean removeItems, boolean preview, ItemStack hammer, LivingEntity hammerer) {
-        return getOutput(inv,removeItems,preview, hammer, hammerer);
+    public List<ItemStack> getSmithingResult(Inventory inv, boolean removeItems, boolean preview, ItemStack hammer, LivingEntity hammerer, World world) {
+        return getOutput(inv,removeItems,preview, hammer, hammerer, world);
     }
 }

@@ -50,6 +50,7 @@ public class ModDispenserBehaviors {
 
                 float skill = hammer.getSmithingSkill(hammerable,null,stack);
                 hammerable.onHitWithHammer(null,stack,skill);
+                hammer.damageAfterSmithingUse(stack,null);
                 return stack;
             }
         };

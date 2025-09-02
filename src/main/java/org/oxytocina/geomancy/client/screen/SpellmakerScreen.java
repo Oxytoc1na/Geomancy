@@ -75,9 +75,14 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
         hints.put(SpellBlocks.SUM.copyItemStack(),"sum");
         hints.put(SpellBlocks.DIMHOP.copyItemStack(),"dimhop");
         hints.put(ModItems.CASTER_LEGGINGS.getDefaultStack(),"casterleggings");
+        hints.put(ModItems.CASTER_BOOTS.getDefaultStack(),"casterboots");
+        hints.put(ModItems.CASTER_HELMET.getDefaultStack(),"casterhelmet");
+        hints.put(ModItems.CASTER_CHESTPLATE.getDefaultStack(),"casterchestplate");
         hints.put(SpellBlocks.DEGRADE_BLOCK.copyItemStack(),"degrading");
         hints.put(SpellBlocks.ENTITIES_NEAR.copyItemStack(),"nearbyentities");
         hints.put(SpellBlocks.DEBUG.copyItemStack(),"debugging");
+        hints.put(SpellBlocks.ACTIVATE.copyItemStack(),"activate");
+        hints.put(ModItems.VARSTORAGE_LARGE.getDefaultStack(),"varpots");
 
         hints.put(Items.STONE.getDefaultStack(),"rockandstone");
     }

@@ -249,7 +249,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
 
     public List<ItemStack> craft(SmitheryRecipeI recipe, DefaultedList<ItemStack> inventory, World world) {
         AUTO_INVENTORY.setInputInventory(inventory);
-        return recipe.getSmithingResult(AUTO_INVENTORY, true,false,getLastHammerStack(),getLastHammerer());
+        return recipe.getSmithingResult(AUTO_INVENTORY, true,false,getLastHammerStack(),getLastHammerer(),world);
     }
 
     private static final AutoCraftingInventory AUTO_INVENTORY = new AutoCraftingInventory(SLOT_COUNT, 1);

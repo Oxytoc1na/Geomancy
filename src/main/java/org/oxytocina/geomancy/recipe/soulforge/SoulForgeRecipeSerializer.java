@@ -22,7 +22,7 @@ public class SoulForgeRecipeSerializer<R extends SoulForgeRecipe> implements Gat
     }
 
     public interface RecipeFactory<R> {
-        R create(Identifier id, String group, boolean secret, Identifier requiredAdvancementIdentifier, List<NbtIngredient> inputs, ItemStack outputItemStack, float cost, float instability);
+        R create(Identifier id, String group, boolean secret, Identifier requiredAdvancementIdentifier, List<NbtIngredient> inputs, ItemStack outputItemStack, float cost, float instability, float speed);
     }
 
     @Override
@@ -42,8 +42,9 @@ public class SoulForgeRecipeSerializer<R extends SoulForgeRecipe> implements Gat
         ItemStack outputItemStack = RecipeUtils.itemStackWithNbtFromJson(JsonHelper.getObject(JsonHelper.getObject(jsonObject, "result"),"item"));
         float cost = jsonObject.get("cost").getAsFloat();
         float instability = jsonObject.get("instability").getAsFloat();
+        float speed = jsonObject.get("speed").getAsFloat();
 
-        return this.recipeFactory.create(identifier, group, secret, requiredAdvancementIdentifier, ingredients, outputItemStack, cost,instability);
+        return this.recipeFactory.create(identifier, group, secret, requiredAdvancementIdentifier, ingredients, outputItemStack, cost,instability,speed);
     }
 
     @Override
@@ -59,6 +60,8 @@ public class SoulForgeRecipeSerializer<R extends SoulForgeRecipe> implements Gat
 
         buf.writeItemStack(recipe.output);
         buf.writeFloat(recipe.cost);
+        buf.writeFloat(recipe.instability);
+        buf.writeFloat(recipe.speed);
     }
 
     @Override
@@ -76,7 +79,8 @@ public class SoulForgeRecipeSerializer<R extends SoulForgeRecipe> implements Gat
         ItemStack outputItemStack = buf.readItemStack();
         float cost = buf.readFloat();
         float instability = buf.readFloat();
-        return this.recipeFactory.create(identifier, group, secret, requiredAdvancementIdentifier, inputs,outputItemStack, cost,instability);
+        float speed = buf.readFloat();
+        return this.recipeFactory.create(identifier, group, secret, requiredAdvancementIdentifier, inputs,outputItemStack, cost,instability,speed);
     }
 
 }

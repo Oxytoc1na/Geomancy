@@ -69,7 +69,7 @@ public class SoulForgeScreen extends HandledScreen<SoulForgeScreenHandler> {
                 v = 91;
             final int height = 22;
             final int width = 35;
-            DrawHelper.drawTexture(context.getMatrices(),TEXTURE,x+84,y+28,width,height,176,v,width,height,256,256,col.x,col.y,col.z,soulFraction);
+            DrawHelper.drawTexture(context.getMatrices(),TEXTURE,x+85,y+28,width,height,176,v,width,height,256,256,col.x,col.y,col.z,soulFraction);
         }
 
         if(handler.isCrafting()){
@@ -146,12 +146,12 @@ public class SoulForgeScreen extends HandledScreen<SoulForgeScreenHandler> {
             boolean alreadyConsumed = stacksToShow.get(i).getRight();
             DrawHelper.drawItem(context,MinecraftClient.getInstance().player,handler.blockEntity.getWorld(),stack,
                     drawPosX,drawPosY,0,0,alreadyConsumed?1:0.5f,alreadyConsumed?1:0.5f,alreadyConsumed?1:0.5f);
+            RenderSystem.setShaderColor(1,1,1,1);
             if(alreadyConsumed)
             {
                 // draw checkmark
                 context.drawTexture(CHECKMARK_TEXTURE,drawPosX+10,drawPosY+10,0,0,0,8,9,8,9);
             }
-            RenderSystem.setShaderColor(1,1,1,1);
             // tooltip
             if(!alreadyShowingTooltip && DrawHelper.mouseInRect(mouseX,mouseY,drawPosX,drawPosY,16,16))
             {

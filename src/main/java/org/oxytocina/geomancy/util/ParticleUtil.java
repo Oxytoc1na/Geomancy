@@ -76,6 +76,9 @@ public class ParticleUtil {
         public static ParticleData createInstability(World world, Vec3d pos){
             return create(world,pos.add(0,0.6f,0)).type(Type.INSTABILITY).amount(10).vel(new Vec3d(-0.1f,0.05f,-0.1f),new Vec3d(0.1f,0.05f,0.1f)).dispersion(0.3f);
         }
+        public static ParticleData createForgeConsume(World world, Vec3d from, Vec3d to){
+            return create(world,from).type(Type.FORGE_CONSUME).amount(1).vel(to,to);
+        }
         
         public static ParticleData create(World world, Vec3d pos){
             return new ParticleData(Type.CAST_SOUL, 10,pos,new Vec3d(0,0,0),world.getRegistryKey().getValue(),world,0.5f);
@@ -173,6 +176,16 @@ public class ParticleUtil {
                         worldObj.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE,pPos.x,pPos.y,pPos.z,0,0,0);
                         break;
                     }
+                    case FORGE_CONSUME:{
+                        var dir = vel.subtract(pPos);
+                        float distance = (float)dir.length();
+                        for (int j = 0; j < distance*5; j++) {
+                            Vec3d newPos = pPos.add(dir.multiply(j/5f/distance));
+                            worldObj.addParticle(ParticleTypes.SCULK_SOUL,newPos.x,newPos.y,newPos.z,0,0,0);
+                            worldObj.addParticle(ParticleTypes.SOUL_FIRE_FLAME,newPos.x,newPos.y,newPos.z,Toolbox.randomBetween(-0.1f,0.1f),Toolbox.randomBetween(0,0.1f),Toolbox.randomBetween(-0.1f,0.1f));
+                        }
+                        break;
+                    }
                 }
             }
         }
@@ -186,7 +199,8 @@ public class ParticleUtil {
             SMITHING_FAILURE,
             SOUL_FLARE,
             SOUL_DUD,
-            INSTABILITY
+            INSTABILITY,
+            FORGE_CONSUME,
         }
     }
 }

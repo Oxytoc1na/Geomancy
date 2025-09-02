@@ -215,7 +215,7 @@ public class SmitheryRecipe extends GatedModRecipe<Inventory> implements Smither
     }
 
     @Override
-    public List<ItemStack> getSmithingResult(Inventory inv, boolean removeItems,boolean preview, ItemStack hammer, LivingEntity hammerer) {
+    public List<ItemStack> getSmithingResult(Inventory inv, boolean removeItems,boolean preview, ItemStack hammer, LivingEntity hammerer,World world) {
         return removeItems?List.of(craft(inv,null)):List.of(getOutput(null));
     }
 }

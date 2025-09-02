@@ -78,9 +78,14 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                 addSpellmakerTip("sum","The versatility of summation","The sum component can sum up numbers and vectors, acts as an OR for booleans, concatenates texts and lists, inserts signals into lists, and appends the text representation of most things to texts.\nA true multitalent!");
                 addSpellmakerTip("dimhop","Dimensional hopping","Known dimensional identifiers are \"minecraft:overworld\", \"minecraft:the_nether\" and \"minecraft:the_end\". You'll appear at the same coordinates you're currently at, just in a different dimension.");
                 addSpellmakerTip("casterleggings","Leggings and groundedness","If you jump while wearing Caster Leggings, any \"Entity Grounded\" component inside the triggered spell will output true for you if you weren't airborne at the time.");
+                addSpellmakerTip("casterboots","Boots and eloquence","If you say something while wearing Caster Leggings, an argument named \"message\" containing what you said is passed into the cast spell.\nAccess it with a Ref. Output component to change the behavior of your spell(s)!");
+                addSpellmakerTip("casterhelmet","Helmets and aggression","If you attack something while wearing a Caster Helmet, an argument named \"target\" containing the thing that you hit is passed into the cast spell.\nAccess it with a Ref. Output component to do even more harm!");
+                addSpellmakerTip("casterchestplate","Chestplates and stalwartness","If you get attacked by something while wearing a Caster Chestplate, an argument named \"attacker\" containing the thing that just hit you is passed into the cast spell.\nTake revenge on that skeleton without having to turn around!");
                 addSpellmakerTip("degrading","Degrading","The degrade block component can turn metal to ore, ore to stone, stone to cobblestone, cobblestone to gravel, gravel to sand, and sand to dirt! It also does other things, like damage anvils! Why would you need this?");
                 addSpellmakerTip("nearbyentities","Nearby Entities","The nearby entities component returns a list of entities, sorted by their distance to the center. The closest entity gets listed first!");
                 addSpellmakerTip("debugging","Debug your spells!","Putting a debug component somewhere in your grid will cause things that go wrong to tell you about themselves instead of staying silent. Be aware of the fact that this only applies to the grid it's placed in, not other grids referenced from it.");
+                addSpellmakerTip("activate","Activation","The activate component can interact with buttons, levers, doors, and can activate things like droppers and dispensers.");
+                addSpellmakerTip("varpots","Variable storage","Varpots (short for variable pots) let you save signals and retrieve them at a later time. They allow for reusable recall spells and two-point fill spells, to name a few examples. You can also save references to entities, including players.");
 
                 addSpellmakerTip("rockandstone","Rock and stone!","What is the difference?\nPerhaps that rocking is more legal than stoning.\nWe may never know.");
             }
@@ -631,6 +636,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
             addAdvancement(".main.simple_duplicate_trinkets","Hubris","Try and fail to equip two artifacts of the same type at once");
             addAdvancement(".main.simple_tried_to_take_smithery_result","You've gotta hammer it!","Hit the Smithery with a Hammer to craft!");
+            addAdvancement(".main.simple_tried_to_smith_cold_forge","You've gotta activate it!","Cast activate on the forge, then hit with a hammer to craft, but don't take too long!");
             addAdvancement(".main.simple_lead_poisoned","Delicious","Experience symptoms of heavy metal poisoning");
             addAdvancement(".main.simple_maddened","The silence after sanity","Let the whispers get to you");
 
