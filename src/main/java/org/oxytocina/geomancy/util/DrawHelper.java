@@ -47,17 +47,30 @@ public class DrawHelper {
     }
 
     public static void drawTexture(
-            MatrixStack matrices, Identifier texture, float x, float y, float width, float height, float u, float v, int regionWidth, int regionHeight, int textureWidth, int textureHeight
+            MatrixStack matrices, Identifier texture, float x, float y, float width, float height, float u, float v,
+            int regionWidth, int regionHeight, int textureWidth, int textureHeight
     ) {
         drawTexture(matrices,texture, x, x + width, y, y + height, 0, regionWidth, regionHeight, u, v, textureWidth, textureHeight);
     }
     public static void drawTexture(
-            MatrixStack matrices,Identifier texture, float x1, float x2, float y1, float y2, float z, float regionWidth, float regionHeight, float u, float v, int textureWidth, int textureHeight
-    ) {
-        drawTexturedQuad(
-                matrices,texture, x1, x2, y1, y2, z, (u + 0.0F) / textureWidth, (u + regionWidth) / textureWidth, (v + 0.0F) / textureHeight, (v + regionHeight) / textureHeight
-        );
+            MatrixStack matrices,Identifier texture, float x1, float x2, float y1, float y2, float z,
+            float regionWidth, float regionHeight, float u, float v, int textureWidth, int textureHeight)
+    {
+        drawTexturedQuad(matrices,texture, x1, x2, y1, y2, z, (u + 0.0F) / textureWidth, (u + regionWidth) / textureWidth, (v + 0.0F) / textureHeight, (v + regionHeight) / textureHeight);
     }
+    public static void drawTexture(
+            MatrixStack matrices, Identifier texture, float x, float y, float width, float height, float u, float v,
+            int regionWidth, int regionHeight, int textureWidth, int textureHeight,float r, float g, float b, float a
+    ) {
+        drawTexture(matrices,texture, x, x + width, y, y + height, 0, regionWidth, regionHeight, u, v, textureWidth, textureHeight,r,g,b,a);
+    }
+    public static void drawTexture(
+            MatrixStack matrices,Identifier texture, float x1, float x2, float y1, float y2, float z,
+            float regionWidth, float regionHeight, float u, float v, int textureWidth, int textureHeight, float r, float g, float b, float a)
+    {
+        drawTexturedQuad(matrices,texture, x1, x2, y1, y2, z, (u + 0.0F) / textureWidth, (u + regionWidth) / textureWidth, (v + 0.0F) / textureHeight, (v + regionHeight) / textureHeight,r,g,b,a);
+    }
+
     public static void drawTexturedQuad(MatrixStack matrices, Identifier texture, float x1, float x2, float y1, float y2, float z, float u1, float u2, float v1, float v2) {
         RenderSystem.setShaderTexture(0, texture);
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
@@ -68,6 +81,19 @@ public class DrawHelper {
         bufferBuilder.vertex(matrix4f, x1, y2, z).texture(u1, v2).next();
         bufferBuilder.vertex(matrix4f, x2, y2, z).texture(u2, v2).next();
         bufferBuilder.vertex(matrix4f, x2, y1, z).texture(u2, v1).next();
+        BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
+    }
+
+    public static void drawTexturedQuad(MatrixStack matrices, Identifier texture, float x1, float x2, float y1, float y2, float z, float u1, float u2, float v1, float v2, float r, float g, float b, float a) {
+        RenderSystem.setShaderTexture(0, texture);
+        RenderSystem.setShader(GameRenderer::getPositionTexColorProgram);
+        Matrix4f matrix4f = matrices.peek().getPositionMatrix();
+        BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
+        bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
+        bufferBuilder.vertex(matrix4f, x1, y1, z).texture(u1, v1).color(r,g,b,a).next();
+        bufferBuilder.vertex(matrix4f, x1, y2, z).texture(u1, v2).color(r,g,b,a).next();
+        bufferBuilder.vertex(matrix4f, x2, y2, z).texture(u2, v2).color(r,g,b,a).next();
+        bufferBuilder.vertex(matrix4f, x2, y1, z).texture(u2, v1).color(r,g,b,a).next();
         BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
     }
 
@@ -130,4 +156,12 @@ public class DrawHelper {
         }
     }
 
+    public static boolean mouseInRect(int mouseX, int mouseY, int drawPosX, int drawPosY, int width, int height) {
+        return
+                mouseX >= drawPosX &&
+                mouseY >= drawPosY &&
+                mouseX <= drawPosX+width &&
+                mouseY <= drawPosY+height;
+
+    }
 }

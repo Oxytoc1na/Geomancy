@@ -13,6 +13,8 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
@@ -51,6 +53,7 @@ import org.oxytocina.geomancy.recipe.soulforge.ISoulForgeRecipe;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
 import org.oxytocina.geomancy.spells.SpellContext;
+import org.oxytocina.geomancy.util.BlockHelper;
 import org.oxytocina.geomancy.util.EntityUtil;
 import org.oxytocina.geomancy.util.ParticleUtil;
 import org.oxytocina.geomancy.util.Toolbox;
@@ -61,11 +64,11 @@ import java.util.List;
 public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory, ImplementedInventory, IOwnable, IPedestalListener, IHammerable {
 
     private final DefaultedList<ItemStack> ownInventory = DefaultedList.ofSize(SLOT_COUNT,ItemStack.EMPTY);
-    private final List<PedestalBlockEntity> surroundingInventories = new ArrayList<>();
-    private final List<PedestalBlockEntity> surroundingSoulInventories = new ArrayList<>();
-    private final List<ItemStack> surroundingIngredients = new ArrayList<>();
+    public final List<PedestalBlockEntity> surroundingInventories = new ArrayList<>();
+    public final List<PedestalBlockEntity> surroundingSoulInventories = new ArrayList<>();
+    public final List<ItemStack> surroundingIngredients = new ArrayList<>();
     private final List<ItemStack> totalIngredients = new ArrayList<>();
-    private final List<ItemStack> consumedIngredients = new ArrayList<>();
+    public final List<ItemStack> consumedIngredients = new ArrayList<>();
     private ItemStack baseIngredient = ItemStack.EMPTY;
 
     private PropertyDelegate propertyDelegate;
@@ -97,9 +100,24 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
         super.writeNbt(nbt);
         Inventories.writeNbt(nbt, ownInventory);
         if(isActive())nbt.putString("activeRecipe",activeRecipe.getIdentifier().toString());
+        if(previewingRecipe!=null)nbt.putString("previewRecipe",previewingRecipe.getIdentifier().toString());
         nbt.putFloat("progress",progress);
         nbt.putFloat("instability",instability);
         nbt.putFloat("availableSoul",availableSoul);
+        NbtList consumedList = new NbtList();
+        for (int i = 0; i < consumedIngredients.size(); i++) {
+            NbtCompound stackNbt = new NbtCompound();
+            consumedIngredients.get(i).writeNbt(stackNbt);
+            consumedList.add(stackNbt);
+        }
+        nbt.put("consumed",consumedList);
+        NbtList surroundingList = new NbtList();
+        for (int i = 0; i < surroundingIngredients.size(); i++) {
+            NbtCompound stackNbt = new NbtCompound();
+            surroundingIngredients.get(i).writeNbt(stackNbt);
+            surroundingList.add(stackNbt);
+        }
+        nbt.put("surrounding",surroundingList);
     }
 
     @Override
@@ -107,12 +125,43 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
         super.readNbt(nbt);
         clear();
         Inventories.readNbt(nbt, ownInventory);
+        activeRecipeIdToLoad=null;
+        previewRecipeIdToLoad=null;
         if(nbt.contains("activeRecipe")){
-            activeRecipe=(ISoulForgeRecipe) world.getRecipeManager().get(Identifier.tryParse(nbt.getString("activeRecipe"))).get();
+            activeRecipeIdToLoad=Identifier.tryParse(nbt.getString("activeRecipe"));
         }
+        if(nbt.contains("previewRecipe")){
+            previewRecipeIdToLoad=Identifier.tryParse(nbt.getString("previewRecipe"));
+        }
+
+        if(world!=null){
+            if(activeRecipeIdToLoad!=null)
+            {
+                activeRecipe = (ISoulForgeRecipe) world.getRecipeManager().get(activeRecipeIdToLoad).orElse(null);
+            }
+            if(previewRecipeIdToLoad!=null)
+            {
+                previewingRecipe = (ISoulForgeRecipe) world.getRecipeManager().get(previewRecipeIdToLoad).orElse(null);
+            }
+        }
+
         progress = nbt.getFloat("progress");
         instability = nbt.getFloat("instability");
         availableSoul = nbt.getFloat("availableSoul");
+        consumedIngredients.clear();
+        if(nbt.contains("consumed")){
+            NbtList consumedList = nbt.getList("consumed", NbtElement.COMPOUND_TYPE);
+            for (int i = 0; i < consumedList.size(); i++) {
+                consumedIngredients.add(ItemStack.fromNbt(consumedList.getCompound(i)));
+            }
+        }
+        surroundingIngredients.clear();
+        if(nbt.contains("surrounding")){
+            NbtList surroundingList = nbt.getList("surrounding", NbtElement.COMPOUND_TYPE);
+            for (int i = 0; i < surroundingList.size(); i++) {
+                surroundingIngredients.add(ItemStack.fromNbt(surroundingList.getCompound(i)));
+            }
+        }
     }
 
     @Override
@@ -167,7 +216,9 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
     }
 
     public void refreshPreviewRecipe(){
+        if(world.isClient) return;
         previewingRecipe = getRecipeFor(world,totalIngredients);
+        sendUpdatesToNearbyClients();
     }
 
     public void activate(SpellContext ctx){
@@ -201,17 +252,43 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
 
             // increase instability
             instability += 1/20f * 0.05f * activeRecipe.getInstability(inputInventory());
+
+            // instability vfx
+            float instabilityPowed = (float)Math.pow(instability,5);
+            if(Geomancy.tick%4==0&&Toolbox.random.nextFloat() < instabilityPowed){
+                Toolbox.playSound(SoundEvents.BLOCK_STONE_BREAK,world,getPos(),SoundCategory.BLOCKS,0.4f+0.6f*instabilityPowed,1+instabilityPowed);
+                ParticleUtil.ParticleData.createInstability(world,getPos().toCenterPos()).send();
+                CamShakeUtil.cause(world,getPos().toCenterPos(),10,0.5f+0.5f*instabilityPowed);
+            }
+
             if(instability>=1){
                 // instability too high, abort craft
-                this.resetProgress();
                 CamShakeUtil.cause(world,getPos().toCenterPos(),20,2,2,0.5f);
                 // TODO: visual and auditory flair
                 // TODO: toss out all ingredients
+                for (int i = 0; i < surroundingInventories.size(); i++) {
+                    var pedestal = surroundingInventories.get(i);
+                    var stack = pedestal.getItem();
+                    if(stack.isEmpty()) continue;
+                    stack = stack.copyAndEmpty();
+                    pedestal.markDirty();
+                    final float speed = 0.2f;
+                    MultiblockCrafter.spawnItemStackAsEntitySplitViaMaxCount(world,pedestal.getPos().toCenterPos().add(0,0.6f,0),stack,stack.getCount(),new Vec3d(
+                            Toolbox.randomBetween(-speed,speed),
+                            Toolbox.randomBetween(0,speed*2),
+                            Toolbox.randomBetween(-speed,speed)
+                    ),false,getOwner());
+                }
                 activeRecipe=null;
+                this.resetProgress();
             }
 
             if(Geomancy.tick%4==0)
+            {
                 sendUpdatesToNearbyClients();
+            }
+
+            markDirty();
         }
         else if(previewingRecipe!=null)
             currentResult = previewingRecipe.getPreviewOutput(inputInventory());
@@ -220,25 +297,39 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
         if(!ItemStack.areEqual(currentResult,getStack(PREVIEW_SLOT))){
             setStack(PREVIEW_SLOT,currentResult);
         }
+
+        if(Geomancy.tick%(isActive()?4:20)==0){
+            updateAvailableSoul();
+        }
     }
 
     private void finishCrafting() {
         this.spawnResult();
         this.resetProgress();
         activeRecipe=null;
-        markDirty();
         // TODO: visual and auditory flair
         Toolbox.playSound(SoundEvents.ENTITY_WITHER_DEATH,world,getPos(), SoundCategory.NEUTRAL, 0.5F, Toolbox.randomPitch());
         CamShakeUtil.cause(world,getPos().toCenterPos(),20,2,2,0.5f);
         sendUpdatesToNearbyClients();
+        markDirty();
     }
 
     private boolean hasCraftingFinished() {
         return progress>=1;
     }
 
+    private Identifier activeRecipeIdToLoad = null;
+    private Identifier previewRecipeIdToLoad = null;
     private void initialize(World world, BlockPos pos, BlockState state){
         initialized=true;
+        if(activeRecipeIdToLoad!=null)
+        {
+            activeRecipe = (ISoulForgeRecipe) world.getRecipeManager().get(activeRecipeIdToLoad).orElse(null);
+        }
+        if(previewRecipeIdToLoad!=null)
+        {
+            previewingRecipe = (ISoulForgeRecipe) world.getRecipeManager().get(previewRecipeIdToLoad).orElse(null);
+        }
         if(!world.isClient){
             register();
             registerInArea(world,pos,PEDESTAL_RANGE);
@@ -311,7 +402,9 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
     }
 
     public void inventoryChanged() {
+        if(world.isClient) return;
         refreshAvailableIngredients();
+        markDirty();
     }
 
     @Override
@@ -370,10 +463,13 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
     @Override
     public void registerPedestal(PedestalBlockEntity pedestal) {
         if(removed) {return;}
+        if(!BlockHelper.withinCube(pedestal.getPos().subtract(getPos()),PEDESTAL_RANGE)) return;
         if(surroundingInventories.contains(pedestal)) return;
         surroundingInventories.add(pedestal);
 
         refreshAvailableIngredients();
+        sendUpdatesToNearbyClients();
+        markDirty();
     }
 
     @Override
@@ -383,6 +479,8 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
         surroundingInventories.remove(pedestal);
 
         refreshAvailableIngredients();
+        sendUpdatesToNearbyClients();
+        markDirty();
     }
 
     @Override
@@ -391,6 +489,8 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
         if(!surroundingInventories.contains(pedestal)) return;
 
         refreshAvailableIngredients();
+        sendUpdatesToNearbyClients();
+        markDirty();
     }
 
     private ItemStack lastHammerStack = ItemStack.EMPTY;
@@ -563,6 +663,22 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
         return isActive();
     }
 
+    public void updateAvailableSoul(){
+        float prev = availableSoul;
+
+        availableSoul = 0;
+        for (PedestalBlockEntity pedestal : surroundingSoulInventories) {
+            var stack = pedestal.getItem();
+            if (!(stack.getItem() instanceof ISoulStoringItem storer)) continue;
+            availableSoul += storer.getMana(world, stack);
+        }
+
+        if(prev!=availableSoul){
+            markDirty();
+            sendUpdatesToNearbyClients();
+        }
+    }
+
     public Inventory getDroppedItems() {
         Inventory res = ImplementedInventory.ofSize(INPUT_SLOT_COUNT);
         for (int i = 0; i < INPUT_SLOT_COUNT; i++) {
@@ -579,17 +695,23 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
         buf.writeBoolean(isActive());
         if(isActive())
             buf.writeIdentifier(activeRecipe.getIdentifier());
+        buf.writeBoolean(previewingRecipe!=null);
+        if(previewingRecipe!=null)
+            buf.writeIdentifier(previewingRecipe.getIdentifier());
         buf.writeFloat(progress);
         buf.writeFloat(instability);
+        buf.writeFloat(availableSoul);
 
         ModMessages.sendToAllClients(sw.getServer(),ModMessages.UPDATE_SOULFORGE,buf, spe-> EntityUtil.isInRange(spe,sw,getPos().toCenterPos(),100));
     }
 
     @Environment(EnvType.CLIENT)
-    public void setStatus(Identifier recipe, float progress, float instability) {
+    public void setStatus(Identifier recipe,Identifier previewRecipe, float progress, float instability, float soul) {
         if(world==null) return;
         activeRecipe = recipe==null?null:(ISoulForgeRecipe) world.getRecipeManager().get(recipe).orElse(null);
+        this.previewingRecipe = previewRecipe==null?null:(ISoulForgeRecipe) world.getRecipeManager().get(previewRecipe).orElse(null);
         this.progress=progress;
         this.instability=instability;
+        this.availableSoul=soul;
     }
 }

@@ -34,7 +34,7 @@ public class SoulForgeScreenHandler extends ScreenHandler {
         this.blockEntity = (SoulForgeBlockEntity) blockEntity;
 
         // input slot
-        addInventory(inventory,0,SoulForgeBlockEntity.INPUT_SLOT_COUNT,3,25,18);
+        addInventory(inventory,0,SoulForgeBlockEntity.INPUT_SLOT_COUNT,3,25+18,18+18);
 
         // preview output slot
         this.addSlot(new PreviewSlot(inventory,SoulForgeBlockEntity.PREVIEW_SLOT,134,36));
@@ -72,15 +72,7 @@ public class SoulForgeScreenHandler extends ScreenHandler {
     }
 
     public boolean isCrafting(){
-        return propertyDelegate.get(0) > 0;
-    }
-
-    public int getScaledProgress() {
-        int progress = this.propertyDelegate.get(0);
-        int maxProgress = this.propertyDelegate.get(1);  // Max Progress
-        int progressArrowSize = 35; // This is the width in pixels of your arrow
-
-        return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
+        return blockEntity.isActive();
     }
 
     @Override

@@ -13,10 +13,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import net.minecraft.world.*;
 import net.minecraft.world.event.GameEvent;
 
@@ -155,5 +152,12 @@ public class BlockHelper {
         //    Vec3d vec3d = innerContext.getStart().subtract(innerContext.getEnd());
         //    return BlockHitResult.createMissed(innerContext.getEnd(), Direction.getFacing(vec3d.x, vec3d.y, vec3d.z), BlockPos.ofFloored(innerContext.getEnd()));
         //});
+    }
+
+    public static boolean withinCube(Vec3i distance, int pedestalRange) {
+        return Math.max(Math.max(
+                Math.abs(distance.getX()),
+                Math.abs(distance.getY())),
+                Math.abs(distance.getZ())) <= pedestalRange;
     }
 }

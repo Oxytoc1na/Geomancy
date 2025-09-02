@@ -1,9 +1,13 @@
 package org.oxytocina.geomancy.util;
 
 import net.minecraft.block.entity.LockableContainerBlockEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
+import org.oxytocina.geomancy.blocks.MultiblockCrafter;
 import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlockEntity;
 
 public class InventoryUtil {
@@ -132,5 +136,12 @@ public class InventoryUtil {
             if(ItemStack.areEqual(inv.getStack(i),stack)) return i;
         }
         return -1;
+    }
+
+    public static void giveOrSpawn(PlayerEntity player, ItemStack stack){
+        if(player==null) return;
+        player.getInventory().insertStack(stack);
+        if(stack.isEmpty()) return;
+        MultiblockCrafter.spawnItemStackAsEntitySplitViaMaxCount(player.getWorld(),player.getPos(),stack, stack.getCount(), new Vec3d(0,0,0),false,player);
     }
 }
