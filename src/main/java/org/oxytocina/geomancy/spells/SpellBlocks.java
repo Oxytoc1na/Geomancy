@@ -2264,13 +2264,13 @@ public class SpellBlocks {
                         var blockPos = Toolbox.posToBlockPos(pos);
                         if(!(comp.world().getBlockEntity(blockPos) instanceof LockableContainerBlockEntity target)) return SpellBlockResult.empty();
                         var toSlot = vars.getInt("toSlot");
-                        if(toSlot<0||toSlot>=target.size()) { tryLogDebugSlotOOB(comp,toSlot); return SpellBlockResult.empty();} // slot OOB
+                        if(toSlot>=target.size()) { tryLogDebugSlotOOB(comp,toSlot); return SpellBlockResult.empty();} // slot OOB
                         var fromSlot = vars.getInt("fromSlot");
                         var amount = vars.getInt("amount");
                         var strict = vars.getBoolean("strict");
                         var fromInv = comp.context.getInventory();
                         if(fromInv==null) return SpellBlockResult.empty();
-                        if(fromSlot <0||fromSlot>=fromInv.size()) { tryLogDebugSlotOOB(comp,toSlot); return SpellBlockResult.empty();} // slot OOB
+                        if(fromSlot <0||fromSlot>=fromInv.size()) { tryLogDebugSlotOOB(comp,fromSlot); return SpellBlockResult.empty();} // slot OOB
                         ItemStack stack = fromInv.getStack(fromSlot);
                         if(stack.isEmpty()) return SpellBlockResult.empty();
                         amount=Math.min(amount,stack.getMaxCount());
@@ -2321,11 +2321,12 @@ public class SpellBlocks {
                         if(stack.isEmpty()) return SpellBlockResult.empty(); // trying to transfer empty item
                         var toSlot = vars.getInt("toSlot");
                         var amount = vars.getInt("amount");
-                        if(amount<1) return SpellBlockResult.empty();
                         var strict = vars.getBoolean("strict");
                         amount=Math.min(amount,stack.getMaxCount());
+                        if(!strict) amount=Math.min(amount,stack.getCount());
                         Inventory toInv = comp.context.getInventory();
-                        if(toSlot <0||toSlot>=toInv.size()) { tryLogDebugSlotOOB(comp,toSlot); return SpellBlockResult.empty();} // slot OOB
+                        if(toSlot>=toInv.size()) { tryLogDebugSlotOOB(comp,toSlot); return SpellBlockResult.empty();} // slot OOB
+                        if(amount<1) return SpellBlockResult.empty();
 
                         float manaCost = 1
                                 +stack.getCount()*0.2f
@@ -2376,9 +2377,10 @@ public class SpellBlocks {
                         ItemStack stack = fromInv.getStack(fromSlot);
                         if(stack.isEmpty()) return SpellBlockResult.empty(); // trying to transfer empty item
                         var amount = vars.getInt("amount");
-                        if(amount<1) return SpellBlockResult.empty();
                         var strict = vars.getBoolean("strict");
                         amount=Math.min(amount,stack.getMaxCount());
+                        if(!strict) amount=Math.min(amount,stack.getCount());
+                        if(amount<1) return SpellBlockResult.empty();
 
                         float manaCost = 1
                                 +stack.getCount()*0.2f
