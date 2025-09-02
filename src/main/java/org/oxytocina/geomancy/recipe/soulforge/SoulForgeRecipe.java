@@ -28,13 +28,15 @@ public class SoulForgeRecipe extends GatedModRecipe<Inventory> implements ISoulF
     protected final ItemStack output;
     protected final float cost;
     protected final float instability;
+    protected final float speed;
 
-    public SoulForgeRecipe(Identifier id, String group, boolean secret, Identifier requiredAdvancementIdentifier, List<NbtIngredient> inputs, ItemStack output, float cost, float instability) {
+    public SoulForgeRecipe(Identifier id, String group, boolean secret, Identifier requiredAdvancementIdentifier, List<NbtIngredient> inputs, ItemStack output, float cost, float instability, float speed) {
         super(id,group,secret,requiredAdvancementIdentifier);
         this.inputs = inputs;
         this.output=output;
         this.cost = cost;
         this.instability=instability;
+        this.speed=speed;
     }
 
     @Override
@@ -119,6 +121,7 @@ public class SoulForgeRecipe extends GatedModRecipe<Inventory> implements ISoulF
 
     public float getCost(){return cost;}
     public float getInstability(){return instability;}
+    public float getSpeed(){return speed;}
 
     @Override
     public List<ItemStack> getResult(Inventory inv, boolean removeItems, boolean preview, LivingEntity owner) {
@@ -133,6 +136,11 @@ public class SoulForgeRecipe extends GatedModRecipe<Inventory> implements ISoulF
     @Override
     public float getInstability(Inventory inv) {
         return getInstability();
+    }
+
+    @Override
+    public float getSpeed(Inventory inv) {
+        return getSpeed();
     }
 
     @Override

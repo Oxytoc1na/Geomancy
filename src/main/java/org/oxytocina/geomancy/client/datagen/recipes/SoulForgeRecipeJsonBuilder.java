@@ -31,12 +31,13 @@ public class SoulForgeRecipeJsonBuilder {
     private final int count;
     private final float cost;
     private final float instability;
+    private final float speed;
     private final Advancement.Builder advancement = Advancement.Builder.createUntelemetered();
     @Nullable private final Identifier requiredAdvancement;
     private final RecipeSerializer<?> serializer;
 
     public SoulForgeRecipeJsonBuilder(RecipeSerializer<?> serializer, RecipeCategory category, List<NbtIngredient> inputs,
-                                      ItemStack output, int count, float cost, float instability, @Nullable Identifier requiredAdvancement) {
+                                      ItemStack output, int count, float cost, float instability, float speed, @Nullable Identifier requiredAdvancement) {
         this.category = category;
         this.serializer = serializer;
         this.inputs = inputs;
@@ -44,17 +45,18 @@ public class SoulForgeRecipeJsonBuilder {
         this.count = count;
         this.cost=cost;
         this.instability=instability;
+        this.speed=speed;
         this.requiredAdvancement=requiredAdvancement;
     }
 
-    public static SoulForgeRecipeJsonBuilder create(List<NbtIngredient> inputs, Item output, int count, float cost, float instability, RecipeCategory category, Identifier requiredAdvancement) {
+    public static SoulForgeRecipeJsonBuilder create(List<NbtIngredient> inputs, Item output, int count, float cost, float instability, float speed, RecipeCategory category, Identifier requiredAdvancement) {
         return new SoulForgeRecipeJsonBuilder(ModRecipeTypes.SOULFORGE_SIMPLE_SERIALIZER, category, inputs, new ItemStack(output),
-                count,cost, instability, requiredAdvancement);
+                count,cost, instability,speed, requiredAdvancement);
     }
 
-    public static SoulForgeRecipeJsonBuilder create(List<NbtIngredient> inputs, ItemStack output, int count, float cost, float instability, RecipeCategory category, Identifier requiredAdvancement) {
+    public static SoulForgeRecipeJsonBuilder create(List<NbtIngredient> inputs, ItemStack output, int count, float cost, float instability, float speed, RecipeCategory category, Identifier requiredAdvancement) {
         return new SoulForgeRecipeJsonBuilder(ModRecipeTypes.SOULFORGE_SIMPLE_SERIALIZER, category, inputs, output,
-                count,cost, instability, requiredAdvancement);
+                count,cost, instability,speed, requiredAdvancement);
     }
 
     public SoulForgeRecipeJsonBuilder criterion(String name, CriterionConditions conditions) {
@@ -67,7 +69,7 @@ public class SoulForgeRecipeJsonBuilder {
         this.advancement.parent(CraftingRecipeJsonBuilder.ROOT).criterion("has_the_recipe", RecipeUnlockedCriterion.create(recipeId)).rewards(net.minecraft.advancement.AdvancementRewards.Builder.recipe(recipeId)).criteriaMerger(CriterionMerger.OR);
         exporter.accept(new Provider(
                 recipeId, this.serializer, this.inputs, this.output, this.count, this.cost,
-                this.instability, this.advancement,
+                this.instability, this.speed, this.advancement,
                 recipeId.withPrefixedPath("recipes/" + this.category.getName() + "/"),requiredAdvancement));
     }
 
@@ -78,7 +80,7 @@ public class SoulForgeRecipeJsonBuilder {
     }
 
     public static record Provider(Identifier id, RecipeSerializer<?> type, List<NbtIngredient> inputs,
-                                  ItemStack output, int count,float cost, float instability,
+                                  ItemStack output, int count,float cost, float instability,float speed ,
                                   Advancement.Builder advancement, Identifier advancementId, Identifier requiredAdvancement) implements RecipeJsonProvider {
         public void serialize(JsonObject json) {
             //if (!this.group.isEmpty()) {
@@ -98,6 +100,7 @@ public class SoulForgeRecipeJsonBuilder {
             resultObject.add("item", RecipeUtils.itemStackWithNbtToJson(output));
             json.addProperty("cost",this.cost);
             json.addProperty("instability",this.instability);
+            json.addProperty("speed",this.speed);
             json.add("result", resultObject);
             if(requiredAdvancement!=null)json.addProperty("required_advancement",requiredAdvancement.toString());
         }

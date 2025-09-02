@@ -17,6 +17,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.random.LocalRandom;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.Geomancy;
@@ -24,6 +25,7 @@ import org.oxytocina.geomancy.blocks.blockEntities.IHammerable;
 import org.oxytocina.geomancy.blocks.blockEntities.SmitheryBlock;
 import org.oxytocina.geomancy.blocks.blockEntities.SmitheryBlockEntity;
 import org.oxytocina.geomancy.enchantments.ModEnchantments;
+import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.List;
 
@@ -145,7 +147,11 @@ public class HammerItem extends MiningToolItem {
         return res;
     }
 
-    public void damageAfterSmithingUse(ItemStack stack, PlayerEntity player){
+    public void damageAfterSmithingUse(ItemStack stack, @Nullable PlayerEntity player){
+        if(player==null){
+            stack.damage(2, new LocalRandom(Geomancy.tick),null);
+            return;
+        }
         stack.damage(2,player,p -> {});
     }
 }

@@ -101,6 +101,7 @@ TODO EFFECT BLOCKS
 --- allowing the user to set NBT is an easy way to get literally any item in the game
 - collect items on ground
 -- this can be done with the entity id, equals and teleport component
+- make logistics take -1 as fromSlot (first with item)
 
 autocaster
 - set block redstone level
@@ -145,8 +146,6 @@ TODO structures
 -- "precompiled" casting items inside autocasters
 
 TODO TESTING
-- transmute
-- logistics
 
 fixed
 

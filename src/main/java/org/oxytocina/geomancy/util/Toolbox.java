@@ -225,6 +225,10 @@ public class Toolbox {
         return s+suffix;
     }
 
+    public static float randomBetween(float min, float max) {
+        return min + random.nextFloat()*(max-min);
+    }
+
     public static class GradientBuilder{
         public ArrayList<KeyFrame> keyFrames = new ArrayList<>();
 

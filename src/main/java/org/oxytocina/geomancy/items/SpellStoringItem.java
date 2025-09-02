@@ -105,31 +105,30 @@ public class SpellStoringItem extends Item {
         }
 
         if(grid.displayStack!=null){
-            tooltip.add(Text.translatable("geomancy.spellmaker.grid.displaysas").append(" ").append(grid.displayStack.getName().getString()).formatted(Formatting.DARK_GRAY));
+            tooltip.add(Text.translatable("geomancy.spellmaker.grid.displaysas").append(" ").append(grid.displayStack.getName().getString()).formatted(Formatting.GRAY));
         }
 
         int i = 0;
-        List<Text> texts = new ArrayList<>();
         // list effectors first
         for(var comp : grid.components.values()){
             if(i>=8){
-                tooltip.add(Text.translatable("geomancy.storage_item.more",grid.components.size()-8).formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("geomancy.storage_item.more",grid.components.size()-8).formatted(Formatting.DARK_GRAY));
                 break;
             }
 
             if(comp.function.category != SpellBlock.Category.Effector) continue;
-            texts.add(Text.translatable("geomancy.spellcomponent."+comp.function.identifier.getPath()).formatted(Formatting.GRAY));
+            tooltip.add(Text.translatable("geomancy.spellcomponent."+comp.function.identifier.getPath()).formatted(Formatting.GRAY));
             i++;
         }
         // list the rest after
         if(i<8)
             for(var comp : grid.components.values()){
                 if(i>=8){
-                    tooltip.add(Text.translatable("geomancy.storage_item.more",grid.components.size()-8).formatted(Formatting.GRAY));
+                    tooltip.add(Text.translatable("geomancy.storage_item.more",grid.components.size()-8).formatted(Formatting.DARK_GRAY));
                     break;
                 }
                 if(comp.function.category == SpellBlock.Category.Effector) continue;
-                tooltip.add(Text.translatable("geomancy.spellcomponent."+comp.function.identifier.getPath()).formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("geomancy.spellcomponent."+comp.function.identifier.getPath()).formatted(Formatting.DARK_GRAY));
                 i++;
             }
     }

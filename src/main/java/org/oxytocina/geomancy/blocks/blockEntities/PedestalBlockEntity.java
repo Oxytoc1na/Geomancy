@@ -18,6 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.inventories.ImplementedInventory;
+import org.oxytocina.geomancy.util.InventoryUtil;
 import org.oxytocina.geomancy.util.SoulUtil;
 import org.oxytocina.geomancy.util.Toolbox;
 
@@ -87,15 +88,30 @@ public class PedestalBlockEntity extends BlockEntity implements ImplementedInven
         var handStack = player.getStackInHand(hand);
         var ownStack = getItem();
         if(ownStack.isEmpty() && handStack.isEmpty()) return; // both empty
-        if(ItemStack.areEqual(handStack,ownStack)) return; // both same
+
+        // put one of the hand item in
         if(ownStack.isEmpty()){
-            setItem(handStack.copyAndEmpty());
+            setItem(handStack.copyWithCount(1));
+            handStack.decrement(1);
             Toolbox.playSound(SoundEvents.ENTITY_ITEM_PICKUP,world,pos,SoundCategory.BLOCKS,0.3f,Toolbox.randomPitch());
+            markDirty();
             IPedestalListener.onPedestalUpdated(this);
             return; // put hand item into pedestal
         }
-        if(handStack.isEmpty()){
-            player.setStackInHand(hand,ownStack);
+
+        // fill up present stack
+        if(ItemStack.canCombine(ownStack,handStack)){
+            int taken = Math.min(handStack.getCount(),ownStack.getMaxCount()-ownStack.getCount());
+            ownStack.increment(taken);
+            setItem(ownStack);
+            handStack.decrement(taken);
+            IPedestalListener.onPedestalUpdated(this);
+            return;
+        }
+
+        // take item from pedestal
+        if(true || handStack.isEmpty()){
+            InventoryUtil.giveOrSpawn(player,ownStack);
             setItem(ItemStack.EMPTY);
             Toolbox.playSound(SoundEvents.ENTITY_ITEM_PICKUP,world,pos,SoundCategory.BLOCKS,0.3f,Toolbox.randomPitch());
             IPedestalListener.onPedestalUpdated(this);

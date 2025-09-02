@@ -2254,8 +2254,8 @@ public class SpellBlocks {
             STORE = register(SpellBlock.Builder.create("store")
                     .inputs(
                             SpellSignal.createVector().named("position"),
-                            SpellSignal.createNumber().named("fromslot"),
-                            SpellSignal.createNumber().named("toslot"),
+                            SpellSignal.createNumber().named("fromSlot"),
+                            SpellSignal.createNumber().named("toSlot"),
                             SpellSignal.createNumber().named("amount"),
                             SpellSignal.createBoolean().named("strict")
                     )
@@ -2265,16 +2265,17 @@ public class SpellBlocks {
                         if(!(comp.world().getBlockEntity(blockPos) instanceof LockableContainerBlockEntity target)) return SpellBlockResult.empty();
                         var toSlot = vars.getInt("toSlot");
                         if(toSlot>=target.size()) { tryLogDebugSlotOOB(comp,toSlot); return SpellBlockResult.empty();} // slot OOB
-                        var fromSlot = vars.getInt("fromslot");
+                        var fromSlot = vars.getInt("fromSlot");
                         var amount = vars.getInt("amount");
-                        if(amount<1) return SpellBlockResult.empty();
                         var strict = vars.getBoolean("strict");
-                        ItemStack stack = ItemStack.EMPTY;
-                        amount=Math.min(amount,stack.getMaxCount());
-                        var inv = comp.context.getInventory();
-                        if(inv==null) return SpellBlockResult.empty();
-                        if(fromSlot <0||fromSlot>=inv.size()) { tryLogDebugSlotOOB(comp,toSlot); return SpellBlockResult.empty();} // slot OOB
+                        var fromInv = comp.context.getInventory();
+                        if(fromInv==null) return SpellBlockResult.empty();
+                        if(fromSlot <0||fromSlot>=fromInv.size()) { tryLogDebugSlotOOB(comp,fromSlot); return SpellBlockResult.empty();} // slot OOB
+                        ItemStack stack = fromInv.getStack(fromSlot);
                         if(stack.isEmpty()) return SpellBlockResult.empty();
+                        amount=Math.min(amount,stack.getMaxCount());
+                        if(!strict) amount=Math.min(amount,stack.getCount());
+                        if(amount<1) return SpellBlockResult.empty();
 
                         float manaCost = 1
                                 +stack.getCount()*0.2f
@@ -2288,6 +2289,7 @@ public class SpellBlocks {
                                 return SpellBlockResult.empty();
                             InventoryUtil.tryInsert(target,insertedStack,toSlot);
                             stack.decrement(amount-insertedStack.getCount());
+                            fromInv.setStack(fromSlot,stack); // mark dirty
                             trySpendSoul(comp,manaCost);
                             spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
                         }
@@ -2304,8 +2306,8 @@ public class SpellBlocks {
             TAKE = register(SpellBlock.Builder.create("take")
                     .inputs(
                             SpellSignal.createVector().named("position"),
-                            SpellSignal.createNumber().named("fromslot"),
-                            SpellSignal.createNumber().named("toslot"),
+                            SpellSignal.createNumber().named("fromSlot"),
+                            SpellSignal.createNumber().named("toSlot"),
                             SpellSignal.createNumber().named("amount"),
                             SpellSignal.createBoolean().named("strict")
                     )
@@ -2314,16 +2316,17 @@ public class SpellBlocks {
                         var blockPos = Toolbox.posToBlockPos(pos);
                         if(!(comp.world().getBlockEntity(blockPos) instanceof LockableContainerBlockEntity fromInv)) return SpellBlockResult.empty(); // no container
                         var fromSlot = vars.getInt("fromSlot");
-                        if(fromSlot>=fromInv.size()) { tryLogDebugSlotOOB(comp,fromSlot); return SpellBlockResult.empty();} // slot OOB
+                        if(fromSlot<0||fromSlot>=fromInv.size()) { tryLogDebugSlotOOB(comp,fromSlot); return SpellBlockResult.empty();} // slot OOB
                         ItemStack stack = fromInv.getStack(fromSlot);
                         if(stack.isEmpty()) return SpellBlockResult.empty(); // trying to transfer empty item
                         var toSlot = vars.getInt("toSlot");
                         var amount = vars.getInt("amount");
-                        if(amount<1) return SpellBlockResult.empty();
                         var strict = vars.getBoolean("strict");
                         amount=Math.min(amount,stack.getMaxCount());
+                        if(!strict) amount=Math.min(amount,stack.getCount());
                         Inventory toInv = comp.context.getInventory();
-                        if(toSlot <0||toSlot>=toInv.size()) { tryLogDebugSlotOOB(comp,toSlot); return SpellBlockResult.empty();} // slot OOB
+                        if(toSlot>=toInv.size()) { tryLogDebugSlotOOB(comp,toSlot); return SpellBlockResult.empty();} // slot OOB
+                        if(amount<1) return SpellBlockResult.empty();
 
                         float manaCost = 1
                                 +stack.getCount()*0.2f
@@ -2337,6 +2340,7 @@ public class SpellBlocks {
                                 return SpellBlockResult.empty();
                             InventoryUtil.tryInsert(toInv,insertedStack,toSlot);
                             stack.decrement(amount-insertedStack.getCount());
+                            fromInv.setStack(fromSlot,stack); // mark dirty
                             trySpendSoul(comp,manaCost);
                             spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
                         }
@@ -2363,7 +2367,7 @@ public class SpellBlocks {
                         var fromPos = vars.getVector("fromPos");
                         var fromBlockPos = Toolbox.posToBlockPos(fromPos);
                         var toPos = vars.getVector("toPos");
-                        var toBlockPos = Toolbox.posToBlockPos(fromPos);
+                        var toBlockPos = Toolbox.posToBlockPos(toPos);
                         if(!(comp.world().getBlockEntity(fromBlockPos) instanceof LockableContainerBlockEntity fromInv)) return SpellBlockResult.empty(); // no from container
                         if(!(comp.world().getBlockEntity(toBlockPos) instanceof LockableContainerBlockEntity toInv)) return SpellBlockResult.empty(); // no to container
                         var fromSlot = vars.getInt("fromSlot");
@@ -2373,9 +2377,10 @@ public class SpellBlocks {
                         ItemStack stack = fromInv.getStack(fromSlot);
                         if(stack.isEmpty()) return SpellBlockResult.empty(); // trying to transfer empty item
                         var amount = vars.getInt("amount");
-                        if(amount<1) return SpellBlockResult.empty();
                         var strict = vars.getBoolean("strict");
                         amount=Math.min(amount,stack.getMaxCount());
+                        if(!strict) amount=Math.min(amount,stack.getCount());
+                        if(amount<1) return SpellBlockResult.empty();
 
                         float manaCost = 1
                                 +stack.getCount()*0.2f
@@ -2390,8 +2395,10 @@ public class SpellBlocks {
                                 return SpellBlockResult.empty();
                             InventoryUtil.tryInsert(toInv,insertedStack,toSlot);
                             stack.decrement(amount-insertedStack.getCount());
+                            fromInv.setStack(fromSlot,stack); // mark dirty
                             trySpendSoul(comp,manaCost);
                             spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,fromPos));
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,toPos));
                         }
                         else{
                             // too broke

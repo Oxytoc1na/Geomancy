@@ -26,14 +26,18 @@ public class SoulforgeUpdateS2CPacket {
         BlockPos pos = buf.readBlockPos();
         boolean active = buf.readBoolean();
         Identifier recipe = active?buf.readIdentifier():null;
+        boolean hasPreview = buf.readBoolean();
+        Identifier preview = hasPreview?buf.readIdentifier():null;
         float progress = buf.readFloat();
         float instability = buf.readFloat();
+        float soul = buf.readFloat();
+
         client.execute(()->{
             if(client==null||client.world==null) return;
             SoulForgeBlockEntity forge = (SoulForgeBlockEntity) client.world.getBlockEntity(pos);
             if(forge==null) return;
 
-            forge.setStatus(recipe,progress,instability);
+            forge.setStatus(recipe,preview,progress,instability,soul);
         });
     }
 }

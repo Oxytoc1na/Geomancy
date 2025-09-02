@@ -13,6 +13,7 @@ public interface ISoulForgeRecipe {
 
     float getSoulCost(Inventory inv);
     float getInstability(Inventory inv);
+    float getSpeed(Inventory inv);
 
     ItemStack getPreviewOutput(Inventory inv);
 

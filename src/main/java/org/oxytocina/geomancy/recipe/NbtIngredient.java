@@ -78,4 +78,11 @@ public class NbtIngredient extends CountIngredient {
         CountIngredient ingredient1 = CountIngredient.ofItems(count,slot,items);
         return new NbtIngredient(ingredient1,nbt);
     }
+
+    public ItemStack getStack() {
+        ItemStack res = ItemStack.EMPTY;
+        if(ingredient.getMatchingStacks().length>0) res=ingredient.getMatchingStacks()[0];
+        res.setNbt(nbt);
+        return res;
+    }
 }

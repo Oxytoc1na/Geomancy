@@ -665,7 +665,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     NbtIngredient.ofItems(OCTANGULITE_INGOT),
                     NbtIngredient.ofItems(OCTANGULITE_INGOT),
                     NbtIngredient.ofItems(OCTANGULITE_INGOT)
-            ),OCTANGULITE_HAMMER,1,500,1f,"",conditionsFromItem(OCTANGULITE_INGOT),null);
+            ),OCTANGULITE_HAMMER,1,500,1f,1f,"",conditionsFromItem(OCTANGULITE_INGOT),null);
         }
 
         this.exporter=null;
@@ -845,8 +845,8 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         TransmuteRecipeJsonBuilder.create(input,output.asItem(),outputCount, cost,RecipeCategory.MISC, requiredAdvancement).criterion(criterionName,conditions).offerTo(exporter,new Identifier(Geomancy.MOD_ID,"transmute_"+getItemName(output)));
     }
 
-    private void AddSimpleSoulForgeRecipe(List<NbtIngredient> inputs, ItemConvertible output, int outputCount, float cost,float instability, String criterionName, CriterionConditions conditions, Identifier requiredAdvancement){
-        SoulForgeRecipeJsonBuilder.create(inputs,output.asItem(),outputCount, cost,instability,RecipeCategory.MISC, requiredAdvancement).criterion(criterionName,conditions).offerTo(exporter,new Identifier(Geomancy.MOD_ID,"soulforge_"+getItemName(output)));
+    private void AddSimpleSoulForgeRecipe(List<NbtIngredient> inputs, ItemConvertible output, int outputCount, float cost,float instability, float speed, String criterionName, CriterionConditions conditions, Identifier requiredAdvancement){
+        SoulForgeRecipeJsonBuilder.create(inputs,output.asItem(),outputCount, cost,instability,speed,RecipeCategory.MISC, requiredAdvancement).criterion(criterionName,conditions).offerTo(exporter,new Identifier(Geomancy.MOD_ID,"soulforge_"+getItemName(output)));
     }
 
     private void AddSmitheryJewelryRecipe(IJewelryItem base){

@@ -68,7 +68,8 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         Advancement got_soul_oak = AddGetItemAdvancement(ModBlocks.SOUL_OAK_PLANKS,"soul_oak",new ItemConvertible[]{ModBlocks.SOUL_OAK_LOG,ModBlocks.SOUL_OAK_PLANKS},"main",AdvancementFrame.TASK,true,false,main);
         Advancement got_spellmaker = AddGetItemAdvancement(ModBlocks.SPELLMAKER,"spellmaker",new ItemConvertible[]{ModBlocks.SPELLMAKER},"main",AdvancementFrame.TASK,true,false,main);
         Advancement simple_duplicate_trinkets = AddSimpleAdvancement(ModItems.ARTIFACT_OF_IRON,"duplicate_trinkets","duplicate_trinkets","main",AdvancementFrame.TASK,true,true,main);
-        Advancement simple_tried_to_take_smithery_result = AddSimpleAdvancement(ModItems.IRON_HAMMER,"tried_to_take_smithery_result","tried_to_take_smithery_result","main",AdvancementFrame.TASK,true,true,main);
+        Advancement simple_tried_to_take_smithery_result = AddSimpleAdvancement(ModItems.IRON_HAMMER,"tried_to_take_smithery_result","tried_to_take_smithery_result","main",AdvancementFrame.TASK,true,true,milestone_smithery);
+        Advancement simple_tried_to_smith_cold_forge = AddSimpleAdvancement(ModItems.GOLDEN_HAMMER,"tried_to_smith_cold_forge","tried_to_smith_cold_forge","main",AdvancementFrame.TASK,true,true,simple_tried_to_take_smithery_result);
         Advancement simple_lead_poisoned = AddSimpleAdvancement(ModItems.RAW_LEAD,"lead_poisoned","lead_poisoned","main",AdvancementFrame.TASK,true,true,got_lead);
         Advancement simple_maddened = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"maddened","maddened","main",AdvancementFrame.TASK,true,true,got_octangulite);
 
@@ -93,6 +94,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
 
         // interaction (hidden)
         Advancement interaction_smithery = AddSimpleAdvancement(null,"smithery","interact","interaction",AdvancementFrame.TASK,false,true,null);
+        Advancement interaction_soulforge = AddSimpleAdvancement(null,"soulforge","interact","interaction",AdvancementFrame.TASK,false,true,null);
 
         // structures visited
         Advancement structure_ancient_hall = AddLocationAdvancement("ancient_hall","ancient_hall",Items.GILDED_BLACKSTONE,main);
@@ -110,7 +112,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         }
 
         // tasks
-        var spell_unlocker = got_spellmaker;
+        var spell_unlocker = milestone_souls;
         Advancement spell_ignition =    AddSimpleAdvancement(Items.FLINT_AND_STEEL,"ignition","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
         Advancement spell_liftoff =     AddSimpleAdvancement(Items.FIREWORK_ROCKET,"liftoff","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
         Advancement spell_ambition =    AddSimpleAdvancement(Items.COMMAND_BLOCK,"ambition","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);

@@ -119,7 +119,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
         updateAvailableComponents();
 
         // 0
-        this.addSlot(new TagFilterSlot(inventory,SpellmakerBlockEntity.OUTPUT_SLOT,152,142, ModItemTags.SPELL_STORING));
+        this.addSlot(new TagFilterSlot(inventory,SpellmakerBlockEntity.OUTPUT_SLOT,152,142, ModItemTags.SPELL_STORING,1));
 
         // 1-9
         addPlayerHotbar(playerInventory);
@@ -1124,6 +1124,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
         currentGrid = SpellStoringItem.getOrCreateGrid(getOutput());
         if(!hasGrid()) return;
         currentGrid.displayStack = heldStack.copy();
+        currentGrid.displayStack.setNbt(null);
         SpellStoringItem.writeGrid(getOutput(),currentGrid);
     }
 
