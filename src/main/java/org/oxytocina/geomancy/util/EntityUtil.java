@@ -9,6 +9,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -156,5 +157,15 @@ public class EntityUtil {
 
     public static double distanceTo(Entity e, Vec3d pos) {
         return pos.subtract(e.getPos()).length();
+    }
+
+    public static Vec3d getRotationVector(float pitch, float yaw) {
+        float f = pitch * ((float)Math.PI / 180F);
+        float g = -yaw * ((float)Math.PI / 180F);
+        float h = MathHelper.cos(g);
+        float i = MathHelper.sin(g);
+        float j = MathHelper.cos(f);
+        float k = MathHelper.sin(f);
+        return new Vec3d((double)(i * j), (double)(-k), (double)(h * j));
     }
 }

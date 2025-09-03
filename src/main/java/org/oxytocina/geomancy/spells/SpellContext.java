@@ -8,6 +8,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.util.Arm;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -16,6 +17,7 @@ import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlockEntity;
 import org.oxytocina.geomancy.entity.CasterDelegateEntity;
 import org.oxytocina.geomancy.items.ISpellSelectorItem;
 import org.oxytocina.geomancy.items.tools.SoulCastingItem;
+import org.oxytocina.geomancy.util.EntityUtil;
 import org.oxytocina.geomancy.util.SoulUtil;
 import org.oxytocina.geomancy.util.Toolbox;
 
@@ -381,7 +383,12 @@ public class SpellContext {
 
     private Vec3d getMuzzleOffsetForItem(){
         if(casterItem.getItem() instanceof SoulCastingItem)
-            return caster.getHandPosOffset(casterItem.getItem());
+        {
+            var item = casterItem.getItem();
+            boolean bl = caster.getOffHandStack().isOf(item) && !caster.getMainHandStack().isOf(item);
+            Arm arm = bl ? caster.getMainArm().getOpposite() : caster.getMainArm();
+            return EntityUtil.getRotationVector(45.0F, caster.getYaw() + (float)(arm == Arm.RIGHT ? 80 : -80)).multiply((double)0.5F);
+        }
         return new Vec3d(0,-0.5f,0);
     }
 

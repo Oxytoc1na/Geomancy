@@ -114,6 +114,7 @@ public class SpellBlocks {
     public static final SpellBlock FIREBALL;
     public static final SpellBlock DEBUG;
     public static final SpellBlock SILENT;
+    public static final SpellBlock INVISIBLE = null; // TODO
     public static final SpellBlock LIGHTNING;
     public static final SpellBlock PLACE;
     public static final SpellBlock BREAK;
