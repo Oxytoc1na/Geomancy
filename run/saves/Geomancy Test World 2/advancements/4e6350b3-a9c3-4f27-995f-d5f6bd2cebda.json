@@ -1,0 +1,454 @@
+{
+  "minecraft:recipes/decorations/crafting_table": {
+    "criteria": {
+      "unlock_right_away": "2025-09-03 12:10:12 +0200"
+    },
+    "done": true
+  },
+  "minecraft:adventure/adventuring_time": {
+    "criteria": {
+      "minecraft:plains": "2025-09-03 12:10:13 +0200"
+    },
+    "done": false
+  },
+  "minecraft:recipes/brewing/cauldron": {
+    "criteria": {
+      "has_water_bucket": "2025-09-03 12:10:32 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/cherry_boat": {
+    "criteria": {
+      "in_water": "2025-09-03 12:10:33 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/bamboo_raft": {
+    "criteria": {
+      "in_water": "2025-09-03 12:10:33 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/spruce_boat": {
+    "criteria": {
+      "in_water": "2025-09-03 12:10:33 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/birch_boat": {
+    "criteria": {
+      "in_water": "2025-09-03 12:10:33 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/oak_boat": {
+    "criteria": {
+      "in_water": "2025-09-03 12:10:33 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/mangrove_boat": {
+    "criteria": {
+      "in_water": "2025-09-03 12:10:33 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/acacia_boat": {
+    "criteria": {
+      "in_water": "2025-09-03 12:10:33 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/jungle_boat": {
+    "criteria": {
+      "in_water": "2025-09-03 12:10:33 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/transportation/dark_oak_boat": {
+    "criteria": {
+      "in_water": "2025-09-03 12:10:33 +0200"
+    },
+    "done": true
+  },
+  "geomancy:main/get_spellmaker": {
+    "criteria": {
+      "got_spellmaker": "2025-09-03 12:11:03 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_spellmaker_block": {
+    "criteria": {
+      "default_conditions": "2025-09-03 12:11:03 +0200"
+    },
+    "done": true
+  },
+  "geomancy:milestones/milestone_souls": {
+    "criteria": {
+      "geomancy:main/get_spellmaker": "2025-09-03 12:11:03 +0200"
+    },
+    "done": false
+  },
+  "minecraft:recipes/decorations/spruce_sign": {
+    "criteria": {
+      "has_planks": "2025-09-03 12:11:19 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/stick": {
+    "criteria": {
+      "has_planks": "2025-09-03 12:11:19 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/spruce_fence": {
+    "criteria": {
+      "has_planks": "2025-09-03 12:11:19 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/spruce_slab": {
+    "criteria": {
+      "has_planks": "2025-09-03 12:11:19 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/spruce_button": {
+    "criteria": {
+      "has_planks": "2025-09-03 12:11:19 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/spruce_pressure_plate": {
+    "criteria": {
+      "has_planks": "2025-09-03 12:11:19 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/spruce_trapdoor": {
+    "criteria": {
+      "has_planks": "2025-09-03 12:11:19 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/spruce_door": {
+    "criteria": {
+      "has_planks": "2025-09-03 12:11:19 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/spruce_fence_gate": {
+    "criteria": {
+      "has_planks": "2025-09-03 12:11:19 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/barrel": {
+    "criteria": {
+      "has_planks": "2025-09-03 12:11:19 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/spruce_stairs": {
+    "criteria": {
+      "has_planks": "2025-09-03 12:11:19 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/soulforge_soul_bore": {
+    "criteria": {
+      "": "2025-09-03 12:14:19 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/soulforge_journey_glove": {
+    "criteria": {
+      "": "2025-09-03 12:14:19 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/soulforge_caster_core": {
+    "criteria": {
+      "": "2025-09-03 12:14:19 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/soulforge_octangulite_hammer": {
+    "criteria": {
+      "": "2025-09-03 12:14:19 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/soulforge_apprentice_glove": {
+    "criteria": {
+      "": "2025-09-03 12:14:19 +0200"
+    },
+    "done": true
+  },
+  "geomancy:interaction/simple_soulforge": {
+    "criteria": {
+      "simple_soulforge": "2025-09-03 12:15:00 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/soulforge_soulstorage_large": {
+    "criteria": {
+      "": "2025-09-03 12:17:40 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/building_blocks/cut_mithril_from_mithril_block_stonecutting": {
+    "criteria": {
+      "has_mithril_block": "2025-09-03 12:17:46 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/building_blocks/mithril_bricks_from_mithril_block_stonecutting": {
+    "criteria": {
+      "has_mithril_block": "2025-09-03 12:17:46 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/mithril_block_decompress_to_mithril_ingot": {
+    "criteria": {
+      "has_mithril_block": "2025-09-03 12:17:46 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/octangulite_block_decompress_to_octangulite_ingot": {
+    "criteria": {
+      "has_octangulite_block": "2025-09-03 12:17:47 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/building_blocks/cut_octangulite_from_octangulite_block_stonecutting": {
+    "criteria": {
+      "has_octangulite_block": "2025-09-03 12:17:47 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/building_blocks/octangulite_bricks_from_octangulite_block_stonecutting": {
+    "criteria": {
+      "has_octangulite_block": "2025-09-03 12:17:47 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/soulforge_spellstorage_medium": {
+    "criteria": {
+      "": "2025-09-03 12:18:15 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/tools/lead": {
+    "criteria": {
+      "has_slime_ball": "2025-09-03 12:20:13 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/sticky_piston": {
+    "criteria": {
+      "has_slime_ball": "2025-09-03 12:20:13 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/slime_block": {
+    "criteria": {
+      "has_slime_ball": "2025-09-03 12:20:13 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_octangulite_ring": {
+    "criteria": {
+      "default_conditions": "2025-09-03 12:22:37 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_casting_chestplate": {
+    "criteria": {
+      "default_conditions": "2025-09-03 12:22:37 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/octangulite_ingot_decompress_to_octangulite_nugget": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-09-03 12:22:37 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_chestplate": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-09-03 12:22:37 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_octangulite_necklace": {
+    "criteria": {
+      "default_conditions": "2025-09-03 12:22:37 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_leggings": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-09-03 12:22:37 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_hoe": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-09-03 12:22:37 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_casting_helmet": {
+    "criteria": {
+      "default_conditions": "2025-09-03 12:22:37 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_shovel": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-09-03 12:22:37 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_boots": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-09-03 12:22:37 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_sword": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-09-03 12:22:37 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_axe": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-09-03 12:22:37 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_pickaxe": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-09-03 12:22:37 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_casting_boots": {
+    "criteria": {
+      "default_conditions": "2025-09-03 12:22:37 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_novice_glove": {
+    "criteria": {
+      "default_conditions": "2025-09-03 12:22:37 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_casting_leggings": {
+    "criteria": {
+      "default_conditions": "2025-09-03 12:22:37 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/smithing_octangulite_pendant": {
+    "criteria": {
+      "default_conditions": "2025-09-03 12:22:37 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/octangulite_ingot_compress_to_octangulite_block": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-09-03 12:22:37 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/tools/octangulite_helmet": {
+    "criteria": {
+      "has_octangulite_ingot": "2025-09-03 12:22:37 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/chest": {
+    "criteria": {
+      "has_lots_of_items": "2025-09-03 12:23:22 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/orthoclase_block_decompress_to_orthoclase": {
+    "criteria": {
+      "has_orthoclase_block": "2025-09-03 12:26:49 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/soulforge_spellstorage_large": {
+    "criteria": {
+      "": "2025-09-03 12:30:01 +0200"
+    },
+    "done": true
+  },
+  "geomancy:spells/simple_brazilian": {
+    "criteria": {
+      "simple_brazilian": "2025-09-03 12:31:58 +0200"
+    },
+    "done": true
+  },
+  "geomancy:spells/simple_deconsciousness": {
+    "criteria": {
+      "simple_deconsciousness": "2025-09-03 12:34:27 +0200"
+    },
+    "done": true
+  },
+  "minecraft:adventure/kill_all_mobs": {
+    "criteria": {
+      "minecraft:creeper": "2025-09-03 12:37:27 +0200",
+      "minecraft:witch": "2025-09-03 12:38:08 +0200"
+    },
+    "done": false
+  },
+  "minecraft:adventure/root": {
+    "criteria": {
+      "killed_something": "2025-09-03 12:37:27 +0200"
+    },
+    "done": true
+  },
+  "minecraft:adventure/kill_a_mob": {
+    "criteria": {
+      "minecraft:creeper": "2025-09-03 12:37:27 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/firework_rocket_simple": {
+    "criteria": {
+      "has_gunpowder": "2025-09-03 12:37:44 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/tnt": {
+    "criteria": {
+      "has_gunpowder": "2025-09-03 12:37:44 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/soulforge_soulstorage_medium": {
+    "criteria": {
+      "": "2025-09-03 12:39:44 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/soulforge_varstorage_medium": {
+    "criteria": {
+      "": "2025-09-03 12:41:48 +0200"
+    },
+    "done": true
+  },
+  "geomancy:recipes/misc/soulforge_autocaster": {
+    "criteria": {
+      "": "2025-09-03 13:29:58 +0200"
+    },
+    "done": true
+  },
+  "DataVersion": 3465
+}
