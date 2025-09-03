@@ -1,5 +1,7 @@
 package org.oxytocina.geomancy.items;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -14,6 +16,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
+import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.enchantments.ModEnchantments;
 import org.oxytocina.geomancy.spells.*;
 
@@ -94,6 +97,7 @@ public class SpellStoringItem extends Item {
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         super.appendTooltip(stack, world, tooltip, context);
 
@@ -109,11 +113,12 @@ public class SpellStoringItem extends Item {
         }
 
         int i = 0;
+        int truncation = Geomancy.CONFIG.spellcradleTooltipTruncation.value();
         // list effectors first
         for(var comp : grid.components.values()){
-            if(i>=8){
-                tooltip.add(Text.translatable("geomancy.storage_item.more",grid.components.size()-8).formatted(Formatting.DARK_GRAY));
-                break;
+            if(i>=truncation&&grid.components.size()>truncation+1){
+                tooltip.add(Text.translatable("geomancy.storage_item.more",grid.components.size()-truncation).formatted(Formatting.DARK_GRAY));
+                return;
             }
 
             if(comp.function.category != SpellBlock.Category.Effector) continue;
@@ -121,11 +126,11 @@ public class SpellStoringItem extends Item {
             i++;
         }
         // list the rest after
-        if(i<8)
+        if(i<=truncation)
             for(var comp : grid.components.values()){
-                if(i>=8){
-                    tooltip.add(Text.translatable("geomancy.storage_item.more",grid.components.size()-8).formatted(Formatting.DARK_GRAY));
-                    break;
+                if(i>=truncation&&grid.components.size()>truncation+1){
+                    tooltip.add(Text.translatable("geomancy.storage_item.more",grid.components.size()-truncation).formatted(Formatting.DARK_GRAY));
+                    return;
                 }
                 if(comp.function.category == SpellBlock.Category.Effector) continue;
                 tooltip.add(Text.translatable("geomancy.spellcomponent."+comp.function.identifier.getPath()).formatted(Formatting.DARK_GRAY));

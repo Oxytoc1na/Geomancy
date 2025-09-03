@@ -90,7 +90,8 @@ public class VariableStoringItem extends Item implements IVariableStoringItem{
         tooltip.add(Text.translatable("geomancy.varstorage.storage").formatted(Formatting.GRAY).append((sigs!=null?sigs.size():0)+"/"+capacity));
 
         if(sigs!=null)
-            for(var sig : sigs.values()){
+            for(var signame : sigs.keySet()){
+                var sig = sigs.get(signame).named(signame);
                 var text = Text.empty().formatted(Formatting.DARK_GRAY).append(sig.toText()).append(" : ").append(sig.toString(SpellContext.ofWorld(world, MinecraftClient.getInstance().player)));
                 tooltip.add(text);
             }

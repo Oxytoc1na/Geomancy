@@ -4,6 +4,7 @@ import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.recipe.VanillaEmiRecipeCategories;
 import dev.emi.emi.api.recipe.handler.StandardRecipeHandler;
 import net.minecraft.screen.slot.Slot;
+import org.oxytocina.geomancy.blocks.blockEntities.SoulForgeBlockEntity;
 import org.oxytocina.geomancy.client.screen.SoulForgeScreenHandler;
 import org.oxytocina.geomancy.compat.emi.ModEMIRecipeCategories;
 
@@ -16,17 +17,17 @@ public class SoulForgeRecipeHandler implements StandardRecipeHandler<SoulForgeSc
         List<Slot> slots = new ArrayList<>();
 
         // crafting slots
-        slots.addAll(handler.slots.subList(0, 10));
+        slots.addAll(handler.slots.subList(0, SoulForgeBlockEntity.SLOT_COUNT));
 
         // player inventory & hotbar
-        slots.addAll(handler.slots.subList(10, 10+9*4));
+        slots.addAll(handler.slots.subList(SoulForgeBlockEntity.SLOT_COUNT, SoulForgeBlockEntity.SLOT_COUNT+9*4));
 
         return slots;
     }
 
     @Override
     public List<Slot> getCraftingSlots(SoulForgeScreenHandler handler) {
-        return handler.slots.subList(0, 10);
+        return handler.slots.subList(0, SoulForgeBlockEntity.SLOT_COUNT);
     }
 
     @Override

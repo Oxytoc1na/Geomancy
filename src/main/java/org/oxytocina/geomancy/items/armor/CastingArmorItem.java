@@ -143,7 +143,7 @@ public class CastingArmorItem extends ArmorItem implements IMaddeningItem, IStor
 
     @Override
     public Text getDisplayName() {
-        return Text.empty();
+        return getName();
     }
 
     @Override

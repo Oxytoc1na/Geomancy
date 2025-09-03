@@ -664,6 +664,16 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     NbtIngredient.ofItems(TITANIUM_INGOT),
                     NbtIngredient.ofItems(TITANIUM_INGOT)
             ),CASTER_CORE,1,2000,0.5f,1f,"",conditionsFromItem(SOUL_FORGE),null);
+
+            // autocaster
+            AddSimpleSoulForgeRecipe(List.of(
+                    NbtIngredient.ofItems(Items.DISPENSER),
+                    NbtIngredient.ofItems(TITANIUM_INGOT),
+                    NbtIngredient.ofItems(TITANIUM_INGOT),
+                    NbtIngredient.ofItems(TITANIUM_INGOT),
+                    NbtIngredient.ofItems(OCTANGULITE_INGOT)
+            ),AUTOCASTER,1,500,1f,1f,"",conditionsFromItem(SOUL_FORGE),null);
+
         }
 
         this.exporter=null;

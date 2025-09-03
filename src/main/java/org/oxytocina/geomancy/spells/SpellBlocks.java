@@ -1712,8 +1712,9 @@ public class SpellBlocks {
                         var data = imbueData.get(id);
                         amp = Toolbox.clampI(amp,0,data.maxAmp);
                         if(data.instant) duration = 1f;
-
                         float manaCost = 0.5f + data.getCost(amp,duration);
+                        if(data.instant) duration = 1/20f;
+
 
                         if(trySpendSoul(comp,manaCost)){
                             var effectInst = new StatusEffectInstance(Registries.STATUS_EFFECT.get(id),Math.round(duration*20),amp);

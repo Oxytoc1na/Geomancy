@@ -43,4 +43,8 @@ public class GeomancyConfig extends ReflectiveConfig {
     @Comment("toggles if timing out a spell should be penalized")
     @SerializedName("penalize_spell_timeout")
     public final TrackedValue<Boolean> penalizeSpellTimeout = this.value(true);
+
+    @Comment("changes how many components in a cradle get displayed before truncation")
+    @SerializedName("spellcradle_tooltip_truncation")
+    public final TrackedValue<Integer> spellcradleTooltipTruncation = this.value(5);
 }

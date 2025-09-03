@@ -1169,6 +1169,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.options.no_spellmaker_move","No Spellmaker UI movement");
             add("MODID.options.shake_intensity","Camera shake intensity");
             add("MODID.options.penalize_spell_timeout","Penalize spell timeout");
+            add("MODID.options.spellcradle_tooltip_truncation","Spellcradle tooltip truncation");
         }
 
         tb=null;

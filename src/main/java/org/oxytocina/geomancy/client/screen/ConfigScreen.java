@@ -9,6 +9,7 @@ import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 import net.minecraft.world.Difficulty;
 import org.oxytocina.geomancy.client.screen.widgets.FloatSlider;
+import org.oxytocina.geomancy.client.screen.widgets.IntSlider;
 import org.oxytocina.geomancy.util.GeomancyConfig;
 
 import java.util.function.Supplier;
@@ -70,6 +71,11 @@ public class ConfigScreen extends Screen {
         slider = FloatSlider.create(0,0,150,20,Text.translatable("geomancy.options.shake_intensity"),
                 GeomancyConfig.CONFIG.shakeIntensity.value(),0f,1f, GeomancyConfig.CONFIG.shakeIntensity::setValue);
         adder.add(slider);
+
+        // spellcradle tooltip truncation
+        var intSlider = IntSlider.create(0,0,150,20,Text.translatable("geomancy.options.spellcradle_tooltip_truncation"),
+                GeomancyConfig.CONFIG.spellcradleTooltipTruncation.value(),1,20, GeomancyConfig.CONFIG.spellcradleTooltipTruncation::setValue);
+        adder.add(intSlider);
 
         // credits and attribution
         adder.add(this.createButton(CREDITS_AND_ATTRIBUTION_TEXT, () -> new GeomancyCreditsScreen(this,false,()->{})));
