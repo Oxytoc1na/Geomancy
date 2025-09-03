@@ -5,6 +5,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
@@ -114,6 +115,7 @@ public class SoulCastingItem extends StorageItem implements ISoulStoringItem, IS
             tooltip.add(Text.translatable("geomancy.caster.emptyhint4").formatted(Formatting.DARK_GRAY));
         }
 
+        ISoulStoringItem.super.addManaTooltip(world,stack,tooltip);
     }
 
     @Override
@@ -255,5 +257,26 @@ public class SoulCastingItem extends StorageItem implements ISoulStoringItem, IS
     @Environment(EnvType.CLIENT)
     public void onSpellChanged(ItemStack stack, ClientPlayerEntity player, int spellIndex) {
         displaySelectedSpell(stack,player,spellIndex);
+    }
+
+    @Override
+    @Environment(EnvType.CLIENT)
+    public boolean isItemBarVisible(ItemStack stack) {
+        return true;
+    }
+
+    @Override
+    @Environment(EnvType.CLIENT)
+    public int getItemBarColor(ItemStack stack) {
+        return ((ISoulStoringItem)stack.getItem()).getBarColor(stack);
+    }
+
+    @Override
+    @Environment(EnvType.CLIENT)
+    public int getItemBarStep(ItemStack stack) {
+        if(MinecraftClient.getInstance()==null) return 0;
+
+        var world = MinecraftClient.getInstance().world;
+        return Math.round(getMana(world,stack) * 13.0F / getCapacity(world,stack));
     }
 }

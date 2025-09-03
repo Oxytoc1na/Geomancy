@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.client.GeomancyClient;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.jewelry.IJewelryItem;
@@ -24,7 +25,7 @@ public class ModColorizationHandler {
     public static void register(){
 
         ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> {
-                    if (view == null || pos == null) {return 0xFFFFFFFF;} else {return octanguliteNoise(pos,tintIndex,0.03f);}
+                    if (view == null || pos == null) {return 0xFFFFFFFF;} else {return octanguliteBlockNoise(pos,tintIndex,0.03f);}
                 },
                 ModBlocks.RAW_OCTANGULITE_BLOCK,
                 ModBlocks.OCTANGULITE_BLOCK,
@@ -58,7 +59,7 @@ public class ModColorizationHandler {
 
         // double tintets, for example vault blocks (first index is uncolored)
         ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> {
-            if (view == null || pos == null || tintIndex == 0) {return 0xFFFFFFFF;} else {return octanguliteNoise(pos,tintIndex,0.03f);}
+            if (view == null || pos == null || tintIndex == 0) {return 0xFFFFFFFF;} else {return octanguliteBlockNoise(pos,tintIndex,0.03f);}
         },
                 ModBlocks.VAULT_BLOCK,
                 ModBlocks.VAULT_BLOCK_SLAB,
@@ -68,22 +69,22 @@ public class ModColorizationHandler {
 
         // soul oak wood only has one tint index, but should use tint index 1 for the bark
         ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> {
-                    if (view == null || pos == null) {return 0xFFFFFFFF;} else {return octanguliteNoise(pos,tintIndex+1,0.03f);}},
+                    if (view == null || pos == null) {return 0xFFFFFFFF;} else {return octanguliteBlockNoise(pos,tintIndex+1,0.03f);}},
                 ModBlocks.SOUL_OAK_WOOD);
 
         // similarly, have leaves offset their tint index by 2
         ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> {
-                    if (view == null || pos == null) {return 0xFFFFFFFF;} else {return octanguliteNoise(pos,tintIndex+2,0.03f);}},
+                    if (view == null || pos == null) {return 0xFFFFFFFF;} else {return octanguliteBlockNoise(pos,tintIndex+2,0.03f);}},
                 ModBlocks.SOUL_OAK_LEAVES);
 
         // similarly, have saplings morph their tint indices from 0 (leaves) -> 2, and 1 (bark) -> 1
         ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> {
-                    if (view == null || pos == null) {return 0xFFFFFFFF;} else {return octanguliteNoise(pos,2-tintIndex,0.03f);}},
+                    if (view == null || pos == null) {return 0xFFFFFFFF;} else {return octanguliteBlockNoise(pos,2-tintIndex,0.03f);}},
                 ModBlocks.SOUL_OAK_SAPLING, ModBlocks.POTTED_SOUL_OAK_SAPLING);
 
         // octangulite ores
         ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> {
-            if (view == null || pos == null || tintIndex == 0) {return 0xFFFFFFFF;} else {return octanguliteNoise(pos,tintIndex,0.003f);}
+            if (view == null || pos == null || tintIndex == 0) {return 0xFFFFFFFF;} else {return octanguliteBlockNoise(pos,tintIndex,0.003f);}
         }, ModBlocks.OCTANGULITE_ORE,ModBlocks.DEEPSLATE_OCTANGULITE_ORE);
 
         // tourmaline ores
@@ -155,7 +156,11 @@ public class ModColorizationHandler {
                 ModBlocks.VAULT_BLOCK,
                 ModBlocks.VAULT_BLOCK_SLAB,
                 ModBlocks.VAULT_BLOCK_STAIRS,
-                ModBlocks.VAULT_GLASS
+                ModBlocks.VAULT_GLASS,
+                ModItems.APPRENTICE_GLOVE,
+                ModItems.JOURNEY_GLOVE,
+                ModItems.EXPERT_GLOVE,
+                ModItems.MASTER_GLOVE
         );
     }
 
@@ -191,7 +196,7 @@ public class ModColorizationHandler {
                 },item);
     }
 
-    private static int octanguliteNoise(BlockPos pos, int tintIndex, float zoom){
+    private static int octanguliteBlockNoise(BlockPos pos, int tintIndex, float zoom){
         float x = zoom*(pos.getX() * (1+tintIndex*0.3f) + tintIndex*16);
         float y = zoom*(pos.getY() * (1+tintIndex*0.3f) + tintIndex*16);
         float z = zoom*(pos.getZ() * (1+tintIndex*0.3f) + tintIndex*16);
@@ -216,50 +221,58 @@ public class ModColorizationHandler {
     public static int octanguliteItemNoise(ItemStack stack, int tintIndex,float zoom, boolean withSlotOffset){
         float baseX, baseY, baseZ;
 
-        if(stack.getHolder()!=null){
-            Vec3d pos = stack.getHolder().getPos();
-
-            if(withSlotOffset && stack.getHolder() instanceof PlayerEntity player){
-
-                int slot = player.getInventory().getSlotWithStack(stack);
-
-                baseX = (float)pos.getX()+slot;
-                baseY = (float)pos.getY()+13+slot*2;
-                baseZ = (float)pos.getZ()+54+slot*3;
-            }
-            else{
-                baseX = (float)pos.getX();
-                baseY = (float)pos.getY();
-                baseZ = (float)pos.getZ();
-            }
-        }
-        else if(MinecraftClient.getInstance() != null)
+        if(Geomancy.CONFIG.epilepsyMode.value())
         {
-            if(withSlotOffset && MinecraftClient.getInstance().player != null)
-            {
-                Vec3d pos = MinecraftClient.getInstance().player.getPos();
-                int slot = MinecraftClient.getInstance().player.getInventory().getSlotWithStack(stack);
+            baseX = 0;
+            baseY = 0;
+            baseZ = 0;
+        }
+        else{
+            if(stack.getHolder()!=null){
+                Vec3d pos = stack.getHolder().getPos();
 
-                baseX = (float)pos.getX()+slot;
-                baseY = (float)pos.getY()+13+slot*2;
-                baseZ = (float)pos.getZ()+54+slot*3;
+                if(withSlotOffset && stack.getHolder() instanceof PlayerEntity player){
+
+                    int slot = player.getInventory().getSlotWithStack(stack);
+
+                    baseX = (float)pos.getX()+slot;
+                    baseY = (float)pos.getY()+13+slot*2;
+                    baseZ = (float)pos.getZ()+54+slot*3;
+                }
+                else{
+                    baseX = (float)pos.getX();
+                    baseY = (float)pos.getY();
+                    baseZ = (float)pos.getZ();
+                }
             }
-            else if(MinecraftClient.getInstance().cameraEntity!=null) {
-                Vec3d pos = MinecraftClient.getInstance().cameraEntity.getPos();
-                baseX = (float) pos.getX();
-                baseY = (float) pos.getY();
-                baseZ = (float) pos.getZ();
+            else if(MinecraftClient.getInstance() != null)
+            {
+                if(withSlotOffset && MinecraftClient.getInstance().player != null)
+                {
+                    Vec3d pos = MinecraftClient.getInstance().player.getPos();
+                    int slot = MinecraftClient.getInstance().player.getInventory().getSlotWithStack(stack);
+
+                    baseX = (float)pos.getX()+slot;
+                    baseY = (float)pos.getY()+13+slot*2;
+                    baseZ = (float)pos.getZ()+54+slot*3;
+                }
+                else if(MinecraftClient.getInstance().cameraEntity!=null) {
+                    Vec3d pos = MinecraftClient.getInstance().cameraEntity.getPos();
+                    baseX = (float) pos.getX();
+                    baseY = (float) pos.getY();
+                    baseZ = (float) pos.getZ();
+                }
+                else{
+                    baseX = 0;
+                    baseY = 0;
+                    baseZ = 0;
+                }
             }
             else{
                 baseX = 0;
                 baseY = 0;
                 baseZ = 0;
             }
-        }
-        else{
-            baseX = 0;
-            baseY = 0;
-            baseZ = 0;
         }
 
         float x = zoom*baseX * (1+tintIndex*0.3f) + tintIndex*16;
@@ -300,52 +313,58 @@ public class ModColorizationHandler {
 
         float baseX, baseY, baseZ;
 
-        if(stack.getHolder()!=null){
-            Vec3d pos = stack.getHolder().getPos();
-
-            if(withSlotOffset && stack.getHolder() instanceof PlayerEntity player){
-
-                int slot = player.getInventory().getSlotWithStack(stack);
-
-                baseX = (float)pos.getX()+slot;
-                baseY = (float)pos.getY()+13+slot*2;
-                baseZ = (float)pos.getZ()+54+slot*3;
-            }
-            else{
-                baseX = (float)pos.getX();
-                baseY = (float)pos.getY();
-                baseZ = (float)pos.getZ();
-            }
-        }
-        else if(MinecraftClient.getInstance() != null)
+        if(Geomancy.CONFIG.epilepsyMode.value())
         {
-            if(withSlotOffset && MinecraftClient.getInstance().player != null)
-            {
-                Vec3d pos = MinecraftClient.getInstance().player.getPos();
-                int slot = MinecraftClient.getInstance().player.getInventory().getSlotWithStack(stack);
+            baseX = 0;
+            baseY = 0;
+            baseZ = 0;
+        }
+        else{
+            if(stack.getHolder()!=null){
+                Vec3d pos = stack.getHolder().getPos();
 
-                baseX = (float)pos.getX()+slot;
-                baseY = (float)pos.getY()+13+slot*2;
-                baseZ = (float)pos.getZ()+54+slot*3;
+                if(withSlotOffset && stack.getHolder() instanceof PlayerEntity player){
+
+                    int slot = player.getInventory().getSlotWithStack(stack);
+
+                    baseX = (float)pos.getX()+slot;
+                    baseY = (float)pos.getY()+13+slot*2;
+                    baseZ = (float)pos.getZ()+54+slot*3;
+                }
+                else{
+                    baseX = (float)pos.getX();
+                    baseY = (float)pos.getY();
+                    baseZ = (float)pos.getZ();
+                }
             }
-            else if(MinecraftClient.getInstance().cameraEntity!=null) {
-                Vec3d pos = MinecraftClient.getInstance().cameraEntity.getPos();
-                baseX = (float) pos.getX();
-                baseY = (float) pos.getY();
-                baseZ = (float) pos.getZ();
+            else if(MinecraftClient.getInstance() != null)
+            {
+                if(withSlotOffset && MinecraftClient.getInstance().player != null)
+                {
+                    Vec3d pos = MinecraftClient.getInstance().player.getPos();
+                    int slot = MinecraftClient.getInstance().player.getInventory().getSlotWithStack(stack);
+
+                    baseX = (float)pos.getX()+slot;
+                    baseY = (float)pos.getY()+13+slot*2;
+                    baseZ = (float)pos.getZ()+54+slot*3;
+                }
+                else if(MinecraftClient.getInstance().cameraEntity!=null) {
+                    Vec3d pos = MinecraftClient.getInstance().cameraEntity.getPos();
+                    baseX = (float) pos.getX();
+                    baseY = (float) pos.getY();
+                    baseZ = (float) pos.getZ();
+                }
+                else{
+                    baseX = 0;
+                    baseY = 0;
+                    baseZ = 0;
+                }
             }
             else{
                 baseX = 0;
                 baseY = 0;
                 baseZ = 0;
             }
-
-
-        }
-        else{
-            baseX = 0;
-            baseY = 0;
-            baseZ = 0;
         }
 
         baseX += speed*GeomancyClient.tick;
@@ -479,27 +498,35 @@ public class ModColorizationHandler {
 
         float baseX, baseY, baseZ;
 
-        if(stack.getHolder()!=null){
-            Vec3d pos = stack.getHolder().getPos();
-
-            if(withSlotOffset && stack.getHolder() instanceof PlayerEntity player){
-
-                int slot = player.getInventory().getSlotWithStack(stack);
-
-                baseX = (float)pos.getX()+slot;
-                baseY = (float)pos.getY()+13+slot*2;
-                baseZ = (float)pos.getZ()+54+slot*3;
-            }
-            else{
-                baseX = (float)pos.getX();
-                baseY = (float)pos.getY();
-                baseZ = (float)pos.getZ();
-            }
-        }
-        else{
+        if(Geomancy.CONFIG.epilepsyMode.value())
+        {
             baseX = 0;
             baseY = 0;
             baseZ = 0;
+        }
+        else{
+            if(stack.getHolder()!=null){
+                Vec3d pos = stack.getHolder().getPos();
+
+                if(withSlotOffset && stack.getHolder() instanceof PlayerEntity player){
+
+                    int slot = player.getInventory().getSlotWithStack(stack);
+
+                    baseX = (float)pos.getX()+slot;
+                    baseY = (float)pos.getY()+13+slot*2;
+                    baseZ = (float)pos.getZ()+54+slot*3;
+                }
+                else{
+                    baseX = (float)pos.getX();
+                    baseY = (float)pos.getY();
+                    baseZ = (float)pos.getZ();
+                }
+            }
+            else{
+                baseX = 0;
+                baseY = 0;
+                baseZ = 0;
+            }
         }
 
         baseX += speed*GeomancyClient.tick;

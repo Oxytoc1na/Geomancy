@@ -229,10 +229,10 @@ public class ModItems {
     // caster items
     //public static final SoulCastingItem CASTER_TEST = register("caster_test",new SoulCastingItem(new FabricItemSettings(),1));
     public static final SoulCastingItem NOVICE_GLOVE =              register("novice_glove",        new SoulCastingItem(new FabricItemSettings().maxCount(1),5,50,0.5f));
-    public static final SoulCastingItem APPRENTICE_GLOVE =          register("apprentice_glove",    new SoulCastingItem(new FabricItemSettings().maxCount(1),9,100,1));
-    public static final SoulCastingItem JOURNEY_GLOVE =             register("journey_glove",       new SoulCastingItem(new FabricItemSettings().maxCount(1),9*2,200,1));
-    public static final SoulCastingItem EXPERT_GLOVE =              register("expert_glove",        new SoulCastingItem(new FabricItemSettings().maxCount(1),9*4,500,1.5f));
-    public static final SoulCastingItem MASTER_GLOVE =              register("master_glove",        new SoulCastingItem(new FabricItemSettings().maxCount(1),9*6,1000,2f));
+    public static final SoulCastingItem APPRENTICE_GLOVE =          register("apprentice_glove",    new SoulCastingItem(new FabricItemSettings().maxCount(1),9,100,1),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom));
+    public static final SoulCastingItem JOURNEY_GLOVE =             register("journey_glove",       new SoulCastingItem(new FabricItemSettings().maxCount(1),9*2,200,1),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom));
+    public static final SoulCastingItem EXPERT_GLOVE =              register("expert_glove",        new SoulCastingItem(new FabricItemSettings().maxCount(1),9*4,500,1.5f),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom));
+    public static final SoulCastingItem MASTER_GLOVE =              register("master_glove",        new SoulCastingItem(new FabricItemSettings().maxCount(1),9*6,1000,2f),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom));
     public static final SpellStoringItem SPELLSTORAGE_SMALL =       register("spellstorage_small",  new SpellStoringItem(new FabricItemSettings().maxCount(8),3,3));
     public static final SpellStoringItem SPELLSTORAGE_MEDIUM =      register("spellstorage_medium", new SpellStoringItem(new FabricItemSettings().maxCount(8),5,5));
     public static final SpellStoringItem SPELLSTORAGE_LARGE =       register("spellstorage_large",  new SpellStoringItem(new FabricItemSettings().maxCount(8),7,7));
