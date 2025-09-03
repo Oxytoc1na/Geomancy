@@ -1,0 +1,7 @@
+{
+  "parent": "geomancy:block/double_tinted_cube_all",
+  "textures": {
+    "all": "geomancy:block/vault_glass",
+    "all2": "geomancy:block/vault_glass_2"
+  }
+}

@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/orientable",
   "textures": {
-    "front": "geomancy:block/autocaster_front",
+    "front": "geomancy:block/autocaster_front_triggered",
     "side": "geomancy:block/autocaster_side",
     "top": "minecraft:block/furnace_top",
     "bottom": "geomancy:block/titanium_block"

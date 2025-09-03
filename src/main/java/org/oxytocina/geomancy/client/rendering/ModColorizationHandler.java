@@ -52,8 +52,19 @@ public class ModColorizationHandler {
                 ModBlocks.SOUL_OAK_DOOR,
                 ModBlocks.SOUL_OAK_LOG,
                 ModBlocks.STRIPPED_SOUL_OAK_LOG,
-                ModBlocks.STRIPPED_SOUL_OAK_WOOD
+                ModBlocks.STRIPPED_SOUL_OAK_WOOD,
+                ModBlocks.VAULT_GLASS
                 );
+
+        // double tintets, for example vault blocks (first index is uncolored)
+        ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> {
+            if (view == null || pos == null || tintIndex == 0) {return 0xFFFFFFFF;} else {return octanguliteNoise(pos,tintIndex,0.03f);}
+        },
+                ModBlocks.VAULT_BLOCK,
+                ModBlocks.VAULT_BLOCK_SLAB,
+                ModBlocks.VAULT_BLOCK_STAIRS,
+                ModBlocks.VAULT_GLASS
+        );
 
         // soul oak wood only has one tint index, but should use tint index 1 for the bark
         ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> {
@@ -139,7 +150,13 @@ public class ModColorizationHandler {
         );
 
         ColorProviderRegistry.ITEM.register(
-                (stack, tintIndex) -> tintIndex==0?0xFFFFFFFF:octanguliteItemNoise(stack, tintIndex, 0.03F,true),ModItems.COMPONENT_POUCH);
+                (stack, tintIndex) -> tintIndex==0?0xFFFFFFFF:octanguliteItemNoise(stack, tintIndex, 0.03F,true),
+                ModItems.COMPONENT_POUCH,
+                ModBlocks.VAULT_BLOCK,
+                ModBlocks.VAULT_BLOCK_SLAB,
+                ModBlocks.VAULT_BLOCK_STAIRS,
+                ModBlocks.VAULT_GLASS
+        );
     }
 
     private static void addOctanguliteItem(Item item,float zoom,boolean withSlotOffset){

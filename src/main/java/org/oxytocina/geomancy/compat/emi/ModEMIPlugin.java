@@ -3,22 +3,14 @@ package org.oxytocina.geomancy.compat.emi;
 import dev.emi.emi.api.*;
 import dev.emi.emi.api.recipe.*;
 import dev.emi.emi.api.stack.*;
-import dev.emi.emi.config.*;
-import dev.emi.emi.runtime.*;
-import net.minecraft.block.*;
-import net.minecraft.client.gui.screen.ingame.*;
-import net.minecraft.fluid.*;
 import net.minecraft.inventory.*;
 import net.minecraft.recipe.*;
-import net.minecraft.registry.*;
-import net.minecraft.util.*;
 import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.client.screen.ModScreenHandlers;
-import org.oxytocina.geomancy.compat.emi.handlers.SmitheryRecipeHandler;
-import org.oxytocina.geomancy.compat.emi.recipes.SmitheryEMIRecipe;
+import org.oxytocina.geomancy.compat.emi.handlers.*;
+import org.oxytocina.geomancy.compat.emi.recipes.*;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
 
-import java.util.*;
 import java.util.function.*;
 
 public class ModEMIPlugin implements EmiPlugin {
@@ -33,6 +25,8 @@ public class ModEMIPlugin implements EmiPlugin {
     public void registerCategories(EmiRegistry registry) {
         registry.addCategory(ModEMIRecipeCategories.SMITHING);
         registry.addWorkstation(ModEMIRecipeCategories.SMITHING, EmiStack.of(ModBlocks.SMITHERY));
+        registry.addCategory(ModEMIRecipeCategories.SOUL_FORGE);
+        registry.addWorkstation(ModEMIRecipeCategories.SOUL_FORGE, EmiStack.of(ModBlocks.SOUL_FORGE));
     }
 
     public void registerRecipes(EmiRegistry registry) {
@@ -43,31 +37,18 @@ public class ModEMIPlugin implements EmiPlugin {
         //addAll(registry, RecipeType.CRAFTING, ShapelessGatedCraftingEMIRecipe::new);
 
         addAll(registry, ModRecipeTypes.SMITHING, SmitheryEMIRecipe::new);
+        addAll(registry, ModRecipeTypes.SOULFORGE_SIMPLE, SoulForgeEMIRecipe::new);
 
     }
 
     public void registerRecipeHandlers(EmiRegistry registry) {
         registry.addRecipeHandler(ModScreenHandlers.SMITHERY_SCREEN_HANDLER, new SmitheryRecipeHandler());
-    }
-
-    public static Identifier syntheticId(String type, Block block) {
-        Identifier blockId = Registries.BLOCK.getId(block);
-        // Note that all recipe ids here start with "spectrum:/" which is legal, but impossible to represent with real files
-        return new Identifier("spectrum:/" + type + "/" + blockId.getNamespace() + "/" + blockId.getPath());
+        registry.addRecipeHandler(ModScreenHandlers.SOULFORGE_SCREEN_HANDLER, new SoulForgeRecipeHandler());
     }
 
     public <C extends Inventory, T extends Recipe<C>> void addAll(EmiRegistry registry, RecipeType<T> type, Function<T, EmiRecipe> constructor) {
         for (T recipe : registry.getRecipeManager().listAllOfType(type)) {
             registry.addRecipe(constructor.apply(recipe));
-        }
-    }
-
-    private static void addRecipeSafe(EmiRegistry registry, Supplier<EmiRecipe> supplier) {
-        try {
-            registry.addRecipe(supplier.get());
-        } catch (Throwable e) {
-            EmiReloadLog.warn("Exception thrown when parsing EMI recipe (no ID available)");
-            EmiReloadLog.error(e);
         }
     }
 

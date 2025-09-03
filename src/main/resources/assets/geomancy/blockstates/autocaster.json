@@ -4,22 +4,37 @@
       "model": "geomancy:block/autocaster_vertical",
       "x": 180
     },
-    "facing=east": {
+    "facing=east,triggered=false": {
       "model": "geomancy:block/autocaster",
       "y": 90
     },
-    "facing=north": {
+    "facing=north,triggered=false": {
       "model": "geomancy:block/autocaster"
     },
-    "facing=south": {
+    "facing=south,triggered=false": {
       "model": "geomancy:block/autocaster",
       "y": 180
     },
     "facing=up": {
       "model": "geomancy:block/autocaster_vertical"
     },
-    "facing=west": {
+    "facing=west,triggered=false": {
       "model": "geomancy:block/autocaster",
+      "y": 270
+    },
+    "facing=east,triggered=true": {
+      "model": "geomancy:block/autocaster_triggered",
+      "y": 90
+    },
+    "facing=north,triggered=true": {
+      "model": "geomancy:block/autocaster_triggered"
+    },
+    "facing=south,triggered=true": {
+      "model": "geomancy:block/autocaster_triggered",
+      "y": 180
+    },
+    "facing=west,triggered=true": {
+      "model": "geomancy:block/autocaster_triggered",
       "y": 270
     }
   }

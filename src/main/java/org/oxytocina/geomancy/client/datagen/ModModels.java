@@ -47,6 +47,14 @@ public class ModModels {
     public static final Model TINTED_TEMPLATE_TRAPDOOR_BOTTOM = block("geomancy:tinted_template_trapdoor_bottom","_bottom",TextureKey.TEXTURE);
     public static final Model TINTED_TEMPLATE_TRAPDOOR_OPEN   = block("geomancy:tinted_template_trapdoor_open","_open",TextureKey.TEXTURE);
 
+    public static final Model DOUBLE_TINTED_CUBE_ALL = block("geomancy:double_tinted_cube_all", TextureKey.ALL,TextureKey.of("all2"));
+    public static final Model DOUBLE_TINTED_STAIRS = block("geomancy:double_tinted_stairs", TextureKey.TOP,TextureKey.SIDE,TextureKey.BOTTOM,TextureKey.of("top2"),TextureKey.of("side2"),TextureKey.of("bottom2"));
+    public static final Model DOUBLE_TINTED_INNER_STAIRS = block("geomancy:double_tinted_inner_stairs","_inner", TextureKey.TOP,TextureKey.SIDE,TextureKey.BOTTOM,TextureKey.of("top2"),TextureKey.of("side2"),TextureKey.of("bottom2"));
+    public static final Model DOUBLE_TINTED_OUTER_STAIRS = block("geomancy:double_tinted_outer_stairs","_outer", TextureKey.TOP,TextureKey.SIDE,TextureKey.BOTTOM,TextureKey.of("top2"),TextureKey.of("side2"),TextureKey.of("bottom2"));
+    public static final Model DOUBLE_TINTED_SLAB = block("geomancy:double_tinted_slab", TextureKey.TOP,TextureKey.SIDE,TextureKey.BOTTOM,TextureKey.of("top2"),TextureKey.of("side2"),TextureKey.of("bottom2"));
+    public static final Model DOUBLE_TINTED_SLAB_TOP = block("geomancy:double_tinted_slab_top","_top", TextureKey.TOP,TextureKey.SIDE,TextureKey.BOTTOM,TextureKey.of("top2"),TextureKey.of("side2"),TextureKey.of("bottom2"));
+
+
     private static Model block(String parent, TextureKey... requiredTextureKeys) {
         return new Model(Optional.ofNullable(Identifier.tryParse(parent).withPrefixedPath("block/")), Optional.empty(), requiredTextureKeys);
     }

@@ -4,15 +4,15 @@ import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.recipe.VanillaEmiRecipeCategories;
 import dev.emi.emi.api.recipe.handler.StandardRecipeHandler;
 import net.minecraft.screen.slot.Slot;
-import org.oxytocina.geomancy.client.screen.SmitheryScreenHandler;
+import org.oxytocina.geomancy.client.screen.SoulForgeScreenHandler;
 import org.oxytocina.geomancy.compat.emi.ModEMIRecipeCategories;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SmitheryRecipeHandler implements StandardRecipeHandler<SmitheryScreenHandler> {
+public class SoulForgeRecipeHandler implements StandardRecipeHandler<SoulForgeScreenHandler> {
     @Override
-    public List<Slot> getInputSources(SmitheryScreenHandler handler) {
+    public List<Slot> getInputSources(SoulForgeScreenHandler handler) {
         List<Slot> slots = new ArrayList<>();
 
         // crafting slots
@@ -25,13 +25,13 @@ public class SmitheryRecipeHandler implements StandardRecipeHandler<SmitheryScre
     }
 
     @Override
-    public List<Slot> getCraftingSlots(SmitheryScreenHandler handler) {
+    public List<Slot> getCraftingSlots(SoulForgeScreenHandler handler) {
         return handler.slots.subList(0, 10);
     }
 
     @Override
     public boolean supportsRecipe(EmiRecipe recipe) {
         EmiRecipeCategory category = recipe.getCategory();
-        return (category == ModEMIRecipeCategories.SMITHING || category == VanillaEmiRecipeCategories.CRAFTING) && recipe.supportsRecipeTree();
+        return (category == ModEMIRecipeCategories.SOUL_FORGE || category == VanillaEmiRecipeCategories.CRAFTING) && recipe.supportsRecipeTree();
     }
 }

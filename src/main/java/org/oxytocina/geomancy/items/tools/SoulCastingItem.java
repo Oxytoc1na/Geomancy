@@ -87,7 +87,7 @@ public class SoulCastingItem extends StorageItem implements ISoulStoringItem, IS
     @Override
     @Environment(EnvType.CLIENT)
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
+        //super.appendTooltip(stack, world, tooltip, context);
 
         var selectedSpellIndex = getSelectedSpellIndex(stack);
         var spells = getCastableSpellItems(stack);

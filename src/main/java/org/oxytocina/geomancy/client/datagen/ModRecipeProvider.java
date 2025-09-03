@@ -184,8 +184,6 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         GOLDEN_HAMMER,1,70,20,conditionsFromItem(Items.GOLD_INGOT),null);
             }
 
-
-
             // geode recipes
             for(GeodeItem item : geodeItems){
                 AddGeodeRecipe(item);
@@ -223,7 +221,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
             // spell, soul and variable storage
             {
-                // small
+                // spell
                 AddShapedSmitheryRecipe(new String[]{
                                 " t ",
                                 " m ",
@@ -235,30 +233,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         },
                         SPELLSTORAGE_SMALL,1,100,12,conditionsFromItem(MITHRIL_INGOT),null);
 
-                // medium
-                AddShapedSmitheryRecipe(new String[]{
-                                " m ",
-                                " o ",
-                                " g "}
-                        ,new SPatKey[]{
-                                new SPatKey("m",SmithingIngredient.ofItems(1,1,MITHRIL_INGOT)),
-                                new SPatKey("o",SmithingIngredient.ofItems(1,1,OCTANGULITE_INGOT)),
-                                new SPatKey("g",SmithingIngredient.ofItems(1,1,Items.GOLD_INGOT)),
-                        },
-                        SPELLSTORAGE_MEDIUM,1,200,15,conditionsFromItem(OCTANGULITE_INGOT),null);
-
-                // large
-                AddShapedSmitheryRecipe(new String[]{
-                                " o ",
-                                " o ",
-                                " g "}
-                        ,new SPatKey[]{
-                                new SPatKey("o",SmithingIngredient.ofItems(1,1,OCTANGULITE_INGOT)),
-                                new SPatKey("g",SmithingIngredient.ofItems(1,1,Items.GOLD_INGOT)),
-                        },
-                        SPELLSTORAGE_LARGE,1,300,20,conditionsFromItem(OCTANGULITE_INGOT),null);
-
-                // small
+                // var
                 AddShapedSmitheryRecipe(new String[]{
                                 " t ",
                                 " m ",
@@ -270,64 +245,17 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         },
                         VARSTORAGE_SMALL,1,100,12,conditionsFromItem(MITHRIL_INGOT),null);
 
-                // medium
-                AddShapedSmitheryRecipe(new String[]{
-                                " m ",
-                                " o ",
-                                " g "}
-                        ,new SPatKey[]{
-                                new SPatKey("m",SmithingIngredient.ofItems(1,1,MITHRIL_INGOT)),
-                                new SPatKey("o",SmithingIngredient.ofItems(1,1,OCTANGULITE_INGOT)),
-                                new SPatKey("g",SmithingIngredient.ofItems(1,1,Items.DIAMOND)),
-                        },
-                        VARSTORAGE_MEDIUM,1,200,15,conditionsFromItem(OCTANGULITE_INGOT),null);
-
-                // large
-                AddShapedSmitheryRecipe(new String[]{
-                                " o ",
-                                " o ",
-                                " g "}
-                        ,new SPatKey[]{
-                                new SPatKey("o",SmithingIngredient.ofItems(1,1,OCTANGULITE_INGOT)),
-                                new SPatKey("g",SmithingIngredient.ofItems(1,1,Items.DIAMOND)),
-                        },
-                        VARSTORAGE_LARGE,1,300,20,conditionsFromItem(OCTANGULITE_INGOT),null);
-
-                // small
+                // soul
                 AddShapedSmitheryRecipe(new String[]{
                                 "ini",
                                 "non",
                                 "ini"}
                         ,new SPatKey[]{
-                                new SPatKey("t",SmithingIngredient.ofItems(1,1,TITANIUM_INGOT)),
+                                new SPatKey("o",SmithingIngredient.ofItems(1,1,OCTANGULITE_INGOT)),
                                 new SPatKey("i",SmithingIngredient.ofItems(1,1,Items.IRON_INGOT)),
                                 new SPatKey("n",SmithingIngredient.ofItems(1,1,LEAD_INGOT)),
                         },
                         SOULSTORAGE_SMALL,1,100,12,conditionsFromItem(MITHRIL_INGOT),null);
-
-                // medium
-                AddShapedSmitheryRecipe(new String[]{
-                                "tnt",
-                                "non",
-                                "tnt"}
-                        ,new SPatKey[]{
-                                new SPatKey("n",SmithingIngredient.ofItems(1,1,OCTANGULITE_NUGGET)),
-                                new SPatKey("o",SmithingIngredient.ofItems(1,1,OCTANGULITE_INGOT)),
-                                new SPatKey("t",SmithingIngredient.ofItems(1,1,TITANIUM_INGOT)),
-                        },
-                        SOULSTORAGE_MEDIUM,1,200,15,conditionsFromItem(OCTANGULITE_INGOT),null);
-
-                // large
-                AddShapedSmitheryRecipe(new String[]{
-                                "mom",
-                                "obo",
-                                "mom"}
-                        ,new SPatKey[]{
-                                new SPatKey("o",SmithingIngredient.ofItems(1,1,OCTANGULITE_INGOT)),
-                                new SPatKey("b",SmithingIngredient.ofItems(1,1,OCTANGULITE_BLOCK)),
-                                new SPatKey("m",SmithingIngredient.ofItems(1,1,MITHRIL_INGOT)),
-                        },
-                        SOULSTORAGE_LARGE,1,300,20,conditionsFromItem(OCTANGULITE_INGOT),null);
             }
 
             // spellcomponents
@@ -543,42 +471,17 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     },
                     SPELLMAKER,1,100,50,conditionsFromItem(SPELLMAKER),Geomancy.locate("main/get_spellmaker"));
 
-            // spellglove
+            // novice spellglove
             AddShapedSmitheryRecipe(new String[]{
-                            "ooo",
+                            "ttt",
                             "lcl",
                             " l "}
                     ,new SPatKey[]{
-                            new SPatKey("o",SmithingIngredient.ofItems(1,1,1,OCTANGULITE_INGOT)),
+                            new SPatKey("t",SmithingIngredient.ofItems(1,1,1,TITANIUM_INGOT)),
                             new SPatKey("l",SmithingIngredient.ofItems(1,1,1,Items.LEATHER)),
                             new SPatKey("c",SmithingIngredient.ofItems(1,1,1,Items.CHEST)),
                     },
-                    EXPERT_GLOVE,1,100,50,conditionsFromItem(OCTANGULITE_INGOT),Geomancy.locate("milestones/milestone_souls"));
-
-            // soul bore
-            AddShapedSmitheryRecipe(new String[]{
-                            "bab",
-                            "ini",
-                            " t "}
-                    ,new SPatKey[]{
-                            new SPatKey("t",SmithingIngredient.ofItems(1,1,TITANIUM_SWORD)),
-                            new SPatKey("n",SmithingIngredient.ofItems(1,1,Items.TNT)),
-                            new SPatKey("a",SmithingIngredient.ofItems(1,1,Items.ANVIL)),
-                            new SPatKey("b",SmithingIngredient.ofItems(1,1,TITANIUM_BLOCK)),
-                            new SPatKey("i",SmithingIngredient.ofItems(1,1,OCTANGULITE_INGOT)),
-                    },
-                    SOUL_BORE,1,200,15,conditionsFromItem(OCTANGULITE_INGOT),null);
-
-            // caster core
-            AddShapedSmitheryRecipe(new String[]{
-                            " t ",
-                            "tbt",
-                            " t "}
-                    ,new SPatKey[]{
-                            new SPatKey("t",SmithingIngredient.ofItems(1,1,TITANIUM_INGOT)),
-                            new SPatKey("b",SmithingIngredient.ofItems(1,1,OCTANGULITE_BLOCK)),
-                    },
-                    CASTER_CORE,1,200,15,conditionsFromItem(OCTANGULITE_INGOT),null);
+                    NOVICE_GLOVE,1,100,50,conditionsFromItem(OCTANGULITE_INGOT),Geomancy.locate("milestones/milestone_souls"));
         }
 
         // tools and armors
@@ -659,13 +562,108 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
         // soul forge
         {
+            // storage
+            {
+                // spells
+                // medium
+                AddSimpleSoulForgeRecipe(List.of(
+                        NbtIngredient.ofItems(SPELLSTORAGE_SMALL),
+                        NbtIngredient.ofItems(Items.GOLD_INGOT),
+                        NbtIngredient.ofItems(OCTANGULITE_INGOT)
+                ),SPELLSTORAGE_MEDIUM,1,200,0.2f,0.5f,"",conditionsFromItem(SPELLSTORAGE_SMALL),null);
+
+                // large
+                AddSimpleSoulForgeRecipe(List.of(
+                        NbtIngredient.ofItems(SPELLSTORAGE_MEDIUM),
+                        NbtIngredient.ofItems(MITHRIL_INGOT),
+                        NbtIngredient.ofItems(OCTANGULITE_INGOT)
+                ),SPELLSTORAGE_LARGE,1,1000,0.5f,0.7f,"",conditionsFromItem(SPELLSTORAGE_MEDIUM),null);
+
+                // vars
+                // medium
+                AddSimpleSoulForgeRecipe(List.of(
+                        NbtIngredient.ofItems(VARSTORAGE_SMALL),
+                        NbtIngredient.ofItems(Items.DIAMOND),
+                        NbtIngredient.ofItems(OCTANGULITE_INGOT)
+                ),VARSTORAGE_MEDIUM,1,200,0.2f,0.5f,"",conditionsFromItem(VARSTORAGE_SMALL),null);
+
+                // large
+                AddSimpleSoulForgeRecipe(List.of(
+                        NbtIngredient.ofItems(VARSTORAGE_MEDIUM),
+                        NbtIngredient.ofItems(Items.DIAMOND),
+                        NbtIngredient.ofItems(OCTANGULITE_INGOT)
+                ),VARSTORAGE_LARGE,1,1000,0.5f,0.7f,"",conditionsFromItem(VARSTORAGE_MEDIUM),null);
+
+                // soul
+                // medium
+                AddSimpleSoulForgeRecipe(List.of(
+                        NbtIngredient.ofItems(SOULSTORAGE_SMALL),
+                        NbtIngredient.ofItems(LEAD_BLOCK),
+                        NbtIngredient.ofItems(OCTANGULITE_BLOCK)
+                ),SOULSTORAGE_MEDIUM,1,200,0.2f,0.5f,"",conditionsFromItem(SOULSTORAGE_SMALL),null);
+
+                // large
+                AddSimpleSoulForgeRecipe(List.of(
+                        NbtIngredient.ofItems(SOULSTORAGE_MEDIUM),
+                        NbtIngredient.ofItems(MITHRIL_BLOCK),
+                        NbtIngredient.ofItems(OCTANGULITE_BLOCK)
+                ),SOULSTORAGE_LARGE,1,1000,0.5f,0.7f,"",conditionsFromItem(SOULSTORAGE_MEDIUM),null);
+
+            }
+
+            // gloves
+            {
+                // apprentice glove
+                AddSimpleSoulForgeRecipe(List.of(
+                        NbtIngredient.ofItems(NOVICE_GLOVE),
+                        NbtIngredient.ofItems(TITANIUM_INGOT),
+                        NbtIngredient.ofItems(MITHRIL_INGOT),
+                        NbtIngredient.ofItems(OCTANGULITE_INGOT)
+                ),APPRENTICE_GLOVE,1,500,0.2f,1f,"",conditionsFromItem(SOUL_FORGE),null);
+
+                // journey glove
+                AddSimpleSoulForgeRecipe(List.of(
+                        NbtIngredient.ofItems(APPRENTICE_GLOVE),
+                        NbtIngredient.ofItems(Items.PHANTOM_MEMBRANE),
+                        NbtIngredient.ofItems(MITHRIL_INGOT),
+                        NbtIngredient.ofItems(OCTANGULITE_INGOT)
+                ),JOURNEY_GLOVE,1,1000,0.5f,1f,"",conditionsFromItem(SOUL_FORGE),null);
+
+                // expert glove
+                AddSimpleSoulForgeRecipe(List.of(
+                        NbtIngredient.ofItems(JOURNEY_GLOVE),
+                        NbtIngredient.ofItems(Items.DRAGON_BREATH),
+                        NbtIngredient.ofItems(MITHRIL_INGOT),
+                        NbtIngredient.ofItems(Items.SHULKER_SHELL)
+                ),EXPERT_GLOVE,1,3000,0.5f,1f,"",conditionsFromItem(Items.DRAGON_BREATH),null);
+
+            }
+
             // octangulite hammer
             AddSimpleSoulForgeRecipe(List.of(
                     NbtIngredient.ofItems(Items.STICK),
                     NbtIngredient.ofItems(OCTANGULITE_INGOT),
                     NbtIngredient.ofItems(OCTANGULITE_INGOT),
                     NbtIngredient.ofItems(OCTANGULITE_INGOT)
-            ),OCTANGULITE_HAMMER,1,500,1f,1f,"",conditionsFromItem(OCTANGULITE_INGOT),null);
+            ),OCTANGULITE_HAMMER,1,500,1f,1f,"",conditionsFromItem(SOUL_FORGE),null);
+
+            // soul bore
+            AddSimpleSoulForgeRecipe(List.of(
+                    NbtIngredient.ofItems(TITANIUM_SWORD),
+                    NbtIngredient.ofItems(Items.TNT),
+                    NbtIngredient.ofItems(Items.ANVIL),
+                    NbtIngredient.ofItems(TITANIUM_BLOCK),
+                    NbtIngredient.ofItems(OCTANGULITE_INGOT)
+            ),SOUL_BORE,1,2000,0.5f,1f,"",conditionsFromItem(SOUL_FORGE),null);
+
+            // caster core
+            AddSimpleSoulForgeRecipe(List.of(
+                    NbtIngredient.ofItems(OCTANGULITE_BLOCK),
+                    NbtIngredient.ofItems(TITANIUM_INGOT),
+                    NbtIngredient.ofItems(TITANIUM_INGOT),
+                    NbtIngredient.ofItems(TITANIUM_INGOT),
+                    NbtIngredient.ofItems(TITANIUM_INGOT)
+            ),CASTER_CORE,1,2000,0.5f,1f,"",conditionsFromItem(SOUL_FORGE),null);
         }
 
         this.exporter=null;

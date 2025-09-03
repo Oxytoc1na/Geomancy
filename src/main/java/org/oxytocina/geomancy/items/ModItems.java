@@ -21,6 +21,7 @@ import net.minecraft.util.Rarity;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.items.armor.*;
 import org.oxytocina.geomancy.items.armor.materials.*;
+import org.oxytocina.geomancy.items.misc.SoulPreviewItem;
 import org.oxytocina.geomancy.items.tools.*;
 import org.oxytocina.geomancy.items.tools.materials.ModToolMaterials;
 import org.oxytocina.geomancy.entity.ExtraEntitySettings;
@@ -251,6 +252,7 @@ public class ModItems {
     public static final SoulBoreItem SOUL_BORE =      register("soul_bore", new SoulBoreItem(new FabricItemSettings().maxCount(1),9));
 
 
+    public static final SoulPreviewItem SOUL_PREVIEW = register("soul_preview",new SoulPreviewItem(new FabricItemSettings()),new ExtraItemSettings().dontGroupItem());
     // geodes
     public static final Item GEODE_PREVIEW = register("geode_preview",new Item(new FabricItemSettings()),new ExtraItemSettings().dontGroupItem());
     // if something else goes terribly wrong, this place is usually where the exception gets thrown

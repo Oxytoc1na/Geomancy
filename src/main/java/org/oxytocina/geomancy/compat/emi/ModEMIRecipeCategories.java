@@ -11,6 +11,7 @@ import org.oxytocina.geomancy.blocks.ModBlocks;
 
 public class ModEMIRecipeCategories {
     public static final EmiRecipeCategory SMITHING = new ModCategory(Geomancy.locate("smithing"), EmiStack.of(ModBlocks.SMITHERY));
+    public static final EmiRecipeCategory SOUL_FORGE = new ModCategory(Geomancy.locate("soul_forge"), EmiStack.of(ModBlocks.SOUL_FORGE));
 
     private static class ModCategory extends EmiRecipeCategory {
         private final String key;

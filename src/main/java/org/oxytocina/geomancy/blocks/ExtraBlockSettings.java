@@ -32,6 +32,7 @@ public class ExtraBlockSettings {
     public static final ArrayList<TrapdoorBlock> TrapdoorBlocks = new ArrayList<>();
 
     public static final ArrayList<Block> CutoutLayerBlocks = new ArrayList<>();
+    public static final ArrayList<Block> TransparentLayerBlocks = new ArrayList<>();
 
     public static final ArrayList<Block> RegularDropBlocks = new ArrayList<Block>();
     public static final HashMap<Block,Integer> VariantCubeBlocks = new HashMap<Block,Integer>();
@@ -83,6 +84,7 @@ public class ExtraBlockSettings {
         res.shouldGenerateModels=shouldGenerateModels;
         res.shouldItemHaveOwnName=shouldItemHaveOwnName;
         res.modelType=modelType;
+        res.layer=layer;
         return res;
     }
 
@@ -163,6 +165,7 @@ public class ExtraBlockSettings {
         switch(layer)
         {
             case Cutout: CutoutLayerBlocks.add(block); break;
+            case Transparent: TransparentLayerBlocks.add(block); break;
             default:break;
         }
 
@@ -176,11 +179,13 @@ public class ExtraBlockSettings {
 
     public enum ModelType{
         Default,
-        Tinted
+        Tinted,
+        DoubleTinted
     }
 
     public enum Layer{
         Default,
-        Cutout
+        Cutout,
+        Transparent
     }
 }

@@ -73,9 +73,9 @@ public class AutocasterBlock extends BlockWithEntity implements BlockEntityProvi
             if(world instanceof ServerWorld sw)
                 this.cast(sw, pos);
             //world.scheduleBlockTick(pos, this, SCHEDULED_TICK_DELAY);
-            world.setBlockState(pos, (BlockState)state.with(TRIGGERED, true), 4);
+            world.setBlockState(pos, (BlockState)state.with(TRIGGERED, true), 2|4);
         } else if (!receivingRedstone && isTriggered) {
-            world.setBlockState(pos, (BlockState)state.with(TRIGGERED, false), 4);
+            world.setBlockState(pos, (BlockState)state.with(TRIGGERED, false), 2|4);
         }
 
     }

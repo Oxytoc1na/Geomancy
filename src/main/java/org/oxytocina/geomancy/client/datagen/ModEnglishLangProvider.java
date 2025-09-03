@@ -570,7 +570,10 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("block.MODID.soul_oak_door"                 , "Soul Oak Door");
             add("block.MODID.soul_oak_trapdoor"             , "Soul Oak Trapdoor");
 
-
+            add("block.MODID.vault_block"                   , "Vault Block");
+            add("block.MODID.vault_block_stairs"            , "Vault Stairs");
+            add("block.MODID.vault_block_slab"              , "Vault Slab");
+            add("block.MODID.vault_glass"                   , "Vault Glass");
         }
 
         // status effects
@@ -1148,12 +1151,15 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         // REI, EMI
         {
             add("container.MODID.rei.smithing.title","Smithing");
+            add("container.MODID.rei.soul_forge.title","Soul Forging");
 
             add("geomancy.rei.locked_recipe","Locked Recipe");
             add("geomancy.rei.locked_recipe.2","Progress to unlock");
 
             add("geomancy.rei.locked_recipe_type","Locked Recipe Type");
             add("geomancy.rei.locked_recipe_type.2","Progress to unlock");
+
+            add("geomancy.soulpreview.tooltip.cost","Souls required: %1$f");
         }
 
         // config

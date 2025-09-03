@@ -1,0 +1,11 @@
+{
+  "parent": "geomancy:block/double_tinted_slab",
+  "textures": {
+    "bottom": "geomancy:block/vault_block",
+    "side": "geomancy:block/vault_block",
+    "top": "geomancy:block/vault_block",
+    "bottom2": "geomancy:block/vault_block_2",
+    "side2": "geomancy:block/vault_block_2",
+    "top2": "geomancy:block/vault_block_2"
+  }
+}

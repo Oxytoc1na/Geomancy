@@ -11,5 +11,8 @@ public class ModBlockTransparency {
         for(var b : ExtraBlockSettings.CutoutLayerBlocks){
             BlockRenderLayerMap.INSTANCE.putBlock(b, RenderLayer.getCutout());
         }
+        for(var b : ExtraBlockSettings.TransparentLayerBlocks){
+            BlockRenderLayerMap.INSTANCE.putBlock(b, RenderLayer.getTranslucent());
+        }
     }
 }

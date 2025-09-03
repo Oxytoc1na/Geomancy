@@ -132,6 +132,7 @@ TODO DEBUG
 - make foreach affected by depth
 - pool sent packets to improve performance
 - stellge caster direction
+- infinite gold glitch (molten gold fluid collision)
 
 TODO ADVANCEMENTS
 - casting spells

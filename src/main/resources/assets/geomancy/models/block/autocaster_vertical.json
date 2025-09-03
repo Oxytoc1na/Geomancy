@@ -1,7 +1,11 @@
 {
-  "parent": "minecraft:block/orientable_vertical",
+  "parent": "minecraft:block/cube",
   "textures": {
-    "front": "geomancy:block/autocaster_front_vertical",
-    "side": "geomancy:block/furnace_top"
+    "up": "geomancy:block/autocaster_front_vertical",
+    "down": "geomancy:block/autocaster_side",
+    "north": "geomancy:block/autocaster_side",
+    "south": "geomancy:block/autocaster_side",
+    "east": "geomancy:block/autocaster_side",
+    "west": "geomancy:block/autocaster_side"
   }
 }

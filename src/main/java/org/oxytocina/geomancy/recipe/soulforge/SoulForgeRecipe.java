@@ -77,7 +77,7 @@ public class SoulForgeRecipe extends GatedModRecipe<Inventory> implements ISoulF
 
     @Override
     public ItemStack getOutput(DynamicRegistryManager registryManager) {
-        return null;
+        return output;
     }
 
     @Override
