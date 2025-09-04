@@ -180,6 +180,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("store","Store Item","puts an item held by the caster into a storage block");
             addSpell("take","Take Item","gives an item from a storage block to the caster");
             addSpell("transfer","Transfer Item","transfers an item from one storage block to another");
+            addSpell("invisible","Invisible","makes spell execution invisible");
+            addSpell("particles","Particles","spawns decorative particles in the world");
             // reference
             addSpell("action","Action","calls another installed spell");
             addSpell("provider","Provider","automatically returns the result of a spell");
@@ -201,6 +203,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("set_element","Set Element","sets the element in a list at a given position");
             addSpell("entities_near","Entities Near","returns a list containing all entities within the specified area");
             addSpell("block_box","Block Box","returns a list containing all block positions in the area");
+            addSpell("raycast_march","Raycast March","returns a list containing all block positions intersected by a ray");
 
             add("MODID.spells.debug.error","Error in spell component %1$s: %2$s");
             add("MODID.spells.debug.broke","Couldn't afford spell %1$s. Cost: %2$f, available: %3$f");

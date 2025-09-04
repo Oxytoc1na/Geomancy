@@ -4,7 +4,10 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.particle.ParticleType;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -27,6 +30,7 @@ public class ParticleUtil {
         public Vec3d velMin;
         public Vec3d velMax;
         public Identifier world;
+        public String data = "";
         public World worldObj;
 
         private ParticleData(Type type, int amount, Vec3d pos, Vec3d dir, Identifier world,World worldObj, float dispersion){
@@ -79,6 +83,10 @@ public class ParticleUtil {
         public static ParticleData createForgeConsume(World world, Vec3d from, Vec3d to){
             return create(world,from).type(Type.FORGE_CONSUME).amount(1).vel(to,to);
         }
+        public static ParticleData createGeneric(World world, ParticleType<?> type, Vec3d pos, Vec3d vel, int count, float disp){
+            return create(world,pos).type(Type.GENERIC).amount(count).dispersion(disp).vel(vel,vel).data(Registries.PARTICLE_TYPE.getId(type).toString());
+        }
+
         
         public static ParticleData create(World world, Vec3d pos){
             return new ParticleData(Type.CAST_SOUL, 10,pos,new Vec3d(0,0,0),world.getRegistryKey().getValue(),world,0.5f);
@@ -89,6 +97,7 @@ public class ParticleUtil {
         public ParticleData vel(Vec3d min,Vec3d max){this.velMin = min; this.velMax=max;return this;}
         public ParticleData dispersion(float dispersion){this.dispersion = dispersion;return this;}
         public ParticleData type(Type type){this.type = type;return this;}
+        public ParticleData data(String data){this.data = data;return this;}
 
         public void send(){
             ParticlesS2CPacket.send(worldObj,this);
@@ -103,6 +112,7 @@ public class ParticleUtil {
             buf.writeVector3f(velMin.toVector3f());
             buf.writeVector3f(velMax.toVector3f());
             buf.writeIdentifier(world);
+            buf.writeString(data);
         }
 
         public static ParticleData from(PacketByteBuf buf){
@@ -114,9 +124,11 @@ public class ParticleUtil {
             Vec3d velMin = new Vec3d(buf.readVector3f());
             Vec3d velMax = new Vec3d(buf.readVector3f());
             Identifier world = buf.readIdentifier();
+            String data = buf.readString();
             var res = new ParticleData(type,amount,pos,dir,world,null,dispersion);
             res.velMin = velMin;
             res.velMax = velMax;
+            res.data=data;
             return res;
         }
 
@@ -186,6 +198,13 @@ public class ParticleUtil {
                         }
                         break;
                     }
+                    case GENERIC:{
+                        ParticleType<?> type = Registries.PARTICLE_TYPE.get(Identifier.tryParse(data));
+                        if(type instanceof ParticleEffect effect){
+                            worldObj.addParticle(effect,pPos.x,pPos.y,pPos.z,vel.x,vel.y,vel.z);
+                        }
+                        break;
+                    }
                 }
             }
         }
@@ -201,6 +220,7 @@ public class ParticleUtil {
             SOUL_DUD,
             INSTABILITY,
             FORGE_CONSUME,
+            GENERIC,
         }
     }
 }

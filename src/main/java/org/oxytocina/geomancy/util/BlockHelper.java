@@ -17,6 +17,8 @@ import net.minecraft.util.math.*;
 import net.minecraft.world.*;
 import net.minecraft.world.event.GameEvent;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
 
 public class BlockHelper {
@@ -152,6 +154,22 @@ public class BlockHelper {
         //    Vec3d vec3d = innerContext.getStart().subtract(innerContext.getEnd());
         //    return BlockHitResult.createMissed(innerContext.getEnd(), Direction.getFacing(vec3d.x, vec3d.y, vec3d.z), BlockPos.ofFloored(innerContext.getEnd()));
         //});
+    }
+
+    public static List<BlockHitResult> raycastBlocksInPath(World world, Vec3d from, Vec3d to) {
+        var context = new BlockStateRaycastContext(from,to,b->false);
+        List<BlockHitResult> res = new ArrayList<>();
+        BlockView.raycast(context.getStart(), context.getEnd(), context, (innerContext, pos) -> {
+            BlockState blockState = world.getBlockState(pos);
+            Vec3d vec3d = innerContext.getStart().subtract(innerContext.getEnd());
+            res.add(new BlockHitResult(pos.toCenterPos(), Direction.getFacing(vec3d.x, vec3d.y, vec3d.z), pos, false));
+            return innerContext.getStatePredicate().test(blockState) ? new BlockHitResult(pos.toCenterPos(), Direction.getFacing(vec3d.x, vec3d.y, vec3d.z), pos, false) : null;
+        }, (innerContext) -> {
+            Vec3d vec3d = innerContext.getStart().subtract(innerContext.getEnd());
+            return BlockHitResult.createMissed(innerContext.getEnd(), Direction.getFacing(vec3d.x, vec3d.y, vec3d.z), BlockPos.ofFloored(innerContext.getEnd()));
+        });
+
+        return res;
     }
 
     public static boolean withinCube(Vec3i distance, int pedestalRange) {

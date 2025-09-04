@@ -3,6 +3,7 @@ package org.oxytocina.geomancy.spells;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
@@ -15,7 +16,9 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlockEntity;
 import org.oxytocina.geomancy.entity.CasterDelegateEntity;
+import org.oxytocina.geomancy.items.CastingTrinketItem;
 import org.oxytocina.geomancy.items.ISpellSelectorItem;
+import org.oxytocina.geomancy.items.armor.CastingArmorItem;
 import org.oxytocina.geomancy.items.tools.SoulCastingItem;
 import org.oxytocina.geomancy.util.EntityUtil;
 import org.oxytocina.geomancy.util.SoulUtil;
@@ -35,6 +38,7 @@ public class SpellContext {
     public Stage stage;
     public boolean debugging = false;
     public boolean silent = false;
+    public boolean invisible = false;
     public int depthLimit = 100;
     public int baseDepth = 0;
     public int highestRecordedDepth = 0;
@@ -357,6 +361,10 @@ public class SpellContext {
         return silent||soundBehavior == SpellContext.SoundBehavior.Silent;
     }
 
+    public boolean showsParticles(){
+        return !invisible;
+    }
+
     public Vec3d getDirection() {
         return switch(sourceType)
         {
@@ -375,21 +383,34 @@ public class SpellContext {
     public Vec3d getMuzzlePos() {
         return switch(sourceType)
         {
-            case Caster -> caster.getEyePos().add(getMuzzleOffsetForItem());
+            case Caster -> getMuzzleOffsetForCaster();
             case Block -> casterBlock.getMuzzlePos();
             default->getOriginPos();
         };
     }
 
-    private Vec3d getMuzzleOffsetForItem(){
-        if(casterItem.getItem() instanceof SoulCastingItem)
-        {
-            var item = casterItem.getItem();
-            boolean bl = caster.getOffHandStack().isOf(item) && !caster.getMainHandStack().isOf(item);
-            Arm arm = bl ? caster.getMainArm().getOpposite() : caster.getMainArm();
-            return EntityUtil.getRotationVector(45.0F, caster.getYaw() + (float)(arm == Arm.RIGHT ? 80 : -80)).multiply((double)0.5F);
+    private Vec3d getMuzzleOffsetForCaster(){
+        Item item = casterItem.getItem();
+        if(item instanceof CastingArmorItem armor){
+            switch(armor.getType()){
+                case BOOTS: return caster.getEyePos().add(0,-0.2f,0); // spit out the particles!!!
+                case LEGGINGS: return caster.getPos().add(0,0.5,0);
+                case CHESTPLATE: return caster.getPos().add(0,1.2f,0);
+                default:break;
+            }
         }
-        return new Vec3d(0,-0.5f,0);
+        else if(item instanceof CastingTrinketItem){
+            return caster.getPos().add(0,1.2f,0);
+        }
+
+        return caster.getEyePos().add(getMuzzleOffsetForItem());
+    }
+
+    private Vec3d getMuzzleOffsetForItem(){
+        var item = casterItem.getItem();
+        boolean bl = caster.getOffHandStack().isOf(item) && !caster.getMainHandStack().isOf(item);
+        Arm arm = bl ? caster.getMainArm().getOpposite() : caster.getMainArm();
+        return EntityUtil.getRotationVector(45.0F, caster.getYaw() + (float)(arm == Arm.RIGHT ? 80 : -80)).multiply((double)0.5F);
     }
 
     public SpellContext root() {

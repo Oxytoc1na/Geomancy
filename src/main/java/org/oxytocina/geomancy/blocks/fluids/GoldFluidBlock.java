@@ -47,20 +47,23 @@ public class GoldFluidBlock extends ModFluidBlock {
         if(otherState.isEmpty() || otherState.isIn(ModFluidTags.MOLTEN_GOLD))
             return null;
 
+        boolean full = state.isStill();
+        boolean otherFull = otherState.isStill();
+
         if(otherState.isIn(FluidTags.WATER))
         {
             // extinguish
-            return Blocks.GOLD_BLOCK.getDefaultState();
+            return (full?Blocks.GOLD_BLOCK:Blocks.CALCITE).getDefaultState();
         }
 
         if(otherState.isIn(FluidTags.LAVA)){
             // ???
-            if(otherState.isOf(Fluids.LAVA))
-                return Blocks.RAW_GOLD_BLOCK.getDefaultState();
+            if(otherFull)
+                return (full?Blocks.GOLD_BLOCK:ModBlocks.GILDED_DEEPSLATE).getDefaultState();
             else
-                return ModBlocks.GILDED_DEEPSLATE.getDefaultState();
+                return Blocks.TUFF.getDefaultState();
         }
 
-        return Blocks.GOLD_ORE.getDefaultState();
+        return Blocks.CALCITE.getDefaultState();
     }
 }

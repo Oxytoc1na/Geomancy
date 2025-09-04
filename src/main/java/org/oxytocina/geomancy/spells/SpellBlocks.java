@@ -59,6 +59,7 @@ public class SpellBlocks {
     public static final SpellBlock CONST_NUM;
     public static final SpellBlock CONST_TEXT;
     public static final SpellBlock CONST_BOOLEAN;
+    public static final SpellBlock CONST_VECTOR;
     public static final SpellBlock ENTITY_CASTER;
     public static final SpellBlock ENTITY_DELEGATE;
     public static final SpellBlock BLOCKPOS_CASTER;
@@ -114,7 +115,7 @@ public class SpellBlocks {
     public static final SpellBlock FIREBALL;
     public static final SpellBlock DEBUG;
     public static final SpellBlock SILENT;
-    public static final SpellBlock INVISIBLE = null; // TODO
+    public static final SpellBlock INVISIBLE;
     public static final SpellBlock LIGHTNING;
     public static final SpellBlock PLACE;
     public static final SpellBlock BREAK;
@@ -136,6 +137,7 @@ public class SpellBlocks {
     public static final SpellBlock STORE;
     public static final SpellBlock TAKE;
     public static final SpellBlock TRANSFER;
+    public static final SpellBlock PARTICLES;
 
     // reference
     public static final SpellBlock ACTION;
@@ -158,6 +160,7 @@ public class SpellBlocks {
     public static final SpellBlock SET_ELEMENT;
     public static final SpellBlock ENTITIES_NEAR;
     public static final SpellBlock BLOCK_BOX;
+    public static final SpellBlock RAYCAST_MARCH;
 
     private static final HashMap<Identifier, ImbueData> imbueData = new HashMap();
     private static final List<TransmuteData> transmuteData = new ArrayList<>();
@@ -242,6 +245,19 @@ public class SpellBlocks {
                     .outputs(SpellSignal.createBoolean(true).named("val"))
                     .parameters(SpellBlock.Parameter.createBoolean("val",true))
                     .func(SpellBlocks::mirrorInToOut)
+                    .category(cat).build());
+
+            CONST_VECTOR = register(SpellBlock.Builder.create("constant_vector")
+                    .outputs(SpellSignal.createVector().named("val"))
+                    .parameters(
+                            SpellBlock.Parameter.createNumber("x",0,-99999999,99999999),
+                            SpellBlock.Parameter.createNumber("y",0,-99999999,99999999),
+                            SpellBlock.Parameter.createNumber("z",0,-99999999,99999999)
+                    )
+                    .func((comp,vars)-> SpellBlockResult.empty().add("val",new Vec3d(
+                            vars.getNumber("x"),
+                            vars.getNumber("y"),
+                            vars.getNumber("z"))))
                     .category(cat).build());
 
             ENTITY_CASTER = register(SpellBlock.Builder.create("entity_caster")
@@ -599,7 +615,7 @@ public class SpellBlocks {
                         
                         .func((comp,vars) -> {
                             SpellBlockResult res = SpellBlockResult.empty();
-                            var hit = raycast(comp,vars);
+                            var hit = raycastBlock(comp,vars);
                             if(hit.getType()== HitResult.Type.BLOCK){
                                 var hitPos = hit.getBlockPos();
                                 res.add(SpellSignal.createVector(hitPos.toCenterPos()).named("hitPos"));
@@ -616,7 +632,7 @@ public class SpellBlocks {
                         
                         .func((comp,vars) -> {
                             SpellBlockResult res = SpellBlockResult.empty();
-                            var hit = raycast(comp,vars);
+                            var hit = raycastBlock(comp,vars);
                             if(hit.getType()== HitResult.Type.BLOCK){
                                 var hitPos = hit.getSide().getVector();
                                 res.add(SpellSignal.createVector(new Vec3d(hitPos.getX(), hitPos.getY(),hitPos.getZ())).named("hitDir"));
@@ -1179,6 +1195,11 @@ public class SpellBlocks {
             SILENT = register(SpellBlock.Builder.create("silent")
                     .func((comp,vars) -> SpellBlockResult.empty())
                     .init(component -> { component.context.silent=true;})
+                    .category(cat).build());
+
+            INVISIBLE = register(SpellBlock.Builder.create("invisible")
+                    .func((comp,vars) -> SpellBlockResult.empty())
+                    .init(component -> { component.context.invisible=true;})
                     .category(cat).build());
 
             FIREBALL = register(SpellBlock.Builder.create("fireball")
@@ -2411,6 +2432,45 @@ public class SpellBlocks {
                         return SpellBlockResult.empty();
                     })
                     .category(cat).build());
+
+            PARTICLES = register(SpellBlock.Builder.create("particles")
+                    .inputs(
+                            SpellSignal.createVector().named("position"),
+                            SpellSignal.createText().named("type"),
+                            SpellSignal.createNumber().named("count"),
+                            SpellSignal.createNumber().named("dispersion"),
+                            SpellSignal.createVector().named("velocity")
+                    )
+                    .func((comp,vars) -> {
+                        var particleID = vars.getIdentifier("type");
+                        if(particleID==null) return SpellBlockResult.empty(); // malformed ID
+                        var particle = Registries.PARTICLE_TYPE.get(particleID);
+                        if(particle==null) return SpellBlockResult.empty(); // particle doesnt exist
+                        var pos = vars.getVector("position");
+                        var count = Toolbox.clampI(vars.getInt("count"),0,100);
+                        var dispersion = vars.getNumber("dispersion");
+                        var vel = vars.getVector("velocity");
+
+                        // calculate cost
+                        float manaCost = 1f
+                                +count/2f
+                                +dispersion
+                                +normalCastOffsetSoulCost(comp,pos);
+
+                        if(canAfford(comp,manaCost)){
+                            ParticleUtil.ParticleData.createGeneric(comp.world(),particle,pos,vel,count,dispersion).send();
+                            trySpendSoul(comp,manaCost);
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
+                        }
+                        else{
+                            // too broke
+                            tryLogDebugBroke(comp,manaCost);
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,pos));
+                        }
+
+                        return SpellBlockResult.empty();
+                    })
+                    .category(cat).build());
         }
 
         // reference
@@ -2749,6 +2809,26 @@ public class SpellBlocks {
                         return res;
                     })
                     .category(cat).build());
+
+            RAYCAST_MARCH = register(SpellBlock.Builder.create("raycast_march")
+                    .inputs(SpellSignal.createVector().named("from"),
+                            SpellSignal.createVector().named("dir"),
+                            SpellSignal.createNumber(0).named("length"))
+                    .outputs(SpellSignal.createList().named("positions"))
+
+                    .func((comp,vars) -> {
+                        SpellBlockResult res = SpellBlockResult.empty();
+                        var hits = raycastBlocksInPath(comp,vars);
+                        List<SpellSignal> sigs = new ArrayList<>();
+                        for (int i = 0; i < hits.size(); i++) {
+                            var hit = hits.get(i);
+                            sigs.add(SpellSignal.createVector(hit.getBlockPos()).named("pos"));
+                        }
+                        if(!sigs.isEmpty())
+                            res.add("positions",sigs);
+                        return res;
+                    })
+                    .category(cat).build());
         }
     }
 
@@ -2774,32 +2854,18 @@ public class SpellBlocks {
                 .category(cat).build();
     }
     // raycasts
-    private static BlockHitResult raycast(SpellComponent comp, SpellBlockArgs vars){
+    private static BlockHitResult raycastBlock(SpellComponent comp, SpellBlockArgs vars){
         var from = vars.getVector("from");
         var dir = vars.getVector("dir");
         var length = vars.getNumber("length");
-        switch(comp.context.sourceType){
-            case Caster :{
-                var ctx = new RaycastContext(from,from.add(dir.multiply(length)), RaycastContext.ShapeType.VISUAL, RaycastContext.FluidHandling.ANY,comp.caster());
-                var hit = comp.world().raycast(ctx);
-                return hit;
-            }
+        return BlockHelper.raycastBlock(comp.world(),from,from.add(dir.multiply(length)));
+    }
 
-            case Block:{
-                var dirV = comp.context.casterBlock.getDirection().getVector();
-                Vec3d end = from.add(dirV.getX()*length,dirV.getY()*length,dirV.getZ()*length);
-
-                return BlockHelper.raycastBlock(comp.world(),from,end);
-            }
-
-            case Delegate:{
-                var ctx = new RaycastContext(from,from.add(dir.multiply(length)), RaycastContext.ShapeType.VISUAL, RaycastContext.FluidHandling.ANY,comp.context.delegate);
-                var hit = comp.world().raycast(ctx);
-                return hit;
-            }
-        }
-
-        return BlockHitResult.createMissed(from,Direction.NORTH,Toolbox.posToBlockPos(from));
+    private static List<BlockHitResult> raycastBlocksInPath(SpellComponent comp, SpellBlockArgs vars){
+        var from = vars.getVector("from");
+        var dir = vars.getVector("dir");
+        var length = vars.getNumber("length");
+        return BlockHelper.raycastBlocksInPath(comp.world(),from,from.add(dir.multiply(length)));
     }
 
     private static EntityHitResult raycastEntity(SpellComponent comp, Vec3d start, Vec3d end) {
@@ -2896,7 +2962,8 @@ public class SpellBlocks {
     }
 
     private static void spawnCastParticles(SpellComponent comp,ParticleUtil.ParticleData data){
-        data.send();
+        if(comp.context.showsParticles())
+            data.send();
     }
 
     public static void playCastSound(SpellContext ctx){
@@ -2994,7 +3061,7 @@ public class SpellBlocks {
     }
 
     public static void spawnMuzzleParticles(SpellContext context) {
-        if(context.isSilent()) return;
+        if(!context.showsParticles()) return;
         if(context.soulConsumed<=0 && context.soundBehavior== SpellContext.SoundBehavior.Reduced) return;
         ParticleUtil.ParticleData.createGenericCastMuzzle(context,context.getMuzzlePos(),context.getDirection()).send();
     }

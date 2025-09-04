@@ -99,9 +99,8 @@ TODO EFFECT BLOCKS
 - nbt manipulation
 -- if this gets added, it's got to be getters only
 --- allowing the user to set NBT is an easy way to get literally any item in the game
-- collect items on ground
--- this can be done with the entity id, equals and teleport component
 - make logistics take -1 as fromSlot (first with item)
+- make var manipulation be able to access varpots from the whole caster inventory
 
 autocaster
 - set block redstone level
@@ -127,12 +126,17 @@ TODO textures
 
 TODO ITEMS
 - give mithril tools gem slots
+- friendship rings
+-- crafted in pairs
+-- if both rings are worn by different people within a certain range of each other, grant buffs
+-- if really close, make heart particles appear
+-- if the other dies, do severe harm
+-- if one hits the other, cause regret
 
 TODO DEBUG
 - make foreach affected by depth
 - pool sent packets to improve performance
 - stellge caster direction
-- infinite gold glitch (molten gold fluid collision)
 
 TODO ADVANCEMENTS
 - casting spells
@@ -147,6 +151,7 @@ TODO structures
 -- "precompiled" casting items inside autocasters
 
 TODO TESTING
+- particle component
 
 fixed
 
