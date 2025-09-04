@@ -1,13 +1,15 @@
 package org.oxytocina.geomancy.items;
 
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.util.Pair;
 import org.oxytocina.geomancy.items.tools.IVariableStoringItem;
+import org.oxytocina.geomancy.items.tools.StorageItem;
 import org.oxytocina.geomancy.spells.SpellGrid;
 
-import java.util.ArrayList;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
 
 public interface ISpellSelectorItem {
@@ -100,10 +102,63 @@ public interface ISpellSelectorItem {
         return null;
     }
 
-    default ArrayList<ItemStack> getVariableStorageItems(ItemStack stack){
+    /// returns a map containing lists that contain variable storage items.
+    /// variable storage items in the main inventory are located under key null.
+    static Map<ItemStack,List<ItemStack>> getAllVariableStorageItems(Inventory inv){
+        Map<ItemStack,List<ItemStack>> res = new LinkedHashMap<>();
+        for (int i = 0; i < inv.size(); i++) {
+            var mainInvStack = inv.getStack(i);
+            if(mainInvStack.getItem() instanceof IVariableStoringItem)
+            {
+                // add stack to main
+                if(!res.containsKey(null)) res.put(null,new ArrayList<>());
+                res.get(null).add(mainInvStack);
+                continue;
+            }
+            if(mainInvStack.getItem() instanceof ISpellSelectorItem sps){
+                res.put(mainInvStack,sps.getVariableStorageItems(mainInvStack));
+            }
+        }
+        return res;
+    }
+
+    /// left: the item that contains the variable storage item. null if main inventory.
+    /// right: the variable storage item.
+    static Pair<ItemStack,ItemStack> pickVariableStorageItem(Inventory inv, String name){
+        ItemStack container = null;
+        ItemStack res = null;
+        var containers = getAllVariableStorageItems(inv);
+        for (var contender : containers.keySet()) {
+            var picked = pickVariableStorageItem(containers.get(contender),name);
+            if(picked != null)
+            {
+                container = contender;
+                res = picked;
+                break;
+            }
+        }
+        return new Pair<>(container,res);
+    }
+
+    static ItemStack pickVariableStorageItem(List<ItemStack> items, String name) {
+        for (int i = 0; i < items.size(); i++) {
+            var item = items.get(i);
+            var itemItem = (IVariableStoringItem) item.getItem();
+            if(itemItem.getAccessorPrefix(item).equals(name)) return item;
+        }
+        return null;
+    }
+
+    static void markDirtyStatic(ItemStack stack){
+        var item = stack.getItem();
+        if(item instanceof ISpellSelectorItem sps){sps.markDirty(stack); return;}
+        if(item instanceof StorageItem storer) {storer.markDirty(stack); return;}
+    }
+
+    default List<ItemStack> getVariableStorageItems(ItemStack stack){
         if(!(stack.getItem() instanceof ISpellSelectorItem)) return null;
 
-        ArrayList<ItemStack> res = new ArrayList<>();
+        List<ItemStack> res = new ArrayList<>();
         for (int i = 0; i < getStorageSize(stack); i++) {
             var contender = getStack(stack,i);
             if(!(contender.getItem() instanceof IVariableStoringItem)) continue;

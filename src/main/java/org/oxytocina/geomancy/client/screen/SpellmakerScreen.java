@@ -82,7 +82,8 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
         hints.put(SpellBlocks.ENTITIES_NEAR.copyItemStack(),"nearbyentities");
         hints.put(SpellBlocks.DEBUG.copyItemStack(),"debugging");
         hints.put(SpellBlocks.ACTIVATE.copyItemStack(),"activate");
-        hints.put(ModItems.VARSTORAGE_LARGE.getDefaultStack(),"varpots");
+        hints.put(ModItems.VARSTORAGE_SMALL.getDefaultStack(),"varpots");
+        hints.put(ModItems.VARSTORAGE_LARGE.getDefaultStack(),"varpots2");
 
         hints.put(Items.STONE.getDefaultStack(),"rockandstone");
     }

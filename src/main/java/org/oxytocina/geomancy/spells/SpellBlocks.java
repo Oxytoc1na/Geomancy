@@ -2589,7 +2589,8 @@ public class SpellBlocks {
                         var splitID = varID.split(":");
                         var varPrefix = splitID[0];
                         var varName = splitID[1];
-                        var varStorerStack = sps.getVariableStorageItem(comp.context.casterItem,varPrefix);
+                        var varStorerStackPair = ISpellSelectorItem.pickVariableStorageItem(comp.context.getInventory(),varPrefix);
+                        var varStorerStack = varStorerStackPair.getRight();
                         if(varStorerStack==null) return SpellBlockResult.empty();
                         var sig = ((IVariableStoringItem) varStorerStack.getItem()).getSignal(varStorerStack,varName);
                         SpellBlockResult res = new SpellBlockResult();
@@ -2609,10 +2610,12 @@ public class SpellBlocks {
                         var splitID = varID.split(":");
                         var varPrefix = splitID[0];
                         var varName = splitID[1];
-                        var varStorerStack = sps.getVariableStorageItem(comp.context.casterItem,varPrefix);
+                        var varStorerStackPair = ISpellSelectorItem.pickVariableStorageItem(comp.context.getInventory(),varPrefix);
+                        var varStorerStack = varStorerStackPair.getRight();
                         if(varStorerStack==null) return SpellBlockResult.empty();
                         if(((IVariableStoringItem) varStorerStack.getItem()).setSignal(varStorerStack,sig.named(varName))){
-                            sps.markDirty(comp.context.casterItem);
+                            var container = varStorerStackPair.getLeft();
+                            ISpellSelectorItem.markDirtyStatic(container);
                             var ent = sig.getEntity(comp.world());
                             if(ent!=null && (ent instanceof VillagerEntity || (ent instanceof ServerPlayerEntity spe && spe!=comp.caster())))
                                 tryUnlockSpellAdvancement(comp,"ulterior_motives");
@@ -2631,10 +2634,12 @@ public class SpellBlocks {
                         var splitID = varID.split(":");
                         var varPrefix = splitID[0];
                         var varName = splitID[1];
-                        var varStorerStack = sps.getVariableStorageItem(comp.context.casterItem,varPrefix);
+                        var varStorerStackPair = ISpellSelectorItem.pickVariableStorageItem(comp.context.getInventory(),varPrefix);
+                        var varStorerStack = varStorerStackPair.getRight();
                         if(varStorerStack==null) return SpellBlockResult.empty();
                         if(((IVariableStoringItem) varStorerStack.getItem()).setSignal(varStorerStack,SpellSignal.createNone().named(varName))){
-                            sps.markDirty(comp.context.casterItem);
+                            var container = varStorerStackPair.getLeft();
+                            ISpellSelectorItem.markDirtyStatic(container);
                         }
                         return SpellBlockResult.empty();
                     })
@@ -2651,8 +2656,9 @@ public class SpellBlocks {
                         var splitID = varID.split(":");
                         var varPrefix = splitID[0];
                         var varName = splitID[1];
-                        var varStorerStack = sps.getVariableStorageItem(comp.context.casterItem,varPrefix);
-                        if(varStorerStack==null) return SpellBlockResult.empty();
+                        var varStorerStackPair = ISpellSelectorItem.pickVariableStorageItem(comp.context.getInventory(),varPrefix);
+                        var varStorerStack = varStorerStackPair.getRight();
+                        if(varStorerStack==null) return SpellBlockResult.empty().add("exists",false);
                         var sig = ((IVariableStoringItem) varStorerStack.getItem()).getSignal(varStorerStack,varName);
                         return SpellBlockResult.empty().add("exists",sig!=null);
                     })

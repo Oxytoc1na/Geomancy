@@ -86,6 +86,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                 addSpellmakerTip("debugging","Debug your spells!","Putting a debug component somewhere in your grid will cause things that go wrong to tell you about themselves instead of staying silent. Be aware of the fact that this only applies to the grid it's placed in, not other grids referenced from it.");
                 addSpellmakerTip("activate","Activation","The activate component can interact with buttons, levers, doors, and can activate things like droppers and dispensers.");
                 addSpellmakerTip("varpots","Variable storage","Varpots (short for variable pots) let you save signals and retrieve them at a later time. They allow for reusable recall spells and two-point fill spells, to name a few examples. You can also save references to entities, including players.");
+                addSpellmakerTip("varpots2","Variable storage Pt. 2","Components that manipulate variables not only do so with varpots within casters,\nthey can also read and write variables from and to varpots stored within other casters, or plainly just your inventory!");
 
                 addSpellmakerTip("rockandstone","Rock and stone!","What is the difference?\nPerhaps that rocking is more legal than stoning.\nWe may never know.");
             }
