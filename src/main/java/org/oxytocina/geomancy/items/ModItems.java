@@ -94,6 +94,9 @@ public class ModItems {
     public static final LorebookItem LORE_LOG_EXPEDITION_4 = register("lorelog_expedition_4",new LorebookItem(new FabricItemSettings(),"lore/expedition_4"),new ExtraItemSettings());
     public static final LorebookItem LORE_LOG_EXPEDITION_5 = register("lorelog_expedition_5",new LorebookItem(new FabricItemSettings(),"lore/expedition_5"),new ExtraItemSettings());
 
+    public static final LorebookItem LORE_BOOK_EXTRAS_CREATION = register("lorebook_extras_creation",new LorebookItem(new FabricItemSettings(),"lore/extras_creation"),new ExtraItemSettings());
+    public static final LorebookItem LORE_LOG_EXTRAS_RESEARCH_1 = register("lorelog_extras_research_1",new LorebookItem(new FabricItemSettings(),"lore/extras_research_1"),new ExtraItemSettings());
+
 
     // music discs
     public static final Item MUSIC_DISC_DIGGY = register("music_disc_diggy",new MusicDiscItem(15, ModSoundEvents.MUSIC_DISC_DIGGY, (new Item.Settings()).maxCount(1).rarity(Rarity.RARE), 235));

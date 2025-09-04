@@ -1128,7 +1128,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                 {
                     // creation
                     add("item.MODID.lorebook_extras_creation","Dwarven History: Creation and beyond");
-                    add("item.MODID.lorebook_extras_creation.tooltip","The dwarven creation mythos");
+                    add("item.MODID.lorebook_extras_creation.tooltip","The Dwarven creation mythos");
 
                     addGBEntryAndInfo(getS("gb:lr")+"dwarven_extras_creation","Dwarven History: Creation and beyond");
                     add(getS("gb:lr")+"dwarven_extras_creation.description"  , "The dwarven creation mythos");
@@ -1161,35 +1161,57 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
                 // stellge extras
                 {
-                    // creation
-                    add("item.MODID.lorebook_extras_creation","Dwarven History: Creation and beyond");
-                    add("item.MODID.lorebook_extras_creation.tooltip","The dwarven creation mythos");
+                    // research 1
+                    add("item.MODID.lorelog_extras_research_1","Research diary Pt. 1");
+                    add("item.MODID.lorelog_extras_research_1.tooltip","Signed: Head Researcher Pentangula");
 
-                    addGBEntryAndInfo(getS("gb:lr")+"dwarven_extras_creation","Dwarven History: Creation and beyond");
-                    add(getS("gb:lr")+"dwarven_extras_creation.description"  , "The dwarven creation mythos");
-                    add(getS("gb:lr")+"dwarven_extras_creation.1.text","""
-                        Not many have felt it, but their tales line up.
-                        Not many have glimpsed beyond our light, but all tell the same.
-                        I am now one of those that know that they are nothing, and yet so much more than that.
-                        Allow me to write down, nay, attempt to write down what I have seen.
+                    addGBEntryAndInfo(getS("gb:lr")+"lorelog_extras_research_1","Research diary Pt. 1");
+                    add(getS("gb:lr")+"lorelog_extras_research_1.description"  , "Signed: Head Researcher Pentangula");
+                    add(getS("gb:lr")+"lorelog_extras_research_1.1.text","""
+                        Dear diary,
+                        I can't figure out how to remove that stupid "dear diary" text.
+                        If L0G-Pro 3.i had better UI I would've asked for IT instead of Diarizer Vtera.
+                        Oh well. Too late now.
+                        Allow me to introduce myself.
+                        I am Pentangula of the Stellge, head of research in section DIM-5. My area of expertise is metadimensional physics.
+                        I have been granted the individual status around 1095000L ago.
+                        My interests are copper, sidestepping the fabric of reality, and organics, especially species 8UN-E of Sol III.
+                        Their long auditory sensory organs and soft secondary external ventilator are just so adorable.
                         """);
-                    add(getS("gb:lr")+"dwarven_extras_creation.2.text","""
-                        Hammerscale. The sparks sent flying when hitting hot metal with a hammer.
-                        Glowing so brightly, burning up in the air that surrounds it.
-                        What we call reality: The sun, the moon, the stars, the earth and the depths. All of it, as one.
-                        It is nought but a singular speck of hammerscale. Hammerscale from a project so grand, so incomprehensibly significant, that we ought to be proud to be there for its creation.
+                    add(getS("gb:lr")+"lorelog_extras_research_1.2.text","""
+                        My current task is the creation of an experimental soulcasting machine that allows for personal interdimensional travel.
+                        I would like to thank us for personally entrusting me with this.
+                        I guess mindless drones don't make for good enough innovators, otherwise we wouldn't individualize for it.
+                        In any case, expedition "Queens Pawn" is ongoing. Last cycle, I sent another drone through to the side 0 using experimental machine D4.
+                        As expected, communications with the drone have been lost as soon as it left.
                         """);
-                    add(getS("gb:lr")+"dwarven_extras_creation.3.text","""
-                        We will not see it through. Our reality will fizzle out long before it is completed.
-                        And yet, what oh so few of us have managed to do is see through our own glow and witness the workpiece of all realities.
-                        Glowing, malleable, and full of potential. To us, frozen in time, but in progress.
-                        The fact that we exist is proof of its progress.
+                    add(getS("gb:lr")+"lorelog_extras_research_1.3.text","""
+                        My current theories as to why this happens with this destination only are as follows:
+                        - the destination is vaporisingly hot
+                        - the destination is lead-fryingly irradiated
+                        - the destination is pressurized akin to a black hole
+                        - there is a hungry allovorial predator waiting on the other side
+                        - time works differently there
+                        - only soul-bearers are allowed there
                         """);
-                    add(getS("gb:lr")+"dwarven_extras_creation.4.text","""
-                        I bet you'll wonder who the blacksmith is.
-                        The light from our sun hides the stars. You may only see them at night.
-                        I could not see, nor could the others. We were blinded by beauty, and ourselves.
-                        I believe that we may only witness the blacksmith when we have fizzled out, and when their work is done.
+                    add(getS("gb:lr")+"lorelog_extras_research_1.4.text","""
+                        I will continue to send out drones to find out which of these it is.
+                        In the meantime, the side effects of dimensional travel seem to be manageable in the drones that returned from Sol III.
+                        A promising sign.
+                        """);
+
+                    // research 2
+                    add("item.MODID.lorelog_extras_research_2","Research diary Pt. 2");
+                    add("item.MODID.lorelog_extras_research_2.tooltip","Signed: Head Researcher Pentangula");
+
+                    addGBEntryAndInfo(getS("gb:lr")+"lorelog_extras_research_2","Research diary Pt. 2");
+                    add(getS("gb:lr")+"lorelog_extras_research_2.description"  , "Signed: Head Researcher Pentangula");
+                    add(getS("gb:lr")+"lorelog_extras_research_2.1.text","""
+                        Dear diary,
+                        I wish I was an organic.
+                        Specially bred Vivocasters with imprinted communication protocols *did* manage to ping us after having entered site 0.
+                        This tells me that organics survive in site 0, but mechanicals don't.
+                        In order for me to further study site 0, I will have to spend incredible amounts of power and time to breed the necessary specialized observation and transmission Vivocasters.
                         """);
                 }
 
