@@ -6,6 +6,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -15,6 +16,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import org.joml.Vector3f;
+import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.helpers.NbtHelper;
 import org.oxytocina.geomancy.util.Toolbox;
 
@@ -226,7 +228,14 @@ public class SpellSignal {
         return res;
     }
 
+    public boolean isLoadingAllowed(MinecraftServer server) {
+        return Geomancy.CONFIG.playerVariableLoading.value() || !containsPlayer(server);
+    }
 
+    public boolean containsPlayer(MinecraftServer server){
+        if(type != Type.UUID) return false;
+        return server.getPlayerManager().getPlayer(getUUIDValue()) != null;
+    }
 
 
     public enum Type{

@@ -36,31 +36,28 @@ public class ConfigScreen extends Screen {
         //adder.add(this.createTopRightButton());
 
         // epilepsy
-        adder.add(CyclingButtonWidget.<Boolean>builder(b->Text.literal(b.toString()))
-                .values(true,false)
-                .initially(GeomancyConfig.CONFIG.epilepsyMode.value())
-                .build(0,0, 150, 20,
-                        Text.translatable("geomancy.options.epilepsy"),
-                        (button, toggle) ->
+        adder.add(CyclingButtonWidget.<Boolean>builder(b->Text.literal(b.toString())).values(true,false)
+                .initially(GeomancyConfig.CONFIG.epilepsyMode.value()).build(0,0, 150, 20,
+                        Text.translatable("geomancy.options.epilepsy"),(button, toggle) ->
                                 GeomancyConfig.CONFIG.epilepsyMode.setValue(toggle)));
 
         // spellmaker move
-        adder.add(CyclingButtonWidget.<Boolean>builder(b->Text.literal(b.toString()))
-                .values(true,false)
-                .initially(GeomancyConfig.CONFIG.noSpellmakerMove.value())
-                .build(0,0, 150, 20,
-                        Text.translatable("geomancy.options.no_spellmaker_move"),
-                        (button, toggle) ->
+        adder.add(CyclingButtonWidget.<Boolean>builder(b->Text.literal(b.toString())).values(true,false)
+                .initially(GeomancyConfig.CONFIG.noSpellmakerMove.value()).build(0,0, 150, 20,
+                        Text.translatable("geomancy.options.no_spellmaker_move"),(button, toggle) ->
                                 GeomancyConfig.CONFIG.noSpellmakerMove.setValue(toggle)));
 
         // spell timeout penalty
-        adder.add(CyclingButtonWidget.<Boolean>builder(b->Text.literal(b.toString()))
-                .values(true,false)
-                .initially(GeomancyConfig.CONFIG.penalizeSpellTimeout.value())
-                .build(0,0, 150, 20,
-                        Text.translatable("geomancy.options.penalize_spell_timeout"),
-                        (button, toggle) ->
+        adder.add(CyclingButtonWidget.<Boolean>builder(b->Text.literal(b.toString())).values(true,false)
+                .initially(GeomancyConfig.CONFIG.penalizeSpellTimeout.value()).build(0,0, 150, 20,
+                        Text.translatable("geomancy.options.penalize_spell_timeout"),(button, toggle) ->
                                 GeomancyConfig.CONFIG.penalizeSpellTimeout.setValue(toggle)));
+
+        // player variable loading
+        adder.add(CyclingButtonWidget.<Boolean>builder(b->Text.literal(b.toString())).values(true,false)
+                .initially(GeomancyConfig.CONFIG.playerVariableLoading.value()).build(0,0, 150, 20,
+                        Text.translatable("geomancy.options.player_variable_loading"),(button, toggle) ->
+                                GeomancyConfig.CONFIG.playerVariableLoading.setValue(toggle)));
 
         // spellmaker ui speed
         var slider = FloatSlider.create(0,0,150,20,Text.translatable("geomancy.options.spellmakeruispeed"),

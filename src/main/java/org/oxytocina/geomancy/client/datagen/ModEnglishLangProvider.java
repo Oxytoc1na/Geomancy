@@ -118,6 +118,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("get_weather","Weather","returns 1 if raining, 2 if thundering, and 0 otherwise");
             addSpell("get_time","Time","returns how progressed the current day is");
             addSpell("entity_delegate","Get Delegate","in a delegate context, returns the delegate entity");
+            addSpell("consumed_soul","Consumed Soul","returns how much soul was consumed between start and end of the spell");
             // arithmetic
             addSpell("vector_entityspawn","Entity Spawn","returns the respawn point of the entity");
             addSpell("vector_entitypos","Entity Position","returns the position of the entity");
@@ -183,6 +184,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("transfer","Transfer Item","transfers an item from one storage block to another");
             addSpell("invisible","Invisible","makes spell execution invisible");
             addSpell("particles","Particles","spawns decorative particles in the world");
+            addSpell("shout","Shout","outputs a value to the chat of anyone within range");
+            addSpell("whisper","Whisper","outputs a value to the chat of a specified player");
             // reference
             addSpell("action","Action","calls another installed spell");
             addSpell("provider","Provider","automatically returns the result of a spell");
@@ -219,6 +222,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.spells.debug.toobig","Component %1$s tried to create a list with too many entries: %2$f/10000");
             add("MODID.spells.debug.depthlimit","Component %1$s: Depth limit reached!");
             add("MODID.spells.debug.timeout","Spell %1$s Timed out! Time taken: %2$sms");
+            add("MODID.spells.debug.player_variables_disallowed","Component %1$s: Loading player variables is disallowed on this server!");
 
 
             add("MODID.caster.nospells","No spells installed");
@@ -1120,6 +1124,75 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                         """);
                 }
 
+                // dwarf extras
+                {
+                    // creation
+                    add("item.MODID.lorebook_extras_creation","Dwarven History: Creation and beyond");
+                    add("item.MODID.lorebook_extras_creation.tooltip","The dwarven creation mythos");
+
+                    addGBEntryAndInfo(getS("gb:lr")+"dwarven_extras_creation","Dwarven History: Creation and beyond");
+                    add(getS("gb:lr")+"dwarven_extras_creation.description"  , "The dwarven creation mythos");
+                    add(getS("gb:lr")+"dwarven_extras_creation.1.text","""
+                        Not many have felt it, but their tales line up.
+                        Not many have glimpsed beyond our light, but all tell the same.
+                        I am now one of those that know that they are nothing, and yet so much more than that.
+                        Allow me to write down, nay, attempt to write down what I have seen.
+                        """);
+                    add(getS("gb:lr")+"dwarven_extras_creation.2.text","""
+                        Hammerscale. The sparks sent flying when hitting hot metal with a hammer.
+                        Glowing so brightly, burning up in the air that surrounds it.
+                        What we call reality: The sun, the moon, the stars, the earth and the depths. All of it, as one.
+                        It is nought but a singular speck of hammerscale.
+                        Hammerscale from a project so grand, so incomprehensibly significant, that we ought to be proud to be there for its creation.
+                        """);
+                    add(getS("gb:lr")+"dwarven_extras_creation.3.text","""
+                        We will not see it through. Our reality will fizzle out long before it is completed.
+                        And yet, what oh so few of us have managed to do is see through our own glow and witness the workpiece of all realities.
+                        Glowing, malleable, and full of potential. To us, frozen in time, but in progress.
+                        The fact that we exist is proof of its progress.
+                        """);
+                    add(getS("gb:lr")+"dwarven_extras_creation.4.text","""
+                        I bet you'll wonder who the blacksmith is.
+                        The light from our sun hides the stars. You may only see them at night.
+                        I could not see, nor could the others. We were blinded by beauty, and ourselves.
+                        I believe that we may only witness the blacksmith when we have fizzled out, and when their work is done.
+                        """);
+                }
+
+                // stellge extras
+                {
+                    // creation
+                    add("item.MODID.lorebook_extras_creation","Dwarven History: Creation and beyond");
+                    add("item.MODID.lorebook_extras_creation.tooltip","The dwarven creation mythos");
+
+                    addGBEntryAndInfo(getS("gb:lr")+"dwarven_extras_creation","Dwarven History: Creation and beyond");
+                    add(getS("gb:lr")+"dwarven_extras_creation.description"  , "The dwarven creation mythos");
+                    add(getS("gb:lr")+"dwarven_extras_creation.1.text","""
+                        Not many have felt it, but their tales line up.
+                        Not many have glimpsed beyond our light, but all tell the same.
+                        I am now one of those that know that they are nothing, and yet so much more than that.
+                        Allow me to write down, nay, attempt to write down what I have seen.
+                        """);
+                    add(getS("gb:lr")+"dwarven_extras_creation.2.text","""
+                        Hammerscale. The sparks sent flying when hitting hot metal with a hammer.
+                        Glowing so brightly, burning up in the air that surrounds it.
+                        What we call reality: The sun, the moon, the stars, the earth and the depths. All of it, as one.
+                        It is nought but a singular speck of hammerscale. Hammerscale from a project so grand, so incomprehensibly significant, that we ought to be proud to be there for its creation.
+                        """);
+                    add(getS("gb:lr")+"dwarven_extras_creation.3.text","""
+                        We will not see it through. Our reality will fizzle out long before it is completed.
+                        And yet, what oh so few of us have managed to do is see through our own glow and witness the workpiece of all realities.
+                        Glowing, malleable, and full of potential. To us, frozen in time, but in progress.
+                        The fact that we exist is proof of its progress.
+                        """);
+                    add(getS("gb:lr")+"dwarven_extras_creation.4.text","""
+                        I bet you'll wonder who the blacksmith is.
+                        The light from our sun hides the stars. You may only see them at night.
+                        I could not see, nor could the others. We were blinded by beauty, and ourselves.
+                        I believe that we may only witness the blacksmith when we have fizzled out, and when their work is done.
+                        """);
+                }
+
                 addGBEntryAndInfo(getS("gb:lr")+"stellge","The Stellge");
                 add(getS("gb:lr")+"stellge.description"  , "");
 
@@ -1174,6 +1247,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.options.shake_intensity","Camera shake intensity");
             add("MODID.options.penalize_spell_timeout","Penalize spell timeout");
             add("MODID.options.spellcradle_tooltip_truncation","Spellcradle tooltip truncation");
+            add("MODID.options.player_variable_loading","Player reference loading");
         }
 
         tb=null;

@@ -296,6 +296,8 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     AddGenericSpellcomponentRecipe(SpellBlocks.DIR_CASTER           ,Items.ARROW                ,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.GET_WEATHER          ,Items.LIGHTNING_ROD        ,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.GET_TIME             ,Items.CLOCK                ,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.CONST_VECTOR         ,Items.HOPPER               ,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.CONSUMED_SOUL        ,Items.SOUL_CAMPFIRE        ,baseIngot);
                 }
 
                 // arithmetic
@@ -369,6 +371,10 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     AddGenericSpellcomponentRecipe(SpellBlocks.TRANSFER,Items.HOPPER_MINECART,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.ACTIVATE,Items.OAK_BUTTON,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.SILENT  ,Items.WHITE_WOOL,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.INVISIBLE,Items.GLASS,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.SHOUT,Items.GOAT_HORN,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.WHISPER,Items.WRITABLE_BOOK,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.PARTICLES,Items.SAND,baseIngot);
                 }
 
                 // reference
@@ -396,14 +402,15 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 // lists
                 {
                     Item baseIngot = Items.GOLD_INGOT;
-                    AddGenericSpellcomponentRecipe(SpellBlocks.FOREACH,Items.DROPPER,baseIngot);
-                    AddGenericSpellcomponentRecipe(SpellBlocks.SPLIT,Items.WOODEN_AXE,baseIngot);
-                    AddGenericSpellcomponentRecipe(SpellBlocks.POP,Items.POPPY,baseIngot);
-                    AddGenericSpellcomponentRecipe(SpellBlocks.SIZE,Items.LIGHT_WEIGHTED_PRESSURE_PLATE,baseIngot);
-                    AddGenericSpellcomponentRecipe(SpellBlocks.GET_ELEMENT,Items.DISPENSER,baseIngot);
-                    AddGenericSpellcomponentRecipe(SpellBlocks.SET_ELEMENT,Items.HOPPER,baseIngot);
-                    AddGenericSpellcomponentRecipe(SpellBlocks.ENTITIES_NEAR,Items.LEAD,baseIngot);
-                    AddGenericSpellcomponentRecipe(SpellBlocks.BLOCK_BOX,Items.WOODEN_PICKAXE,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.FOREACH,         Items.DROPPER,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.SPLIT,           Items.WOODEN_AXE,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.POP,             Items.POPPY,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.SIZE,            Items.LIGHT_WEIGHTED_PRESSURE_PLATE,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.GET_ELEMENT,     Items.DISPENSER,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.SET_ELEMENT,     Items.HOPPER,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.ENTITIES_NEAR,   Items.LEAD,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.BLOCK_BOX,       Items.WOODEN_PICKAXE,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.RAYCAST_MARCH,   Items.SPECTRAL_ARROW,baseIngot);
                 }
 
                 String builtSpellComps = "";

@@ -70,6 +70,7 @@ public class SpellBlocks {
     public static final SpellBlock CASTER_SLOT;
     public static final SpellBlock GET_WEATHER;
     public static final SpellBlock GET_TIME;
+    public static final SpellBlock CONSUMED_SOUL;
 
     // arithmetic
     public static final SpellBlock SUM;
@@ -112,6 +113,8 @@ public class SpellBlocks {
 
     // effectors
     public static final SpellBlock PRINT;
+    public static final SpellBlock SHOUT;
+    public static final SpellBlock WHISPER;
     public static final SpellBlock FIREBALL;
     public static final SpellBlock DEBUG;
     public static final SpellBlock SILENT;
@@ -357,6 +360,18 @@ public class SpellBlocks {
                         var props = component.world().getLevelProperties();
                         res.add("fraction",props.getTimeOfDay()/24000f);
                         return res;
+                    })
+                    .category(cat).build());
+
+            CONSUMED_SOUL = register(SpellBlock.Builder.create("consumed_soul")
+                    .outputs(SpellSignal.createNumber().named("soul"))
+                    .init(comp-> comp.receivedSignals.put("a",SpellSignal.createNumber(comp.context.soulConsumed)))
+                    .post(comp-> {
+                        float prev = comp.receivedSignals.get("a").getNumberValue();
+                        float now = comp.context.soulConsumed;
+                        float consumed = now-prev;
+                        if(consumed>0)
+                            comp.pushSignals(SpellBlockResult.empty().add("soul",consumed));
                     })
                     .category(cat).build());
         }
@@ -1202,6 +1217,35 @@ public class SpellBlocks {
                     .init(component -> { component.context.invisible=true;})
                     .category(cat).build());
 
+            SHOUT = register(SpellBlock.Builder.create("shout")
+                    .inputs(
+                            SpellSignal.createAny().named("val"),
+                            SpellSignal.createVector().named("position"),
+                            SpellSignal.createNumber().named("range")
+                    )
+                    .func((comp,vars) -> {
+                        if(comp.world() instanceof ServerWorld serverWorld)
+                            for(var spe : serverWorld.getPlayers())
+                                if(EntityUtil.isInRange(spe,serverWorld,vars.getVector("position"),vars.getNumber("range")))
+                                    spe.sendMessage(Text.literal(vars.get("val").toString(comp.context)));
+                        return SpellBlockResult.empty();
+                    })
+                    .category(cat).build());
+
+            WHISPER = register(SpellBlock.Builder.create("whisper")
+                    .inputs(
+                            SpellSignal.createAny().named("val"),
+                            SpellSignal.createUUID().named("player")
+                    )
+                    .func((comp,vars) -> {
+                        if(!(comp.world() instanceof ServerWorld serverWorld)) return SpellBlockResult.empty();
+                        var player = serverWorld.getPlayerByUuid(vars.getUUID("player"));
+                        if(player==null) return SpellBlockResult.empty();
+                        player.sendMessage(Text.literal(vars.get("val").toString(comp.context)));
+                        return SpellBlockResult.empty();
+                    })
+                    .category(cat).build());
+
             FIREBALL = register(SpellBlock.Builder.create("fireball")
                     .inputs(SpellSignal.createVector().named("position"),
                             SpellSignal.createVector().named("direction"),
@@ -1341,6 +1385,7 @@ public class SpellBlocks {
 
                         return SpellBlockResult.empty();
                     })
+                    .defaultLootWeight(0)
                     .category(cat).build());
 
             PUSH = register(SpellBlock.Builder.create("push")
@@ -2115,7 +2160,7 @@ public class SpellBlocks {
                                 +normalCastOffsetSoulCost(comp,pos);
 
                         if(canAfford(comp,manaCost)){
-
+                            boolean success=true;
                             // open doors, trapdoors, press butons, flip levers
                             if(
                                     targetBlock instanceof DoorBlock
@@ -2202,12 +2247,15 @@ public class SpellBlocks {
                             else if(targetBlock instanceof SoulForgeBlock sfb){
                                 sfb.activate(world,blockPos,comp.context);
                             }
+                            else success = false;
 
-                            if(comp.caster()!=null && EntityUtil.distanceTo(comp.caster(),pos) >=1000)
-                                tryUnlockSpellAdvancement(comp,"ftl");
+                            if(success){
+                                if(comp.caster()!=null && EntityUtil.distanceTo(comp.caster(),pos) >=1000)
+                                    tryUnlockSpellAdvancement(comp,"ftl");
 
-                            trySpendSoul(comp,manaCost);
-                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
+                                trySpendSoul(comp,manaCost);
+                                spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
+                            }
                         }
                         else{
                             // too broke
@@ -2593,6 +2641,11 @@ public class SpellBlocks {
                         var varStorerStack = varStorerStackPair.getRight();
                         if(varStorerStack==null) return SpellBlockResult.empty();
                         var sig = ((IVariableStoringItem) varStorerStack.getItem()).getSignal(varStorerStack,varName);
+                        if(!sig.isLoadingAllowed(comp.world().getServer()))
+                        {
+                            tryLogDebugPlayerVariablesDisallowed(comp);
+                            sig=null;
+                        }
                         SpellBlockResult res = new SpellBlockResult();
                         if(sig!=null) res.add(sig.named("var"));
                         return res;
@@ -2951,6 +3004,10 @@ public class SpellBlocks {
     private static void tryLogDebugNoSuchEffect(SpellComponent comp, String text){
         tryLogDebug(comp,Text.translatable("geomancy.spells.debug.invalideffect",
                 comp.getRuntimeName(),Text.literal(text)));
+    }
+
+    private static void tryLogDebugPlayerVariablesDisallowed(SpellComponent comp){
+        tryLogDebug(comp,Text.translatable("geomancy.spells.debug.player_variables_disallowed",comp.getRuntimeName()));
     }
 
     private static void tryLogDebugUnimbuableEffect(SpellComponent comp, Text text){

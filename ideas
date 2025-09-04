@@ -100,7 +100,6 @@ TODO EFFECT BLOCKS
 -- if this gets added, it's got to be getters only
 --- allowing the user to set NBT is an easy way to get literally any item in the game
 - make logistics take -1 as fromSlot (first with item)
-- make var manipulation be able to access varpots from the whole caster inventory
 
 autocaster
 - set block redstone level
@@ -148,10 +147,15 @@ TODO structures
 - small crashed ship
 - soulcasting trials
 -- room that asks you to activate buttons behind unbreakable glass
+--- recommended: "ray activator" spell (raycast march until activate triggers)
 -- "precompiled" casting items inside autocasters
 
 TODO TESTING
 - particle component
+- new variable storage interactions
+-- disabling player var loading
+- shout and whisper
+- raycast march
 
 fixed
 

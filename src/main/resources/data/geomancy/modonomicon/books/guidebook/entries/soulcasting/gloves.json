@@ -1,0 +1,86 @@
+{
+  "background_u_index": 1,
+  "background_v_index": 0,
+  "category": "geomancy:soulcasting",
+  "description": "book.geomancy.guidebook.soulcasting.gloves.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "geomancy:novice_glove"
+  },
+  "name": "book.geomancy.guidebook.soulcasting.gloves.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.soulcasting.gloves.info.text",
+      "title": "book.geomancy.guidebook.soulcasting.gloves.info.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "item": {
+        "item": "geomancy:novice_glove"
+      },
+      "text": "book.geomancy.guidebook.soulcasting.gloves.novice_glove.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:milestones/soulforge"
+      },
+      "item": {
+        "item": "geomancy:apprentice_glove"
+      },
+      "text": "book.geomancy.guidebook.soulcasting.gloves.apprentice_glove.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:milestones/soulforge"
+      },
+      "item": {
+        "item": "geomancy:journey_glove"
+      },
+      "text": "book.geomancy.guidebook.soulcasting.gloves.journey_glove.text",
+      "title": ""
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:milestones/soulforge"
+      },
+      "item": {
+        "item": "geomancy:expert_glove"
+      },
+      "text": "book.geomancy.guidebook.soulcasting.gloves.expert_glove.text",
+      "title": ""
+    }
+  ],
+  "parents": [
+    {
+      "draw_arrow": true,
+      "entry": "geomancy:soulcasting/spellstorage",
+      "line_enabled": true,
+      "line_reversed": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "x": -13,
+  "y": -3
+}

@@ -47,4 +47,8 @@ public class GeomancyConfig extends ReflectiveConfig {
     @Comment("changes how many components in a cradle get displayed before truncation")
     @SerializedName("spellcradle_tooltip_truncation")
     public final TrackedValue<Integer> spellcradleTooltipTruncation = this.value(5);
+
+    @Comment("if true, allows variable storage items to load references to players")
+    @SerializedName("player_variable_loading")
+    public final TrackedValue<Boolean> playerVariableLoading = this.value(true);
 }

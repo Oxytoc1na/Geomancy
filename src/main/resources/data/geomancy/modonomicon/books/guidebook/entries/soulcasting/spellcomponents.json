@@ -1,17 +1,17 @@
 {
   "background_u_index": 1,
   "background_v_index": 0,
-  "category": "geomancy:octangulite",
+  "category": "geomancy:soulcasting",
   "condition": {
     "type": "modonomicon:advancement",
     "advancement_id": "geomancy:octangulite/get_spellcomponent"
   },
-  "description": "book.geomancy.guidebook.octangulite.spellcomponents.description",
+  "description": "book.geomancy.guidebook.soulcasting.spellcomponents.description",
   "hide_while_locked": true,
   "icon": {
     "item": "geomancy:spellcomponent"
   },
-  "name": "book.geomancy.guidebook.octangulite.spellcomponents.name",
+  "name": "book.geomancy.guidebook.soulcasting.spellcomponents.name",
   "pages": [
     {
       "type": "modonomicon:text",
@@ -20,8 +20,8 @@
         "type": "modonomicon:none"
       },
       "show_title_separator": true,
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.0.text",
-      "title": "book.geomancy.guidebook.octangulite.spellcomponents.0.title",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.0.text",
+      "title": "book.geomancy.guidebook.soulcasting.spellcomponents.0.title",
       "use_markdown_in_title": false
     },
     {
@@ -33,7 +33,7 @@
       "item": {
         "item": "geomancy:spellcomponent"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.spellcomponent.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.spellcomponent.text",
       "title": ""
     },
     {
@@ -48,7 +48,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:conveyor\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.conveyor.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.conveyor.text",
       "title": ""
     },
     {
@@ -63,7 +63,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:gate\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.gate.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.gate.text",
       "title": ""
     },
     {
@@ -78,7 +78,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:for\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.for.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.for.text",
       "title": ""
     },
     {
@@ -93,7 +93,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:not\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.not.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.not.text",
       "title": ""
     },
     {
@@ -108,7 +108,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:constant_number\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.constant_number.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.constant_number.text",
       "title": ""
     },
     {
@@ -123,7 +123,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:constant_text\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.constant_text.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.constant_text.text",
       "title": ""
     },
     {
@@ -138,7 +138,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:constant_boolean\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.constant_boolean.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.constant_boolean.text",
       "title": ""
     },
     {
@@ -153,7 +153,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:constant_vector\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.constant_vector.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.constant_vector.text",
       "title": ""
     },
     {
@@ -168,7 +168,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:entity_caster\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.entity_caster.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.entity_caster.text",
       "title": ""
     },
     {
@@ -183,7 +183,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:entity_delegate\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.entity_delegate.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.entity_delegate.text",
       "title": ""
     },
     {
@@ -198,7 +198,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:blockpos_caster\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.blockpos_caster.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.blockpos_caster.text",
       "title": ""
     },
     {
@@ -213,7 +213,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:caster_slot\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.caster_slot.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.caster_slot.text",
       "title": ""
     },
     {
@@ -228,7 +228,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:pos_caster\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.pos_caster.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.pos_caster.text",
       "title": ""
     },
     {
@@ -243,7 +243,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:pos_muzzle\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.pos_muzzle.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.pos_muzzle.text",
       "title": ""
     },
     {
@@ -258,7 +258,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:eyepos_caster\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.eyepos_caster.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.eyepos_caster.text",
       "title": ""
     },
     {
@@ -273,7 +273,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:dir_caster\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.dir_caster.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.dir_caster.text",
       "title": ""
     },
     {
@@ -288,7 +288,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:get_weather\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.get_weather.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.get_weather.text",
       "title": ""
     },
     {
@@ -303,7 +303,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:get_time\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.get_time.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.get_time.text",
       "title": ""
     },
     {
@@ -318,7 +318,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:consumed_soul\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.consumed_soul.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.consumed_soul.text",
       "title": ""
     },
     {
@@ -333,7 +333,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:sum\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.sum.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.sum.text",
       "title": ""
     },
     {
@@ -348,7 +348,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:subtract\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.subtract.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.subtract.text",
       "title": ""
     },
     {
@@ -363,7 +363,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:multiply\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.multiply.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.multiply.text",
       "title": ""
     },
     {
@@ -378,7 +378,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:divide\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.divide.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.divide.text",
       "title": ""
     },
     {
@@ -393,7 +393,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:sin\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.sin.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.sin.text",
       "title": ""
     },
     {
@@ -408,7 +408,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:cos\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.cos.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.cos.text",
       "title": ""
     },
     {
@@ -423,7 +423,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:tan\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.tan.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.tan.text",
       "title": ""
     },
     {
@@ -438,7 +438,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:exp\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.exp.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.exp.text",
       "title": ""
     },
     {
@@ -453,7 +453,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:log\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.log.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.log.text",
       "title": ""
     },
     {
@@ -468,7 +468,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:mod\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.mod.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.mod.text",
       "title": ""
     },
     {
@@ -483,7 +483,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:raycast_pos\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.raycast_pos.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.raycast_pos.text",
       "title": ""
     },
     {
@@ -498,7 +498,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:raycast_dir\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.raycast_dir.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.raycast_dir.text",
       "title": ""
     },
     {
@@ -513,7 +513,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:invert\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.invert.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.invert.text",
       "title": ""
     },
     {
@@ -528,7 +528,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:random_integer\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.random_integer.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.random_integer.text",
       "title": ""
     },
     {
@@ -543,7 +543,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:parse\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.parse.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.parse.text",
       "title": ""
     },
     {
@@ -558,7 +558,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:to_text\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.to_text.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.to_text.text",
       "title": ""
     },
     {
@@ -573,7 +573,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:vector_entityspawn\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.vector_entityspawn.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.vector_entityspawn.text",
       "title": ""
     },
     {
@@ -588,7 +588,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:vector_entitypos\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.vector_entitypos.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.vector_entitypos.text",
       "title": ""
     },
     {
@@ -603,7 +603,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:vector_entityvel\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.vector_entityvel.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.vector_entityvel.text",
       "title": ""
     },
     {
@@ -618,7 +618,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:vector_entityeyepos\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.vector_entityeyepos.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.vector_entityeyepos.text",
       "title": ""
     },
     {
@@ -633,7 +633,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:vector_entitydir\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.vector_entitydir.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.vector_entitydir.text",
       "title": ""
     },
     {
@@ -648,7 +648,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:bool_entitygrounded\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.bool_entitygrounded.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.bool_entitygrounded.text",
       "title": ""
     },
     {
@@ -663,7 +663,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:entity_nearest\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.entity_nearest.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.entity_nearest.text",
       "title": ""
     },
     {
@@ -678,7 +678,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:text_entityid\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.text_entityid.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.text_entityid.text",
       "title": ""
     },
     {
@@ -693,7 +693,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:entity_has_effect\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.entity_has_effect.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.entity_has_effect.text",
       "title": ""
     },
     {
@@ -708,7 +708,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:entity_health\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.entity_health.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.entity_health.text",
       "title": ""
     },
     {
@@ -723,7 +723,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:raycast_entity\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.raycast_entity.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.raycast_entity.text",
       "title": ""
     },
     {
@@ -738,7 +738,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:vector_split\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.vector_split.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.vector_split.text",
       "title": ""
     },
     {
@@ -753,7 +753,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:vector_build\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.vector_build.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.vector_build.text",
       "title": ""
     },
     {
@@ -768,7 +768,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:and\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.and.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.and.text",
       "title": ""
     },
     {
@@ -783,7 +783,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:or\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.or.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.or.text",
       "title": ""
     },
     {
@@ -798,7 +798,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:xor\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.xor.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.xor.text",
       "title": ""
     },
     {
@@ -813,7 +813,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:equals\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.equals.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.equals.text",
       "title": ""
     },
     {
@@ -828,7 +828,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:greater\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.greater.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.greater.text",
       "title": ""
     },
     {
@@ -843,7 +843,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:less\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.less.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.less.text",
       "title": ""
     },
     {
@@ -858,7 +858,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:text_blockid\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.text_blockid.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.text_blockid.text",
       "title": ""
     },
     {
@@ -873,7 +873,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:translate\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.translate.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.translate.text",
       "title": ""
     },
     {
@@ -888,7 +888,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:print\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.print.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.print.text",
       "title": ""
     },
     {
@@ -903,7 +903,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:debug\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.debug.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.debug.text",
       "title": ""
     },
     {
@@ -918,7 +918,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:silent\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.silent.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.silent.text",
       "title": ""
     },
     {
@@ -933,7 +933,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:invisible\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.invisible.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.invisible.text",
       "title": ""
     },
     {
@@ -948,7 +948,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:shout\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.shout.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.shout.text",
       "title": ""
     },
     {
@@ -963,7 +963,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:whisper\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.whisper.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.whisper.text",
       "title": ""
     },
     {
@@ -978,7 +978,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:fireball\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.fireball.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.fireball.text",
       "title": ""
     },
     {
@@ -993,7 +993,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:lightning\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.lightning.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.lightning.text",
       "title": ""
     },
     {
@@ -1008,7 +1008,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:teleport\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.teleport.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.teleport.text",
       "title": ""
     },
     {
@@ -1023,7 +1023,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:dimhop\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.dimhop.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.dimhop.text",
       "title": ""
     },
     {
@@ -1038,7 +1038,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:push\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.push.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.push.text",
       "title": ""
     },
     {
@@ -1053,7 +1053,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:place\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.place.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.place.text",
       "title": ""
     },
     {
@@ -1068,7 +1068,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:break\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.break.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.break.text",
       "title": ""
     },
     {
@@ -1083,7 +1083,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:set_spell\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.set_spell.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.set_spell.text",
       "title": ""
     },
     {
@@ -1098,7 +1098,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:degrade_block\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.degrade_block.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.degrade_block.text",
       "title": ""
     },
     {
@@ -1113,7 +1113,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:imbue\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.imbue.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.imbue.text",
       "title": ""
     },
     {
@@ -1128,7 +1128,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:replace\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.replace.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.replace.text",
       "title": ""
     },
     {
@@ -1143,7 +1143,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:ignite\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.ignite.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.ignite.text",
       "title": ""
     },
     {
@@ -1158,7 +1158,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:play_sound\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.play_sound.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.play_sound.text",
       "title": ""
     },
     {
@@ -1173,7 +1173,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:delegate\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.delegate.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.delegate.text",
       "title": ""
     },
     {
@@ -1188,7 +1188,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:set_time\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.set_time.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.set_time.text",
       "title": ""
     },
     {
@@ -1203,7 +1203,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:set_weather\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.set_weather.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.set_weather.text",
       "title": ""
     },
     {
@@ -1218,7 +1218,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:grow\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.grow.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.grow.text",
       "title": ""
     },
     {
@@ -1233,7 +1233,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:activate\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.activate.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.activate.text",
       "title": ""
     },
     {
@@ -1248,7 +1248,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:transmute_item\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.transmute_item.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.transmute_item.text",
       "title": ""
     },
     {
@@ -1263,7 +1263,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:store\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.store.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.store.text",
       "title": ""
     },
     {
@@ -1278,7 +1278,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:take\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.take.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.take.text",
       "title": ""
     },
     {
@@ -1293,7 +1293,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:transfer\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.transfer.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.transfer.text",
       "title": ""
     },
     {
@@ -1308,7 +1308,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:particles\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.particles.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.particles.text",
       "title": ""
     },
     {
@@ -1323,7 +1323,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:action\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.action.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.action.text",
       "title": ""
     },
     {
@@ -1338,7 +1338,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:provider\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.provider.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.provider.text",
       "title": ""
     },
     {
@@ -1353,7 +1353,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:function\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.function.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.function.text",
       "title": ""
     },
     {
@@ -1368,7 +1368,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:function_two\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.function_two.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.function_two.text",
       "title": ""
     },
     {
@@ -1383,7 +1383,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:ref_output\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.ref_output.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.ref_output.text",
       "title": ""
     },
     {
@@ -1398,7 +1398,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:ref_input\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.ref_input.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.ref_input.text",
       "title": ""
     },
     {
@@ -1413,7 +1413,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:var_output\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.var_output.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.var_output.text",
       "title": ""
     },
     {
@@ -1428,7 +1428,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:var_input\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.var_input.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.var_input.text",
       "title": ""
     },
     {
@@ -1443,7 +1443,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:var_delete\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.var_delete.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.var_delete.text",
       "title": ""
     },
     {
@@ -1458,7 +1458,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:var_exists\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.var_exists.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.var_exists.text",
       "title": ""
     },
     {
@@ -1473,7 +1473,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:foreach\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.foreach.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.foreach.text",
       "title": ""
     },
     {
@@ -1488,7 +1488,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:split\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.split.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.split.text",
       "title": ""
     },
     {
@@ -1503,7 +1503,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:pop\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.pop.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.pop.text",
       "title": ""
     },
     {
@@ -1518,7 +1518,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:size\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.size.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.size.text",
       "title": ""
     },
     {
@@ -1533,7 +1533,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:get_element\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.get_element.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.get_element.text",
       "title": ""
     },
     {
@@ -1548,7 +1548,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:set_element\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.set_element.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.set_element.text",
       "title": ""
     },
     {
@@ -1563,7 +1563,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:entities_near\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.entities_near.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.entities_near.text",
       "title": ""
     },
     {
@@ -1578,7 +1578,7 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:block_box\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.block_box.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.block_box.text",
       "title": ""
     },
     {
@@ -1593,19 +1593,25 @@
         "item": "geomancy:spellcomponent",
         "nbt": "{component:{func:\"geomancy:raycast_march\"}}"
       },
-      "text": "book.geomancy.guidebook.octangulite.spellcomponents.raycast_march.text",
+      "text": "book.geomancy.guidebook.soulcasting.spellcomponents.raycast_march.text",
       "title": ""
     }
   ],
   "parents": [
     {
       "draw_arrow": true,
-      "entry": "geomancy:octangulite/octangulite_intro",
+      "entry": "geomancy:soulcasting/revelation",
+      "line_enabled": true,
+      "line_reversed": false
+    },
+    {
+      "draw_arrow": true,
+      "entry": "geomancy:soulcasting/revelation",
       "line_enabled": true,
       "line_reversed": false
     }
   ],
   "show_when_any_parent_unlocked": false,
-  "x": -11,
+  "x": -9,
   "y": -1
 }

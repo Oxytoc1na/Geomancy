@@ -57,6 +57,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         // progression milestones
         Advancement milestone_smithery = AddOrMilestoneAdvancement("smithery", List.of("geomancy:interaction/simple_smithery"),ModBlocks.SMITHERY,Geomancy.locate("textures/block/gilded_deepslate.png"));
         Advancement milestone_souls = AddAndMilestoneAdvancement("souls", List.of("geomancy:main/simple_maddened","geomancy:main/get_spellmaker"),ModBlocks.SMITHERY,Geomancy.locate("textures/block/octangulite_block.png"));
+        Advancement milestone_soulforge = AddOrMilestoneAdvancement("soulforge", List.of("geomancy:interaction/simple_soulforge"),ModBlocks.SOUL_FORGE,Geomancy.locate("textures/block/orthoclase_block.png"));
 
         Advancement got_molten_gold = AddGetItemAdvancement(ModFluids.MOLTEN_GOLD_BUCKET,"molten_gold",ModFluids.MOLTEN_GOLD_BUCKET,"main",AdvancementFrame.CHALLENGE,true,false,main);
         Advancement got_mithril = AddGetItemAdvancement(ModItems.RAW_MITHRIL,"mithril",ModItems.RAW_MITHRIL,"main",AdvancementFrame.TASK,true,false,main);

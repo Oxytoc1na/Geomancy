@@ -1,0 +1,43 @@
+{
+  "background_u_index": 1,
+  "background_v_index": 0,
+  "category": "geomancy:soulcasting",
+  "condition": {
+    "type": "modonomicon:advancement",
+    "advancement_id": "geomancy:milestones/milestone_souls"
+  },
+  "description": "book.geomancy.guidebook.soulcasting.revelation.description",
+  "hide_while_locked": true,
+  "icon": {
+    "item": "geomancy:spellstorage_small"
+  },
+  "name": "book.geomancy.guidebook.soulcasting.revelation.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.soulcasting.revelation.info.text",
+      "title": "book.geomancy.guidebook.soulcasting.revelation.info.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "item": {
+        "item": "geomancy:spellstorage_small"
+      },
+      "text": "book.geomancy.guidebook.soulcasting.revelation.spellstorage_small.text",
+      "title": ""
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "x": -11,
+  "y": -1
+}
