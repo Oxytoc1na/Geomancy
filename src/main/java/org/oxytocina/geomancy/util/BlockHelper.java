@@ -162,7 +162,7 @@ public class BlockHelper {
         BlockView.raycast(context.getStart(), context.getEnd(), context, (innerContext, pos) -> {
             BlockState blockState = world.getBlockState(pos);
             Vec3d vec3d = innerContext.getStart().subtract(innerContext.getEnd());
-            res.add(new BlockHitResult(pos.toCenterPos(), Direction.getFacing(vec3d.x, vec3d.y, vec3d.z), pos, false));
+            res.add(new BlockHitResult(pos.toCenterPos(), Direction.getFacing(vec3d.x, vec3d.y, vec3d.z), pos.mutableCopy(), false));
             return innerContext.getStatePredicate().test(blockState) ? new BlockHitResult(pos.toCenterPos(), Direction.getFacing(vec3d.x, vec3d.y, vec3d.z), pos, false) : null;
         }, (innerContext) -> {
             Vec3d vec3d = innerContext.getStart().subtract(innerContext.getEnd());

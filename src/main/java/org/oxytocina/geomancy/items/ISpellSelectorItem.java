@@ -150,6 +150,7 @@ public interface ISpellSelectorItem {
     }
 
     static void markDirtyStatic(ItemStack stack){
+        if(stack==null) return;
         var item = stack.getItem();
         if(item instanceof ISpellSelectorItem sps){sps.markDirty(stack); return;}
         if(item instanceof StorageItem storer) {storer.markDirty(stack); return;}

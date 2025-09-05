@@ -365,13 +365,13 @@ public class SpellBlocks {
 
             CONSUMED_SOUL = register(SpellBlock.Builder.create("consumed_soul")
                     .outputs(SpellSignal.createNumber().named("soul"))
-                    .init(comp-> comp.receivedSignals.put("a",SpellSignal.createNumber(comp.context.soulConsumed)))
+                    .init(comp-> comp.castClearedData.put("a",Float.toString(comp.context.getSoulConsumed())))
                     .post(comp-> {
-                        float prev = comp.receivedSignals.get("a").getNumberValue();
-                        float now = comp.context.soulConsumed;
+                        if(comp.castClearedData.isEmpty()) return;
+                        float prev = Float.parseFloat(comp.castClearedData.get("a"));
+                        float now = comp.context.getSoulConsumed();
                         float consumed = now-prev;
-                        if(consumed>0)
-                            comp.pushSignals(SpellBlockResult.empty().add("soul",consumed));
+                        comp.pushSignals(SpellBlockResult.empty().add("soul",consumed));
                     })
                     .category(cat).build());
         }
@@ -1109,7 +1109,7 @@ public class SpellBlocks {
                 GREATER = register(SpellBlock.Builder.create("greater")
                         .inputs(SpellSignal.createAny().named("a"),
                                 SpellSignal.createAny().named("b"))
-                        .outputs(SpellSignal.createAny().named("res"))
+                        .outputs(SpellSignal.createBoolean().named("res"))
                         
                         .func((comp,vars) -> {
                             SpellBlockResult res = SpellBlockResult.empty();
@@ -1128,10 +1128,12 @@ public class SpellBlocks {
                         })
                         .category(cat).build());
 
+                // UNUSED CONTENT
+                // this is the same thing as greater
                 LESS = register(SpellBlock.Builder.create("less")
                         .inputs(SpellSignal.createAny().named("a"),
                                 SpellSignal.createAny().named("b"))
-                        .outputs(SpellSignal.createAny().named("res"))
+                        .outputs(SpellSignal.createBoolean().named("res"))
                         
                         .func((comp,vars) -> {
                             SpellBlockResult res = SpellBlockResult.empty();
@@ -1148,6 +1150,7 @@ public class SpellBlocks {
                             }
                             return res;
                         })
+                        .defaultLootWeight(0)
                         .category(cat).build());
             }
 
@@ -3032,13 +3035,13 @@ public class SpellBlocks {
     public static void playCastSound(SpellContext ctx){
         if(ctx.isSilent()) return;
 
-        float fraction = ctx.soulConsumed / ctx.getCasterMaxSoul();
+        float fraction = ctx.getSoulConsumed() / ctx.getCasterMaxSoul();
         SoundEvent event = null;
-        if(fraction > 0.7f && ctx.soulConsumed > 200)
+        if(fraction > 0.7f && ctx.getSoulConsumed() > 200)
             event = ModSoundEvents.CAST_SUCCESS_EXPENSIVE;
-        else if(fraction > 0.2f && ctx.soulConsumed > 50)
+        else if(fraction > 0.2f && ctx.getSoulConsumed() > 50)
             event = ModSoundEvents.CAST_SUCCESS_MEDIUM;
-        else if(ctx.soundBehavior == SpellContext.SoundBehavior.Full || ctx.soulConsumed>0)
+        else if(ctx.soundBehavior == SpellContext.SoundBehavior.Full || ctx.getSoulConsumed()>0)
             event = ModSoundEvents.CAST_SUCCESS_CHEAP;
         Toolbox.playSound(event,ctx.getWorld(), ctx.getOriginBlockPos(), switch(ctx.sourceType){
             case Caster -> SoundCategory.PLAYERS;
@@ -3125,7 +3128,7 @@ public class SpellBlocks {
 
     public static void spawnMuzzleParticles(SpellContext context) {
         if(!context.showsParticles()) return;
-        if(context.soulConsumed<=0 && context.soundBehavior== SpellContext.SoundBehavior.Reduced) return;
+        if(context.getSoulConsumed()<=0 && context.soundBehavior== SpellContext.SoundBehavior.Reduced) return;
         ParticleUtil.ParticleData.createGenericCastMuzzle(context,context.getMuzzlePos(),context.getDirection()).send();
     }
 

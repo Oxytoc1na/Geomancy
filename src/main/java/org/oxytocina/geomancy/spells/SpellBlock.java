@@ -35,6 +35,7 @@ public class SpellBlock {
     public Consumer<SpellComponent> postFunction;
 
     public SpellBlockResult run(SpellComponent component,SpellBlockArgs arguments){
+        if(function==null) return SpellBlockResult.empty();
         return function.apply(component,arguments);
     }
 

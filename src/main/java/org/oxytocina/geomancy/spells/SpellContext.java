@@ -33,7 +33,7 @@ public class SpellContext {
     public ItemStack casterItem;
     public ItemStack spellStorage;
     protected float availableSoul;
-    public float soulConsumed = 0;
+    protected float soulConsumed = 0;
     public float soulCostMultiplier = 1;
     public Stage stage;
     public boolean debugging = false;
@@ -148,6 +148,11 @@ public class SpellContext {
         var res = new SpellContext(null,caster,null,null,null,null,0,0,0,null);
         res.worldOverride = world;
         return res;
+    }
+
+    public float getSoulConsumed(){
+        if(isChild()) return parentCall.getSoulConsumed();
+        return soulConsumed;
     }
 
     public boolean tryConsumeSoul(float amount){

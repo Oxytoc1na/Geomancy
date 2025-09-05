@@ -151,11 +151,8 @@ TODO structures
 -- "precompiled" casting items inside autocasters
 
 TODO TESTING
-- particle component
-- new variable storage interactions
 -- disabling player var loading
 - shout and whisper
-- raycast march
 
 fixed
 

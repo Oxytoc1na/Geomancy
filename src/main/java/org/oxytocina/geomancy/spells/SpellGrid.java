@@ -157,7 +157,7 @@ public class SpellGrid {
             }
         }
 
-        if(context.soulConsumed > 0){
+        if(context.getSoulConsumed() > 0){
             switch(context.sourceType)
             {
                 case Caster :
@@ -168,7 +168,7 @@ public class SpellGrid {
             }
 
             // deconsciousness advancements
-            if(context.soulConsumed>=10000)
+            if(context.getSoulConsumed()>=10000)
                 SpellBlocks.tryUnlockSpellAdvancement(context.caster,"deconsciousness");
         }
         SpellBlocks.playCastSound(context);
