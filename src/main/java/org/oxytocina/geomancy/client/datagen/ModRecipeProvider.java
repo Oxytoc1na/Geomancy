@@ -499,6 +499,32 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                             new SPatKey("c",SmithingIngredient.ofItems(1,1,1,Items.CHEST)),
                     },
                     NOVICE_GLOVE,1,100,50,conditionsFromItem(OCTANGULITE_INGOT),Geomancy.locate("milestones/milestone_souls"));
+
+            // soul forge
+            AddShapedSmitheryRecipe(new String[]{
+                            "ooo",
+                            "msm",
+                            "ttt"}
+                    ,new SPatKey[]{
+                            new SPatKey("o",SmithingIngredient.ofItems(1,1,1,OCTANGULITE_INGOT)),
+                            new SPatKey("s",SmithingIngredient.ofItems(1,1,1,SMITHERY)),
+                            new SPatKey("m",SmithingIngredient.ofItems(1,1,1,MITHRIL_INGOT)),
+                            new SPatKey("t",SmithingIngredient.ofItems(1,1,1,TITANIUM_INGOT)),
+                    },
+                    SOUL_FORGE,1,100,50,conditionsFromItem(SPELLMAKER),Geomancy.locate("milestones/souls"));
+
+            // pedestal
+            AddShapedSmitheryRecipe(new String[]{
+                            "ttt",
+                            " m ",
+                            "bbb"}
+                    ,new SPatKey[]{
+                            new SPatKey("b",SmithingIngredient.ofItems(1,1,1,Blocks.POLISHED_BLACKSTONE_BRICKS)),
+                            new SPatKey("m",SmithingIngredient.ofItems(1,1,1,MITHRIL_INGOT)),
+                            new SPatKey("t",SmithingIngredient.ofItems(1,1,1,TITANIUM_INGOT)),
+                    },
+                    PEDESTAL,1,30,30,conditionsFromItem(SPELLMAKER),Geomancy.locate("milestones/souls"));
+
         }
 
         // tools and armors
