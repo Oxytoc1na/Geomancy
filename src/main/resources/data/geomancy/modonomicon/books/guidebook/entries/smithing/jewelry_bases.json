@@ -21,7 +21,7 @@
       "use_markdown_in_title": false
     },
     {
-      "type": "modonomicon:crafting_recipe",
+      "type": "geomancy:smithing_recipe",
       "anchor": "",
       "condition": {
         "type": "modonomicon:none"
@@ -32,7 +32,7 @@
       "title2": ""
     },
     {
-      "type": "modonomicon:crafting_recipe",
+      "type": "geomancy:smithing_recipe",
       "anchor": "",
       "condition": {
         "type": "modonomicon:none"
@@ -40,6 +40,17 @@
       "recipe_id_1": "geomancy:smithing_iron_necklace",
       "text": "book.geomancy.guidebook.smithing.jewelry_bases.iron_necklace.text",
       "title1": "iron_necklace",
+      "title2": ""
+    },
+    {
+      "type": "geomancy:smithing_recipe",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "recipe_id_1": "geomancy:smithing_iron_pendant",
+      "text": "book.geomancy.guidebook.smithing.jewelry_bases.iron_pendant.text",
+      "title1": "iron_pendant",
       "title2": ""
     }
   ],
@@ -52,6 +63,6 @@
     }
   ],
   "show_when_any_parent_unlocked": false,
-  "x": -10,
+  "x": -1,
   "y": 2
 }

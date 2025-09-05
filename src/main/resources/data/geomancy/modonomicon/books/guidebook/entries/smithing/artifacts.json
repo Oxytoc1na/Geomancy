@@ -21,7 +21,7 @@
       "use_markdown_in_title": false
     },
     {
-      "type": "modonomicon:crafting_recipe",
+      "type": "geomancy:smithing_recipe",
       "anchor": "",
       "condition": {
         "type": "modonomicon:none"
@@ -32,7 +32,7 @@
       "title2": ""
     },
     {
-      "type": "modonomicon:crafting_recipe",
+      "type": "geomancy:smithing_recipe",
       "anchor": "",
       "condition": {
         "type": "modonomicon:none"
@@ -43,7 +43,7 @@
       "title2": ""
     },
     {
-      "type": "modonomicon:crafting_recipe",
+      "type": "geomancy:smithing_recipe",
       "anchor": "",
       "condition": {
         "type": "modonomicon:none"
@@ -63,6 +63,6 @@
     }
   ],
   "show_when_any_parent_unlocked": false,
-  "x": -12,
+  "x": -3,
   "y": -4
 }

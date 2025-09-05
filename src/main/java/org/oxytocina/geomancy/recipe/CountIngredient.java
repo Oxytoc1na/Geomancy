@@ -8,6 +8,10 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 public class CountIngredient {
     public Ingredient ingredient;
     public int count;
@@ -78,5 +82,13 @@ public class CountIngredient {
         Ingredient ingredient1 = Ingredient.ofItems(items);
 
         return new CountIngredient(ingredient1,count,slot);
+    }
+
+    public List<ItemStack> getStacks() {
+        List<ItemStack> res = new ArrayList<>();
+        for (var stack :ingredient.getMatchingStacks()){
+            res.add(stack.copyWithCount(count));
+        }
+        return res;
     }
 }

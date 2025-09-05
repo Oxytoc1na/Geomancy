@@ -44,23 +44,6 @@ public abstract class ModEMIRecipe implements EmiRecipe {
         return AdvancementHelper.hasAdvancementClient(client.player, advancement);
     }
 
-    protected static Text getCraftingTimeText(int time) {
-        if (time == 20) {
-            return Text.translatable("container.spectrum.rei.crafting_time_one_second", 1);
-        } else {
-            return Text.translatable("container.spectrum.rei.crafting_time", (time / 20));
-        }
-    }
-
-    protected static Text getCraftingTimeText(int time, float experience) {
-        // special handling for "1 second". Looks nicer
-        if (time == 20) {
-            return Text.translatable("container.spectrum.rei.crafting_time_one_second_and_xp", 1, experience);
-        } else {
-            return Text.translatable("container.spectrum.rei.crafting_time_and_xp", (time / 20), experience);
-        }
-    }
-
     public abstract void addUnlockedWidgets(WidgetHolder widgets);
 
     @Override

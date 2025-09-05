@@ -19,7 +19,7 @@
   "background_width": 512,
   "entry_textures": "modonomicon:textures/gui/entry_textures.png",
   "icon": {
-    "item": "geomancy:raw_octangulite"
+    "item": "minecraft:writable_book"
   },
   "name": "book.geomancy.guidebook.lore.name",
   "show_category_button": true,

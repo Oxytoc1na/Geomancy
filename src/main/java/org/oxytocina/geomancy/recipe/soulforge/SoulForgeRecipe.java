@@ -11,6 +11,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.recipe.GatedModRecipe;
@@ -23,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SoulForgeRecipe extends GatedModRecipe<Inventory> implements ISoulForgeRecipe {
+
+    public static final Identifier UNLOCK_IDENTIFIER = null;
 
     protected final List<NbtIngredient> inputs;
     protected final ItemStack output;
@@ -110,8 +113,7 @@ public class SoulForgeRecipe extends GatedModRecipe<Inventory> implements ISoulF
 
     @Override
     public Identifier getRecipeTypeUnlockIdentifier() {
-        Geomancy.logError("getRecipeTypeUnlockIdentifier returning null");
-        return null; //UNLOCK_IDENTIFIER;
+        return UNLOCK_IDENTIFIER;
     }
 
     @Override
@@ -154,7 +156,7 @@ public class SoulForgeRecipe extends GatedModRecipe<Inventory> implements ISoulF
     }
 
     @Override
-    public List<NbtIngredient> getNbtIngredients(Inventory inv) {
+    public List<NbtIngredient> getNbtIngredients(@Nullable Inventory inv) {
         return inputs;
     }
 

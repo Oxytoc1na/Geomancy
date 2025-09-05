@@ -23,7 +23,7 @@
   },
   "entry_textures": "modonomicon:textures/gui/entry_textures.png",
   "icon": {
-    "item": "geomancy:spellstorage_small"
+    "item": "geomancy:soulstorage_small"
   },
   "name": "book.geomancy.guidebook.soulcasting.name",
   "show_category_button": true,

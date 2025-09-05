@@ -1,30 +1,27 @@
 package org.oxytocina.geomancy.compat.modonomicon.client.pages;
 
 import com.klikli_dev.modonomicon.api.ModonomiconConstants;
-import com.klikli_dev.modonomicon.book.page.BookCraftingRecipePage;
 import com.klikli_dev.modonomicon.client.gui.book.BookContentScreen;
-import com.mojang.blaze3d.systems.*;
-import net.minecraft.client.gui.*;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.ShapedRecipe;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
-import net.minecraft.util.*;
-import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.world.*;
+import net.minecraft.util.Identifier;
+import org.joml.Vector2f;
 import org.oxytocina.geomancy.Geomancy;
-import org.oxytocina.geomancy.compat.modonomicon.ModonomiconHelper;
 import org.oxytocina.geomancy.compat.modonomicon.pages.BookGatedRecipePage;
 import org.oxytocina.geomancy.recipe.smithery.SmitheryRecipe;
-import org.oxytocina.geomancy.recipe.smithery.SmithingIngredient;
+import org.oxytocina.geomancy.recipe.soulforge.SoulForgeRecipe;
+import org.oxytocina.geomancy.util.DrawHelper;
+import org.oxytocina.geomancy.util.Toolbox;
 
-import java.util.*;
+import java.util.Arrays;
 
-public class BookSmitheryCraftingPageRenderer extends BookGatedRecipePageRenderer<SmitheryRecipe, BookGatedRecipePage<SmitheryRecipe>> {
-	
+public class BookSoulforgeCraftingPageRenderer extends BookGatedRecipePageRenderer<SoulForgeRecipe, BookGatedRecipePage<SoulForgeRecipe>> {
+
 	private static final Identifier BACKGROUND_TEXTURE = Geomancy.locate("textures/gui/modonomicon/pedestal_crafting1.png");
 
-	public BookSmitheryCraftingPageRenderer(BookGatedRecipePage<SmitheryRecipe> page) {
+	public BookSoulforgeCraftingPageRenderer(BookGatedRecipePage<SoulForgeRecipe> page) {
 		super(page);
 	}
 	
@@ -34,7 +31,7 @@ public class BookSmitheryCraftingPageRenderer extends BookGatedRecipePageRendere
 	}
 
     @Override
-    protected void drawRecipe(DrawContext drawContext, SmitheryRecipe recipe, int recipeX, int recipeY, int mouseX, int mouseY, boolean second) {
+    protected void drawRecipe(DrawContext drawContext, SoulForgeRecipe recipe, int recipeX, int recipeY, int mouseX, int mouseY, boolean second) {
         // render title if applicable
         if (!second) {
             if (!this.page.getTitle1().isEmpty()) {
@@ -66,14 +63,24 @@ public class BookSmitheryCraftingPageRenderer extends BookGatedRecipePageRendere
         this.parentScreen.renderItemStack(drawContext, recipeX + 79, recipeY + 22, mouseX, mouseY, recipe.getOutput(this.parentScreen.getMinecraft().world.getRegistryManager()));
 
         // draw ingredients
-        var ingredients = recipe.getSmithingIngredients();
-        for (int i = 0; i < ingredients.size(); i++) {
-            var ingredient = ingredients.get(i);
-            int slot = shaped?ingredient.slot:i;
-            int x = recipeX + (slot % 3) * 19 + 3;
-            int y = recipeY + (slot / 3) * 19 + 3;
-            this.parentScreen.renderItemStacks(drawContext, x, y, mouseX, mouseY, Arrays.asList(ingredient.ingredient.getMatchingStacks()), ingredient.count);
+        var ingredients = recipe.getNbtIngredients(null);
+        if(!ingredients.isEmpty())
+        {
+            var baseIng = ingredients.get(0);
+            int x = recipeX + 19 + 3;
+            int y = recipeY + 19 + 3;
+            this.parentScreen.renderItemStacks(drawContext, x, y, mouseX, mouseY, Arrays.asList(baseIng.ingredient.getMatchingStacks()), baseIng.count);
+
+            for (int i = 1; i < ingredients.size(); i++) {
+                var ingredient = ingredients.get(i);
+                float angle = (float)Math.PI*2*((float)i/ (ingredients.size()-1));
+                var offset = Toolbox.rotateVector(new Vector2f(24,0),angle);
+                int drawPosX = x+(int)offset.x;
+                int drawPosY = y+(int)offset.y;
+                this.parentScreen.renderItemStacks(drawContext, drawPosX, drawPosY, mouseX, mouseY, Arrays.asList(ingredient.ingredient.getMatchingStacks()), ingredient.count);
+            }
         }
+
 
         // draw recipe icon
         this.parentScreen.renderItemStack(drawContext, recipeX + 79, recipeY + 41, mouseX, mouseY, recipe.createIcon());

@@ -39,7 +39,7 @@ public abstract class GatedModRecipe<C extends Inventory> implements GatedRecipe
     }
 
     /**
-     * The advancement the player has to have for the recipe be craftable
+     * The advancement the player has to have for the recipe to be craftable
      *
      * @return The advancement identifier. A null value means the player is always able to craft this recipe
      */

@@ -37,9 +37,65 @@
       "condition": {
         "type": "modonomicon:none"
       },
+      "recipe_id_1": "geomancy:lead_hammer",
+      "text": "book.geomancy.guidebook.smithing.hammers.lead.text",
+      "title1": "lead_hammer",
+      "title2": ""
+    },
+    {
+      "type": "geomancy:smithing_recipe",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "recipe_id_1": "geomancy:smithing_molybdenum_hammer",
+      "text": "book.geomancy.guidebook.smithing.hammers.molybdenum.text",
+      "title1": "molybdenum_hammer",
+      "title2": ""
+    },
+    {
+      "type": "geomancy:smithing_recipe",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "recipe_id_1": "geomancy:smithing_titanium_hammer",
+      "text": "book.geomancy.guidebook.smithing.hammers.titanium.text",
+      "title1": "titanium_hammer",
+      "title2": ""
+    },
+    {
+      "type": "geomancy:smithing_recipe",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
       "recipe_id_1": "geomancy:smithing_mithril_hammer",
       "text": "book.geomancy.guidebook.smithing.hammers.mithril.text",
       "title1": "mithril_hammer",
+      "title2": ""
+    },
+    {
+      "type": "geomancy:smithing_recipe",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "recipe_id_1": "geomancy:smithing_golden_hammer",
+      "text": "book.geomancy.guidebook.smithing.hammers.gold.text",
+      "title1": "golden_hammer",
+      "title2": ""
+    },
+    {
+      "type": "geomancy:soulforge_recipe",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:advancement",
+        "advancement_id": "geomancy:milestones/milestone_soulforge"
+      },
+      "recipe_id_1": "geomancy:soulforge_octangulite_hammer",
+      "text": "book.geomancy.guidebook.smithing.hammers.octangulite.text",
+      "title1": "octangulite_hammer",
       "title2": ""
     }
   ],
@@ -52,6 +108,6 @@
     }
   ],
   "show_when_any_parent_unlocked": false,
-  "x": -12,
+  "x": -3,
   "y": 2
 }

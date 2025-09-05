@@ -46,13 +46,13 @@ public class BookGatedRecipePage<T extends GatedRecipe<?>> extends BookRecipePag
 		if (supportsTwoRecipesOnOnePage) {
 			var title1 = BookGsonHelper.getAsBookTextHolder(json, "title", BookTextHolder.EMPTY);
 			var title2 = BookGsonHelper.getAsBookTextHolder(json, "title2", BookTextHolder.EMPTY);
-			Identifier recipeId1 = json.has("recipe_id") ? Identifier.tryParse(JsonHelper.getString(json, "recipe_id")) : null;
-			Identifier recipeId2 = json.has("recipe_id2") ? Identifier.tryParse(JsonHelper.getString(json, "recipe_id2")) : null;
+			Identifier recipeId1 = json.has("recipe_id_1") ? Identifier.tryParse(JsonHelper.getString(json, "recipe_id_1")) : null;
+			Identifier recipeId2 = json.has("recipe_id_2") ? Identifier.tryParse(JsonHelper.getString(json, "recipe_id_2")) : null;
 			condition = skipRecipeUnlockCheck ? condition : getConditionWithRecipes(condition, recipeId1, recipeId2);
 			return new BookGatedRecipePage<>(recipeType, pageType, title1, recipeId1, title2, recipeId2, text, anchor, condition);
 		} else {
 			var title = BookGsonHelper.getAsBookTextHolder(json, "title", BookTextHolder.EMPTY);
-			Identifier recipeId = json.has("recipe_id") ? Identifier.tryParse(JsonHelper.getString(json, "recipe_id")) : null;
+			Identifier recipeId = json.has("recipe_id_1") ? Identifier.tryParse(JsonHelper.getString(json, "recipe_id_1")) : null;
 			condition = skipRecipeUnlockCheck ? condition : getConditionWithRecipes(condition, recipeId, null);
 			return new BookGatedRecipePage<>(recipeType, pageType, title, recipeId, BookTextHolder.EMPTY, null, text, anchor, condition);
 		}

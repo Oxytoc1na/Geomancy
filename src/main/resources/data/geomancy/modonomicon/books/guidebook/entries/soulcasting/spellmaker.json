@@ -25,24 +25,18 @@
       "use_markdown_in_title": false
     },
     {
-      "type": "modonomicon:text",
+      "type": "geomancy:smithing_recipe",
       "anchor": "",
       "condition": {
         "type": "modonomicon:none"
       },
-      "show_title_separator": true,
-      "text": "book.geomancy.guidebook.soulcasting.spellmaker.1.text",
-      "title": "",
-      "use_markdown_in_title": false
+      "recipe_id_1": "geomancy:smithing_spellmaker_block",
+      "text": "book.geomancy.guidebook.soulcasting.spellmaker.spellmaker_block.text",
+      "title1": "spellmaker_block",
+      "title2": ""
     }
   ],
   "parents": [
-    {
-      "draw_arrow": true,
-      "entry": "geomancy:soulcasting/spellcomponents",
-      "line_enabled": true,
-      "line_reversed": false
-    },
     {
       "draw_arrow": true,
       "entry": "geomancy:soulcasting/revelation",
@@ -51,6 +45,6 @@
     }
   ],
   "show_when_any_parent_unlocked": false,
-  "x": -11,
+  "x": 0,
   "y": 1
 }

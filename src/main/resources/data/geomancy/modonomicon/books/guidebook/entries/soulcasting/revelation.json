@@ -9,7 +9,7 @@
   "description": "book.geomancy.guidebook.soulcasting.revelation.description",
   "hide_while_locked": true,
   "icon": {
-    "item": "geomancy:spellstorage_small"
+    "item": "geomancy:soulstorage_small"
   },
   "name": "book.geomancy.guidebook.soulcasting.revelation.name",
   "pages": [
@@ -25,19 +25,40 @@
       "use_markdown_in_title": false
     },
     {
-      "type": "modonomicon:spotlight",
+      "type": "modonomicon:text",
       "anchor": "",
       "condition": {
         "type": "modonomicon:none"
       },
-      "item": {
-        "item": "geomancy:spellstorage_small"
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.soulcasting.revelation.2.text",
+      "title": "",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
       },
-      "text": "book.geomancy.guidebook.soulcasting.revelation.spellstorage_small.text",
-      "title": ""
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.soulcasting.revelation.3.text",
+      "title": "",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.soulcasting.revelation.4.text",
+      "title": "",
+      "use_markdown_in_title": false
     }
   ],
   "show_when_any_parent_unlocked": false,
-  "x": -11,
+  "x": 0,
   "y": -1
 }

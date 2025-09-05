@@ -20,6 +20,8 @@ import java.util.List;
 
 public class TransmuteRecipe extends GatedModRecipe<Inventory>{
 
+    public static final Identifier UNLOCK_IDENTIFIER = null;
+
     protected final SmithingIngredient base;
     protected final ItemStack output;
     protected final float cost;
@@ -83,8 +85,7 @@ public class TransmuteRecipe extends GatedModRecipe<Inventory>{
 
     @Override
     public Identifier getRecipeTypeUnlockIdentifier() {
-        Geomancy.logError("getRecipeTypeUnlockIdentifier returning null");
-        return null; //UNLOCK_IDENTIFIER;
+        return UNLOCK_IDENTIFIER;
     }
 
     @Override

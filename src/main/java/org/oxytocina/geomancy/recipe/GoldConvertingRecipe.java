@@ -14,7 +14,8 @@ import java.util.*;
 
 public class GoldConvertingRecipe extends FluidConvertingRecipe {
 
-    //public static final Identifier UNLOCK_IDENTIFIER = SpectrumCommon.locate("midgame/create_midnight_aberration");
+    public static final Identifier UNLOCK_IDENTIFIER = null;
+
     private static final Set<Item> outputItems = new HashSet<>();
 
     public GoldConvertingRecipe(Identifier id, String group, boolean secret, Identifier requiredAdvancementIdentifier, @NotNull Ingredient inputIngredient, ItemStack outputItemStack) {
@@ -43,8 +44,7 @@ public class GoldConvertingRecipe extends FluidConvertingRecipe {
 
     @Override
     public Identifier getRecipeTypeUnlockIdentifier() {
-        Geomancy.logError("getRecipeTypeUnlockIdentifier returning null");
-        return null; //UNLOCK_IDENTIFIER;
+        return UNLOCK_IDENTIFIER;
     }
 
     @Override

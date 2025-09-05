@@ -24,20 +24,6 @@ public interface GatedRecipe<C extends Inventory> extends Recipe<C> {
                 && AdvancementHelper.hasAdvancementServer(playerEntity, getRequiredAdvancementIdentifier());
     }
 
-    default Text getSingleUnlockToastString() {
-        return Text.translatable("spectrum.toast." + getRecipeTypeShortID() + "_recipe_unlocked.title");
-    }
-
-    default Text getMultipleUnlockToastString() {
-        return Text.translatable("spectrum.toast." + getRecipeTypeShortID() + "_recipes_unlocked.title");
-    }
-
-    default void registerInToastManager(RecipeType<?> recipeType, GatedRecipe<C> gatedRecipe) {
-        if (FabricLoader.getInstance().getEnvironmentType() != EnvType.SERVER) {
-            registerInToastManagerClient(recipeType, gatedRecipe);
-        }
-    }
-
     @Environment(EnvType.CLIENT)
     private void registerInToastManagerClient(RecipeType<?> recipeType, GatedRecipe<C> gatedRecipe) {
         //UnlockToastManager.registerGatedRecipe(recipeType, gatedRecipe);

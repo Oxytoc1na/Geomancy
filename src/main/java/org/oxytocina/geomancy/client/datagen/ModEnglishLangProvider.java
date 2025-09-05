@@ -692,19 +692,29 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
                 addGBEntryAndInfo(getS("gb:mn")+"gold","Molten Gold");
                 add(getS("gb:mn")+"gold.description", "");
-                add(getS("gb:mn")+"gold.intro.text", "Fascinating. I'm not used to finding fluids other than water or lava... yet here's some molten gold.\nWhat is equally as fascinating is that the only places I've found it in seem to be these ruins... How has it not resolidified after all these years?");
+                add(getS("gb:mn")+"gold.info.text", "Fascinating. I'm not used to finding fluids other than water or lava... yet here's some molten gold.\nWhat is equally as fascinating is that the only places I've found it in seem to be these ruins... How has it not resolidified after all these years?");
                 add(getS("gb:mn")+"gold.gold_bucket.text", "I doubt I'll be able to dip my apples or carrots in it...");
 
                 addGBEntryAndInfo(getS("gb:mn")+"deepslate","Gilded Deepslate");
                 add(getS("gb:mn")+"deepslate.description", "");
-                add(getS("gb:mn")+"deepslate.intro.text", "I have discovered these polished deepslate blocks in some of those ruins. Some of them bear ancient symbols and sigils. I wonder what they mean.");
+                add(getS("gb:mn")+"deepslate.info.text", "I have discovered these polished deepslate blocks in some of those ruins. Some of them bear ancient symbols and sigils. I wonder what they mean.");
                 add(getS("gb:mn")+"deepslate.gilded_deepslate.text", "It's skillfully adorned with glittering gold.");
-                add(getS("gb:mn")+"deepslate.decoaretd_gilded_deepslate.text", "It appears to display various tools, weapons, and treasure.");
+                add(getS("gb:mn")+"deepslate.decorated_gilded_deepslate.text", "It appears to display various tools, weapons, and treasure.");
 
                 addGBEntryAndInfo(getS("gb:mn")+"mithril","Mithril");
                 add(getS("gb:mn")+"mithril.description"  , "");
-                add(getS("gb:mn")+"mithril.intro.text", "This incredibly rare metal is impressively durable for its light weight. It shines with a bright white color. I can sense that there is more to it than tools and armor.");
+                add(getS("gb:mn")+"mithril.info.text", "This incredibly rare metal is impressively durable for its light weight. It shines with a bright white color. I can sense that there is more to it than tools and armor.");
                 add(getS("gb:mn")+"mithril.mithril_ingot.text", "It is also definitely not edible.");
+
+                addGBEntryAndInfo(getS("gb:mn")+"lead","Lead");
+                add(getS("gb:mn")+"lead.description"  , "");
+                add(getS("gb:mn")+"lead.info.text", "This common, dark gray metal is pretty soft, and incredibly heavy.\n\\\nIt doesn't seem to have many uses. Maybe there is more to it than meets the eye?");
+                add(getS("gb:mn")+"lead.lead_ingot.text", "Maybe it's edible...?");
+
+                addGBEntryAndInfo(getS("gb:mn")+"molybdenum","Molybdenum");
+                add(getS("gb:mn")+"molybdenum.description"  , "");
+                add(getS("gb:mn")+"molybdenum.info.text", "This pinkish metal shares many qualities with iron.\n\\\nFor some reason, I feel extra focused while I'm around it.");
+                add(getS("gb:mn")+"molybdenum.molybdenum_ingot.text", "It's shiny and it makes me feel good!");
             }
 
             add(getS("gb:sm")+"name", "Smithing");
@@ -720,14 +730,26 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                 add(getS("gb:sm")+"hammers.info.text","The hammer that one uses to whack the workpiece determines how successful they shall be in doing so.");
                 add(getS("gb:sm")+"hammers.iron.title",getItemName(ModItems.IRON_HAMMER));
                 add(getS("gb:sm")+"hammers.iron.text","Probably the most basic hammer for smithing there is.");
+                add(getS("gb:sm")+"hammers.lead.title",getItemName(ModItems.LEAD_HAMMER));
+                add(getS("gb:sm")+"hammers.lead.text","This thing is worse than iron. I'm not sure why I'd use it.");
+                add(getS("gb:sm")+"hammers.molybdenum.title",getItemName(ModItems.MOLYBDENUM_HAMMER));
+                add(getS("gb:sm")+"hammers.molybdenum.text","A decent upgrade from iron. It also makes me feel strangely focused.");
+                add(getS("gb:sm")+"hammers.titanium.title",getItemName(ModItems.TITANIUM_HAMMER));
+                add(getS("gb:sm")+"hammers.titanium.text","It'll take me quite some time to wear this puppy down.");
+                add(getS("gb:sm")+"hammers.gold.title",getItemName(ModItems.GOLDEN_HAMMER));
+                add(getS("gb:sm")+"hammers.gold.text","Fragile, but incredibly effective.");
                 add(getS("gb:sm")+"hammers.mithril.title",getItemName(ModItems.MITHRIL_HAMMER));
                 add(getS("gb:sm")+"hammers.mithril.text","Mithrils durability and feathery weight makes it ideal at continuously hitting a workpiece without getting tired.");
+                add(getS("gb:sm")+"hammers.octangulite.title",getItemName(ModItems.OCTANGULITE_HAMMER));
+                add(getS("gb:sm")+"hammers.octangulite.text","This is probably the best there is.");
+
 
                 addGBEntryAndInfo(getS("gb:sm")+"jewelry_bases","Jewelry");
                 add(getS("gb:sm")+"jewelry_bases.description","");
-                add(getS("gb:sm")+"jewelry_bases.info.text","Inspired by the ancient scriptures detailing jewelry, I have devised these recipes for empty jewelry items.");
-                add(getS("gb:sm")+"jewelry_bases.iron_ring.text","This vessel holds up to one gem and can be worn on ones fingers.");
-                add(getS("gb:sm")+"jewelry_bases.iron_necklace.text","This vessel holds up to one gem and can be worn around ones neck.");
+                add(getS("gb:sm")+"jewelry_bases.info.text","Inspired by the ancient scriptures detailing jewelry, I have devised these recipes for empty jewelry items. They should apply to many different metals.");
+                add(getS("gb:sm")+"jewelry_bases.iron_ring.text","This form can be worn on the fingers.");
+                add(getS("gb:sm")+"jewelry_bases.iron_necklace.text","This form can be worn around the neck.");
+                add(getS("gb:sm")+"jewelry_bases.iron_pendant.text","This form can be worn around the neck. It doesn't provide benefits itself, but buffs the same type of gem as slotted in it.");
 
                 addGBEntryAndInfo(getS("gb:sm")+"artifacts","Artifacts");
                 add(getS("gb:sm")+"artifacts.description","");
@@ -792,11 +814,6 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                 add(getS("gb:oc")+"madness.info.text", "It's both! The octangulite, or whatever it's made of is driving me mad! I best stay away from it. But...maybe it can tell me whats going on?");
                 add(getS("gb:oc")+"madness.1.text", "I feel fuzzy... This feels dangerous. Whatever happens, I am sorry to those that I'll hurt when I no longer remember them.");
 
-                addGBEntryAndInfo(getS("gb:oc")+"spellcomponents","Spell Components");
-                add(getS("gb:oc")+"spellcomponents.description"  , "");
-                add(getS("gb:oc")+"spellcomponents.0.title"  , "Spell Components");
-                add(getS("gb:oc")+"spellcomponents.0.text"  , "These weird hexagonal doodads seem to be able to perform mathematical operations and affect the world, is used correctly.");
-                add(getS("gb:oc")+"spellcomponents.spellcomponent.text"  , "This seems to be the template for all of them.");
             }
 
             add(getS("gb:lr")+"name", "History");
@@ -1130,28 +1147,28 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                     add("item.MODID.lorebook_extras_creation","Dwarven History: Creation and beyond");
                     add("item.MODID.lorebook_extras_creation.tooltip","The Dwarven creation mythos");
 
-                    addGBEntryAndInfo(getS("gb:lr")+"dwarven_extras_creation","Dwarven History: Creation and beyond");
-                    add(getS("gb:lr")+"dwarven_extras_creation.description"  , "The dwarven creation mythos");
-                    add(getS("gb:lr")+"dwarven_extras_creation.1.text","""
+                    addGBEntryAndInfo(getS("gb:lr")+"extras_creation","Dwarven History: Creation and beyond");
+                    add(getS("gb:lr")+"extras_creation.description"  , "The dwarven creation mythos");
+                    add(getS("gb:lr")+"extras_creation.1.text","""
                         Not many have felt it, but their tales line up.
                         Not many have glimpsed beyond our light, but all tell the same.
                         I am now one of those that know that they are nothing, and yet so much more than that.
                         Allow me to write down, nay, attempt to write down what I have seen.
-                        """);
-                    add(getS("gb:lr")+"dwarven_extras_creation.2.text","""
                         Hammerscale. The sparks sent flying when hitting hot metal with a hammer.
+                        """);
+                    add(getS("gb:lr")+"extras_creation.2.text","""
                         Glowing so brightly, burning up in the air that surrounds it.
                         What we call reality: The sun, the moon, the stars, the earth and the depths. All of it, as one.
                         It is nought but a singular speck of hammerscale.
                         Hammerscale from a project so grand, so incomprehensibly significant, that we ought to be proud to be there for its creation.
                         """);
-                    add(getS("gb:lr")+"dwarven_extras_creation.3.text","""
+                    add(getS("gb:lr")+"extras_creation.3.text","""
                         We will not see it through. Our reality will fizzle out long before it is completed.
                         And yet, what oh so few of us have managed to do is see through our own glow and witness the workpiece of all realities.
                         Glowing, malleable, and full of potential. To us, frozen in time, but in progress.
                         The fact that we exist is proof of its progress.
                         """);
-                    add(getS("gb:lr")+"dwarven_extras_creation.4.text","""
+                    add(getS("gb:lr")+"extras_creation.4.text","""
                         I bet you'll wonder who the blacksmith is.
                         The light from our sun hides the stars. You may only see them at night.
                         I could not see, nor could the others. We were blinded by beauty, and ourselves.
@@ -1165,36 +1182,45 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                     add("item.MODID.lorelog_extras_research_1","Research diary Pt. 1");
                     add("item.MODID.lorelog_extras_research_1.tooltip","Signed: Head Researcher Pentangula");
 
-                    addGBEntryAndInfo(getS("gb:lr")+"lorelog_extras_research_1","Research diary Pt. 1");
-                    add(getS("gb:lr")+"lorelog_extras_research_1.description"  , "Signed: Head Researcher Pentangula");
-                    add(getS("gb:lr")+"lorelog_extras_research_1.1.text","""
+                    addGBEntryAndInfo(getS("gb:lr")+"extras_research_1","Research diary Pt. 1");
+                    add(getS("gb:lr")+"extras_research_1.description"  , "Signed: Head Researcher Pentangula");
+                    add(getS("gb:lr")+"extras_research_1.1.text","""
                         Dear diary,
                         I can't figure out how to remove that stupid "dear diary" text.
                         If L0G-Pro 3.i had better UI I would've asked for IT instead of Diarizer Vtera.
                         Oh well. Too late now.
                         Allow me to introduce myself.
-                        I am Pentangula of the Stellge, head of research in section DIM-5. My area of expertise is metadimensional physics.
+                        I am Pentangula of the Stellge, head of research in section DIM-5.
+                        """);
+                    add(getS("gb:lr")+"extras_research_1.2.text","""
+                        My area of expertise is metadimensional physics.
                         I have been granted the individual status around 1095000L ago.
                         My interests are copper, sidestepping the fabric of reality, and organics, especially species 8UN-E of Sol III.
                         Their long auditory sensory organs and soft secondary external ventilator are just so adorable.
                         """);
-                    add(getS("gb:lr")+"lorelog_extras_research_1.2.text","""
+                    add(getS("gb:lr")+"extras_research_1.3.text","""
                         My current task is the creation of an experimental soulcasting machine that allows for personal interdimensional travel.
                         I would like to thank us for personally entrusting me with this.
-                        I guess mindless drones don't make for good enough innovators, otherwise we wouldn't individualize for it.
-                        In any case, expedition "Queens Pawn" is ongoing. Last cycle, I sent another drone through to the side 0 using experimental machine D4.
+                        I guess mindless drones don't make for good enough innovators,
+                        """);
+                    add(getS("gb:lr")+"extras_research_1.4.text","""
+                        otherwise we wouldn't individualize for it.
+                        In any case, expedition "Queens Pawn" is ongoing. Last cycle, I sent another drone through to site 0 using experimental machine D4.
                         As expected, communications with the drone have been lost as soon as it left.
                         """);
-                    add(getS("gb:lr")+"lorelog_extras_research_1.3.text","""
+                    add(getS("gb:lr")+"extras_research_1.5.text","""
                         My current theories as to why this happens with this destination only are as follows:
+                        
                         - the destination is vaporisingly hot
                         - the destination is lead-fryingly irradiated
                         - the destination is pressurized akin to a black hole
+                        """);
+                    add(getS("gb:lr")+"extras_research_1.6.text","""
                         - there is a hungry allovorial predator waiting on the other side
                         - time works differently there
                         - only soul-bearers are allowed there
                         """);
-                    add(getS("gb:lr")+"lorelog_extras_research_1.4.text","""
+                    add(getS("gb:lr")+"extras_research_1.7.text","""
                         I will continue to send out drones to find out which of these it is.
                         In the meantime, the side effects of dimensional travel seem to be manageable in the drones that returned from Sol III.
                         A promising sign.
@@ -1204,22 +1230,60 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                     add("item.MODID.lorelog_extras_research_2","Research diary Pt. 2");
                     add("item.MODID.lorelog_extras_research_2.tooltip","Signed: Head Researcher Pentangula");
 
-                    addGBEntryAndInfo(getS("gb:lr")+"lorelog_extras_research_2","Research diary Pt. 2");
-                    add(getS("gb:lr")+"lorelog_extras_research_2.description"  , "Signed: Head Researcher Pentangula");
-                    add(getS("gb:lr")+"lorelog_extras_research_2.1.text","""
+                    addGBEntryAndInfo(getS("gb:lr")+"extras_research_2","Research diary Pt. 2");
+                    add(getS("gb:lr")+"extras_research_2.description"  , "Signed: Head Researcher Pentangula");
+                    add(getS("gb:lr")+"extras_research_2.1.text","""
                         Dear diary,
                         I wish I was an organic.
                         Specially bred Vivocasters with imprinted communication protocols *did* manage to ping us after having entered site 0.
-                        This tells me that organics survive in site 0, but mechanicals don't.
+                        This tells me that organics survive there, but mechanicals don't.
+                        """);
+                    add(getS("gb:lr")+"extras_research_2.2.text","""
                         In order for me to further study site 0, I will have to spend incredible amounts of power and time to breed the necessary specialized observation and transmission Vivocasters.
+                        If I was an organic, I could just waltz in there and explore it myself.
+                        """);
+                    add(getS("gb:lr")+"extras_research_2.3.text","""
+                        P.S.:
+                        I asked us for an instance of L0G-Pro 4.a, and am currently writing in there.
+                        The "Dear diary" at the start of my logs kind of grew on me, so now I'm putting it there myself.
                         """);
                 }
 
                 addGBEntryAndInfo(getS("gb:lr")+"stellge","The Stellge");
                 add(getS("gb:lr")+"stellge.description"  , "");
+                add(getS("gb:lr")+"stellge.info.text","""
+                        I have found something indubitably alien.
+                        Ruins of highly advanced and weirdly geometric spacecraft are littered all over this worlds liveliest areas.
+                        Judging by their mostly intact interior, they were not designed to accommodate living beings.
+                        """);
+                add(getS("gb:lr")+"stellge.2.text","""
+                        As of writing this, it is unclear to me why they were here - and why they no longer are.
+                        \\
+                        Their written language is made of unknown glyphs and symbols.
+                        \\
+                        If I learn more about them, maybe I can decipher their meaning.
+                        """);
+                add(getS("gb:lr")+"stellge.3.text","""
+                        From the marks in their structures, I did manage to at least learn of their name.
+                        \\
+                        \\
+                        They call themselves the "Stellge".
+                        """);
 
                 addGBEntryAndInfo(getS("gb:lr")+"dwarves","The Dwarves");
                 add(getS("gb:lr")+"dwarves.description"  , "");
+                add(getS("gb:lr")+"dwarves.info.text","""
+                        The ruins I have uncovered seem to have been built by a society of miners and blacksmiths.
+                        Their architecture makes heavy use of golden engravings and decoration.
+                        """);
+                add(getS("gb:lr")+"dwarves.2.text","""
+                        The dust and rot present in their ruins suggests that they are long gone.
+                        \\
+                        I wonder what happened to them. There is no visible damage from a potential siege, yet the armories are full of unused weapons.
+                        \\
+                        \\
+                        All the riches are still there, too...
+                        """);
             }
 
             add(getS("gb:sc")+"name", "Soulcasting");
@@ -1228,13 +1292,130 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                 {
                     addGBEntryAndInfo(getS("gb:"+cat)+"revelation","Revelation");
                     add(getS("gb:"+cat)+"revelation.description"  , "");
-                    add(getS("gb:"+cat)+"revelation.info.text", "This type of wood is mesmerizing. Its color is inconsistent. I struggle to look away from it.");
-                    add(getS("gb:"+cat)+"revelation.soul_oak_planks.text", "Mesmerizing.");
+                    add(getS("gb:"+cat)+"revelation.info.text", """
+                            I...understand.
+                            \\
+                            The stellge came here because of the octangulite.
+                            \\
+                            They use it as fuel for machines that can do all sorts of things.
+                            """);
+                    add(getS("gb:"+cat)+"revelation.2.text", """
+                            Octangulite is most abundant in areas with a lot of life in them.
+                            \\
+                            Swamps, jungles, forests...
+                            \\
+                            The answer is souls. Octangulite is made of hundreds of thousands of souls, from all kinds of animals.
+                            \\
+                            Maybe even from microbes or bacteria.
+                            They all come together and manifest physically as octangulite.
+                            """);
+                    add(getS("gb:"+cat)+"revelation.3.text", """
+                            THAT'S why it has been whispering to me, and THAT'S why i feel so drawn to it.
+                            Its collective consciousness wants me to become a part of it, so that it can grow.
+                            """);
+                    add(getS("gb:"+cat)+"revelation.4.text", """
+                            I don't know which is worse: That *this* is what happens to things that die, 
+                            or that the Stellge destroy unthinkable quantities of souls to power their toasters.
+                            """);
+
+                    addGBEntryAndInfo(getS("gb:"+cat)+"spellcomponents","Spell Components");
+                    add(getS("gb:"+cat)+"spellcomponents.description"  , "");
+                    add(getS("gb:"+cat)+"spellcomponents.0.title"  , "Spell Components");
+                    add(getS("gb:"+cat)+"spellcomponents.0.text"  , "These weird hexagonal doodads seem to be able to perform mathematical operations and affect the world, if used correctly.");
+                    add(getS("gb:"+cat)+"spellcomponents.spellcomponent.text"  , "This seems to be the template for all of them.");
 
                     addGBEntryAndInfo(getS("gb:"+cat)+"spellmaker","Spellmaker");
                     add(getS("gb:"+cat)+"spellmaker.description"  , "");
+                    add(getS("gb:"+cat)+"spellmaker.info.text", """
+                            This strange Stellgian machine allows for the creation of "spells".
+                            \\
+                            If I insert a so-called "spell cradle", it opens up and lets me manipulate its component slots. Interesting.
+                            """);
+                    add(getS("gb:"+cat)+"spellmaker.spellmaker_block.text", """
+                            I feel like I'm building something out of fuse beads while using this.
+                            """);
                 }
 
+                addGBEntryAndInfo(getS("gb:sc")+"soulstorage","Soul Storage");
+                add(getS("gb:sc")+"soulstorage.description"  , "");
+                add(getS("gb:sc")+"soulstorage.info.text", """
+                            If I want to cast more complex spells, I will want to be able to afford it.
+                            \\
+                            These mesmerizing doodads will passively draw souls from the environment and keep them until I need them.
+                            """);
+                add(getS("gb:sc")+"soulstorage.soulstorage_small.text", """
+                            Even souls will want to look at a pyramid this colorful.
+                            """);
+                add(getS("gb:sc")+"soulstorage.soulstorage_medium.text", """
+                            Cubes seem to be even more enticing to them than pyramids are.
+                            \\
+                            I wonder if there is an even better shape for this.
+                            """);
+                add(getS("gb:sc")+"soulstorage.soulstorage_large.text", """
+                            This is it.
+                            \\
+                            Spheres are by far the best shape for the purpose of capturing souls.
+                            \\
+                            ...and my gaze.
+                            """);
+
+                addGBEntryAndInfo(getS("gb:sc")+"spellstorage","Spell Storage");
+                add(getS("gb:sc")+"spellstorage.description"  , "");
+                add(getS("gb:sc")+"spellstorage.info.text", """
+                            These unorthodox storage devices can hold components in a hexagonal grid.
+                            \\
+                            Putting them into a glove will let me "run" the components inside and manipulate the world based on how they are arranged.
+                            """);
+                add(getS("gb:sc")+"spellstorage.spellstorage_small.text", """
+                            It's not much, but it will let me do the basics.
+                            """);
+                add(getS("gb:sc")+"spellstorage.spellstorage_medium.text", """
+                            Now we're talking. The possibilities just expanded 10-fold!
+                            """);
+                add(getS("gb:sc")+"spellstorage.spellstorage_large.text", """
+                            These will be solely for convenience most of the time. If I really need that big a grid, I should reconsider.
+                            """);
+
+                addGBEntryAndInfo(getS("gb:sc")+"varstorage","Variable Storage");
+                add(getS("gb:sc")+"varstorage.description"  , "");
+                add(getS("gb:sc")+"varstorage.info.text", """
+                            I have come up with a solution to storing signals for later use, or safekeeping.
+                            \\
+                            These "Varpots" will allow me to save and load signals to it using special spell components.
+                            \\
+                            I may put them into a caster, or keep them on my person. Both work!
+                            """);
+                add(getS("gb:sc")+"varstorage.varstorage_small.text", """
+                            It really doesn't get much smaller than this, but 1 is still a whole lot more than 0.
+                            """);
+                add(getS("gb:sc")+"varstorage.varstorage_medium.text", """
+                            This one can hold four times as many signals as its predecessor!
+                            """);
+                add(getS("gb:sc")+"varstorage.varstorage_large.text", """
+                            If I ever end up needing more than this, I should dive a little deeper into list signals instead.
+                            """);
+
+                addGBEntryAndInfo(getS("gb:sc")+"gloves","Spellgloves");
+                add(getS("gb:sc")+"gloves.description"  , "The tool of a Soulcaster");
+                add(getS("gb:sc")+"gloves.info.text", """
+                            With one of these and a well-built spellcradle, I will be able to cast spells!
+                            \\
+                            I can access the internal storage by shift-right clicking.
+                            \\
+                            Scrolling while sneaking will also change the selected spell.
+                            """);
+                add(getS("gb:sc")+"gloves.novice_glove.text", """
+                            This beauty will let me cast up to 5 different spells!
+                            """);
+                add(getS("gb:sc")+"gloves.apprentice_glove.text", """
+                            A little pricier, but the capacity is now almost twice as big!
+                            """);
+                add(getS("gb:sc")+"gloves.journey_glove.text", """
+                            Double the capacity at two full rows!
+                            """);
+                add(getS("gb:sc")+"gloves.expert_glove.text", """
+                            It doesn't get much better than this.
+                            """);
             }
 
         }
@@ -1259,6 +1440,19 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("geomancy.rei.locked_recipe_type.2","Progress to unlock");
 
             add("geomancy.soulpreview.tooltip.cost","Souls required: %1$f");
+
+            // tags
+            add("#geomancy:casting_item","Casting item");
+            add("#geomancy:component_storing","Stores components");
+            add("#geomancy:fits_in_casters","Fits in casters");
+            add("#geomancy:fits_in_soul_bore","Fits in soul bore");
+            add("#geomancy:jewelry_gems","Jewelry gems");
+            add("#geomancy:octangulite","Octangulite");
+            add("#geomancy:spell_storing","Stores spells");
+            add("#geomancy:stellge_curious","Stellge curious");
+            add("#geomancy:variable_storing","Stores variables");
+            add("#geomancy:molten_gold","Molten gold");
+            add("#geomancy:viscous_fluid","Viscous fluid");
         }
 
         // config
@@ -1363,6 +1557,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         add("MODID.tooltip.spellcomponent."+spell,description);
 
         add(getS("gb:oc")+"spellcomponents."+spell+".text"  , modonomiconDescription);
+        add(getS("gb:sc")+"spellcomponents."+spell+".text"  , modonomiconDescription);
     }
 
     void addAdvancement(String advancement, String name, String description){

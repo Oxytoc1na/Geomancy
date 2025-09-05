@@ -21,55 +21,51 @@
       "use_markdown_in_title": false
     },
     {
-      "type": "modonomicon:spotlight",
+      "type": "geomancy:smithing_recipe",
       "anchor": "",
       "condition": {
         "type": "modonomicon:none"
       },
-      "item": {
-        "item": "geomancy:novice_glove"
-      },
+      "recipe_id_1": "geomancy:smithing_novice_glove",
       "text": "book.geomancy.guidebook.soulcasting.gloves.novice_glove.text",
-      "title": ""
+      "title1": "novice_glove",
+      "title2": ""
     },
     {
-      "type": "modonomicon:spotlight",
+      "type": "geomancy:soulforge_recipe",
       "anchor": "",
       "condition": {
         "type": "modonomicon:advancement",
-        "advancement_id": "geomancy:milestones/soulforge"
+        "advancement_id": "geomancy:milestones/milestone_soulforge"
       },
-      "item": {
-        "item": "geomancy:apprentice_glove"
-      },
+      "recipe_id_1": "geomancy:soulforge_apprentice_glove",
       "text": "book.geomancy.guidebook.soulcasting.gloves.apprentice_glove.text",
-      "title": ""
+      "title1": "apprentice_glove",
+      "title2": ""
     },
     {
-      "type": "modonomicon:spotlight",
+      "type": "geomancy:soulforge_recipe",
       "anchor": "",
       "condition": {
         "type": "modonomicon:advancement",
-        "advancement_id": "geomancy:milestones/soulforge"
+        "advancement_id": "geomancy:milestones/milestone_soulforge"
       },
-      "item": {
-        "item": "geomancy:journey_glove"
-      },
+      "recipe_id_1": "geomancy:soulforge_journey_glove",
       "text": "book.geomancy.guidebook.soulcasting.gloves.journey_glove.text",
-      "title": ""
+      "title1": "journey_glove",
+      "title2": ""
     },
     {
-      "type": "modonomicon:spotlight",
+      "type": "geomancy:soulforge_recipe",
       "anchor": "",
       "condition": {
         "type": "modonomicon:advancement",
-        "advancement_id": "geomancy:milestones/soulforge"
+        "advancement_id": "geomancy:milestones/milestone_soulforge"
       },
-      "item": {
-        "item": "geomancy:expert_glove"
-      },
+      "recipe_id_1": "geomancy:soulforge_expert_glove",
       "text": "book.geomancy.guidebook.soulcasting.gloves.expert_glove.text",
-      "title": ""
+      "title1": "expert_glove",
+      "title2": ""
     }
   ],
   "parents": [
@@ -81,6 +77,6 @@
     }
   ],
   "show_when_any_parent_unlocked": false,
-  "x": -13,
+  "x": -2,
   "y": -3
 }

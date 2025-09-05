@@ -2,6 +2,10 @@
   "background_u_index": 1,
   "background_v_index": 0,
   "category": "geomancy:lore",
+  "condition": {
+    "type": "modonomicon:advancement",
+    "advancement_id": "geomancy:location/octangula"
+  },
   "description": "book.geomancy.guidebook.lore.stellge.description",
   "hide_while_locked": false,
   "icon": {
@@ -18,17 +22,6 @@
       "show_title_separator": true,
       "text": "book.geomancy.guidebook.lore.stellge.info.text",
       "title": "book.geomancy.guidebook.lore.stellge.info.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.geomancy.guidebook.lore.stellge.1.text",
-      "title": "",
       "use_markdown_in_title": false
     },
     {
@@ -55,6 +48,6 @@
     }
   ],
   "show_when_any_parent_unlocked": false,
-  "x": -12,
+  "x": 1,
   "y": -3
 }

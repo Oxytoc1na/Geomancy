@@ -96,6 +96,7 @@ public class ModItems {
 
     public static final LorebookItem LORE_BOOK_EXTRAS_CREATION = register("lorebook_extras_creation",new LorebookItem(new FabricItemSettings(),"lore/extras_creation"),new ExtraItemSettings());
     public static final LorebookItem LORE_LOG_EXTRAS_RESEARCH_1 = register("lorelog_extras_research_1",new LorebookItem(new FabricItemSettings(),"lore/extras_research_1"),new ExtraItemSettings());
+    public static final LorebookItem LORE_LOG_EXTRAS_RESEARCH_2 = register("lorelog_extras_research_2",new LorebookItem(new FabricItemSettings(),"lore/extras_research_2"),new ExtraItemSettings());
 
 
     // music discs

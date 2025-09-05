@@ -21,42 +21,39 @@
       "use_markdown_in_title": false
     },
     {
-      "type": "modonomicon:spotlight",
+      "type": "geomancy:smithing_recipe",
       "anchor": "",
       "condition": {
         "type": "modonomicon:none"
       },
-      "item": {
-        "item": "geomancy:varstorage_small"
-      },
+      "recipe_id_1": "geomancy:smithing_varstorage_small",
       "text": "book.geomancy.guidebook.soulcasting.varstorage.varstorage_small.text",
-      "title": ""
+      "title1": "varstorage_small",
+      "title2": ""
     },
     {
-      "type": "modonomicon:spotlight",
+      "type": "geomancy:soulforge_recipe",
       "anchor": "",
       "condition": {
         "type": "modonomicon:advancement",
-        "advancement_id": "geomancy:milestones/soulforge"
+        "advancement_id": "geomancy:milestones/milestone_soulforge"
       },
-      "item": {
-        "item": "geomancy:varstorage_medium"
-      },
+      "recipe_id_1": "geomancy:soulforge_varstorage_medium",
       "text": "book.geomancy.guidebook.soulcasting.varstorage.varstorage_medium.text",
-      "title": ""
+      "title1": "varstorage_medium",
+      "title2": ""
     },
     {
-      "type": "modonomicon:spotlight",
+      "type": "geomancy:soulforge_recipe",
       "anchor": "",
       "condition": {
         "type": "modonomicon:advancement",
-        "advancement_id": "geomancy:milestones/soulforge"
+        "advancement_id": "geomancy:milestones/milestone_soulforge"
       },
-      "item": {
-        "item": "geomancy:varstorage_large"
-      },
+      "recipe_id_1": "geomancy:soulforge_varstorage_large",
       "text": "book.geomancy.guidebook.soulcasting.varstorage.varstorage_large.text",
-      "title": ""
+      "title1": "varstorage_large",
+      "title2": ""
     }
   ],
   "parents": [
@@ -68,6 +65,6 @@
     }
   ],
   "show_when_any_parent_unlocked": false,
-  "x": -13,
+  "x": -2,
   "y": 1
 }

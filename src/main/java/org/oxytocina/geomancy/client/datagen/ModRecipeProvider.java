@@ -72,6 +72,16 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .criterion(hasItem(LEAD_INGOT), conditionsFromItem(LEAD_INGOT))
                 .offerTo(exporter);
 
+        // smithery
+        ShapedRecipeJsonBuilder.create(
+                        RecipeCategory.TOOLS, SMITHERY, 1)
+                .input('#', Items.GOLD_INGOT)
+                .input('s', Items.IRON_BLOCK)
+                .pattern("##")
+                .pattern("ss")
+                .criterion(hasItem(Items.GOLD_INGOT), conditionsFromItem(Items.GOLD_INGOT))
+                .offerTo(exporter);
+
         // component pouch
         AddSurrounded4(SPELLCOMPONENT,Items.LEATHER,COMPONENT_POUCH,1,RecipeCategory.TOOLS);
 

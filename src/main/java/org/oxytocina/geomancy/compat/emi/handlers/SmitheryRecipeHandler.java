@@ -31,9 +31,14 @@ public class SmitheryRecipeHandler implements StandardRecipeHandler<SmitheryScre
         return handler.slots.subList(0, SmitheryBlockEntity.SLOT_COUNT);
     }
 
+    public static final List<EmiRecipeCategory> SUPPORTED_CATEGORIES = List.of(
+            ModEMIRecipeCategories.SMITHING,
+            ModEMIRecipeCategories.GEODE,
+            VanillaEmiRecipeCategories.CRAFTING
+    );
     @Override
     public boolean supportsRecipe(EmiRecipe recipe) {
         EmiRecipeCategory category = recipe.getCategory();
-        return (category == ModEMIRecipeCategories.SMITHING || category == VanillaEmiRecipeCategories.CRAFTING) && recipe.supportsRecipeTree();
+        return SUPPORTED_CATEGORIES.contains(category) && recipe.supportsRecipeTree();
     }
 }

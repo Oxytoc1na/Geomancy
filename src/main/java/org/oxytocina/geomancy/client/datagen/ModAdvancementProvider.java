@@ -88,6 +88,9 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                 ModItems.LORE_LOG_EXPEDITION_3,
                 ModItems.LORE_LOG_EXPEDITION_4,
                 ModItems.LORE_LOG_EXPEDITION_5,
+                ModItems.LORE_BOOK_EXTRAS_CREATION,
+                ModItems.LORE_LOG_EXTRAS_RESEARCH_1,
+                ModItems.LORE_LOG_EXTRAS_RESEARCH_2
         };
         for (var item : loreItems) {
             AddGetItemAdvancement(null, Registries.ITEM.getId(item).getPath(),item,"lore",AdvancementFrame.TASK,false,true,null);

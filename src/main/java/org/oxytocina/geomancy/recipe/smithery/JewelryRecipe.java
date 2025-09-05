@@ -12,6 +12,7 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.jewelry.IJewelryItem;
 import org.oxytocina.geomancy.items.jewelry.JewelryItem;
@@ -25,6 +26,8 @@ import java.util.List;
 import org.oxytocina.geomancy.items.jewelry.GemSlot;
 
 public class JewelryRecipe extends GatedModRecipe<Inventory> implements SmitheryRecipeI{
+
+    public static final Identifier UNLOCK_IDENTIFIER = null;
 
     protected final SmithingIngredient base;
     protected final int progressRequiredBase;
@@ -240,7 +243,7 @@ public class JewelryRecipe extends GatedModRecipe<Inventory> implements Smithery
 
     @Override
     public ItemStack createIcon() {
-        return new ItemStack(ModItems.IRON_RING);
+        return new ItemStack(ModBlocks.SMITHERY.asItem());
     }
 
     @Override
@@ -260,8 +263,7 @@ public class JewelryRecipe extends GatedModRecipe<Inventory> implements Smithery
 
     @Override
     public Identifier getRecipeTypeUnlockIdentifier() {
-        Geomancy.logError("getRecipeTypeUnlockIdentifier returning null");
-        return null; //UNLOCK_IDENTIFIER;
+        return UNLOCK_IDENTIFIER;
     }
 
     @Override

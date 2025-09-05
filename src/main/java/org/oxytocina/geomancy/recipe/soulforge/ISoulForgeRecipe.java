@@ -4,6 +4,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.recipe.NbtIngredient;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public interface ISoulForgeRecipe {
 
     boolean hasBaseStack();
 
-    List<NbtIngredient> getNbtIngredients(Inventory inv);
+    List<NbtIngredient> getNbtIngredients(@Nullable Inventory inv);
 
     Identifier getIdentifier();
 }

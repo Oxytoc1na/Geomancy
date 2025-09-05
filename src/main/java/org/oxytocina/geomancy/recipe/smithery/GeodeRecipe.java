@@ -17,6 +17,7 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.enchantments.ModEnchantments;
 import org.oxytocina.geomancy.items.GeodeItem;
 import org.oxytocina.geomancy.items.ModItems;
@@ -28,7 +29,9 @@ import java.util.List;
 
 public class GeodeRecipe extends GatedModRecipe<Inventory> implements SmitheryRecipeI{
 
-    protected final SmithingIngredient base;
+    public static final Identifier UNLOCK_IDENTIFIER = null;
+
+    public final SmithingIngredient base;
     protected final int progressRequiredBase;
     protected final int difficulty;
     protected final float difficultyPerMighty;
@@ -64,7 +67,7 @@ public class GeodeRecipe extends GatedModRecipe<Inventory> implements SmitheryRe
 
     @Override
     public ItemStack getOutput(DynamicRegistryManager registryManager) {
-        return null;
+        return ModItems.GEODE_PREVIEW.getDefaultStack();
     }
 
     public List<ItemStack> getOutput(Inventory inv, boolean removeIngredients, boolean preview, ItemStack hammer, LivingEntity hammerer, World world) {
@@ -148,7 +151,7 @@ public class GeodeRecipe extends GatedModRecipe<Inventory> implements SmitheryRe
 
     @Override
     public ItemStack createIcon() {
-        return new ItemStack(ModItems.STONE_GEODE);
+        return new ItemStack(ModBlocks.SMITHERY.asItem());
     }
 
     @Override
@@ -168,8 +171,7 @@ public class GeodeRecipe extends GatedModRecipe<Inventory> implements SmitheryRe
 
     @Override
     public Identifier getRecipeTypeUnlockIdentifier() {
-        Geomancy.logError("getRecipeTypeUnlockIdentifier returning null");
-        return null; //UNLOCK_IDENTIFIER;
+        return UNLOCK_IDENTIFIER;
     }
 
     @Override

@@ -27,6 +27,8 @@ public class ModEMIPlugin implements EmiPlugin {
         registry.addWorkstation(ModEMIRecipeCategories.SMITHING, EmiStack.of(ModBlocks.SMITHERY));
         registry.addCategory(ModEMIRecipeCategories.SOUL_FORGE);
         registry.addWorkstation(ModEMIRecipeCategories.SOUL_FORGE, EmiStack.of(ModBlocks.SOUL_FORGE));
+        registry.addCategory(ModEMIRecipeCategories.GEODE);
+        registry.addWorkstation(ModEMIRecipeCategories.GEODE, EmiStack.of(ModBlocks.SMITHERY));
     }
 
     public void registerRecipes(EmiRegistry registry) {
@@ -37,6 +39,7 @@ public class ModEMIPlugin implements EmiPlugin {
         //addAll(registry, RecipeType.CRAFTING, ShapelessGatedCraftingEMIRecipe::new);
 
         addAll(registry, ModRecipeTypes.SMITHING, SmitheryEMIRecipe::new);
+        addAll(registry, ModRecipeTypes.GEODE, GeodeEMIRecipe::new);
         addAll(registry, ModRecipeTypes.SOULFORGE_SIMPLE, SoulForgeEMIRecipe::new);
 
     }

@@ -12,6 +12,7 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.recipe.CountIngredient;
 import org.oxytocina.geomancy.recipe.GatedModRecipe;
@@ -21,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SmitheryRecipe extends GatedModRecipe<Inventory> implements SmitheryRecipeI{
+
+    public static final Identifier UNLOCK_IDENTIFIER = null;
 
     protected final DefaultedList<SmithingIngredient> inputs;
     protected final ItemStack output;
@@ -189,7 +192,7 @@ public class SmitheryRecipe extends GatedModRecipe<Inventory> implements Smither
 
     @Override
     public ItemStack createIcon() {
-        return new ItemStack(ModItems.IRON_HAMMER);
+        return new ItemStack(ModBlocks.SMITHERY.asItem());
     }
 
     @Override
@@ -205,8 +208,7 @@ public class SmitheryRecipe extends GatedModRecipe<Inventory> implements Smither
 
     @Override
     public Identifier getRecipeTypeUnlockIdentifier() {
-        Geomancy.logError("getRecipeTypeUnlockIdentifier returning null");
-        return null; //UNLOCK_IDENTIFIER;
+        return UNLOCK_IDENTIFIER;
     }
 
     @Override
