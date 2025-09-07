@@ -16,6 +16,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 import org.joml.Vector2i;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlockEntity;
@@ -92,6 +93,11 @@ public class SpellGrid {
                     AutocasterBlockEntity blockEntity,CasterDelegateEntity delegate, SpellBlockArgs args,
                     SpellContext.SoundBehavior soundBehavior, boolean activatedByHotkey){
         long startTime = System.nanoTime();
+        World world = casterEntity!=null?casterEntity.getWorld() : blockEntity!=null?blockEntity.getWorld() : delegate!=null?delegate.getWorld():null;
+
+        // check restrictions
+        SpellContext.Restrictions restrictions = SpellContext.Restrictions.NONE;
+
 
         float costMultiplier = soulCostMultiplier;
         if(casterEntity!=null&&casterEntity.hasStatusEffect(ModStatusEffects.REGRETFUL))
@@ -104,6 +110,7 @@ public class SpellGrid {
         context.activatedByHotkey = activatedByHotkey;
         context.refreshAvailableSoul();
         context.internalVars = args;
+        context.setRestrictions(restrictions);
 
         try{
             for (var comp : components.values())

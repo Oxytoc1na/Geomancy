@@ -93,6 +93,7 @@ x copper : engineers
 
 PROGRAMMING
 TODO PREMADE SPELLS
+- jumpscare (particles and playsound)
 
 TODO EFFECT BLOCKS
 - taming entities
@@ -118,9 +119,7 @@ TODO MODONOMICON
 
 TODO textures
 - status effects
-- autocaster
-- glove
-- precomp machine
+- master glove
 - stellge caster
 
 TODO ITEMS
@@ -135,7 +134,6 @@ TODO ITEMS
 TODO DEBUG
 - make foreach affected by depth
 - pool sent packets to improve performance
-- stellge caster direction
 
 TODO ADVANCEMENTS
 - casting spells
@@ -206,6 +204,26 @@ start
 -> smithing a basic spellglove
 -> activate component unlocked
 -> ritualistic forge unlocked
+
+"Exodia" spell quest chain
+- the "exodia" spell is a theoretical soulcasting apparatus that activates certain  highly specialized
+components in a specific order while fulfilling certain requirements for each one.
+successfully casting the "exodia" spell allows for communication with the over-gods in the null dimension
+and unlocks geomancys endgame content.
+components in order of progression:
+- ?1: unlocked from a recipe in a stellgian lore book (prospecting studies) found in the digsite overworld structure
+-- activation requirements: activate while in a location with 1000+ ambient souls
+- ?2: unlocked from a recipe in a stellgian lore book (dimensional exploration) found in a nether bastion
+-- activation requirements: provide a list signal containing you, the number -23, and the position of you with y=-64
+- ?3: unlocked from a recipe in a lore book of unknown origin (dwarven cult) found in an ancient city
+-- activation requirements: play the enderdragon death sound event while standing in an ancient city
+-- this will inevitably anger the skulk sensors in the area and summon a warden
+- ?4: unlocked from a recipe in a stellgian lore book (dimensional outer rim studies) found in an end city
+-- activation requirements: cast while so deep in the void that you'll take damage if you stay
+- ?5: unlocked from researching a big structure found in the null dimension
+-- activation requirements: summon lightning ontop of the roof of the null dimension
+-- if all other exodia components have successfully been triggered by the caster, this
+lets them achieve enlightenment and have a vision of the over-deities communing with them.
 
 ender dragon defeated
 -> dimhop component unlocked, crafted at ritualistic forge

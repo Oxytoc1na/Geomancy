@@ -58,6 +58,12 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         Advancement milestone_smithery = AddOrMilestoneAdvancement("smithery", List.of("geomancy:interaction/simple_smithery"),ModBlocks.SMITHERY,Geomancy.locate("textures/block/gilded_deepslate.png"));
         Advancement milestone_souls = AddAndMilestoneAdvancement("souls", List.of("geomancy:main/simple_maddened","geomancy:main/get_spellmaker"),ModBlocks.SMITHERY,Geomancy.locate("textures/block/octangulite_block.png"));
         Advancement milestone_soulforge = AddOrMilestoneAdvancement("soulforge", List.of("geomancy:interaction/simple_soulforge"),ModBlocks.SOUL_FORGE,Geomancy.locate("textures/block/orthoclase_block.png"));
+        var enlightenmentList = List.of(
+                "geomancy:main/simple_enlightenment_1","geomancy:main/simple_enlightenment_2","geomancy:main/simple_enlightenment_3",
+                "geomancy:main/simple_enlightenment_4","geomancy:main/simple_enlightenment_5"
+        );
+        Advancement milestone_enlightenment = AddAndMilestoneAdvancement("enlightenment",enlightenmentList ,ModItems.SOUL_PREVIEW,Geomancy.locate("textures/block/orthoclase_block.png"));
+        Advancement milestone_any_enlightenment = AddOrMilestoneAdvancement("enlightenment",enlightenmentList,ModItems.SOUL_PREVIEW,Geomancy.locate("textures/block/orthoclase_block.png"));
 
         Advancement got_molten_gold = AddGetItemAdvancement(ModFluids.MOLTEN_GOLD_BUCKET,"molten_gold",ModFluids.MOLTEN_GOLD_BUCKET,"main",AdvancementFrame.CHALLENGE,true,false,main);
         Advancement got_mithril = AddGetItemAdvancement(ModItems.RAW_MITHRIL,"mithril",ModItems.RAW_MITHRIL,"main",AdvancementFrame.TASK,true,false,main);
@@ -73,6 +79,11 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         Advancement simple_tried_to_smith_cold_forge = AddSimpleAdvancement(ModItems.GOLDEN_HAMMER,"tried_to_smith_cold_forge","tried_to_smith_cold_forge","main",AdvancementFrame.TASK,true,true,simple_tried_to_take_smithery_result);
         Advancement simple_lead_poisoned = AddSimpleAdvancement(ModItems.RAW_LEAD,"lead_poisoned","lead_poisoned","main",AdvancementFrame.TASK,true,true,got_lead);
         Advancement simple_maddened = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"maddened","maddened","main",AdvancementFrame.TASK,true,true,got_octangulite);
+        Advancement enlightenment_1 = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"enlightenment_1","enlightenment","main",AdvancementFrame.CHALLENGE,true,true,milestone_souls);
+        Advancement enlightenment_2 = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"enlightenment_2","enlightenment","main",AdvancementFrame.CHALLENGE,true,true,milestone_souls);
+        Advancement enlightenment_3 = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"enlightenment_3","enlightenment","main",AdvancementFrame.CHALLENGE,true,true,milestone_souls);
+        Advancement enlightenment_4 = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"enlightenment_4","enlightenment","main",AdvancementFrame.CHALLENGE,true,true,milestone_souls);
+        Advancement enlightenment_5 = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"enlightenment_5","enlightenment","main",AdvancementFrame.CHALLENGE,true,true,milestone_souls);
 
         // lore
         var loreItems = new Item[]{

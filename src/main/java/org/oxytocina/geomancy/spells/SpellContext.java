@@ -3,8 +3,7 @@ package org.oxytocina.geomancy.spells;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.server.world.ServerWorld;
@@ -19,7 +18,6 @@ import org.oxytocina.geomancy.entity.CasterDelegateEntity;
 import org.oxytocina.geomancy.items.CastingTrinketItem;
 import org.oxytocina.geomancy.items.ISpellSelectorItem;
 import org.oxytocina.geomancy.items.armor.CastingArmorItem;
-import org.oxytocina.geomancy.items.tools.SoulCastingItem;
 import org.oxytocina.geomancy.util.EntityUtil;
 import org.oxytocina.geomancy.util.SoulUtil;
 import org.oxytocina.geomancy.util.Toolbox;
@@ -39,6 +37,7 @@ public class SpellContext {
     public boolean debugging = false;
     public boolean silent = false;
     public boolean invisible = false;
+    private Restrictions restrictions = Restrictions.NONE; /// for use in caster dungeons to prevent teleport spells from working
     public int depthLimit = 100;
     public int baseDepth = 0;
     public int highestRecordedDepth = 0;
@@ -151,8 +150,7 @@ public class SpellContext {
     }
 
     public float getSoulConsumed(){
-        if(isChild()) return parentCall.getSoulConsumed();
-        return soulConsumed;
+        return root().soulConsumed;
     }
 
     public boolean tryConsumeSoul(float amount){
@@ -381,8 +379,7 @@ public class SpellContext {
     }
 
     public boolean isActivatedByHotkey(){
-        if(isChild()) return parentCall.isActivatedByHotkey();
-        return activatedByHotkey;
+        return root().activatedByHotkey;
     }
 
     public Vec3d getMuzzlePos() {
@@ -423,6 +420,14 @@ public class SpellContext {
         return this;
     }
 
+    public Restrictions restrictions(){
+        return root().restrictions;
+    }
+
+    public void setRestrictions(Restrictions restrictions){
+        root().restrictions =restrictions;
+    }
+
     public enum SourceType{
         Caster,
         Block,
@@ -438,5 +443,32 @@ public class SpellContext {
         Full,
         Reduced,
         Silent
+    }
+
+    public enum Restrictions {
+        NONE("none",true,true),
+        DUNGEON("dungeon",false,false);
+
+        private final String name;
+        private final boolean allowTeleports;
+        private final boolean allowBlockManipulation;
+
+        private Restrictions(String name, boolean allowTeleports, boolean allowBlockManipulation) {
+            this.name = name;
+            this.allowTeleports = allowTeleports;
+            this.allowBlockManipulation = allowBlockManipulation;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+
+        public boolean allowsTeleports() {
+            return allowTeleports;
+        }
+
+        public boolean allowsBlockManipulation() {
+            return allowBlockManipulation;
+        }
     }
 }

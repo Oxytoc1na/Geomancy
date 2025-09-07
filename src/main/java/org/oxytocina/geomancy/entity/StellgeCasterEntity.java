@@ -87,7 +87,13 @@ public class StellgeCasterEntity extends StellgeEntity implements RangedAttackMo
                             .conf(SpellComponent.confBuilder("se","speed").mode(SpellComponent.SideConfig.Mode.Input))
                             .conf(SpellComponent.confBuilder("sw","power").mode(SpellComponent.SideConfig.Mode.Input))
                     )
-                    .add(SpellComponent.builder(SpellBlocks.POS_CASTER).pos(2,1).conf(SpellComponent.confBuilder("sw").mode(SpellComponent.SideConfig.Mode.Output)))
+                    .add(SpellComponent.builder(SpellBlocks.SUM).pos(2,1)
+                            .conf(SpellComponent.confBuilder("sw").mode(SpellComponent.SideConfig.Mode.Output))
+                            .conf(SpellComponent.confBuilder("e","a").mode(SpellComponent.SideConfig.Mode.Input))
+                            .conf(SpellComponent.confBuilder("ne","b").mode(SpellComponent.SideConfig.Mode.Input))
+                    )
+                    .add(SpellComponent.builder(SpellBlocks.EYEPOS_CASTER).pos(3,1).conf(SpellComponent.confBuilder("w").mode(SpellComponent.SideConfig.Mode.Output)))
+                    .add(SpellComponent.builder(SpellBlocks.DIR_CASTER).pos(3,0).conf(SpellComponent.confBuilder("sw").mode(SpellComponent.SideConfig.Mode.Output)))
                     .add(SpellComponent.builder(SpellBlocks.DIR_CASTER).pos(3,2).conf(SpellComponent.confBuilder("w").mode(SpellComponent.SideConfig.Mode.Output)))
                     .add(SpellComponent.builder(SpellBlocks.CONST_NUM).param("val",1).pos(2,3).conf(SpellComponent.confBuilder("nw").mode(SpellComponent.SideConfig.Mode.Output)))
                     .add(SpellComponent.builder(SpellBlocks.CONST_NUM).param("val",1).pos(1,3).conf(SpellComponent.confBuilder("ne").mode(SpellComponent.SideConfig.Mode.Output)))
@@ -128,6 +134,8 @@ public class StellgeCasterEntity extends StellgeEntity implements RangedAttackMo
         var stack = getEquippedStack(EquipmentSlot.MAINHAND);
         if(stack.isEmpty()) return;
         if(!(stack.getItem() instanceof SoulCastingItem cs)) return;
+        // force looking at target
+        this.lookAtEntity(target,360,360);
         cs.cast(stack,this);
     }
 }

@@ -30,6 +30,7 @@ import net.minecraft.util.math.*;
 import net.minecraft.world.*;
 import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlock;
+import org.oxytocina.geomancy.blocks.blockEntities.RestrictorBlockEntity;
 import org.oxytocina.geomancy.blocks.blockEntities.SoulForgeBlock;
 import org.oxytocina.geomancy.inventories.ImplementedInventory;
 import org.oxytocina.geomancy.items.ISpellSelectorItem;
@@ -1329,6 +1330,8 @@ public class SpellBlocks {
                         if(trySpendSoul(comp,manaCost)){
                             //comp.world().setBlockState(Toolbox.posToBlockPos(pos), Blocks.GLOWSTONE.getDefaultState());
                             spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,ent.getPos()));
+                            RestrictorBlockEntity.registerPFA(RestrictorBlockEntity.PotentiallyForbiddenAction.createTeleport(
+                                    comp.context,ent.getPos(),pos));
                             ent.teleport(pos.x,pos.y,pos.z);
                             spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
                         }
@@ -1378,6 +1381,8 @@ public class SpellBlocks {
 
                         if(trySpendSoul(comp,manaCost)){
                             spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,ent.getPos()));
+                            RestrictorBlockEntity.registerPFA(RestrictorBlockEntity.PotentiallyForbiddenAction.createDimhop(
+                                    comp.context,comp.world().getRegistryKey().getValue(),destinationID));
                             ent.teleport(destination,ent.getX(),ent.getY(),ent.getZ(),null,ent.getYaw(),ent.getPitch());
                         }
                         else{

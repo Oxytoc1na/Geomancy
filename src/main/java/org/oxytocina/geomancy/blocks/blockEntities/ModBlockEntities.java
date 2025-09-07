@@ -22,6 +22,8 @@ public class ModBlockEntities {
             FabricBlockEntityTypeBuilder.create(SoulForgeBlockEntity::new,ModBlocks.SOUL_FORGE).build());
     public static final BlockEntityType<PedestalBlockEntity> PEDESTAL_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE,Geomancy.locate("pedestal_be"),
             FabricBlockEntityTypeBuilder.create(PedestalBlockEntity::new,ModBlocks.PEDESTAL).build());
+    public static final BlockEntityType<RestrictorBlockEntity> RESTRICTOR_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE,Geomancy.locate("restrictor_be"),
+            FabricBlockEntityTypeBuilder.create(RestrictorBlockEntity::new,ModBlocks.RESTRICTOR).build());
 
     public static void register() {
 
