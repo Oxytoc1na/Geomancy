@@ -79,11 +79,6 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         Advancement simple_tried_to_smith_cold_forge = AddSimpleAdvancement(ModItems.GOLDEN_HAMMER,"tried_to_smith_cold_forge","tried_to_smith_cold_forge","main",AdvancementFrame.TASK,true,true,simple_tried_to_take_smithery_result);
         Advancement simple_lead_poisoned = AddSimpleAdvancement(ModItems.RAW_LEAD,"lead_poisoned","lead_poisoned","main",AdvancementFrame.TASK,true,true,got_lead);
         Advancement simple_maddened = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"maddened","maddened","main",AdvancementFrame.TASK,true,true,got_octangulite);
-        Advancement enlightenment_1 = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"enlightenment_1","enlightenment","main",AdvancementFrame.CHALLENGE,true,true,milestone_souls);
-        Advancement enlightenment_2 = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"enlightenment_2","enlightenment","main",AdvancementFrame.CHALLENGE,true,true,milestone_souls);
-        Advancement enlightenment_3 = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"enlightenment_3","enlightenment","main",AdvancementFrame.CHALLENGE,true,true,milestone_souls);
-        Advancement enlightenment_4 = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"enlightenment_4","enlightenment","main",AdvancementFrame.CHALLENGE,true,true,milestone_souls);
-        Advancement enlightenment_5 = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"enlightenment_5","enlightenment","main",AdvancementFrame.CHALLENGE,true,true,milestone_souls);
 
         // lore
         var loreItems = new Item[]{
@@ -142,6 +137,12 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         Advancement spell_ulterior_motives = AddSimpleAdvancement(Items.WRITABLE_BOOK,"ulterior_motives","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
         Advancement spell_build_big =   AddSimpleAdvancement(Items.CHEST,"build_big","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
         Advancement spell_deconsciousness =   AddSimpleAdvancement(Items.SOUL_CAMPFIRE,"deconsciousness","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement enlightenment_1 = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"enlightenment_1","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement enlightenment_2 = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"enlightenment_2","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement enlightenment_3 = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"enlightenment_3","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement enlightenment_4 = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"enlightenment_4","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement enlightenment_5 = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"enlightenment_5","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+
     }
     private Advancement AddGetItemAdvancement(ItemConvertible item,String name, ItemConvertible conditionItem, String category, AdvancementFrame frame, boolean announce, boolean hidden, Advancement parent){
         return AddGetItemAdvancement(item,name,new Item[]{conditionItem.asItem()},category,frame,announce,hidden,parent);

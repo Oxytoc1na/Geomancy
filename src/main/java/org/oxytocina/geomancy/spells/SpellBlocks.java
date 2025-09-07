@@ -36,6 +36,7 @@ import org.oxytocina.geomancy.inventories.ImplementedInventory;
 import org.oxytocina.geomancy.items.ISpellSelectorItem;
 import org.oxytocina.geomancy.items.armor.CastingArmorItem;
 import org.oxytocina.geomancy.items.tools.IVariableStoringItem;
+import org.oxytocina.geomancy.registries.ModDamageTypes;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
 import org.oxytocina.geomancy.util.*;
@@ -165,6 +166,13 @@ public class SpellBlocks {
     public static final SpellBlock ENTITIES_NEAR;
     public static final SpellBlock BLOCK_BOX;
     public static final SpellBlock RAYCAST_MARCH;
+
+    // ancient
+    public static final SpellBlock EXODIA_1;
+    public static final SpellBlock EXODIA_2;
+    public static final SpellBlock EXODIA_3;
+    public static final SpellBlock EXODIA_4;
+    public static final SpellBlock EXODIA_5;
 
     private static final HashMap<Identifier, ImbueData> imbueData = new HashMap();
     private static final List<TransmuteData> transmuteData = new ArrayList<>();
@@ -1328,11 +1336,26 @@ public class SpellBlocks {
                                 +normalCastOffsetSoulCost(comp,pos);
 
                         if(trySpendSoul(comp,manaCost)){
+                            // check if restricted
+                            boolean allowed = true;
+                            if(comp.context.caster instanceof ServerPlayerEntity spe){
+                                var restrictions = RestrictorBlockEntity.getRestrictionsFor(spe);
+                                if(!restrictions.allowsTeleports()){
+                                    // disallowed action, punish!
+                                    allowed = false;
+                                    spe.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS,5));
+                                    spe.damage(ModDamageTypes.of(comp.context.getWorld(),ModDamageTypes.RESTRICTED_ACTION),4);
+                                    ParticleUtil.ParticleData.createRestrictedAction(comp.context.getWorld(),spe.getEyePos()).send();
+                                    tryLogDebugRestricted(comp);
+                                }
+                            }
+                            if(allowed){
+                                RestrictorBlockEntity.registerPFA(RestrictorBlockEntity.PotentiallyForbiddenAction.createTeleport(
+                                        comp.context,ent.getPos(),pos));
+                                ent.teleport(pos.x,pos.y,pos.z);
+                            }
                             //comp.world().setBlockState(Toolbox.posToBlockPos(pos), Blocks.GLOWSTONE.getDefaultState());
                             spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,ent.getPos()));
-                            RestrictorBlockEntity.registerPFA(RestrictorBlockEntity.PotentiallyForbiddenAction.createTeleport(
-                                    comp.context,ent.getPos(),pos));
-                            ent.teleport(pos.x,pos.y,pos.z);
                             spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
                         }
                         else{
@@ -1380,10 +1403,24 @@ public class SpellBlocks {
                         if(sw.getRegistryKey() == destination.getRegistryKey()) return SpellBlockResult.empty();
 
                         if(trySpendSoul(comp,manaCost)){
+                            boolean allowed = true;
+                            if(comp.context.caster instanceof ServerPlayerEntity spe){
+                                var restrictions = RestrictorBlockEntity.getRestrictionsFor(spe);
+                                if(!restrictions.allowsTeleports()){
+                                    // disallowed action, punish!
+                                    allowed = false;
+                                    spe.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS,5));
+                                    spe.damage(ModDamageTypes.of(comp.context.getWorld(),ModDamageTypes.RESTRICTED_ACTION),4);
+                                    ParticleUtil.ParticleData.createRestrictedAction(comp.context.getWorld(),spe.getEyePos()).send();
+                                    tryLogDebugRestricted(comp);
+                                }
+                            }
+                            if(allowed) {
+                                RestrictorBlockEntity.registerPFA(RestrictorBlockEntity.PotentiallyForbiddenAction.createDimhop(
+                                        comp.context,comp.world().getRegistryKey().getValue(),destinationID));
+                                ent.teleport(destination,ent.getX(),ent.getY(),ent.getZ(),null,ent.getYaw(),ent.getPitch());
+                            }
                             spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,ent.getPos()));
-                            RestrictorBlockEntity.registerPFA(RestrictorBlockEntity.PotentiallyForbiddenAction.createDimhop(
-                                    comp.context,comp.world().getRegistryKey().getValue(),destinationID));
-                            ent.teleport(destination,ent.getX(),ent.getY(),ent.getZ(),null,ent.getYaw(),ent.getPitch());
                         }
                         else{
                             // too broke
@@ -2897,6 +2934,16 @@ public class SpellBlocks {
                     })
                     .category(cat).build());
         }
+
+        // ancient
+        cat = SpellBlock.Category.Ancient;
+        {
+            EXODIA_1 = SpellBlocks2.EXODIA_1;
+            EXODIA_2 = SpellBlocks2.EXODIA_2;
+            EXODIA_3 = SpellBlocks2.EXODIA_3;
+            EXODIA_4 = SpellBlocks2.EXODIA_4;
+            EXODIA_5 = SpellBlocks2.EXODIA_5;
+        }
     }
 
     private static void tryUnlockSpellAdvancement(SpellComponent comp, String name) {
@@ -2980,7 +3027,7 @@ public class SpellBlocks {
         logDebug(ctx.caster,Text.translatable("geomancy.spells.debug.depthlimit",ctx.grid.getRuntimeName(ctx)));
     }
 
-    private static void tryLogDebugBroke(SpellComponent comp,float cost){
+    public static void tryLogDebugBroke(SpellComponent comp,float cost){
         tryLogDebug(comp,Text.translatable("geomancy.spells.debug.broke",comp.getRuntimeName(),cost,comp.context.availableSoul));
     }
 
@@ -3028,11 +3075,16 @@ public class SpellBlocks {
                 comp.getRuntimeName(),vol));
     }
 
+    public static void tryLogDebugRestricted(SpellComponent comp){
+        tryLogDebug(comp,Text.translatable("geomancy.spells.debug.restricted",
+                comp.getRuntimeName()));
+    }
+
     public static void tryLogDebugTimedOut(SpellContext context) {
         if(context.debugging)logDebug(context.caster,Text.translatable("geomancy.spells.debug.timeout",context.grid.getRuntimeName(context),context.getExecutionTimeMS()));
     }
 
-    private static void spawnCastParticles(SpellComponent comp,ParticleUtil.ParticleData data){
+    public static void spawnCastParticles(SpellComponent comp,ParticleUtil.ParticleData data){
         if(comp.context.showsParticles())
             data.send();
     }
@@ -3056,23 +3108,23 @@ public class SpellBlocks {
         },1,0.8f+Toolbox.random.nextFloat()*0.4f);
     }
 
-    private static boolean trySpendSoul(SpellComponent comp, float amount){
+    public static boolean trySpendSoul(SpellComponent comp, float amount){
         return comp.context.tryConsumeSoul(amount);
     }
 
-    private static boolean canAfford(SpellComponent comp, float amount){
+    public static boolean canAfford(SpellComponent comp, float amount){
         return comp.context.canAfford(amount);
     }
 
-    private static float castOffsetSoulCost(SpellComponent comp, Vec3d pos, float perBlock){
+    public static float castOffsetSoulCost(SpellComponent comp, Vec3d pos, float perBlock){
         return distanceToCaster(comp.context,pos)*perBlock;
     }
 
-    private static float normalCastOffsetSoulCost(SpellComponent comp, Vec3d pos){
+    public static float normalCastOffsetSoulCost(SpellComponent comp, Vec3d pos){
         return castOffsetSoulCost(comp,pos,0.1f);
     }
 
-    private static float distanceToCaster(SpellContext context, Vec3d pos){
+    public static float distanceToCaster(SpellContext context, Vec3d pos){
         return (float)context.getOriginPos().subtract(pos).length();
     }
 
@@ -3097,16 +3149,6 @@ public class SpellBlocks {
 
     public static SpellBlockResult mirrorInToOut(SpellComponent comp, SpellBlockArgs vars){
         return new SpellBlockResult(vars);
-    }
-
-    public static SpellComponent.SideConfig[] freeformSideConfigs(SpellComponent comp,String var){
-        SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
-        for (int i = 0; i < 6; i++) {
-            res[i] = SpellComponent.SideConfig.createFreeform(comp
-                    ,SpellComponent.directions[i]);
-            res[i].varName=var;
-        }
-        return res;
     }
 
     public static boolean canImbueEffect(String effect){

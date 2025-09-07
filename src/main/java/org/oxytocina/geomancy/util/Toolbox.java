@@ -308,4 +308,8 @@ public class Toolbox {
     public static int roundWithChance(float v){
         return Math.round(v-(v%1) + (random.nextFloat()<(v%1)?1:0));
     }
+
+    public static String reverseString(String s){
+        return new StringBuilder(s).reverse().toString();
+    }
 }

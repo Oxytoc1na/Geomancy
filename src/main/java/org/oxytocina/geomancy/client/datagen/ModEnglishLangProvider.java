@@ -97,6 +97,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.spellcomponent.category.effector",       "Effector");
             add("MODID.spellcomponent.category.reference",      "Reference");
             add("MODID.spellcomponent.category.lists",          "Lists");
+            add("MODID.spellcomponent.category.ancient",        "Ancient");
 
             // flow control
             addSpell("conveyor","Conveyor","outputs its input");
@@ -223,6 +224,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.spells.debug.depthlimit","Component %1$s: Depth limit reached!");
             add("MODID.spells.debug.timeout","Spell %1$s Timed out! Time taken: %2$sms");
             add("MODID.spells.debug.player_variables_disallowed","Component %1$s: Loading player variables is disallowed on this server!");
+            add("MODID.spells.debug.restricted","Component %1$s: The desired action is restricted here!");
 
 
             add("MODID.caster.nospells","No spells installed");
@@ -604,6 +606,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         add("death.attack.geomancy.duplicate_trinkets", "%1$s felt their own hubris");
         add("death.attack.geomancy.molten_gold", "%1$s fell into King Midas' bathtub");
         add("death.attack.geomancy.plumbometer", "%1$s died of Hypochondria");
+        add("death.attack.geomancy.restricted_action", "%1$s was caught trespassing");
 
         // Misc
         {

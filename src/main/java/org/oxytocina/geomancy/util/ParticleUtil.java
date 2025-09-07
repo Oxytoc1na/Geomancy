@@ -86,6 +86,9 @@ public class ParticleUtil {
         public static ParticleData createGeneric(World world, ParticleType<?> type, Vec3d pos, Vec3d vel, int count, float disp){
             return create(world,pos).type(Type.GENERIC).amount(count).dispersion(disp).vel(vel,vel).data(Registries.PARTICLE_TYPE.getId(type).toString());
         }
+        public static ParticleData createRestrictedAction(World world, Vec3d where){
+            return create(world,where).type(Type.RESTRICTED_ACTION).amount(20).dispersion(0.75f).vel(new Vec3d(-0.2,-0.2,-0.2), new Vec3d(0.2,0.2,0.2));
+        }
 
         
         public static ParticleData create(World world, Vec3d pos){
@@ -205,6 +208,10 @@ public class ParticleUtil {
                         }
                         break;
                     }
+                    case RESTRICTED_ACTION:{
+                        worldObj.addParticle(ParticleTypes.SQUID_INK,pPos.x,pPos.y,pPos.z,0,0,0);
+                        break;
+                    }
                 }
             }
         }
@@ -221,6 +228,7 @@ public class ParticleUtil {
             INSTABILITY,
             FORGE_CONSUME,
             GENERIC,
+            RESTRICTED_ACTION,
         }
     }
 }

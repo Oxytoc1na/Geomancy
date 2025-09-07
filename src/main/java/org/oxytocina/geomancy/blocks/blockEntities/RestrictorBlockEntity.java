@@ -2,6 +2,9 @@ package org.oxytocina.geomancy.blocks.blockEntities;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
@@ -9,6 +12,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -24,6 +28,8 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.inventories.ImplementedInventory;
+import org.oxytocina.geomancy.registries.ModDamageTypes;
+import org.oxytocina.geomancy.spells.SpellBlocks;
 import org.oxytocina.geomancy.spells.SpellContext;
 import org.oxytocina.geomancy.util.*;
 
@@ -77,6 +83,9 @@ public class RestrictorBlockEntity extends BlockEntity {
                 case Teleport : {
                     if(ctx.caster==null || ctx.caster.isRemoved()) break;
                     ctx.caster.teleport(from.x,from.y,from.z);
+                    ctx.caster.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS,5));
+                    ctx.caster.damage(ModDamageTypes.of(ctx.getWorld(),ModDamageTypes.RESTRICTED_ACTION),4);
+                    ParticleUtil.ParticleData.createRestrictedAction(ctx.getWorld(),ctx.caster.getEyePos()).send();
                     break;
                 }
                 case Dimhop: {
@@ -86,6 +95,9 @@ public class RestrictorBlockEntity extends BlockEntity {
                     from = ctx.getOriginPos();
                     var ent = ctx.caster;
                     ent.teleport(destination,from.x,from.y,from.z,null,ent.getYaw(),ent.getPitch());
+                    ctx.caster.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS,5));
+                    ctx.caster.damage(ModDamageTypes.of(ctx.getWorld(),ModDamageTypes.RESTRICTED_ACTION),4);
+                    ParticleUtil.ParticleData.createRestrictedAction(ctx.getWorld(),ctx.caster.getEyePos()).send();
                     break;
                 }
             }

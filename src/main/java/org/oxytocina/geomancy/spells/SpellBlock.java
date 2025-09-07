@@ -341,6 +341,7 @@ public class SpellBlock {
         Arithmetic,
         Effector,
         Reference,
-        Lists
+        Lists,
+        Ancient
     }
 }
