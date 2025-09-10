@@ -623,114 +623,14 @@ public class SpellmakerScreenHandler extends ScreenHandler {
             // render component
             var component = currentGrid.getComponent(drawPositionIndices.get(i));
             if(component!=null){
-                var fgTexture = component.getHexFrontTexture();
-                var bgTexture = component.getHexBackTexture();
-                RenderSystem.setShaderColor(1,1,1,1);
-
-                DrawHelper.drawTexture(context.getMatrices(),bgTexture,
-                        drawPositions.get(i).x,
-                        drawPositions.get(i).y,
-                        scaledHexWidth,
-                        scaledHexHeight,
-                        (hexBGTextureSize-hexWidth)/2f,
-                        0,
-                        hexWidth,
-                        hexBGTextureSize,
-                        hexBGTextureSize,
-                        hexBGTextureSize
-                );
-
-                DrawHelper.drawTexture(context.getMatrices(),fgTexture,
-                        drawPositions.get(i).x,
-                        drawPositions.get(i).y,
-                        scaledHexWidth,
-                        scaledHexHeight,
-                        (hexBGTextureSize-hexWidth)/2f,
-                        0,
-                        hexWidth,
-                        hexBGTextureSize,
-                        hexBGTextureSize,
-                        hexBGTextureSize
-                );
-
-                // render side configs
-                for (var conf : component.sideConfigs){
-                    var tex = conf.getTexture();
-                    if(tex!=null){
-                        conf.setShaderColor();
-                        DrawHelper.drawTexture(context.getMatrices(),
-                                tex,
-                                drawPositions.get(i).x,
-                                drawPositions.get(i).y,
-                                scaledHexWidth,
-                                scaledHexHeight,
-                                (hexBGTextureSize-hexWidth)/2f,
-                                0,
-                                hexWidth,
-                                hexBGTextureSize,
-                                hexBGTextureSize,
-                                hexBGTextureSize);
-                    }
-
-
-                }
+                renderComponent(context,component,drawPositions.get(i).x,drawPositions.get(i).y,fieldDrawScale);
             }
             // render empty cell
             else{
                 // render new component
                 if(selectedNewComponent!=null && i==selectedHexagon){
                     component = selectedNewComponent;
-                    var fgTexture = component.getHexFrontTexture();
-                    var bgTexture = component.getHexBackTexture();
-                    RenderSystem.setShaderColor(1,1,1,1);
-
-                    DrawHelper.drawTexture(context.getMatrices(),bgTexture,
-                            drawPositions.get(i).x,
-                            drawPositions.get(i).y,
-                            scaledHexWidth,
-                            scaledHexHeight,
-                            (hexBGTextureSize-hexWidth)/2f,
-                            0,
-                            hexWidth,
-                            hexBGTextureSize,
-                            hexBGTextureSize,
-                            hexBGTextureSize
-                    );
-
-                    DrawHelper.drawTexture(context.getMatrices(),fgTexture,
-                            drawPositions.get(i).x,
-                            drawPositions.get(i).y,
-                            scaledHexWidth,
-                            scaledHexHeight,
-                            (hexBGTextureSize-hexWidth)/2f,
-                            0,
-                            hexWidth,
-                            hexBGTextureSize,
-                            hexBGTextureSize,
-                            hexBGTextureSize
-                    );
-
-                    // render side configs
-                    for (var conf : component.sideConfigs){
-                        var tex = conf.getTexture();
-                        if(tex!=null){
-                            conf.setShaderColor();
-                            context.drawTexture(
-                                    tex,
-                                    Math.round(drawPositions.get(i).x),
-                                    Math.round(drawPositions.get(i).y),
-                                    Math.round(scaledHexWidth),
-                                    Math.round(scaledHexHeight),
-                                    (hexBGTextureSize-hexWidth)/2f,
-                                    0,
-                                    hexWidth,
-                                    hexBGTextureSize,
-                                    hexBGTextureSize,
-                                    hexBGTextureSize);
-                        }
-
-
-                    }
+                    renderComponent(context,component,drawPositions.get(i).x,drawPositions.get(i).y,fieldDrawScale);
                 }
                 // actually render an empty cell
                 else{
@@ -772,57 +672,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
 
             // render component
             {
-                var fgTexture = component.getHexFrontTexture();
-                var bgTexture = component.getHexBackTexture();
-                RenderSystem.setShaderColor(1,1,1,1);
-
-                context.drawTexture(bgTexture,
-                        infoPosX,
-                        infoPosY,
-                        previewWidth,
-                        previewHeight,
-                        (hexBGTextureSize-hexWidth)/2f,
-                        0,
-                        hexWidth,
-                        hexBGTextureSize,
-                        hexBGTextureSize,
-                        hexBGTextureSize
-                );
-
-                context.drawTexture(fgTexture,
-                        infoPosX,
-                        infoPosY,
-                        previewWidth,
-                        previewHeight,
-                        (hexBGTextureSize-hexWidth)/2f,
-                        0,
-                        hexWidth,
-                        hexBGTextureSize,
-                        hexBGTextureSize,
-                        hexBGTextureSize
-                );
-
-                // render side configs
-                for (var conf : component.sideConfigs){
-                    var tex = conf.getTexture();
-                    if(tex!=null){
-                        conf.setShaderColor();
-                        context.drawTexture(
-                                tex,
-                                infoPosX,
-                                infoPosY,
-                                Math.round(hexWidth*previewScale),
-                                Math.round(hexBGTextureSize*previewScale),
-                                (hexBGTextureSize-hexWidth)/2f,
-                                0,
-                                hexWidth,
-                                hexBGTextureSize,
-                                hexBGTextureSize,
-                                hexBGTextureSize);
-                    }
-
-
-                }
+                renderComponent(context,component,infoPosX,infoPosY,previewScale);
             }
             RenderSystem.setShaderColor(1,1,1,1);
 
@@ -894,57 +744,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
 
             // render component
             {
-                var fgTexture = component.getHexFrontTexture();
-                var bgTexture = component.getHexBackTexture();
-                RenderSystem.setShaderColor(1,1,1,1);
-
-                context.drawTexture(bgTexture,
-                        infoPosX,
-                        infoPosY,
-                        previewWidth,
-                        previewHeight,
-                        (hexBGTextureSize-hexWidth)/2f,
-                        0,
-                        hexWidth,
-                        hexBGTextureSize,
-                        hexBGTextureSize,
-                        hexBGTextureSize
-                );
-
-                context.drawTexture(fgTexture,
-                        infoPosX,
-                        infoPosY,
-                        previewWidth,
-                        previewHeight,
-                        (hexBGTextureSize-hexWidth)/2f,
-                        0,
-                        hexWidth,
-                        hexBGTextureSize,
-                        hexBGTextureSize,
-                        hexBGTextureSize
-                );
-
-                // render side configs
-                for (var conf : component.sideConfigs){
-                    var tex = conf.getTexture();
-                    if(tex!=null){
-                        conf.setShaderColor();
-                        context.drawTexture(
-                                tex,
-                                infoPosX,
-                                infoPosY,
-                                Math.round(hexWidth*previewScale),
-                                Math.round(hexBGTextureSize*previewScale),
-                                (hexBGTextureSize-hexWidth)/2f,
-                                0,
-                                hexWidth,
-                                hexBGTextureSize,
-                                hexBGTextureSize,
-                                hexBGTextureSize);
-                    }
-
-
-                }
+                renderComponent(context,component,infoPosX,infoPosY,previewScale);
             }
 
             // render side configs
@@ -1126,6 +926,63 @@ public class SpellmakerScreenHandler extends ScreenHandler {
         currentGrid.displayStack = heldStack.copy();
         currentGrid.displayStack.setNbt(null);
         SpellStoringItem.writeGrid(getOutput(),currentGrid);
+    }
+
+    public static void renderComponent(DrawContext ctx, SpellComponent component, float x, float y, float scale){
+        var fgTexture = component.getHexFrontTexture();
+        var bgTexture = component.getHexBackTexture();
+        RenderSystem.setShaderColor(1,1,1,1);
+
+        final float scaledHexWidth = hexWidth*scale;
+        final float scaledHexHeight = hexBGTextureSize*scale;
+
+        DrawHelper.drawTexture(ctx.getMatrices(),bgTexture,
+                x,
+                y,
+                scaledHexWidth,
+                scaledHexHeight,
+                (hexBGTextureSize-hexWidth)/2f,
+                0,
+                hexWidth,
+                hexBGTextureSize,
+                hexBGTextureSize,
+                hexBGTextureSize
+        );
+
+        DrawHelper.drawTexture(ctx.getMatrices(),fgTexture,
+                x,
+                y,
+                scaledHexWidth,
+                scaledHexHeight,
+                (hexBGTextureSize-hexWidth)/2f,
+                0,
+                hexWidth,
+                hexBGTextureSize,
+                hexBGTextureSize,
+                hexBGTextureSize
+        );
+
+        // render side configs
+        for (var conf : component.sideConfigs){
+            var tex = conf.getTexture();
+            if(tex!=null){
+                //conf.setShaderColor();
+                DrawHelper.drawTexture(ctx.getMatrices(),
+                        tex,
+                        x,
+                        y,
+                        scaledHexWidth,
+                        scaledHexHeight,
+                        (hexBGTextureSize-hexWidth)/2f,
+                        0,
+                        hexWidth,
+                        hexBGTextureSize,
+                        hexBGTextureSize,
+                        hexBGTextureSize);
+            }
+
+
+        }
     }
 
     public void updateAppearanceSlot(){
