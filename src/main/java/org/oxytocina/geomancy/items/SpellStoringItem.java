@@ -8,6 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
@@ -15,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.enchantments.ModEnchantments;
 import org.oxytocina.geomancy.spells.*;
+import org.oxytocina.geomancy.util.StellgeUtil;
 
 import java.util.List;
 import java.util.Objects;
@@ -117,7 +119,9 @@ public class SpellStoringItem extends Item {
             }
 
             if(comp.function.category != SpellBlock.Category.Effector) continue;
-            tooltip.add(Text.translatable("geomancy.spellcomponent."+comp.function.identifier.getPath()).formatted(Formatting.GRAY));
+            MutableText compText = Text.translatable("geomancy.spellcomponent."+comp.function.identifier.getPath());
+            if(comp.isObfuscated()) compText = Text.empty().append(StellgeUtil.stellgify(compText));
+            tooltip.add(compText.formatted(Formatting.GRAY));
             i++;
         }
         // list the rest after
@@ -128,7 +132,9 @@ public class SpellStoringItem extends Item {
                     return;
                 }
                 if(comp.function.category == SpellBlock.Category.Effector) continue;
-                tooltip.add(Text.translatable("geomancy.spellcomponent."+comp.function.identifier.getPath()).formatted(Formatting.DARK_GRAY));
+                MutableText compText = Text.translatable("geomancy.spellcomponent."+comp.function.identifier.getPath());
+                if(comp.isObfuscated()) compText = Text.empty().append(StellgeUtil.stellgify(compText));
+                tooltip.add(compText.formatted(Formatting.DARK_GRAY));
                 i++;
             }
     }

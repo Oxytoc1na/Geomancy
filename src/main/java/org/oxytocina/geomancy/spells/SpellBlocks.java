@@ -12,7 +12,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.*;
+import net.minecraft.predicate.entity.LocationPredicate;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -28,6 +31,9 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.*;
 import net.minecraft.world.*;
+import net.minecraft.world.gen.feature.PlacedFeatures;
+import net.minecraft.world.gen.structure.Structures;
+import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlock;
 import org.oxytocina.geomancy.blocks.blockEntities.RestrictorBlockEntity;
@@ -178,6 +184,7 @@ public class SpellBlocks {
     private static final List<TransmuteData> transmuteData = new ArrayList<>();
     private static final HashMap<Function<BlockState,Boolean>, BlockState> degradeBlockData = new LinkedHashMap<>();
     private static final HashMap<Function<BlockState,Boolean> , BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult>> igniteBehavior = new LinkedHashMap<>();
+    private static final List<SoundEvent> exodia3TriggerEvents = new ArrayList<>();
 
     private static SpellBlock.Category cat;
     static{
@@ -1310,6 +1317,11 @@ public class SpellBlocks {
                             lightning.setPosition(pos);
                             comp.world().spawnEntity(lightning);
                             spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
+
+                            // exodia 5
+                            if(pos.y >= 255 && comp.caster() instanceof ServerPlayerEntity spe && spe.getPos().y >= 255 && spe.getServerWorld().getRegistryKey().getValue().equals(Geomancy.locate("null"))){
+                                comp.context.setRootFlag("exodia_5");
+                            }
                         }
                         else{
                             // too broke
@@ -2011,6 +2023,23 @@ public class SpellBlocks {
                     })
                     .category(cat).build());
 
+            // exodia 3 trigger events
+            {
+                exodia3TriggerEvents.add(SoundEvents.BLOCK_ANVIL_PLACE);
+                exodia3TriggerEvents.add(SoundEvents.BLOCK_ANVIL_LAND);
+                exodia3TriggerEvents.add(SoundEvents.BLOCK_ANVIL_USE);
+                exodia3TriggerEvents.add(SoundEvents.BLOCK_ANVIL_BREAK);
+                exodia3TriggerEvents.add(SoundEvents.BLOCK_ANVIL_FALL);
+                exodia3TriggerEvents.add(SoundEvents.BLOCK_ANVIL_DESTROY);
+
+                exodia3TriggerEvents.add(SoundEvents.ENTITY_GENERIC_EXPLODE);
+
+                exodia3TriggerEvents.add(SoundEvents.ENTITY_ENDER_DRAGON_AMBIENT);
+                exodia3TriggerEvents.add(SoundEvents.ENTITY_ENDER_DRAGON_DEATH);
+                exodia3TriggerEvents.add(SoundEvents.ENTITY_ENDER_DRAGON_GROWL);
+
+                exodia3TriggerEvents.add(SoundEvents.ENTITY_WITHER_DEATH);
+            }
             PLAY_SOUND = register(SpellBlock.Builder.create("play_sound")
                     .inputs(
                             SpellSignal.createVector().named("position"),
@@ -2045,6 +2074,15 @@ public class SpellBlocks {
                             trySpendSoul(comp,manaCost);
                             spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
                             if(comp.context.root().silent) tryUnlockSpellAdvancement(comp,"deception");
+
+                            // exodia 3
+                            if(vol>=2 && comp.caster() instanceof ServerPlayerEntity spe && exodia3TriggerEvents.contains(soundEvent)){
+                                LocationPredicate predicate = LocationPredicate.feature(RegistryKey.of(RegistryKeys.STRUCTURE,new Identifier("ancient_city")));
+                                if(predicate.test(spe.getServerWorld(),pos.x,pos.y,pos.z)){
+                                    // we're playing inside an ancient city
+                                    comp.context.setRootFlag("exodia_3");
+                                }
+                            }
                         }
                         else{
                             // too broke

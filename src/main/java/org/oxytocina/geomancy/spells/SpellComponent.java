@@ -2,6 +2,8 @@ package org.oxytocina.geomancy.spells;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.netty.buffer.Unpooled;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
@@ -18,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2i;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.util.ByteUtil;
+import org.oxytocina.geomancy.util.EnlightenmentUtil;
 
 import java.nio.charset.Charset;
 import java.util.*;
@@ -453,6 +456,22 @@ public class SpellComponent {
 
     public ItemStack getItemStack() {
         return function.getItemStack();
+    }
+
+    public boolean isAncient() {
+        return function.isAncient();
+    }
+
+    @Environment(EnvType.CLIENT)
+    public boolean isObfuscated() {
+        return switch(function.identifier.toString()){
+            case "geomancy:exodia_1" -> EnlightenmentUtil.getEnlightenmentClient() < 1;
+            case "geomancy:exodia_2" -> EnlightenmentUtil.getEnlightenmentClient() < 2;
+            case "geomancy:exodia_3" -> EnlightenmentUtil.getEnlightenmentClient() < 3;
+            case "geomancy:exodia_4" -> EnlightenmentUtil.getEnlightenmentClient() < 4;
+            case "geomancy:exodia_5" -> EnlightenmentUtil.getEnlightenmentClient() < 5;
+            default -> false;
+        };
     }
 
     public static class SideConfig{

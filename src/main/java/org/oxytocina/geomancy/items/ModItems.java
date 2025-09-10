@@ -98,6 +98,11 @@ public class ModItems {
     public static final LorebookItem LORE_LOG_EXTRAS_RESEARCH_1 = register("lorelog_extras_research_1",new LorebookItem(new FabricItemSettings(),"lore/extras_research_1"),new ExtraItemSettings());
     public static final LorebookItem LORE_LOG_EXTRAS_RESEARCH_2 = register("lorelog_extras_research_2",new LorebookItem(new FabricItemSettings(),"lore/extras_research_2"),new ExtraItemSettings());
 
+    public static final LorebookItem LORE_LOG_EXODIA_1 = register("lorelog_exodia_1",new LorebookItem(new FabricItemSettings(),"lore/exodia_1"),new ExtraItemSettings());
+    public static final LorebookItem LORE_LOG_EXODIA_2 = register("lorelog_exodia_2",new LorebookItem(new FabricItemSettings(),"lore/exodia_2"),new ExtraItemSettings());
+    public static final LorebookItem LORE_LOG_EXODIA_3 = register("lorelog_exodia_3",new LorebookItem(new FabricItemSettings(),"lore/exodia_3"),new ExtraItemSettings());
+    public static final LorebookItem LORE_LOG_EXODIA_4 = register("lorelog_exodia_4",new LorebookItem(new FabricItemSettings(),"lore/exodia_4"),new ExtraItemSettings());
+
 
     // music discs
     public static final Item MUSIC_DISC_DIGGY = register("music_disc_diggy",new MusicDiscItem(15, ModSoundEvents.MUSIC_DISC_DIGGY, (new Item.Settings()).maxCount(1).rarity(Rarity.RARE), 235));

@@ -38,7 +38,6 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         addShort("gb:sc","book.MODID.guidebook.soulcasting.");
 
 
-
         // Spells
         {
             add("MODID.spellmaker.delete",  "remove");
@@ -209,6 +208,12 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("entities_near","Entities Near","returns a list containing all entities within the specified area");
             addSpell("block_box","Block Box","returns a list containing all block positions in the area");
             addSpell("raycast_march","Raycast March","returns a list containing all block positions intersected by a ray");
+            // ancient
+            addSpell("exodia_1","Challenge of Soul","???");
+            addSpell("exodia_2","Challenge of Calculation","???");
+            addSpell("exodia_3","Challenge of Presence","???");
+            addSpell("exodia_4","Challenge of Curiosity","???");
+            addSpell("exodia_5","Challenge of Absolution","???");
 
             add("MODID.spells.debug.error","Error in spell component %1$s: %2$s");
             add("MODID.spells.debug.broke","Couldn't afford spell %1$s. Cost: %2$f, available: %3$f");
@@ -668,6 +673,11 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addAdvancement(".spells.simple_ulterior_motives","Ulterior Motives","Save a reference to another player onto a varpot");
             addAdvancement(".spells.simple_build_big","Technical debt","Fill three quarters of a spacious spellcradle with components");
             addAdvancement(".spells.simple_deconsciousness","Deconsciousness","Cast a spell that costs at least 10000 souls");
+            addAdvancement(".spells.enlightenment_1","Conqueror of Soul","???");
+            addAdvancement(".spells.enlightenment_2","Conqueror of Calculation","???");
+            addAdvancement(".spells.enlightenment_3","Conqueror of Presence","???");
+            addAdvancement(".spells.enlightenment_4","Conqueror of Curiosity","???");
+            addAdvancement(".spells.enlightenment_5","Conqueror of Absolution","???");
 
             addAdvancement(":milestones/milestone_smithery","The Craft of the Ancients","Obtain the smithery");
             addAdvancement(":milestones/milestone_souls","Soulcraft","Learn of the true nature of octangulite");
@@ -1249,6 +1259,103 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                         P.S.:
                         I asked us for an instance of L0G-Pro 4.a, and am currently writing in there.
                         The "Dear diary" at the start of my logs kind of grew on me, so now I'm putting it there myself.
+                        """);
+                }
+
+                // exodia
+                {
+                    // 1 : soul
+                    add("item.MODID.lorelog_exodia_1","Field Research Log");
+                    add("item.MODID.lorelog_exodia_1.tooltip","Signed: Prospector Septangula");
+
+                    addGBEntryAndInfo(getS("gb:lr")+"exodia_1","Field Research Log");
+                    add(getS("gb:lr")+"exodia_1.description"  , "Signed: Prospector Septangula");
+                    add(getS("gb:lr")+"exodia_1.1.text","""
+                        I am Septangula of the Stellge, Prospector at Site IZ. Ambient soul-slurry density exceeds previous records. In collaboration with Head Engineer Tritangula, we have designed a new soulcasting component.
+                        """);
+                    add(getS("gb:lr")+"exodia_1.2.text","""
+                        Component E1, when cast in an area with exceptional slurry density, will potentially allow us to gain insights into project 0.
+                        """);
+                    add(getS("gb:lr")+"exodia_1.3.text","""
+                        Attaching recipe for Component E1.
+                        Requesting observation squad and recipient Vivocasters.
+                        """);
+
+                    // 2 : calculation
+                    add("item.MODID.lorelog_exodia_2","Dimensional Exploration Log Pt.1");
+                    add("item.MODID.lorelog_exodia_2.tooltip","Signed: Head Researcher Pentangula");
+
+                    addGBEntryAndInfo(getS("gb:lr")+"exodia_2","Dimensional Exploration Log Pt.1");
+                    add(getS("gb:lr")+"exodia_2.description"  , "Signed: Head Researcher Pentangula");
+                    add(getS("gb:lr")+"exodia_2.1.text","""
+                        Dear diary,
+                        this is Pentangula of the Stellge, reporting from dimension Sol III, sub 1.
+                        After the scout drones deemed the immediate area safe, I have decided to visit personally!
+                        I can confirm temperature and slurry density readings. Getting back home will not be a concern.
+                        """);
+                    add(getS("gb:lr")+"exodia_2.2.text","""
+                        Unfortunately, though, soul stone expectancy here is still below the threshold for extraction.
+                        For some reason, souls like to gather into loose granulate here.
+                        The SPV of mentioned "soul sand" (I came up with that alliteration myself!) sadly isn't high enough for it to be of use for us.
+                        """);
+                    add(getS("gb:lr")+"exodia_2.3.text","""
+                        It would make for good soil to grow Vivocaster food in, though.
+                        Anyways, I'm happy to report that I've figure out something that may help us make some progress with project 0.
+                        If I can supply a machine with the correct algorithm...
+                        """);
+                    add(getS("gb:lr")+"exodia_2.4.text","""
+                        ...it may be able to tell me whats so special about this place.
+                        I have attached a schematic.
+                        """);
+
+                    // 3 : presence
+                    add("item.MODID.lorelog_exodia_3","Dimensional Exploration Log Pt.2");
+                    add("item.MODID.lorelog_exodia_3.tooltip","Signed: Head Researcher Pentangula");
+                    addGBEntryAndInfo(getS("gb:lr")+"exodia_3","Dimensional Exploration Log Pt.2");
+                    add(getS("gb:lr")+"exodia_3.description"  , "Signed: Head Researcher Pentangula");
+                    add(getS("gb:lr")+"exodia_3.1.text","""
+                        Dear diary,
+                        this is Pentangula of the Stellge, reporting from deep inside my favourite planet!
+                        The prospectors have transmitted discovery of a peculiar point of interest, and I'm there right now!
+                        It appears to be some kind of abandoned settlement.
+                        """);
+                    add(getS("gb:lr")+"exodia_3.2.text","""
+                        According to the report, this place has unusually dense slurry for being underground.
+                        Theres patches of a mushy, dark-blue substance here.
+                        It seems to be another naturally occurring form of soul storage on Sol III.
+                        """);
+                    add(getS("gb:lr")+"exodia_3.3.text","""
+                        This gunk seems to spread much, much faster than soul stone does.
+                        The density of souls per block suffers greatly because of it.
+                        I still think that it could give us important insights into project 0.
+                        Some of the local biomass reacts strangely to noise...
+                        """);
+                    add(getS("gb:lr")+"exodia_3.4.text","""
+                        Together with the digsite engineers, we've come up with a new component that will greatly amplify the volume of a sufficiently loud conjured sound.
+                        """);
+
+                    // 4 : curiosity
+                    add("item.MODID.lorelog_exodia_4","Dimensional Exploration Log Pt.3");
+                    add("item.MODID.lorelog_exodia_4.tooltip","Signed: Head Researcher Pentangula");
+                    addGBEntryAndInfo(getS("gb:lr")+"exodia_4","Dimensional Exploration Log Pt.3");
+                    add(getS("gb:lr")+"exodia_4.description"  , "Signed: Head Researcher Pentangula");
+                    add(getS("gb:lr")+"exodia_4.1.text","""
+                        Dear diary,
+                        this is Pentangula of the Stellge, reporting from dimension Sol III, sub 2.
+                        Readings for this one were curious, so I decided to visit personally.
+                        """);
+                    add(getS("gb:lr")+"exodia_4.2.text","""
+                        I can confirm that local slurry density is, for an inhabited dimension, at a record low.
+                        A long expedition is unfeasible due to limited portable soul storage.
+                        """);
+                    add(getS("gb:lr")+"exodia_4.3.text","""
+                        I wouldn't want to get stuck here...
+                        There's a certain curious happenstance I would like to mention.
+                        There is no ground.
+                        It's sort of like space, except that theres gravity. Whatever gets pulled down there gets spaghettified into malfunction.
+                        """);
+                    add(getS("gb:lr")+"exodia_4.4.text","""
+                        I have devised a component that can measure this spaghettification. Perhaps learning more about it will help us with project 0.
                         """);
                 }
 

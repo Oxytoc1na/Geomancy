@@ -22,6 +22,8 @@ import org.oxytocina.geomancy.util.EntityUtil;
 import org.oxytocina.geomancy.util.SoulUtil;
 import org.oxytocina.geomancy.util.Toolbox;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class SpellContext {
@@ -47,6 +49,7 @@ public class SpellContext {
     public boolean activatedByHotkey = false;
     public SpellGrid grid;
     public SoundBehavior soundBehavior;
+    protected List<String> flags;
 
     public SourceType sourceType;
 
@@ -82,6 +85,7 @@ public class SpellContext {
         this.soulConsumed=soulConsumed;
         this.soundBehavior=soundBehavior;
         this.startTime = System.nanoTime();
+        this.flags = null;
 
         sourceType = delegate!=null?SourceType.Delegate
                 : caster!=null?SourceType.Caster
@@ -426,6 +430,20 @@ public class SpellContext {
 
     public void setRestrictions(Restrictions restrictions){
         root().restrictions =restrictions;
+    }
+
+    public boolean hasFlag(String flag) {
+        if(isChild()) return parentCall.hasFlag(flag);
+        return flags!=null&&flags.contains(flag);
+    }
+
+    public void setRootFlag(String flag){
+        root().setFlag(flag);
+    }
+
+    public void setFlag(String flag){
+        if(flags==null) flags = new ArrayList<>();
+        if(!flags.contains(flag)) flags.add(flag);
     }
 
     public enum SourceType{

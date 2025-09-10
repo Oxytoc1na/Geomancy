@@ -1,5 +1,7 @@
 package org.oxytocina.geomancy.items;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
@@ -8,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
@@ -20,6 +23,8 @@ import org.oxytocina.geomancy.spells.SpellBlock;
 import org.oxytocina.geomancy.spells.SpellBlocks;
 import org.oxytocina.geomancy.spells.SpellComponent;
 import org.oxytocina.geomancy.spells.SpellGrid;
+import org.oxytocina.geomancy.util.EnlightenmentUtil;
+import org.oxytocina.geomancy.util.StellgeUtil;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -57,12 +62,16 @@ public class SpellComponentStoringItem extends Item {
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public Text getName(ItemStack stack) {
         SpellComponent comp = readComponent(stack);
-        return Text.translatable(this.getTranslationKey(stack)).append(Text.literal(" [").append(Text.translatable("geomancy.spellcomponent."+(comp!=null?comp.function.identifier.getPath():"empty")).append("]")).formatted(Formatting.GRAY));
+        MutableText compText = Text.translatable("geomancy.spellcomponent."+(comp!=null?comp.function.identifier.getPath():"empty"));
+        if(comp!=null&&comp.isObfuscated()) return StellgeUtil.stellgify(compText);
+        return Text.translatable(this.getTranslationKey(stack)).append(Text.literal(" [").append(compText).append("]")).formatted(Formatting.GRAY);
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         super.appendTooltip(stack, world, tooltip, context);
 
@@ -72,13 +81,21 @@ public class SpellComponentStoringItem extends Item {
         tooltip.addAll(componentTooltip(comp,false));
     }
 
+    @Environment(EnvType.CLIENT)
     public static List<Text> componentTooltip(SpellComponent comp,boolean forSpellmaker){
         List<Text> tooltip = new ArrayList<>();
         if(comp==null) return tooltip;
 
         if(forSpellmaker)
-            tooltip.add(Text.translatable("geomancy.spellcomponent."+comp.function.identifier.getPath().toLowerCase()).formatted(Formatting.WHITE));
-        tooltip.add(Text.translatable("geomancy.spellcomponent.category."+comp.function.category.toString().toLowerCase()).formatted(Formatting.BLUE));
+        {
+            MutableText compText = Text.translatable("geomancy.spellcomponent."+comp.function.identifier.getPath());
+            if(comp.isObfuscated()) compText = StellgeUtil.stellgify(compText);
+            tooltip.add(compText.formatted(Formatting.WHITE));
+        }
+        Text catText = Text.translatable("geomancy.spellcomponent.category."+comp.function.category.toString().toLowerCase()).formatted(Formatting.BLUE);
+        if(comp.function.isAncient())
+            catText = ICustomRarityItem.colorizeName(ICustomRarityItem.Rarity.Ancient,null,catText);
+        tooltip.add(catText);
         if(!forSpellmaker)
             tooltip.add(Text.translatable("geomancy.tooltip.spellcomponent."+comp.function.identifier.getPath()).formatted(Formatting.GRAY));
         tooltip.add(Text.empty());
@@ -121,5 +138,11 @@ public class SpellComponentStoringItem extends Item {
         NbtCompound componentCompound = new NbtCompound();
         component.writeNbt(componentCompound);
         return componentCompound;
+    }
+
+    public static boolean isAncient(ItemStack stack){
+        var comp = readComponent(stack);
+        if(comp==null) return false;
+        return comp.isAncient();
     }
 }

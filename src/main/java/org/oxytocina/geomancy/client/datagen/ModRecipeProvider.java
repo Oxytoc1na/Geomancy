@@ -2,6 +2,7 @@ package org.oxytocina.geomancy.client.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
+import net.minecraft.advancement.AdvancementCriterion;
 import net.minecraft.advancement.criterion.CriterionConditions;
 import net.minecraft.block.*;
 import net.minecraft.data.server.recipe.*;
@@ -30,6 +31,7 @@ import org.oxytocina.geomancy.recipe.smithery.SmithingIngredient;
 import org.oxytocina.geomancy.registries.ModItemTags;
 import org.oxytocina.geomancy.spells.SpellBlock;
 import org.oxytocina.geomancy.spells.SpellBlocks;
+import org.oxytocina.geomancy.spells.SpellBlocks2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -717,6 +719,43 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     NbtIngredient.ofItems(OCTANGULITE_INGOT)
             ),AUTOCASTER,1,500,1f,1f,"",conditionsFromItem(SOUL_FORGE),null);
 
+            // exodia
+            {
+                // 1 : soul
+                AddSimpleSoulForgeRecipe(List.of(
+                        NbtIngredient.ofItems(SPELLCOMPONENT),
+                        NbtIngredient.ofItems(RAW_OCTANGULITE_BLOCK),
+                        NbtIngredient.ofItems(10,SOUL_OAK_LOG)
+                ), SpellBlocks.EXODIA_1.getItemStack(),1,500,1f,1f,"",
+                        ModAdvancementCriterion.conditionsFromAdvancement(Geomancy.locate("lore/get_lorelog_exodia_1")),null,"exodia_1");
+
+                // 2 : calculation
+                AddSimpleSoulForgeRecipe(List.of(
+                                NbtIngredient.ofItems(SPELLCOMPONENT),
+                                NbtIngredient.ofItems(5,Items.COMPARATOR),
+                                NbtIngredient.ofItems(5,Items.REDSTONE_BLOCK)
+                        ), SpellBlocks.EXODIA_2.getItemStack(),1,500,1f,1f,"",
+                        ModAdvancementCriterion.conditionsFromAdvancement(Geomancy.locate("lore/get_lorelog_exodia_2")),null,"exodia_2");
+
+                // 3 : presence
+                AddSimpleSoulForgeRecipe(List.of(
+                                NbtIngredient.ofItems(SPELLCOMPONENT),
+                                NbtIngredient.ofItems(10,Items.ECHO_SHARD),
+                                NbtIngredient.ofItems(Items.SCULK_SENSOR),
+                                NbtIngredient.ofItems(Items.SCULK_SHRIEKER)
+                        ), SpellBlocks.EXODIA_3.getItemStack(),1,500,1f,1f,"",
+                        ModAdvancementCriterion.conditionsFromAdvancement(Geomancy.locate("lore/get_lorelog_exodia_3")),null,"exodia_3");
+
+                // 4 : curiosity
+                AddSimpleSoulForgeRecipe(List.of(
+                                NbtIngredient.ofItems(SPELLCOMPONENT),
+                                NbtIngredient.ofItems(Items.CHORUS_FLOWER),
+                                NbtIngredient.ofItems(4,Items.SHULKER_SHELL),
+                                NbtIngredient.ofItems(16,Items.PURPUR_BLOCK)
+                        ), SpellBlocks.EXODIA_4.getItemStack(),1,500,1f,1f,"",
+                        ModAdvancementCriterion.conditionsFromAdvancement(Geomancy.locate("lore/get_lorelog_exodia_4")),null,"exodia_4");
+            }
+
         }
 
         this.exporter=null;
@@ -897,7 +936,10 @@ public class ModRecipeProvider extends FabricRecipeProvider {
     }
 
     private void AddSimpleSoulForgeRecipe(List<NbtIngredient> inputs, ItemConvertible output, int outputCount, float cost,float instability, float speed, String criterionName, CriterionConditions conditions, Identifier requiredAdvancement){
-        SoulForgeRecipeJsonBuilder.create(inputs,output.asItem(),outputCount, cost,instability,speed,RecipeCategory.MISC, requiredAdvancement).criterion(criterionName,conditions).offerTo(exporter,new Identifier(Geomancy.MOD_ID,"soulforge_"+getItemName(output)));
+        AddSimpleSoulForgeRecipe(inputs,output.asItem().getDefaultStack(),outputCount,cost,instability,speed,criterionName,conditions,requiredAdvancement,getItemName(output));
+    }
+    private void AddSimpleSoulForgeRecipe(List<NbtIngredient> inputs, ItemStack output, int outputCount, float cost,float instability, float speed, String criterionName, CriterionConditions conditions, Identifier requiredAdvancement, String name){
+        SoulForgeRecipeJsonBuilder.create(inputs,output,outputCount, cost,instability,speed,RecipeCategory.MISC, requiredAdvancement).criterion(criterionName,conditions).offerTo(exporter,new Identifier(Geomancy.MOD_ID,"soulforge_"+name));
     }
 
     private void AddSmitheryJewelryRecipe(IJewelryItem base){

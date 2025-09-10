@@ -1,5 +1,7 @@
 package org.oxytocina.geomancy.spells;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
@@ -12,6 +14,7 @@ import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class SpellBlock {
     public HashMap<String, SpellSignal> variables;
@@ -29,6 +32,7 @@ public class SpellBlock {
     public int defaultLootWeight;
     public int recipeRequiredProgress;
     public int recipeDifficulty;
+    public OverarchingCategory overarchingCategory;
 
     public BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult> function;
     public Consumer<SpellComponent> initFunction;
@@ -48,18 +52,19 @@ public class SpellBlock {
     }
 
     protected SpellBlock(Identifier identifier,
-                  List<SpellSignal> inputs,
-                  List<SpellSignal> outputs,
-                  List<Parameter> parameters,
-                  BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult> function,
-                  Function<SpellComponent,SpellComponent.SideConfig[]> sideConfigGetter,
-                         Consumer<SpellComponent> initFunction,
-                         Consumer<SpellComponent> postFunction,
-                  Category category,
-                  int defaultLootWeight,
-                  int recipeRequiredProgress,
-                  int recipeDifficulty,
-                         ItemStack stack){
+                List<SpellSignal> inputs,
+                List<SpellSignal> outputs,
+                List<Parameter> parameters,
+                BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult> function,
+                Function<SpellComponent,SpellComponent.SideConfig[]> sideConfigGetter,
+                Consumer<SpellComponent> initFunction,
+                Consumer<SpellComponent> postFunction,
+                Category category,
+                int defaultLootWeight,
+                int recipeRequiredProgress,
+                int recipeDifficulty,
+                ItemStack stack,
+                OverarchingCategory overarchingCategory){
         this.identifier=identifier;
         this.inputs = new HashMap<>();
         this.outputs = new HashMap<>();
@@ -72,6 +77,7 @@ public class SpellBlock {
         this.defaultLootWeight=defaultLootWeight;
         this.recipeRequiredProgress=recipeRequiredProgress;
         this.recipeDifficulty=recipeDifficulty;
+        this.overarchingCategory=overarchingCategory;
 
         this.function=function;
         this.sideConfigGetter = sideConfigGetter;
@@ -120,6 +126,10 @@ public class SpellBlock {
         return stack.copy();
     }
 
+    public boolean isAncient() {
+        return overarchingCategory == OverarchingCategory.Ancient;
+    }
+
     public static class Builder{
 
         final Identifier identifier;
@@ -131,6 +141,7 @@ public class SpellBlock {
         int defaultLootWeight = 100;
         public int recipeRequiredProgress = 100;
         public int recipeDifficulty = 20;
+        OverarchingCategory overarchingCategory = null;
 
         public Function<SpellComponent,SpellComponent.SideConfig[]> sideConfigGetter;
         public BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult> function;
@@ -155,6 +166,7 @@ public class SpellBlock {
             if(outputs==null) outputs = new SpellSignal[0];
             if(parameters==null) parameters = new Parameter[0];
             if(sideConfigGetter==null) autoSideConfig();
+            if(overarchingCategory==null) overarchingCategory = category == Category.Ancient ? OverarchingCategory.Ancient : OverarchingCategory.Normal;
 
             return new SpellBlock(
                     identifier,
@@ -169,7 +181,8 @@ public class SpellBlock {
                     defaultLootWeight,
                     recipeRequiredProgress,
                     recipeDifficulty,
-                    stack
+                    stack,
+                    overarchingCategory
             );
         }
 
@@ -230,6 +243,10 @@ public class SpellBlock {
 
         public Builder sideConfigGetter(Function<SpellComponent,SpellComponent.SideConfig[]> func){
             this.sideConfigGetter=func;
+            return this;
+        }
+        public Builder ancient(){
+            this.overarchingCategory = OverarchingCategory.Ancient;
             return this;
         }
 
@@ -342,6 +359,11 @@ public class SpellBlock {
         Effector,
         Reference,
         Lists,
+        Ancient
+    }
+
+    public enum OverarchingCategory {
+        Normal,
         Ancient
     }
 }

@@ -96,7 +96,11 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                 ModItems.LORE_LOG_EXPEDITION_5,
                 ModItems.LORE_BOOK_EXTRAS_CREATION,
                 ModItems.LORE_LOG_EXTRAS_RESEARCH_1,
-                ModItems.LORE_LOG_EXTRAS_RESEARCH_2
+                ModItems.LORE_LOG_EXTRAS_RESEARCH_2,
+                ModItems.LORE_LOG_EXODIA_1,
+                ModItems.LORE_LOG_EXODIA_2,
+                ModItems.LORE_LOG_EXODIA_3,
+                ModItems.LORE_LOG_EXODIA_4
         };
         for (var item : loreItems) {
             AddGetItemAdvancement(null, Registries.ITEM.getId(item).getPath(),item,"lore",AdvancementFrame.TASK,false,true,null);
@@ -138,10 +142,10 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         Advancement spell_build_big =   AddSimpleAdvancement(Items.CHEST,"build_big","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
         Advancement spell_deconsciousness =   AddSimpleAdvancement(Items.SOUL_CAMPFIRE,"deconsciousness","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
         Advancement enlightenment_1 = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"enlightenment_1","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement enlightenment_2 = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"enlightenment_2","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement enlightenment_3 = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"enlightenment_3","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement enlightenment_4 = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"enlightenment_4","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement enlightenment_5 = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"enlightenment_5","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement enlightenment_2 = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"enlightenment_2","do","spells",AdvancementFrame.CHALLENGE,true,true,enlightenment_1);
+        Advancement enlightenment_3 = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"enlightenment_3","do","spells",AdvancementFrame.CHALLENGE,true,true,enlightenment_2);
+        Advancement enlightenment_4 = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"enlightenment_4","do","spells",AdvancementFrame.CHALLENGE,true,true,enlightenment_3);
+        Advancement enlightenment_5 = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"enlightenment_5","do","spells",AdvancementFrame.CHALLENGE,true,true,enlightenment_4);
 
     }
     private Advancement AddGetItemAdvancement(ItemConvertible item,String name, ItemConvertible conditionItem, String category, AdvancementFrame frame, boolean announce, boolean hidden, Advancement parent){
