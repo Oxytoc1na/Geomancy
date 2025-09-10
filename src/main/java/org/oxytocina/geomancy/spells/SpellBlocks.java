@@ -38,6 +38,7 @@ import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlock;
 import org.oxytocina.geomancy.blocks.blockEntities.RestrictorBlockEntity;
 import org.oxytocina.geomancy.blocks.blockEntities.SoulForgeBlock;
+import org.oxytocina.geomancy.client.datagen.ModAdvancementProvider;
 import org.oxytocina.geomancy.inventories.ImplementedInventory;
 import org.oxytocina.geomancy.items.ISpellSelectorItem;
 import org.oxytocina.geomancy.items.armor.CastingArmorItem;
@@ -1275,6 +1276,12 @@ public class SpellBlocks {
                         var speed =vars.getNumber("speed");
                         var power =vars.getInt("power");
                         var pos = vars.getVector("position");
+                        var restrictions = RestrictorBlockEntity.getRestrictionsAt(pos,comp.world());
+                        if(!restrictions.allowsBlockManipulation() && !comp.context.isFromPrecomiled()){
+                            // not allowed to place here! punish!
+                            punishDisallowedAction(comp.context);
+                            return SpellBlockResult.empty();
+                        }
 
                         float manaCost = 2
                                 +normalCastOffsetSoulCost(comp,pos)
@@ -1341,6 +1348,12 @@ public class SpellBlocks {
                     .func((comp,vars) -> {
                         var uuid = vars.getUUID("entity");
                         var pos = vars.getVector("position");
+                        var restrictions = RestrictorBlockEntity.getRestrictionsAt(pos,comp.world());
+                        if(!restrictions.allowsTeleports()){
+                            // disallowed action, punish!
+                            punishDisallowedAction(comp.context);
+                            return SpellBlockResult.empty();
+                        }
                         Entity ent = comp.world() instanceof ServerWorld sw ? sw.getEntity(uuid) : null;
                         if(ent==null) return SpellBlockResult.empty();
 
@@ -1351,14 +1364,11 @@ public class SpellBlocks {
                             // check if restricted
                             boolean allowed = true;
                             if(comp.context.caster instanceof ServerPlayerEntity spe){
-                                var restrictions = RestrictorBlockEntity.getRestrictionsFor(spe);
+                                restrictions = RestrictorBlockEntity.getRestrictionsFor(spe);
                                 if(!restrictions.allowsTeleports()){
                                     // disallowed action, punish!
                                     allowed = false;
-                                    spe.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS,5));
-                                    spe.damage(ModDamageTypes.of(comp.context.getWorld(),ModDamageTypes.RESTRICTED_ACTION),4);
-                                    ParticleUtil.ParticleData.createRestrictedAction(comp.context.getWorld(),spe.getEyePos()).send();
-                                    tryLogDebugRestricted(comp);
+
                                 }
                             }
                             if(allowed){
@@ -1421,10 +1431,7 @@ public class SpellBlocks {
                                 if(!restrictions.allowsTeleports()){
                                     // disallowed action, punish!
                                     allowed = false;
-                                    spe.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS,5));
-                                    spe.damage(ModDamageTypes.of(comp.context.getWorld(),ModDamageTypes.RESTRICTED_ACTION),4);
-                                    ParticleUtil.ParticleData.createRestrictedAction(comp.context.getWorld(),spe.getEyePos()).send();
-                                    tryLogDebugRestricted(comp);
+                                    punishDisallowedAction(comp.context);
                                 }
                             }
                             if(allowed) {
@@ -1500,12 +1507,18 @@ public class SpellBlocks {
                         ItemStack stack = inv.getStack(slotInt);
                         if(!(stack.getItem() instanceof BlockItem bi)) { tryLogDebugNotPlaceable(comp,stack); return SpellBlockResult.empty(); } // not a block
                         if(stack.isEmpty()) return SpellBlockResult.empty();
+                        var blockPos = Toolbox.posToBlockPos(pos);
+                        var restrictions = RestrictorBlockEntity.getRestrictionsAt(pos,comp.world());
+                        if(!restrictions.allowsBlockManipulation() && !comp.context.isFromPrecomiled()){
+                            // not allowed to place here! punish!
+                            punishDisallowedAction(comp.context);
+                            return SpellBlockResult.empty();
+                        }
 
                         float manaCost = 1
                                 +normalCastOffsetSoulCost(comp,pos);
 
                         if(canAfford(comp,manaCost)){
-                            var blockPos = Toolbox.posToBlockPos(pos);
 
                             BlockState targetState = comp.world().getBlockState(blockPos);
                             if(!targetState.isReplaceable())
@@ -1549,6 +1562,12 @@ public class SpellBlocks {
                         var silkTouch = vars.getBoolean("silk touch");
                         var autocollect = vars.getBoolean("autocollect");
                         var blockPos = Toolbox.posToBlockPos(pos);
+                        var restrictions = RestrictorBlockEntity.getRestrictionsAt(pos,comp.world());
+                        if(!restrictions.allowsBlockManipulation() && !comp.context.isFromPrecomiled()){
+                            // not allowed to place here! punish!
+                            punishDisallowedAction(comp.context);
+                            return SpellBlockResult.empty();
+                        }
 
                         // calculate breaking cost
                         BlockState targetState = comp.world().getBlockState(blockPos);
@@ -1703,7 +1722,13 @@ public class SpellBlocks {
                     .func((comp,vars) -> {
                         if(!(comp.world() instanceof ServerWorld sw)) return SpellBlockResult.empty(); // not in a server world
                         var pos = vars.getVector("position");
-                        var blockPos = vars.getBlockPos("position");
+                        var blockPos = Toolbox.posToBlockPos(pos);
+                        var restrictions = RestrictorBlockEntity.getRestrictionsAt(pos,comp.world());
+                        if(!restrictions.allowsBlockManipulation() && !comp.context.isFromPrecomiled()){
+                            // not allowed to place here! punish!
+                            punishDisallowedAction(comp.context);
+                            return SpellBlockResult.empty();
+                        }
 
                         // calculate breaking cost
                         BlockState targetState = comp.world().getBlockState(blockPos);
@@ -1882,6 +1907,12 @@ public class SpellBlocks {
                         if(replaceWithStack.isEmpty()) return SpellBlockResult.empty();
 
                         var blockPos = Toolbox.posToBlockPos(pos);
+                        var restrictions = RestrictorBlockEntity.getRestrictionsAt(pos,comp.world());
+                        if(!restrictions.allowsBlockManipulation() && !comp.context.isFromPrecomiled()){
+                            // not allowed to place here! punish!
+                            punishDisallowedAction(comp.context);
+                            return SpellBlockResult.empty();
+                        }
 
                         // calculate breaking cost
                         BlockState targetState = comp.world().getBlockState(blockPos);
@@ -1995,7 +2026,13 @@ public class SpellBlocks {
                     .inputs(SpellSignal.createVector().named("position"))
                     .func((comp,vars) -> {
                         var pos = vars.getVector("position");
-                        var blockPos = vars.getBlockPos("position");
+                        var blockPos = Toolbox.posToBlockPos(pos);
+                        var restrictions = RestrictorBlockEntity.getRestrictionsAt(pos,comp.world());
+                        if(!restrictions.allowsBlockManipulation() && !comp.context.isFromPrecomiled()){
+                            // not allowed to place here! punish!
+                            punishDisallowedAction(comp.context);
+                            return SpellBlockResult.empty();
+                        }
 
                         // calculate breaking cost
                         BlockState targetState = comp.world().getBlockState(blockPos);
@@ -2201,7 +2238,13 @@ public class SpellBlocks {
                     .inputs(SpellSignal.createVector().named("position"))
                     .func((comp,vars) -> {
                         var pos = vars.getVector("position");
-                        var blockPos = vars.getBlockPos("position");
+                        var blockPos = Toolbox.posToBlockPos(pos);
+                        var restrictions = RestrictorBlockEntity.getRestrictionsAt(pos,comp.world());
+                        if(!restrictions.allowsBlockManipulation() && !comp.context.isFromPrecomiled()){
+                            // not allowed to place here! punish!
+                            punishDisallowedAction(comp.context);
+                            return SpellBlockResult.empty();
+                        }
 
                         // calculate cost
                         float manaCost = 10f
@@ -2232,7 +2275,13 @@ public class SpellBlocks {
                     )
                     .func((comp,vars) -> {
                         var pos = vars.getVector("position");
-                        var blockPos = vars.getBlockPos("position");
+                        var blockPos = Toolbox.posToBlockPos(pos);
+                        var restrictions = RestrictorBlockEntity.getRestrictionsAt(pos,comp.world());
+                        if(!restrictions.allowsActivate() && !comp.context.isFromPrecomiled()){
+                            // not allowed to place here! punish!
+                            punishDisallowedAction(comp.context);
+                            return SpellBlockResult.empty();
+                        }
 
                         World world = comp.world();
                         BlockState targetState = world.getBlockState(blockPos);
@@ -2416,6 +2465,12 @@ public class SpellBlocks {
                     .func((comp,vars) -> {
                         var pos = vars.getVector("position");
                         var blockPos = Toolbox.posToBlockPos(pos);
+                        var restrictions = RestrictorBlockEntity.getRestrictionsAt(pos,comp.world());
+                        if(!restrictions.allowsBlockManipulation() && !comp.context.isFromPrecomiled()){
+                            // not allowed to place here! punish!
+                            punishDisallowedAction(comp.context);
+                            return SpellBlockResult.empty();
+                        }
                         if(!(comp.world().getBlockEntity(blockPos) instanceof LockableContainerBlockEntity target)) return SpellBlockResult.empty();
                         var toSlot = vars.getInt("toSlot");
                         if(toSlot>=target.size()) { tryLogDebugSlotOOB(comp,toSlot); return SpellBlockResult.empty();} // slot OOB
@@ -2468,6 +2523,12 @@ public class SpellBlocks {
                     .func((comp,vars) -> {
                         var pos = vars.getVector("position");
                         var blockPos = Toolbox.posToBlockPos(pos);
+                        var restrictions = RestrictorBlockEntity.getRestrictionsAt(pos,comp.world());
+                        if(!restrictions.allowsBlockManipulation() && !comp.context.isFromPrecomiled()){
+                            // not allowed to place here! punish!
+                            punishDisallowedAction(comp.context);
+                            return SpellBlockResult.empty();
+                        }
                         if(!(comp.world().getBlockEntity(blockPos) instanceof LockableContainerBlockEntity fromInv)) return SpellBlockResult.empty(); // no container
                         var fromSlot = vars.getInt("fromSlot");
                         if(fromSlot<0||fromSlot>=fromInv.size()) { tryLogDebugSlotOOB(comp,fromSlot); return SpellBlockResult.empty();} // slot OOB
@@ -2522,6 +2583,18 @@ public class SpellBlocks {
                         var fromBlockPos = Toolbox.posToBlockPos(fromPos);
                         var toPos = vars.getVector("toPos");
                         var toBlockPos = Toolbox.posToBlockPos(toPos);
+                        var restrictions = RestrictorBlockEntity.getRestrictionsAt(fromPos,comp.world());
+                        if(!restrictions.allowsBlockManipulation() && !comp.context.isFromPrecomiled()){
+                            // not allowed to place here! punish!
+                            punishDisallowedAction(comp.context);
+                            return SpellBlockResult.empty();
+                        }
+                        restrictions = RestrictorBlockEntity.getRestrictionsAt(toPos,comp.world());
+                        if(!restrictions.allowsBlockManipulation() && !comp.context.isFromPrecomiled()){
+                            // not allowed to place here! punish!
+                            punishDisallowedAction(comp.context);
+                            return SpellBlockResult.empty();
+                        }
                         if(!(comp.world().getBlockEntity(fromBlockPos) instanceof LockableContainerBlockEntity fromInv)) return SpellBlockResult.empty(); // no from container
                         if(!(comp.world().getBlockEntity(toBlockPos) instanceof LockableContainerBlockEntity toInv)) return SpellBlockResult.empty(); // no to container
                         var fromSlot = vars.getInt("fromSlot");
@@ -2984,6 +3057,16 @@ public class SpellBlocks {
         }
     }
 
+    public static void punishDisallowedAction(SpellContext context) {
+        if(context.caster instanceof ServerPlayerEntity spe){
+            spe.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS,5));
+            spe.damage(ModDamageTypes.of(context.getWorld(),ModDamageTypes.RESTRICTED_ACTION),4);
+            AdvancementHelper.grantAdvancementCriterion(spe,Geomancy.locate("main/simple_tried_disallowed_action"),"simple_tried_disallowed_action");
+        }
+        ParticleUtil.ParticleData.createRestrictedAction(context.getWorld(),context.getOriginPos()).send();
+        tryLogDebugRestricted(context);
+    }
+
     private static void tryUnlockSpellAdvancement(SpellComponent comp, String name) {
         tryUnlockSpellAdvancement(comp.caster(),name);
     }
@@ -3113,9 +3196,10 @@ public class SpellBlocks {
                 comp.getRuntimeName(),vol));
     }
 
-    public static void tryLogDebugRestricted(SpellComponent comp){
-        tryLogDebug(comp,Text.translatable("geomancy.spells.debug.restricted",
-                comp.getRuntimeName()));
+    public static void tryLogDebugRestricted(SpellContext context){
+        if(!context.debugging) return;
+        logDebug(context.caster,Text.translatable("geomancy.spells.debug.restricted",
+                context.grid.getRuntimeName(context)));
     }
 
     public static void tryLogDebugTimedOut(SpellContext context) {

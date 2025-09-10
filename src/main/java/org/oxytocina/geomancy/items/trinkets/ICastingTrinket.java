@@ -1,4 +1,4 @@
-package org.oxytocina.geomancy.items;
+package org.oxytocina.geomancy.items.trinkets;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;

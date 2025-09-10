@@ -1,4 +1,4 @@
-package org.oxytocina.geomancy.items;
+package org.oxytocina.geomancy.items.trinkets;
 
 import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketItem;
@@ -30,6 +30,7 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.client.screen.StorageItemScreenHandler;
+import org.oxytocina.geomancy.items.*;
 import org.oxytocina.geomancy.spells.SpellBlockArgs;
 import org.oxytocina.geomancy.spells.SpellContext;
 import org.oxytocina.geomancy.spells.SpellGrid;

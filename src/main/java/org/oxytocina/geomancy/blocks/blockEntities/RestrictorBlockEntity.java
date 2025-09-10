@@ -2,32 +2,21 @@ package org.oxytocina.geomancy.blocks.blockEntities;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventories;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
-import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
-import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.Geomancy;
-import org.oxytocina.geomancy.inventories.ImplementedInventory;
 import org.oxytocina.geomancy.registries.ModDamageTypes;
 import org.oxytocina.geomancy.spells.SpellBlocks;
 import org.oxytocina.geomancy.spells.SpellContext;
@@ -40,12 +29,39 @@ import java.util.UUID;
 
 public class RestrictorBlockEntity extends BlockEntity {
 
-    public static final HashMap<UUID, Pair<RestrictorBlockEntity,Integer>> influences = new HashMap<>();
+    public static final HashMap<UUID, Pair<RestrictorBlockEntity,Integer>> PLAYER_INFLUENCES = new HashMap<>();
+    public static final List<RestrictorBlockEntity> RESTRICTORS = new ArrayList<>();
 
     private static List<PotentiallyForbiddenAction> PFAS = new ArrayList<>();
 
     public static void registerPFA(PotentiallyForbiddenAction pfa) {
         PFAS.add(pfa);
+    }
+
+    public static SpellContext.Restrictions getRestrictionsAt(Vec3d pos, World world) {
+        double minDist = 1000000;
+        RestrictorBlockEntity be = null;
+        for(var r : RESTRICTORS)
+        {
+            double dist = (r.getPos().toCenterPos().subtract(pos)).length();
+            if(dist < minDist){
+                minDist=dist;
+                if(minDist < RANGE)
+                    be = r;
+            }
+        }
+        if(be!=null){
+            return be.getRestrictions();
+        }
+        return getDefaultRestrictionsAt(pos,world);
+    }
+
+    public static SpellContext.Restrictions getDefaultRestrictionsAt(Vec3d pos,World world){
+        if(world instanceof ServerWorld sw){
+            var blockPos = Toolbox.posToBlockPos(pos);
+            return sw.isChunkLoaded(blockPos) ? SpellContext.Restrictions.NONE : SpellContext.Restrictions.UNLOADED;
+        }
+        return SpellContext.Restrictions.UNLOADED;
     }
 
     public static class PotentiallyForbiddenAction{
@@ -83,9 +99,7 @@ public class RestrictorBlockEntity extends BlockEntity {
                 case Teleport : {
                     if(ctx.caster==null || ctx.caster.isRemoved()) break;
                     ctx.caster.teleport(from.x,from.y,from.z);
-                    ctx.caster.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS,5));
-                    ctx.caster.damage(ModDamageTypes.of(ctx.getWorld(),ModDamageTypes.RESTRICTED_ACTION),4);
-                    ParticleUtil.ParticleData.createRestrictedAction(ctx.getWorld(),ctx.caster.getEyePos()).send();
+                    SpellBlocks.punishDisallowedAction(ctx);
                     break;
                 }
                 case Dimhop: {
@@ -95,9 +109,7 @@ public class RestrictorBlockEntity extends BlockEntity {
                     from = ctx.getOriginPos();
                     var ent = ctx.caster;
                     ent.teleport(destination,from.x,from.y,from.z,null,ent.getYaw(),ent.getPitch());
-                    ctx.caster.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS,5));
-                    ctx.caster.damage(ModDamageTypes.of(ctx.getWorld(),ModDamageTypes.RESTRICTED_ACTION),4);
-                    ParticleUtil.ParticleData.createRestrictedAction(ctx.getWorld(),ctx.caster.getEyePos()).send();
+                    SpellBlocks.punishDisallowedAction(ctx);
                     break;
                 }
             }
@@ -124,24 +136,25 @@ public class RestrictorBlockEntity extends BlockEntity {
     public static int DURATION = 20;
 
     public static void clear(){
-        influences.clear();
+        PLAYER_INFLUENCES.clear();
+        RESTRICTORS.clear();
     }
 
     public static void tick() {
         // tick down influences
         var toRemove = new ArrayList<>();
-        for(var uuid : influences.keySet()){
-            var pair = influences.get(uuid);
+        for(var uuid : PLAYER_INFLUENCES.keySet()){
+            var pair = PLAYER_INFLUENCES.get(uuid);
             if(pair==null){toRemove.add(uuid);continue;}
             var be = pair.getLeft();
             if(be==null){toRemove.add(uuid);continue;}
             int ticksLeft = pair.getRight();
             ticksLeft--;
             if(ticksLeft<=0) {toRemove.add(uuid);continue;}
-            influences.put(uuid,new Pair(be,ticksLeft));
+            PLAYER_INFLUENCES.put(uuid,new Pair(be,ticksLeft));
         }
         for(var uuid : toRemove)
-            influences.remove(uuid);
+            PLAYER_INFLUENCES.remove(uuid);
 
         // tick PFAs
         List<PotentiallyForbiddenAction> newPFAs = new ArrayList<>();
@@ -161,11 +174,22 @@ public class RestrictorBlockEntity extends BlockEntity {
             newPFAs.add(pfa);
         }
         PFAS = newPFAs;
+
+        // tick restrictor deregistration
+        if(Geomancy.tick % 20 == 0){
+            toRemove.clear();
+            for(var r : RESTRICTORS){
+                if(r.isRemoved()) toRemove.add(r);
+            }
+            for(var r : toRemove){
+                RESTRICTORS.remove(r);
+            }
+        }
     }
 
     public static SpellContext.Restrictions getRestrictionsFor(ServerPlayerEntity spe){
-        if(!influences.containsKey(spe.getUuid())) return SpellContext.Restrictions.NONE;
-        return influences.get(spe.getUuid()).getLeft().getRestrictions();
+        if(!PLAYER_INFLUENCES.containsKey(spe.getUuid())) return SpellContext.Restrictions.NONE;
+        return PLAYER_INFLUENCES.get(spe.getUuid()).getLeft().getRestrictions();
     }
 
     public RestrictorBlockEntity(BlockPos pos, BlockState state) {
@@ -206,11 +230,11 @@ public class RestrictorBlockEntity extends BlockEntity {
 
             // check if other BE already influencing
             // if so, replace only if closer
-            var prevBE = influences.containsKey(uuid) ? influences.get(uuid).getLeft() : null;
+            var prevBE = PLAYER_INFLUENCES.containsKey(uuid) ? PLAYER_INFLUENCES.get(uuid).getLeft() : null;
             if(prevBE!=null && EntityUtil.distanceTo(spe,prevBE.getPos().toCenterPos()) < EntityUtil.distanceTo(spe,this.getPos().toCenterPos())) continue;
 
             // set new influence
-            influences.put(uuid,new Pair<>(this,DURATION));
+            PLAYER_INFLUENCES.put(uuid,new Pair<>(this,DURATION));
         }
     }
 
@@ -220,6 +244,6 @@ public class RestrictorBlockEntity extends BlockEntity {
         initized=true;
         //if(world!=null && !world.isClient)
         //    IPedestalListener.onPedestalCreated(this);
-
+        RESTRICTORS.add(this);
     }
 }

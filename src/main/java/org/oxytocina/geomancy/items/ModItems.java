@@ -1,13 +1,10 @@
 package org.oxytocina.geomancy.items;
 
+import dev.emi.trinkets.api.TrinketItem;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.fabricmc.fabric.api.registry.CompostingChanceRegistry;
-import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
@@ -27,6 +24,7 @@ import org.oxytocina.geomancy.items.tools.materials.ModToolMaterials;
 import org.oxytocina.geomancy.entity.ExtraEntitySettings;
 import org.oxytocina.geomancy.items.artifacts.*;
 import org.oxytocina.geomancy.items.jewelry.*;
+import org.oxytocina.geomancy.items.trinkets.CastingTrinketItem;
 import org.oxytocina.geomancy.loottables.ModLootTables;
 import org.oxytocina.geomancy.registries.ModBlockTags;
 import org.oxytocina.geomancy.registries.ModItemTags;
@@ -219,6 +217,11 @@ public class ModItems {
 
     public static final CastingTrinketItem CASTER_CORE =    register("caster_core",new CastingTrinketItem(new Item.Settings().maxCount(1), 9*3,ModItemTags.FITS_IN_CASTERS,false),new ExtraItemSettings());
 
+    public static final TrinketItem MANIA_MASK = register("mania_mask",new TrinketItem(new Item.Settings().maxCount(1)));
+    public static final TrinketItem SORROW_MASK = register("sorrow_mask",new TrinketItem(new Item.Settings().maxCount(1)));
+    public static final TrinketItem PARANOIA_MASK = register("paranoia_mask",new TrinketItem(new Item.Settings().maxCount(1)));
+    public static final TrinketItem MELANCHOLY_MASK = register("melancholy_mask",new TrinketItem(new Item.Settings().maxCount(1)));
+    public static final TrinketItem ADAPTIVE_MASK = register("adaptive_mask",new TrinketItem(new Item.Settings().maxCount(1)));
 
     public static final HammerItem IRON_HAMMER = register("iron_hammer",new HammerItem(5,-3.3f,ToolMaterials.IRON, ModBlockTags.HAMMER_MINEABLES, new FabricItemSettings(),
             10,1,10,20),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Handheld));

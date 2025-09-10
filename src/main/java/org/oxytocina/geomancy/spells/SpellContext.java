@@ -15,8 +15,9 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlockEntity;
 import org.oxytocina.geomancy.entity.CasterDelegateEntity;
-import org.oxytocina.geomancy.items.CastingTrinketItem;
+import org.oxytocina.geomancy.items.trinkets.CastingTrinketItem;
 import org.oxytocina.geomancy.items.ISpellSelectorItem;
+import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.armor.CastingArmorItem;
 import org.oxytocina.geomancy.util.EntityUtil;
 import org.oxytocina.geomancy.util.SoulUtil;
@@ -446,6 +447,10 @@ public class SpellContext {
         if(!flags.contains(flag)) flags.add(flag);
     }
 
+    public boolean isFromPrecomiled() {
+        return casterItem.getItem() == ModItems.PRECOMP_CASTER;
+    }
+
     public enum SourceType{
         Caster,
         Block,
@@ -464,17 +469,20 @@ public class SpellContext {
     }
 
     public enum Restrictions {
-        NONE("none",true,true),
-        DUNGEON("dungeon",false,false);
+        NONE("none",true,true,true),
+        UNLOADED("unloaded",true,false,false),
+        DUNGEON("dungeon",false,false,true);
 
         private final String name;
         private final boolean allowTeleports;
         private final boolean allowBlockManipulation;
+        private final boolean allowActivate;
 
-        private Restrictions(String name, boolean allowTeleports, boolean allowBlockManipulation) {
+        private Restrictions(String name, boolean allowTeleports, boolean allowBlockManipulation, boolean allowActivate) {
             this.name = name;
             this.allowTeleports = allowTeleports;
             this.allowBlockManipulation = allowBlockManipulation;
+            this.allowActivate=allowActivate;
         }
 
         public String getName() {
@@ -487,6 +495,10 @@ public class SpellContext {
 
         public boolean allowsBlockManipulation() {
             return allowBlockManipulation;
+        }
+
+        public boolean allowsActivate() {
+            return allowActivate;
         }
     }
 }

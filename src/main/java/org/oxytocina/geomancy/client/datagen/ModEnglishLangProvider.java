@@ -483,6 +483,12 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("item.MODID.component_pouch","Component Pouch");
             add("MODID.storage.tooltip","Use to open");
 
+            add("item.MODID.mania_mask","Mania Mask");
+            add("item.MODID.sorrow_mask","Sorrow Mask");
+            add("item.MODID.paranoia_mask","Paranoia Mask");
+            add("item.MODID.melancholy_mask","Melancholy Mask");
+            add("item.MODID.adaptive_mask","Adaptive Mask");
+
             add("geomancy.storage_item.more","...and %1$s more");
         }
 
@@ -658,6 +664,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addAdvancement(".main.simple_tried_to_smith_cold_forge","You've gotta activate it!","Cast activate on the forge, then hit with a hammer to craft, but don't take too long!");
             addAdvancement(".main.simple_lead_poisoned","Delicious","Experience symptoms of heavy metal poisoning");
             addAdvancement(".main.simple_maddened","The silence after sanity","Let the whispers get to you");
+            addAdvancement(".main.simple_tried_disallowed_action","Naughty","Attempt to do a crime");
 
             addAdvancement(".spells.simple_ambition","Ambition","Try to cast a spell that is too complex");
             addAdvancement(".spells.simple_bones","There's magic in my bones!","Use the grow spell component");

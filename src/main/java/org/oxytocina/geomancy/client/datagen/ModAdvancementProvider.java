@@ -79,6 +79,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         Advancement simple_tried_to_smith_cold_forge = AddSimpleAdvancement(ModItems.GOLDEN_HAMMER,"tried_to_smith_cold_forge","tried_to_smith_cold_forge","main",AdvancementFrame.TASK,true,true,simple_tried_to_take_smithery_result);
         Advancement simple_lead_poisoned = AddSimpleAdvancement(ModItems.RAW_LEAD,"lead_poisoned","lead_poisoned","main",AdvancementFrame.TASK,true,true,got_lead);
         Advancement simple_maddened = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"maddened","maddened","main",AdvancementFrame.TASK,true,true,got_octangulite);
+        Advancement simple_tried_disallowed_action = AddSimpleAdvancement(Items.BARRIER,"tried_disallowed_action","trespass","main",AdvancementFrame.TASK,true,true,got_spellmaker);
 
         // lore
         var loreItems = new Item[]{

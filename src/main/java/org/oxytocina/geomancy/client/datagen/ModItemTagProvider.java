@@ -149,7 +149,6 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
 
     private void generateAccessoryTags() {
         //this.getOrCreateTagBuilder(accessory("chest/cape")).add(
-        //this.getOrCreateTagBuilder(accessory("head/face")).add(
         //this.getOrCreateTagBuilder(accessory("head/hat")).add(
         //this.getOrCreateTagBuilder(accessory("legs/belt")).add(
 
@@ -179,6 +178,15 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
                     artifact
             );
         }
+
+        this.getOrCreateTagBuilder(accessory("head/face")).add(
+                ModItems.MANIA_MASK,
+                ModItems.SORROW_MASK,
+                ModItems.PARANOIA_MASK,
+                ModItems.MELANCHOLY_MASK,
+                ModItems.ADAPTIVE_MASK
+        );
+
     }
 
     private static TagKey<Item> accessory(String name) {

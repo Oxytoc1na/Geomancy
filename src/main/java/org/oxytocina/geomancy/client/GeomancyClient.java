@@ -18,6 +18,7 @@ import org.oxytocina.geomancy.client.rendering.ModBlockTransparency;
 import org.oxytocina.geomancy.client.rendering.ModColorizationHandler;
 import org.oxytocina.geomancy.client.rendering.ModModelPredicateProvider;
 import org.oxytocina.geomancy.client.rendering.armor.ModArmorRenderers;
+import org.oxytocina.geomancy.client.rendering.trinkets.ModTrinketRenderers;
 import org.oxytocina.geomancy.client.screen.*;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 import org.oxytocina.geomancy.compat.GeomancyIntegrationPacks;
@@ -49,6 +50,7 @@ public class GeomancyClient implements ClientModInitializer {
         ModModelLayers.register();
         ModDimensions.registerClient();
         ModParticleFactories.register();
+        ModTrinketRenderers.register();
 
         ClientTickEvents.START_CLIENT_TICK.register(new ClientPlayerTickHandler());
         ClientPlayConnectionEvents.JOIN.register(new ClientPlayConnectionJoin());
