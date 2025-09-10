@@ -1,5 +1,8 @@
 package org.oxytocina.geomancy.effects;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectCategory;
@@ -14,6 +17,19 @@ public class EcstaticStatusEffect extends ModStatusEffect {
 		super(statusEffectCategory, color);
 	}
 
+	@Environment(EnvType.CLIENT)
+	public static void tickClient() {
+		var player = MinecraftClient.getInstance().player;
+		if(player==null || !player.hasStatusEffect(ModStatusEffects.ECSTATIC)) return;
+
+		boolean moving = player.getVelocity().multiply(1,0,1).length()>0.05f;
+		boolean onGround = player.isOnGround();
+
+		if(onGround && moving){
+			player.jump();
+		}
+	}
+
 	@Override
 	public void applyUpdateEffect(LivingEntity entity, int amplifier) {
 		World world = entity.getWorld();
@@ -26,22 +42,11 @@ public class EcstaticStatusEffect extends ModStatusEffect {
 			return;
 		}
 
-		if(onGround && moving && world.isClient && entity instanceof ClientPlayerEntity playerEntity){
-			playerEntity.jump();
-			return;
-		}
-
 		entity.setJumping(onGround && moving);
 	}
 
 	@Override
 	public boolean canApplyUpdateEffect(int duration, int amplifier) {
-		/*int i = 200 >> amplifier;
-		if (i > 0) {
-			return duration % i == 0;
-		}
-		return true;*/
-
 		return true;
 	}
 

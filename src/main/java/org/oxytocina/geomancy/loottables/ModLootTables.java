@@ -762,6 +762,13 @@ public class ModLootTables {
             DIGSITE_HALLWAY_CHEST = register("chests/digsite_hallway", LootTable.builder()
                     // lore
                     .pool(LootPool.builder()
+                            .with(ItemEntry.builder(
+                                            ModItems.LORE_LOG_EXODIA_1)
+                                    .weight(10)
+                                    .conditionally(RandomChanceLootCondition.builder(0.1f))
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                    )
+                    .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(-3,1))
                             .with(ItemEntry.builder(
                                             ModItems.LORE_LOG_EXPEDITION_1)
@@ -786,7 +793,7 @@ public class ModLootTables {
                     )
                     // octangulite
                     .pool(LootPool.builder()
-                            .rolls(UniformLootNumberProvider.create(0.0F, 3.0F))
+                            .rolls(UniformLootNumberProvider.create(0.0F, 2.0F))
                             .with(ItemEntry.builder(
                                             ModItems.RAW_OCTANGULITE)
                                     .weight(20)
@@ -802,7 +809,7 @@ public class ModLootTables {
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(5.0F, 16.0F)))))
                     // blocks
                     .pool(LootPool.builder()
-                            .rolls(UniformLootNumberProvider.create(2.0F, 4.0F))
+                            .rolls(UniformLootNumberProvider.create(1.0F, 2.0F))
                             .with(ItemEntry.builder(
                                             ModBlocks.CUT_TITANIUM)
                                     .apply(SetCountLootFunction.builder(
@@ -814,7 +821,7 @@ public class ModLootTables {
                     )
                     // generic treasure
                     .pool(LootPool.builder()
-                            .rolls(UniformLootNumberProvider.create(1.0F, 3.0F))
+                            .rolls(UniformLootNumberProvider.create(-1.0F, 2.0F))
                             .with(ItemEntry.builder(
                                             Items.EMERALD)
                                     .weight(5)
@@ -826,9 +833,51 @@ public class ModLootTables {
                             .with(ItemEntry.builder(
                                             Items.GOLD_INGOT)
                                     .weight(5)
-                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F)))))
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
+                            .with(ItemEntry.builder(
+                                            ModItems.TITANIUM_INGOT)
+                                    .weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
+                            .with(ItemEntry.builder(
+                                            ModItems.LEAD_INGOT)
+                                    .weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
+                            .with(ItemEntry.builder(
+                                            ModItems.MOLYBDENUM_INGOT)
+                                    .weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
+                            .with(ItemEntry.builder(
+                                            ModItems.MITHRIL_INGOT)
+                                    .weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
+                            .with(ItemEntry.builder(
+                                            ModItems.ORTHOCLASE)
+                                    .weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
+                            .with(ItemEntry.builder(
+                                            ModItems.PERIDOT)
+                                    .weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
+                            .with(ItemEntry.builder(
+                                            ModItems.TOURMALINE)
+                                    .weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
+                            .with(ItemEntry.builder(
+                                            ModItems.AXINITE)
+                                    .weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
+                    )
+                    // spell component
                     .pool(spellComponentsBuilder()
                             .rolls(UniformLootNumberProvider.create(2.0F, 4.0F))
+                    )
+                    // component pouch
+                    .pool(LootPool.builder()
+                            .with(ItemEntry.builder(
+                                            ModItems.COMPONENT_POUCH)
+                                    .weight(10)
+                                    .conditionally(RandomChanceLootCondition.builder(0.05f))
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
                     )
             );
         }
@@ -847,16 +896,36 @@ public class ModLootTables {
     }
 
     public static void register() {
-        // register stone geodes
         LootTableEvents.MODIFY.register((resourceManager, lootManager, id, tableBuilder, source) -> {
-            // Let's only modify built-in loot tables and leave data pack loot tables untouched by checking the source.
-            // We also check that the loot table ID is equal to the ID we want.
-            if (source.isBuiltin() && Blocks.STONE.getLootTableId().equals(id)) {
+            if(!source.isBuiltin()) return;
+
+            // register stone geodes
+            if (Blocks.STONE.getLootTableId().equals(id)) {
                 LootPool.Builder poolBuilder = LootPool.builder().with(ItemEntry.builder(ModItems.STONE_GEODE)
                         .conditionally(RandomChanceLootCondition.builder(1/300f))
                 );
-
                 tableBuilder.pool(poolBuilder);
+                return;
+            }
+
+            // exodia 1 can be found in digsite chests
+
+            // exodia 2
+            if (LootTables.BASTION_TREASURE_CHEST.equals(id)) {
+                tableBuilder.pool(LootPool.builder().with(ItemEntry.builder(ModItems.LORE_LOG_EXODIA_2)));
+                return;
+            }
+
+            // exodia 3
+            if (LootTables.ANCIENT_CITY_CHEST.equals(id)) {
+                tableBuilder.pool(LootPool.builder().with(ItemEntry.builder(ModItems.LORE_LOG_EXODIA_3).conditionally(RandomChanceLootCondition.builder(1/10f))));
+                return;
+            }
+
+            // exodia 4
+            if (LootTables.END_CITY_TREASURE_CHEST.equals(id)) {
+                tableBuilder.pool(LootPool.builder().with(ItemEntry.builder(ModItems.LORE_LOG_EXODIA_4).conditionally(RandomChanceLootCondition.builder(1/4f))));
+                return;
             }
         });
     }
@@ -969,30 +1038,6 @@ public class ModLootTables {
         var res = LootPool.builder();
 
         HashMap<JewelryItem,Integer> weighted = new HashMap<>();
-        /*
-        weighted.put(ModItems.COPPER_NECKLACE,100);
-        weighted.put(ModItems.COPPER_PENDANT,100);
-        weighted.put(ModItems.COPPER_RING,100);
-        weighted.put(ModItems.LEAD_NECKLACE,100);
-        weighted.put(ModItems.LEAD_PENDANT,100);
-        weighted.put(ModItems.LEAD_RING,100);
-        weighted.put(ModItems.IRON_NECKLACE,60);
-        weighted.put(ModItems.IRON_PENDANT,60);
-        weighted.put(ModItems.IRON_RING,60);
-        weighted.put(ModItems.GOLD_NECKLACE,30);
-        weighted.put(ModItems.GOLD_PENDANT,30);
-        weighted.put(ModItems.GOLD_RING,30);
-        weighted.put(ModItems.MOLYBDENUM_NECKLACE,30);
-        weighted.put(ModItems.MOLYBDENUM_PENDANT,30);
-        weighted.put(ModItems.MOLYBDENUM_RING,30);
-        weighted.put(ModItems.TITANIUM_NECKLACE,10);
-        weighted.put(ModItems.TITANIUM_PENDANT,10);
-        weighted.put(ModItems.TITANIUM_RING,10);
-        weighted.put(ModItems.MITHRIL_NECKLACE,1);
-        weighted.put(ModItems.MITHRIL_PENDANT,1);
-        weighted.put(ModItems.MITHRIL_RING,1);
-
-         */
 
         for(var jewelryItem : weighted.keySet()){
             int weight = weighted.get(jewelryItem);

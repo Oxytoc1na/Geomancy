@@ -75,7 +75,7 @@ public class SpellBlocks2 {
                             }
                             return SpellBlockResult.empty();
                         })
-                .category(cat).build());
+                .category(cat).defaultLootWeight(0).build());
 
         // challenge of math
         // based on world seed and dimension, provide a reference spell that solves a certain math problem
@@ -115,7 +115,7 @@ public class SpellBlocks2 {
                     }
                     return SpellBlockResult.empty();
                 })
-                .category(cat).build());
+                .category(cat).defaultLootWeight(0).build());
 
         // challenge of recklessness
         // activate a loud sound event spell while in an ancient city
@@ -156,7 +156,7 @@ public class SpellBlocks2 {
                     }
 
                 })
-                .category(cat).build());
+                .category(cat).defaultLootWeight(0).build());
 
         // challenge of curiosity
         // activate while deep enough in the ends void to take damage
@@ -180,7 +180,7 @@ public class SpellBlocks2 {
                     }
                     return SpellBlockResult.empty();
                 })
-                .category(cat).build());
+                .category(cat).defaultLootWeight(0).build());
 
         // challenge of absolution
         // cast lightning ontop of the nulls roof, while also standing on it
@@ -202,6 +202,6 @@ public class SpellBlocks2 {
                         spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,comp.context.getOriginPos()));
                     }
                 })
-                .category(cat).build());
+                .category(cat).defaultLootWeight(0).build());
     }
 }

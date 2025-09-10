@@ -120,32 +120,32 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         for (var id : SpellBlocks.functions.keySet()){
             NbtCompound nbt = new NbtCompound();
             NbtCompound component = new NbtCompound();
-            component.putString("func",id.toString());
+            component.putString("f",id.toString());
             nbt.put("component",component);
             AddGetItemWithNbtAdvancement(ModItems.SPELLCOMPONENT,nbt,id.getPath(),"spellcomponents");
         }
 
         // tasks
         var spell_unlocker = milestone_souls;
-        Advancement spell_ignition =    AddSimpleAdvancement(Items.FLINT_AND_STEEL,"ignition","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement spell_liftoff =     AddSimpleAdvancement(Items.FIREWORK_ROCKET,"liftoff","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement spell_ambition =    AddSimpleAdvancement(Items.COMMAND_BLOCK,"ambition","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement spell_brazilian =   AddSimpleAdvancement(Items.LEATHER_BOOTS,"brazilian","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement spell_celeste =     AddSimpleAdvancement(Items.FEATHER,"celeste","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement spell_long_arms =   AddSimpleAdvancement(Items.SPYGLASS,"long_arms","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement spell_ftl =         AddSimpleAdvancement(Items.SPYGLASS,"ftl","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement spell_bones =       AddSimpleAdvancement(Items.BONE,"bones","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement spell_fireball =    AddSimpleAdvancement(Items.FIRE_CHARGE,"fireball","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement spell_deception =   AddSimpleAdvancement(Items.NOTE_BLOCK,"deception","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement spell_medic =       AddSimpleAdvancement(Items.ENCHANTED_GOLDEN_APPLE,"medic","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_ignition =  AddSimpleAdvancement(Items.FLINT_AND_STEEL,"ignition","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_liftoff =   AddSimpleAdvancement(Items.FIREWORK_ROCKET,"liftoff","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_ambition =  AddSimpleAdvancement(Items.COMMAND_BLOCK,"ambition","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_brazilian = AddSimpleAdvancement(Items.LEATHER_BOOTS,"brazilian","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_celeste =   AddSimpleAdvancement(Items.FEATHER,"celeste","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_long_arms = AddSimpleAdvancement(Items.SPYGLASS,"long_arms","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_ftl =       AddSimpleAdvancement(Items.SPYGLASS,"ftl","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_bones =     AddSimpleAdvancement(Items.BONE,"bones","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_fireball =  AddSimpleAdvancement(Items.FIRE_CHARGE,"fireball","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_deception = AddSimpleAdvancement(Items.NOTE_BLOCK,"deception","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_medic =     AddSimpleAdvancement(Items.ENCHANTED_GOLDEN_APPLE,"medic","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
         Advancement spell_ulterior_motives = AddSimpleAdvancement(Items.WRITABLE_BOOK,"ulterior_motives","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement spell_build_big =   AddSimpleAdvancement(Items.CHEST,"build_big","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement spell_deconsciousness =   AddSimpleAdvancement(Items.SOUL_CAMPFIRE,"deconsciousness","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement enlightenment_1 = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"enlightenment_1","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement enlightenment_2 = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"enlightenment_2","do","spells",AdvancementFrame.CHALLENGE,true,true,enlightenment_1);
-        Advancement enlightenment_3 = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"enlightenment_3","do","spells",AdvancementFrame.CHALLENGE,true,true,enlightenment_2);
-        Advancement enlightenment_4 = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"enlightenment_4","do","spells",AdvancementFrame.CHALLENGE,true,true,enlightenment_3);
-        Advancement enlightenment_5 = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"enlightenment_5","do","spells",AdvancementFrame.CHALLENGE,true,true,enlightenment_4);
+        Advancement spell_build_big = AddSimpleAdvancement(Items.CHEST,"build_big","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_deconsciousness = AddSimpleAdvancement(Items.SOUL_CAMPFIRE,"deconsciousness","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement enlightenment_1 = AddSimpleAdvancement(ModItems.LORE_LOG_EXODIA_1,"enlightenment_1","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement enlightenment_2 = AddSimpleAdvancement(ModItems.LORE_LOG_EXODIA_2,"enlightenment_2","do","spells",AdvancementFrame.CHALLENGE,true,true,enlightenment_1);
+        Advancement enlightenment_3 = AddSimpleAdvancement(ModItems.LORE_LOG_EXODIA_3,"enlightenment_3","do","spells",AdvancementFrame.CHALLENGE,true,true,enlightenment_2);
+        Advancement enlightenment_4 = AddSimpleAdvancement(ModItems.LORE_LOG_EXODIA_4,"enlightenment_4","do","spells",AdvancementFrame.CHALLENGE,true,true,enlightenment_3);
+        Advancement enlightenment_5 = AddSimpleAdvancement(ModItems.LORE_LOG_EXODIA_4,"enlightenment_5","do","spells",AdvancementFrame.CHALLENGE,true,true,enlightenment_4);
 
     }
     private Advancement AddGetItemAdvancement(ItemConvertible item,String name, ItemConvertible conditionItem, String category, AdvancementFrame frame, boolean announce, boolean hidden, Advancement parent){
