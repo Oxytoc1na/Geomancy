@@ -1,0 +1,73 @@
+{
+  "background_u_index": 1,
+  "background_v_index": 0,
+  "category": "geomancy:lore",
+  "condition": {
+    "type": "modonomicon:advancement",
+    "advancement_id": "geomancy:lore/get_lorelog_exodia_2"
+  },
+  "description": "book.geomancy.guidebook.lore.exodia_2.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minecraft:chorus_plant"
+  },
+  "name": "book.geomancy.guidebook.lore.exodia_2.name",
+  "pages": [
+    {
+      "type": "geomancy:text_stellge",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "knowledgeBonus": 0.0,
+      "requiredKnowledge": 15.0,
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.lore.exodia_2.1.text",
+      "title": "",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "geomancy:text_stellge",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "knowledgeBonus": 0.0,
+      "requiredKnowledge": 15.0,
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.lore.exodia_2.2.text",
+      "title": "",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "geomancy:text_stellge",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "knowledgeBonus": 0.0,
+      "requiredKnowledge": 15.0,
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.lore.exodia_2.3.text",
+      "title": "",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "geomancy:soulforge_stellge",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "knowledgeBonus": 0.0,
+      "recipeFraction": 0.75,
+      "recipe_id_1": "geomancy:soulforge_exodia_2",
+      "requiredKnowledge": 15.0,
+      "text": "book.geomancy.guidebook.lore.exodia_2.4.text",
+      "title1": "chorus_plant",
+      "title2": ""
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "x": 2,
+  "y": 2
+}

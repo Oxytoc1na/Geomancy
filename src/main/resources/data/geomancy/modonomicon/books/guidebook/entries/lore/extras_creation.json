@@ -1,0 +1,64 @@
+{
+  "background_u_index": 1,
+  "background_v_index": 0,
+  "category": "geomancy:lore",
+  "condition": {
+    "type": "modonomicon:advancement",
+    "advancement_id": "geomancy:lore/get_lorebook_extras_creation"
+  },
+  "description": "book.geomancy.guidebook.lore.extras_creation.description",
+  "hide_while_locked": true,
+  "icon": {
+    "item": "minecraft:soul_sand"
+  },
+  "name": "book.geomancy.guidebook.lore.extras_creation.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.lore.extras_creation.1.text",
+      "title": "",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.lore.extras_creation.2.text",
+      "title": "",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.lore.extras_creation.3.text",
+      "title": "",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.lore.extras_creation.4.text",
+      "title": "",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "x": 6,
+  "y": -3
+}
