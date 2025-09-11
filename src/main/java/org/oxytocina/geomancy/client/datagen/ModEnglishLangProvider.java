@@ -119,6 +119,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("get_time","Time","returns how progressed the current day is");
             addSpell("entity_delegate","Get Delegate","in a delegate context, returns the delegate entity");
             addSpell("consumed_soul","Consumed Soul","returns how much soul was consumed between start and end of the spell");
+            addSpell("empty_list","Empty List","returns an empty list");
             // arithmetic
             addSpell("vector_entityspawn","Entity Spawn","returns the respawn point of the entity");
             addSpell("vector_entitypos","Entity Position","returns the position of the entity");
@@ -201,13 +202,15 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             // lists
             addSpell("foreach","Foreach","individually sends out the elements of a list");
             addSpell("split","Split","splits a list into two at the given index");
-            addSpell("pop","Pop","returns the first element of a list, and the list without it");
+            addSpell("pop","Pop","returns the last element of a list, and the list without it");
+            addSpell("dequeue","Dequeue","returns the first element of a list, and the list without it");
             addSpell("size","Size","returns the count of elements in a list");
             addSpell("get_element","Get Element","returns the element in a list at a given position");
             addSpell("set_element","Set Element","sets the element in a list at a given position");
             addSpell("entities_near","Entities Near","returns a list containing all entities within the specified area");
             addSpell("block_box","Block Box","returns a list containing all block positions in the area");
             addSpell("raycast_march","Raycast March","returns a list containing all block positions intersected by a ray");
+            addSpell("to_list","To List","returns a list composed of the elements of the input (vectors -> x, y, z; texts -> letters)");
             // ancient
             addSpell("exodia_1","Challenge of Soul","???");
             addSpell("exodia_2","Challenge of Calculation","???");
@@ -230,7 +233,13 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.spells.debug.timeout","Spell %1$s Timed out! Time taken: %2$sms");
             add("MODID.spells.debug.player_variables_disallowed","Component %1$s: Loading player variables is disallowed on this server!");
             add("MODID.spells.debug.restricted","Component %1$s: The desired action is restricted here!");
-
+            add("MODID.spells.debug.exodia2","The ancient component speaks to me...: ");
+            add("MODID.spells.debug.exodia2_fail","The ancient component fizzles...but does nothing, except speak to me: ");
+            add("MODID.spells.debug.exodia2.reverse","Provide a spell that reverses the input text \"arg\" and outputs it as \"res\".");
+            add("MODID.spells.debug.exodia2.sort","Provide a spell that sorts the list containing number signals \"arg\" and outputs it as \"res\".");
+            add("MODID.spells.debug.exodia2.factorial","Provide a spell that takes a number as an argument and returns the factorial of the number.");
+            add("MODID.spells.debug.exodia2.mix","Provide a spell that returns a list containing a reference to yourself, your name, and the number 0.");
+            add("MODID.spells.debug.exodia2.pythagoras","Provide a spell that takes a list of numbers [a,b] and returns c according to the pythagorean theorem.");
 
             add("MODID.caster.nospells","No spells installed");
             add("MODID.caster.emptyhint1","Shift + use to insert and select spells");
@@ -680,11 +689,11 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addAdvancement(".spells.simple_ulterior_motives","Ulterior Motives","Save a reference to another player onto a varpot");
             addAdvancement(".spells.simple_build_big","Technical debt","Fill three quarters of a spacious spellcradle with components");
             addAdvancement(".spells.simple_deconsciousness","Deconsciousness","Cast a spell that costs at least 10000 souls");
-            addAdvancement(".spells.enlightenment_1","Conqueror of Soul","???");
-            addAdvancement(".spells.enlightenment_2","Conqueror of Calculation","???");
-            addAdvancement(".spells.enlightenment_3","Conqueror of Presence","???");
-            addAdvancement(".spells.enlightenment_4","Conqueror of Curiosity","???");
-            addAdvancement(".spells.enlightenment_5","Conqueror of Absolution","???");
+            addAdvancement(".spells.simple_enlightenment_1","Conqueror of Soul","Activate something strange at a lively place");
+            addAdvancement(".spells.simple_enlightenment_2","Conqueror of Calculation","Pass the job interview programming question");
+            addAdvancement(".spells.simple_enlightenment_3","Conqueror of Presence","Tell the world how you truly feel. Give it your all. It deserves to be heard.");
+            addAdvancement(".spells.simple_enlightenment_4","Conqueror of Curiosity","Taste incomprehensible destruction");
+            addAdvancement(".spells.simple_enlightenment_5","Conqueror of Absolution","Reach the summit, and be touched by the gaze of those to whom you are less than nothing.");
 
             addAdvancement(":milestones/milestone_smithery","The Craft of the Ancients","Obtain the smithery");
             addAdvancement(":milestones/milestone_souls","Soulcraft","Learn of the true nature of octangulite");

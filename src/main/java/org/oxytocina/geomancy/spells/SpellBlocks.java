@@ -69,6 +69,7 @@ public class SpellBlocks {
     public static final SpellBlock CONST_TEXT;
     public static final SpellBlock CONST_BOOLEAN;
     public static final SpellBlock CONST_VECTOR;
+    public static final SpellBlock EMPTY_LIST;
     public static final SpellBlock ENTITY_CASTER;
     public static final SpellBlock ENTITY_DELEGATE;
     public static final SpellBlock BLOCKPOS_CASTER;
@@ -167,12 +168,14 @@ public class SpellBlocks {
     public static final SpellBlock FOREACH;
     public static final SpellBlock SPLIT;
     public static final SpellBlock POP;
+    public static final SpellBlock DEQUEUE;
     public static final SpellBlock SIZE;
     public static final SpellBlock GET_ELEMENT;
     public static final SpellBlock SET_ELEMENT;
     public static final SpellBlock ENTITIES_NEAR;
     public static final SpellBlock BLOCK_BOX;
     public static final SpellBlock RAYCAST_MARCH;
+    public static final SpellBlock TO_LIST;
 
     // ancient
     public static final SpellBlock EXODIA_1;
@@ -278,6 +281,11 @@ public class SpellBlocks {
                             vars.getNumber("x"),
                             vars.getNumber("y"),
                             vars.getNumber("z"))))
+                    .category(cat).build());
+
+            EMPTY_LIST = register(SpellBlock.Builder.create("empty_list")
+                    .outputs(SpellSignal.createList().named("val"))
+                    .func((comp,vars)-> SpellBlockResult.empty().add(SpellSignal.createList().named("val")))
                     .category(cat).build());
 
             ENTITY_CASTER = register(SpellBlock.Builder.create("entity_caster")
@@ -754,7 +762,7 @@ public class SpellBlocks {
                         
                         .func((comp,vars) -> {
                             SpellBlockResult res = SpellBlockResult.empty();
-                            res.add("res",vars.get("signal").getTextValue());
+                            res.add("res",vars.get("signal").getTextValue(comp.context));
                             return res;
                         })
                         .category(cat).build());
@@ -2797,7 +2805,7 @@ public class SpellBlocks {
                         var varStorerStack = varStorerStackPair.getRight();
                         if(varStorerStack==null) return SpellBlockResult.empty();
                         var sig = ((IVariableStoringItem) varStorerStack.getItem()).getSignal(varStorerStack,varName);
-                        if(!sig.isLoadingAllowed(comp.world().getServer()))
+                        if(sig!=null&&!sig.isLoadingAllowed(comp.world().getServer()))
                         {
                             tryLogDebugPlayerVariablesDisallowed(comp);
                             sig=null;
@@ -2916,6 +2924,21 @@ public class SpellBlocks {
                     .build());
 
             POP = register(SpellBlock.Builder.create("pop")
+                    .inputs(SpellSignal.createList().named("list"))
+                    .outputs(SpellSignal.createAny().named("signal"),SpellSignal.createList().named("list"))
+                    .func((component, args) ->
+                    {
+                        SpellBlockResult res = SpellBlockResult.empty();
+                        var list = args.getList("list");
+                        if(list==null || list.isEmpty()) return res;
+                        res.add(list.remove(list.size()-1).named("signal"));
+                        res.add("list",list);
+                        return res;
+                    })
+                    .category(cat)
+                    .build());
+
+            DEQUEUE = register(SpellBlock.Builder.create("dequeue")
                     .inputs(SpellSignal.createList().named("list"))
                     .outputs(SpellSignal.createAny().named("signal"),SpellSignal.createList().named("list"))
                     .func((component, args) ->
@@ -3044,6 +3067,41 @@ public class SpellBlocks {
                         return res;
                     })
                     .category(cat).build());
+
+            TO_LIST = register(SpellBlock.Builder.create("to_list")
+                    .inputs(SpellSignal.createAny().named("signal"))
+                    .outputs(SpellSignal.createList().named("list"))
+                    .func((component, args) ->
+                    {
+                        SpellBlockResult res = SpellBlockResult.empty();
+                        List<SpellSignal> list = new ArrayList<>();
+                        var signal = args.get("signal");
+                        switch(signal.type){
+                            case List:return SpellBlockResult.empty().add(signal.named("list"));
+                            case Vector:
+                                var vec = signal.getVectorValue();
+                                list.add(SpellSignal.createNumber(vec.x).named("x"));
+                                list.add(SpellSignal.createNumber(vec.y).named("y"));
+                                list.add(SpellSignal.createNumber(vec.z).named("z"));
+                                break;
+                            case Text:
+                                String text = signal.getTextValue(component.context);
+                                for (int i = 0; i < text.length(); i++) {
+                                    String c = text.substring(i,i+1);
+                                    list.add(SpellSignal.createText(c).named(Integer.toString(i)));
+                                }
+                                break;
+                            default:break;
+                        }
+                        if(!list.isEmpty())
+                        {
+                            var listSig = SpellSignal.createList(list).named("list");
+                            res.add(listSig);
+                        }
+                        return res;
+                    })
+                    .category(cat)
+                    .build());
         }
 
         // ancient

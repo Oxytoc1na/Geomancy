@@ -18,13 +18,16 @@ import net.minecraft.util.math.RotationAxis;
 import org.oxytocina.geomancy.effects.ModStatusEffect;
 import org.oxytocina.geomancy.effects.ModStatusEffects;
 import org.oxytocina.geomancy.items.ModItems;
+import org.oxytocina.geomancy.util.Toolbox;
 
 public class AdaptiveMaskTrinketRenderer implements TrinketRenderer {
     @Override
     public void render(ItemStack stack, SlotReference slotReference, EntityModel<? extends LivingEntity> contextModel, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, LivingEntity entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
         if(entity instanceof ClientPlayerEntity player){
+            var model = Toolbox.safeCast(contextModel,(PlayerEntityModel<AbstractClientPlayerEntity>) null);
+            if(model==null) return;
             ItemRenderer itemRenderer = MinecraftClient.getInstance().getItemRenderer();
-            TrinketRenderer.translateToFace(matrices, (PlayerEntityModel<AbstractClientPlayerEntity>) contextModel, player, headYaw, headPitch);
+            TrinketRenderer.translateToFace(matrices, model, player, headYaw, headPitch);
             matrices.scale(0.55f,0.55f,0.55f);
             matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(180.0F));
             ItemStack displayedStack = stack;

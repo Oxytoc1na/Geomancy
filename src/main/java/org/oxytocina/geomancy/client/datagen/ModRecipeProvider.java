@@ -52,41 +52,71 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
         // shaped recipes
 
-        // iron hammer
-        ShapedRecipeJsonBuilder.create(
-                        RecipeCategory.TOOLS, IRON_HAMMER, 1)
-                .input('#', Items.IRON_INGOT)
-                .input('s', Items.STICK)
-                .pattern("###")
-                .pattern("#s#")
-                .pattern(" s ")
-                .criterion(hasItem(Items.IRON_INGOT), conditionsFromItem(Items.IRON_INGOT))
-                .offerTo(exporter);
+        // regular
+        {
+            // iron hammer
+            ShapedRecipeJsonBuilder.create(
+                            RecipeCategory.TOOLS, IRON_HAMMER, 1)
+                    .input('#', Items.IRON_INGOT)
+                    .input('s', Items.STICK)
+                    .pattern("###")
+                    .pattern("#s#")
+                    .pattern(" s ")
+                    .criterion(hasItem(Items.IRON_INGOT), conditionsFromItem(Items.IRON_INGOT))
+                    .offerTo(exporter);
 
-        // lead hammer
-        ShapedRecipeJsonBuilder.create(
-                        RecipeCategory.TOOLS, LEAD_HAMMER, 1)
-                .input('#', LEAD_INGOT)
-                .input('s', Items.STICK)
-                .pattern("###")
-                .pattern("#s#")
-                .pattern(" s ")
-                .criterion(hasItem(LEAD_INGOT), conditionsFromItem(LEAD_INGOT))
-                .offerTo(exporter);
+            // lead hammer
+            ShapedRecipeJsonBuilder.create(
+                            RecipeCategory.TOOLS, LEAD_HAMMER, 1)
+                    .input('#', LEAD_INGOT)
+                    .input('s', Items.STICK)
+                    .pattern("###")
+                    .pattern("#s#")
+                    .pattern(" s ")
+                    .criterion(hasItem(LEAD_INGOT), conditionsFromItem(LEAD_INGOT))
+                    .offerTo(exporter);
 
-        // smithery
-        ShapedRecipeJsonBuilder.create(
-                        RecipeCategory.TOOLS, SMITHERY, 1)
-                .input('#', Items.GOLD_INGOT)
-                .input('s', Items.IRON_BLOCK)
-                .pattern("##")
-                .pattern("ss")
-                .criterion(hasItem(Items.GOLD_INGOT), conditionsFromItem(Items.GOLD_INGOT))
-                .offerTo(exporter);
+            // smithery
+            ShapedRecipeJsonBuilder.create(
+                            RecipeCategory.TOOLS, SMITHERY, 1)
+                    .input('#', Items.GOLD_INGOT)
+                    .input('s', Items.IRON_BLOCK)
+                    .pattern("##")
+                    .pattern("ss")
+                    .criterion(hasItem(Items.GOLD_INGOT), conditionsFromItem(Items.GOLD_INGOT))
+                    .offerTo(exporter);
 
-        // component pouch
-        AddSurrounded4(SPELLCOMPONENT,Items.LEATHER,COMPONENT_POUCH,1,RecipeCategory.TOOLS);
+            // component pouch
+            AddSurrounded4(SPELLCOMPONENT,Items.LEATHER,COMPONENT_POUCH,1,RecipeCategory.TOOLS);
 
+            // masks
+            {
+                // mania
+                ShapedRecipeJsonBuilder.create(
+                                RecipeCategory.MISC, MANIA_MASK, 1)
+                        .input('#', Items.BRICK)
+                        .input('w', Items.WHITE_DYE)
+                        .input('b', Items.BLACK_DYE)
+                        .pattern("#b#")
+                        .pattern("#w#")
+                        .pattern(" # ")
+                        .criterion(hasItem(Items.BRICK), conditionsFromItem(Items.BRICK))
+                        .offerTo(exporter);
+                // melancholy
+                ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC,MELANCHOLY_MASK).input(MANIA_MASK).input(Items.RED_BED)
+                        .criterion(hasItem(Items.BRICK), conditionsFromItem(Items.BRICK)).offerTo(exporter);
+                // sorrow
+                ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC,SORROW_MASK).input(MANIA_MASK).input(Items.GHAST_TEAR)
+                        .criterion(hasItem(Items.BRICK), conditionsFromItem(Items.BRICK)).offerTo(exporter);
+                // paranoia
+                ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC,PARANOIA_MASK).input(MANIA_MASK).input(Items.ENDER_EYE)
+                        .criterion(hasItem(Items.BRICK), conditionsFromItem(Items.BRICK)).offerTo(exporter);
+                // adaptive
+                ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC,ADAPTIVE_MASK).input(MANIA_MASK).input(MELANCHOLY_MASK).input(PARANOIA_MASK).input(SORROW_MASK)
+                        .criterion(hasItem(MANIA_MASK), conditionsFromItem(MANIA_MASK)).offerTo(exporter);
+
+            }
+        }
 
         // smelting recipes
         {
@@ -310,6 +340,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     AddGenericSpellcomponentRecipe(SpellBlocks.GET_TIME             ,Items.CLOCK                ,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.CONST_VECTOR         ,Items.HOPPER               ,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.CONSUMED_SOUL        ,Items.SOUL_CAMPFIRE        ,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.EMPTY_LIST           ,Items.BOOK                 ,baseIngot);
                 }
 
                 // arithmetic
@@ -417,12 +448,14 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     AddGenericSpellcomponentRecipe(SpellBlocks.FOREACH,         Items.DROPPER,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.SPLIT,           Items.WOODEN_AXE,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.POP,             Items.POPPY,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.DEQUEUE,         Items.FEATHER,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.SIZE,            Items.LIGHT_WEIGHTED_PRESSURE_PLATE,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.GET_ELEMENT,     Items.DISPENSER,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.SET_ELEMENT,     Items.HOPPER,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.ENTITIES_NEAR,   Items.LEAD,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.BLOCK_BOX,       Items.WOODEN_PICKAXE,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.RAYCAST_MARCH,   Items.SPECTRAL_ARROW,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.TO_LIST,         Items.WRITABLE_BOOK,baseIngot);
                 }
 
                 String builtSpellComps = "";

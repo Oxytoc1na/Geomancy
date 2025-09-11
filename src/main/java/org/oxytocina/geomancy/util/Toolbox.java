@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -229,6 +228,18 @@ public class Toolbox {
         return min + random.nextFloat()*(max-min);
     }
 
+    public static float factorial(float in) {
+        float res = 1;
+        while(in>=1){
+            res*=in--;
+        }
+        return res;
+    }
+
+    public static boolean roughlyEqual(float a, float b, float maxDifference) {
+        return Math.abs(b-a) <maxDifference;
+    }
+
     public static class GradientBuilder{
         public ArrayList<KeyFrame> keyFrames = new ArrayList<>();
 
@@ -311,5 +322,15 @@ public class Toolbox {
 
     public static String reverseString(String s){
         return new StringBuilder(s).reverse().toString();
+    }
+
+    public static <T> T safeCast(Object obj, T def){
+        try{
+            return (T)obj;
+        }
+        catch(Exception ignored){
+
+        }
+        return def;
     }
 }

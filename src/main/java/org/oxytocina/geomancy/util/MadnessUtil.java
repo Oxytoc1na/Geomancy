@@ -51,6 +51,11 @@ public class MadnessUtil {
     }
 
     /// DOESNT sync poisoning
+    public static void addMadness(ServerPlayerEntity spe, float amount) {
+        setMadness(spe,getMadness(spe)+amount);
+    }
+
+    /// DOESNT sync poisoning
     public static boolean setMaddeningSpeed(PlayerEntity player, float newVal){
         if(player==null) return false;
         PlayerData data = PlayerData.from(player);
@@ -305,5 +310,6 @@ public class MadnessUtil {
         }
         return res;
     }
+
 
 }
