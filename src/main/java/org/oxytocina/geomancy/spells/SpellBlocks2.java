@@ -3,6 +3,7 @@ package org.oxytocina.geomancy.spells;
 import com.mojang.datafixers.util.Function3;
 import net.minecraft.block.entity.SculkSensorBlockEntity;
 import net.minecraft.block.entity.SculkShriekerBlockEntity;
+import net.minecraft.loot.LootTables;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
@@ -64,8 +65,13 @@ public class SpellBlocks2 {
                         float cProvided = out.vars.get("res").getNumberValue();
                         return Toolbox.roughlyEqual((float)cDesired,cProvided,0.1f);
                     },
-                    List.of(S)
-                    createNumberList(new float[]{1,6,4,9,11,17,20,18,2})
+                    List.of(
+                            SpellSignal.createList(List.of(SpellSignal.createNumber(1),SpellSignal.createNumber(1))),
+                            SpellSignal.createList(List.of(SpellSignal.createNumber(3),SpellSignal.createNumber(1))),
+                            SpellSignal.createList(List.of(SpellSignal.createNumber(10),SpellSignal.createNumber(6))),
+                            SpellSignal.createList(List.of(SpellSignal.createNumber(21),SpellSignal.createNumber(75))),
+                            SpellSignal.createList(List.of(SpellSignal.createNumber(3),SpellSignal.createNumber(665)))
+                    )
             )
             //new Exodia2Data("sort",
             //        (in,out)-> out.vars.containsKey("res") && out.vars.get("res").type == SpellSignal.Type.List && isListSorted(out.vars.get("res").getListValue()),

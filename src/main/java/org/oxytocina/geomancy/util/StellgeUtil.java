@@ -133,6 +133,13 @@ public class StellgeUtil {
         // having learned about souls grants 5 knowledge
         vals.put("geomancy:milestones/milestone_souls",5f);
 
+        // enlightenment gives 3 each
+        vals.put("geomancy:spells/simple_enlightenment_1",3f);
+        vals.put("geomancy:spells/simple_enlightenment_2",3f);
+        vals.put("geomancy:spells/simple_enlightenment_3",3f);
+        vals.put("geomancy:spells/simple_enlightenment_4",3f);
+        vals.put("geomancy:spells/simple_enlightenment_5",3f);
+
         for(var s : vals.keySet())
         {
             if(AdvancementHelper.hasAdvancementServer(spe, Identifier.tryParse(s)))

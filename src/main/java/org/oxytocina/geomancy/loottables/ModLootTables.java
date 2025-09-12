@@ -918,7 +918,7 @@ public class ModLootTables {
 
             // exodia 3
             if (LootTables.ANCIENT_CITY_CHEST.equals(id)) {
-                tableBuilder.pool(LootPool.builder().with(ItemEntry.builder(ModItems.LORE_LOG_EXODIA_3).conditionally(RandomChanceLootCondition.builder(1/10f))));
+                tableBuilder.pool(LootPool.builder().with(ItemEntry.builder(ModItems.LORE_LOG_EXODIA_3).conditionally(RandomChanceLootCondition.builder(1/7f))));
                 return;
             }
 
