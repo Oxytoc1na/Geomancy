@@ -65,17 +65,8 @@ public class GuidebookItem extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (world.isClient()) {
-            // if the player has never opened the book before
-            // automatically open the introduction page
             openGuidebook();
 
-            /** TODO: this can be removed by putting
-             * "entry_to_open": "spectrum:general/intro",
-             * "open_entry_to_open_only_once": true,
-             *
-             * in the general category entry in 1.21
-             * https://klikli-dev.github.io/modonomicon/docs/basics/structure/categories
-             */
             if (!hasOpenedGuidebookBefore()) {
                 openGuidebook(Geomancy.locate("general/intro"), 0);
             }
@@ -89,13 +80,9 @@ public class GuidebookItem extends Item {
         return TypedActionResult.success(user.getStackInHand(hand), world.isClient);
     }
 
-    /**
-     * If clientside and the client does not have stats synced yet (not opened the stats screen)
-     * this is always false 💀
-     */
     @Environment(EnvType.CLIENT)
     private boolean hasOpenedGuidebookBefore() {
-        return true; //ClientAdvancements.hasDone(Geomancy.locate("hidden/opened_guidebook"));
+        return true;
     }
 
     public void openGuidebook() {

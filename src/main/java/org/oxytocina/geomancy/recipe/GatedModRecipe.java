@@ -1,8 +1,5 @@
 package org.oxytocina.geomancy.recipe;
 
-//import de.dafuqs.spectrum.api.recipe.*;
-//import de.dafuqs.spectrum.helpers.NbtHelper;
-//import de.dafuqs.spectrum.helpers.*;
 import net.minecraft.inventory.*;
 import net.minecraft.item.*;
 import net.minecraft.nbt.*;
@@ -59,8 +56,8 @@ public abstract class GatedModRecipe<C extends Inventory> implements GatedRecipe
 
     @Override
     public boolean equals(Object object) {
-        if (object instanceof GatedModRecipe gatedSpectrumRecipe) {
-            return gatedSpectrumRecipe.getId().equals(this.getId());
+        if (object instanceof GatedModRecipe gatedRecipe) {
+            return gatedRecipe.getId().equals(this.getId());
         }
         return false;
     }
@@ -69,26 +66,5 @@ public abstract class GatedModRecipe<C extends Inventory> implements GatedRecipe
     public String toString() {
         return this.getId().toString();
     }
-
-    protected static ItemStack getDefaultStackWithCount(Item item, int count) {
-        ItemStack stack = item.getDefaultStack();
-        stack.setCount(count);
-        return stack;
-    }
-
-    //protected static ItemStack copyNbt(ItemStack sourceStack, ItemStack output) {
-    //    // this overrides all nbt data, that are not nested compounds (like lists)...
-    //    NbtCompound sourceNbt = sourceStack.getNbt();
-    //    if (sourceNbt != null) {
-    //        ItemStack modifiedOutput = output.copy();
-    //        NbtCompound modifiedNbt = sourceNbt.copy();
-    //        NbtHelper.mergeNbt(modifiedNbt, sourceNbt);
-    //        modifiedNbt.remove(ItemStack.DAMAGE_KEY);
-    //        modifiedOutput.setNbt(modifiedNbt);
-    //        // ...therefore, we need to restore all previous enchantments that the original item had and are still applicable to the new item
-    //        output = SpectrumEnchantmentHelper.clearAndCombineEnchantments(modifiedOutput, false, false, output, sourceStack);
-    //    }
-    //    return output;
-    //}
 
 }

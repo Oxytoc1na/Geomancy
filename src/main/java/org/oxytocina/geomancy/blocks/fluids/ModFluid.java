@@ -121,10 +121,6 @@ public abstract class ModFluid extends FlowableFluid {
                         int count = result.getCount() * itemStack.getCount();
                         result.setCount(count);
 
-                        if (itemEntity.getOwner() instanceof ServerPlayerEntity serverPlayerEntity) {
-                            //SpectrumAdvancementCriteria.FLUID_DIPPING.trigger(serverPlayerEntity, (ServerWorld) world, pos, itemStack, result);
-                        }
-
                         itemEntity.discard();
                         MultiblockCrafter.spawnItemStackAsEntitySplitViaMaxCount(world, itemEntity.getPos(), result, count, Vec3d.ZERO, false, itemEntity.getOwner());
                     }

@@ -1,12 +1,9 @@
 package org.oxytocina.geomancy.recipe;
 
-//import de.dafuqs.spectrum.*;
-//import de.dafuqs.spectrum.registries.*;
 import net.minecraft.item.*;
 import net.minecraft.recipe.*;
 import net.minecraft.util.*;
 import org.jetbrains.annotations.*;
-import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
 
@@ -16,15 +13,8 @@ public class GoldConvertingRecipe extends FluidConvertingRecipe {
 
     public static final Identifier UNLOCK_IDENTIFIER = null;
 
-    private static final Set<Item> outputItems = new HashSet<>();
-
     public GoldConvertingRecipe(Identifier id, String group, boolean secret, Identifier requiredAdvancementIdentifier, @NotNull Ingredient inputIngredient, ItemStack outputItemStack) {
         super(id, group, secret, requiredAdvancementIdentifier, inputIngredient, outputItemStack);
-        outputItems.add(outputItemStack.getItem());
-    }
-
-    public static boolean isExistingOutputItem(@NotNull ItemStack itemStack) {
-        return outputItems.contains(itemStack.getItem());
     }
 
     @Override

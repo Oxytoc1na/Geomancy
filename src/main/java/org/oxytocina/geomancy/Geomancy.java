@@ -64,9 +64,6 @@ public class Geomancy implements ModInitializer {
     public static final String MOD_ID = "geomancy";
     private static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-    public static final Map<Identifier, TagKey<Item>> CACHED_ITEM_TAG_MAP = new HashMap<>();
-    //public static SpectrumConfig CONFIG;
-
     public static boolean startedInitialization = false;
     public static boolean initializing = false;
     public static boolean finishedInitialization = false;
@@ -206,28 +203,6 @@ public class Geomancy implements ModInitializer {
 
     public static Identifier locate(String name) {
         return new Identifier(MOD_ID, name);
-    }
-
-    // Will be null when playing on a dedicated server!
-    @Nullable
-    public static MinecraftServer minecraftServer;
-
-    static {
-        //Set up config
-        //logInfo("Loading config file...");
-        //AutoConfig.register(SpectrumConfig.class, JanksonConfigSerializer::new);
-        //CONFIG = AutoConfig.getConfigHolder(SpectrumConfig.class).getConfig();
-        //logInfo("Finished loading config file.");
-    }
-
-    /**
-     * When initializing a block entity, world can still be null
-     * Therefore we use the RecipeManager reference from MinecraftServer
-     * This in turn does not work on clients connected to dedicated servers, though
-     * since SpectrumCommon.minecraftServer is null
-     */
-    public static Optional<RecipeManager> getRecipeManager(@Nullable World world) {
-        return world == null ? minecraftServer == null ? Optional.empty() : Optional.of(minecraftServer.getRecipeManager()) : Optional.of(world.getRecipeManager());
     }
 
     public static boolean Client() {

@@ -75,12 +75,6 @@ public abstract class GoldFluid extends ModFluid {
 
                     if(world.setBlockState(pos,ModFluids.MOLTEN_GOLD.getDefaultState().getBlockState())){
                         world.playSound(null, itemEntity.getBlockPos(), SoundEvents.BLOCK_LAVA_AMBIENT, SoundCategory.NEUTRAL, 1.0F, 0.9F + world.getRandom().nextFloat() * 0.2F);
-
-
-                        if (itemEntity.getOwner() instanceof ServerPlayerEntity serverPlayerEntity) {
-                            //SpectrumAdvancementCriteria.FLUID_DIPPING.trigger(serverPlayerEntity, (ServerWorld) world, pos, itemStack, result);
-                        }
-
                         itemEntity.discard();
                     }
                 }
