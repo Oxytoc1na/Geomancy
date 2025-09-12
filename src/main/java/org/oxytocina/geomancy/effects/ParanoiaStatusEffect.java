@@ -1,5 +1,7 @@
 package org.oxytocina.geomancy.effects;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.LivingEntity;
@@ -43,80 +45,75 @@ public class ParanoiaStatusEffect extends ModStatusEffect {
 		super(statusEffectCategory, color);
 	}
 
-	@Override
-	public void applyUpdateEffect(LivingEntity entity, int amplifier) {
-		World world = entity.getWorld();
+	@Environment(EnvType.CLIENT)
+	public static void tickClient(){
+		var playerEntity = MinecraftClient.getInstance().player;
+		if(playerEntity==null) return;
+		World world = playerEntity.getWorld();
 
-		if(world.isClient && entity instanceof ClientPlayerEntity playerEntity){
+		if(Toolbox.random.nextFloat() < 0.7f)
+		{
+			// oneshot event
+			var events = oneshotEvents.keySet().stream().toList();
+			SoundEvent event = events.get(Toolbox.random.nextInt(events.size()));
 
-			if(Toolbox.random.nextFloat() < 0.7f)
-			{
-				// oneshot event
-				var events = oneshotEvents.keySet().stream().toList();
-				SoundEvent event = events.get(Toolbox.random.nextInt(events.size()));
+			// position the footstep event around the player
+			Vec3d pos = playerEntity.getPos();
+			Vec3d offset = Vec3d.fromPolar(0,(float)(Toolbox.random.nextFloat()*Math.PI*2));
+			pos.add(offset.multiply(Toolbox.random.nextFloat()*5+5));
+
+			if(world!=null)
+				world.playSound(pos.x,pos.y,pos.z,event,oneshotEvents.get(event),1,Toolbox.random.nextFloat()*0.4f+0.8f,true);
+
+		}
+		else{
+			// footstep event
+			StepEvent event = new StepEvent();
+
+			// take the block the player is standing on
+			if(playerEntity.supportingBlockPos.isPresent()){
+				// player footstep
+				if(Toolbox.random.nextFloat() < 0.5f)
+				{
+					var state = playerEntity.getWorld().getBlockState(playerEntity.supportingBlockPos.get());
+					event.event = state.getBlock().getSoundGroup(state).getStepSound();
+				}
+				// mob footstep
+				else
+				{
+					int mobCase = Toolbox.random.nextInt(2);
+					event.event = switch(mobCase){
+						case 1 -> SoundEvents.ENTITY_SKELETON_STEP;
+						default -> SoundEvents.ENTITY_ZOMBIE_STEP;
+					};
+				}
+
 
 				// position the footstep event around the player
 				Vec3d pos = playerEntity.getPos();
 				Vec3d offset = Vec3d.fromPolar(0,(float)(Toolbox.random.nextFloat()*Math.PI*2));
+				Vec3d dir = Vec3d.fromPolar(0,(float)(Toolbox.random.nextFloat()*Math.PI*2));
 				pos.add(offset.multiply(Toolbox.random.nextFloat()*5+5));
-
-				if(MinecraftClient.getInstance().world!=null)
-					MinecraftClient.getInstance().world.playSound(pos.x,pos.y,pos.z,event,oneshotEvents.get(event),1,Toolbox.random.nextFloat()*0.4f+0.8f,true);
-
+				event.pos = pos;
+				event.dir = dir;
+				event.cooldownPerSound = Toolbox.random.nextInt(10,20);
+				currentStepEvents.add(event);
 			}
-			else{
-				// footstep event
-				StepEvent event = new StepEvent();
-
-				// take the block the player is standing on
-				if(playerEntity.supportingBlockPos.isPresent()){
-					// player footstep
-					if(Toolbox.random.nextFloat() < 0.5f)
-					{
-						var state = playerEntity.getWorld().getBlockState(playerEntity.supportingBlockPos.get());
-						event.event = state.getBlock().getSoundGroup(state).getStepSound();
-					}
-					// mob footstep
-					else
-					{
-						int mobCase = Toolbox.random.nextInt(2);
-						event.event = switch(mobCase){
-							case 1 -> SoundEvents.ENTITY_SKELETON_STEP;
-							default -> SoundEvents.ENTITY_ZOMBIE_STEP;
-						};
-					}
-
-
-					// position the footstep event around the player
-					Vec3d pos = playerEntity.getPos();
-					Vec3d offset = Vec3d.fromPolar(0,(float)(Toolbox.random.nextFloat()*Math.PI*2));
-					Vec3d dir = Vec3d.fromPolar(0,(float)(Toolbox.random.nextFloat()*Math.PI*2));
-					pos.add(offset.multiply(Toolbox.random.nextFloat()*5+5));
-					event.pos = pos;
-					event.dir = dir;
-					event.cooldownPerSound = Toolbox.random.nextInt(10,20);
-					currentStepEvents.add(event);
-				}
-			}
-
-
 		}
+
+		for(var ev : currentStepEvents){
+			ev.tick();
+		}
+		currentStepEvents.removeIf(stepEvent -> !stepEvent.keep());
 	}
 
-	@Override
+    @Override
 	public boolean canApplyUpdateEffect(int duration, int amplifier) {
 		int i = 200 >> amplifier;
 		if (i > 0) {
 			return duration % i == 0;
 		}
 		return true;
-	}
-
-	public static void tick(){
-		for(var ev : currentStepEvents){
-			ev.tick();
-		}
-		currentStepEvents.removeIf(stepEvent -> !stepEvent.keep());
 	}
 
 	public static class StepEvent{
@@ -127,6 +124,7 @@ public class ParanoiaStatusEffect extends ModStatusEffect {
 		public Vec3d pos;
 		public Vec3d dir;
 
+		@Environment(EnvType.CLIENT)
 		public void tick(){
 			if(--cooldown<=0){
 				cooldown +=cooldownPerSound;

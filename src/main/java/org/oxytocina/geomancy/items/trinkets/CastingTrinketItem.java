@@ -3,6 +3,8 @@ package org.oxytocina.geomancy.items.trinkets;
 import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketItem;
 import dev.emi.trinkets.api.TrinketsApi;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -311,6 +313,7 @@ public class CastingTrinketItem extends TrinketItem implements IStorageItem, Ext
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public void onSpellChanged(ItemStack stack, ClientPlayerEntity player, int spellIndex) {
 
     }

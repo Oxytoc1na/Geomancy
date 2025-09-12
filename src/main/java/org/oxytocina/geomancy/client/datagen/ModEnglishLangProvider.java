@@ -258,9 +258,6 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
         // Items
         {
-            add("item.MODID.suspicious_substance"   , "Suspicious Substance");
-            add("item.MODID.guidite_sword"          , "Guidite Sword");
-
             add("item.MODID.raw_mithril"            , "Raw Mithril");
             add("item.MODID.mithril_ingot"          , "Mithril Ingot");
             add("item.MODID.mithril_nugget"         , "Mithril Nugget");
@@ -427,6 +424,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
             add("item.MODID.geode_preview",                 "Who knows?");
             add("item.MODID.stone_geode"            ,       "Stone Geode");
+            add("item.MODID.component_bag"          ,       "Component Bag");
             add("tooltip.MODID.geodes"              ,       "Can be hammered open...if you're careful.");
             add("item.MODID.explorers_map.ancient_hall",    "Directions home");
             add("item.MODID.explorers_map.digsite",         "DIGSITE COORDINATES");

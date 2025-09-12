@@ -3,7 +3,6 @@ package org.oxytocina.geomancy.spells;
 import com.mojang.datafixers.util.Function3;
 import net.minecraft.block.entity.SculkSensorBlockEntity;
 import net.minecraft.block.entity.SculkShriekerBlockEntity;
-import net.minecraft.loot.LootTables;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
@@ -17,7 +16,6 @@ import org.oxytocina.geomancy.util.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.BiFunction;
 
 import static org.oxytocina.geomancy.spells.SpellBlocks.*;
 

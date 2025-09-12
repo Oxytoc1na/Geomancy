@@ -80,9 +80,8 @@ public class GeodeRecipe extends GatedModRecipe<Inventory> implements SmitheryRe
         // add loottable drops
         if(!preview){
             if(baseStack.getItem() instanceof GeodeItem geodeItem){
-                LootTable lootTable = geodeItem.getLootTable();
-
                 if(world instanceof ServerWorld serverWorld){
+                    LootTable lootTable = geodeItem.getLootTable(world);
                     var loot = lootTable.generateLoot(new LootContextParameterSet.Builder(serverWorld).build(LootContextType.create().build()));
                     res.addAll(loot);
                 }

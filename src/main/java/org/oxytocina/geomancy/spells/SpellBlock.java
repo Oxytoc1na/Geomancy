@@ -3,10 +3,12 @@ package org.oxytocina.geomancy.spells;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.SpellComponentStoringItem;
+import org.oxytocina.geomancy.util.AdvancementHelper;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -128,6 +130,10 @@ public class SpellBlock {
 
     public boolean isAncient() {
         return overarchingCategory == OverarchingCategory.Ancient;
+    }
+
+    public boolean recipeUnlocked(ServerPlayerEntity spe) {
+        return AdvancementHelper.hasAdvancementServer(spe,Geomancy.locate("spellcomponents/get_"+identifier.getPath()));
     }
 
     public static class Builder{

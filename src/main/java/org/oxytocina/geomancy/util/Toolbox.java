@@ -8,6 +8,7 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootTable;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -332,5 +333,9 @@ public class Toolbox {
 
         }
         return def;
+    }
+
+    public static LootTable getLootTable(ServerWorld sw, Identifier identifier){
+        return sw.getServer().getLootManager().getLootTable(identifier);
     }
 }

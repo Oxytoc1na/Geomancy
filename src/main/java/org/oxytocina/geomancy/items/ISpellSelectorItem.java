@@ -1,5 +1,7 @@
 package org.oxytocina.geomancy.items;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -179,6 +181,7 @@ public interface ISpellSelectorItem {
     }
 
     void markDirty(ItemStack casterItem);
+    @Environment(EnvType.CLIENT)
     void onSpellChanged(ItemStack stack, ClientPlayerEntity player, int spellIndex);
 
     default boolean spellPresent(ItemStack stack, String spellName){

@@ -28,7 +28,7 @@ public class ClientPlayerTickHandler implements ClientTickEvents.StartTick {
 
         ScrollTracker.update();
         ModHudRenderer.tick();
-        ParanoiaStatusEffect.tick();
         EcstaticStatusEffect.tickClient();
+        ParanoiaStatusEffect.tickClient();
     }
 }

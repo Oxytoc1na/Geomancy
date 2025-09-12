@@ -273,7 +273,8 @@ public class ModItems {
 
     // VVV swap commented out lines to see if it "solves" it (its a clue!) VVV
     //public static final Item STONE_GEODE = register("stone_geode",new Item(new FabricItemSettings()));
-    public static final GeodeItem STONE_GEODE = register("stone_geode",new GeodeItem(new FabricItemSettings(),ModLootTables.GEODE_STONE));
+    public static final GeodeItem STONE_GEODE = register("stone_geode",new GeodeItem(new FabricItemSettings(),Geomancy.locate("geodes/stone")));
+    public static final ComponentBagItem COMPONENT_BAG = register("component_bag",new ComponentBagItem(new FabricItemSettings(),Geomancy.locate("items/component_bag")));
 
     public static final FoodItem LEAD_APPLE = register("lead_apple",new FoodItem(new FabricItemSettings().food(new FoodComponent.Builder().alwaysEdible().hunger(4).build()),le->{
         LeadUtil.addPoisoning((PlayerEntity) le,100);

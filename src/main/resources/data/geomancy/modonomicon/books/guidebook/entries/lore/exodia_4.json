@@ -9,7 +9,7 @@
   "description": "book.geomancy.guidebook.lore.exodia_4.description",
   "hide_while_locked": false,
   "icon": {
-    "item": "minecraft:chorus_plant"
+    "item": "geomancy:lorelog_exodia_4"
   },
   "name": "book.geomancy.guidebook.lore.exodia_4.name",
   "pages": [
@@ -63,7 +63,7 @@
       "recipe_id_1": "geomancy:soulforge_exodia_4",
       "requiredKnowledge": 25.0,
       "text": "book.geomancy.guidebook.lore.exodia_4.4.text",
-      "title1": "chorus_plant",
+      "title1": "lorelog_exodia_4",
       "title2": ""
     }
   ],

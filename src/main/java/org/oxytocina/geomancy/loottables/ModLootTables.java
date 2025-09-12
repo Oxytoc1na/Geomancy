@@ -52,7 +52,9 @@ public class ModLootTables {
     public static final HashMap<Identifier, LootTable.Builder> LOOT_TABLE_BUILDERS = new HashMap<>();
 
     public static final LootTable DWARVEN_REMNANTS_CHEST;
+
     public static final LootTable GEODE_STONE;
+    public static final LootTable COMPONENT_BAG;
 
     public static final LootTable ANCIENT_HALL_SMITHERY_CHEST;
     public static final LootTable ANCIENT_HALL_STORAGE_CHEST;
@@ -64,6 +66,7 @@ public class ModLootTables {
     public static final LootTable OCTANGULA_SPELLMAKER_CHEST;
 
     public static final LootTable DIGSITE_HALLWAY_CHEST;
+
 
     static {
         // DWARVEN_REMNANTS_CHEST
@@ -87,21 +90,13 @@ public class ModLootTables {
                     // lore
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(-1,1))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_BOOK_GOLDSMITH_1)
-                                    .weight(10)
+                            .with(ItemEntry.builder(ModItems.LORE_BOOK_GOLDSMITH_1).weight(10)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_BOOK_GOLDSMITH_2)
-                                    .weight(7)
+                            .with(ItemEntry.builder(ModItems.LORE_BOOK_GOLDSMITH_2).weight(7)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_BOOK_GOLDSMITH_3)
-                                    .weight(4)
+                            .with(ItemEntry.builder(ModItems.LORE_BOOK_GOLDSMITH_3).weight(4)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_BOOK_GOLDSMITH_4)
-                                    .weight(2)
+                            .with(ItemEntry.builder(ModItems.LORE_BOOK_GOLDSMITH_4).weight(2)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
                     )
                 .pool(LootPool.builder()
@@ -168,7 +163,7 @@ public class ModLootTables {
             );
         }
 
-        //GEODE_STONE
+        // GEODE_STONE
         {
             GEODE_STONE = register("geodes/stone", LootTable.builder()
                     .pool(LootPool.builder()
@@ -207,68 +202,77 @@ public class ModLootTables {
             );
         }
 
+        // COMPONENT_BAG
+        {
+            COMPONENT_BAG = register("items/component_bag", LootTable.builder()
+                    .pool(LootPool.builder()
+                            .rolls(ConstantLootNumberProvider.create(2))
+                            .with(ItemEntry.builder(ModItems.OCTANGULITE_NUGGET).weight(40)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
+                            .with(ItemEntry.builder(ModBlocks.SOUL_OAK_SAPLING).weight(10)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
+                            .with(ItemEntry.builder(ModBlocks.SOUL_OAK_LOG).weight(20)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
+                            .with(ItemEntry.builder(ModItems.SPELLSTORAGE_SMALL).weight(20)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(ModItems.SOULSTORAGE_SMALL).weight(10)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(ModItems.VARSTORAGE_SMALL).weight(15)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                    )
+            );
+        }
+
         // ANCIENT_HALL_SMITHERY_CHEST
         {
             ANCIENT_HALL_SMITHERY_CHEST = register("chests/ancient_hall_smithery", LootTable.builder()
                     // lore
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(0,1))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_BOOK_GOLDSMITH_1)
-                                    .weight(10)
+                            .with(ItemEntry.builder(ModItems.LORE_BOOK_GOLDSMITH_1).weight(10)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_BOOK_GOLDSMITH_2)
-                                    .weight(9)
+                            .with(ItemEntry.builder(ModItems.LORE_BOOK_GOLDSMITH_2).weight(9)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_BOOK_GOLDSMITH_3)
-                                    .weight(8)
+                            .with(ItemEntry.builder(ModItems.LORE_BOOK_GOLDSMITH_3).weight(8)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_BOOK_GOLDSMITH_4)
-                                    .weight(7)
+                            .with(ItemEntry.builder(ModItems.LORE_BOOK_GOLDSMITH_4).weight(7)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
                     )
                     // mithril
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(3.0F, 6.0F))
-                            .with(ItemEntry.builder(
-                                            ModItems.RAW_MITHRIL)
-                                    .weight(20)
-                                    .apply(SetCountLootFunction.builder(
-                                            UniformLootNumberProvider.create(1.0F, 4.0F))))
-                            .with(ItemEntry.builder(
-                                            ModItems.MITHRIL_INGOT)
-                                    .weight(5)
+                            .with(ItemEntry.builder(ModItems.RAW_MITHRIL).weight(20)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
+                            .with(ItemEntry.builder(ModItems.MITHRIL_INGOT).weight(5)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 2.0F))))
-                            .with(ItemEntry.builder(
-                                            ModItems.MITHRIL_NUGGET)
-                                    .weight(10)
+                            .with(ItemEntry.builder(ModItems.MITHRIL_NUGGET).weight(10)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(5.0F, 16.0F)))))
                     // vanilla treasure
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(3.0F, 7.0F))
-                            .with(ItemEntry.builder(
-                                            Items.EMERALD)
-                                    .weight(5)
+                            .with(ItemEntry.builder(Items.EMERALD).weight(5)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(4.0F, 8.0F))))
-                            .with(ItemEntry.builder(
-                                            Items.DIAMOND)
-                                    .weight(5)
+                            .with(ItemEntry.builder(Items.DIAMOND).weight(5)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(2.0F, 4.0F))))
-                            .with(ItemEntry.builder(
-                                            Items.GOLD_INGOT)
-                                    .weight(5)
+                            .with(ItemEntry.builder(Items.GOLD_INGOT).weight(5)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(3.0F, 8.0F))))
-                            .with(ItemEntry.builder(
-                                            Items.IRON_INGOT)
-                                    .weight(10)
+                            .with(ItemEntry.builder(Items.IRON_INGOT).weight(10)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(5.0F, 10.0F))))
-                            .with(ItemEntry.builder(
-                                            Items.LAPIS_LAZULI)
-                                    .weight(5)
-                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(3.0F, 8.0F)))))
+                            .with(ItemEntry.builder(Items.LAPIS_LAZULI).weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(3.0F, 8.0F))))
+                            .with(ItemEntry.builder(ModItems.TITANIUM_INGOT).weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
+                            .with(ItemEntry.builder(ModItems.MOLYBDENUM_INGOT).weight(8)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
+                            .with(ItemEntry.builder(ModItems.ORTHOCLASE).weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
+                            .with(ItemEntry.builder(ModItems.PERIDOT).weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
+                            .with(ItemEntry.builder(ModItems.AXINITE).weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
+                            .with(ItemEntry.builder(ModItems.TOURMALINE).weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
+                    )
                     // buckets
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(1.0F, 3.0F))
@@ -280,14 +284,11 @@ public class ModLootTables {
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(1.0F, 2.0F))
                             .with(ItemEntry.builder(
-                                    ModItems.IRON_HAMMER)
-                                    .weight(10)
+                                    ModItems.IRON_HAMMER).weight(10)
                                     .apply(EnchantWithLevelsLootFunction.builder(UniformLootNumberProvider.create(10.0F, 25.0F)))
                                     .apply(SetDamageLootFunction.builder(UniformLootNumberProvider.create(0.0f,0.5f)))
                             )
-                            .with(ItemEntry.builder(
-                                            ModItems.MITHRIL_HAMMER)
-                                    .weight(1)
+                            .with(ItemEntry.builder(ModItems.MITHRIL_HAMMER).weight(1)
                                     .apply(EnchantWithLevelsLootFunction.builder(UniformLootNumberProvider.create(10.0F, 20.0F)))
                                     .apply(SetDamageLootFunction.builder(UniformLootNumberProvider.create(0.0f,0.5f)))
                             ))
@@ -301,79 +302,48 @@ public class ModLootTables {
                     // lore (war)
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(1,1))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_BOOK_WAR_1)
-                                    .weight(10)
+                            .with(ItemEntry.builder(ModItems.LORE_BOOK_WAR_1).weight(10)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_BOOK_WAR_2)
-                                    .weight(9)
+                            .with(ItemEntry.builder(ModItems.LORE_BOOK_WAR_2).weight(9)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_BOOK_WAR_3)
-                                    .weight(8)
+                            .with(ItemEntry.builder(ModItems.LORE_BOOK_WAR_3).weight(8)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
                     )
                     // lore
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(0,1))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_BOOK_GOLDSMITH_1)
-                                    .weight(10)
+                            .with(ItemEntry.builder(ModItems.LORE_BOOK_GOLDSMITH_1).weight(10)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_BOOK_GOLDSMITH_2)
-                                    .weight(9)
+                            .with(ItemEntry.builder(ModItems.LORE_BOOK_GOLDSMITH_2).weight(9)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_BOOK_GOLDSMITH_3)
-                                    .weight(8)
+                            .with(ItemEntry.builder(ModItems.LORE_BOOK_GOLDSMITH_3).weight(8)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_BOOK_GOLDSMITH_4)
-                                    .weight(7)
+                            .with(ItemEntry.builder(ModItems.LORE_BOOK_GOLDSMITH_4).weight(7)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
                     )
                     // treasure
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(3.0F, 7.0F))
-                            .with(ItemEntry.builder(
-                                            Items.EMERALD)
-                                    .weight(5)
+                            .with(ItemEntry.builder(Items.EMERALD).weight(5)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(4.0F, 8.0F))))
-                            .with(ItemEntry.builder(
-                                            Items.DIAMOND)
-                                    .weight(5)
+                            .with(ItemEntry.builder(Items.DIAMOND).weight(5)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(2.0F, 4.0F))))
-                            .with(ItemEntry.builder(
-                                            Items.GOLD_INGOT)
-                                    .weight(5)
+                            .with(ItemEntry.builder(Items.GOLD_INGOT).weight(5)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(3.0F, 8.0F))))
-                            .with(ItemEntry.builder(
-                                            Items.IRON_INGOT)
-                                    .weight(10)
+                            .with(ItemEntry.builder(Items.IRON_INGOT).weight(10)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(5.0F,10.0F))))
-                            .with(ItemEntry.builder(
-                                            ModItems.MITHRIL_INGOT)
-                                    .weight(2)
+                            .with(ItemEntry.builder(ModItems.MITHRIL_INGOT).weight(2)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1,3))))
-                            .with(ItemEntry.builder(
-                                            Items.LAPIS_LAZULI)
-                                    .weight(5)
+                            .with(ItemEntry.builder(Items.LAPIS_LAZULI).weight(5)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(3.0F, 8.0F))))
                     )
                     // special treasure
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(0.0F, 3.0F))
                             .with(ItemEntry.builder(
-                                        ModFluids.MOLTEN_GOLD_BUCKET)
-                                    .weight(10))
-                            .with(ItemEntry.builder(
-                                            ModItems.EMPTY_ARTIFACT)
-                                    .weight(10))
-                            .with(ItemEntry.builder(
-                                            ModItems.MUSIC_DISC_DIGGY)
-                                    .weight(10))
+                                        ModFluids.MOLTEN_GOLD_BUCKET).weight(10))
+                            .with(ItemEntry.builder(ModItems.EMPTY_ARTIFACT).weight(10))
+                            .with(ItemEntry.builder(ModItems.MUSIC_DISC_DIGGY).weight(10))
                     )
             );
         }
@@ -384,62 +354,33 @@ public class ModLootTables {
                     // food
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(3.0F, 6.0F))
-                            .with(ItemEntry.builder(
-                                            Items.ROTTEN_FLESH)
-                                    .weight(20)
-                                    .apply(SetCountLootFunction.builder(
-                                            UniformLootNumberProvider.create(1.0F, 6.0F))))
-                            .with(ItemEntry.builder(
-                                            Items.POTATO)
-                                    .weight(20)
-                                    .apply(SetCountLootFunction.builder(
-                                            UniformLootNumberProvider.create(1.0F, 6.0F))))
-                            .with(ItemEntry.builder(
-                                            Items.POISONOUS_POTATO)
-                                    .weight(5)
-                                    .apply(SetCountLootFunction.builder(
-                                            UniformLootNumberProvider.create(1.0F, 2.0F))))
-                            .with(ItemEntry.builder(
-                                            Items.HONEY_BOTTLE)
-                                    .weight(5)
-                                    .apply(SetCountLootFunction.builder(
-                                            UniformLootNumberProvider.create(1.0F, 2.0F))))
-                            .with(ItemEntry.builder(
-                                            Items.POTION)
-                                    .weight(5)
-                                    .apply(
-                                            SetPotionLootFunction.builder(Potions.POISON))
+                            .with(ItemEntry.builder(Items.ROTTEN_FLESH).weight(20)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 6.0F))))
+                            .with(ItemEntry.builder(Items.POTATO).weight(20)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 6.0F))))
+                            .with(ItemEntry.builder(Items.POISONOUS_POTATO).weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 2.0F))))
+                            .with(ItemEntry.builder(Items.HONEY_BOTTLE).weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 2.0F))))
+                            .with(ItemEntry.builder(Items.POTION).weight(5)
+                                    .apply(SetPotionLootFunction.builder(Potions.POISON))
                             )
                     )
                     // tools
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(1.0F, 3.0F))
-                            .with(ItemEntry.builder(
-                                            Items.IRON_SWORD)
-                                    .weight(10))
-                            .with(ItemEntry.builder(
-                                            Items.BUCKET)
-                                    .weight(10))
-                            .with(ItemEntry.builder(
-                                            Items.FLINT_AND_STEEL)
-                                    .weight(10))
-                            .with(ItemEntry.builder(
-                                            Items.WOODEN_SHOVEL)
-                                    .weight(10))
+                            .with(ItemEntry.builder(Items.IRON_SWORD).weight(10))
+                            .with(ItemEntry.builder(Items.BUCKET).weight(10))
+                            .with(ItemEntry.builder(Items.FLINT_AND_STEEL).weight(10))
+                            .with(ItemEntry.builder(Items.WOODEN_SHOVEL).weight(10))
                     )
                     // dishes
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(3.0F, 6.0F))
-                            .with(ItemEntry.builder(
-                                            Items.BOWL)
-                                    .weight(20)
-                                    .apply(SetCountLootFunction.builder(
-                                            UniformLootNumberProvider.create(1.0F, 6.0F))))
-                            .with(ItemEntry.builder(
-                                            Items.GLASS_BOTTLE)
-                                    .weight(20)
-                                    .apply(SetCountLootFunction.builder(
-                                            UniformLootNumberProvider.create(1.0F, 6.0F))))
+                            .with(ItemEntry.builder(Items.BOWL).weight(20)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 6.0F))))
+                            .with(ItemEntry.builder(Items.GLASS_BOTTLE).weight(20)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 6.0F))))
                     )
             );
         }
@@ -450,96 +391,49 @@ public class ModLootTables {
                     // food
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(4.0F, 9.0F))
-                            .with(ItemEntry.builder(
-                                            Items.ROTTEN_FLESH)
-                                    .weight(20)
-                                    .apply(SetCountLootFunction.builder(
-                                            UniformLootNumberProvider.create(1.0F, 6.0F))))
-                            .with(ItemEntry.builder(
-                                            Items.POTATO)
-                                    .weight(20)
-                                    .apply(SetCountLootFunction.builder(
-                                            UniformLootNumberProvider.create(1.0F, 6.0F))))
-                            .with(ItemEntry.builder(
-                                            Items.POISONOUS_POTATO)
-                                    .weight(5)
-                                    .apply(SetCountLootFunction.builder(
-                                            UniformLootNumberProvider.create(1.0F, 2.0F))))
-                            .with(ItemEntry.builder(
-                                            Items.HONEY_BOTTLE)
-                                    .weight(5)
-                                    .apply(SetCountLootFunction.builder(
-                                            UniformLootNumberProvider.create(1.0F, 2.0F))))
-                            .with(ItemEntry.builder(
-                                            Items.POTION)
-                                    .weight(5)
-                                    .apply(
-                                            SetPotionLootFunction.builder(Potions.POISON))
+                            .with(ItemEntry.builder(Items.ROTTEN_FLESH).weight(20)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 6.0F))))
+                            .with(ItemEntry.builder(Items.POTATO).weight(20)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 6.0F))))
+                            .with(ItemEntry.builder(Items.POISONOUS_POTATO).weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 2.0F))))
+                            .with(ItemEntry.builder(Items.HONEY_BOTTLE).weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 2.0F))))
+                            .with(ItemEntry.builder(Items.POTION).weight(5)
+                                    .apply(SetPotionLootFunction.builder(Potions.POISON))
                             )
-                            .with(ItemEntry.builder(
-                                            Items.BREAD)
-                                    .weight(5)
-                                    .apply(SetCountLootFunction.builder(
-                                            UniformLootNumberProvider.create(1.0F, 6.0F))))
+                            .with(ItemEntry.builder(Items.BREAD).weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 6.0F))))
                     )
                     // tools
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(1.0F, 3.0F))
-                            .with(ItemEntry.builder(
-                                            Items.IRON_SWORD)
-                                    .weight(10))
-                            .with(ItemEntry.builder(
-                                            Items.BUCKET)
-                                    .weight(10))
-                            .with(ItemEntry.builder(
-                                            Items.FLINT_AND_STEEL)
-                                    .weight(10))
-                            .with(ItemEntry.builder(
-                                            Items.WOODEN_SHOVEL)
-                                    .weight(10))
+                            .with(ItemEntry.builder(Items.IRON_SWORD).weight(10))
+                            .with(ItemEntry.builder(Items.BUCKET).weight(10))
+                            .with(ItemEntry.builder(Items.FLINT_AND_STEEL).weight(10))
+                            .with(ItemEntry.builder(Items.WOODEN_SHOVEL).weight(10))
                     )
                     // dishes
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(3.0F, 6.0F))
-                            .with(ItemEntry.builder(
-                                            Items.BOWL)
-                                    .weight(20)
-                                    .apply(SetCountLootFunction.builder(
-                                            UniformLootNumberProvider.create(1.0F, 6.0F))))
-                            .with(ItemEntry.builder(
-                                            Items.GLASS_BOTTLE)
-                                    .weight(20)
-                                    .apply(SetCountLootFunction.builder(
-                                            UniformLootNumberProvider.create(1.0F, 6.0F))))
+                            .with(ItemEntry.builder(Items.BOWL).weight(20)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 6.0F))))
+                            .with(ItemEntry.builder(Items.GLASS_BOTTLE).weight(20)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 6.0F))))
                     )
                     // seeds
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(3.0F, 6.0F))
-                            .with(ItemEntry.builder(
-                                            Items.WHEAT_SEEDS)
-                                    .weight(20)
-                                    .apply(SetCountLootFunction.builder(
-                                            UniformLootNumberProvider.create(1.0F, 6.0F))))
-                            .with(ItemEntry.builder(
-                                            Items.MELON_SEEDS)
-                                    .weight(20)
-                                    .apply(SetCountLootFunction.builder(
-                                            UniformLootNumberProvider.create(1.0F, 6.0F))))
-                            .with(ItemEntry.builder(
-                                            Items.BEETROOT_SEEDS)
-                                    .weight(20)
-                                    .apply(SetCountLootFunction.builder(
-                                            UniformLootNumberProvider.create(1.0F, 6.0F))))
-                            .with(ItemEntry.builder(
-                                            Items.PUMPKIN_SEEDS)
-                                    .weight(20)
-                                    .apply(SetCountLootFunction.builder(
-                                            UniformLootNumberProvider.create(1.0F, 6.0F))))
-                            .with(ItemEntry.builder(
-                                            Items.TORCHFLOWER_SEEDS)
-                                    .weight(1)
-                                    .apply(SetCountLootFunction.builder(
-                                            UniformLootNumberProvider.create(1.0F, 2.0F))))
+                            .with(ItemEntry.builder(Items.WHEAT_SEEDS).weight(20)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 6.0F))))
+                            .with(ItemEntry.builder(Items.MELON_SEEDS).weight(20)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 6.0F))))
+                            .with(ItemEntry.builder(Items.BEETROOT_SEEDS).weight(20)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 6.0F))))
+                            .with(ItemEntry.builder(Items.PUMPKIN_SEEDS).weight(20)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 6.0F))))
+                            .with(ItemEntry.builder(Items.TORCHFLOWER_SEEDS).weight(1)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 2.0F))))
                     )
             );
         }
@@ -550,73 +444,43 @@ public class ModLootTables {
                     // lore (war)
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(-1,1))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_BOOK_WAR_1)
-                                    .weight(10)
+                            .with(ItemEntry.builder(ModItems.LORE_BOOK_WAR_1).weight(10)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_BOOK_WAR_2)
-                                    .weight(9)
+                            .with(ItemEntry.builder(ModItems.LORE_BOOK_WAR_2).weight(9)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_BOOK_WAR_3)
-                                    .weight(8)
+                            .with(ItemEntry.builder(ModItems.LORE_BOOK_WAR_3).weight(8)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
                     )
                     // lore
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(0,1))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_BOOK_GOLDSMITH_1)
-                                    .weight(10)
+                            .with(ItemEntry.builder(ModItems.LORE_BOOK_GOLDSMITH_1).weight(10)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_BOOK_GOLDSMITH_2)
-                                    .weight(9)
+                            .with(ItemEntry.builder(ModItems.LORE_BOOK_GOLDSMITH_2).weight(9)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_BOOK_GOLDSMITH_3)
-                                    .weight(8)
+                            .with(ItemEntry.builder(ModItems.LORE_BOOK_GOLDSMITH_3).weight(8)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_BOOK_GOLDSMITH_4)
-                                    .weight(7)
+                            .with(ItemEntry.builder(ModItems.LORE_BOOK_GOLDSMITH_4).weight(7)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
                     )
                     // belongings
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(3.0F, 7.0F))
-                            .with(ItemEntry.builder(
-                                            Items.CLOCK)
-                                    .weight(5))
-                            .with(ItemEntry.builder(
-                                            Items.COMPASS)
-                                    .weight(5))
-                            .with(ItemEntry.builder(
-                                            Items.BOOK)
-                                    .weight(5)
+                            .with(ItemEntry.builder(Items.CLOCK).weight(5))
+                            .with(ItemEntry.builder(Items.COMPASS).weight(5))
+                            .with(ItemEntry.builder(Items.BOOK).weight(5)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 2.0F))))
-                            .with(ItemEntry.builder(
-                                            Items.INK_SAC)
-                                    .weight(5)
+                            .with(ItemEntry.builder(Items.INK_SAC).weight(5)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
-                            .with(ItemEntry.builder(
-                                            Items.FEATHER)
-                                    .weight(5)
+                            .with(ItemEntry.builder(Items.FEATHER).weight(5)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
                     )
                     // special treasure
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(0.0F, 3.0F))
-                            .with(ItemEntry.builder(
-                                            ModFluids.MOLTEN_GOLD_BUCKET)
-                                    .weight(10))
-                            .with(ItemEntry.builder(
-                                            ModItems.EMPTY_ARTIFACT)
-                                    .weight(10))
-                            .with(ItemEntry.builder(
-                                            ModItems.MUSIC_DISC_DIGGY)
-                                    .weight(10))
+                            .with(ItemEntry.builder(ModFluids.MOLTEN_GOLD_BUCKET).weight(10))
+                            .with(ItemEntry.builder(ModItems.EMPTY_ARTIFACT).weight(10))
+                            .with(ItemEntry.builder(ModItems.MUSIC_DISC_DIGGY).weight(10))
                     )
             );
         }
@@ -626,78 +490,53 @@ public class ModLootTables {
             OCTANGULA_HALL_CHEST = register("chests/octangula_hall", LootTable.builder()
                     // lore
                     .pool(LootPool.builder()
-                            .rolls(UniformLootNumberProvider.create(0,1))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_LOG_EXPEDITION_1)
-                                    .weight(10)
+                            .rolls(UniformLootNumberProvider.create(0,2))
+                            .with(ItemEntry.builder(ModItems.LORE_LOG_EXPEDITION_1).weight(10)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_LOG_EXPEDITION_2)
-                                    .weight(10)
+                            .with(ItemEntry.builder(ModItems.LORE_LOG_EXPEDITION_2).weight(10)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_LOG_EXPEDITION_3)
-                                    .weight(10)
+                            .with(ItemEntry.builder(ModItems.LORE_LOG_EXPEDITION_3).weight(10)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_LOG_EXPEDITION_4)
-                                    .weight(10)
+                            .with(ItemEntry.builder(ModItems.LORE_LOG_EXPEDITION_4).weight(10)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_LOG_EXPEDITION_5)
-                                    .weight(10)
+                            .with(ItemEntry.builder(ModItems.LORE_LOG_EXPEDITION_5).weight(10)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
                     )
                     // octangulite
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(0.0F, 2.0F))
-                            .with(ItemEntry.builder(
-                                            ModItems.RAW_OCTANGULITE)
-                                    .weight(20)
-                                    .apply(SetCountLootFunction.builder(
-                                            UniformLootNumberProvider.create(0.0F, 2.0F))))
-                            .with(ItemEntry.builder(
-                                            ModItems.OCTANGULITE_INGOT)
-                                    .weight(5)
+                            .with(ItemEntry.builder(ModItems.RAW_OCTANGULITE).weight(20)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(0.0F, 2.0F))))
-                            .with(ItemEntry.builder(
-                                            ModItems.OCTANGULITE_NUGGET)
-                                    .weight(10)
+                            .with(ItemEntry.builder(ModItems.OCTANGULITE_INGOT).weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(0.0F, 2.0F))))
+                            .with(ItemEntry.builder(ModItems.OCTANGULITE_NUGGET).weight(10)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(2.0F, 6.0F)))))
                     // blocks
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(2.0F, 4.0F))
-                            .with(ItemEntry.builder(
-                                            ModBlocks.CUT_TITANIUM)
-                                    .apply(SetCountLootFunction.builder(
-                                            UniformLootNumberProvider.create(0.0F, 8.0F))))
-                            .with(ItemEntry.builder(
-                                            Blocks.OXIDIZED_CUT_COPPER)
-                                    .apply(SetCountLootFunction.builder(
-                                            UniformLootNumberProvider.create(0.0F, 8.0F))))
+                            .with(ItemEntry.builder(ModBlocks.CUT_TITANIUM)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(0.0F, 8.0F))))
+                            .with(ItemEntry.builder(Blocks.OXIDIZED_CUT_COPPER)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(0.0F, 8.0F))))
                     )
                     // treasure
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(1.0F, 3.0F))
-                            .with(ItemEntry.builder(
-                                            Items.EMERALD)
-                                    .weight(5)
+                            .with(ItemEntry.builder(Items.EMERALD).weight(5)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
-                            .with(ItemEntry.builder(
-                                            Items.GOLD_INGOT)
-                                    .weight(5)
+                            .with(ItemEntry.builder(Items.GOLD_INGOT).weight(5)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
-                            .with(ItemEntry.builder(
-                                            Items.IRON_INGOT)
-                                    .weight(5)
+                            .with(ItemEntry.builder(Items.IRON_INGOT).weight(5)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
-                            .with(ItemEntry.builder(
-                                            ModItems.LEAD_INGOT)
-                                    .weight(5)
+                            .with(ItemEntry.builder(ModItems.LEAD_INGOT).weight(5)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
                     )
                     .pool(spellComponentsBuilder()
                             .rolls(UniformLootNumberProvider.create(2.0F, 4.0F))
+                    )
+                    .pool(LootPool.builder()
+                            .rolls(UniformLootNumberProvider.create(0.0F, 2.0F))
+                            .with(ItemEntry.builder(ModItems.COMPONENT_BAG))
                     )
                     .randomSequenceId(Geomancy.locate("chests/dwarven_remnants"))
             );
@@ -709,32 +548,21 @@ public class ModLootTables {
                     // lore
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(1,2))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_LOG_EXPEDITION_1)
-                                    .weight(10)
+                            .with(ItemEntry.builder(ModItems.LORE_LOG_EXPEDITION_1).weight(10)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_LOG_EXPEDITION_2)
-                                    .weight(10)
+                            .with(ItemEntry.builder(ModItems.LORE_LOG_EXPEDITION_2).weight(10)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_LOG_EXPEDITION_3)
-                                    .weight(10)
+                            .with(ItemEntry.builder(ModItems.LORE_LOG_EXPEDITION_3).weight(10)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_LOG_EXPEDITION_4)
-                                    .weight(10)
+                            .with(ItemEntry.builder(ModItems.LORE_LOG_EXPEDITION_4).weight(10)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_LOG_EXPEDITION_5)
-                                    .weight(10)
+                            .with(ItemEntry.builder(ModItems.LORE_LOG_EXPEDITION_5).weight(10)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
                     )
                     // digsite treasure map
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(1.0F, 1.0F))
-                            .with(ItemEntry.builder(
-                                            Items.MAP)
+                            .with(ItemEntry.builder(Items.MAP)
                                     .apply(ExplorationMapLootFunction.builder()
                                             .withDestination(TagKey.of(RegistryKeys.STRUCTURE,Geomancy.locate("on_digsite_map")))
                                             .withDecoration(MapIcon.Type.TARGET_POINT)
@@ -749,6 +577,10 @@ public class ModLootTables {
                     .pool(spellComponentsBuilder()
                             .rolls(UniformLootNumberProvider.create(2.0F, 4.0F))
                     )
+                    .pool(LootPool.builder()
+                            .rolls(UniformLootNumberProvider.create(1.0F, 3.0F))
+                            .with(ItemEntry.builder(ModItems.COMPONENT_BAG))
+                    )
                     // premade spells
                     .pool(premadeSpellsBuilder()
                             .rolls(UniformLootNumberProvider.create(2.0F, 4.0F))
@@ -762,120 +594,78 @@ public class ModLootTables {
             DIGSITE_HALLWAY_CHEST = register("chests/digsite_hallway", LootTable.builder()
                     // lore
                     .pool(LootPool.builder()
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_LOG_EXODIA_1)
-                                    .weight(10)
+                            .with(ItemEntry.builder(ModItems.LORE_LOG_EXODIA_1).weight(10)
                                     .conditionally(RandomChanceLootCondition.builder(0.1f))
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
                     )
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(-3,1))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_LOG_EXPEDITION_1)
-                                    .weight(10)
+                            .with(ItemEntry.builder(ModItems.LORE_LOG_EXPEDITION_1).weight(10)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_LOG_EXPEDITION_2)
-                                    .weight(10)
+                            .with(ItemEntry.builder(ModItems.LORE_LOG_EXPEDITION_2).weight(10)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_LOG_EXPEDITION_3)
-                                    .weight(10)
+                            .with(ItemEntry.builder(ModItems.LORE_LOG_EXPEDITION_3).weight(10)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_LOG_EXPEDITION_4)
-                                    .weight(10)
+                            .with(ItemEntry.builder(ModItems.LORE_LOG_EXPEDITION_4).weight(10)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
-                            .with(ItemEntry.builder(
-                                            ModItems.LORE_LOG_EXPEDITION_5)
-                                    .weight(10)
+                            .with(ItemEntry.builder(ModItems.LORE_LOG_EXPEDITION_5).weight(10)
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
                     )
                     // octangulite
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(0.0F, 2.0F))
-                            .with(ItemEntry.builder(
-                                            ModItems.RAW_OCTANGULITE)
-                                    .weight(20)
-                                    .apply(SetCountLootFunction.builder(
-                                            UniformLootNumberProvider.create(1.0F, 4.0F))))
-                            .with(ItemEntry.builder(
-                                            ModItems.OCTANGULITE_INGOT)
-                                    .weight(5)
+                            .with(ItemEntry.builder(ModItems.RAW_OCTANGULITE).weight(20)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
+                            .with(ItemEntry.builder(ModItems.OCTANGULITE_INGOT).weight(5)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 2.0F))))
-                            .with(ItemEntry.builder(
-                                            ModItems.OCTANGULITE_NUGGET)
-                                    .weight(10)
+                            .with(ItemEntry.builder(ModItems.OCTANGULITE_NUGGET).weight(10)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(5.0F, 16.0F)))))
                     // blocks
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(1.0F, 2.0F))
-                            .with(ItemEntry.builder(
-                                            ModBlocks.CUT_TITANIUM)
-                                    .apply(SetCountLootFunction.builder(
-                                            UniformLootNumberProvider.create(3.0F, 8.0F))))
-                            .with(ItemEntry.builder(
-                                            ModBlocks.CUT_LEAD)
-                                    .apply(SetCountLootFunction.builder(
-                                            UniformLootNumberProvider.create(3.0F, 8.0F))))
+                            .with(ItemEntry.builder(ModBlocks.CUT_TITANIUM)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(3.0F, 8.0F))))
+                            .with(ItemEntry.builder(ModBlocks.CUT_LEAD)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(3.0F, 8.0F))))
                     )
                     // generic treasure
                     .pool(LootPool.builder()
                             .rolls(UniformLootNumberProvider.create(-1.0F, 2.0F))
-                            .with(ItemEntry.builder(
-                                            Items.EMERALD)
-                                    .weight(5)
+                            .with(ItemEntry.builder(Items.EMERALD).weight(5)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 2.0F))))
-                            .with(ItemEntry.builder(
-                                            Items.DIAMOND)
-                                    .weight(5)
+                            .with(ItemEntry.builder(Items.DIAMOND).weight(5)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(0.0F, 2.0F))))
-                            .with(ItemEntry.builder(
-                                            Items.GOLD_INGOT)
-                                    .weight(5)
+                            .with(ItemEntry.builder(Items.GOLD_INGOT).weight(5)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
-                            .with(ItemEntry.builder(
-                                            ModItems.TITANIUM_INGOT)
-                                    .weight(5)
+                            .with(ItemEntry.builder(ModItems.TITANIUM_INGOT).weight(5)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
-                            .with(ItemEntry.builder(
-                                            ModItems.LEAD_INGOT)
-                                    .weight(5)
+                            .with(ItemEntry.builder(ModItems.LEAD_INGOT).weight(5)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
-                            .with(ItemEntry.builder(
-                                            ModItems.MOLYBDENUM_INGOT)
-                                    .weight(5)
+                            .with(ItemEntry.builder(ModItems.MOLYBDENUM_INGOT).weight(5)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
-                            .with(ItemEntry.builder(
-                                            ModItems.MITHRIL_INGOT)
-                                    .weight(5)
+                            .with(ItemEntry.builder(ModItems.MITHRIL_INGOT).weight(5)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
-                            .with(ItemEntry.builder(
-                                            ModItems.ORTHOCLASE)
-                                    .weight(5)
+                            .with(ItemEntry.builder(ModItems.ORTHOCLASE).weight(5)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
-                            .with(ItemEntry.builder(
-                                            ModItems.PERIDOT)
-                                    .weight(5)
+                            .with(ItemEntry.builder(ModItems.PERIDOT).weight(5)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
-                            .with(ItemEntry.builder(
-                                            ModItems.TOURMALINE)
-                                    .weight(5)
+                            .with(ItemEntry.builder(ModItems.TOURMALINE).weight(5)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
-                            .with(ItemEntry.builder(
-                                            ModItems.AXINITE)
-                                    .weight(5)
+                            .with(ItemEntry.builder(ModItems.AXINITE).weight(5)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
                     )
                     // spell component
                     .pool(spellComponentsBuilder()
                             .rolls(UniformLootNumberProvider.create(2.0F, 4.0F))
                     )
+                    .pool(LootPool.builder()
+                            .rolls(UniformLootNumberProvider.create(1, 2.0F))
+                            .conditionally(RandomChanceLootCondition.builder(0.1f))
+                            .with(ItemEntry.builder(ModItems.COMPONENT_BAG))
+                    )
                     // component pouch
                     .pool(LootPool.builder()
-                            .with(ItemEntry.builder(
-                                            ModItems.COMPONENT_POUCH)
-                                    .weight(10)
+                            .with(ItemEntry.builder(ModItems.COMPONENT_POUCH).weight(10)
                                     .conditionally(RandomChanceLootCondition.builder(0.05f))
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
                     )
