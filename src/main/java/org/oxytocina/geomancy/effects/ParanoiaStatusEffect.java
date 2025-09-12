@@ -49,6 +49,9 @@ public class ParanoiaStatusEffect extends ModStatusEffect {
 	public static void tickClient(){
 		var playerEntity = MinecraftClient.getInstance().player;
 		if(playerEntity==null) return;
+		var effectInst = playerEntity.getStatusEffect(ModStatusEffects.PARANOIA);
+		if(effectInst==null) return;
+		if(!ModStatusEffects.PARANOIA.canApplyUpdateEffect(effectInst.getDuration(),effectInst.getAmplifier())) return;
 		World world = playerEntity.getWorld();
 
 		if(Toolbox.random.nextFloat() < 0.7f)
