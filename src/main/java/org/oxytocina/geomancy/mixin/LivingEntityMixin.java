@@ -228,9 +228,9 @@ public abstract class LivingEntityMixin {
         LivingEntity thisEntity = (LivingEntity) (Object) this;
     }
 
-    @Redirect(method = "tickMovement()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isWet()Z"))
-    private boolean geomancy$isWet(LivingEntity livingEntity) {
-        return livingEntity.isTouchingWater() ? ((TouchingFluidAware) livingEntity).geomancy$isTouchingExtinguishingFluid() : livingEntity.isWet();
+    @WrapOperation(method = "tickMovement()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isWet()Z"))
+    private boolean geomancy$isWet(LivingEntity livingEntity, Operation<Boolean> original) {
+        return livingEntity.isTouchingWater() ? ((TouchingFluidAware) livingEntity).geomancy$isTouchingExtinguishingFluid() : original.call(livingEntity);
     }
 
     @Shadow

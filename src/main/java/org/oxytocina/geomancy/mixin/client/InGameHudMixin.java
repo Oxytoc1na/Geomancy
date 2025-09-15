@@ -33,6 +33,7 @@ public abstract class InGameHudMixin {
         return getTexture(texture, effect);
     }
 
+    @Unique
     private static Identifier getTexture(Identifier texture, StatusEffectInstance effect) {
         var type = effect.getEffectType();
 
