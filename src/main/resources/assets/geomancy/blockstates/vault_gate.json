@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "vanished=true,desire_vanished=true": {
+      "model": "geomancy:block/vault_gate_off"
+    },
+    "vanished=false,desire_vanished=false": {
+      "model": "geomancy:block/vault_gate_on"
+    },
+    "vanished=true,desire_vanished=false": {
+      "model": "geomancy:block/vault_gate_turning_on"
+    },
+    "vanished=false,desire_vanished=true": {
+      "model": "geomancy:block/vault_gate_turning_off"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "geomancy:block/vault_gate_turning_on"
+  }
+}

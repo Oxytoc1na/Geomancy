@@ -53,8 +53,7 @@ public class ModColorizationHandler {
                 ModBlocks.SOUL_OAK_DOOR,
                 ModBlocks.SOUL_OAK_LOG,
                 ModBlocks.STRIPPED_SOUL_OAK_LOG,
-                ModBlocks.STRIPPED_SOUL_OAK_WOOD,
-                ModBlocks.VAULT_GLASS
+                ModBlocks.STRIPPED_SOUL_OAK_WOOD
                 );
 
         // double tintets, for example vault blocks (first index is uncolored)
@@ -64,7 +63,9 @@ public class ModColorizationHandler {
                 ModBlocks.VAULT_BLOCK,
                 ModBlocks.VAULT_BLOCK_SLAB,
                 ModBlocks.VAULT_BLOCK_STAIRS,
-                ModBlocks.VAULT_GLASS
+                ModBlocks.VAULT_GLASS,
+                ModBlocks.VAULT_GATE,
+                ModBlocks.VAULT_GATE_CONTROL
         );
 
         // soul oak wood only has one tint index, but should use tint index 1 for the bark

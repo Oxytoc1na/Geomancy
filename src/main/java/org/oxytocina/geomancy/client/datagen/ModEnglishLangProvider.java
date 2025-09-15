@@ -602,6 +602,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("block.MODID.vault_block_stairs"            , "Vault Stairs");
             add("block.MODID.vault_block_slab"              , "Vault Slab");
             add("block.MODID.vault_glass"                   , "Vault Glass");
+            add("block.MODID.vault_gate"                    , "Vault Gate");
+            add("block.MODID.vault_gate_control"            , "Vault Gate Control");
         }
 
         // status effects

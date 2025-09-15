@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "powered=true": {
+      "model": "geomancy:block/vault_gate_control_powered"
+    },
+    "powered=false": {
+      "model": "geomancy:block/vault_gate_control"
+    }
+  }
+}
