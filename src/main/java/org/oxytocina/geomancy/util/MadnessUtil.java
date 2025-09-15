@@ -151,7 +151,7 @@ public class MadnessUtil {
 
     }
 
-    private static void tryMadnessEffects(ServerPlayerEntity player) {
+    public static void tryMadnessEffects(ServerPlayerEntity player) {
         if(player.isCreative() || player.isDead()) return;
 
         float madness = getMadness(player);

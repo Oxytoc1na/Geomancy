@@ -7,11 +7,23 @@ import net.minecraft.registry.Registry;
 import org.oxytocina.geomancy.Geomancy;
 
 public class ModStatusEffects {
+
+    // buffs
+
+    /// decreases soul casting cost by 20% per level
+    public static final StatusEffect BLISSFUL = register("blissful", new ModStatusEffect(StatusEffectCategory.BENEFICIAL, 0x2324f8));
+
+    /// increases soul regeneration speed by 50% per level
+    public static final StatusEffect RIGHTEOUS = register("righteous", new ModStatusEffect(StatusEffectCategory.BENEFICIAL, 0x2324f8));
+
+
+    // debuffs
+
     /// increases soul casting cost by 50% per level
-    public static final StatusEffect REGRETFUL = register("regretful", new RegretfulStatusEffect(StatusEffectCategory.HARMFUL, 0x2324f8));
+    public static final StatusEffect REGRETFUL = register("regretful", new ModStatusEffect(StatusEffectCategory.HARMFUL, 0x2324f8));
 
     /// decreases soul regeneration speed by 20% per level
-    public static final StatusEffect MOURNING = register("mourning", new MourningStatusEffect(StatusEffectCategory.HARMFUL, 0x2324f8));
+    public static final StatusEffect MOURNING = register("mourning", new ModStatusEffect(StatusEffectCategory.HARMFUL, 0x2324f8));
 
     /// makes you jump when moving around
     public static final StatusEffect ECSTATIC = register("ecstatic", new EcstaticStatusEffect(StatusEffectCategory.HARMFUL, 0x2324f8));

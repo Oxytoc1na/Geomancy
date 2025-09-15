@@ -37,7 +37,6 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         addShort("gb:lr","book.MODID.guidebook.lore.");
         addShort("gb:sc","book.MODID.guidebook.soulcasting.");
 
-
         // Spells
         {
             add("MODID.spellmaker.delete",  "remove");
@@ -633,6 +632,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("itemGroup.MODID.main",     "Geomancy");
             add("itemGroup.MODID.jewelry",  "Geomancy Jewelry");
             add("itemGroup.MODID.spells",   "Geomancy Spells");
+            add("itemGroup.MODID.lore",     "Geomancy Books");
             add("geomancy.message.lead.tingling",   "Your fingers are tingling...");
             add("geomancy.message.lead.nausea",     "You feel like throwing up...");
             add("geomancy.message.lead.poison",     "You feel a sharp pain in your head...");
@@ -650,7 +650,6 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add(KeyInputHandler.LANG_CAST_3,"Cast Trinket 3");
             add(KeyInputHandler.LANG_ACTIVATE_SPELLS,"Trinket Hotbar Casting");
         }
-
 
         // Toasts
         add("geomancy.toast.stellgeknowledge.title","Stellgian Knowledge gained");

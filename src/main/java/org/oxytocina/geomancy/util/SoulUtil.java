@@ -229,6 +229,11 @@ public class SoulUtil {
             var amp = player.getStatusEffect(ModStatusEffects.MOURNING).getAmplifier();
             res *= Toolbox.clampF(1-(amp+1)*0.2f,0,1);
         }
+        if(player.hasStatusEffect(ModStatusEffects.RIGHTEOUS))
+        {
+            var amp = player.getStatusEffect(ModStatusEffects.RIGHTEOUS).getAmplifier();
+            res *= 1+(amp+1)*0.5f;
+        }
 
         return res;
     }
@@ -295,9 +300,10 @@ public class SoulUtil {
         float max = item.getCapacity(world,stack);
 
         // per tick
-        float actualRegenSpeed = 0.0005f *
-                (regenSpeed
-                        +item.getRechargeSpeedMultiplier(world,stack,player))
+        float actualRegenSpeed = 0.0005f
+                * regenSpeed
+                * (player!=null?(getRegenSpeedMultiplier(player)):1)
+                * item.getRechargeSpeedMultiplier(world,stack,player)
                 * ambientMana;
 
         // make regen less effective the fuller the item is

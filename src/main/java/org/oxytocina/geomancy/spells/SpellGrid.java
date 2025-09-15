@@ -98,12 +98,17 @@ public class SpellGrid {
         // check restrictions
         SpellContext.Restrictions restrictions = SpellContext.Restrictions.NONE;
 
-
+        // soul cost
         float costMultiplier = soulCostMultiplier;
         if(casterEntity!=null&&casterEntity.hasStatusEffect(ModStatusEffects.REGRETFUL))
         {
             var amp = casterEntity.getStatusEffect(ModStatusEffects.REGRETFUL).getAmplifier();
             costMultiplier *= 1+(amp+1)*0.5f;
+        }
+        if(casterEntity!=null&&casterEntity.hasStatusEffect(ModStatusEffects.BLISSFUL))
+        {
+            var amp = casterEntity.getStatusEffect(ModStatusEffects.BLISSFUL).getAmplifier();
+            costMultiplier *= 1-(amp+1)*0.2f;
         }
 
         SpellContext context = new SpellContext(this,casterEntity,blockEntity,delegate,casterItem,spellStorage,0,costMultiplier,0,soundBehavior);

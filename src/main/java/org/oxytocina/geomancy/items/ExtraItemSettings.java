@@ -1,11 +1,12 @@
 package org.oxytocina.geomancy.items;
 
 
+import dev.emi.emi.api.EmiApi;
 import net.minecraft.item.Item;
 import org.oxytocina.geomancy.items.jewelry.IJewelryItem;
-import org.oxytocina.geomancy.items.jewelry.JewelryItem;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ExtraItemSettings {
 
@@ -14,18 +15,22 @@ public class ExtraItemSettings {
     public static final ArrayList<Item> ParentInventoryModel = new ArrayList<Item>();
     public static final ArrayList<Item> ParentBottomModel = new ArrayList<Item>();
     public static final ArrayList<IJewelryItem> JewelryModel = new ArrayList<IJewelryItem>();
-    public static final ArrayList<Item> ItemsInGroup = new ArrayList<Item>();
+
+    public static final ArrayList<Item> ITEMS_IN_MAIN_GROUP = new ArrayList<Item>();
+    public static final ArrayList<Item> ITEMS_IN_LORE_GROUP = new ArrayList<Item>();
+    public static final ArrayList<Item> ITEMS_IN_JEWELRY_GROUP = new ArrayList<Item>();
+    public static final ArrayList<Item> ITEMS_IN_SPELLS_GROUP = new ArrayList<Item>();
 
     public Item item;
 
     private ModelType model = ModelType.Generated;
 
-    private boolean shouldAddItemToGroup = true;
-
+    private final List<Group> groups;
 
 
     public ExtraItemSettings(){
-
+        groups = new ArrayList<>();
+        groups.add(Group.Main);
     }
 
     public static ExtraItemSettings create(){
@@ -38,7 +43,9 @@ public class ExtraItemSettings {
     }
 
 
-    public ExtraItemSettings dontGroupItem(){shouldAddItemToGroup=false; return this;}
+    public ExtraItemSettings dontGroupItem(){groups.clear(); return this;}
+    public ExtraItemSettings group(Group group){groups.clear(); groups.add(group); return this;}
+    public ExtraItemSettings addGroup(Group group){groups.add(group); return this;}
     public ExtraItemSettings modelType(ModelType type){ model=type;return this;}
 
     public void apply(){
@@ -51,8 +58,14 @@ public class ExtraItemSettings {
             default: break;
         }
 
-        if(shouldAddItemToGroup)
-            ItemsInGroup.add(item);
+        for(var group : groups){
+            switch(group){
+                case Main -> ITEMS_IN_MAIN_GROUP.add(item);
+                case Lore -> ITEMS_IN_LORE_GROUP.add(item);
+                case Jewelry -> ITEMS_IN_JEWELRY_GROUP.add(item);
+                case Spells -> ITEMS_IN_SPELLS_GROUP.add(item);
+            }
+        }
 
     }
 
@@ -63,5 +76,12 @@ public class ExtraItemSettings {
         BlockPlusInventory,
         BlockPlusBottom,
         Custom
+    }
+
+    public enum Group{
+        Main,
+        Lore,
+        Jewelry,
+        Spells
     }
 }
