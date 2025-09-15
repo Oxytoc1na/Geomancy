@@ -333,6 +333,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("item.MODID.octangulite_leggings"       , "Octangulite Leggings");
             add("item.MODID.octangulite_chestplate"     , "Octangulite Chestplate");
             add("item.MODID.octangulite_helmet"         , "Octangulite Helmet");
+            add("item.MODID.octangulite_apple"          , "Octangulite Apple");
 
             add("item.MODID.casting_boots"          , "Soulcasting Boots");
             add("item.MODID.casting_leggings"       , "Soulcasting Leggings");
@@ -611,6 +612,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("effect.MODID.regretful"   , "Regretful");
             add("effect.MODID.mourning"    , "Mourning");
             add("effect.MODID.ecstatic"    , "Ecstatic");
+            add("effect.MODID.blissful"    , "Blissful");
+            add("effect.MODID.righteous"   , "Righteous");
 
         }
 

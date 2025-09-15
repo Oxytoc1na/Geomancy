@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
@@ -16,6 +17,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.effects.ModStatusEffects;
 import org.oxytocina.geomancy.items.armor.*;
 import org.oxytocina.geomancy.items.armor.materials.*;
 import org.oxytocina.geomancy.items.misc.SoulPreviewItem;
@@ -76,11 +78,11 @@ public class ModItems {
 
 
     // guidebook and lore
-    public static final GuidebookItem GUIDE_BOOK = register("guidebook",new GuidebookItem(new FabricItemSettings()),new ExtraItemSettings().addGroup(ExtraItemSettings.Group.Lore));
-    public static final LorebookItem LORE_BOOK_GOLDSMITH_1 = register("lorebook_goldsmith_1",new LorebookItem(new FabricItemSettings(),"lore/goldsmith_1"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
-    public static final LorebookItem LORE_BOOK_GOLDSMITH_2 = register("lorebook_goldsmith_2",new LorebookItem(new FabricItemSettings(),"lore/goldsmith_2"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
-    public static final LorebookItem LORE_BOOK_GOLDSMITH_3 = register("lorebook_goldsmith_3",new LorebookItem(new FabricItemSettings(),"lore/goldsmith_3"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
-    public static final LorebookItem LORE_BOOK_GOLDSMITH_4 = register("lorebook_goldsmith_4",new LorebookItem(new FabricItemSettings(),"lore/goldsmith_4"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
+    public static final GuidebookItem GUIDE_BOOK =              register("guidebook",           new GuidebookItem(new FabricItemSettings()),new ExtraItemSettings().addGroup(ExtraItemSettings.Group.Lore));
+    public static final LorebookItem LORE_BOOK_GOLDSMITH_1 =    register("lorebook_goldsmith_1",new LorebookItem(new FabricItemSettings(),"lore/goldsmith_1"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
+    public static final LorebookItem LORE_BOOK_GOLDSMITH_2 =    register("lorebook_goldsmith_2",new LorebookItem(new FabricItemSettings(),"lore/goldsmith_2"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
+    public static final LorebookItem LORE_BOOK_GOLDSMITH_3 =    register("lorebook_goldsmith_3",new LorebookItem(new FabricItemSettings(),"lore/goldsmith_3"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
+    public static final LorebookItem LORE_BOOK_GOLDSMITH_4 =    register("lorebook_goldsmith_4",new LorebookItem(new FabricItemSettings(),"lore/goldsmith_4"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
 
     public static final LorebookItem LORE_BOOK_WAR_1 = register("lorebook_war_1",new LorebookItem(new FabricItemSettings(),"lore/war_1"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
     public static final LorebookItem LORE_BOOK_WAR_2 = register("lorebook_war_2",new LorebookItem(new FabricItemSettings(),"lore/war_2"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
@@ -92,9 +94,9 @@ public class ModItems {
     public static final LorebookItem LORE_LOG_EXPEDITION_4 = register("lorelog_expedition_4",new LorebookItem(new FabricItemSettings(),"lore/expedition_4"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
     public static final LorebookItem LORE_LOG_EXPEDITION_5 = register("lorelog_expedition_5",new LorebookItem(new FabricItemSettings(),"lore/expedition_5"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
 
-    public static final LorebookItem LORE_BOOK_EXTRAS_CREATION = register("lorebook_extras_creation",new LorebookItem(new FabricItemSettings(),"lore/extras_creation"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
-    public static final LorebookItem LORE_LOG_EXTRAS_RESEARCH_1 = register("lorelog_extras_research_1",new LorebookItem(new FabricItemSettings(),"lore/extras_research_1"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
-    public static final LorebookItem LORE_LOG_EXTRAS_RESEARCH_2 = register("lorelog_extras_research_2",new LorebookItem(new FabricItemSettings(),"lore/extras_research_2"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
+    public static final LorebookItem LORE_BOOK_EXTRAS_CREATION =    register("lorebook_extras_creation",    new LorebookItem(new FabricItemSettings(),"lore/extras_creation"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
+    public static final LorebookItem LORE_LOG_EXTRAS_RESEARCH_1 =   register("lorelog_extras_research_1",   new LorebookItem(new FabricItemSettings(),"lore/extras_research_1"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
+    public static final LorebookItem LORE_LOG_EXTRAS_RESEARCH_2 =   register("lorelog_extras_research_2",   new LorebookItem(new FabricItemSettings(),"lore/extras_research_2"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
 
     public static final LorebookItem LORE_LOG_EXODIA_1 = register("lorelog_exodia_1",new LorebookItem(new FabricItemSettings(),"lore/exodia_1"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
     public static final LorebookItem LORE_LOG_EXODIA_2 = register("lorelog_exodia_2",new LorebookItem(new FabricItemSettings(),"lore/exodia_2"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
@@ -217,11 +219,11 @@ public class ModItems {
 
     public static final CastingTrinketItem CASTER_CORE =    register("caster_core",new CastingTrinketItem(new Item.Settings().maxCount(1), 9*3,ModItemTags.FITS_IN_CASTERS,false),new ExtraItemSettings().group(ExtraItemSettings.Group.Spells));
 
-    public static final TrinketItem MANIA_MASK =        register("mania_mask",new TrinketItem(new Item.Settings().maxCount(1)));
-    public static final TrinketItem SORROW_MASK =       register("sorrow_mask",new TrinketItem(new Item.Settings().maxCount(1)));
-    public static final TrinketItem PARANOIA_MASK =     register("paranoia_mask",new TrinketItem(new Item.Settings().maxCount(1)));
-    public static final TrinketItem MELANCHOLY_MASK =   register("melancholy_mask",new TrinketItem(new Item.Settings().maxCount(1)));
-    public static final TrinketItem ADAPTIVE_MASK =     register("adaptive_mask",new TrinketItem(new Item.Settings().maxCount(1)));
+    public static final TrinketItem MANIA_MASK =        register("mania_mask",      new TrinketItem(new Item.Settings().maxCount(1)));
+    public static final TrinketItem SORROW_MASK =       register("sorrow_mask",     new TrinketItem(new Item.Settings().maxCount(1)));
+    public static final TrinketItem PARANOIA_MASK =     register("paranoia_mask",   new TrinketItem(new Item.Settings().maxCount(1)));
+    public static final TrinketItem MELANCHOLY_MASK =   register("melancholy_mask", new TrinketItem(new Item.Settings().maxCount(1)));
+    public static final TrinketItem ADAPTIVE_MASK =     register("adaptive_mask",   new TrinketItem(new Item.Settings().maxCount(1)));
 
     public static final HammerItem IRON_HAMMER = register("iron_hammer",new HammerItem(5,-3.3f,ToolMaterials.IRON, ModBlockTags.HAMMER_MINEABLES, new FabricItemSettings(),
             10,1,10,20),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Handheld));
@@ -257,9 +259,9 @@ public class ModItems {
     public static final VariableStoringItem VARSTORAGE_MEDIUM =      register("varstorage_medium", new VariableStoringItem(new FabricItemSettings().maxCount(8),4),ExtraItemSettings.create().group(ExtraItemSettings.Group.Spells));
     public static final VariableStoringItem VARSTORAGE_LARGE =       register("varstorage_large",  new VariableStoringItem(new FabricItemSettings().maxCount(8),16),ExtraItemSettings.create().group(ExtraItemSettings.Group.Spells));
 
-    public static final SoulStorageItem SOULSTORAGE_SMALL =       register("soulstorage_small",  new SoulStorageItem(new FabricItemSettings().maxCount(1),100,0.5f),ExtraItemSettings.create().group(ExtraItemSettings.Group.Spells));
-    public static final SoulStorageItem SOULSTORAGE_MEDIUM =      register("soulstorage_medium", new SoulStorageItem(new FabricItemSettings().maxCount(1),400,0.75f),ExtraItemSettings.create().group(ExtraItemSettings.Group.Spells));
-    public static final PonderableSoulStorageItem SOULSTORAGE_LARGE = register("soulstorage_large",  new PonderableSoulStorageItem(new FabricItemSettings().maxCount(1),1600,1f),ExtraItemSettings.create().group(ExtraItemSettings.Group.Spells));
+    public static final SoulStorageItem SOULSTORAGE_SMALL =             register("soulstorage_small",  new SoulStorageItem(new FabricItemSettings().maxCount(1),100,0.5f),ExtraItemSettings.create().group(ExtraItemSettings.Group.Spells));
+    public static final SoulStorageItem SOULSTORAGE_MEDIUM =            register("soulstorage_medium", new SoulStorageItem(new FabricItemSettings().maxCount(1),400,0.75f),ExtraItemSettings.create().group(ExtraItemSettings.Group.Spells));
+    public static final PonderableSoulStorageItem SOULSTORAGE_LARGE =   register("soulstorage_large",  new PonderableSoulStorageItem(new FabricItemSettings().maxCount(1),1600,1f),ExtraItemSettings.create().group(ExtraItemSettings.Group.Spells));
 
     public static final SoulBoreItem SOUL_BORE =      register("soul_bore", new SoulBoreItem(new FabricItemSettings().maxCount(1),9),ExtraItemSettings.create().group(ExtraItemSettings.Group.Spells));
 
@@ -276,7 +278,10 @@ public class ModItems {
         if(le instanceof ServerPlayerEntity spe) LeadUtil.tryLeadEffects(spe);
     }),ExtraItemSettings.create());
 
-    public static final MaddeningFoodItem OCTANGULITE_APPLE = register("octangulite_apple",new MaddeningFoodItem(new FabricItemSettings().food(new FoodComponent.Builder().alwaysEdible().hunger(8).saturationModifier(1.5f).build()),le->{
+    public static final MaddeningFoodItem OCTANGULITE_APPLE = register("octangulite_apple",new MaddeningFoodItem(new FabricItemSettings().food(new FoodComponent.Builder().alwaysEdible().hunger(8).saturationModifier(1.5f)
+            .statusEffect(new StatusEffectInstance(ModStatusEffects.BLISSFUL,20*60*2,2),1)
+            .statusEffect(new StatusEffectInstance(ModStatusEffects.RIGHTEOUS,20*60,2),1)
+            .build()), le->{
         if(!(le instanceof ServerPlayerEntity spe)) return;
         MadnessUtil.addMadness(spe,100);
         MadnessUtil.syncMadness(spe);

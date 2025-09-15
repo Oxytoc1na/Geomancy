@@ -123,6 +123,7 @@ public class MadnessUtil {
 
         if(++madnessEffectsCounter > 20*60){
             for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+                if(player.isCreative() || player.isDead()) continue;
                 tryMadnessEffects(player);
             }
             madnessEffectsCounter =0;
@@ -152,8 +153,6 @@ public class MadnessUtil {
     }
 
     public static void tryMadnessEffects(ServerPlayerEntity player) {
-        if(player.isCreative() || player.isDead()) return;
-
         float madness = getMadness(player);
         // effect chance asymptotically approaches 100%.
         // at 200, there is a 20% chance.
