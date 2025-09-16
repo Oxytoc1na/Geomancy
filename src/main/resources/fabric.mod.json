@@ -8,7 +8,7 @@
     "oxytocina"
   ],
   "contact": {},
-  "license": "MIT",
+  "license": "LGPL-3.0-only",
   "icon": "assets/geomancy/icon.png",
   "environment": "*",
   "entrypoints": {
