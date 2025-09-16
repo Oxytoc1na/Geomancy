@@ -211,6 +211,7 @@ public class SoulUtil {
             if(state.isIn(ModBlockTags.ADDS_SOULS_NORMAL)) res += 3/div;
             else if(state.isIn(ModBlockTags.ADDS_SOULS_FEW)) res += 1/div;
             else if(state.isIn(ModBlockTags.ADDS_SOULS_MANY)) res += 10/div;
+            else if(state.isIn(ModBlockTags.REMOVES_SOULS_MANY)) res -= 10/div;
         }
 
         return res;

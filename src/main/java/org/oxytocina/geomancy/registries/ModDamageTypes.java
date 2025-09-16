@@ -17,6 +17,7 @@ public class ModDamageTypes {
     public static final RegistryKey<DamageType> PLUMBOMETER = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, Geomancy.locate( "plumbometer"));
     public static final RegistryKey<DamageType> MOLTEN_GOLD = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, Geomancy.locate( "molten_gold"));
     public static final RegistryKey<DamageType> RESTRICTED_ACTION = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, Geomancy.locate( "restricted_action"));
+    public static final RegistryKey<DamageType> NULL_RUBBLE = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, Geomancy.locate( "null_rubble"));
 
     public static DamageSource of(World world, RegistryKey<DamageType> key) {
         return new DamageSource(world.getRegistryManager().get(RegistryKeys.DAMAGE_TYPE).entryOf(key));

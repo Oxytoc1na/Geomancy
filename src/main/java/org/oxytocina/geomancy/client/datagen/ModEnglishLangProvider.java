@@ -11,6 +11,7 @@ import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.client.event.KeyInputHandler;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.jewelry.GemSlot;
+import org.oxytocina.geomancy.registries.ModItemTags;
 import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.HashMap;
@@ -629,6 +630,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         add("death.attack.geomancy.molten_gold", "%1$s fell into King Midas' bathtub");
         add("death.attack.geomancy.plumbometer", "%1$s died of Hypochondria");
         add("death.attack.geomancy.restricted_action", "%1$s was caught trespassing");
+        add("death.attack.geomancy.null_rubble", "%1$s's head was caved in by nothing");
 
         // Misc
         {
@@ -1570,17 +1572,17 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("geomancy.soulpreview.tooltip.cost","Souls required: %1$f");
 
             // tags
-            add("#geomancy:casting_item","Casting item");
-            add("#geomancy:component_storing","Stores components");
-            add("#geomancy:fits_in_casters","Fits in casters");
-            add("#geomancy:fits_in_soul_bore","Fits in soul bore");
-            add("#geomancy:jewelry_gems","Jewelry gems");
-            add("#geomancy:octangulite","Octangulite");
-            add("#geomancy:spell_storing","Stores spells");
-            add("#geomancy:stellge_curious","Stellge curious");
-            add("#geomancy:variable_storing","Stores variables");
-            add("#geomancy:molten_gold","Molten gold");
-            add("#geomancy:viscous_fluid","Viscous fluid");
+            add("tag.MODID.casting_item","Casting item");
+            add("tag.MODID.component_storing","Stores components");
+            add("tag.MODID.fits_in_casters","Fits in casters");
+            add("tag.MODID.fits_in_soul_bore","Fits in soul bore");
+            add("tag.MODID.jewelry_gems","Jewelry gems");
+            add("tag.MODID.octangulite","Octangulite");
+            add("tag.MODID.spell_storing","Stores spells");
+            add("tag.MODID.stellge_curious","Stellge curious");
+            add("tag.MODID.variable_storing","Stores variables");
+            add("tag.MODID.molten_gold","Molten gold");
+            add("tag.MODID.viscous_fluid","Viscous fluid");
         }
 
         // config

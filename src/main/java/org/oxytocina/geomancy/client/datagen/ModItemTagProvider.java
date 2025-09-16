@@ -28,13 +28,13 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-        getOrCreateTagBuilder(SMELLY_ITEMS)
-            .add(Items.SLIME_BALL)
-            .add(Items.ROTTEN_FLESH)
-            .addOptionalTag(ItemTags.DIRT)
-            .add(Identifier.of(Identifier.DEFAULT_NAMESPACE,"oak_planks"))
-            .forceAddTag(ItemTags.BANNERS)
-            .setReplace(true);
+        //getOrCreateTagBuilder(SMELLY_ITEMS)
+        //    .add(Items.SLIME_BALL)
+        //    .add(Items.ROTTEN_FLESH)
+        //    .addOptionalTag(ItemTags.DIRT)
+        //    .add(Identifier.of(Identifier.DEFAULT_NAMESPACE,"oak_planks"))
+        //    .forceAddTag(ItemTags.BANNERS)
+        //    .setReplace(true);
 
         getOrCreateTagBuilder(ItemTags.MUSIC_DISCS)
                 .add(ModItems.MUSIC_DISC_DIGGY)
@@ -91,7 +91,13 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
 
         // stellge curious
         getOrCreateTagBuilder(STELLGE_CURIOUS).setReplace(false)
-                        .forceAddTag(OCTANGULITE);
+                .forceAddTag(OCTANGULITE)
+                .forceAddTag(FITS_IN_CASTERS)
+                .forceAddTag(FITS_IN_SOUL_BORE)
+                .forceAddTag(SPELL_STORING)
+                .forceAddTag(CASTING_ITEM)
+                .add(ModItems.SPELLCOMPONENT)
+        ;
 
         // spell storing
         getOrCreateTagBuilder(SPELL_STORING).setReplace(false)

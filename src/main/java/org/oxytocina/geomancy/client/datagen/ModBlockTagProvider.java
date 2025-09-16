@@ -79,6 +79,13 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
                         ModBlocks.OCTANGULITE_BRICK_WALL
                 );
 
+        // null blocks
+        getOrCreateTagBuilder(NULL_BLOCKS).setReplace(false)
+                .add(
+                        ModBlocks.NULL_ROCK,
+                        ModBlocks.NULL_RUBBLE
+                );
+
         getOrCreateTagBuilder(SOUL_OAK_LOGS).setReplace(false)
                 .add(ModBlocks.SOUL_OAK_LOG)
                 .add(ModBlocks.SOUL_OAK_WOOD)
@@ -124,6 +131,8 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
         addSoulTag(BlockTags.BEEHIVES,SoulLevel.Many);
         addSoulTag(OCTANGULITE,SoulLevel.Many);
 
+        addSoulTag(NULL_BLOCKS,SoulLevel.RemoveMany);
+
 
     }
     void addSoulBlock(Block block) { addSoulBlock(block,SoulLevel.Normal); }
@@ -133,6 +142,7 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
             case Few -> ADDS_SOULS_FEW;
             case Normal -> ADDS_SOULS_NORMAL;
             case Many -> ADDS_SOULS_MANY;
+            case RemoveMany -> REMOVES_SOULS_MANY;
         }).setReplace(false);
 
         builder_main.add(block);
@@ -144,6 +154,7 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
             case Few -> ADDS_SOULS_FEW;
             case Normal -> ADDS_SOULS_NORMAL;
             case Many -> ADDS_SOULS_MANY;
+            case RemoveMany -> REMOVES_SOULS_MANY;
         }).setReplace(false);
 
         builder_main.forceAddTag(tag);
@@ -152,7 +163,8 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
     enum SoulLevel{
         Few,
         Normal,
-        Many
+        Many,
+        RemoveMany
     }
 
 }

@@ -10,7 +10,6 @@ import org.oxytocina.geomancy.Geomancy;
 
 public class ModItemTags {
 
-    public static final TagKey<Item> SMELLY_ITEMS = register( "smelly_items");
     public static final TagKey<Item> JEWELRY_GEMS = register("jewelry_gems");
     public static final TagKey<Item> STELLGE_CURIOUS = register("stellge_curious");
     public static final TagKey<Item> OCTANGULITE = register("octangulite");
