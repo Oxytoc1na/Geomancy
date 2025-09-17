@@ -2,31 +2,13 @@ package org.oxytocina.geomancy.client.datagen;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.minecraft.block.Block;
-import net.minecraft.client.sound.Sound;
 import net.minecraft.data.DataOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.DataWriter;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.stat.StatType;
-import net.minecraft.text.TextContent;
-import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Map;
@@ -43,8 +25,8 @@ public class ModSoundProvider implements DataProvider {
 
     public void generateSounds(SoundBuilder soundBuilder)
     {
-        for(var key : ModSoundEvents.events.keySet()){
-            var event = ModSoundEvents.events.get(key);
+        for(var key : ModSoundEvents.EVENTS.keySet()){
+            var event = ModSoundEvents.EVENTS.get(key);
             soundBuilder.add(key,event);
         }
     }

@@ -2,7 +2,6 @@ package org.oxytocina.geomancy.sound;
 
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
@@ -10,7 +9,7 @@ import org.oxytocina.geomancy.Geomancy;
 import java.util.HashMap;
 
 public class ModSoundEvents {
-    public static final HashMap<Identifier,ExtraData> events = new HashMap<>();
+    public static final HashMap<Identifier,ExtraData> EVENTS = new HashMap<>();
 
     public static final SoundEvent MUSIC_DISC_DIGGY = register("music_disc.diggy",new ExtraData().prefix("geomancy:records/diggy"));
     public static final SoundEvent USE_HAMMER = register("use_hammer",new ExtraData().count(4).prefix("geomancy:anvil_use"));
@@ -68,7 +67,7 @@ public class ModSoundEvents {
     private static SoundEvent register(Identifier id, Identifier soundId,ExtraData data) {
         SoundEvent res = Registry.register(Registries.SOUND_EVENT, id, SoundEvent.of(soundId));
         data.event = res;
-        events.put(id,data);
+        EVENTS.put(id,data);
         return res;
     }
 

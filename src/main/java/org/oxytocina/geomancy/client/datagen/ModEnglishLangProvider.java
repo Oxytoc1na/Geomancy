@@ -425,6 +425,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
             add("item.MODID.geode_preview",                 "Who knows?");
             add("item.MODID.stone_geode"            ,       "Stone Geode");
+            add("item.MODID.deepslate_geode"        ,       "Deepslate Geode");
             add("item.MODID.component_bag"          ,       "Component Bag");
             add("tooltip.MODID.geodes"              ,       "Can be hammered open...if you're careful.");
             add("item.MODID.explorers_map.ancient_hall",    "Directions home");

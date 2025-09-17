@@ -7,7 +7,7 @@
     "advancement_id": "geomancy:lore/get_lorelog_exodia_4"
   },
   "description": "book.geomancy.guidebook.lore.exodia_4.description",
-  "hide_while_locked": false,
+  "hide_while_locked": true,
   "icon": {
     "item": "geomancy:lorelog_exodia_4"
   },

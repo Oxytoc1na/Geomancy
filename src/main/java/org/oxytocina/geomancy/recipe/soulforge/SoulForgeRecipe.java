@@ -25,7 +25,7 @@ import java.util.List;
 
 public class SoulForgeRecipe extends GatedModRecipe<Inventory> implements ISoulForgeRecipe {
 
-    public static final Identifier UNLOCK_IDENTIFIER = null;
+    public static final Identifier UNLOCK_IDENTIFIER = Geomancy.locate("milestones/milestone_soulforge");
 
     protected final List<NbtIngredient> inputs;
     protected final ItemStack output;

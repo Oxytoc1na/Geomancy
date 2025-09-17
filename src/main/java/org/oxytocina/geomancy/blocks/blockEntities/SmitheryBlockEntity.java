@@ -202,7 +202,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
                     MultiblockCrafter.spawnItemStackAsEntitySplitViaMaxCount(world, Vec3d.ofCenter(pos).add(new Vec3d(0,1,0)), result, count, new Vec3d(0,0.25f,0), false, null);
                 }
             }
-            world.playSound(null, pos, ModSoundEvents.SMITHERY_FINISHED, SoundCategory.NEUTRAL, 1.0F, 0.6F + world.getRandom().nextFloat() * 0.2F);
+            world.playSound(null, pos, ModSoundEvents.SMITHERY_FINISHED, SoundCategory.BLOCKS, 1.0F, 0.6F + world.getRandom().nextFloat() * 0.2F);
 
         }
 
@@ -275,7 +275,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
                 Vec3d particlePos = Vec3d.ofCenter(pos);
                 if(!hasCraftingFinished())
                 {
-                    world.playSound(null, pos, ModSoundEvents.USE_HAMMER, SoundCategory.NEUTRAL, 0.7F, 0.9F + world.getRandom().nextFloat() * 0.2F);
+                    world.playSound(null, pos, ModSoundEvents.USE_HAMMER, SoundCategory.BLOCKS, 0.7F, 0.9F + world.getRandom().nextFloat() * 0.2F);
                     // send progress particle packet
                     ParticleUtil.ParticleData.createSmithingProgress(world,particlePos).send();
                     CamShakeUtil.cause(world,getPos().toCenterPos(),10,0.5f);
@@ -318,7 +318,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
                         setStack(slotID,ItemStack.EMPTY);
                         if(!world.isClient)
                         {
-                            world.playSound(null, pos, SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.NEUTRAL, 2F, 0.5F + world.getRandom().nextFloat() * 0.2F);
+                            world.playSound(null, pos, SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.BLOCKS, 2F, 0.5F + world.getRandom().nextFloat() * 0.2F);
                             CamShakeUtil.cause(world,getPos().toCenterPos(),10,0.5f);
                         }
 
@@ -339,7 +339,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
                         player.getMainHandStack().setCount(0);
                         playFailSound = false;
                         if(!world.isClient)
-                            world.playSound(null, pos, ModSoundEvents.USE_HAMMER_SLIP, SoundCategory.NEUTRAL, 0.9F, 0.9F + world.getRandom().nextFloat() * 0.2F);
+                            world.playSound(null, pos, ModSoundEvents.USE_HAMMER_SLIP, SoundCategory.BLOCKS, 0.9F, 0.9F + world.getRandom().nextFloat() * 0.2F);
 
                         break;
                     // reset progress
@@ -351,7 +351,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
 
                 if(playFailSound && !world.isClient)
                 {
-                    world.playSound(null, pos, ModSoundEvents.USE_HAMMER_FAIL, SoundCategory.NEUTRAL, 0.9F, 0.9F + world.getRandom().nextFloat() * 0.2F);
+                    world.playSound(null, pos, ModSoundEvents.USE_HAMMER_FAIL, SoundCategory.BLOCKS, 0.9F, 0.9F + world.getRandom().nextFloat() * 0.2F);
                     Vec3d particlePos = Vec3d.ofCenter(pos);
                     // send finish particle packet
                     ParticleUtil.ParticleData.createSmithingFailure(world,particlePos).send();

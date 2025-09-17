@@ -270,6 +270,7 @@ public class ModItems {
     // geodes
     public static final Item GEODE_PREVIEW =                register("geode_preview",   new Item(new FabricItemSettings()),new ExtraItemSettings().dontGroupItem());
     public static final GeodeItem STONE_GEODE =             register("stone_geode",     new GeodeItem(new FabricItemSettings(),Geomancy.locate("geodes/stone")));
+    public static final GeodeItem DEEPSLATE_GEODE =         register("deepslate_geode", new GeodeItem(new FabricItemSettings(),Geomancy.locate("geodes/deepslate")));
     public static final ComponentBagItem COMPONENT_BAG =    register("component_bag",   new ComponentBagItem(new FabricItemSettings(),Geomancy.locate("items/component_bag")),ExtraItemSettings.create().group(ExtraItemSettings.Group.Spells));
 
     public static final FoodItem LEAD_APPLE = register("lead_apple",new FoodItem(new FabricItemSettings().food(new FoodComponent.Builder().alwaysEdible().hunger(4).build()),le->{
@@ -307,27 +308,23 @@ public class ModItems {
 
         // Register items to the custom item group.
         ItemGroupEvents.modifyEntriesEvent(MAIN_ITEM_GROUP_KEY).register(itemGroup -> {
-            for(Item i : ExtraItemSettings.ITEMS_IN_MAIN_GROUP){
+            for(Item i : ExtraItemSettings.ITEMS_IN_MAIN_GROUP)
                 itemGroup.add(i);
-            }
         });
 
         ItemGroupEvents.modifyEntriesEvent(LORE_ITEM_GROUP_KEY).register(itemGroup -> {
-            for(Item i : ExtraItemSettings.ITEMS_IN_LORE_GROUP){
+            for(Item i : ExtraItemSettings.ITEMS_IN_LORE_GROUP)
                 itemGroup.add(i);
-            }
         });
 
         ItemGroupEvents.modifyEntriesEvent(JEWELRY_ITEM_GROUP_KEY).register(itemGroup -> {
-            for(Item i : ExtraItemSettings.ITEMS_IN_JEWELRY_GROUP){
+            for(Item i : ExtraItemSettings.ITEMS_IN_JEWELRY_GROUP)
                 itemGroup.add(i);
-            }
         });
 
         ItemGroupEvents.modifyEntriesEvent(SPELLS_ITEM_GROUP_KEY).register(itemGroup -> {
-            for(Item i : ExtraItemSettings.ITEMS_IN_SPELLS_GROUP){
+            for(Item i : ExtraItemSettings.ITEMS_IN_SPELLS_GROUP)
                 itemGroup.add(i);
-            }
         });
 
     }

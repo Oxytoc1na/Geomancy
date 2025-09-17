@@ -4,6 +4,8 @@ import com.google.common.collect.Sets;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
 import net.minecraft.block.Blocks;
+import net.minecraft.enchantment.Enchantments;
+import net.minecraft.enchantment.SilkTouchEnchantment;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
@@ -12,10 +14,8 @@ import net.minecraft.item.map.MapIcon;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.LootTables;
-import net.minecraft.loot.condition.LootCondition;
-import net.minecraft.loot.condition.LootConditionTypes;
-import net.minecraft.loot.condition.RandomChanceLootCondition;
-import net.minecraft.loot.condition.RandomChanceWithLootingLootCondition;
+import net.minecraft.loot.condition.*;
+import net.minecraft.loot.entry.AlternativeEntry;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.function.*;
 import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
@@ -25,6 +25,9 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.Potions;
+import net.minecraft.predicate.NumberRange;
+import net.minecraft.predicate.item.EnchantmentPredicate;
+import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.text.Text;
@@ -54,6 +57,7 @@ public class ModLootTables {
     public static final LootTable DWARVEN_REMNANTS_CHEST;
 
     public static final LootTable GEODE_STONE;
+    public static final LootTable GEODE_DEEPSLATE;
     public static final LootTable COMPONENT_BAG;
 
     public static final LootTable ANCIENT_HALL_SMITHERY_CHEST;
@@ -172,9 +176,9 @@ public class ModLootTables {
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
                             .with(ItemEntry.builder(Items.COAL).weight(100)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
-                            .with(ItemEntry.builder(Items.IRON_ORE).weight(50)
+                            .with(ItemEntry.builder(Items.RAW_IRON).weight(50)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
-                            .with(ItemEntry.builder(Items.GOLD_ORE).weight(50)
+                            .with(ItemEntry.builder(Items.RAW_GOLD).weight(50)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
                             .with(ItemEntry.builder(Items.LAPIS_LAZULI).weight(50)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
@@ -195,6 +199,45 @@ public class ModLootTables {
                             .with(ItemEntry.builder(Items.NETHERITE_SCRAP).weight(10)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 2.0F))))
                             .with(ItemEntry.builder(ModItems.MUSIC_DISC_DIGGY).weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
+                            .with(ItemEntry.builder(Items.NETHER_STAR).weight(1)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 1.0F))))
+                    )
+            );
+        }
+
+        // GEODE_DEEPSLATE
+        {
+            GEODE_DEEPSLATE = register("geodes/deepslate", LootTable.builder()
+                    .pool(LootPool.builder()
+                            .rolls(ConstantLootNumberProvider.create(1))
+                            .with(ItemEntry.builder(Items.COBBLED_DEEPSLATE).weight(100)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
+                            .with(ItemEntry.builder(Items.COAL).weight(100)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
+                            .with(ItemEntry.builder(Items.RAW_IRON).weight(50)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
+                            .with(ItemEntry.builder(Items.RAW_GOLD).weight(50)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
+                            .with(ItemEntry.builder(Items.LAPIS_LAZULI).weight(50)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
+                            .with(ItemEntry.builder(ModItems.TOURMALINE).weight(50)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
+                            .with(ItemEntry.builder(ModItems.AXINITE).weight(50)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
+                            .with(ItemEntry.builder(ModItems.ORTHOCLASE).weight(50)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
+                            .with(ItemEntry.builder(ModItems.PERIDOT).weight(50)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
+                            .with(ItemEntry.builder(Items.REDSTONE).weight(50)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 8.0F))))
+                            .with(ItemEntry.builder(Items.EMERALD).weight(40)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
+                            .with(ItemEntry.builder(Items.DIAMOND).weight(30)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 2.0F))))
+                            .with(ItemEntry.builder(Items.NETHERITE_SCRAP).weight(15)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 2.0F))))
+                            .with(ItemEntry.builder(ModItems.MUSIC_DISC_DIGGY).weight(10)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
                             .with(ItemEntry.builder(Items.NETHER_STAR).weight(1)
                                     .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 1.0F))))
@@ -691,11 +734,18 @@ public class ModLootTables {
 
             // register stone geodes
             if (Blocks.STONE.getLootTableId().equals(id)) {
-                LootPool.Builder poolBuilder = LootPool.builder().with(ItemEntry.builder(ModItems.STONE_GEODE)
+                tableBuilder.pool(LootPool.builder().with(ItemEntry.builder(ModItems.STONE_GEODE)
                         .conditionally(RandomChanceLootCondition.builder(1/300f))
-                );
-                tableBuilder.pool(poolBuilder);
-                return;
+                        .conditionally(InvertedLootCondition.builder(MatchToolLootCondition.builder(ItemPredicate.Builder.create().enchantment(new EnchantmentPredicate(Enchantments.SILK_TOUCH, NumberRange.IntRange.atLeast(1)))))
+                )));return;
+            }
+
+            // register deepslate geodes
+            if (Blocks.DEEPSLATE.getLootTableId().equals(id)) {
+                tableBuilder.pool(LootPool.builder().with(ItemEntry.builder(ModItems.DEEPSLATE_GEODE)
+                        .conditionally(RandomChanceLootCondition.builder(1/300f))
+                        .conditionally(InvertedLootCondition.builder(MatchToolLootCondition.builder(ItemPredicate.Builder.create().enchantment(new EnchantmentPredicate(Enchantments.SILK_TOUCH, NumberRange.IntRange.atLeast(1)))))
+                )));return;
             }
 
             // exodia 1 can be found in digsite chests

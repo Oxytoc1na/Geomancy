@@ -27,6 +27,7 @@ import org.oxytocina.geomancy.items.jewelry.IJewelryItem;
 import org.oxytocina.geomancy.items.tools.SoulBoreItem;
 import org.oxytocina.geomancy.progression.advancement.ModAdvancementCriterion;
 import org.oxytocina.geomancy.recipe.NbtIngredient;
+import org.oxytocina.geomancy.recipe.smithery.SmitheryRecipe;
 import org.oxytocina.geomancy.recipe.smithery.SmithingIngredient;
 import org.oxytocina.geomancy.registries.ModItemTags;
 import org.oxytocina.geomancy.spells.SpellBlock;
@@ -50,10 +51,12 @@ public class ModRecipeProvider extends FabricRecipeProvider {
     public void generate(Consumer<RecipeJsonProvider> exporter) {
         this.exporter=exporter;
 
-        // shaped recipes
-
-        // regular
+        // crafting
         {
+            // guidebook
+            ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC,GUIDE_BOOK).input(Items.BOOK).input(Items.COBBLESTONE)
+                    .criterion(hasItem(Items.COBBLESTONE), conditionsFromItem(Items.COBBLESTONE)).offerTo(exporter);
+
             // iron hammer
             ShapedRecipeJsonBuilder.create(
                             RecipeCategory.TOOLS, IRON_HAMMER, 1)
@@ -262,30 +265,31 @@ public class ModRecipeProvider extends FabricRecipeProvider {
             }
 
             // spell, soul and variable storage
+            final Identifier SoulAdvancementId = Geomancy.locate("milestones/milestone_souls");
             {
                 // spell
                 AddShapedSmitheryRecipe(new String[]{
-                                " t ",
-                                " m ",
-                                " g "}
+                                "t",
+                                "m",
+                                "g"}
                         ,new SPatKey[]{
                                 new SPatKey("t",SmithingIngredient.ofItems(1,1,TITANIUM_INGOT)),
                                 new SPatKey("m",SmithingIngredient.ofItems(1,1,MITHRIL_INGOT)),
                                 new SPatKey("g",SmithingIngredient.ofItems(1,1,Items.GOLD_INGOT)),
                         },
-                        SPELLSTORAGE_SMALL,1,100,12,conditionsFromItem(MITHRIL_INGOT),null);
+                        SPELLSTORAGE_SMALL,1,100,12,conditionsFromItem(MITHRIL_INGOT), SoulAdvancementId);
 
                 // var
                 AddShapedSmitheryRecipe(new String[]{
-                                " t ",
-                                " m ",
-                                " g "}
+                                "t",
+                                "m",
+                                "g"}
                         ,new SPatKey[]{
                                 new SPatKey("t",SmithingIngredient.ofItems(1,1,TITANIUM_INGOT)),
                                 new SPatKey("m",SmithingIngredient.ofItems(1,1,MITHRIL_INGOT)),
                                 new SPatKey("g",SmithingIngredient.ofItems(1,1,Items.DIAMOND)),
                         },
-                        VARSTORAGE_SMALL,1,100,12,conditionsFromItem(MITHRIL_INGOT),null);
+                        VARSTORAGE_SMALL,1,100,12,conditionsFromItem(MITHRIL_INGOT),SoulAdvancementId);
 
                 // soul
                 AddShapedSmitheryRecipe(new String[]{
@@ -297,7 +301,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                                 new SPatKey("i",SmithingIngredient.ofItems(1,1,Items.IRON_INGOT)),
                                 new SPatKey("n",SmithingIngredient.ofItems(1,1,LEAD_INGOT)),
                         },
-                        SOULSTORAGE_SMALL,1,100,12,conditionsFromItem(MITHRIL_INGOT),null);
+                        SOULSTORAGE_SMALL,1,100,12,conditionsFromItem(MITHRIL_INGOT),SoulAdvancementId);
             }
 
             // spellcomponents
@@ -311,7 +315,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                                 new SPatKey("i",SmithingIngredient.ofItems(1,1,Items.IRON_INGOT)),
                                 new SPatKey("t",SmithingIngredient.ofItems(1,1,TITANIUM_NUGGET)),
                         },
-                        SPELLCOMPONENT,1,20,10,ModAdvancementCriterion.conditionsFromAdvancement(Geomancy.locate("octangulite/get_spellcomponent")),null);
+                        SPELLCOMPONENT,1,20,10,ModAdvancementCriterion.conditionsFromAdvancement(Geomancy.locate("octangulite/get_spellcomponent")),SoulAdvancementId);
 
                 // flow control
                 {
@@ -477,7 +481,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                                 new SPatKey("o",SmithingIngredient.ofItems(1,1,1, OCTANGULITE_BLOCK.asItem())),
                                 new SPatKey("r",SmithingIngredient.ofItems(1,1,1,Blocks.REDSTONE_BLOCK)),
                         },
-                        CASTER_HELMET,1,100,50,conditionsFromItem(OCTANGULITE_INGOT),Geomancy.locate("milestones/milestone_souls"));
+                        CASTER_HELMET,1,100,50,conditionsFromItem(OCTANGULITE_INGOT),SoulAdvancementId);
                 AddShapedSmitheryRecipe(new String[]{
                                 " r ",
                                 "obo",
@@ -487,7 +491,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                                 new SPatKey("o",SmithingIngredient.ofItems(1,1,1, OCTANGULITE_BLOCK.asItem())),
                                 new SPatKey("r",SmithingIngredient.ofItems(1,1,1,Blocks.REDSTONE_BLOCK)),
                         },
-                        CASTER_CHESTPLATE,1,100,50,conditionsFromItem(OCTANGULITE_INGOT),Geomancy.locate("milestones/milestone_souls"));
+                        CASTER_CHESTPLATE,1,100,50,conditionsFromItem(OCTANGULITE_INGOT),SoulAdvancementId);
                 AddShapedSmitheryRecipe(new String[]{
                                 " r ",
                                 "obo",
@@ -497,7 +501,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                                 new SPatKey("o",SmithingIngredient.ofItems(1,1,1, OCTANGULITE_BLOCK.asItem())),
                                 new SPatKey("r",SmithingIngredient.ofItems(1,1,1,Blocks.REDSTONE_BLOCK)),
                         },
-                        CASTER_LEGGINGS,1,100,50,conditionsFromItem(OCTANGULITE_INGOT),Geomancy.locate("milestones/milestone_souls"));
+                        CASTER_LEGGINGS,1,100,50,conditionsFromItem(OCTANGULITE_INGOT),SoulAdvancementId);
                 AddShapedSmitheryRecipe(new String[]{
                                 " r ",
                                 "obo",
@@ -507,7 +511,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                                 new SPatKey("o",SmithingIngredient.ofItems(1,1,1, OCTANGULITE_BLOCK.asItem())),
                                 new SPatKey("r",SmithingIngredient.ofItems(1,1,1,Blocks.REDSTONE_BLOCK)),
                         },
-                        CASTER_BOOTS,1,100,50,conditionsFromItem(OCTANGULITE_INGOT),Geomancy.locate("milestones/milestone_souls"));
+                        CASTER_BOOTS,1,100,50,conditionsFromItem(OCTANGULITE_INGOT),SoulAdvancementId);
 
             }
 
@@ -533,7 +537,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                             new SPatKey("l",SmithingIngredient.ofItems(1,1,1,Items.LEATHER)),
                             new SPatKey("c",SmithingIngredient.ofItems(1,1,1,Items.CHEST)),
                     },
-                    NOVICE_GLOVE,1,100,50,conditionsFromItem(OCTANGULITE_INGOT),Geomancy.locate("milestones/milestone_souls"));
+                    NOVICE_GLOVE,1,100,50,conditionsFromItem(OCTANGULITE_INGOT),SoulAdvancementId);
 
             // soul forge
             AddShapedSmitheryRecipe(new String[]{
@@ -546,7 +550,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                             new SPatKey("m",SmithingIngredient.ofItems(1,1,1,MITHRIL_INGOT)),
                             new SPatKey("t",SmithingIngredient.ofItems(1,1,1,TITANIUM_INGOT)),
                     },
-                    SOUL_FORGE,1,100,50,conditionsFromItem(SPELLMAKER),Geomancy.locate("milestones/souls"));
+                    SOUL_FORGE,1,100,50,conditionsFromItem(SPELLMAKER),SoulAdvancementId);
 
             // pedestal
             AddShapedSmitheryRecipe(new String[]{
@@ -558,7 +562,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                             new SPatKey("m",SmithingIngredient.ofItems(1,1,1,MITHRIL_INGOT)),
                             new SPatKey("t",SmithingIngredient.ofItems(1,1,1,TITANIUM_INGOT)),
                     },
-                    PEDESTAL,1,30,30,conditionsFromItem(SPELLMAKER),Geomancy.locate("milestones/souls"));
+                    PEDESTAL,1,30,30,conditionsFromItem(SPELLMAKER),SoulAdvancementId);
 
         }
 
