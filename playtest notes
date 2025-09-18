@@ -3,5 +3,27 @@ o exodia lore entries arent hidden when locked
 x spell component, spellcradle, regular attractor, varpot recipe isnt locked behind souls
 ? soul forge recipes are all visible without progression
 x smithery sound is in category friendly creatures???
+- war plans 1 goes off page
+- change ancient hall smithery loot (mithril hammer)
+- opening storage items still uses off hand items
+- add storage item open and close sounds
+- madness goes into the negatives
+- digsite needs more pieces!!!
+-- rare intermission rooms in the tunnels, too!
+- "Format Error" in expedition lore 1, page 2
+- artifact equip lore goes off screen
+- spellmaker model is fucked
+- soulforge milestone is untranslated
+- exodia component recipes arent hidden
+- sort available components in the spellmaker
+- used components dont get properly updated clientside
+- spellmaker grid renders ontop of component tooltips
+- make basic spell components unlocked upon finding any spell component
+-- caster entity
+-- caster pos. eye pos. and dir.
+- make component pouches not autograb empty components
+- smithery recipe recognition sucks
+-- cant craft attractor because the lead ring recipe is part of it and matches
+- no titanium page in discovery
 
 - add deepslate geodes?
