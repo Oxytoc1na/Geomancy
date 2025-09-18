@@ -306,6 +306,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
             // spellcomponents
             {
+                Identifier baseCompAdvancmentID = Geomancy.locate("octangulite/get_spellcomponent");
                 // base
                 AddShapedSmitheryRecipe(new String[]{
                                 " t ",
@@ -329,20 +330,20 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 // providers
                 {
                     Item baseIngot = MOLYBDENUM_INGOT;
-                    AddGenericSpellcomponentRecipe(SpellBlocks.CONST_BOOLEAN        ,Items.LEVER                ,baseIngot);
-                    AddGenericSpellcomponentRecipe(SpellBlocks.CONST_NUM            ,Items.COMPARATOR           ,baseIngot);
-                    AddGenericSpellcomponentRecipe(SpellBlocks.CONST_TEXT           ,Items.OAK_SIGN             ,baseIngot);
-                    AddGenericSpellcomponentRecipe(SpellBlocks.ENTITY_CASTER        ,Items.DIRT                 ,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.CONST_BOOLEAN        ,Items.LEVER                ,baseIngot,baseCompAdvancmentID);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.CONST_NUM            ,Items.COMPARATOR           ,baseIngot,baseCompAdvancmentID);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.CONST_TEXT           ,Items.OAK_SIGN             ,baseIngot,baseCompAdvancmentID);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.ENTITY_CASTER        ,Items.DIRT                 ,baseIngot,baseCompAdvancmentID);
                     AddGenericSpellcomponentRecipe(SpellBlocks.ENTITY_DELEGATE      ,Items.SNOW_BLOCK           ,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.CASTER_SLOT          ,Items.CHEST                ,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.BLOCKPOS_CASTER      ,Items.STONE                ,baseIngot);
-                    AddGenericSpellcomponentRecipe(SpellBlocks.POS_CASTER           ,Items.OAK_PRESSURE_PLATE   ,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.POS_CASTER           ,Items.OAK_PRESSURE_PLATE   ,baseIngot,baseCompAdvancmentID);
                     AddGenericSpellcomponentRecipe(SpellBlocks.POS_MUZZLE           ,Items.DISPENSER            ,baseIngot);
-                    AddGenericSpellcomponentRecipe(SpellBlocks.EYEPOS_CASTER        ,Items.SPIDER_EYE           ,baseIngot);
-                    AddGenericSpellcomponentRecipe(SpellBlocks.DIR_CASTER           ,Items.ARROW                ,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.EYEPOS_CASTER        ,Items.SPIDER_EYE           ,baseIngot,baseCompAdvancmentID);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.DIR_CASTER           ,Items.ARROW                ,baseIngot,baseCompAdvancmentID);
                     AddGenericSpellcomponentRecipe(SpellBlocks.GET_WEATHER          ,Items.LIGHTNING_ROD        ,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.GET_TIME             ,Items.CLOCK                ,baseIngot);
-                    AddGenericSpellcomponentRecipe(SpellBlocks.CONST_VECTOR         ,Items.HOPPER               ,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.CONST_VECTOR         ,Items.HOPPER               ,baseIngot,baseCompAdvancmentID);
                     AddGenericSpellcomponentRecipe(SpellBlocks.CONSUMED_SOUL        ,Items.SOUL_CAMPFIRE        ,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.EMPTY_LIST           ,Items.BOOK                 ,baseIngot);
                 }
@@ -427,8 +428,8 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 // reference
                 {
                     Item baseIngot = Items.COPPER_INGOT;
-                    AddGenericSpellcomponentRecipe(SpellBlocks.REF_OUTPUT,Items.STICKY_PISTON,baseIngot);
-                    AddGenericSpellcomponentRecipe(SpellBlocks.REF_INPUT,Items.PISTON,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.REF_OUTPUT,Items.STICKY_PISTON,baseIngot,baseCompAdvancmentID);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.REF_INPUT,Items.PISTON,baseIngot,baseCompAdvancmentID);
                     AddGenericSpellcomponentRecipe(SpellBlocks.ACTION,Items.REDSTONE,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.FUNCTION,Items.REDSTONE_BLOCK,baseIngot);
 
@@ -437,7 +438,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                             SmithingIngredient.ofItems(1,1,baseIngot),
                             SmithingIngredient.ofItems(1,1,Items.REDSTONE_BLOCK),
                             SmithingIngredient.ofItems(1,1,Items.REDSTONE_BLOCK),
-                    }).toList(),SpellBlocks.FUNCTION2,true);
+                    }).toList(),SpellBlocks.FUNCTION2,true,ModAdvancementProvider.getComponentID(SpellBlocks.FUNCTION2.identifier.getPath()));
 
                     AddGenericSpellcomponentRecipe(SpellBlocks.PROVIDER,Items.DROPPER,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.VAR_OUTPUT,Items.BOOK,baseIngot);
@@ -765,7 +766,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         NbtIngredient.ofItems(RAW_OCTANGULITE_BLOCK),
                         NbtIngredient.ofItems(10,SOUL_OAK_LOG)
                 ), SpellBlocks.EXODIA_1.getItemStack(),1,500,1f,1f,"",
-                        ModAdvancementCriterion.conditionsFromAdvancement(Geomancy.locate("lore/get_lorelog_exodia_1")),null,"exodia_1");
+                        ModAdvancementCriterion.conditionsFromAdvancement(Geomancy.locate("lore/get_lorelog_exodia_1")),Geomancy.locate("lore/get_lorelog_exodia_1"),"exodia_1");
 
                 // 2 : calculation
                 AddSimpleSoulForgeRecipe(List.of(
@@ -773,7 +774,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                                 NbtIngredient.ofItems(5,Items.COMPARATOR),
                                 NbtIngredient.ofItems(5,Items.REDSTONE_BLOCK)
                         ), SpellBlocks.EXODIA_2.getItemStack(),1,500,1f,1f,"",
-                        ModAdvancementCriterion.conditionsFromAdvancement(Geomancy.locate("lore/get_lorelog_exodia_2")),null,"exodia_2");
+                        ModAdvancementCriterion.conditionsFromAdvancement(Geomancy.locate("lore/get_lorelog_exodia_2")),Geomancy.locate("lore/get_lorelog_exodia_2"),"exodia_2");
 
                 // 3 : presence
                 AddSimpleSoulForgeRecipe(List.of(
@@ -782,7 +783,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                                 NbtIngredient.ofItems(Items.SCULK_SENSOR),
                                 NbtIngredient.ofItems(Items.SCULK_SHRIEKER)
                         ), SpellBlocks.EXODIA_3.getItemStack(),1,500,1f,1f,"",
-                        ModAdvancementCriterion.conditionsFromAdvancement(Geomancy.locate("lore/get_lorelog_exodia_3")),null,"exodia_3");
+                        ModAdvancementCriterion.conditionsFromAdvancement(Geomancy.locate("lore/get_lorelog_exodia_3")),Geomancy.locate("lore/get_lorelog_exodia_3"),"exodia_3");
 
                 // 4 : curiosity
                 AddSimpleSoulForgeRecipe(List.of(
@@ -791,7 +792,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                                 NbtIngredient.ofItems(4,Items.SHULKER_SHELL),
                                 NbtIngredient.ofItems(16,Items.PURPUR_BLOCK)
                         ), SpellBlocks.EXODIA_4.getItemStack(),1,500,1f,1f,"",
-                        ModAdvancementCriterion.conditionsFromAdvancement(Geomancy.locate("lore/get_lorelog_exodia_4")),null,"exodia_4");
+                        ModAdvancementCriterion.conditionsFromAdvancement(Geomancy.locate("lore/get_lorelog_exodia_4")),Geomancy.locate("lore/get_lorelog_exodia_4"),"exodia_4");
             }
 
         }
@@ -1031,13 +1032,17 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
     private final ArrayList<SpellBlock> spellComponentRecipesBuilt = new ArrayList<>();
     private void AddGenericSpellcomponentRecipe(SpellBlock comp, ItemConvertible ingredient,ItemConvertible baseIngot){
+        AddGenericSpellcomponentRecipe(comp,ingredient,baseIngot,ModAdvancementProvider.getComponentID(comp.identifier.getPath()));
+    }
+
+    private void AddGenericSpellcomponentRecipe(SpellBlock comp, ItemConvertible ingredient,ItemConvertible baseIngot,Identifier requiredAdvancement){
         AddSpellcomponentRecipe(Arrays.stream(new SmithingIngredient[] {
                 SmithingIngredient.ofItems(1,1,SPELLCOMPONENT),
                 SmithingIngredient.ofItems(1,1,baseIngot),
                 SmithingIngredient.ofItems(1,1,ingredient),
-        }).toList(),comp,true);
+        }).toList(),comp,true,requiredAdvancement);
     }
-    private void AddSpellcomponentRecipe(List<SmithingIngredient> input, SpellBlock outputComponent, boolean shapeless){
+    private void AddSpellcomponentRecipe(List<SmithingIngredient> input, SpellBlock outputComponent, boolean shapeless,Identifier requiredAdvancement){
 
         var conditions = conditionsFromItem(SPELLCOMPONENT);
 
@@ -1054,7 +1059,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 outputComponent.recipeDifficulty,
                 shapeless,
                 RecipeCategory.MISC,
-                ModAdvancementProvider.getComponentID(outputComponent.identifier.getPath()))
+                requiredAdvancement)
                 .criterion("gotten_base",conditions)
                 .offerTo(exporter,new Identifier(Geomancy.MOD_ID,"spellcomponent_"+outputComponent.identifier.getPath()));
 

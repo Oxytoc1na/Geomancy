@@ -15,11 +15,15 @@ public class SpellmakerRefreshS2CPacket {
     public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler,
                                PacketByteBuf buf, PacketSender responseSender) {
         var pos = buf.readBlockPos();
-        var entity = client.world!=null?client.world.getBlockEntity(pos):null;
-        if(entity instanceof SpellmakerBlockEntity){
-            if(SpellmakerScreenHandler.current!=null){
-                SpellmakerScreenHandler.current.refresh();
+        client.execute(()-> {
+            if(client.world == null) return;
+            var entity = client.world.getBlockEntity(pos);
+            if (entity instanceof SpellmakerBlockEntity) {
+                if (SpellmakerScreenHandler.current != null) {
+                    SpellmakerScreenHandler.current.refresh();
+                }
             }
-        }
+        });
+
     }
 }

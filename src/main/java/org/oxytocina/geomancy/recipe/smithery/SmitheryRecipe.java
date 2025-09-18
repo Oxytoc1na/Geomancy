@@ -68,6 +68,7 @@ public class SmitheryRecipe extends GatedModRecipe<Inventory> implements Smither
             // shaped logic
 
             ArrayList<Integer> shapelessExcludedSlots = new ArrayList<>();
+            ArrayList<Integer> usedSlots = new ArrayList<>();
 
             // partial shaped logic
             for(CountIngredient ing : inputs)
@@ -81,6 +82,7 @@ public class SmitheryRecipe extends GatedModRecipe<Inventory> implements Smither
                 if(!slot.isEmpty() && ing.test(slot)){
                     if(slot.getCount() >= ing.count){
                         ingredientAvailable = true;
+                        usedSlots.add(ing.slot);
                     }
                 }
                 if(!ingredientAvailable) return false;
@@ -101,12 +103,19 @@ public class SmitheryRecipe extends GatedModRecipe<Inventory> implements Smither
                         countLeft-=removed;
                         if(countLeft<=0){
                             ingredientAvailable = true;
+                            usedSlots.add(i);
                             break;
                         }
 
                     }
                 }
                 if(!ingredientAvailable) return false;
+            }
+
+            // check if no unnecessary ingredients are present
+            for (int i = 0; i < inv.size(); i++) {
+                if(usedSlots.contains(i)) continue;
+                if(!inv.getStack(i).isEmpty()) return false;
             }
         }
 

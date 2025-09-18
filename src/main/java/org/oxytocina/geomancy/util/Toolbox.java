@@ -280,6 +280,9 @@ public class Toolbox {
         }
     }
 
+    public static void playSound(SoundEvent event, World world, BlockPos pos, SoundCategory cat, float volume) {
+        playSound(event,world,pos,cat,volume,randomPitch());
+    }
     public static void playSound(SoundEvent event, World world, BlockPos pos, SoundCategory cat, float volume, float pitch){
         if(event==null) return;
         if(!(world instanceof ServerWorld)){

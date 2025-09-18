@@ -35,8 +35,7 @@ import org.oxytocina.geomancy.registries.ModItemTags;
 import org.oxytocina.geomancy.spells.SpellBlock;
 import org.oxytocina.geomancy.spells.SpellBlocks;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.*;
 
 public class SpellmakerBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory, ImplementedInventory {
 
@@ -145,7 +144,13 @@ public class SpellmakerBlockEntity extends BlockEntity implements ExtendedScreen
 
     public Inventory getComponentItems(Inventory inventory){
         var comps = getComponentAmountsIn(inventory);
-        return componentMapToInventory(comps);
+        // sort components
+        List<SpellBlock> keys = new ArrayList<>(comps.keySet());
+        keys.sort(Comparator.comparingInt(a -> SpellBlocks.functionOrder.get(a.identifier)));
+        var compsSorted = new LinkedHashMap<SpellBlock,Integer>();
+        for(var block : keys)
+            compsSorted.put(block,comps.get(block));
+        return componentMapToInventory(compsSorted);
     }
 
     public Inventory getComponentItemsFromPlayer(PlayerEntity player){

@@ -584,6 +584,7 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         renderBackground(context);//,mouseX,mouseY,delta);
+        handler.appearanceSlot.setEnabled(!inspecting);
         super.render(context, mouseX, mouseY, delta);
 
         // render cursor stack for new components...
@@ -641,8 +642,8 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
             }
         }
 
-        drawMouseoverTooltip(context,mouseX,mouseY);
         handler.render(context, mouseX, mouseY, delta);
+        drawMouseoverTooltip(context,mouseX,mouseY);
     }
 
     public void setComponentInspected(boolean inspected){

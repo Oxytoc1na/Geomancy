@@ -45,6 +45,7 @@ public class MadnessUtil {
         if(player==null) return false;
         PlayerData data = PlayerData.from(player);
         float old = data.madness;
+        if(amount<0) amount=0;
         if(old==amount) return false;
         data.madness = amount;
         return true;

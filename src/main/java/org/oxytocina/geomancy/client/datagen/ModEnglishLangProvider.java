@@ -702,6 +702,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
             addAdvancement(":milestones/milestone_smithery","The Craft of the Ancients","Obtain the smithery");
             addAdvancement(":milestones/milestone_souls","Soulcraft","Learn of the true nature of octangulite");
+            addAdvancement(":milestones/milestone_soulforge","Forging with soul","Discover a new way of smithing");
 
             addAdvancement(":location/ancient_hall","Ancient","Discover the once prosperous remains of the ancients");
             addAdvancement(":location/octangula","Geometric","Discover the vessel of something else");
@@ -976,11 +977,12 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                         \\
                         Several large floating vessels of metal of unknown origin have landed near the Swamp of Shorg.
                         \\
-                        Their captains are rigid yet in motion. They levitate akin to their vessels. Their forms are foreign to all other living beings.
-                        \\
-                        Their motives are as of yet unknown.
+                        Their captains are rigid yet in motion. They levitate akin to their vessels.
                         """);
                     add(getS("gb:lr")+"war_1.2.text", """
+                        Their forms are foreign to all other living beings.
+                        \\
+                        Their motives are as of yet unknown.
                         """);
                     add(getS("gb:lr")+"war_1.3.text", """
                         """);

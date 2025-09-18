@@ -27,6 +27,7 @@ public interface IStorageItem {
     void setInventory(ItemStack stack, NbtCompound nbt);
     void setStack(ItemStack output, int i, ItemStack stack);
     TagKey<Item> getStorableTag();
+    default boolean autocollectsStack(ItemStack stack) {return true;}
     boolean autocollects();
     default void markDirty(ItemStack stack){
         saveInventoryToNbt(stack);
@@ -34,6 +35,7 @@ public interface IStorageItem {
 
     default void tryCollect(ItemStack storage, ItemEntity entity, PlayerEntity player, ItemStack stack){
         if(!stack.isIn(getStorableTag())) return;
+        if(!autocollectsStack(stack)) return;
 
         var inv = getInventory(storage);
 

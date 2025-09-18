@@ -72,7 +72,7 @@ public class SpellmakerScreenHandler extends ScreenHandler {
     public SpellmakerScreen screen;
 
     private boolean dragging = false;
-    private boolean dragEnabled = false; // if clicked inide the field, allow dragging
+    private boolean dragEnabled = false; // if clicked inside the field, allow dragging
     private double draggedX = 0;
     private double draggedY = 0;
 
@@ -150,8 +150,9 @@ public class SpellmakerScreenHandler extends ScreenHandler {
         rebuild();
     }
 
+    @Environment(EnvType.CLIENT)
     public void refresh(){
-
+        updateAvailableComponents();
     }
 
     private ItemStack prevOutput = ItemStack.EMPTY;

@@ -21,6 +21,7 @@ import org.oxytocina.geomancy.blocks.blockEntities.ModBlockEntities;
 import org.oxytocina.geomancy.client.screen.ModScreenHandlers;
 import org.oxytocina.geomancy.commands.ModCommands;
 import org.oxytocina.geomancy.compat.GeomancyIntegrationPacks;
+import org.oxytocina.geomancy.compat.trinkets.ModTrinketsCompat;
 import org.oxytocina.geomancy.effects.ModStatusEffects;
 import org.oxytocina.geomancy.enchantments.ModEnchantments;
 import org.oxytocina.geomancy.entity.ModEntityAttributes;
@@ -155,6 +156,7 @@ public class Geomancy implements ModInitializer {
             ModTrunkPlacerTypes.register();
             ModFoliagePlacerTypes.register();
             ModDimensions.register();
+            ModTrinketsCompat.register();
 
             ModDispenserBehaviors.register();
             ModCauldronBehaviors.register();

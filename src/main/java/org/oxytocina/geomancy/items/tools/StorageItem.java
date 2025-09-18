@@ -17,6 +17,8 @@ import net.minecraft.registry.tag.TagKey;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
@@ -27,26 +29,40 @@ import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.client.screen.StorageItemScreenHandler;
 import org.oxytocina.geomancy.inventories.ImplementedInventory;
 import org.oxytocina.geomancy.items.*;
+import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 public class StorageItem extends Item implements IStorageItem, ExtendedScreenHandlerFactory {
 
     public int storageSize = 0;
     public final TagKey<Item> storableTag;
     public final boolean showContentsInTooltip;
+    public final Function<ItemStack,Boolean> collectablePredicate;
 
     public StorageItem(Settings settings, int storageSize, TagKey<Item> storableTag, boolean showContentsInTooltip) {
+        this(settings,storageSize,storableTag,showContentsInTooltip,a->true);
+    }
+
+
+    public StorageItem(Settings settings, int storageSize, TagKey<Item> storableTag, boolean showContentsInTooltip, Function<ItemStack,Boolean> collectablePredicate) {
         super(settings);
         this.storageSize = storageSize;
         this.storableTag=storableTag;
         this.showContentsInTooltip=showContentsInTooltip;
+        this.collectablePredicate=collectablePredicate;
     }
 
     @Override
     public TagKey<Item> getStorableTag() {
         return storableTag;
+    }
+
+    @Override
+    public boolean autocollectsStack(ItemStack stack) {
+        return collectablePredicate.apply(stack);
     }
 
     @Override
@@ -60,8 +76,9 @@ public class StorageItem extends Item implements IStorageItem, ExtendedScreenHan
             if(user instanceof ServerPlayerEntity sp){
                 var stack = user.getStackInHand(hand);
                 sp.openHandledScreen((StorageItem) stack.getItem());
+                Toolbox.playSound(SoundEvents.ITEM_BUNDLE_DROP_CONTENTS,world,user.getBlockPos(), SoundCategory.PLAYERS,0.5f,Toolbox.randomPitch());
             }
-            return TypedActionResult.consume(user.getStackInHand(hand));
+            return TypedActionResult.success(user.getStackInHand(hand),true);
         }
         return TypedActionResult.pass(user.getStackInHand(hand));
     }
