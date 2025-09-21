@@ -20,6 +20,7 @@ import net.minecraft.world.gen.chunk.Blender;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
 import net.minecraft.world.gen.noise.NoiseConfig;
+import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.util.GenUtil;
 import org.oxytocina.geomancy.util.SimplexNoise;
 import org.oxytocina.geomancy.util.Toolbox;
@@ -101,7 +102,7 @@ public class NullChunkGenerator extends ChunkGenerator {
         int genX, genY, genZ;
         final float thresholdNoiseScale = 0.004f;
         final float padding = 0.05f; // padding in percent from bottom and top
-        BlockState core = Blocks.STONE.getDefaultState();
+        BlockState core = ModBlocks.NULL_ROCK.getDefaultState();
         for(int ix = 0; ix < 16; ++ix) {
             genX = ((startX+ix)/2)*2;
             for(int iy = 0; iy < height; ++iy) {
@@ -123,7 +124,7 @@ public class NullChunkGenerator extends ChunkGenerator {
 
         // generate maze
         final float typeNoiseScale = 0.00742f;
-        final float typeMazeThreshold = 0.0f;
+        final float typeMazeThreshold = 0.1f;
         final float typeNoise =
                 SimplexNoise.noiseNormalized(startX*typeNoiseScale,0,startZ*typeNoiseScale)
                 ;

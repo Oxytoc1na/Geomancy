@@ -148,6 +148,9 @@ TODO structures
 -- room that asks you to activate buttons behind unbreakable glass
 --- recommended: "ray activator" spell (raycast march until activate triggers)
 -- "precompiled" casting items inside autocasters
+-- proximity activated traps
+--- autocaster proximity sensor spell
+--- when triggered, cast break below players exact position
 
 TODO TESTING
 -- disabling player var loading

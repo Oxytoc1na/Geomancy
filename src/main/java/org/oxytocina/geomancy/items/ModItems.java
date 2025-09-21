@@ -331,27 +331,23 @@ public class ModItems {
 
     public static final RegistryKey<ItemGroup> MAIN_ITEM_GROUP_KEY = RegistryKey.of(Registries.ITEM_GROUP.getKey(), new Identifier(Geomancy.MOD_ID, "main_item_group"));
     public static final ItemGroup MAIN_ITEM_GROUP = FabricItemGroup.builder()
-            .icon(ModItems.GUIDE_BOOK::getDefaultStack)
-            .displayName(Text.translatable("itemGroup."+Geomancy.MOD_ID+".main"))
-            .build();
+            .icon(ModItems.IRON_HAMMER::getDefaultStack)
+            .displayName(Text.translatable("itemGroup."+Geomancy.MOD_ID+".main")).build();
 
     public static final RegistryKey<ItemGroup> JEWELRY_ITEM_GROUP_KEY = RegistryKey.of(Registries.ITEM_GROUP.getKey(), new Identifier(Geomancy.MOD_ID, "jewelry_item_group"));
     public static final ItemGroup JEWELRY_ITEM_GROUP = FabricItemGroup.builder()
             .icon(() -> IRON_RING.getDefaultStack()/*IRON_RING.addSlot(new ItemStack(ModItems.IRON_RING),new GemSlot(Items.DIAMOND,1))*/)
-            .displayName(Text.translatable("itemGroup."+Geomancy.MOD_ID+".jewelry"))
-            .build();
+            .displayName(Text.translatable("itemGroup."+Geomancy.MOD_ID+".jewelry")).build();
 
     public static final RegistryKey<ItemGroup> SPELLS_ITEM_GROUP_KEY = RegistryKey.of(Registries.ITEM_GROUP.getKey(), new Identifier(Geomancy.MOD_ID, "spells_item_group"));
     public static final ItemGroup SPELLS_ITEM_GROUP = FabricItemGroup.builder()
             .icon(JOURNEY_GLOVE::getDefaultStack)
-            .displayName(Text.translatable("itemGroup."+Geomancy.MOD_ID+".spells"))
-            .build();
+            .displayName(Text.translatable("itemGroup."+Geomancy.MOD_ID+".spells")).build();
 
     public static final RegistryKey<ItemGroup> LORE_ITEM_GROUP_KEY = RegistryKey.of(Registries.ITEM_GROUP.getKey(), new Identifier(Geomancy.MOD_ID, "lore_item_group"));
     public static final ItemGroup LORE_ITEM_GROUP = FabricItemGroup.builder()
             .icon(() -> LORE_LOG_EXODIA_1.getDefaultStack())
-            .displayName(Text.translatable("itemGroup."+Geomancy.MOD_ID+".lore"))
-            .build();
+            .displayName(Text.translatable("itemGroup."+Geomancy.MOD_ID+".lore")).build();
 
     public static <T extends Item> T register(String id,T item) {
         return register(id,item,new ExtraItemSettings());

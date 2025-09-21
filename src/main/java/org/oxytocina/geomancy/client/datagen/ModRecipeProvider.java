@@ -6,6 +6,7 @@ import net.minecraft.advancement.AdvancementCriterion;
 import net.minecraft.advancement.criterion.CriterionConditions;
 import net.minecraft.block.*;
 import net.minecraft.data.server.recipe.*;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
@@ -472,47 +473,6 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 }
                 Geomancy.logInfo("Spellblocks:\n"+builtSpellComps);
 
-                // casting armor
-                AddShapedSmitheryRecipe(new String[]{
-                                " r ",
-                                "obo",
-                                " o "}
-                        ,new SPatKey[]{
-                                new SPatKey("b",SmithingIngredient.ofItems(1,1,1,OCTANGULITE_HELMET)),
-                                new SPatKey("o",SmithingIngredient.ofItems(1,1,1, OCTANGULITE_BLOCK.asItem())),
-                                new SPatKey("r",SmithingIngredient.ofItems(1,1,1,Blocks.REDSTONE_BLOCK)),
-                        },
-                        CASTER_HELMET,1,100,50,conditionsFromItem(OCTANGULITE_INGOT),SoulAdvancementId);
-                AddShapedSmitheryRecipe(new String[]{
-                                " r ",
-                                "obo",
-                                " o "}
-                        ,new SPatKey[]{
-                                new SPatKey("b",SmithingIngredient.ofItems(1,1,1,OCTANGULITE_CHESTPLATE)),
-                                new SPatKey("o",SmithingIngredient.ofItems(1,1,1, OCTANGULITE_BLOCK.asItem())),
-                                new SPatKey("r",SmithingIngredient.ofItems(1,1,1,Blocks.REDSTONE_BLOCK)),
-                        },
-                        CASTER_CHESTPLATE,1,100,50,conditionsFromItem(OCTANGULITE_INGOT),SoulAdvancementId);
-                AddShapedSmitheryRecipe(new String[]{
-                                " r ",
-                                "obo",
-                                " o "}
-                        ,new SPatKey[]{
-                                new SPatKey("b",SmithingIngredient.ofItems(1,1,1,OCTANGULITE_LEGGINGS)),
-                                new SPatKey("o",SmithingIngredient.ofItems(1,1,1, OCTANGULITE_BLOCK.asItem())),
-                                new SPatKey("r",SmithingIngredient.ofItems(1,1,1,Blocks.REDSTONE_BLOCK)),
-                        },
-                        CASTER_LEGGINGS,1,100,50,conditionsFromItem(OCTANGULITE_INGOT),SoulAdvancementId);
-                AddShapedSmitheryRecipe(new String[]{
-                                " r ",
-                                "obo",
-                                " o "}
-                        ,new SPatKey[]{
-                                new SPatKey("b",SmithingIngredient.ofItems(1,1,1,OCTANGULITE_BOOTS)),
-                                new SPatKey("o",SmithingIngredient.ofItems(1,1,1, OCTANGULITE_BLOCK.asItem())),
-                                new SPatKey("r",SmithingIngredient.ofItems(1,1,1,Blocks.REDSTONE_BLOCK)),
-                        },
-                        CASTER_BOOTS,1,100,50,conditionsFromItem(OCTANGULITE_INGOT),SoulAdvancementId);
 
             }
 
@@ -795,6 +755,35 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         ModAdvancementCriterion.conditionsFromAdvancement(Geomancy.locate("lore/get_lorelog_exodia_4")),Geomancy.locate("lore/get_lorelog_exodia_4"),"exodia_4");
             }
 
+            // casting armor
+            {
+                AddSimpleSoulForgeRecipe(List.of(
+                        NbtIngredient.ofItems(OCTANGULITE_HELMET),
+                        NbtIngredient.ofItems(3,OCTANGULITE_BLOCK),
+                        NbtIngredient.ofItems(Blocks.TARGET)
+                ),CASTER_HELMET,1,500,1,1,"get",
+                        conditionsFromItem(OCTANGULITE_HELMET),null);
+                var tempStack = Items.ENCHANTED_BOOK.getDefaultStack();
+                tempStack.addEnchantment(Enchantments.THORNS,3);
+                AddSimpleSoulForgeRecipe(List.of(
+                                NbtIngredient.ofItems(OCTANGULITE_CHESTPLATE),
+                                NbtIngredient.ofItems(3,OCTANGULITE_BLOCK),
+                                NbtIngredient.ofItems(1,tempStack.getNbt(),tempStack.getItem())
+                        ),CASTER_CHESTPLATE,1,500,1,1,"get",
+                        conditionsFromItem(OCTANGULITE_CHESTPLATE),null);
+                AddSimpleSoulForgeRecipe(List.of(
+                                NbtIngredient.ofItems(OCTANGULITE_LEGGINGS),
+                                NbtIngredient.ofItems(3,OCTANGULITE_BLOCK),
+                                NbtIngredient.ofItems(Blocks.SLIME_BLOCK)
+                        ),CASTER_LEGGINGS,1,500,1,1,"get",
+                        conditionsFromItem(OCTANGULITE_LEGGINGS),null);
+                AddSimpleSoulForgeRecipe(List.of(
+                                NbtIngredient.ofItems(OCTANGULITE_BOOTS),
+                                NbtIngredient.ofItems(3,OCTANGULITE_BLOCK),
+                                NbtIngredient.ofItems(Items.GOAT_HORN)
+                        ),CASTER_BOOTS,1,500,1,1,"get",
+                        conditionsFromItem(OCTANGULITE_BOOTS),null);
+            }
         }
 
         this.exporter=null;
