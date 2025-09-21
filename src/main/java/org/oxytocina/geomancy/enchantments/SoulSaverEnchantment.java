@@ -7,10 +7,12 @@ import net.minecraft.item.ItemStack;
 import org.oxytocina.geomancy.items.ISoulStoringItem;
 import org.oxytocina.geomancy.items.SpellStoringItem;
 
-public class SoulSaverEnchantment extends Enchantment {
+public class SoulSaverEnchantment extends ModEnchantment {
 
     protected SoulSaverEnchantment() {
-        super(Rarity.RARE, EnchantmentTarget.WEARABLE, new EquipmentSlot[] {});
+        super(Rarity.RARE, s->s.getItem() instanceof SpellStoringItem
+                || s.getItem() instanceof ISoulStoringItem
+        );
     }
 
     @Override
@@ -21,13 +23,5 @@ public class SoulSaverEnchantment extends Enchantment {
     @Override
     public int getMaxLevel() {
         return 5;
-    }
-
-    @Override
-    public boolean isAcceptableItem(ItemStack stack) {
-        return
-                stack.getItem() instanceof SpellStoringItem
-                || stack.getItem() instanceof ISoulStoringItem
-                ;
     }
 }

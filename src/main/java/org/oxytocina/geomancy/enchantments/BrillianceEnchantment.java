@@ -6,10 +6,10 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import org.oxytocina.geomancy.items.jewelry.JewelryItem;
 
-public class BrillianceEnchantment extends Enchantment {
+public class BrillianceEnchantment extends ModEnchantment {
 
     protected BrillianceEnchantment() {
-        super(Rarity.RARE, EnchantmentTarget.WEARABLE, new EquipmentSlot[] {});
+        super(Rarity.RARE, s->s.getItem() instanceof JewelryItem);
     }
 
     @Override
@@ -20,10 +20,5 @@ public class BrillianceEnchantment extends Enchantment {
     @Override
     public int getMaxLevel() {
         return 5;
-    }
-
-    @Override
-    public boolean isAcceptableItem(ItemStack stack) {
-        return stack.getItem() instanceof JewelryItem;
     }
 }

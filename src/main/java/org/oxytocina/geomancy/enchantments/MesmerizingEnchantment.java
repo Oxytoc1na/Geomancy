@@ -6,10 +6,10 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import org.oxytocina.geomancy.items.ISoulStoringItem;
 
-public class MesmerizingEnchantment extends Enchantment {
+public class MesmerizingEnchantment extends ModEnchantment {
 
     protected MesmerizingEnchantment() {
-        super(Rarity.RARE, EnchantmentTarget.WEARABLE, new EquipmentSlot[] {});
+        super(Rarity.RARE, s->s.getItem() instanceof ISoulStoringItem);
     }
 
     @Override
@@ -20,12 +20,5 @@ public class MesmerizingEnchantment extends Enchantment {
     @Override
     public int getMaxLevel() {
         return 5;
-    }
-
-    @Override
-    public boolean isAcceptableItem(ItemStack stack) {
-        return
-                stack.getItem() instanceof ISoulStoringItem
-                ;
     }
 }

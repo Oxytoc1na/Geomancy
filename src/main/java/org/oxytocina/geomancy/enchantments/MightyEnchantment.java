@@ -4,12 +4,13 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
+import org.oxytocina.geomancy.items.jewelry.JewelryItem;
 import org.oxytocina.geomancy.items.tools.HammerItem;
 
-public class MightyEnchantment extends Enchantment {
+public class MightyEnchantment extends ModEnchantment {
 
     protected MightyEnchantment() {
-        super(Rarity.UNCOMMON, EnchantmentTarget.DIGGER, new EquipmentSlot[] {EquipmentSlot.MAINHAND});
+        super(Rarity.UNCOMMON, s->s.getItem() instanceof HammerItem);
     }
 
     @Override
@@ -20,10 +21,5 @@ public class MightyEnchantment extends Enchantment {
     @Override
     public int getMaxLevel() {
         return 5;
-    }
-
-    @Override
-    public boolean isAcceptableItem(ItemStack stack) {
-        return stack.getItem() instanceof HammerItem;
     }
 }
