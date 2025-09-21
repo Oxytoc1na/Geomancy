@@ -142,4 +142,13 @@ public class JewelryItem extends TrinketItem implements IJewelryItem {
         super.appendTooltip(stack, world, list, context);
     }
 
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return stack.getCount() == 1;
+    }
+
+    @Override
+    public int getEnchantability() {
+        return jewelrySettings.enchantability;
+    }
 }

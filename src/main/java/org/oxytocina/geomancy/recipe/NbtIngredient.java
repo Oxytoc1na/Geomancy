@@ -87,6 +87,7 @@ public class NbtIngredient extends CountIngredient {
         ItemStack res = ItemStack.EMPTY;
         if(ingredient.getMatchingStacks().length>0) res=ingredient.getMatchingStacks()[0];
         res.setNbt(nbt);
+        res.setCount(count);
         return res;
     }
 

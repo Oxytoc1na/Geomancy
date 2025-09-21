@@ -279,4 +279,14 @@ public class SoulCastingItem extends StorageItem implements ISoulStoringItem, IS
         var world = MinecraftClient.getInstance().world;
         return Math.round(getMana(world,stack) * 13.0F / getCapacity(world,stack));
     }
+
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return stack.getCount() == 1;
+    }
+
+    @Override
+    public int getEnchantability() {
+        return 14;
+    }
 }

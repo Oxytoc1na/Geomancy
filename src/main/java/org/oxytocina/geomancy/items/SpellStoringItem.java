@@ -139,4 +139,14 @@ public class SpellStoringItem extends Item {
             }
     }
 
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return stack.getCount() == 1;
+    }
+
+    @Override
+    public int getEnchantability() {
+        return 14;
+    }
+
 }

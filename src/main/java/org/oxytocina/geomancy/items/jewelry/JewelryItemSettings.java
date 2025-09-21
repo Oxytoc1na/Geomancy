@@ -7,6 +7,7 @@ public class JewelryItemSettings {
     public TrinketSlot slot = TrinketSlot.ANY;
     public int baseMishapWeight = 1;
     public boolean pendant = false;
+    public int enchantability = 14;
 
     public JewelryItemSettings(){
     }
@@ -23,6 +24,8 @@ public class JewelryItemSettings {
     public JewelryItemSettings setSlot(TrinketSlot slot){ this.slot=slot; return this;}
     public JewelryItemSettings setBaseMishapWeight(int weight){ this.baseMishapWeight=weight; return this;}
     public JewelryItemSettings setPendant(){ this.pendant=true; return this;}
+
+    public JewelryItemSettings setEnchantability(int enchantability) {this.enchantability=enchantability;return this;}
 
     public enum TrinketSlot{
         ANY,

@@ -7,6 +7,7 @@ import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ToolMaterials;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -71,5 +72,15 @@ public class SoulStorageItem extends Item implements ISoulStoringItem, ICustomRa
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> list, TooltipContext context) {
         super.appendTooltip(stack, world, list, context);
         ISoulStoringItem.super.addManaTooltip(world,stack,list);
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return stack.getCount() == 1;
+    }
+
+    @Override
+    public int getEnchantability() {
+        return 14;
     }
 }
