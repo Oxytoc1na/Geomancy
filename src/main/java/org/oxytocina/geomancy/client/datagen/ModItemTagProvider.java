@@ -150,6 +150,11 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
                         ModItems.PRECOMP_CASTER
                         );
 
+        // chiseled bookshelf
+        var builder = getOrCreateTagBuilder(ItemTags.BOOKSHELF_BOOKS);
+        for(var item : ExtraItemSettings.ITEMS_IN_LORE_GROUP)
+            builder.add(item);
+
 
         generateAccessoryTags();
     }
@@ -194,10 +199,6 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
                 ModItems.ADAPTIVE_MASK
         );
 
-        // chiseled bookshelf
-        var builder = getOrCreateTagBuilder(ItemTags.BOOKSHELF_BOOKS);
-        for(var item : ExtraItemSettings.ITEMS_IN_LORE_GROUP)
-            builder.add(item);
 
 
     }

@@ -18,6 +18,7 @@ import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -76,7 +77,6 @@ public class StorageItem extends Item implements IStorageItem, ExtendedScreenHan
             if(user instanceof ServerPlayerEntity sp){
                 var stack = user.getStackInHand(hand);
                 sp.openHandledScreen((StorageItem) stack.getItem());
-                Toolbox.playSound(SoundEvents.ITEM_BUNDLE_DROP_CONTENTS,world,user.getBlockPos(), SoundCategory.PLAYERS,0.5f,Toolbox.randomPitch());
             }
             return TypedActionResult.success(user.getStackInHand(hand),true);
         }
@@ -324,5 +324,18 @@ public class StorageItem extends Item implements IStorageItem, ExtendedScreenHan
     }
 
 
+    @Override
+    public SoundEvent getOpenSound() {
+        return SoundEvents.ITEM_BUNDLE_DROP_CONTENTS;
+    }
 
+    @Override
+    public SoundEvent getCloseSound() {
+        return SoundEvents.ITEM_BUNDLE_REMOVE_ONE;
+    }
+
+    @Override
+    public SoundEvent getCollectSound() {
+        return SoundEvents.ITEM_BUNDLE_INSERT;
+    }
 }

@@ -16,6 +16,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -119,5 +121,16 @@ public class PrecompiledSoulCastingItem extends SoulCastingItem {
         if(!(stack.getItem() instanceof PrecompiledSoulCastingItem compiled)) return;
         if(!(spellStorer.getItem() instanceof SpellStoringItem storer)) return;
         compiled.setStack(stack,0,spellStorer);
+    }
+
+
+    @Override
+    public SoundEvent getOpenSound() {
+        return SoundEvents.BLOCK_IRON_TRAPDOOR_OPEN;
+    }
+
+    @Override
+    public SoundEvent getCloseSound() {
+        return SoundEvents.BLOCK_IRON_TRAPDOOR_CLOSE;
     }
 }

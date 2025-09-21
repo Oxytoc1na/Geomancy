@@ -8,6 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -214,4 +215,15 @@ public class SoulBoreItem extends StorageItem implements ISoulStoringItem, ICust
         float mana = getLeftoverMana(stack);
         return (int)(mana/cap*13);
     }
+
+    @Override
+    public SoundEvent getOpenSound() {
+        return SoundEvents.BLOCK_PISTON_EXTEND;
+    }
+
+    @Override
+    public SoundEvent getCloseSound() {
+        return SoundEvents.BLOCK_PISTON_CONTRACT;
+    }
+
 }

@@ -16,6 +16,9 @@ import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import org.oxytocina.geomancy.Geomancy;
@@ -24,6 +27,7 @@ import org.oxytocina.geomancy.inventories.ImplementedInventory;
 import org.oxytocina.geomancy.items.IStorageItem;
 import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.registries.ModItemTags;
+import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,6 +88,12 @@ public class StorageItemScreenHandler extends ScreenHandler {
 
         outputItemChanged();
         currentOutput = getOutput();
+
+        if(player instanceof ServerPlayerEntity spe){
+            if(parent.getItem() instanceof IStorageItem storer){
+                Toolbox.playSound(storer.getOpenSound(),spe.getWorld(),spe.getBlockPos(), SoundCategory.PLAYERS,0.5f,Toolbox.randomPitch());
+            }
+        }
     }
 
     public Inventory getInventory(){
@@ -198,6 +208,12 @@ public class StorageItemScreenHandler extends ScreenHandler {
         if(dirty){
             writeInventory();
             dirty=false;
+        }
+
+        if(player instanceof ServerPlayerEntity spe){
+            if(parent.getItem() instanceof IStorageItem storer){
+                Toolbox.playSound(storer.getCloseSound(),spe.getWorld(),spe.getBlockPos(), SoundCategory.PLAYERS,0.5f,Toolbox.randomPitch());
+            }
         }
 
         super.onClosed(player);

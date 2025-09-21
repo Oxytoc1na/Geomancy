@@ -23,6 +23,8 @@ import net.minecraft.registry.tag.TagKey;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -316,5 +318,16 @@ public class CastingTrinketItem extends TrinketItem implements IStorageItem, Ext
     @Environment(EnvType.CLIENT)
     public void onSpellChanged(ItemStack stack, ClientPlayerEntity player, int spellIndex) {
 
+    }
+
+
+    @Override
+    public SoundEvent getOpenSound() {
+        return SoundEvents.BLOCK_IRON_TRAPDOOR_OPEN;
+    }
+
+    @Override
+    public SoundEvent getCloseSound() {
+        return SoundEvents.BLOCK_IRON_TRAPDOOR_CLOSE;
     }
 }

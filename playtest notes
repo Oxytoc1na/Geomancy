@@ -9,7 +9,7 @@ x: DONE
 -- rare intermission rooms in the tunnels, too!
 - "Format Error" in expedition lore 1, page 2
 - artifact equip lore goes off screen
-- spellmaker model is fucked
+- spellmaker model is fucked (only with other mods?)
 o used components dont get properly updated clientside
 o make basic spell components unlocked upon finding any spell component
 o- caster entity

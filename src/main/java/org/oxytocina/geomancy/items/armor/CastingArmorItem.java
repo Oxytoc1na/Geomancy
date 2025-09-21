@@ -25,6 +25,8 @@ import net.minecraft.registry.tag.TagKey;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -356,5 +358,15 @@ public class CastingArmorItem extends ArmorItem implements IMaddeningItem, IStor
         var models = MinecraftClient.getInstance().getEntityModelLoader();
         var root = models.getModelPart(ModModelLayers.MAIN_CASTING_LAYER);
         return new CastingArmorModel(root, slot);
+    }
+
+    @Override
+    public SoundEvent getOpenSound() {
+        return SoundEvents.ITEM_BUNDLE_DROP_CONTENTS;
+    }
+
+    @Override
+    public SoundEvent getCloseSound() {
+        return SoundEvents.ITEM_BUNDLE_REMOVE_ONE;
     }
 }

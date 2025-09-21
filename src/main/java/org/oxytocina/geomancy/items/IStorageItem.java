@@ -8,9 +8,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.collection.DefaultedList;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.util.AdvancementHelper;
+import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.HashMap;
 
@@ -75,6 +78,7 @@ public interface IStorageItem {
     default void onCollected(ItemStack storage, ItemEntity entity, PlayerEntity player, ItemStack stack){
         if(player instanceof ServerPlayerEntity spe)
         {
+            Toolbox.playSound(this.getCollectSound(),player.getWorld(),player.getBlockPos(), SoundCategory.PLAYERS,0.5f,Toolbox.randomPitch());
             // check for component unlocks
             if(stack.getItem() instanceof SpellComponentStoringItem){
                 var comp = SpellComponentStoringItem.readComponent(stack);
@@ -84,4 +88,8 @@ public interface IStorageItem {
             }
         }
     }
+
+    default SoundEvent getOpenSound() {return null;}
+    default SoundEvent getCloseSound() {return null;}
+    default SoundEvent getCollectSound() {return null;}
 }

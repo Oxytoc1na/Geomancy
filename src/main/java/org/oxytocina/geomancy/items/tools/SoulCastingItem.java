@@ -16,6 +16,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -288,5 +290,15 @@ public class SoulCastingItem extends StorageItem implements ISoulStoringItem, IS
     @Override
     public int getEnchantability() {
         return 14;
+    }
+
+    @Override
+    public SoundEvent getOpenSound() {
+        return SoundEvents.BLOCK_IRON_TRAPDOOR_OPEN;
+    }
+
+    @Override
+    public SoundEvent getCloseSound() {
+        return SoundEvents.BLOCK_IRON_TRAPDOOR_CLOSE;
     }
 }
