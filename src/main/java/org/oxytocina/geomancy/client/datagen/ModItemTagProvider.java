@@ -12,6 +12,7 @@ import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.blocks.ModBlocks;
+import org.oxytocina.geomancy.items.ExtraItemSettings;
 import org.oxytocina.geomancy.items.artifacts.ArtifactItem;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.jewelry.GemSlot;
@@ -192,6 +193,12 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
                 ModItems.MELANCHOLY_MASK,
                 ModItems.ADAPTIVE_MASK
         );
+
+        // chiseled bookshelf
+        var builder = getOrCreateTagBuilder(ItemTags.BOOKSHELF_BOOKS);
+        for(var item : ExtraItemSettings.ITEMS_IN_LORE_GROUP)
+            builder.add(item);
+
 
     }
 

@@ -78,30 +78,30 @@ public class ModItems {
 
 
     // guidebook and lore
-    public static final GuidebookItem GUIDE_BOOK =              register("guidebook",           new GuidebookItem(new FabricItemSettings()),new ExtraItemSettings().addGroup(ExtraItemSettings.Group.Lore));
-    public static final LorebookItem LORE_BOOK_GOLDSMITH_1 =    register("lorebook_goldsmith_1",new LorebookItem(new FabricItemSettings(),"lore/goldsmith_1"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
-    public static final LorebookItem LORE_BOOK_GOLDSMITH_2 =    register("lorebook_goldsmith_2",new LorebookItem(new FabricItemSettings(),"lore/goldsmith_2"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
-    public static final LorebookItem LORE_BOOK_GOLDSMITH_3 =    register("lorebook_goldsmith_3",new LorebookItem(new FabricItemSettings(),"lore/goldsmith_3"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
-    public static final LorebookItem LORE_BOOK_GOLDSMITH_4 =    register("lorebook_goldsmith_4",new LorebookItem(new FabricItemSettings(),"lore/goldsmith_4"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
+    public static final GuidebookItem GUIDE_BOOK =              register("guidebook",           new GuidebookItem(new FabricItemSettings().maxCount(1)),new ExtraItemSettings().addGroup(ExtraItemSettings.Group.Lore));
+    public static final LorebookItem LORE_BOOK_GOLDSMITH_1 =    register("lorebook_goldsmith_1",new LorebookItem(new FabricItemSettings().maxCount(1),"lore/goldsmith_1"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
+    public static final LorebookItem LORE_BOOK_GOLDSMITH_2 =    register("lorebook_goldsmith_2",new LorebookItem(new FabricItemSettings().maxCount(1),"lore/goldsmith_2"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
+    public static final LorebookItem LORE_BOOK_GOLDSMITH_3 =    register("lorebook_goldsmith_3",new LorebookItem(new FabricItemSettings().maxCount(1),"lore/goldsmith_3"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
+    public static final LorebookItem LORE_BOOK_GOLDSMITH_4 =    register("lorebook_goldsmith_4",new LorebookItem(new FabricItemSettings().maxCount(1),"lore/goldsmith_4"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
 
-    public static final LorebookItem LORE_BOOK_WAR_1 = register("lorebook_war_1",new LorebookItem(new FabricItemSettings(),"lore/war_1"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
-    public static final LorebookItem LORE_BOOK_WAR_2 = register("lorebook_war_2",new LorebookItem(new FabricItemSettings(),"lore/war_2"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
-    public static final LorebookItem LORE_BOOK_WAR_3 = register("lorebook_war_3",new LorebookItem(new FabricItemSettings(),"lore/war_3"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
+    public static final LorebookItem LORE_BOOK_WAR_1 = register("lorebook_war_1",new LorebookItem(new FabricItemSettings().maxCount(1),"lore/war_1"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
+    public static final LorebookItem LORE_BOOK_WAR_2 = register("lorebook_war_2",new LorebookItem(new FabricItemSettings().maxCount(1),"lore/war_2"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
+    public static final LorebookItem LORE_BOOK_WAR_3 = register("lorebook_war_3",new LorebookItem(new FabricItemSettings().maxCount(1),"lore/war_3"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
 
-    public static final LorebookItem LORE_LOG_EXPEDITION_1 = register("lorelog_expedition_1",new LorebookItem(new FabricItemSettings(),"lore/expedition_1"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
-    public static final LorebookItem LORE_LOG_EXPEDITION_2 = register("lorelog_expedition_2",new LorebookItem(new FabricItemSettings(),"lore/expedition_2"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
-    public static final LorebookItem LORE_LOG_EXPEDITION_3 = register("lorelog_expedition_3",new LorebookItem(new FabricItemSettings(),"lore/expedition_3"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
-    public static final LorebookItem LORE_LOG_EXPEDITION_4 = register("lorelog_expedition_4",new LorebookItem(new FabricItemSettings(),"lore/expedition_4"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
-    public static final LorebookItem LORE_LOG_EXPEDITION_5 = register("lorelog_expedition_5",new LorebookItem(new FabricItemSettings(),"lore/expedition_5"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
+    public static final LorebookItem LORE_LOG_EXPEDITION_1 = register("lorelog_expedition_1",new LorebookItem(new FabricItemSettings().maxCount(1),"lore/expedition_1"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
+    public static final LorebookItem LORE_LOG_EXPEDITION_2 = register("lorelog_expedition_2",new LorebookItem(new FabricItemSettings().maxCount(1),"lore/expedition_2"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
+    public static final LorebookItem LORE_LOG_EXPEDITION_3 = register("lorelog_expedition_3",new LorebookItem(new FabricItemSettings().maxCount(1),"lore/expedition_3"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
+    public static final LorebookItem LORE_LOG_EXPEDITION_4 = register("lorelog_expedition_4",new LorebookItem(new FabricItemSettings().maxCount(1),"lore/expedition_4"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
+    public static final LorebookItem LORE_LOG_EXPEDITION_5 = register("lorelog_expedition_5",new LorebookItem(new FabricItemSettings().maxCount(1),"lore/expedition_5"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
 
-    public static final LorebookItem LORE_BOOK_EXTRAS_CREATION =    register("lorebook_extras_creation",    new LorebookItem(new FabricItemSettings(),"lore/extras_creation"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
-    public static final LorebookItem LORE_LOG_EXTRAS_RESEARCH_1 =   register("lorelog_extras_research_1",   new LorebookItem(new FabricItemSettings(),"lore/extras_research_1"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
-    public static final LorebookItem LORE_LOG_EXTRAS_RESEARCH_2 =   register("lorelog_extras_research_2",   new LorebookItem(new FabricItemSettings(),"lore/extras_research_2"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
+    public static final LorebookItem LORE_BOOK_EXTRAS_CREATION =    register("lorebook_extras_creation",    new LorebookItem(new FabricItemSettings().maxCount(1),"lore/extras_creation"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
+    public static final LorebookItem LORE_LOG_EXTRAS_RESEARCH_1 =   register("lorelog_extras_research_1",   new LorebookItem(new FabricItemSettings().maxCount(1),"lore/extras_research_1"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
+    public static final LorebookItem LORE_LOG_EXTRAS_RESEARCH_2 =   register("lorelog_extras_research_2",   new LorebookItem(new FabricItemSettings().maxCount(1),"lore/extras_research_2"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
 
-    public static final LorebookItem LORE_LOG_EXODIA_1 = register("lorelog_exodia_1",new LorebookItem(new FabricItemSettings(),"lore/exodia_1"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
-    public static final LorebookItem LORE_LOG_EXODIA_2 = register("lorelog_exodia_2",new LorebookItem(new FabricItemSettings(),"lore/exodia_2"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
-    public static final LorebookItem LORE_LOG_EXODIA_3 = register("lorelog_exodia_3",new LorebookItem(new FabricItemSettings(),"lore/exodia_3"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
-    public static final LorebookItem LORE_LOG_EXODIA_4 = register("lorelog_exodia_4",new LorebookItem(new FabricItemSettings(),"lore/exodia_4"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
+    public static final LorebookItem LORE_LOG_EXODIA_1 = register("lorelog_exodia_1",new LorebookItem(new FabricItemSettings().maxCount(1),"lore/exodia_1"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
+    public static final LorebookItem LORE_LOG_EXODIA_2 = register("lorelog_exodia_2",new LorebookItem(new FabricItemSettings().maxCount(1),"lore/exodia_2"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
+    public static final LorebookItem LORE_LOG_EXODIA_3 = register("lorelog_exodia_3",new LorebookItem(new FabricItemSettings().maxCount(1),"lore/exodia_3"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
+    public static final LorebookItem LORE_LOG_EXODIA_4 = register("lorelog_exodia_4",new LorebookItem(new FabricItemSettings().maxCount(1),"lore/exodia_4"),new ExtraItemSettings().group(ExtraItemSettings.Group.Lore));
 
 
     // music discs
