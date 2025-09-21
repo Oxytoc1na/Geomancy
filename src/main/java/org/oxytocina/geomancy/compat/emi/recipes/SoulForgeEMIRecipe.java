@@ -3,6 +3,7 @@ package org.oxytocina.geomancy.compat.emi.recipes;
 
 import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
+import dev.emi.emi.api.stack.ItemEmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Identifier;
@@ -46,7 +47,7 @@ public class SoulForgeEMIRecipe extends GatedModEMIRecipe<SoulForgeRecipe> {
         if(recipe.isShapeless()){
             // shapeless
             for(var ing : ingredients){
-                list.add(EmiIngredient.of(ing.ingredient));
+                list.add(ItemEmiStack.of(ing.getStack()));
             }
         }
         else{
@@ -55,10 +56,10 @@ public class SoulForgeEMIRecipe extends GatedModEMIRecipe<SoulForgeRecipe> {
             for (int i = 0; i < 9; i++) {
                 for(var ing : ingredients){
                     if(ing.slot!=i) continue;
-                    list.add(EmiIngredient.of(ing.ingredient));
+                    list.add(ItemEmiStack.of(ing.getStack()));
                     continue outer;
                 }
-                list.add(EmiIngredient.of(Ingredient.EMPTY));
+                list.add(ItemEmiStack.EMPTY);
             }
         }
 

@@ -56,18 +56,26 @@ public class SoulForgeRecipe extends GatedModRecipe<Inventory> implements ISoulF
 
     public boolean inputsPresent(Inventory inv){
         List<Integer> usedUp = new ArrayList<>();
-        for (NbtIngredient input : inputs) {
+        for (int i = 0; i < inputs.size(); i++) {
             boolean present = false;
-            for (int j = 0; j < inv.size(); j++) {
-                if(usedUp.contains(j)) continue;
-                if (input.test(inv.getStack(j))) {
-                    present = true;
-                    usedUp.add(j);
-                    break;
+            var input = inputs.get(i);
+            if(i==0){
+                if (!input.test(inv.getStack(0))) {
+                    return false;
                 }
             }
-            if (!present)
-                return false;
+            else{
+                for (int j = 1; j < inv.size(); j++) {
+                    if(usedUp.contains(j)) continue;
+                    if (input.test(inv.getStack(j))) {
+                        present = true;
+                        usedUp.add(j);
+                        break;
+                    }
+                }
+                if (!present)
+                    return false;
+            }
         }
 
         return true;

@@ -6,12 +6,16 @@ import com.google.gson.JsonSyntaxException;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.AbstractNbtNumber;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.helpers.NbtHelper;
 import org.oxytocina.geomancy.recipe.smithery.SmithingIngredient;
+
+import java.util.Objects;
 
 public class NbtIngredient extends CountIngredient {
     public NbtCompound nbt;
@@ -84,5 +88,35 @@ public class NbtIngredient extends CountIngredient {
         if(ingredient.getMatchingStacks().length>0) res=ingredient.getMatchingStacks()[0];
         res.setNbt(nbt);
         return res;
+    }
+
+    @Override
+    public boolean test(ItemStack stack){
+        return ingredient.test(stack) && nbtsMatch(stack.getNbt(),nbt);
+    }
+
+    public boolean nbtsMatch(NbtCompound testedNbt, NbtCompound conditionNbt){
+        if(conditionNbt==null|| conditionNbt.isEmpty()) return true;
+        if(testedNbt==null||testedNbt.isEmpty()) return false;
+
+        for(var key : conditionNbt.getKeys())
+        {
+            if(!testedNbt.contains(key)) return false;
+            if(!nbtElementsMatch(testedNbt.get(key),conditionNbt.get(key))) return false;
+        }
+
+        return true;
+    }
+
+    public boolean nbtElementsMatch(NbtElement testedElement, NbtElement conditionElement){
+        if(testedElement.getType() != conditionElement.getType()) return false;
+        switch(testedElement.getType()){
+            case NbtElement.COMPOUND_TYPE : return nbtsMatch((NbtCompound) testedElement,(NbtCompound) conditionElement);
+            case NbtElement.STRING_TYPE: return Objects.equals(testedElement.asString(), conditionElement.asString());
+        }
+        if(testedElement instanceof AbstractNbtNumber testedNumber && conditionElement instanceof AbstractNbtNumber conditionNumber){
+            return testedNumber.doubleValue() == conditionNumber.doubleValue();
+        }
+        return true;
     }
 }

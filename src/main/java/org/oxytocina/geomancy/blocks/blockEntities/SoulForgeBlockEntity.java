@@ -582,7 +582,8 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
                         var pedestalStack = pedestal.getStack(0);
                         if(!ingredient.test(pedestalStack)) continue;
                         // consume stack
-                        consumedIngredients.add(pedestalStack.copyAndEmpty());
+                        consumedIngredients.add(pedestalStack.copyWithCount(ingredient.count));
+                        pedestalStack.decrement(ingredient.count);
                         pedestal.markDirty();
                         ParticleUtil.ParticleData.createForgeConsume(world,getPos().toCenterPos().add(0,0.6f,0),pedestal.getPos().toCenterPos().add(0,0.6f,0)).send();
                         Toolbox.playSound(SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE,world,pedestal.getPos(),SoundCategory.BLOCKS,0.5f,Toolbox.randomPitch());
@@ -597,7 +598,7 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
                 }
 
                 // consume final ingredient
-                if(progress >= 1 && shouldHaveConsumedCount>=ingredients.size() && consumedIngredients.size() >= ingredients.size()-1)
+                if(consumedAllIngredients && progress >= 1 && shouldHaveConsumedCount>=ingredients.size() && consumedIngredients.size() >= ingredients.size()-1)
                 {
                     var baseIng = ingredients.get(0);
                     // check if this ingredient is consumed
@@ -617,21 +618,14 @@ public class SoulForgeBlockEntity extends BlockEntity implements ExtendedScreenH
 
                     // try to consume ingredient
                     boolean consumed = false;
-                    for (int i = 0; i < size(); i++) {
-                        var baseStack = getStack(i);
-                        if(!baseIng.test(baseStack)) continue;
-                        // consume stack
-                        consumedIngredients.add(baseStack.copyAndEmpty());
-                        markDirty();
-                        // TODO: visual and auditory flair
-                        changed2=true;
-                        consumed=true;
-                        break;
-                    }
-                    if(consumed)
-                        continue;
-
-                    consumedAllIngredients = false;
+                    var baseStack = getStack(0);
+                    if(!baseIng.test(baseStack)){ consumedAllIngredients = false; continue;}
+                    // consume stack
+                    consumedIngredients.add(baseStack.copyWithCount(baseIng.count));
+                    baseStack.decrement(baseIng.count);
+                    markDirty();
+                    // TODO: visual and auditory flair
+                    changed2=true;
                 }
             }
 
