@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockBox;
@@ -144,13 +145,15 @@ public class MadnessUtil {
         float madness = getMadness(player);
         float ambientMadness = getAmbientMadness(player);
 
-        float combined = madness+ambientMadness;
+        float combined = Math.max(0,madness+ambientMadness);
 
-        float chance = combined/(combined+800);
+        float chance = Toolbox.clampF(combined/(combined+800),0,1);
         if(Toolbox.random.nextFloat()>chance) return;
 
-        Toolbox.playSound(ModSoundEvents.WHISPERS,player.getWorld(),player.getBlockPos(), SoundCategory.AMBIENT,0.2f+chance*0.6f,0.8f+Toolbox.random.nextFloat()*0.4f);
-
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeBlockPos(player.getBlockPos());
+        buf.writeFloat(0.2f+chance*0.6f);
+        ServerPlayNetworking.send(player,ModMessages.WHISPER,buf);
     }
 
     public static void tryMadnessEffects(ServerPlayerEntity player) {
@@ -312,4 +315,10 @@ public class MadnessUtil {
     }
 
 
+    public static void whisperAt(ServerWorld world, BlockPos pos) {
+        var buf = PacketByteBufs.create();
+        buf.writeBlockPos(pos);
+        buf.writeFloat(0.5f);
+        ModMessages.sendToAllClients(world.getServer(),ModMessages.WHISPER,buf,s->EntityUtil.isInRange(s,world,pos.toCenterPos(),50));
+    }
 }

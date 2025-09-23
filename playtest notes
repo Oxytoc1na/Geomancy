@@ -4,7 +4,7 @@ x: DONE
 
 - change ancient hall smithery loot (mithril hammer)
 - opening storage items still uses off hand items
-1/2 add storage item open and close sounds
+o add storage item open and close sounds
 - digsite needs more pieces!!!
 -- rare intermission rooms in the tunnels, too!
 - "Format Error" in expedition lore 1, page 2
@@ -14,7 +14,8 @@ o used components dont get properly updated clientside
 o make basic spell components unlocked upon finding any spell component
 o- caster entity
 o- caster pos. eye pos. and dir.
-- no titanium page in discovery
+x no titanium page in discovery
 - increase octangulite spawn rate
 
 x add deepslate geodes?
+o whispers are annoying AF

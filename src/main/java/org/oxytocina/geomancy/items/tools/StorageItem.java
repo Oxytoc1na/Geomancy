@@ -78,9 +78,8 @@ public class StorageItem extends Item implements IStorageItem, ExtendedScreenHan
                 var stack = user.getStackInHand(hand);
                 sp.openHandledScreen((StorageItem) stack.getItem());
             }
-            return TypedActionResult.success(user.getStackInHand(hand),true);
         }
-        return TypedActionResult.pass(user.getStackInHand(hand));
+        return TypedActionResult.success(user.getStackInHand(hand),true);
     }
 
     @Override

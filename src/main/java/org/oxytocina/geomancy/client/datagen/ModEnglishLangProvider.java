@@ -741,6 +741,11 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                 add(getS("gb:mn")+"mithril.info.text", "This incredibly rare metal is impressively durable for its light weight. It shines with a bright white color. I can sense that there is more to it than tools and armor.");
                 add(getS("gb:mn")+"mithril.mithril_ingot.text", "It is also definitely not edible.");
 
+                addGBEntryAndInfo(getS("gb:mn")+"titanium","Titanium");
+                add(getS("gb:mn")+"titanium.description"  , "");
+                add(getS("gb:mn")+"titanium.info.text", "This rare metal is nearly indestructible! It shines a pale blue and its durability is unmatched. Even rust or corrosion are no match for it.");
+                add(getS("gb:mn")+"titanium.titanium_ingot.text", "I just hope it's not poisonous.");
+
                 addGBEntryAndInfo(getS("gb:mn")+"lead","Lead");
                 add(getS("gb:mn")+"lead.description"  , "");
                 add(getS("gb:mn")+"lead.info.text", "This common, dark gray metal is pretty soft, and incredibly heavy.\n\\\nIt doesn't seem to have many uses. Maybe there is more to it than meets the eye?");
@@ -1287,97 +1292,103 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
                 // exodia
                 {
-                    // 1 : soul
                     add("item.MODID.lorelog_exodia_1","Field Research Log");
                     add("item.MODID.lorelog_exodia_1.tooltip","Signed: Prospector Septangula");
 
-                    addGBEntryAndInfo(getS("gb:lr")+"exodia_1","Field Research Log");
-                    add(getS("gb:lr")+"exodia_1.description"  , "Signed: Prospector Septangula");
-                    add(getS("gb:lr")+"exodia_1.1.text","""
+                    add("item.MODID.lorelog_exodia_2","Dimensional Exploration Log Pt.1");
+                    add("item.MODID.lorelog_exodia_2.tooltip","Signed: Head Researcher Pentangula");
+
+                    add("item.MODID.lorelog_exodia_3","Dimensional Exploration Log Pt.2");
+                    add("item.MODID.lorelog_exodia_3.tooltip","Signed: Head Researcher Pentangula");
+
+                    add("item.MODID.lorelog_exodia_4","Dimensional Exploration Log Pt.3");
+                    add("item.MODID.lorelog_exodia_4.tooltip","Signed: Head Researcher Pentangula");
+                }
+                for(var cat : new String[]{"lr","sc"})
+                {
+                    // 1 : soul
+
+                    addGBEntryAndInfo(getS("gb:"+cat)+"exodia_1","Field Research Log");
+                    add(getS("gb:"+cat)+"exodia_1.description"  , "Signed: Prospector Septangula");
+                    add(getS("gb:"+cat)+"exodia_1.1.text","""
                         I am Septangula of the Stellge, Prospector at Site IZ. Ambient soul-slurry density exceeds previous records. In collaboration with Head Engineer Tritangula, we have designed a new soulcasting component.
                         """);
-                    add(getS("gb:lr")+"exodia_1.2.text","""
+                    add(getS("gb:"+cat)+"exodia_1.2.text","""
                         Component E1, when cast in an area with exceptional slurry density, will potentially allow us to gain insights into project 0.
                         """);
-                    add(getS("gb:lr")+"exodia_1.3.text","""
+                    add(getS("gb:"+cat)+"exodia_1.3.text","""
                         Attaching recipe for Component E1.
                         Requesting observation squad and recipient Vivocasters.
                         """);
 
                     // 2 : calculation
-                    add("item.MODID.lorelog_exodia_2","Dimensional Exploration Log Pt.1");
-                    add("item.MODID.lorelog_exodia_2.tooltip","Signed: Head Researcher Pentangula");
 
-                    addGBEntryAndInfo(getS("gb:lr")+"exodia_2","Dimensional Exploration Log Pt.1");
-                    add(getS("gb:lr")+"exodia_2.description"  , "Signed: Head Researcher Pentangula");
-                    add(getS("gb:lr")+"exodia_2.1.text","""
+                    addGBEntryAndInfo(getS("gb:"+cat)+"exodia_2","Dimensional Exploration Log Pt.1");
+                    add(getS("gb:"+cat)+"exodia_2.description"  , "Signed: Head Researcher Pentangula");
+                    add(getS("gb:"+cat)+"exodia_2.1.text","""
                         Dear diary,
                         this is Pentangula of the Stellge, reporting from dimension Sol III, sub 1.
                         After the scout drones deemed the immediate area safe, I have decided to visit personally!
                         I can confirm temperature and slurry density readings. Getting back home will not be a concern.
                         """);
-                    add(getS("gb:lr")+"exodia_2.2.text","""
+                    add(getS("gb:"+cat)+"exodia_2.2.text","""
                         Unfortunately, though, soul stone expectancy here is still below the threshold for extraction.
                         For some reason, souls like to gather into loose granulate here.
                         The SPV of mentioned "soul sand" (I came up with that alliteration myself!) sadly isn't high enough for it to be of use for us.
                         """);
-                    add(getS("gb:lr")+"exodia_2.3.text","""
+                    add(getS("gb:"+cat)+"exodia_2.3.text","""
                         It would make for good soil to grow Vivocaster food in, though.
                         Anyways, I'm happy to report that I've figure out something that may help us make some progress with project 0.
                         If I can supply a machine with the correct algorithm...
                         """);
-                    add(getS("gb:lr")+"exodia_2.4.text","""
+                    add(getS("gb:"+cat)+"exodia_2.4.text","""
                         ...it may be able to tell me whats so special about this place.
                         I have attached a schematic.
                         """);
 
                     // 3 : presence
-                    add("item.MODID.lorelog_exodia_3","Dimensional Exploration Log Pt.2");
-                    add("item.MODID.lorelog_exodia_3.tooltip","Signed: Head Researcher Pentangula");
-                    addGBEntryAndInfo(getS("gb:lr")+"exodia_3","Dimensional Exploration Log Pt.2");
-                    add(getS("gb:lr")+"exodia_3.description"  , "Signed: Head Researcher Pentangula");
-                    add(getS("gb:lr")+"exodia_3.1.text","""
+                    addGBEntryAndInfo(getS("gb:"+cat)+"exodia_3","Dimensional Exploration Log Pt.2");
+                    add(getS("gb:"+cat)+"exodia_3.description"  , "Signed: Head Researcher Pentangula");
+                    add(getS("gb:"+cat)+"exodia_3.1.text","""
                         Dear diary,
                         this is Pentangula of the Stellge, reporting from deep inside my favourite planet!
                         The prospectors have transmitted discovery of a peculiar point of interest, and I'm there right now!
                         It appears to be some kind of abandoned settlement.
                         """);
-                    add(getS("gb:lr")+"exodia_3.2.text","""
+                    add(getS("gb:"+cat)+"exodia_3.2.text","""
                         According to the report, this place has unusually dense slurry for being underground.
                         Theres patches of a mushy, dark-blue substance here.
                         It seems to be another naturally occurring form of soul storage on Sol III.
                         """);
-                    add(getS("gb:lr")+"exodia_3.3.text","""
+                    add(getS("gb:"+cat)+"exodia_3.3.text","""
                         This gunk seems to spread much, much faster than soul stone does.
                         The density of souls per block suffers greatly because of it.
                         I still think that it could give us important insights into project 0.
                         Some of the local biomass reacts strangely to noise...
                         """);
-                    add(getS("gb:lr")+"exodia_3.4.text","""
+                    add(getS("gb:"+cat)+"exodia_3.4.text","""
                         Together with the digsite engineers, we've come up with a new component that will greatly amplify the volume of a sufficiently loud conjured sound.
                         """);
 
                     // 4 : curiosity
-                    add("item.MODID.lorelog_exodia_4","Dimensional Exploration Log Pt.3");
-                    add("item.MODID.lorelog_exodia_4.tooltip","Signed: Head Researcher Pentangula");
-                    addGBEntryAndInfo(getS("gb:lr")+"exodia_4","Dimensional Exploration Log Pt.3");
-                    add(getS("gb:lr")+"exodia_4.description"  , "Signed: Head Researcher Pentangula");
-                    add(getS("gb:lr")+"exodia_4.1.text","""
+                    addGBEntryAndInfo(getS("gb:"+cat)+"exodia_4","Dimensional Exploration Log Pt.3");
+                    add(getS("gb:"+cat)+"exodia_4.description"  , "Signed: Head Researcher Pentangula");
+                    add(getS("gb:"+cat)+"exodia_4.1.text","""
                         Dear diary,
                         this is Pentangula of the Stellge, reporting from dimension Sol III, sub 2.
                         Readings for this one were curious, so I decided to visit personally.
                         """);
-                    add(getS("gb:lr")+"exodia_4.2.text","""
+                    add(getS("gb:"+cat)+"exodia_4.2.text","""
                         I can confirm that local slurry density is, for an inhabited dimension, at a record low.
                         A long expedition is unfeasible due to limited portable soul storage.
                         """);
-                    add(getS("gb:lr")+"exodia_4.3.text","""
+                    add(getS("gb:"+cat)+"exodia_4.3.text","""
                         I wouldn't want to get stuck here...
                         There's a certain curious happenstance I would like to mention.
                         There is no ground.
                         It's sort of like space, except that theres gravity. Whatever gets pulled down there gets spaghettified into malfunction.
                         """);
-                    add(getS("gb:lr")+"exodia_4.4.text","""
+                    add(getS("gb:"+cat)+"exodia_4.4.text","""
                         I have devised a component that can measure this spaghettification. Perhaps learning more about it will help us with project 0.
                         """);
                 }
@@ -1469,6 +1480,133 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                             """);
                 }
 
+                // exodia quest chain
+                {
+                    addGBEntryAndInfo(getS("gb:sc")+"enlightenment_1","Conqueror of Soul");
+                    add(getS("gb:sc")+"enlightenment_1.description"  , "Accelerando");
+                    add(getS("gb:sc")+"enlightenment_1.info.text", """
+                            I feel as though there is a sinkhole in my stomach as I am writing this.
+                            \\
+                            The world makes sense in a different way now.
+                            \\
+                            All the souls that just got sucked up imparted their knowledge unto me, and it's a little more than I can sift through right now.
+                            """);
+                    add(getS("gb:sc")+"enlightenment_1.1.text", """
+                            The sorting is slow. Most of what they say is about food or hunger, but I *did* manage to salvage some curiosities from their ceaseless babble.
+                            """);
+                    add(getS("gb:sc")+"enlightenment_1.2.text", """
+                            There's got to be more to the Stellges mining efforts than "ooo, shiny".
+                            \\
+                            There *is* soulcasting, which could explain it all, but I feel as though theres another goal mixed in with the soul power demand of their...society?
+                            """);
+
+                    addGBEntryAndInfo(getS("gb:sc")+"enlightenment_2","Conqueror of Calculation");
+                    add(getS("gb:sc")+"enlightenment_2.description"  , "Staccato");
+                    add(getS("gb:sc")+"enlightenment_2.info.text", """
+                            While the results of the whirring ancient component didn't exactly reveal anything grandiose about soul sand, they *did* get me thinking.
+                            \\
+                            The ruined portals strewn across the world - did the Stellge build them?
+                            """);
+                    add(getS("gb:sc")+"enlightenment_2.1.text", """
+                            If not, how did they get to the nether? Teleportation?
+                            \\
+                            If so, why fly here with sophisticated spacecraft?
+                            \\
+                            The results imply a connection between ancient debris and soul sand, but apart from some theoretical blueprints, it's not the most insightful.
+                            """);
+                    add(getS("gb:sc")+"enlightenment_2.2.text", """
+                            I keep reading about a certain "Project 0" in the logs of the Stellge.
+                            \\
+                            These special components seem linked to it. Although I am far from understanding what they're for.
+                            """);
+
+                    addGBEntryAndInfo(getS("gb:sc")+"enlightenment_3","Conqueror of Presence");
+                    add(getS("gb:sc")+"enlightenment_3.description"  , "Fortissimo");
+                    add(getS("gb:sc")+"enlightenment_3.info.text", """
+                            My ears still ring and theres a warden after me now...
+                            \\
+                            What is the point of all these tasks? Eating souls, doing math, and now what, being really loud?
+                            \\
+                            What's the connection? I don't get it.
+                            """);
+                    add(getS("gb:sc")+"enlightenment_3.1.text", """
+                            Do the Stellge seem some greater truth about souls? Why? They're machines, and they kill millions of dead things a second time just to power their tech.
+                            \\
+                            \\
+                            Why would they care about soul esoterica?
+                            """);
+                    add(getS("gb:sc")+"enlightenment_3.2.text", """
+                            Whatever...
+                            \\
+                            The component spat out some useful data. I really doubt it would be new to the Stellge, but it does help *me* improve the efficiency of my soulcasting equipment.
+                            """);
+
+                    addGBEntryAndInfo(getS("gb:sc")+"enlightenment_4","Conqueror of Curiosity");
+                    add(getS("gb:sc")+"enlightenment_4.description"  , "Crescendo");
+                    add(getS("gb:sc")+"enlightenment_4.info.text", """
+                            Really? The Stellge were HERE, of all places?
+                            \\
+                            Either they're pathological explorers, quite stupid, or I'm both.
+                            \\
+                            There's not much reason for them to be here because of the thinness of the "soul-slurry".
+                            """);
+                    add(getS("gb:sc")+"enlightenment_4.1.text", """
+                            What strikes me as interesting, though, is their fascination with the void.
+                            \\
+                            They definitely were onto something, judging by the data that the ancient component just coughed up.
+                            \\
+                            Apparently, there is a dimension called "null".
+                            """);
+                    add(getS("gb:sc")+"enlightenment_4.1.text", """
+                            A rather bland name. Maybe the component malfunctioned while printing it.
+                            \\
+                            It also didn't print instructions on how to get there.
+                            \\
+                            Maybe there is some soulcasting I can do to solve my little transportation problem.
+                            """);
+
+                    addGBEntryAndInfo(getS("gb:sc")+"enlightenment_5","Conqueror of Absolution");
+                    add(getS("gb:sc")+"enlightenment_5.description"  , "Elysion");
+                    add(getS("gb:sc")+"enlightenment_5.info.text", """
+                            I...have been seen.
+                            \\
+                            This is what they were after. An answer.
+                            \\
+                            The Dwarven priests were right. Our universe is a mote of dust suspended in the workshop of an incomprehensible artist.
+                            \\
+                            And I managed to get its attention.
+                            """);
+                    add(getS("gb:sc")+"enlightenment_5.1.text", """
+                            I feel an indescribable mixture of power, pride, and terror.
+                            \\
+                            There couldn't possibly be a place I feel alone in from now on.
+                            \\
+                            I am touched by the gaze of that to which I am less than nothing.
+                            \\
+                            My burden is knowledge.
+                            """);
+                    add(getS("gb:sc")+"enlightenment_5.1.text", """
+                            What I have seen cannot be undone.
+                            """);
+
+                    addGBEntryAndInfo(getS("gb:sc")+"null","Null");
+                    add(getS("gb:sc")+"null.description"  , "Someplace else");
+                    add(getS("gb:sc")+"null.info.text", """
+                            With one of these and a well-built spellcradle, I will be able to cast spells!
+                            \\
+                            I can access the internal storage by shift-right clicking.
+                            \\
+                            Scrolling while sneaking will also change the selected spell.
+                            """);
+                    add(getS("gb:sc")+"null.1.text", """
+                            With one of these and a well-built spellcradle, I will be able to cast spells!
+                            \\
+                            I can access the internal storage by shift-right clicking.
+                            \\
+                            Scrolling while sneaking will also change the selected spell.
+                            """);
+                }
+
                 addGBEntryAndInfo(getS("gb:sc")+"soulstorage","Soul Storage");
                 add(getS("gb:sc")+"soulstorage.description"  , "");
                 add(getS("gb:sc")+"soulstorage.info.text", """
@@ -1549,6 +1687,10 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                 add(getS("gb:sc")+"gloves.expert_glove.text", """
                             It doesn't get much better than this.
                             """);
+
+
+
+
             }
 
         }
@@ -1597,6 +1739,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.options.penalize_spell_timeout","Penalize spell timeout");
             add("MODID.options.spellcradle_tooltip_truncation","Spellcradle tooltip truncation");
             add("MODID.options.player_variable_loading","Player reference loading");
+            add("MODID.options.whisper_volume","Whisper volume");
         }
 
         tb=null;

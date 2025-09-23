@@ -51,4 +51,9 @@ public class GeomancyConfig extends ReflectiveConfig {
     @Comment("if true, allows variable storage items to load references to players")
     @SerializedName("player_variable_loading")
     public final TrackedValue<Boolean> playerVariableLoading = this.value(true);
+
+    @Comment("changes how loud whispers are")
+    @Comment("valid range: 0-1")
+    @SerializedName("whisper_volume")
+    public final TrackedValue<Float> whisperVolume = this.value(0.5f);
 }

@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementFrame;
+import net.minecraft.advancement.AdvancementRewards;
 import net.minecraft.advancement.criterion.CriterionConditions;
 import net.minecraft.advancement.criterion.InventoryChangedCriterion;
 import net.minecraft.item.Item;
@@ -14,6 +15,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.server.function.CommandFunction;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
@@ -52,6 +54,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                         false // Hide it in the advancement tab until it's achieved
                 )
                 .criterion("crafting_table", InventoryChangedCriterion.Conditions.items(Items.CRAFTING_TABLE))
+                .rewards(new AdvancementRewards(0,new Identifier[]{Registries.ITEM.getId(ModItems.GUIDE_BOOK)},new Identifier[0], CommandFunction.LazyContainer.EMPTY))
                 .build(consumer, Geomancy.MOD_ID + ":main/root");
 
         // progression milestones

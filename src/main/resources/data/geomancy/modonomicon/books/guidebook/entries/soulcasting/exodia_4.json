@@ -1,0 +1,81 @@
+{
+  "background_u_index": 1,
+  "background_v_index": 0,
+  "category": "geomancy:soulcasting",
+  "condition": {
+    "type": "modonomicon:advancement",
+    "advancement_id": "geomancy:lore/get_lorelog_exodia_4"
+  },
+  "description": "book.geomancy.guidebook.soulcasting.exodia_4.description",
+  "hide_while_locked": true,
+  "icon": {
+    "item": "geomancy:lorelog_exodia_4"
+  },
+  "name": "book.geomancy.guidebook.soulcasting.exodia_4.name",
+  "pages": [
+    {
+      "type": "geomancy:text_stellge",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "knowledgeBonus": 0.0,
+      "requiredKnowledge": 25.0,
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.soulcasting.exodia_4.1.text",
+      "title": "",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "geomancy:text_stellge",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "knowledgeBonus": 0.0,
+      "requiredKnowledge": 25.0,
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.soulcasting.exodia_4.2.text",
+      "title": "",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "geomancy:text_stellge",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "knowledgeBonus": 0.0,
+      "requiredKnowledge": 25.0,
+      "show_title_separator": true,
+      "text": "book.geomancy.guidebook.soulcasting.exodia_4.3.text",
+      "title": "",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "geomancy:soulforge_stellge",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "knowledgeBonus": 0.0,
+      "recipeFraction": 0.75,
+      "recipe_id_1": "geomancy:soulforge_exodia_4",
+      "requiredKnowledge": 25.0,
+      "text": "book.geomancy.guidebook.soulcasting.exodia_4.4.text",
+      "title1": "lorelog_exodia_4",
+      "title2": ""
+    }
+  ],
+  "parents": [
+    {
+      "draw_arrow": true,
+      "entry": "geomancy:soulcasting/enlightenment_3",
+      "line_enabled": true,
+      "line_reversed": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "x": -1,
+  "y": -1
+}

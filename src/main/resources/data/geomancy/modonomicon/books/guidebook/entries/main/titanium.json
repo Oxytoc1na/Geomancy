@@ -4,14 +4,14 @@
   "category": "geomancy:main",
   "condition": {
     "type": "modonomicon:advancement",
-    "advancement_id": "geomancy:main/get_mithril"
+    "advancement_id": "geomancy:main/get_titanium"
   },
-  "description": "book.geomancy.guidebook.main.mithril.description",
+  "description": "book.geomancy.guidebook.main.titanium.description",
   "hide_while_locked": false,
   "icon": {
-    "item": "geomancy:raw_mithril"
+    "item": "geomancy:raw_titanium"
   },
-  "name": "book.geomancy.guidebook.main.mithril.name",
+  "name": "book.geomancy.guidebook.main.titanium.name",
   "pages": [
     {
       "type": "modonomicon:text",
@@ -20,8 +20,8 @@
         "type": "modonomicon:none"
       },
       "show_title_separator": true,
-      "text": "book.geomancy.guidebook.main.mithril.info.text",
-      "title": "book.geomancy.guidebook.main.mithril.info.title",
+      "text": "book.geomancy.guidebook.main.titanium.info.text",
+      "title": "book.geomancy.guidebook.main.titanium.info.title",
       "use_markdown_in_title": false
     },
     {
@@ -31,9 +31,9 @@
         "type": "modonomicon:none"
       },
       "item": {
-        "item": "geomancy:mithril_ingot"
+        "item": "geomancy:titanium_ingot"
       },
-      "text": "book.geomancy.guidebook.main.mithril.mithril_ingot.text",
+      "text": "book.geomancy.guidebook.main.titanium.titanium_ingot.text",
       "title": ""
     }
   ],
@@ -46,6 +46,6 @@
     }
   ],
   "show_when_any_parent_unlocked": false,
-  "x": -4,
-  "y": 1
+  "x": -5,
+  "y": -1
 }

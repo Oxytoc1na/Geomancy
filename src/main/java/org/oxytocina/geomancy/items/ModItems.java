@@ -76,6 +76,9 @@ public class ModItems {
     public static final Item PERIDOT =      register("peridot",     new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof()));
     public static final Item AXINITE =      register("axinite",     new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof()));
 
+    // crafting materials
+    public static final Item SOUL_ACTUATOR = register("soul_actuator", new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON)));
+
 
     // guidebook and lore
     public static final GuidebookItem GUIDE_BOOK =              register("guidebook",           new GuidebookItem(new FabricItemSettings().maxCount(1)),new ExtraItemSettings().addGroup(ExtraItemSettings.Group.Lore));

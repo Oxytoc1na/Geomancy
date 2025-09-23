@@ -41,6 +41,8 @@ public class PrecompiledSoulCastingItem extends SoulCastingItem {
         super(settings, storageSize,internalSoulStorage,rechargeSpeedMultiplier);
     }
 
+    /// precompileds only open up for selection if the user is creative
+    /// TODO: it may be possible to circumvent this with a modified client. fix it or something.
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (!world.isClient) {
@@ -55,9 +57,8 @@ public class PrecompiledSoulCastingItem extends SoulCastingItem {
             else{
                 cast(user.getStackInHand(hand),user);
             }
-            return TypedActionResult.consume(user.getStackInHand(hand));
         }
-        return TypedActionResult.pass(user.getStackInHand(hand));
+        return TypedActionResult.consume(user.getStackInHand(hand));
     }
 
     @Override

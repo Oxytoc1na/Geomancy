@@ -64,16 +64,9 @@ public class SoulCastingItem extends StorageItem implements ISoulStoringItem, IS
             }
             else{
                 cast(user.getStackInHand(hand),user);
-
             }
-
-
-            return TypedActionResult.consume(user.getStackInHand(hand));
-        } else {
-
         }
-
-        return TypedActionResult.pass(user.getStackInHand(hand));
+        return TypedActionResult.consume(user.getStackInHand(hand));
     }
 
     public void cast(ItemStack key, LivingEntity user){

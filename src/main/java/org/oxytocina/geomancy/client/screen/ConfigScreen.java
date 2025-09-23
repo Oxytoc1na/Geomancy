@@ -70,6 +70,11 @@ public class ConfigScreen extends Screen {
                 GeomancyConfig.CONFIG.shakeIntensity.value(),0f,1f, GeomancyConfig.CONFIG.shakeIntensity::setValue);
         adder.add(slider);
 
+        // whisper volume
+        slider = FloatSlider.create(0,0,150,20,Text.translatable("geomancy.options.whisper_volume"),
+                GeomancyConfig.CONFIG.whisperVolume.value(),0f,1f, GeomancyConfig.CONFIG.whisperVolume::setValue);
+        adder.add(slider);
+
         // spellcradle tooltip truncation
         var intSlider = IntSlider.create(0,0,150,20,Text.translatable("geomancy.options.spellcradle_tooltip_truncation"),
                 GeomancyConfig.CONFIG.spellcradleTooltipTruncation.value(),1,20, GeomancyConfig.CONFIG.spellcradleTooltipTruncation::setValue);
