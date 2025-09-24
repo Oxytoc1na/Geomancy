@@ -1557,7 +1557,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                             \\
                             Apparently, there is a dimension called "null".
                             """);
-                    add(getS("gb:sc")+"enlightenment_4.1.text", """
+                    add(getS("gb:sc")+"enlightenment_4.2.text", """
                             A rather bland name. Maybe the component malfunctioned while printing it.
                             \\
                             It also didn't print instructions on how to get there.
@@ -1585,7 +1585,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                             \\
                             My burden is knowledge.
                             """);
-                    add(getS("gb:sc")+"enlightenment_5.1.text", """
+                    add(getS("gb:sc")+"enlightenment_5.2.text", """
                             What I have seen cannot be undone.
                             """);
 
