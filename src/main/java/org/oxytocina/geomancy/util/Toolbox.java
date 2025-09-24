@@ -293,12 +293,10 @@ public class Toolbox {
 
     @Environment(EnvType.CLIENT)
     public static void playSoundClient(SoundEvent event, World world, BlockPos pos, SoundCategory cat, float volume, float pitch){
-        if(event==null) return;
-        if(world instanceof ClientWorld){
-            world.playSound(MinecraftClient.getInstance().player, pos,event,cat,volume,pitch);
-            return;
+        if(event==null||volume<=0) return;
+        if(world instanceof ClientWorld cw){
+            cw.playSound(MinecraftClient.getInstance().player, pos,event,cat,volume,pitch);
         }
-        world.playSound(null,pos,event,cat,volume,pitch);
     }
 
     public static Vector2f rotateVector(Vector2f v1, double a){

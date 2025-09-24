@@ -10,7 +10,6 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
-import org.oxytocina.geomancy.util.StellgeUtil;
 import org.oxytocina.geomancy.util.Toolbox;
 
 public class WhisperS2CPacket {
