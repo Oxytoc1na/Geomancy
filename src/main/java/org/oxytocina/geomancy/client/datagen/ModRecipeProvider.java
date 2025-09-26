@@ -605,6 +605,11 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         }
 
         // soul forge
+        Identifier ADVANCEMENT_ID_ENLIGHTENMENT_1 = Geomancy.locate("spells/simple_enlightenment_1");
+        Identifier ADVANCEMENT_ID_ENLIGHTENMENT_2 = Geomancy.locate("spells/simple_enlightenment_2");
+        Identifier ADVANCEMENT_ID_ENLIGHTENMENT_3 = Geomancy.locate("spells/simple_enlightenment_3");
+        Identifier ADVANCEMENT_ID_ENLIGHTENMENT_4 = Geomancy.locate("spells/simple_enlightenment_4");
+        Identifier ADVANCEMENT_ID_ENLIGHTENMENT_5 = Geomancy.locate("spells/simple_enlightenment_5");
         {
             // storage
             {
@@ -614,14 +619,14 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         NbtIngredient.ofItems(SPELLSTORAGE_SMALL),
                         NbtIngredient.ofItems(Items.GOLD_INGOT),
                         NbtIngredient.ofItems(OCTANGULITE_INGOT)
-                ),SPELLSTORAGE_MEDIUM,1,200,0.2f,0.5f,"",conditionsFromItem(SPELLSTORAGE_SMALL),null);
+                ),SPELLSTORAGE_MEDIUM,1,200,0.2f,0.5f,"",conditionsFromItem(SPELLSTORAGE_SMALL),ADVANCEMENT_ID_ENLIGHTENMENT_1);
 
                 // large
                 AddSimpleSoulForgeRecipe(List.of(
                         NbtIngredient.ofItems(SPELLSTORAGE_MEDIUM),
                         NbtIngredient.ofItems(MITHRIL_INGOT),
                         NbtIngredient.ofItems(OCTANGULITE_INGOT)
-                ),SPELLSTORAGE_LARGE,1,1000,0.5f,0.7f,"",conditionsFromItem(SPELLSTORAGE_MEDIUM),null);
+                ),SPELLSTORAGE_LARGE,1,1000,0.5f,0.7f,"",conditionsFromItem(SPELLSTORAGE_MEDIUM),ADVANCEMENT_ID_ENLIGHTENMENT_3);
 
                 // vars
                 // medium
@@ -629,14 +634,14 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         NbtIngredient.ofItems(VARSTORAGE_SMALL),
                         NbtIngredient.ofItems(Items.DIAMOND),
                         NbtIngredient.ofItems(OCTANGULITE_INGOT)
-                ),VARSTORAGE_MEDIUM,1,200,0.2f,0.5f,"",conditionsFromItem(VARSTORAGE_SMALL),null);
+                ),VARSTORAGE_MEDIUM,1,200,0.2f,0.5f,"",conditionsFromItem(VARSTORAGE_SMALL),ADVANCEMENT_ID_ENLIGHTENMENT_2);
 
                 // large
                 AddSimpleSoulForgeRecipe(List.of(
                         NbtIngredient.ofItems(VARSTORAGE_MEDIUM),
                         NbtIngredient.ofItems(Items.DIAMOND),
                         NbtIngredient.ofItems(OCTANGULITE_INGOT)
-                ),VARSTORAGE_LARGE,1,1000,0.5f,0.7f,"",conditionsFromItem(VARSTORAGE_MEDIUM),null);
+                ),VARSTORAGE_LARGE,1,1000,0.5f,0.7f,"",conditionsFromItem(VARSTORAGE_MEDIUM),ADVANCEMENT_ID_ENLIGHTENMENT_4);
 
                 // soul
                 // medium
@@ -644,14 +649,14 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         NbtIngredient.ofItems(SOULSTORAGE_SMALL),
                         NbtIngredient.ofItems(LEAD_BLOCK),
                         NbtIngredient.ofItems(OCTANGULITE_BLOCK)
-                ),SOULSTORAGE_MEDIUM,1,200,0.2f,0.5f,"",conditionsFromItem(SOULSTORAGE_SMALL),null);
+                ),SOULSTORAGE_MEDIUM,1,200,0.2f,0.5f,"",conditionsFromItem(SOULSTORAGE_SMALL),ADVANCEMENT_ID_ENLIGHTENMENT_1);
 
                 // large
                 AddSimpleSoulForgeRecipe(List.of(
                         NbtIngredient.ofItems(SOULSTORAGE_MEDIUM),
                         NbtIngredient.ofItems(MITHRIL_BLOCK),
                         NbtIngredient.ofItems(OCTANGULITE_BLOCK)
-                ),SOULSTORAGE_LARGE,1,1000,0.5f,0.7f,"",conditionsFromItem(SOULSTORAGE_MEDIUM),null);
+                ),SOULSTORAGE_LARGE,1,1000,0.5f,0.7f,"",conditionsFromItem(SOULSTORAGE_MEDIUM),ADVANCEMENT_ID_ENLIGHTENMENT_4);
 
             }
 
@@ -671,7 +676,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         NbtIngredient.ofItems(Items.PHANTOM_MEMBRANE),
                         NbtIngredient.ofItems(MITHRIL_INGOT),
                         NbtIngredient.ofItems(OCTANGULITE_INGOT)
-                ),JOURNEY_GLOVE,1,1000,0.5f,1f,"",conditionsFromItem(SOUL_FORGE),null);
+                ),JOURNEY_GLOVE,1,1000,0.5f,1f,"",conditionsFromItem(SOUL_FORGE),ADVANCEMENT_ID_ENLIGHTENMENT_2);
 
                 // expert glove
                 AddSimpleSoulForgeRecipe(List.of(
@@ -679,7 +684,15 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         NbtIngredient.ofItems(Items.DRAGON_BREATH),
                         NbtIngredient.ofItems(MITHRIL_INGOT),
                         NbtIngredient.ofItems(Items.SHULKER_SHELL)
-                ),EXPERT_GLOVE,1,3000,0.5f,1f,"",conditionsFromItem(Items.DRAGON_BREATH),null);
+                ),EXPERT_GLOVE,1,3000,0.5f,1f,"",conditionsFromItem(Items.DRAGON_BREATH),ADVANCEMENT_ID_ENLIGHTENMENT_4);
+
+                // expert glove
+                AddSimpleSoulForgeRecipe(List.of(
+                        NbtIngredient.ofItems(JOURNEY_GLOVE),
+                        NbtIngredient.ofItems(Items.DRAGON_BREATH),
+                        NbtIngredient.ofItems(MITHRIL_INGOT),
+                        NbtIngredient.ofItems(Items.SHULKER_SHELL)
+                ),EXPERT_GLOVE,1,3000,0.5f,1f,"",conditionsFromItem(Items.DRAGON_BREATH),ADVANCEMENT_ID_ENLIGHTENMENT_5);
 
             }
 

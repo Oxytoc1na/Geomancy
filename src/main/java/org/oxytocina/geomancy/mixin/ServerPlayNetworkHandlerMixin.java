@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class ServerPlayNetworkHandlerMixin {
     @Shadow public abstract ServerPlayerEntity getPlayer();
 
-    @Inject(method="Lnet/minecraft/server/network/ServerPlayNetworkHandler;onChatMessage(Lnet/minecraft/network/packet/c2s/play/ChatMessageC2SPacket;)V",at=@At(value="HEAD"))
+    @Inject(method= "onChatMessage(Lnet/minecraft/network/packet/c2s/play/ChatMessageC2SPacket;)V",at=@At(value="HEAD"))
     public void geomancy$onChatMessage(ChatMessageC2SPacket packet, CallbackInfo ci)
     {
         EntityUtil.onMessageSent(this.getPlayer(),packet.chatMessage());

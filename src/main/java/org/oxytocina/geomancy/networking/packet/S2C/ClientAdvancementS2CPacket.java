@@ -18,18 +18,37 @@ public class ClientAdvancementS2CPacket {
     @Environment(EnvType.CLIENT)
     public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler,
                                PacketByteBuf buf, PacketSender responseSender) {
+        boolean reset = buf.readBoolean();
+        if(reset) ClientAdvancements.clear();
         int count = buf.readInt();
         for (int i = 0; i < count; i++) {
             Identifier id = buf.readIdentifier();
-            ClientAdvancements.add(id);
+            boolean adding = buf.readBoolean();
+            if(adding)
+                ClientAdvancements.add(id);
+            else
+                ClientAdvancements.remove(id);
         }
     }
 
-    public static void send(ServerPlayerEntity player, Identifier... ids){
+    public static void sendSync(ServerPlayerEntity player, Identifier... ids){
         PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeBoolean(true); // reset
         buf.writeInt(ids.length);
         for(var id : ids)
+        {
             buf.writeIdentifier(id);
+            buf.writeBoolean(true);
+        }
+        ServerPlayNetworking.send(player,ModMessages.CLIENT_ADVANCEMENT,buf);
+    }
+
+    public static void sendSingle(ServerPlayerEntity player, Identifier id, boolean add){
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeBoolean(false); // reset
+        buf.writeInt(1);
+        buf.writeIdentifier(id);
+        buf.writeBoolean(add);
         ServerPlayNetworking.send(player,ModMessages.CLIENT_ADVANCEMENT,buf);
     }
 }

@@ -2,6 +2,7 @@ package org.oxytocina.geomancy.mixin;
 
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.PlayerAdvancementTracker;
+import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.oxytocina.geomancy.networking.packet.S2C.ClientAdvancementS2CPacket;
 import org.oxytocina.geomancy.progression.advancement.ModCriteria;
@@ -19,7 +20,7 @@ public class PlayerAdvancementTrackerMixin {
 
     @Inject(method = "grantCriterion", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/Advancement;getRewards()Lnet/minecraft/advancement/AdvancementRewards;"))
     private void geomancy$advancementObtained(Advancement advancement, String criterionName, CallbackInfoReturnable<Boolean> cir) {
-        ClientAdvancementS2CPacket.send(this.owner,advancement.getId());
+        ClientAdvancementS2CPacket.sendSingle(this.owner,advancement.getId(),true);
         StellgeUtil.syncKnowledge(this.owner);
         ModCriteria.ADVANCEMENT.trigger(this.owner,advancement.getId());
     }

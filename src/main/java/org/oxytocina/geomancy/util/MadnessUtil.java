@@ -20,6 +20,7 @@ import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
+import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.IMaddeningBlock;
 import org.oxytocina.geomancy.effects.ModStatusEffects;
 import org.oxytocina.geomancy.entity.PlayerData;
@@ -47,6 +48,10 @@ public class MadnessUtil {
         PlayerData data = PlayerData.from(player);
         float old = data.madness;
         if(amount<0) amount=0;
+        if(Float.isNaN(amount)){
+            Geomancy.logError("tried to set "+player.getDisplayName().getString()+"s madness to not a number!");
+            throw new RuntimeException();
+        }
         if(old==amount) return false;
         data.madness = amount;
         return true;
@@ -68,7 +73,13 @@ public class MadnessUtil {
     }
 
     public static float getMadness(PlayerEntity player){
-        return PlayerData.from(player).madness;
+        float res = PlayerData.from(player).madness;
+        if(Float.isNaN(res)){
+            Geomancy.logError("got NaN as madness of player "+player.getDisplayName().getString()+"! setting to 0");
+            res=0;
+            setMadness(player,0);
+        }
+        return res;
     }
 
     // returns only the poisoning speed from a players inventory, without ambiance added in
@@ -112,7 +123,7 @@ public class MadnessUtil {
         }
 
 
-        // recalc mana
+        // recalc madness
         for(PlayerEntity entity : queuedRecalcs){
             recalculateMadnessSpeed(entity);
         }
