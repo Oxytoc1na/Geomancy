@@ -21,6 +21,7 @@ import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
 import net.minecraft.world.gen.noise.NoiseConfig;
 import org.oxytocina.geomancy.blocks.ModBlocks;
+import org.oxytocina.geomancy.registries.ModBlockTags;
 import org.oxytocina.geomancy.util.GenUtil;
 import org.oxytocina.geomancy.util.SimplexNoise;
 import org.oxytocina.geomancy.util.Toolbox;
@@ -54,9 +55,88 @@ public class NullChunkGenerator extends ChunkGenerator {
 
     /* the method that places grass, dirt, and other things on top of the world, as well as handling the bedrock and deepslate layers,
     as well as a few other miscellaneous things. without this method, your world is just a blank stone (or whatever your default block is) canvas (plus any ores, etc) */
+
+
+    static final BlockState rubbleState = ModBlocks.NULL_RUBBLE.getDefaultState();
+    static final BlockState crystalState = ModBlocks.NULL_CRYSTAL.getDefaultState();
+
     @Override
     public void buildSurface(ChunkRegion region, StructureAccessor structures, NoiseConfig noiseConfig, Chunk chunk) {
+        ChunkPos chunkPos = chunk.getPos();
+        int startX = chunkPos.getStartX();
+        int startZ = chunkPos.getStartZ();
+        int height = chunk.getHeight();
 
+        BlockPos.Mutable mutable = new BlockPos.Mutable();
+
+        // generate noise
+        int genX, genY, genZ;
+        final float blobThreshold = 0.9f;
+        final float surfaceThreshold = 0.8f;
+        final float surfaceNoisePerDepth = 0.02f;
+        BlockState state = null;
+        for(int ix = 0; ix < 16; ++ix) {
+            genX = ((startX+ix)/2)*2;
+            for(int iy = 0; iy < height; ++iy) {
+                genY = (iy/2)*2;
+                for(int iz = 0; iz < 16; ++iz) {
+                    genZ = ((startZ+iz)/2)*2;
+                    state = chunk.getBlockState(mutable.set(ix, iy, iz));
+                    // null rubble
+                    if(state.isIn(ModBlockTags.NULL_RUBBLE_REPLACEABLE))
+                    {
+                        // rubble blobs
+                        float noise = rubbleNoise(genX,genY,genZ);
+                        if(noise > blobThreshold)
+                            chunk.setBlockState(mutable, rubbleState, false);
+
+                        // surface
+                        if(noise > surfaceThreshold)
+                        {
+                            int depth = Math.round((float)Math.ceil((noise-surfaceThreshold)/surfaceNoisePerDepth));
+                            var topstate = chunk.getBlockState(mutable.up(depth));
+                            mutable.down(depth);
+                            if(topstate.isAir())
+                            {
+                                chunk.setBlockState(mutable, rubbleState, false);
+                            }
+                        }
+                    }
+
+                    // null crystal
+                    if(state.isIn(ModBlockTags.NULL_CRYSTAL_REPLACEABLE))
+                    {
+                        // rubble blobs
+                        float noise = crystalNoise(genX,genY,genZ);
+                        if(noise > blobThreshold)
+                            chunk.setBlockState(mutable, crystalState, false);
+
+                        // surface
+                        if(noise > surfaceThreshold)
+                        {
+                            int depth = Math.round((float)Math.ceil((noise-surfaceThreshold)/surfaceNoisePerDepth));
+                            var bottomstate = chunk.getBlockState(mutable.down(depth));
+                            var immediateBottomState = chunk.getBlockState(mutable.down());
+                            if(bottomstate.isAir())
+                            {
+                                chunk.setBlockState(mutable, crystalState, false);
+                            }
+
+                            // "paint" layer onto surface
+                            if(immediateBottomState.isAir()){
+                                int offset = 0;
+                                while(immediateBottomState.isAir() && mutable.getY()-(++offset)>chunk.getBottomY()){
+                                    immediateBottomState = chunk.getBlockState(mutable.down(offset));
+                                }
+                                if(immediateBottomState.isIn(ModBlockTags.NULL_CRYSTAL_REPLACEABLE)){
+                                    chunk.setBlockState(mutable.down(offset), crystalState, false);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
     /* the method that paints biomes on top of the already-generated terrain. if you leave this method alone, the entire world will be a River biome.
      note that this does not mean that the world will all be water; but drowned and salmon will spawn. */
@@ -158,10 +238,28 @@ public class NullChunkGenerator extends ChunkGenerator {
 
     final static float mainNoiseScale = 0.03f;
     final static float mainNoiseScaleOctave1 = 0.1431f;
+    final static float mainNoiseScaleOctave2 = 0.028314f;
     private float tunnellyNoise(int x, int y, int z){
-        return 0.8f * ((1-(float)Math.pow(SimplexNoise.noiseNormalized(x*mainNoiseScale,y*mainNoiseScale,z*mainNoiseScale),3))*3)%1
-                + 0.2f * SimplexNoise.noiseNormalized(x,y,z,mainNoiseScaleOctave1)
+        return (0.8f * ((1-(float)Math.pow(SimplexNoise.noiseNormalized(x*mainNoiseScale,y*mainNoiseScale,z*mainNoiseScale),3))*3)%1
+                + 0.2f * SimplexNoise.noiseNormalized(x,y,z,mainNoiseScaleOctave1))
+                * Toolbox.clampF(
+                    20*(SimplexNoise.noiseNormalized(x,y,z,mainNoiseScaleOctave2)-0.5f)
+                        ,0.2f,1)
         ;
+    }
+
+    private float rubbleNoise(int x, int y, int z){
+        return 0.8f * (1-(float)Math.pow(SimplexNoise.noiseNormalized(x*mainNoiseScale+0.51231,y*mainNoiseScale+0.3142,z*mainNoiseScale+0.1573),2))%1
+                + 0.2f * SimplexNoise.noiseNormalized(x+4819,y+1931,z-5738,mainNoiseScaleOctave1)
+                ;
+    }
+
+    final static float crystalNoiseScale = 0.041f;
+    final static float crystalNoiseScaleOctave1 = 0.1331f;
+    private float crystalNoise(int x, int y, int z){
+        return 0.7f * (1-(float)Math.pow(SimplexNoise.noiseNormalized(x* crystalNoiseScale +0.51231,y* crystalNoiseScale +0.3142,z* crystalNoiseScale +0.1573),2))%1
+                + 0.3f * SimplexNoise.noiseNormalized(x+623,y+4375,z-165, crystalNoiseScaleOctave1)
+                ;
     }
 
     private ChunkSection generateMazeSection(Chunk chunk, ChunkSection section, int y){

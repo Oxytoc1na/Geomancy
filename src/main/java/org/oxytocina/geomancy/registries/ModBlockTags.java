@@ -29,6 +29,9 @@ public class ModBlockTags {
     public static final TagKey<Block> SOUL_OAK_LOGS = register( "soul_oak_logs");
     public static final TagKey<Block> HAMMER_MINEABLES = register( "mineable/hammer");
 
+    public static final TagKey<Block> NULL_RUBBLE_REPLACEABLE = register( "null/rubble_replaceable");
+    public static final TagKey<Block> NULL_CRYSTAL_REPLACEABLE = register( "null/crystal_replaceable");
+
     public static TagKey<Block> register(String name){
         return register(Geomancy.locate(name));
     }

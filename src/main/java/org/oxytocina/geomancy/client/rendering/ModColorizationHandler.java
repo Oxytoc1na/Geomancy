@@ -103,6 +103,7 @@ public class ModColorizationHandler {
         addOctanguliteItem(ModItems.RAW_OCTANGULITE,0.01F,true);
         addOctanguliteItem(ModItems.OCTANGULITE_INGOT,0.01F,true);
         addOctanguliteItem(ModItems.OCTANGULITE_NUGGET,0.01F,true);
+        addOctanguliteItem(ModItems.OCTANGULITE_APPLE,0.01F,true);
         addOctanguliteItem(ModBlocks.OCTANGULITE_BLOCK.asItem(),0.03F,false);
         addOctanguliteItem(ModBlocks.RAW_OCTANGULITE_BLOCK.asItem(),0.03F,false);
         addOctanguliteItem(ModBlocks.CUT_OCTANGULITE.asItem(),0.03F,false);

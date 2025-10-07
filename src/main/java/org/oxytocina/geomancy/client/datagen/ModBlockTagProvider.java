@@ -86,6 +86,14 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
                         ModBlocks.NULL_RUBBLE
                 );
 
+        getOrCreateTagBuilder(NULL_RUBBLE_REPLACEABLE).setReplace(false)
+                .add(ModBlocks.NULL_ROCK)
+        ;
+
+        getOrCreateTagBuilder(NULL_CRYSTAL_REPLACEABLE).setReplace(false)
+                .add(ModBlocks.NULL_ROCK)
+        ;
+
         getOrCreateTagBuilder(SOUL_OAK_LOGS).setReplace(false)
                 .add(ModBlocks.SOUL_OAK_LOG)
                 .add(ModBlocks.SOUL_OAK_WOOD)

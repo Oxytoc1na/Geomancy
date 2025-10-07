@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "vertical_direction=down": {
+      "model": "geomancy:block/null_spike_down_tip"
+    },
+    "vertical_direction=up": {
+      "model": "geomancy:block/null_spike_up_tip"
+    }
+  }
+}
