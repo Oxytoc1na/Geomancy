@@ -186,6 +186,8 @@ public class ModBlocks {
     public static final Block NULL_ROCK = register("null_rock", Block::new, AbstractBlock.Settings.create().mapColor(MapColor.BLACK).requiresTool().strength(4.0F, 6.0F).sounds(BlockSoundGroup.BASALT).instrument(Instrument.BASEDRUM).requiresTool(),ExtraBlockSettings.create().mineableByPickaxe().miningLevel(2),new FabricItemSettings());
     public static final ModFallingBlock NULL_RUBBLE = register("null_rubble", s->new ModFallingBlock(s, Toolbox.colorFromRGB(0.2f,0.2f,0.2f)), AbstractBlock.Settings.create().mapColor(MapColor.BLACK).requiresTool().strength(4.0F, 6.0F).sounds(BlockSoundGroup.BASALT).instrument(Instrument.BASEDRUM).requiresTool(),ExtraBlockSettings.create().mineableByShovel().mineableByPickaxe().miningLevel(2),new FabricItemSettings());
 
+    public static final GlowLichenBlock IRIDESCENT_VINES = register("iridescent_vines",GlowLichenBlock::new,AbstractBlock.Settings.copy(Blocks.GLOW_LICHEN),ExtraBlockSettings.create().notSimpleCube().cutout());
+
     // vault blocks
     public static final Block VAULT_BLOCK               = register("vault_block", Block::new,AbstractBlock.Settings.create().mapColor(MapColor.STONE_GRAY).instrument(Instrument.BASEDRUM).strength(-1.0F, 3600000.0F).dropsNothing().allowsSpawning(Blocks::never),ExtraBlockSettings.create().noModels().layer(ExtraBlockSettings.Layer.Cutout));
     public static final GlassBlock VAULT_GLASS          = register("vault_glass", GlassBlock::new,AbstractBlock.Settings.copy(VAULT_BLOCK).nonOpaque().solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never),ExtraBlockSettings.copyFrom(VAULT_BLOCK).layer(ExtraBlockSettings.Layer.Transparent),new FabricItemSettings());

@@ -312,6 +312,11 @@ public class SoulUtil {
         // at 100%, 50% speed
         actualRegenSpeed *= 1-0.5f*(data.mana/Math.max(max,1));
 
+        // prevent passive loss of soul
+        if(actualRegenSpeed <= 0){
+            return false;
+        }
+
         // regen from ambiance
         float newMana = Toolbox.clampF(data.mana + actualRegenSpeed,0,max);
         if(newMana!=data.mana)

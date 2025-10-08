@@ -5,6 +5,8 @@ import com.llamalad7.mixinextras.injector.wrapoperation.*;
 
 //import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.MultifaceGrowthBlock;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.*;
@@ -15,6 +17,7 @@ import net.minecraft.entity.player.*;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.*;
 import net.minecraft.nbt.*;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.*;
 import net.minecraft.util.math.*;
@@ -299,5 +302,19 @@ public abstract class LivingEntityMixin {
         return !(((EntityMixin)ent).getFirstUpdate()) && ((EntityMixin)ent).getFluidHeight().getDouble(ModFluidTags.VISCOUS_FLUID) > (double)0.0F;
     }
 
+    @Inject(method="isClimbing",at=@At(value="RETURN"),cancellable = true)
+    public void geomancy$preventFloorClimbing(CallbackInfoReturnable<Boolean> cir){
+        BlockState blockState = ((LivingEntity)(Object)this).getBlockStateAtPos();
+        if(blockState.isIn(BlockTags.CLIMBABLE) && blockState.getBlock() instanceof MultifaceGrowthBlock &&
+                MultifaceGrowthBlock.hasDirection(blockState,Direction.DOWN)
+                && !MultifaceGrowthBlock.hasDirection(blockState,Direction.EAST)
+                && !MultifaceGrowthBlock.hasDirection(blockState,Direction.WEST)
+                && !MultifaceGrowthBlock.hasDirection(blockState,Direction.NORTH)
+                && !MultifaceGrowthBlock.hasDirection(blockState,Direction.SOUTH)
+        )
+        {
+            cir.setReturnValue(false);
+        }
+    }
 
 }

@@ -37,6 +37,11 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
         builder = getOrCreateTagBuilder(HOE_MINEABLES).setReplace(false);
         for(Block b : ExtraBlockSettings.ToolableBlock_Hoe) builder.add(b);
 
+        // climbable
+        getOrCreateTagBuilder(BlockTags.CLIMBABLE).setReplace(false).add(
+                ModBlocks.IRIDESCENT_VINES
+        );
+
         // walls
         builder = getOrCreateTagBuilder(BlockTags.WALLS).setReplace(false);
         for(Block b : ExtraBlockSettings.WallBlocks.keySet())builder.add(b);

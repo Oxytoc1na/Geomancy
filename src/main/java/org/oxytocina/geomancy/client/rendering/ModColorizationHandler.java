@@ -53,7 +53,8 @@ public class ModColorizationHandler {
                 ModBlocks.SOUL_OAK_DOOR,
                 ModBlocks.SOUL_OAK_LOG,
                 ModBlocks.STRIPPED_SOUL_OAK_LOG,
-                ModBlocks.STRIPPED_SOUL_OAK_WOOD
+                ModBlocks.STRIPPED_SOUL_OAK_WOOD,
+                ModBlocks.IRIDESCENT_VINES
                 );
 
         // double tintets, for example vault blocks (first index is uncolored)
@@ -128,6 +129,7 @@ public class ModColorizationHandler {
         //addOctanguliteItem(ModBlocks.SOUL_OAK_HANGING_SIGN.asItem(),0.03F,false);
         addOctanguliteItem(ModBlocks.SOUL_OAK_STAIRS.asItem(),0.03F,false);
         addOctanguliteItem(ModBlocks.SOUL_OAK_SLAB.asItem(),0.03F,false);
+        addOctanguliteItem(ModBlocks.IRIDESCENT_VINES.asItem(),0.03F,false);
 
         addOctanguliteOreItem(ModBlocks.OCTANGULITE_ORE.asItem(),0.003F,false);
         addOctanguliteOreItem(ModBlocks.DEEPSLATE_OCTANGULITE_ORE.asItem(),0.003F,false);
