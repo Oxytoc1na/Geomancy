@@ -38,14 +38,17 @@ public class NullSpikeBlock extends Block implements LandingBlock, Waterloggable
         this.setDefaultState(this.stateManager.getDefaultState().with(VERTICAL_DIRECTION, Direction.UP).with(WATERLOGGED, false));
     }
 
+    @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(VERTICAL_DIRECTION, WATERLOGGED);
     }
 
+    @Override
     public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
         return canPlaceAtWithDirection(world, pos, (Direction)state.get(VERTICAL_DIRECTION));
     }
 
+    @Override
     public void onProjectileHit(World world, BlockState state, BlockHitResult hit, ProjectileEntity projectile) {
         BlockPos blockPos = hit.getBlockPos();
         if (!world.isClient && projectile.canModifyAt(world, blockPos) && projectile instanceof TridentEntity && projectile.getVelocity().length() > 0.6) {
@@ -54,6 +57,7 @@ public class NullSpikeBlock extends Block implements LandingBlock, Waterloggable
 
     }
 
+    @Override
     public void onLandedUpon(World world, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
         if (state.get(VERTICAL_DIRECTION) == Direction.UP) {
             entity.handleFallDamage(fallDistance + 3.0F, 3.0F, world.getDamageSources().stalagmite());
@@ -63,17 +67,19 @@ public class NullSpikeBlock extends Block implements LandingBlock, Waterloggable
 
     }
 
+    @Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         if (isPointingUp(state) && !this.canPlaceAt(state, world, pos)) {
             world.breakBlock(pos, true);
         } else {
             spawnFallingBlock(state, world, pos);
         }
-
     }
 
-    public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-
+    @Override
+    public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+        world.scheduleBlockTick(pos, this, 2);
+        return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
     }
 
     @Nullable
@@ -91,16 +97,18 @@ public class NullSpikeBlock extends Block implements LandingBlock, Waterloggable
         }
     }
 
+    @Override
     public FluidState getFluidState(BlockState state) {
         return (Boolean)state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
     }
 
+    @Override
     public VoxelShape getCullingShape(BlockState state, BlockView world, BlockPos pos) {
         return VoxelShapes.empty();
     }
 
+    @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        Thickness thickness = Thickness.TIP;
         VoxelShape voxelShape;
         if (state.get(VERTICAL_DIRECTION) == Direction.DOWN) {
             voxelShape = DOWN_TIP_SHAPE;
@@ -111,21 +119,24 @@ public class NullSpikeBlock extends Block implements LandingBlock, Waterloggable
         return voxelShape.offset(vec3d.x, (double)0.0F, vec3d.z);
     }
 
+    @Override
     public boolean isShapeFullCube(BlockState state, BlockView world, BlockPos pos) {
         return false;
     }
 
+    @Override
     public float getMaxHorizontalModelOffset() {
         return 0.125F;
     }
 
+    @Override
     public void onDestroyedOnLanding(World world, BlockPos pos, FallingBlockEntity fallingBlockEntity) {
         if (!fallingBlockEntity.isSilent()) {
             world.syncWorldEvent(1045, pos, 0);
         }
-
     }
 
+    @Override
     public DamageSource getDamageSource(Entity attacker) {
         return attacker.getDamageSources().fallingStalactite(attacker);
     }
@@ -163,17 +174,6 @@ public class NullSpikeBlock extends Block implements LandingBlock, Waterloggable
         return Thickness.TIP;
     }
 
-    private static boolean canGrow(BlockState state, ServerWorld world, BlockPos pos) {
-        Direction direction = (Direction)state.get(VERTICAL_DIRECTION);
-        BlockPos blockPos = pos.offset(direction);
-        BlockState blockState = world.getBlockState(blockPos);
-        if (!blockState.getFluidState().isEmpty()) {
-            return false;
-        } else {
-            return blockState.isAir() ? true : isTip(blockState, direction.getOpposite());
-        }
-    }
-
     private static boolean canPlaceAtWithDirection(WorldView world, BlockPos pos, Direction direction) {
         BlockPos blockPos = pos.offset(direction.getOpposite());
         BlockState blockState = world.getBlockState(blockPos);
@@ -192,12 +192,13 @@ public class NullSpikeBlock extends Block implements LandingBlock, Waterloggable
         return isPointedDripstoneFacingDirection(state, Direction.UP);
     }
 
+    @Override
     public boolean canPathfindThrough(BlockState state, BlockView world, BlockPos pos, NavigationType type) {
         return false;
     }
 
     private static boolean isPointedDripstoneFacingDirection(BlockState state, Direction direction) {
-        return state.isOf(Blocks.POINTED_DRIPSTONE) && state.get(VERTICAL_DIRECTION) == direction;
+        return state.isOf(ModBlocks.NULL_SPIKE) && state.get(VERTICAL_DIRECTION) == direction;
     }
 
     static {

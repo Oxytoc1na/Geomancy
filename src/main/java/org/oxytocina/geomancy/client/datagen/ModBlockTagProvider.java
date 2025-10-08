@@ -80,19 +80,21 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
                 );
 
         // null blocks
-        getOrCreateTagBuilder(NULL_BLOCKS).setReplace(false)
-                .add(
-                        ModBlocks.NULL_ROCK,
-                        ModBlocks.NULL_RUBBLE
-                );
+        {
+            getOrCreateTagBuilder(NULL_BLOCKS).setReplace(false).add(
+                            ModBlocks.NULL_ROCK,
+                            ModBlocks.NULL_RUBBLE);
 
-        getOrCreateTagBuilder(NULL_RUBBLE_REPLACEABLE).setReplace(false)
-                .add(ModBlocks.NULL_ROCK)
-        ;
+            getOrCreateTagBuilder(NULL_RUBBLE_REPLACEABLE).setReplace(false)
+                    .add(ModBlocks.NULL_ROCK);
 
-        getOrCreateTagBuilder(NULL_CRYSTAL_REPLACEABLE).setReplace(false)
-                .add(ModBlocks.NULL_ROCK)
-        ;
+            getOrCreateTagBuilder(NULL_CRYSTAL_REPLACEABLE).setReplace(false)
+                    .add(ModBlocks.NULL_ROCK);
+
+            getOrCreateTagBuilder(NULL_HOLDS_SPIKES).setReplace(false)
+                    .add(ModBlocks.NULL_ROCK,ModBlocks.NULL_RUBBLE);
+        }
+
 
         getOrCreateTagBuilder(SOUL_OAK_LOGS).setReplace(false)
                 .add(ModBlocks.SOUL_OAK_LOG)
@@ -127,24 +129,29 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
         addSoulTag(BlockTags.CORALS,SoulLevel.Normal);
         addSoulTag(BlockTags.CORAL_BLOCKS,SoulLevel.Normal);
         addSoulTag(BlockTags.CAVE_VINES,SoulLevel.Normal);
-        addSoulBlock(Blocks.VINE,SoulLevel.Normal);
-        addSoulBlock(Blocks.KELP,SoulLevel.Normal);
-        addSoulBlock(Blocks.KELP_PLANT,SoulLevel.Normal);
-        addSoulBlock(Blocks.TALL_GRASS,SoulLevel.Normal);
-        addSoulBlock(Blocks.TALL_SEAGRASS,SoulLevel.Normal);
-        addSoulBlock(Blocks.GRASS,SoulLevel.Normal);
-        addSoulBlock(Blocks.SEAGRASS,SoulLevel.Normal);
-        addSoulBlock(Blocks.SEA_PICKLE,SoulLevel.Normal);
+        addSoulBlocks(SoulLevel.Normal,
+                Blocks.VINE,Blocks.KELP,Blocks.KELP_PLANT,
+                Blocks.TALL_GRASS,Blocks.TALL_SEAGRASS,Blocks.GRASS,
+                Blocks.SEAGRASS,Blocks.SEA_PICKLE);
 
         addSoulTag(BlockTags.BEEHIVES,SoulLevel.Many);
         addSoulTag(OCTANGULITE,SoulLevel.Many);
+        addSoulBlocks(SoulLevel.Many,
+                Blocks.INFESTED_COBBLESTONE,
+                Blocks.INFESTED_CHISELED_STONE_BRICKS,
+                Blocks.INFESTED_DEEPSLATE,
+                Blocks.INFESTED_STONE,
+                Blocks.INFESTED_STONE_BRICKS,
+                Blocks.INFESTED_MOSSY_STONE_BRICKS,
+                Blocks.INFESTED_CRACKED_STONE_BRICKS
+                );
 
         addSoulTag(NULL_BLOCKS,SoulLevel.RemoveMany);
 
 
     }
-    void addSoulBlock(Block block) { addSoulBlock(block,SoulLevel.Normal); }
-    void addSoulBlock(Block block,SoulLevel level){
+    void addSoulBlock(Block block) { addSoulBlocks(SoulLevel.Normal,block); }
+    void addSoulBlocks(SoulLevel level,Block... blocks){
         var builder_main = getOrCreateTagBuilder(ADDS_SOULS).setReplace(false);
         var builder_sub = getOrCreateTagBuilder(switch(level){
             case Few -> ADDS_SOULS_FEW;
@@ -153,8 +160,10 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
             case RemoveMany -> REMOVES_SOULS_MANY;
         }).setReplace(false);
 
-        builder_main.add(block);
-        builder_sub.add(block);
+        for(var block : blocks){
+            builder_main.add(block);
+            builder_sub.add(block);
+        }
     }
     void addSoulTag(TagKey<Block> tag, SoulLevel level){
         var builder_main = getOrCreateTagBuilder(ADDS_SOULS).setReplace(false);

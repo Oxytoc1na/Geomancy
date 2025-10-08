@@ -31,6 +31,7 @@ public class ModBlockTags {
 
     public static final TagKey<Block> NULL_RUBBLE_REPLACEABLE = register( "null/rubble_replaceable");
     public static final TagKey<Block> NULL_CRYSTAL_REPLACEABLE = register( "null/crystal_replaceable");
+    public static final TagKey<Block> NULL_HOLDS_SPIKES = register( "null/holds_spikes");
 
     public static TagKey<Block> register(String name){
         return register(Geomancy.locate(name));

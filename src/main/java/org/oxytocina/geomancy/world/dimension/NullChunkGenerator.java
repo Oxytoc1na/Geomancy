@@ -7,6 +7,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.HeightLimitView;
 import net.minecraft.world.Heightmap;
@@ -21,6 +22,7 @@ import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
 import net.minecraft.world.gen.noise.NoiseConfig;
 import org.oxytocina.geomancy.blocks.ModBlocks;
+import org.oxytocina.geomancy.blocks.NullSpikeBlock;
 import org.oxytocina.geomancy.registries.ModBlockTags;
 import org.oxytocina.geomancy.util.GenUtil;
 import org.oxytocina.geomancy.util.SimplexNoise;
@@ -59,6 +61,8 @@ public class NullChunkGenerator extends ChunkGenerator {
 
     static final BlockState rubbleState = ModBlocks.NULL_RUBBLE.getDefaultState();
     static final BlockState crystalState = ModBlocks.NULL_CRYSTAL.getDefaultState();
+    static final BlockState spikeUpState = ModBlocks.NULL_SPIKE.getDefaultState().with(NullSpikeBlock.VERTICAL_DIRECTION, Direction.UP);
+    static final BlockState spikeDownState = ModBlocks.NULL_SPIKE.getDefaultState().with(NullSpikeBlock.VERTICAL_DIRECTION, Direction.DOWN);
 
     @Override
     public void buildSurface(ChunkRegion region, StructureAccessor structures, NoiseConfig noiseConfig, Chunk chunk) {
@@ -72,15 +76,17 @@ public class NullChunkGenerator extends ChunkGenerator {
         // generate noise
         int genX, genY, genZ;
         final float blobThreshold = 0.9f;
+        final float groundSpikeThreshold = 0.7f;
+        final float ceilingSpikeThreshold = 0.6f;
         final float surfaceThreshold = 0.8f;
         final float surfaceNoisePerDepth = 0.02f;
         BlockState state = null;
         for(int ix = 0; ix < 16; ++ix) {
-            genX = ((startX+ix)/2)*2;
+            genX = startX+ix;
             for(int iy = 0; iy < height; ++iy) {
-                genY = (iy/2)*2;
+                genY = iy;
                 for(int iz = 0; iz < 16; ++iz) {
-                    genZ = ((startZ+iz)/2)*2;
+                    genZ = startZ+iz;
                     state = chunk.getBlockState(mutable.set(ix, iy, iz));
                     // null rubble
                     if(state.isIn(ModBlockTags.NULL_RUBBLE_REPLACEABLE))
@@ -134,6 +140,33 @@ public class NullChunkGenerator extends ChunkGenerator {
                             }
                         }
                     }
+
+                    // spikes on ground
+                    if(genY < 64 && state.isIn(ModBlockTags.NULL_HOLDS_SPIKES))
+                    {
+                        var upperState = chunk.getBlockState(mutable.up());
+                        if(upperState.isAir()){
+                            // theres space!
+                            float noise = groundSpikeNoise(genX,genY,genZ);
+                            noise = Toolbox.clampF(noise-((iy-30)*0.02f),0,noise);
+                            if(noise > groundSpikeThreshold)
+                                chunk.setBlockState(mutable.up(), spikeUpState, false);
+                        }
+                    }
+
+                    // spikes on ceiling
+                    if(state.isIn(ModBlockTags.NULL_HOLDS_SPIKES))
+                    {
+                        var lowerState = chunk.getBlockState(mutable.down());
+                        if(lowerState.isAir()){
+                            // theres space!
+                            float noise = groundSpikeNoise(genX,genY,genZ);
+                            noise = Toolbox.clampF(noise+((iy-height+100)*0.02f),0,noise);
+                            if(noise > ceilingSpikeThreshold)
+                                chunk.setBlockState(mutable.down(), spikeDownState, false);
+                        }
+                    }
+
                 }
             }
         }
@@ -259,6 +292,12 @@ public class NullChunkGenerator extends ChunkGenerator {
     private float crystalNoise(int x, int y, int z){
         return 0.7f * (1-(float)Math.pow(SimplexNoise.noiseNormalized(x* crystalNoiseScale +0.51231,y* crystalNoiseScale +0.3142,z* crystalNoiseScale +0.1573),2))%1
                 + 0.3f * SimplexNoise.noiseNormalized(x+623,y+4375,z-165, crystalNoiseScaleOctave1)
+                ;
+    }
+
+    final static float spikeNoiseScale = 0.3524f;
+    private float groundSpikeNoise(int x, int y, int z){
+        return 1 * (1-(float)Math.pow(SimplexNoise.noiseNormalized(x* spikeNoiseScale +0.51231,y* spikeNoiseScale +0.3142,z* spikeNoiseScale +0.1573),2))%1
                 ;
     }
 
