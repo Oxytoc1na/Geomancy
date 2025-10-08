@@ -188,6 +188,8 @@ public class ModBlocks {
     public static final Block NULL_CRYSTAL          = register("null_crystal",  Block::new,AbstractBlock.Settings.create().luminance(s->10).mapColor(MapColor.BRIGHT_TEAL).requiresTool().strength(4.0F, 6.0F).sounds(BlockSoundGroup.AMETHYST_BLOCK).instrument(Instrument.BASEDRUM),ExtraBlockSettings.create().mineableByPickaxe().miningLevel(2),new FabricItemSettings());
     public static final NullSpikeBlock NULL_SPIKE   = register("null_spike",    NullSpikeBlock::new,AbstractBlock.Settings.copy(NULL_ROCK),ExtraBlockSettings.create().mineableByPickaxe().miningLevel(2).notSimpleCube().cutout(),new FabricItemSettings());
 
+    public static final GlowLichenBlock IRIDESCENT_VINES = register("iridescent_vines",GlowLichenBlock::new,AbstractBlock.Settings.copy(Blocks.GLOW_LICHEN).luminance(GlowLichenBlock.getLuminanceSupplier(10)),ExtraBlockSettings.create().notSimpleCube().cutout());
+
     // vault blocks
     public static final Block VAULT_BLOCK               = register("vault_block", Block::new,AbstractBlock.Settings.create().mapColor(MapColor.STONE_GRAY).instrument(Instrument.BASEDRUM).strength(-1.0F, 3600000.0F).dropsNothing().allowsSpawning(Blocks::never),ExtraBlockSettings.create().noModels().layer(ExtraBlockSettings.Layer.Cutout));
     public static final GlassBlock VAULT_GLASS          = register("vault_glass", GlassBlock::new,AbstractBlock.Settings.copy(VAULT_BLOCK).nonOpaque().solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never),ExtraBlockSettings.copyFrom(VAULT_BLOCK).layer(ExtraBlockSettings.Layer.Transparent),new FabricItemSettings());

@@ -19,6 +19,7 @@ public class CasterChangeSelectedSpellC2S {
         ItemStack stack = buf.readItemStack();
         int slot = buf.readInt();
         int selected = buf.readInt();
+        if(slot==-1) return; // invalid slot sent
 
         server.execute(()->{
             if(player==null||player.getWorld()==null) return;

@@ -1,6 +1,7 @@
 package org.oxytocina.geomancy.spells;
 
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
@@ -22,6 +23,7 @@ import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlockEntity;
 import org.oxytocina.geomancy.client.util.CamShakeUtil;
 import org.oxytocina.geomancy.effects.ModStatusEffects;
+import org.oxytocina.geomancy.enchantments.ModEnchantments;
 import org.oxytocina.geomancy.entity.CasterDelegateEntity;
 import org.oxytocina.geomancy.items.SpellStoringItem;
 import org.oxytocina.geomancy.util.ByteUtil;
@@ -99,7 +101,8 @@ public class SpellGrid {
         SpellContext.Restrictions restrictions = SpellContext.Restrictions.NONE;
 
         // soul cost
-        float costMultiplier = soulCostMultiplier;
+        float casterItemCostMultiplier = 1 - 0.1f*EnchantmentHelper.getLevel(ModEnchantments.SOUL_SAVER,casterItem);
+        float costMultiplier = this.soulCostMultiplier*casterItemCostMultiplier;
         if(casterEntity!=null&&casterEntity.hasStatusEffect(ModStatusEffects.REGRETFUL))
         {
             var amp = casterEntity.getStatusEffect(ModStatusEffects.REGRETFUL).getAmplifier();

@@ -13,11 +13,24 @@ import java.util.Objects;
 
 public class ModEnchantments {
 
-    public static final SkillfulEnchantment SKILLFUL = register("skillful",new SkillfulEnchantment());
-    public static final MightyEnchantment MIGHTY = register("mighty",new MightyEnchantment());
-    public static final BrillianceEnchantment BRILLIANCE = register("brilliance",new BrillianceEnchantment());
-    public static final SoulSaverEnchantment SOUL_SAVER = register("soul_saver",new SoulSaverEnchantment());
-    public static final MesmerizingEnchantment MESMERIZING = register("mesmerizing",new MesmerizingEnchantment());
+    /// increases skill of a hammer for smithery and soulforge recipes
+    /// targets: hammers
+    public static final SkillfulEnchantment SKILLFUL        = register("skillful",new SkillfulEnchantment());
+    /// increases progress per swing of a hammer in smithery and soulforge recipes
+    /// targets: hammers
+    public static final MightyEnchantment MIGHTY            = register("mighty",new MightyEnchantment());
+    /// increases effectiveness of jewelry
+    /// targets: jewelry
+    public static final BrillianceEnchantment BRILLIANCE    = register("brilliance",new BrillianceEnchantment());
+    /// decreases soul consumed from this item
+    /// targets: soul storage items, spell storage items
+    public static final SoulSaverEnchantment SOUL_SAVER     = register("soul_saver",new SoulSaverEnchantment());
+    /// increases soul storage capacity of an item
+    /// targets: soul storage
+    public static final MesmerizingEnchantment MESMERIZING  = register("mesmerizing",new MesmerizingEnchantment());
+    /// decreases effect of distance on casting cost
+    /// targets: caster items
+    public static final FocusedEnchantment FOCUSED          = register("focused",new FocusedEnchantment());
 
     public static void register(){
 

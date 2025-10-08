@@ -58,31 +58,32 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                 .build(consumer, Geomancy.MOD_ID + ":main/root");
 
         // progression milestones
-        Advancement milestone_smithery = AddOrMilestoneAdvancement("smithery", List.of("geomancy:interaction/simple_smithery"),ModBlocks.SMITHERY,Geomancy.locate("textures/block/gilded_deepslate.png"));
-        Advancement milestone_souls = AddAndMilestoneAdvancement("souls", List.of("geomancy:main/simple_maddened","geomancy:main/get_spellmaker"),ModBlocks.SMITHERY,Geomancy.locate("textures/block/octangulite_block.png"));
-        Advancement milestone_soulforge = AddOrMilestoneAdvancement("soulforge", List.of("geomancy:interaction/simple_soulforge"),ModBlocks.SOUL_FORGE,Geomancy.locate("textures/block/orthoclase_block.png"));
+        Advancement milestone_smithery      = AddOrMilestoneAdvancement("smithery"  , List.of("geomancy:interaction/simple_smithery")                       ,ModBlocks.SMITHERY     ,Geomancy.locate("textures/block/gilded_deepslate.png"));
+        Advancement milestone_souls         = AddAndMilestoneAdvancement("souls"    , List.of("geomancy:main/simple_maddened","geomancy:main/get_spellmaker")   ,ModBlocks.SPELLMAKER   ,Geomancy.locate("textures/block/octangulite_block.png"));
+        Advancement milestone_soulforge     = AddOrMilestoneAdvancement("soulforge" , List.of("geomancy:interaction/simple_soulforge")                      ,ModBlocks.SOUL_FORGE   ,Geomancy.locate("textures/block/orthoclase_block.png"));
         var enlightenmentList = List.of(
                 "geomancy:main/simple_enlightenment_1","geomancy:main/simple_enlightenment_2","geomancy:main/simple_enlightenment_3",
                 "geomancy:main/simple_enlightenment_4","geomancy:main/simple_enlightenment_5"
         );
-        Advancement milestone_enlightenment = AddAndMilestoneAdvancement("enlightenment",enlightenmentList ,ModItems.SOUL_PREVIEW,Geomancy.locate("textures/block/orthoclase_block.png"));
-        Advancement milestone_any_enlightenment = AddOrMilestoneAdvancement("enlightenment",enlightenmentList,ModItems.SOUL_PREVIEW,Geomancy.locate("textures/block/orthoclase_block.png"));
+        Advancement milestone_enlightenment     = AddAndMilestoneAdvancement("enlightenment",enlightenmentList,ModItems.SOUL_PREVIEW,Geomancy.locate("textures/block/orthoclase_block.png"));
+        Advancement milestone_any_enlightenment = AddOrMilestoneAdvancement("enlightenment" ,enlightenmentList,ModItems.SOUL_PREVIEW,Geomancy.locate("textures/block/orthoclase_block.png"));
 
-        Advancement got_molten_gold = AddGetItemAdvancement(ModFluids.MOLTEN_GOLD_BUCKET,"molten_gold",ModFluids.MOLTEN_GOLD_BUCKET,"main",AdvancementFrame.CHALLENGE,true,false,main);
-        Advancement got_mithril = AddGetItemAdvancement(ModItems.RAW_MITHRIL,"mithril",ModItems.RAW_MITHRIL,"main",AdvancementFrame.TASK,true,false,main);
-        Advancement got_octangulite = AddGetItemAdvancement(ModItems.RAW_OCTANGULITE,"octangulite",ModItems.RAW_OCTANGULITE,"main",AdvancementFrame.TASK,true,false,main);
-        Advancement got_titanium = AddGetItemAdvancement(ModItems.RAW_TITANIUM,"titanium",ModItems.RAW_TITANIUM,"main",AdvancementFrame.TASK,true,false,main);
-        Advancement got_lead = AddGetItemAdvancement(ModItems.RAW_LEAD,"lead",ModItems.RAW_LEAD,"main",AdvancementFrame.TASK,true,false,main);
-        Advancement got_molybdenum = AddGetItemAdvancement(ModItems.RAW_MOLYBDENUM,"molybdenum",ModItems.RAW_MOLYBDENUM,"main",AdvancementFrame.TASK,true,false,main);
-        Advancement got_gilded_deepslate = AddGetItemAdvancement(ModBlocks.DECORATED_GILDED_DEEPSLATE,"gilded_deepslate",new ItemConvertible[]{ModBlocks.GILDED_DEEPSLATE,ModBlocks.DECORATED_GILDED_DEEPSLATE},"main",AdvancementFrame.TASK,true,false,main);
-        Advancement got_soul_oak = AddGetItemAdvancement(ModBlocks.SOUL_OAK_PLANKS,"soul_oak",new ItemConvertible[]{ModBlocks.SOUL_OAK_LOG,ModBlocks.SOUL_OAK_PLANKS},"main",AdvancementFrame.TASK,true,false,main);
-        Advancement got_spellmaker = AddGetItemAdvancement(ModBlocks.SPELLMAKER,"spellmaker",new ItemConvertible[]{ModBlocks.SPELLMAKER},"main",AdvancementFrame.TASK,true,false,main);
-        Advancement simple_duplicate_trinkets = AddSimpleAdvancement(ModItems.ARTIFACT_OF_IRON,"duplicate_trinkets","duplicate_trinkets","main",AdvancementFrame.TASK,true,true,main);
-        Advancement simple_tried_to_take_smithery_result = AddSimpleAdvancement(ModItems.IRON_HAMMER,"tried_to_take_smithery_result","tried_to_take_smithery_result","main",AdvancementFrame.TASK,true,true,milestone_smithery);
-        Advancement simple_tried_to_smith_cold_forge = AddSimpleAdvancement(ModItems.GOLDEN_HAMMER,"tried_to_smith_cold_forge","tried_to_smith_cold_forge","main",AdvancementFrame.TASK,true,true,simple_tried_to_take_smithery_result);
-        Advancement simple_lead_poisoned = AddSimpleAdvancement(ModItems.RAW_LEAD,"lead_poisoned","lead_poisoned","main",AdvancementFrame.TASK,true,true,got_lead);
-        Advancement simple_maddened = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE,"maddened","maddened","main",AdvancementFrame.TASK,true,true,got_octangulite);
-        Advancement simple_tried_disallowed_action = AddSimpleAdvancement(Items.BARRIER,"tried_disallowed_action","trespass","main",AdvancementFrame.TASK,true,true,got_spellmaker);
+        Advancement got_molten_gold      = AddGetItemAdvancement(ModFluids.MOLTEN_GOLD_BUCKET           ,"molten_gold"      ,ModFluids.MOLTEN_GOLD_BUCKET   ,"main",AdvancementFrame.CHALLENGE  ,true,false,main);
+        Advancement got_mithril          = AddGetItemAdvancement(ModItems.RAW_MITHRIL                   ,"mithril"          ,new ItemConvertible[]{ModBlocks.MITHRIL_ORE, ModBlocks.DEEPSLATE_MITHRIL_ORE,ModItems.RAW_MITHRIL,ModItems.MITHRIL_INGOT,ModItems.MITHRIL_NUGGET}                      ,"main",AdvancementFrame.TASK,true,false,main);
+        Advancement got_octangulite      = AddGetItemAdvancement(ModItems.RAW_OCTANGULITE               ,"octangulite"      ,new ItemConvertible[]{ModBlocks.OCTANGULITE_ORE, ModBlocks.DEEPSLATE_OCTANGULITE_ORE,ModItems.RAW_OCTANGULITE,ModItems.OCTANGULITE_INGOT,ModItems.OCTANGULITE_NUGGET}  ,"main",AdvancementFrame.TASK,true,false,main);
+        Advancement got_titanium         = AddGetItemAdvancement(ModItems.RAW_TITANIUM                  ,"titanium"         ,new ItemConvertible[]{ModBlocks.TITANIUM_ORE, ModBlocks.DEEPSLATE_TITANIUM_ORE,ModItems.RAW_TITANIUM,ModItems.TITANIUM_INGOT,ModItems.TITANIUM_NUGGET}                 ,"main",AdvancementFrame.TASK,true,false,main);
+        Advancement got_lead             = AddGetItemAdvancement(ModItems.RAW_LEAD                      ,"lead"             ,new ItemConvertible[]{ModBlocks.LEAD_ORE, ModBlocks.DEEPSLATE_LEAD_ORE,ModItems.RAW_LEAD,ModItems.LEAD_INGOT,ModItems.LEAD_NUGGET}                                     ,"main",AdvancementFrame.TASK,true,false,main);
+        Advancement got_molybdenum       = AddGetItemAdvancement(ModItems.RAW_MOLYBDENUM                ,"molybdenum"       ,new ItemConvertible[]{ModBlocks.MOLYBDENUM_ORE, ModBlocks.DEEPSLATE_MOLYBDENUM_ORE,ModItems.RAW_MOLYBDENUM,ModItems.MOLYBDENUM_INGOT,ModItems.MOLYBDENUM_NUGGET}       ,"main",AdvancementFrame.TASK,true,false,main);
+        Advancement got_gilded_deepslate = AddGetItemAdvancement(ModBlocks.DECORATED_GILDED_DEEPSLATE   ,"gilded_deepslate" ,new ItemConvertible[]{ModBlocks.GILDED_DEEPSLATE,ModBlocks.DECORATED_GILDED_DEEPSLATE}                                                                                 ,"main",AdvancementFrame.TASK,true,false,main);
+        Advancement got_soul_oak         = AddGetItemAdvancement(ModBlocks.SOUL_OAK_PLANKS              ,"soul_oak"         ,new ItemConvertible[]{ModBlocks.SOUL_OAK_LOG,ModBlocks.SOUL_OAK_PLANKS,ModBlocks.SOUL_OAK_LEAVES,ModBlocks.SOUL_OAK_SAPLING}                                           ,"main",AdvancementFrame.TASK,true,false,main);
+        Advancement got_spellmaker       = AddGetItemAdvancement(ModBlocks.SPELLMAKER                   ,"spellmaker"       ,ModBlocks.SPELLMAKER           ,"main",AdvancementFrame.TASK       ,true,false,main);
+
+        Advancement simple_duplicate_trinkets               = AddSimpleAdvancement(ModItems.ARTIFACT_OF_IRON,"duplicate_trinkets","duplicate_trinkets"                      ,"main",AdvancementFrame.TASK,true,true,main);
+        Advancement simple_tried_to_take_smithery_result    = AddSimpleAdvancement(ModItems.IRON_HAMMER     ,"tried_to_take_smithery_result","tried_to_take_smithery_result","main",AdvancementFrame.TASK,true,true,milestone_smithery);
+        Advancement simple_tried_to_smith_cold_forge        = AddSimpleAdvancement(ModItems.GOLDEN_HAMMER   ,"tried_to_smith_cold_forge","tried_to_smith_cold_forge"        ,"main",AdvancementFrame.TASK,true,true,simple_tried_to_take_smithery_result);
+        Advancement simple_lead_poisoned                    = AddSimpleAdvancement(ModItems.RAW_LEAD        ,"lead_poisoned","lead_poisoned"                                ,"main",AdvancementFrame.TASK,true,true,got_lead);
+        Advancement simple_maddened                         = AddSimpleAdvancement(ModItems.RAW_OCTANGULITE ,"maddened","maddened"                                          ,"main",AdvancementFrame.TASK,true,true,got_octangulite);
+        Advancement simple_tried_disallowed_action          = AddSimpleAdvancement(Items.BARRIER            ,"tried_disallowed_action","trespass"                           ,"main",AdvancementFrame.TASK,true,true,got_spellmaker);
 
         // lore
         var loreItems = new Item[]{
@@ -111,13 +112,13 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         }
 
         // interaction (hidden)
-        Advancement interaction_smithery = AddSimpleAdvancement(null,"smithery","interact","interaction",AdvancementFrame.TASK,false,true,null);
-        Advancement interaction_soulforge = AddSimpleAdvancement(null,"soulforge","interact","interaction",AdvancementFrame.TASK,false,true,null);
+        Advancement interaction_smithery    = AddSimpleAdvancement(null,"smithery","interact","interaction",AdvancementFrame.TASK,false,true,null);
+        Advancement interaction_soulforge   = AddSimpleAdvancement(null,"soulforge","interact","interaction",AdvancementFrame.TASK,false,true,null);
 
         // structures visited
-        Advancement structure_ancient_hall = AddLocationAdvancement("ancient_hall","ancient_hall",Items.GILDED_BLACKSTONE,main);
-        Advancement structure_octangula = AddLocationAdvancement("octangula","octangula",ModBlocks.CUT_TITANIUM,main);
-        Advancement structure_digsite = AddLocationAdvancement("digsite","digsite",ModBlocks.CUT_LEAD,main);
+        Advancement structure_ancient_hall  = AddLocationAdvancement("ancient_hall","ancient_hall",Items.GILDED_BLACKSTONE,main);
+        Advancement structure_octangula     = AddLocationAdvancement("octangula","octangula",ModBlocks.CUT_TITANIUM,main);
+        Advancement structure_digsite       = AddLocationAdvancement("digsite","digsite",ModBlocks.CUT_LEAD,main);
 
         // obtained spell component advancements
         Advancement got_spellcomponent = AddGetItemAdvancement(ModItems.SPELLCOMPONENT,"spellcomponent",ModItems.SPELLCOMPONENT,"octangulite",AdvancementFrame.TASK,true,false,main);
@@ -131,25 +132,25 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
 
         // tasks
         var spell_unlocker = milestone_souls;
-        Advancement spell_ignition =  AddSimpleAdvancement(Items.FLINT_AND_STEEL,"ignition","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement spell_liftoff =   AddSimpleAdvancement(Items.FIREWORK_ROCKET,"liftoff","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement spell_ambition =  AddSimpleAdvancement(Items.COMMAND_BLOCK,"ambition","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement spell_brazilian = AddSimpleAdvancement(Items.LEATHER_BOOTS,"brazilian","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement spell_celeste =   AddSimpleAdvancement(Items.FEATHER,"celeste","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement spell_long_arms = AddSimpleAdvancement(Items.SPYGLASS,"long_arms","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement spell_ftl =       AddSimpleAdvancement(Items.SPYGLASS,"ftl","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement spell_bones =     AddSimpleAdvancement(Items.BONE,"bones","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement spell_fireball =  AddSimpleAdvancement(Items.FIRE_CHARGE,"fireball","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement spell_deception = AddSimpleAdvancement(Items.NOTE_BLOCK,"deception","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement spell_medic =     AddSimpleAdvancement(Items.ENCHANTED_GOLDEN_APPLE,"medic","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement spell_ulterior_motives = AddSimpleAdvancement(Items.WRITABLE_BOOK,"ulterior_motives","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement spell_build_big = AddSimpleAdvancement(Items.CHEST,"build_big","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement spell_deconsciousness = AddSimpleAdvancement(Items.SOUL_CAMPFIRE,"deconsciousness","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement enlightenment_1 = AddSimpleAdvancement(ModItems.LORE_LOG_EXODIA_1,"enlightenment_1","do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
-        Advancement enlightenment_2 = AddSimpleAdvancement(ModItems.LORE_LOG_EXODIA_2,"enlightenment_2","do","spells",AdvancementFrame.CHALLENGE,true,true,enlightenment_1);
-        Advancement enlightenment_3 = AddSimpleAdvancement(ModItems.LORE_LOG_EXODIA_3,"enlightenment_3","do","spells",AdvancementFrame.CHALLENGE,true,true,enlightenment_2);
-        Advancement enlightenment_4 = AddSimpleAdvancement(ModItems.LORE_LOG_EXODIA_4,"enlightenment_4","do","spells",AdvancementFrame.CHALLENGE,true,true,enlightenment_3);
-        Advancement enlightenment_5 = AddSimpleAdvancement(ModItems.LORE_LOG_EXODIA_4,"enlightenment_5","do","spells",AdvancementFrame.CHALLENGE,true,true,enlightenment_4);
+        Advancement spell_ignition =            AddSimpleAdvancement(Items.FLINT_AND_STEEL          ,"ignition"         ,"do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_liftoff =             AddSimpleAdvancement(Items.FIREWORK_ROCKET          ,"liftoff"          ,"do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_ambition =            AddSimpleAdvancement(Items.COMMAND_BLOCK            ,"ambition"         ,"do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_brazilian =           AddSimpleAdvancement(Items.LEATHER_BOOTS            ,"brazilian"        ,"do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_celeste =             AddSimpleAdvancement(Items.FEATHER                  ,"celeste"          ,"do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_long_arms =           AddSimpleAdvancement(Items.PISTON                   ,"long_arms"        ,"do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_ftl =                 AddSimpleAdvancement(Items.SPYGLASS                 ,"ftl"              ,"do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_bones =               AddSimpleAdvancement(Items.BONE                     ,"bones"            ,"do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_fireball =            AddSimpleAdvancement(Items.FIRE_CHARGE              ,"fireball"         ,"do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_deception =           AddSimpleAdvancement(Items.NOTE_BLOCK               ,"deception"        ,"do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_medic =               AddSimpleAdvancement(Items.ENCHANTED_GOLDEN_APPLE   ,"medic"            ,"do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_ulterior_motives =    AddSimpleAdvancement(Items.WRITABLE_BOOK            ,"ulterior_motives" ,"do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_build_big =           AddSimpleAdvancement(Items.CHEST                    ,"build_big"        ,"do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_deconsciousness =     AddSimpleAdvancement(Items.SOUL_CAMPFIRE            ,"deconsciousness"  ,"do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement enlightenment_1 =           AddSimpleAdvancement(ModItems.LORE_LOG_EXODIA_1     ,"enlightenment_1"  ,"do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement enlightenment_2 =           AddSimpleAdvancement(ModItems.LORE_LOG_EXODIA_2     ,"enlightenment_2"  ,"do","spells",AdvancementFrame.CHALLENGE,true,true,enlightenment_1);
+        Advancement enlightenment_3 =           AddSimpleAdvancement(ModItems.LORE_LOG_EXODIA_3     ,"enlightenment_3"  ,"do","spells",AdvancementFrame.CHALLENGE,true,true,enlightenment_2);
+        Advancement enlightenment_4 =           AddSimpleAdvancement(ModItems.LORE_LOG_EXODIA_4     ,"enlightenment_4"  ,"do","spells",AdvancementFrame.CHALLENGE,true,true,enlightenment_3);
+        Advancement enlightenment_5 =           AddSimpleAdvancement(ModItems.LORE_LOG_EXODIA_4     ,"enlightenment_5"  ,"do","spells",AdvancementFrame.CHALLENGE,true,true,enlightenment_4);
 
     }
     private Advancement AddGetItemAdvancement(ItemConvertible item,String name, ItemConvertible conditionItem, String category, AdvancementFrame frame, boolean announce, boolean hidden, Advancement parent){

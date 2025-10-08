@@ -31,14 +31,11 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.*;
 import net.minecraft.world.*;
-import net.minecraft.world.gen.feature.PlacedFeatures;
-import net.minecraft.world.gen.structure.Structures;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlock;
 import org.oxytocina.geomancy.blocks.blockEntities.RestrictorBlockEntity;
 import org.oxytocina.geomancy.blocks.blockEntities.SoulForgeBlock;
-import org.oxytocina.geomancy.client.datagen.ModAdvancementProvider;
 import org.oxytocina.geomancy.inventories.ImplementedInventory;
 import org.oxytocina.geomancy.items.ISpellSelectorItem;
 import org.oxytocina.geomancy.items.armor.CastingArmorItem;
@@ -1605,7 +1602,7 @@ public class SpellBlocks {
 
                             if (!minableBlocksPredicate.test(targetState)) {
                                 // couldnt mine
-                                tryLogDebugNotbreakable(comp,targetState);
+                                tryLogDebugNotBreakable(comp,targetState);
                                 return SpellBlockResult.empty();
                             }
 
@@ -1619,7 +1616,7 @@ public class SpellBlocks {
 
                             if(!broke){
                                 // couldnt mine... again?
-                                tryLogDebugNotbreakable(comp,targetState);
+                                tryLogDebugNotBreakable(comp,targetState);
                                 return SpellBlockResult.empty();
                             }
 
@@ -1753,7 +1750,7 @@ public class SpellBlocks {
                                 {
                                     if (!BlockHelper.replaceBlock(comp.world(),blockPos,degradeBlockData.get(predicate))) {
                                         // couldnt replace
-                                        tryLogDebugNotbreakable(comp,targetState);
+                                        tryLogDebugNotBreakable(comp,targetState);
                                         return SpellBlockResult.empty();
                                     }
 
@@ -1776,7 +1773,7 @@ public class SpellBlocks {
                                 Predicate<BlockState> minableBlocksPredicate = s -> !s.isToolRequired() || s2.isSuitableFor(s);
                                 if (!minableBlocksPredicate.test(targetState)) {
                                     // couldnt mine
-                                    tryLogDebugNotbreakable(comp,targetState);
+                                    tryLogDebugNotBreakable(comp,targetState);
                                     return SpellBlockResult.empty();
                                 }
 
@@ -1797,7 +1794,7 @@ public class SpellBlocks {
 
                                 if (!BlockHelper.replaceBlock(comp.world(),blockPos,replacementState)) {
                                     // couldnt replace
-                                    tryLogDebugNotbreakable(comp,targetState);
+                                    tryLogDebugNotBreakable(comp,targetState);
                                     return SpellBlockResult.empty();
                                 }
 
@@ -1947,7 +1944,7 @@ public class SpellBlocks {
                             Predicate<BlockState> minableBlocksPredicate = s -> s.getBlock().getHardness()>=0&&(!s.isToolRequired() || s2.isSuitableFor(s));
                             if (!minableBlocksPredicate.test(targetState)) {
                                 // couldnt mine
-                                tryLogDebugNotbreakable(comp,targetState);
+                                tryLogDebugNotBreakable(comp,targetState);
                                 return SpellBlockResult.empty();
                             }
 
@@ -1955,7 +1952,7 @@ public class SpellBlocks {
 
                             if(!BlockHelper.replaceBlockWithDrops(pe,stack,comp.world(),blockPos,bi.getBlock().getDefaultState(),minableBlocksPredicate)){
                                 // couldnt mine... again?
-                                tryLogDebugNotbreakable(comp,targetState);
+                                tryLogDebugNotBreakable(comp,targetState);
                                 return SpellBlockResult.empty();
                             }
 
@@ -3207,7 +3204,7 @@ public class SpellBlocks {
     }
 
     public static void tryLogDebugBroke(SpellComponent comp,float cost){
-        tryLogDebug(comp,Text.translatable("geomancy.spells.debug.broke",comp.getRuntimeName(),cost,comp.context.availableSoul));
+        tryLogDebug(comp,Text.translatable("geomancy.spells.debug.broke",comp.getRuntimeName(),comp.context.soulCostMultiplier*cost,comp.context.availableSoul));
     }
 
     private static void tryLogDebugNoSuchFunction(SpellComponent comp, String spellname){
@@ -3230,7 +3227,7 @@ public class SpellBlocks {
                 comp.getRuntimeName(),state.getBlock().getName()));
     }
 
-    private static void tryLogDebugNotbreakable(SpellComponent comp, BlockState state){
+    private static void tryLogDebugNotBreakable(SpellComponent comp, BlockState state){
         tryLogDebug(comp,Text.translatable("geomancy.spells.debug.notbreakable",
                 comp.getRuntimeName(),state.getBlock().getName()));
     }
@@ -3297,7 +3294,7 @@ public class SpellBlocks {
     }
 
     public static float castOffsetSoulCost(SpellComponent comp, Vec3d pos, float perBlock){
-        return distanceToCaster(comp.context,pos)*perBlock;
+        return distanceToCaster(comp.context,pos)*perBlock*comp.context.getDistanceCostMultiplier();
     }
 
     public static float normalCastOffsetSoulCost(SpellComponent comp, Vec3d pos){

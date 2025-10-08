@@ -3,8 +3,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [64, 32],
 	"textures": {
-		"1": "geomancy:item/model/expert_glove_3d",
-		"particle": "geomancy:item/model/expert_glove_3d"
+		"1": "geomancy:item/model/master_glove_3d",
+		"particle": "geomancy:item/model/master_glove_3d"
 	},
 	"elements": [
 		{
