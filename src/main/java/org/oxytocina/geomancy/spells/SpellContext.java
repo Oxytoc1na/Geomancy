@@ -1,5 +1,6 @@
 package org.oxytocina.geomancy.spells;
 
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
@@ -14,6 +15,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlockEntity;
+import org.oxytocina.geomancy.enchantments.ModEnchantments;
 import org.oxytocina.geomancy.entity.CasterDelegateEntity;
 import org.oxytocina.geomancy.items.trinkets.CastingTrinketItem;
 import org.oxytocina.geomancy.items.ISpellSelectorItem;
@@ -161,8 +163,8 @@ public class SpellContext {
     public boolean tryConsumeSoul(float amount){
         if(isChild()) return parentCall.tryConsumeSoul(amount);
 
-        amount *= soulCostMultiplier;
         if(!canAfford(amount)) { couldntAffordSomething = true; return false; }
+        amount *= soulCostMultiplier;
         soulConsumed += amount;
 
         switch (sourceType){
@@ -200,6 +202,7 @@ public class SpellContext {
     public boolean canAfford(float amount){
         if(isChild()) return parentCall.canAfford(amount);
 
+        amount *= soulCostMultiplier;
         switch (sourceType){
             case Caster :{
                 if(caster instanceof PlayerEntity player){
@@ -449,6 +452,10 @@ public class SpellContext {
 
     public boolean isFromPrecomiled() {
         return casterItem.getItem() == ModItems.PRECOMP_CASTER;
+    }
+
+    public float getDistanceCostMultiplier() {
+        return 1 - (0.9f/5)*EnchantmentHelper.getLevel(ModEnchantments.FOCUSED,casterItem);
     }
 
     public enum SourceType{

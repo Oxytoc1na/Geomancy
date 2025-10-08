@@ -688,11 +688,11 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
                 // expert glove
                 AddSimpleSoulForgeRecipe(List.of(
-                        NbtIngredient.ofItems(JOURNEY_GLOVE),
+                        NbtIngredient.ofItems(EXPERT_GLOVE),
                         NbtIngredient.ofItems(Items.DRAGON_BREATH),
                         NbtIngredient.ofItems(MITHRIL_INGOT),
                         NbtIngredient.ofItems(Items.SHULKER_SHELL)
-                ),EXPERT_GLOVE,1,3000,0.5f,1f,"",conditionsFromItem(Items.DRAGON_BREATH),ADVANCEMENT_ID_ENLIGHTENMENT_5);
+                ),MASTER_GLOVE,1,3000,0.5f,1f,"",conditionsFromItem(Items.DRAGON_BREATH),ADVANCEMENT_ID_ENLIGHTENMENT_5);
 
             }
 

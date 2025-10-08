@@ -166,8 +166,19 @@ public class SoulCastingItem extends StorageItem implements ISoulStoringItem, IS
         // send packet to server
         PacketByteBuf data = PacketByteBufs.create();
 
+        int slot = -1;
+        int i = 0;
+        for(var item : player.getHandItems())
+        {
+            if(item==stack)
+            {
+                slot=i==0?player.getInventory().selectedSlot:PlayerInventory.OFF_HAND_SLOT;break;
+            }
+            i++;
+        }
+
         data.writeItemStack(stack);
-        data.writeInt(player.getInventory().indexOf(stack));
+        data.writeInt(slot);
         data.writeInt(nextIndex);
         ClientPlayNetworking.send(ModMessages.CASTER_CHANGE_SELECTED_SPELL, data);
 

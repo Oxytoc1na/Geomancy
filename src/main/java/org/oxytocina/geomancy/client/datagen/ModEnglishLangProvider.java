@@ -625,6 +625,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         add("enchantment.MODID.brilliance"  , "Brilliance");
         add("enchantment.MODID.soul_saver"  , "Soul Saver");
         add("enchantment.MODID.mesmerizing" , "Mesmerizing");
+        add("enchantment.MODID.focused"     , "Focused");
 
         // damage types
         add("death.attack.geomancy.duplicate_trinkets", "%1$s felt their own hubris");
