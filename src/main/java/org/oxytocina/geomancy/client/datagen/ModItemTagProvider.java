@@ -8,6 +8,7 @@ import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
@@ -22,8 +23,11 @@ import static org.oxytocina.geomancy.registries.ModItemTags.*;
 import java.util.concurrent.CompletableFuture;
 
 public class ModItemTagProvider extends FabricTagProvider<Item> {
+    public static ModItemTagProvider INSTANCE = null;
+
     public ModItemTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
         super(output, RegistryKeys.ITEM, registriesFuture);
+        INSTANCE=this;
     }
 
 
@@ -90,6 +94,15 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
                 ModBlocks.SOUL_OAK_TRAPDOOR.asItem()
         ).setReplace(false);
 
+        // walls
+        getOrCreateTagBuilder(ItemTags.WALLS).add(
+                ModBlocks.LEAD_BRICK_WALL.asItem(),
+                ModBlocks.MITHRIL_BRICK_WALL.asItem(),
+                ModBlocks.MOLYBDENUM_BRICK_WALL.asItem(),
+                ModBlocks.OCTANGULITE_BRICK_WALL.asItem(),
+                ModBlocks.TITANIUM_BRICK_WALL.asItem()
+        );
+
         // stellge curious
         getOrCreateTagBuilder(STELLGE_CURIOUS).setReplace(false)
                 .forceAddTag(OCTANGULITE)
@@ -155,6 +168,115 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
         for(var item : ExtraItemSettings.ITEMS_IN_LORE_GROUP)
             builder.add(item);
 
+        // tools
+        {
+            getOrCreateTagBuilder(ItemTags.SWORDS).add(
+                    ModItems.LEAD_SWORD,
+                    ModItems.MITHRIL_SWORD,
+                    ModItems.MOLYBDENUM_SWORD,
+                    ModItems.TITANIUM_SWORD,
+                    ModItems.OCTANGULITE_SWORD
+            );
+
+            getOrCreateTagBuilder(ItemTags.SHOVELS).add(
+                    ModItems.LEAD_SHOVEL,
+                    ModItems.MITHRIL_SHOVEL,
+                    ModItems.MOLYBDENUM_SHOVEL,
+                    ModItems.TITANIUM_SHOVEL,
+                    ModItems.OCTANGULITE_SHOVEL
+            );
+
+            getOrCreateTagBuilder(ItemTags.PICKAXES).add(
+                    ModItems.LEAD_PICKAXE,
+                    ModItems.MITHRIL_PICKAXE,
+                    ModItems.MOLYBDENUM_PICKAXE,
+                    ModItems.TITANIUM_PICKAXE,
+                    ModItems.OCTANGULITE_PICKAXE
+            );
+
+            getOrCreateTagBuilder(ItemTags.HOES).add(
+                    ModItems.LEAD_HOE,
+                    ModItems.MITHRIL_HOE,
+                    ModItems.MOLYBDENUM_HOE,
+                    ModItems.TITANIUM_HOE,
+                    ModItems.OCTANGULITE_HOE
+            );
+
+            getOrCreateTagBuilder(ItemTags.AXES).add(
+                    ModItems.LEAD_AXE,
+                    ModItems.MITHRIL_AXE,
+                    ModItems.MOLYBDENUM_AXE,
+                    ModItems.TITANIUM_AXE,
+                    ModItems.OCTANGULITE_AXE
+            );
+        }
+
+
+        // stone tool materials
+        getOrCreateTagBuilder(ItemTags.STONE_TOOL_MATERIALS).add(
+                ModBlocks.NULL_ROCK.asItem()
+        );
+
+        // stone crafting materials
+        getOrCreateTagBuilder(ItemTags.STONE_CRAFTING_MATERIALS).add(
+                ModBlocks.NULL_ROCK.asItem()
+        );
+
+        // beacon payments
+        getOrCreateTagBuilder(ItemTags.BEACON_PAYMENT_ITEMS).add(
+                ModItems.MITHRIL_INGOT,
+                ModItems.MOLYBDENUM_INGOT,
+                ModItems.LEAD_INGOT,
+                ModItems.TITANIUM_INGOT,
+                ModItems.OCTANGULITE_INGOT
+        );
+
+        // raw ores
+        getOrCreateTagBuilder(C_RAW_ORES).add(
+                ModItems.RAW_MITHRIL,
+                ModItems.RAW_MOLYBDENUM,
+                ModItems.RAW_LEAD,
+                ModItems.RAW_TITANIUM,
+                ModItems.RAW_OCTANGULITE
+        );
+
+        // ingots
+        getOrCreateTagBuilder(C_INGOTS).add(
+                ModItems.MITHRIL_INGOT,
+                ModItems.MOLYBDENUM_INGOT,
+                ModItems.LEAD_INGOT,
+                ModItems.TITANIUM_INGOT,
+                ModItems.OCTANGULITE_INGOT
+        );
+
+        // nuggets
+        getOrCreateTagBuilder(C_NUGGETS).add(
+                ModItems.MITHRIL_NUGGET,
+                ModItems.MOLYBDENUM_NUGGET,
+                ModItems.LEAD_NUGGET,
+                ModItems.TITANIUM_NUGGET,
+                ModItems.OCTANGULITE_NUGGET
+        );
+
+        // foods
+        getOrCreateTagBuilder(C_FOODS).add(
+                ModItems.LEAD_APPLE,
+                ModItems.OCTANGULITE_APPLE
+        );
+
+        // gems
+        getOrCreateTagBuilder(C_GEMS).add(
+                ModItems.PERIDOT,
+                ModItems.AXINITE,
+                ModItems.TOURMALINE,
+                ModItems.ORTHOCLASE
+        );
+
+        // geodes
+        getOrCreateTagBuilder(GEODES).add(
+                ModItems.STONE_GEODE,
+                ModItems.DEEPSLATE_GEODE
+        );
 
         generateAccessoryTags();
     }
@@ -209,5 +331,9 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
 
     private static TagKey<Item> itemTag(Identifier location) {
         return TagKey.of(Registries.ITEM.getKey(), location);
+    }
+
+    public FabricTagProvider<Item>.FabricTagBuilder getBuilder(TagKey<Item> itemKey) {
+        return getOrCreateTagBuilder(itemKey);
     }
 }

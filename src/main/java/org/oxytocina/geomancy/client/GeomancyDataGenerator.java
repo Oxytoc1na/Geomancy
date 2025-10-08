@@ -3,13 +3,18 @@ package org.oxytocina.geomancy.client;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.minecraft.data.DataOutput;
 import net.minecraft.registry.RegistryBuilder;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.RegistryWrapper;
 import org.oxytocina.geomancy.client.datagen.*;
 import org.oxytocina.geomancy.world.ModConfiguredFeatures;
 import org.oxytocina.geomancy.world.ModPlacedFeatures;
 import org.oxytocina.geomancy.world.biome.ModBiomes;
 import org.oxytocina.geomancy.world.dimension.ModDimensions;
+
+import java.util.concurrent.CompletableFuture;
 
 public class GeomancyDataGenerator implements DataGeneratorEntrypoint {
 
@@ -18,9 +23,10 @@ public class GeomancyDataGenerator implements DataGeneratorEntrypoint {
         FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
 
         pack.addProvider(ModAdvancementProvider::new);
+        ModBlockTagProvider.precalcHybrids();
+        pack.addProvider(ModBlockTagProvider::new);
         pack.addProvider(ModItemTagProvider::new);
         pack.addProvider(ModBiomeTagProvider::new);
-        pack.addProvider(ModBlockTagProvider::new);
         pack.addProvider(ModFluidTagProvider::new);
         pack.addProvider(ModDamageTypeTagProvider::new);
         pack.addProvider(ModBlockLootTableProvider::new);

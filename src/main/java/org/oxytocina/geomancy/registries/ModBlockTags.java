@@ -18,6 +18,12 @@ public class ModBlockTags {
     public static final TagKey<Block> MININGLEVEL_IRON = register(Identifier.of(Identifier.DEFAULT_NAMESPACE, "needs_iron_tool"));
     public static final TagKey<Block> MININGLEVEL_DIAMOND = register(Identifier.of(Identifier.DEFAULT_NAMESPACE, "needs_diamond_tool"));
 
+    public static final TagKey<Block> LEAD_ORES = register( "lead_ores");
+    public static final TagKey<Block> MITHRIL_ORES = register( "mithril_ores");
+    public static final TagKey<Block> MOLYBDENUM_ORES = register( "molybdenum_ores");
+    public static final TagKey<Block> TITANIUM_ORES = register( "titanium_ores");
+    public static final TagKey<Block> OCTANGULITE_ORES = register( "octangulite_ores");
+
     public static final TagKey<Block> OCTANGULITE = register( "octangulite");
     public static final TagKey<Block> NULL_BLOCKS = register( "null_blocks");
     public static final TagKey<Block> ADDS_SOULS = register( "adds_souls");
@@ -33,8 +39,16 @@ public class ModBlockTags {
     public static final TagKey<Block> NULL_CRYSTAL_REPLACEABLE = register( "null/crystal_replaceable");
     public static final TagKey<Block> NULL_HOLDS_SPIKES = register( "null/holds_spikes");
 
+    // common tags
+    public static final TagKey<Block> C_ORES = registerCommon("ores");
+    public static final TagKey<Block> C_GLASS_BLOCKS = registerCommon("glass_blocks");
+
+
     public static TagKey<Block> register(String name){
         return register(Geomancy.locate(name));
+    }
+    public static TagKey<Block> registerCommon(String name){
+        return register(new Identifier("c",name));
     }
     public static TagKey<Block> register(Identifier id){
         return TagKey.of(RegistryKeys.BLOCK,id);

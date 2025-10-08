@@ -21,6 +21,7 @@ import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
+import org.oxytocina.geomancy.client.GeomancyDataGenerator;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.progression.advancement.LocationCriterion;
 import org.oxytocina.geomancy.progression.advancement.ModAdvancementCriterion;

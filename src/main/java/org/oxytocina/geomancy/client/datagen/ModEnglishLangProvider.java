@@ -606,6 +606,15 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("block.MODID.vault_glass"                   , "Vault Glass");
             add("block.MODID.vault_gate"                    , "Vault Gate");
             add("block.MODID.vault_gate_control"            , "Vault Gate Control");
+
+            // null
+            {
+                add("block.MODID.null_rock"     , "Nullrock");
+                add("block.MODID.null_rubble"   , "Null Rubble");
+                add("block.MODID.null_crystal"  , "Null Crystal");
+                add("block.MODID.null_spike"    , "Null Spike");
+                add("block.MODID.iridescent_vines","Iridescent Vines");
+            }
         }
 
         // status effects
@@ -1728,6 +1737,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("tag.MODID.variable_storing","Stores variables");
             add("tag.MODID.molten_gold","Molten gold");
             add("tag.MODID.viscous_fluid","Viscous fluid");
+            add("tag.MODID.geodes","Geodes");
         }
 
         // config
