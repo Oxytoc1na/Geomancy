@@ -4,10 +4,13 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.ConnectingBlock;
+import net.minecraft.block.MultifaceGrowthBlock;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.HeightLimitView;
 import net.minecraft.world.Heightmap;
@@ -28,6 +31,7 @@ import org.oxytocina.geomancy.util.GenUtil;
 import org.oxytocina.geomancy.util.SimplexNoise;
 import org.oxytocina.geomancy.util.Toolbox;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
@@ -63,6 +67,17 @@ public class NullChunkGenerator extends ChunkGenerator {
     static final BlockState crystalState = ModBlocks.NULL_CRYSTAL.getDefaultState();
     static final BlockState spikeUpState = ModBlocks.NULL_SPIKE.getDefaultState().with(NullSpikeBlock.VERTICAL_DIRECTION, Direction.UP);
     static final BlockState spikeDownState = ModBlocks.NULL_SPIKE.getDefaultState().with(NullSpikeBlock.VERTICAL_DIRECTION, Direction.DOWN);
+    static final BlockState floorVinesState = ModBlocks.IRIDESCENT_VINES.getDefaultState().with(ConnectingBlock.DOWN,true);
+
+    static final float blobThreshold = 0.9f;
+    static final float crystalBlobThreshold = 0.95f;
+    static final float hangingCrystalBlobThresholdLow = 0.5f;
+    static final float hangingCrystalBlobThresholdHigh = 0.95f;
+    static final float crystalBlobFloorVineThreshold = 0.4f;
+    static final float groundSpikeThreshold = 0.7f;
+    static final float ceilingSpikeThreshold = 0.6f;
+    static final float surfaceThreshold = 0.8f;
+    static final float surfaceNoisePerDepth = 0.02f;
 
     @Override
     public void buildSurface(ChunkRegion region, StructureAccessor structures, NoiseConfig noiseConfig, Chunk chunk) {
@@ -75,11 +90,7 @@ public class NullChunkGenerator extends ChunkGenerator {
 
         // generate noise
         int genX, genY, genZ;
-        final float blobThreshold = 0.9f;
-        final float groundSpikeThreshold = 0.7f;
-        final float ceilingSpikeThreshold = 0.6f;
-        final float surfaceThreshold = 0.8f;
-        final float surfaceNoisePerDepth = 0.02f;
+
         BlockState state = null;
         for(int ix = 0; ix < 16; ++ix) {
             genX = startX+ix;
@@ -112,13 +123,13 @@ public class NullChunkGenerator extends ChunkGenerator {
                     // null crystal
                     if(state.isIn(ModBlockTags.NULL_CRYSTAL_REPLACEABLE))
                     {
-                        // rubble blobs
+                        // blobs
                         float noise = crystalNoise(genX,genY,genZ);
-                        if(noise > blobThreshold)
+                        if(noise > crystalBlobThreshold)
                             chunk.setBlockState(mutable, crystalState, false);
 
-                        // surface
-                        if(noise > surfaceThreshold)
+                        // hanging
+                        if(noise > getHangingCrystalThreshold(genX,genY,genZ))
                         {
                             int depth = Math.round((float)Math.ceil((noise-surfaceThreshold)/surfaceNoisePerDepth));
                             var bottomstate = chunk.getBlockState(mutable.down(depth));
@@ -135,7 +146,15 @@ public class NullChunkGenerator extends ChunkGenerator {
                                     immediateBottomState = chunk.getBlockState(mutable.down(offset));
                                 }
                                 if(immediateBottomState.isIn(ModBlockTags.NULL_CRYSTAL_REPLACEABLE)){
-                                    chunk.setBlockState(mutable.down(offset), crystalState, false);
+                                    chunk.setBlockState(mutable.down(offset), rubbleState, false);
+                                    noise = crystalFloorVineNoise(genX,genY,genZ);
+                                    if(noise > crystalBlobFloorVineThreshold){
+                                        BlockPos.Mutable tempPos = mutable.down(offset-1).mutableCopy();
+                                        var tempState = chunk.getBlockState(tempPos);
+                                        if(tempState.isAir()|| tempState.isOf(ModBlocks.NULL_SPIKE)){
+                                            chunk.setBlockState(tempPos, floorVinesState, false);
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -273,7 +292,7 @@ public class NullChunkGenerator extends ChunkGenerator {
     final static float mainNoiseScaleOctave1 = 0.1431f;
     final static float mainNoiseScaleOctave2 = 0.028314f;
     private float tunnellyNoise(int x, int y, int z){
-        return (0.8f * ((1-(float)Math.pow(SimplexNoise.noiseNormalized(x*mainNoiseScale,y*mainNoiseScale,z*mainNoiseScale),3))*3)%1
+        return (0.8f * ((1-(float)Math.pow(SimplexNoise.noiseNormalized(x*mainNoiseScale,y*mainNoiseScale*2,z*mainNoiseScale),3))*3)%1
                 + 0.2f * SimplexNoise.noiseNormalized(x,y,z,mainNoiseScaleOctave1))
                 * Toolbox.clampF(
                     20*(SimplexNoise.noiseNormalized(x,y,z,mainNoiseScaleOctave2)-0.5f)
@@ -290,8 +309,22 @@ public class NullChunkGenerator extends ChunkGenerator {
     final static float crystalNoiseScale = 0.041f;
     final static float crystalNoiseScaleOctave1 = 0.1331f;
     private float crystalNoise(int x, int y, int z){
-        return 0.7f * (1-(float)Math.pow(SimplexNoise.noiseNormalized(x* crystalNoiseScale +0.51231,y* crystalNoiseScale +0.3142,z* crystalNoiseScale +0.1573),2))%1
-                + 0.3f * SimplexNoise.noiseNormalized(x+623,y+4375,z-165, crystalNoiseScaleOctave1)
+        return 0.8f * (1-(float)Math.pow(SimplexNoise.noiseNormalized(x* crystalNoiseScale +0.51231,y* crystalNoiseScale +0.3142,z* crystalNoiseScale +0.1573),2))%1
+                + 0.2f * SimplexNoise.noiseNormalized(x+623,y+4375,z-165, crystalNoiseScaleOctave1)
+                ;
+    }
+
+    final static float hangingCrystalBiomeNoiseScale = 0.0315f;
+    private float getHangingCrystalThreshold(int x, int y, int z){
+        return MathHelper.lerp(1 * (1-(float)Math.pow(SimplexNoise.noiseNormalized(x* hangingCrystalBiomeNoiseScale +0.51231,y* hangingCrystalBiomeNoiseScale +0.3142,z* hangingCrystalBiomeNoiseScale +0.1573),2))%1
+                ,hangingCrystalBlobThresholdLow,hangingCrystalBlobThresholdHigh);
+    }
+
+    final static float crystalFloorVineNoiseScale = 0.4812f;
+    final static float crystalFloorVineNoiseScaleOctave1 = 0.7541f;
+    private float crystalFloorVineNoise(int x, int y, int z){
+        return 0.5f * SimplexNoise.noiseNormalized(x* crystalFloorVineNoiseScale +0.61231,y* crystalFloorVineNoiseScale +0.2142,z* crystalFloorVineNoiseScale +0.3573)
+                + 0.5f * SimplexNoise.noiseNormalized(x+6235,y+435,z-2365, crystalFloorVineNoiseScaleOctave1)
                 ;
     }
 

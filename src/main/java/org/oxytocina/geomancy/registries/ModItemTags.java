@@ -27,6 +27,10 @@ public class ModItemTags {
     public static final TagKey<Item> MOLYBDENUM_ORES = register( "molybdenum_ores");
     public static final TagKey<Item> TITANIUM_ORES = register( "titanium_ores");
     public static final TagKey<Item> OCTANGULITE_ORES = register( "octangulite_ores");
+    public static final TagKey<Item> PERIDOT_ORES = register( "peridot_ores");
+    public static final TagKey<Item> TOURMALINE_ORES = register( "tourmaline_ores");
+    public static final TagKey<Item> AXINITE_ORES = register( "axinite_ores");
+    public static final TagKey<Item> ORTHOCLASE_ORES = register( "orthoclase_ores");
 
     // common tags
     public static final TagKey<Item> C_RAW_ORES = registerCommon("raw_ores");

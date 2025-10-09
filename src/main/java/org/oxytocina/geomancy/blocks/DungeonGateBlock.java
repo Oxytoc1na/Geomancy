@@ -64,7 +64,7 @@ public class DungeonGateBlock extends GlassBlock {
                 }
             }
 
-            Toolbox.playSound(state.get(DESIRE_VANISHED) ? SoundEvents.BLOCK_PISTON_CONTRACT : SoundEvents.BLOCK_PISTON_EXTEND, world,pos, SoundCategory.BLOCKS,0.5f,Toolbox.randomPitch());
+            Toolbox.playSound(state.get(DESIRE_VANISHED) ? SoundEvents.BLOCK_AMETHYST_BLOCK_HIT : SoundEvents.BLOCK_AMETHYST_BLOCK_PLACE, world,pos, SoundCategory.BLOCKS,0.15f,Toolbox.randomPitch());
         }
     }
 

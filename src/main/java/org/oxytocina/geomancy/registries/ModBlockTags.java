@@ -23,6 +23,10 @@ public class ModBlockTags {
     public static final TagKey<Block> MOLYBDENUM_ORES = register( "molybdenum_ores");
     public static final TagKey<Block> TITANIUM_ORES = register( "titanium_ores");
     public static final TagKey<Block> OCTANGULITE_ORES = register( "octangulite_ores");
+    public static final TagKey<Block> PERIDOT_ORES = register( "peridot_ores");
+    public static final TagKey<Block> TOURMALINE_ORES = register( "tourmaline_ores");
+    public static final TagKey<Block> AXINITE_ORES = register( "axinite_ores");
+    public static final TagKey<Block> ORTHOCLASE_ORES = register( "orthoclase_ores");
 
     public static final TagKey<Block> OCTANGULITE = register( "octangulite");
     public static final TagKey<Block> NULL_BLOCKS = register( "null_blocks");

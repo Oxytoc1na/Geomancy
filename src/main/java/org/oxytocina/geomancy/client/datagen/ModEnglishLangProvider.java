@@ -1738,6 +1738,15 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("tag.MODID.molten_gold","Molten gold");
             add("tag.MODID.viscous_fluid","Viscous fluid");
             add("tag.MODID.geodes","Geodes");
+            add("tag.MODID.lead_ores","Lead Ores");
+            add("tag.MODID.molybdenum_ores","Molybdenum Ores");
+            add("tag.MODID.titanium_ores","Titanium Ores");
+            add("tag.MODID.mithril_ores","Mithril Ores");
+            add("tag.MODID.octangulite_ores","Octangulite Ores");
+            add("tag.MODID.peridot_ores","Peridot Ores");
+            add("tag.MODID.tourmaline_ores","Tourmaline Ores");
+            add("tag.MODID.axinite_ores","Axinite Ores");
+            add("tag.MODID.orthoclase_ores","Orthoclase Ores");
         }
 
         // config

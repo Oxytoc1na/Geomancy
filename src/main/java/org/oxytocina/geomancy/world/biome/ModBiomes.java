@@ -3,16 +3,14 @@ package org.oxytocina.geomancy.world.biome;
 import net.minecraft.client.sound.MusicType;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registerable;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.sound.BiomeMoodSound;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeEffects;
-import net.minecraft.world.biome.GenerationSettings;
-import net.minecraft.world.biome.SpawnSettings;
+import net.minecraft.world.biome.*;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
 import net.minecraft.world.gen.feature.PlacedFeatures;
@@ -101,14 +99,16 @@ public class ModBiomes {
                 .precipitation(false).downfall(0f).temperature(0f)
                 .generationSettings(biomeBuilder.build()).spawnSettings(spawnBuilder.build())
                 .effects((new BiomeEffects.Builder())
-                        .waterColor(0x373F6D)
-                        .waterFogColor(0x373F6D)
+                        .waterColor(0x505070)
+                        .waterFogColor(0x000000)
                         .skyColor(0x000000)
                         .grassColor(0x373F6D)
                         .foliageColor(0x373F6D)
                         .fogColor(0x000000)
                         .moodSound(BiomeMoodSound.CAVE)
-                        .music(MusicType.createIngameMusic(SoundEvents.MUSIC_END)).build())
+                        .particleConfig(new BiomeParticleConfig(ParticleTypes.ASH,0.05f))
+                        .music(MusicType.createIngameMusic(SoundEvents.MUSIC_END)).build()
+                )
                 .build();
     }
 }
