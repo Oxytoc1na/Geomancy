@@ -17,7 +17,10 @@ import org.oxytocina.geomancy.registries.ModItemTags;
 
 import static org.oxytocina.geomancy.registries.ModBlockTags.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class ModBlockTagProvider extends FabricTagProvider<Block> {
@@ -25,7 +28,67 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
         super(output, RegistryKeys.BLOCK, registriesFuture);
     }
 
+    protected static Map<TagKey<Block>,List<Block>> HYBRID_BLOCKS = new HashMap<TagKey<Block>,List<Block>>();
+    protected static Map<TagKey<Block>,List<TagKey<Block>>> HYBRID_TAGS = new HashMap<TagKey<Block>,List<TagKey<Block>>>();
+
+    public static Map<TagKey<Item>,List<Block>> HYBRID_ITEM_BLOCKS = new HashMap<>();
+    public static Map<TagKey<Item>,List<TagKey<Item>>> HYBRID_ITEM_TAGS = new HashMap<>();
+
     public static void precalcHybrids() {
+        // walls
+        for(Block b : ExtraBlockSettings.WallBlocks.keySet()) addHybrid(BlockTags.WALLS, ItemTags.WALLS,b);
+
+        // fences
+        for(Block b : ExtraBlockSettings.FenceBlocks.keySet())addHybrid(BlockTags.FENCES, ItemTags.FENCES,b);
+        addHybrid(BlockTags.WOODEN_FENCES, ItemTags.WOODEN_FENCES,ModBlocks.SOUL_OAK_FENCE);
+
+        // fence gates
+        for(Block b : ExtraBlockSettings.FenceBlocks.keySet())addHybrid(BlockTags.FENCE_GATES, ItemTags.FENCE_GATES,b);
+
+        // stairs
+        for(Block b : ExtraBlockSettings.StairsBlocks.keySet())addHybrid(BlockTags.STAIRS, ItemTags.STAIRS,b);
+
+        // slabs
+        for(Block b : ExtraBlockSettings.SlabBlocks.keySet())addHybrid(BlockTags.SLABS, ItemTags.SLABS,b);
+
+        // soul fire bases
+        addHybrid(BlockTags.SOUL_FIRE_BASE_BLOCKS,ItemTags.SOUL_FIRE_BASE_BLOCKS,ModBlocks.NULL_CRYSTAL);
+
+        // wood
+        addHybrid(BlockTags.PLANKS,ItemTags.PLANKS,ModBlocks.SOUL_OAK_PLANKS);
+        addHybrid(BlockTags.LOGS_THAT_BURN,ItemTags.LOGS_THAT_BURN,
+                ModBlocks.SOUL_OAK_LOG,
+                ModBlocks.STRIPPED_SOUL_OAK_LOG,
+                ModBlocks.SOUL_OAK_WOOD,
+                ModBlocks.STRIPPED_SOUL_OAK_WOOD);
+        addHybrid(BlockTags.WOODEN_BUTTONS,ItemTags.WOODEN_BUTTONS,
+                ModBlocks.SOUL_OAK_BUTTON);
+        addHybrid(BlockTags.WOODEN_DOORS,ItemTags.WOODEN_DOORS,
+                ModBlocks.SOUL_OAK_DOOR);
+        addHybrid(BlockTags.WOODEN_FENCES,ItemTags.WOODEN_FENCES,
+                ModBlocks.SOUL_OAK_FENCE);
+        addHybrid(BlockTags.WOODEN_SLABS,ItemTags.WOODEN_SLABS,
+                ModBlocks.SOUL_OAK_SLAB);
+        addHybrid(BlockTags.WOODEN_STAIRS,ItemTags.WOODEN_STAIRS,
+                ModBlocks.SOUL_OAK_STAIRS);
+        addHybrid(BlockTags.WOODEN_PRESSURE_PLATES,ItemTags.WOODEN_PRESSURE_PLATES,
+                ModBlocks.SOUL_OAK_PRESSURE_PLATE);
+        addHybrid(BlockTags.WOODEN_TRAPDOORS,ItemTags.WOODEN_TRAPDOORS,
+                ModBlocks.SOUL_OAK_TRAPDOOR);
+        addHybridTag(BlockTags.LOGS_THAT_BURN,ItemTags.LOGS_THAT_BURN,SOUL_OAK_LOGS, ModItemTags.SOUL_OAK_LOGS);
+        addHybrid(BlockTags.LEAVES,ItemTags.LEAVES,ModBlocks.SOUL_OAK_LEAVES);
+        addHybrid(BlockTags.SAPLINGS,ItemTags.SAPLINGS,ModBlocks.SOUL_OAK_SAPLING);
+
+        // ores
+        addHybrid(LEAD_ORES,ModItemTags.LEAD_ORES,ModBlocks.LEAD_ORE,ModBlocks.DEEPSLATE_LEAD_ORE);
+        addHybrid(MOLYBDENUM_ORES,ModItemTags.MOLYBDENUM_ORES,ModBlocks.MOLYBDENUM_ORE,ModBlocks.DEEPSLATE_MOLYBDENUM_ORE);
+        addHybrid(TITANIUM_ORES,ModItemTags.TITANIUM_ORES,ModBlocks.TITANIUM_ORE,ModBlocks.DEEPSLATE_TITANIUM_ORE);
+        addHybrid(MITHRIL_ORES,ModItemTags.MITHRIL_ORES,ModBlocks.MITHRIL_ORE,ModBlocks.DEEPSLATE_MITHRIL_ORE);
+        addHybrid(OCTANGULITE_ORES,ModItemTags.OCTANGULITE_ORES,ModBlocks.OCTANGULITE_ORE,ModBlocks.DEEPSLATE_OCTANGULITE_ORE);
+
+        addHybridTags(C_ORES,ModItemTags.C_ORES,
+                List.of(LEAD_ORES,MOLYBDENUM_ORES,TITANIUM_ORES,MITHRIL_ORES,OCTANGULITE_ORES),
+                List.of(ModItemTags.LEAD_ORES,ModItemTags.MOLYBDENUM_ORES,ModItemTags.TITANIUM_ORES,ModItemTags.MITHRIL_ORES,ModItemTags.OCTANGULITE_ORES));
     }
 
     @Override
@@ -48,25 +111,6 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
         getOrCreateTagBuilder(BlockTags.CLIMBABLE).setReplace(false).add(
                 ModBlocks.IRIDESCENT_VINES
         );
-
-        // walls
-        for(Block b : ExtraBlockSettings.WallBlocks.keySet()) addHybrid(BlockTags.WALLS, ItemTags.WALLS,b);
-
-        // fences
-        for(Block b : ExtraBlockSettings.FenceBlocks.keySet())addHybrid(BlockTags.FENCES, ItemTags.FENCES,b);
-        addHybrid(BlockTags.WOODEN_FENCES, ItemTags.WOODEN_FENCES,ModBlocks.SOUL_OAK_FENCE);
-
-        // fence gates
-        for(Block b : ExtraBlockSettings.FenceBlocks.keySet())addHybrid(BlockTags.FENCE_GATES, ItemTags.FENCE_GATES,b);
-
-        // stairs
-        for(Block b : ExtraBlockSettings.StairsBlocks.keySet())addHybrid(BlockTags.STAIRS, ItemTags.STAIRS,b);
-
-        // slabs
-        for(Block b : ExtraBlockSettings.SlabBlocks.keySet())addHybrid(BlockTags.SLABS, ItemTags.SLABS,b);
-
-        // soul fire bases
-        addHybrid(BlockTags.SOUL_FIRE_BASE_BLOCKS,ItemTags.SOUL_FIRE_BASE_BLOCKS,ModBlocks.NULL_CRYSTAL);
 
         // mining levels
         var levelbuilder_stone = getOrCreateTagBuilder(MININGLEVEL_STONE).setReplace(false);
@@ -120,20 +164,7 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
                 .add(ModBlocks.STRIPPED_SOUL_OAK_WOOD)
         ;
 
-        addHybridTag(BlockTags.LOGS_THAT_BURN,ItemTags.LOGS_THAT_BURN,SOUL_OAK_LOGS, ModItemTags.SOUL_OAK_LOGS);
-        addHybrid(BlockTags.LEAVES,ItemTags.LEAVES,ModBlocks.SOUL_OAK_LEAVES);
-        addHybrid(BlockTags.SAPLINGS,ItemTags.SAPLINGS,ModBlocks.SOUL_OAK_SAPLING);
 
-        // ores
-        addHybrid(LEAD_ORES,ModItemTags.LEAD_ORES,ModBlocks.LEAD_ORE,ModBlocks.DEEPSLATE_LEAD_ORE);
-        addHybrid(MOLYBDENUM_ORES,ModItemTags.MOLYBDENUM_ORES,ModBlocks.MOLYBDENUM_ORE,ModBlocks.DEEPSLATE_MOLYBDENUM_ORE);
-        addHybrid(TITANIUM_ORES,ModItemTags.TITANIUM_ORES,ModBlocks.TITANIUM_ORE,ModBlocks.DEEPSLATE_TITANIUM_ORE);
-        addHybrid(MITHRIL_ORES,ModItemTags.MITHRIL_ORES,ModBlocks.MITHRIL_ORE,ModBlocks.DEEPSLATE_MITHRIL_ORE);
-        addHybrid(OCTANGULITE_ORES,ModItemTags.OCTANGULITE_ORES,ModBlocks.OCTANGULITE_ORE,ModBlocks.DEEPSLATE_OCTANGULITE_ORE);
-
-        addHybridTags(C_ORES,ModItemTags.C_ORES,
-                List.of(LEAD_ORES,MOLYBDENUM_ORES,TITANIUM_ORES,MITHRIL_ORES,OCTANGULITE_ORES),
-                List.of(ModItemTags.LEAD_ORES,ModItemTags.MOLYBDENUM_ORES,ModItemTags.TITANIUM_ORES,ModItemTags.MITHRIL_ORES,ModItemTags.OCTANGULITE_ORES));
 
 
         // ambient souls
@@ -173,7 +204,7 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
 
         addSoulTag(NULL_BLOCKS,SoulLevel.RemoveMany);
 
-
+        actualizeHybrids();
     }
     void addSoulBlock(Block block) { addSoulBlocks(SoulLevel.Normal,block); }
     void addSoulBlocks(SoulLevel level,Block... blocks){
@@ -210,31 +241,40 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
     }
 
     /// adds blocks to a block tag and to an item tag
-    public void addHybrid(TagKey<Block> blockKey, TagKey<Item> itemKey, Block... blocks){
-        getOrCreateTagBuilder(blockKey).add(blocks);
+    public static void addHybrid(TagKey<Block> blockKey, TagKey<Item> itemKey, Block... blocks){
+        if(!HYBRID_BLOCKS.containsKey(blockKey)) HYBRID_BLOCKS.put(blockKey,new ArrayList<>());
+        HYBRID_BLOCKS.get(blockKey).addAll(List.of(blocks));
         addItems(itemKey,blocks);
     }
 
-    public void addHybridTags(TagKey<Block> blockKey, TagKey<Item> itemKey, List<TagKey<Block>> blockTagsToAdd, List<TagKey<Item>> itemTagsToAdd) {
-        var blockBuilder = getOrCreateTagBuilder(blockKey);
-        var itemBuilder = getItemBuilder(itemKey);
+    public static void addHybridTags(TagKey<Block> blockKey, TagKey<Item> itemKey, List<TagKey<Block>> blockTagsToAdd, List<TagKey<Item>> itemTagsToAdd) {
+        if(!HYBRID_TAGS.containsKey(blockKey)) HYBRID_TAGS.put(blockKey,new ArrayList<>());
+        HYBRID_TAGS.get(blockKey).addAll(blockTagsToAdd);
 
-        for(var bt : blockTagsToAdd) blockBuilder.forceAddTag(bt);
-        for(var it : itemTagsToAdd) itemBuilder.forceAddTag(it);
+        if(!HYBRID_ITEM_TAGS.containsKey(itemKey)) HYBRID_ITEM_TAGS.put(itemKey,new ArrayList<>());
+        HYBRID_ITEM_TAGS.get(itemKey).addAll(itemTagsToAdd);
     }
 
 
-    public void addHybridTag(TagKey<Block> blockKey, TagKey<Item> itemKey, TagKey<Block> blockTagToAdd, TagKey<Item> itemTagToAdd){
-        getOrCreateTagBuilder(blockKey).forceAddTag(blockTagToAdd);
-        getItemBuilder(itemKey).forceAddTag(itemTagToAdd);
+    public static void addHybridTag(TagKey<Block> blockKey, TagKey<Item> itemKey, TagKey<Block> blockTagToAdd, TagKey<Item> itemTagToAdd){
+        addHybridTags(blockKey,itemKey,List.of(blockTagToAdd),List.of(itemTagToAdd));
     }
 
-    public void addItems(TagKey<Item> itemKey, Block... blocks){
-        var itemBuilder = getItemBuilder(itemKey);
-        for(var block : blocks) itemBuilder.add(block.asItem());
+    public static void addItems(TagKey<Item> itemKey, Block... blocks){
+        if(!HYBRID_ITEM_BLOCKS.containsKey(itemKey)) HYBRID_ITEM_BLOCKS.put(itemKey,new ArrayList<>());
+        HYBRID_ITEM_BLOCKS.get(itemKey).addAll(List.of(blocks));
     }
 
-    public FabricTagProvider<Item>.FabricTagBuilder getItemBuilder(TagKey<Item> itemKey) {
-        return ModItemTagProvider.INSTANCE.getBuilder(itemKey);
+    public void actualizeHybrids(){
+        for(var entry : HYBRID_BLOCKS.entrySet()){
+            var builder = getOrCreateTagBuilder(entry.getKey());
+            builder.add(entry.getValue().toArray(new Block[0]));
+        }
+
+        for(var entry : HYBRID_TAGS.entrySet()){
+            var builder = getOrCreateTagBuilder(entry.getKey());
+            for(var tag : entry.getValue())
+                builder.forceAddTag(tag);
+        }
     }
 }
