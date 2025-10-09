@@ -280,14 +280,15 @@ public class MadnessUtil {
 
         // make extreme values have less of an impact
         final double g = 0.03;
-        effectiveMaddeningSpeed = (float)Toolbox.log(1+g,effectiveMaddeningSpeed*g+1);
+        if(effectiveMaddeningSpeed>1)
+            effectiveMaddeningSpeed = (float)Toolbox.log(1+g,effectiveMaddeningSpeed*g+1);
 
         // slow maddening down a lot
         effectiveMaddeningSpeed *= 0.001;
 
         // prevents maddening from climbing endlessly
         // healing is much less effective if you're still exposed
-        final double lerpPerTick = 0.0001 / (1+effectiveMaddeningSpeed);
+        final double lerpPerTick = 0.0001 / (1+Math.max(effectiveMaddeningSpeed,0));
 
         float newMadness = (float)(Toolbox.LerpD(prevMadness,0,lerpPerTick) + effectiveMaddeningSpeed);
 

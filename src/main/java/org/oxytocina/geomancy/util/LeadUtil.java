@@ -231,14 +231,15 @@ public class LeadUtil {
 
         // make extreme values have less of an impact
         final double g = 0.03;
-        effectivePoisoningSpeed = Toolbox.log(1+g,effectivePoisoningSpeed*g+1);
+        if(effectivePoisoningSpeed>1)
+            effectivePoisoningSpeed = Toolbox.log(1+g,effectivePoisoningSpeed*g+1);
 
         // slow poisoning down a lot
         effectivePoisoningSpeed *= 0.001;
 
         // prevents poisoning from climbing endlessly
         // healing is much less effective if you're still exposed
-        final double lerpPerTick = 0.0001 / (1+effectivePoisoningSpeed);
+        final double lerpPerTick = 0.0001 / (1+Math.max(effectivePoisoningSpeed,0));
 
         float newPoisoning = (float)(Toolbox.LerpD(prevPoisoning,0,lerpPerTick) + effectivePoisoningSpeed);
 
