@@ -21,6 +21,11 @@ public interface IStorageItem {
     HashMap<ItemStack,DefaultedList<ItemStack>> inventories = new HashMap<>();
     HashMap<ItemStack,Inventory> actualInventories = new HashMap<>();
 
+    static void clear(){
+        inventories.clear();
+        actualInventories.clear();
+    }
+
     DefaultedList<ItemStack> readInventoryFromNbt(ItemStack stack);
     void saveInventoryToNbt(ItemStack stack);
 

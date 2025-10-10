@@ -247,7 +247,17 @@ public class SpellmakerScreenHandler extends ScreenHandler {
                     return ItemStack.EMPTY;
                 }
                 // from player to storage
-            } else if (!this.insertItem(fromStack, 0, 1, false)) {
+            } else{
+                var toStack = getOutput();
+                if(toStack.isEmpty())
+                {
+                    this.slots.get(0).setStack(res.copyWithCount(1));
+                    this.slots.get(0).markDirty();
+                    res.decrement(1);
+                    fromSlot.setStack(res);
+                    fromSlot.markDirty();
+                    return res;
+                }
                 return ItemStack.EMPTY;
             }
 

@@ -229,7 +229,7 @@ public class OctanguliteArmorModel extends BipedEntityModel<LivingEntity> {
         }
         hue = MathHelper.lerp(durability,0,hue);
 
-        return ModColorizationHandler.hsvToRgb(
+        return Toolbox.colorFromHSV(
                 hue,sat,val
         );
     }

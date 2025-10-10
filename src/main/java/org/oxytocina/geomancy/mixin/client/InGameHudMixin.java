@@ -20,7 +20,7 @@ public abstract class InGameHudMixin {
 
     @Inject(method = "Lnet/minecraft/client/gui/hud/InGameHud;render(Lnet/minecraft/client/gui/DrawContext;F)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;isDemo()Z"), locals = LocalCapture.CAPTURE_FAILHARD)
     private void geomancy$render(DrawContext context, float tickDelta, CallbackInfo ci) {
-        ModHudRenderer.onHudRender(context, getCameraPlayer());
+        ModHudRenderer.onHudRenderStatic(context, getCameraPlayer());
     }
 
     @ModifyArg(method = "renderStatusEffectOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V", ordinal = 0))

@@ -289,6 +289,8 @@ public class SpellmakerBlockEntity extends BlockEntity implements ExtendedScreen
     public void tryQuickInsertCradle(ItemStack stack) {
         if(!getOutput().isEmpty()) return;
         if(!stack.isIn(ModItemTags.SPELL_STORING)) return;
-        setStack(OUTPUT_SLOT,stack.copyAndEmpty());
+        if(stack.isEmpty()) return;
+        setStack(OUTPUT_SLOT,stack.copyWithCount(1));
+        stack.decrement(1);
     }
 }

@@ -1,8 +1,11 @@
 package org.oxytocina.geomancy.client;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 //import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 
@@ -13,6 +16,7 @@ import org.oxytocina.geomancy.client.blocks.blockEntities.SmitheryBlockEntityRen
 import org.oxytocina.geomancy.client.blocks.blockEntities.SpellmakerBlockEntityRenderer;
 import org.oxytocina.geomancy.client.entity.ModEntityRenderers;
 import org.oxytocina.geomancy.client.event.ClientPlayerTickHandler;
+import org.oxytocina.geomancy.client.hud.ModHudRenderer;
 import org.oxytocina.geomancy.client.registries.ModModelLayers;
 import org.oxytocina.geomancy.client.rendering.ModBlockTransparency;
 import org.oxytocina.geomancy.client.rendering.ModColorizationHandler;
@@ -55,6 +59,8 @@ public class GeomancyClient implements ClientModInitializer {
         ClientTickEvents.START_CLIENT_TICK.register(new ClientPlayerTickHandler());
         ClientPlayConnectionEvents.JOIN.register(new ClientPlayConnectionJoin());
         ClientPlayConnectionEvents.DISCONNECT.register(new ClientPlayConnectionLeave());
+
+        //HudRenderCallback.EVENT.register(new ModHudRenderer());
 
         BlockEntityRendererFactories.register(ModBlockEntities.SMITHERY_BLOCK_ENTITY, SmitheryBlockEntityRenderer::new);
         BlockEntityRendererFactories.register(ModBlockEntities.SPELLMAKER_BLOCK_ENTITY, SpellmakerBlockEntityRenderer::new);

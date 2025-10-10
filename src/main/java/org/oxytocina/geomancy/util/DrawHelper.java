@@ -2,6 +2,7 @@ package org.oxytocina.geomancy.util;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.model.BakedModel;
@@ -163,5 +164,23 @@ public class DrawHelper {
                 mouseX <= drawPosX+width &&
                 mouseY <= drawPosY+height;
 
+    }
+
+    public static int drawText(DrawContext context,TextRenderer textRenderer, @Nullable String text, float x, float y, int color, boolean shadow) {
+        if (text == null) {
+            return 0;
+        } else {
+            int i = textRenderer.draw(text, x, y, color, shadow, context.getMatrices().peek().getPositionMatrix(), context.getVertexConsumers(), TextRenderer.TextLayerType.NORMAL, 0, 15728880, textRenderer.isRightToLeft());
+            context.draw();
+            return i;
+        }
+    }
+
+    public static void drawTextOutlined(DrawContext context,TextRenderer textRenderer, @Nullable String text, float x, float y, int color, int outlineColor){
+        drawText(context,textRenderer, text, x + 1, y, outlineColor, false);
+        drawText(context,textRenderer, text, x - 1, y, outlineColor, false);
+        drawText(context,textRenderer, text, x, y + 1, outlineColor, false);
+        drawText(context,textRenderer, text, x, y - 1, outlineColor, false);
+        drawText(context,textRenderer, text, x, y, color, false);
     }
 }

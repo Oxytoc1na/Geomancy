@@ -8,6 +8,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import org.oxytocina.geomancy.Geomancy;
@@ -213,7 +214,7 @@ public class ModColorizationHandler {
         float y3 = zoom*2f*((pos.getY()+395) * (1+tintIndex*0.3f) + tintIndex*16);
         float z3 = zoom*2f*((pos.getZ()+529) * (1+tintIndex*0.3f) + tintIndex*16);
 
-        return hsvToRgb(
+        return Toolbox.colorFromHSV(
                 (float)(org.oxytocina.geomancy.util.SimplexNoise.noise(x,y,z)+1)/2,
                 (float) (1-Math.pow(1F-((SimplexNoise.noise(x2,y2,z2)+1)/2),2)),
                 (float) (1-Math.pow(1F-((SimplexNoise.noise(x3,y3,z3)+1)/2),2))
@@ -291,7 +292,7 @@ public class ModColorizationHandler {
         float y3 = zoom*2f*((baseY+395) * (1+tintIndex*0.3f) + tintIndex*16);
         float z3 = zoom*2f*((baseZ+529) * (1+tintIndex*0.3f) + tintIndex*16);
 
-        return hsvToRgb(
+        return Toolbox.colorFromHSV(
                 (float)(org.oxytocina.geomancy.util.SimplexNoise.noise(x,y,z)+1)/2,
                 (float) (1-Math.pow(1F-((SimplexNoise.noise(x2,y2,z2)+1)/2),2)),
                 (float) (1-Math.pow(1F-((SimplexNoise.noise(x3,y3,z3)+1)/2),2))
@@ -398,7 +399,7 @@ public class ModColorizationHandler {
         }
         hue = MathHelper.lerp(durability,0,hue);
 
-        return hsvToRgb(
+        return Toolbox.colorFromHSV(
                 hue,sat,val
         );
 
@@ -407,12 +408,14 @@ public class ModColorizationHandler {
     public static int octanguliteItemBarNoise(float progress){
         return octanguliteItemBarNoise(progress,1);
     }
-
     public static int octanguliteItemBarNoise(float progress, float tickScale){
-        float baseX = 0, baseY = 0, baseZ = 0;
+        return octanguliteItemBarNoise(progress,tickScale,0,0,0);
+    }
+
+    public static int octanguliteItemBarNoise(float progress, float tickScale, float baseX, float baseY, float baseZ){
         float zoom = 0.008f;
 
-        baseX = GeomancyClient.tick * tickScale;
+        baseX += GeomancyClient.tick * tickScale;
 
         float x = zoom*baseX * (1+0.3f);
         float y = zoom*baseY * (1+0.3f);
@@ -432,7 +435,7 @@ public class ModColorizationHandler {
         // ensure its readable
         float val = 0.4f + 0.6f * (float) (1-Math.pow(1F-((SimplexNoise.noise(x3,y3,z3)+1)/2),2));
 
-        return hsvToRgb(
+        return Toolbox.colorFromHSV(
                 (float)(org.oxytocina.geomancy.util.SimplexNoise.noise(x,y,z)+1)/2,
                 sat,val
 
@@ -463,32 +466,10 @@ public class ModColorizationHandler {
         };
 
         return sup.apply(n);
-
     }
 
 
-    public static int hsvToRgb(float hue, float saturation, float value) {
 
-        hue = Toolbox.clampF(hue,0,1);
-        saturation = Toolbox.clampF(saturation,0,1);
-        value = Toolbox.clampF(value,0,1);
-
-        int h = (int)(hue * 6);
-        float f = hue * 6 - h;
-        float p = value * (1 - saturation);
-        float q = value * (1 - f * saturation);
-        float t = value * (1 - (1 - f) * saturation);
-
-        switch (h) {
-            case 0: return Toolbox.colorFromRGB(value, t, p);
-            case 1: return Toolbox.colorFromRGB(q, value, p);
-            case 2: return Toolbox.colorFromRGB(p, value, t);
-            case 3: return Toolbox.colorFromRGB(p, q, value);
-            case 4: return Toolbox.colorFromRGB(t, p, value);
-            case 5: return Toolbox.colorFromRGB(value, p, q);
-            default: throw new RuntimeException("Something went wrong when converting from HSV to RGB. Input was " + hue + ", " + saturation + ", " + value);
-        }
-    }
 
     public static int octanguliteRarityNoise(ItemStack stack, int index) {
         final float zoom = 0.03f;
@@ -560,7 +541,7 @@ public class ModColorizationHandler {
         }
         hue = MathHelper.lerp(durability,0,hue);
 
-        return hsvToRgb(
+        return Toolbox.colorFromHSV(
                 hue,sat,val
         );
     }

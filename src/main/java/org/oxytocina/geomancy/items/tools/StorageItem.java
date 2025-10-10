@@ -27,6 +27,8 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.client.GeomancyClient;
 import org.oxytocina.geomancy.client.screen.StorageItemScreenHandler;
 import org.oxytocina.geomancy.inventories.ImplementedInventory;
 import org.oxytocina.geomancy.items.*;
@@ -254,7 +256,14 @@ public class StorageItem extends Item implements IStorageItem, ExtendedScreenHan
      * @return the item in the slot
      */
     public ItemStack getStack(ItemStack key,int slot) {
-        return getItems(key).get(slot);
+        var items = getItems(key);
+        if(items==null){
+            Geomancy.logError("StorageItem.getItems returned null!");
+            inventories.remove(key);
+            actualInventories.remove(key);
+            return ItemStack.EMPTY;
+        }
+        return items.get(slot);
     }
 
     /**
