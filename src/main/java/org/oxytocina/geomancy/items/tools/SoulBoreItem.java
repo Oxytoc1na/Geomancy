@@ -99,7 +99,7 @@ public class SoulBoreItem extends StorageItem implements ISoulStoringItem, ICust
     }
 
     @Override
-    public void takeSoul(World world, ItemStack stack, float amount, @Nullable SpellContext ctx) {
+    public void removeSoul(World world, ItemStack stack, float amount, @Nullable SpellContext ctx) {
         float leftOvers = getLeftoverMana(stack);
         float taken = Math.min(leftOvers,amount);
         amount -= taken;
@@ -128,6 +128,11 @@ public class SoulBoreItem extends StorageItem implements ISoulStoringItem, ICust
         onTakenFuel(world,ctx);
         setLeftoverMana(stack,leftOvers);
         markDirty(stack);
+    }
+
+    @Override
+    public boolean canAddSoulTo(World world, ItemStack stack, @Nullable SpellContext ctx) {
+        return false;
     }
 
     public void onTakenFuel(World world, @Nullable SpellContext ctx) {

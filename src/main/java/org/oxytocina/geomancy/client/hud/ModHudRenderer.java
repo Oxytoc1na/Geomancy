@@ -212,7 +212,7 @@ public class ModHudRenderer {
         for (int i = 0; i < drawnBlobs; i++) {
             if(i>=PREV_DRAWN_BLOB_FRACTIONS.size()) break;
             float fractionDiff = drawnBlobFractions.get(i).getLeft() - PREV_DRAWN_BLOB_FRACTIONS.get(i).getLeft();
-            if(fractionDiff<=-0.9f) // fully used up blob! initiate BOOM animation!!!!
+            if(drawnBlobFractions.get(i).getLeft() < 0.1f && fractionDiff<=-0.15f) // fully used up blob! initiate BOOM animation!!!!
                 newBlobBreakage.add(1f);
             else
                 // it takes 10 frames for the animation to finish

@@ -11,15 +11,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.predicate.entity.LocationPredicate;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
@@ -92,7 +87,7 @@ public class SoulUtil {
         recalculateSoul(player,true);
     }
     private static void recalculateSoul(PlayerEntity player, boolean sync){
-        if(player==null || !(player instanceof ServerPlayerEntity)) return;
+        if(!(player instanceof ServerPlayerEntity)) return;
 
         float cap = 0;
         float mana = 0;
@@ -366,12 +361,14 @@ public class SoulUtil {
         HashMap<Integer,List<Pair<ItemStack, ISoulStoringItem>>> storerPriorityMap = new HashMap<>();
         for(var storer : storers){
             var pair = new Pair<>(storer,(ISoulStoringItem)storer.getItem());
+            if(!pair.getRight().canRemoveSoulFrom(world,storer,ctx)) continue;
             int priority = pair.getRight().depletionPriority(storer);
             if(!storerPriorityMap.containsKey(priority)) storerPriorityMap.put(priority,new ArrayList<>());
             storerPriorityMap.get(priority).add(pair);
         }
         List<Integer> keys = new ArrayList<>(storerPriorityMap.keySet());
         keys.sort(Comparator.comparingInt(o -> o));
+        List<ItemStack> stacksToSync = new ArrayList<>();
 
         float left = amount;
         for (int i = 0; i < keys.size(); i++) {
@@ -389,12 +386,61 @@ public class SoulUtil {
                     if(mana<=0) continue;
                     float taken = Math.min(mana,amountPerStack);
                     left-=taken;
-                    pair.getRight().takeSoul(world,pair.getLeft(),taken,ctx);
+                    pair.getRight().removeSoul(world,pair.getLeft(),taken,ctx);
                     if(mana-taken<=0) pair.getRight().onDepleted(pair.getLeft());
                     changed=true;
+                    if(!stacksToSync.contains(pair.getLeft())) stacksToSync.add(pair.getLeft());
                 }
             }
         }
+
+        for(var s : stacksToSync)
+            syncItemSoul(world,s);
+
+        return left;
+    }
+
+    private static float addSoul(List<ItemStack> storers, float amount, World world, @Nullable SpellContext ctx){
+        // generate prioritized lists
+        HashMap<Integer,List<Pair<ItemStack, ISoulStoringItem>>> storerPriorityMap = new HashMap<>();
+        for(var storer : storers){
+            var pair = new Pair<>(storer,(ISoulStoringItem)storer.getItem());
+            if(!pair.getRight().canAddSoulTo(world,storer,ctx)) continue;
+            int priority = pair.getRight().depletionPriority(storer);
+            if(!storerPriorityMap.containsKey(priority)) storerPriorityMap.put(priority,new ArrayList<>());
+            storerPriorityMap.get(priority).add(pair);
+        }
+        List<Integer> keys = new ArrayList<>(storerPriorityMap.keySet());
+        keys.sort(Comparator.comparingInt(o -> o));
+        List<ItemStack> stacksToSync = new ArrayList<>();
+
+        float left = amount;
+        for (int i = 0; i < keys.size(); i++) {
+            if(left<=0) break;
+            var prioStorers = storerPriorityMap.get(keys.get(i));
+            boolean changed=true;
+            while(left>0){
+                if(!changed) break;
+                changed=false;
+                int stacksWithMana = 0;
+                for(var pair : prioStorers){if(pair.getRight().getMana(world,pair.getLeft()) > 0 ) stacksWithMana++;}
+                float amountPerStack = left/stacksWithMana;
+                for(var pair : prioStorers){
+                    float mana = pair.getRight().getMana(world,pair.getLeft());
+                    float maxMana = pair.getRight().getCapacity(world,pair.getLeft());
+                    if(mana>=maxMana) continue;
+                    float taken = Math.min(maxMana-mana,amountPerStack);
+                    left-=taken;
+                    pair.getRight().addSoul(world,pair.getLeft(),taken,ctx);
+                    if(mana+taken>=maxMana) pair.getRight().onToppedUp(pair.getLeft());
+                    changed=true;
+                    if(!stacksToSync.contains(pair.getLeft())) stacksToSync.add(pair.getLeft());
+                }
+            }
+        }
+
+        for(var s : stacksToSync)
+            syncItemSoul(world,s);
 
         return left;
     }
@@ -428,5 +474,10 @@ public class SoulUtil {
         var items = getAllSoulStoringItems(player);
         for (var stack : items)
             syncItemSoul(player.getWorld(),stack,player);
+    }
+
+    public static void addSoulToPlayer(ServerPlayerEntity player, float amount){
+        var items = getAllSoulStoringItems(player);
+        if(addSoul(items,amount,player.getWorld(),null)!=amount) queueRecalculateSoul(player);
     }
 }

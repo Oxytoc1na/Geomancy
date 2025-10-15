@@ -10,6 +10,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import org.oxytocina.geomancy.util.LeadUtil;
 import org.oxytocina.geomancy.util.MadnessUtil;
+import org.oxytocina.geomancy.util.SoulUtil;
 import org.oxytocina.geomancy.util.StellgeUtil;
 import org.oxytocina.geomancy.world.dimension.MazeUtil;
 
@@ -114,6 +115,18 @@ public class ModCommands {
                                 .executes(context -> {
                                     final BlockPos value = BlockPosArgumentType.getBlockPos(context, "pos");
                                     MazeUtil.generateSection(context.getSource().getWorld(),value,1);
+                                    return 1;
+                                })
+                        )
+                ));
+
+        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) ->
+                dispatcher.register(literal("soul")
+                        .then(literal("fill")
+                                .executes(context -> {
+                                    var player = context.getSource().getPlayer();
+                                    if(player==null) return 1;
+                                    SoulUtil.addSoulToPlayer(player,1000000f);
                                     return 1;
                                 })
                         )

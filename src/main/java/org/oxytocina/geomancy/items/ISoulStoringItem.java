@@ -40,6 +40,10 @@ public interface ISoulStoringItem {
 
     }
 
+    default void onToppedUp(ItemStack stack){
+
+    }
+
     /// lower priority items deplete first
     default int depletionPriority(ItemStack stack){
         return 0;
@@ -121,7 +125,18 @@ public interface ISoulStoringItem {
         tooltip.add(Text.translatable("geomancy.soul_storage.tooltip",Math.round(mana),Math.round(cap),Math.round(fraction*100)).formatted(Formatting.DARK_GRAY));
     }
 
-    default void takeSoul(World world, ItemStack left, float taken, @Nullable SpellContext ctx){
-        setMana(world,left,getMana(world,left)-taken);
+    default void changeSoul(World world, ItemStack stack, float taken, @Nullable SpellContext ctx){
+        if(taken>0) addSoul(world,stack,taken,ctx);
+        else if(taken <0) removeSoul(world,stack,-taken,ctx);
+    }
+
+    default boolean canRemoveSoulFrom(World world, ItemStack stack, @Nullable SpellContext ctx){return true;}
+    default void removeSoul(World world, ItemStack stack, float taken, @Nullable SpellContext ctx){
+        setMana(world,stack,getMana(world,stack)-taken);
+    }
+
+    default boolean canAddSoulTo(World world, ItemStack stack, @Nullable SpellContext ctx){return true;}
+    default void addSoul(World world, ItemStack stack, float taken, @Nullable SpellContext ctx){
+        setMana(world,stack,getMana(world,stack)+taken);
     }
 }
