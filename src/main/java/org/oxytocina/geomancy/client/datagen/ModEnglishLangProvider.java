@@ -1764,6 +1764,9 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.options.soul_crosshair_type.pyramid","Pyramid");
             add("MODID.options.soul_crosshair_type.hourglass","Hourglass");
             add("MODID.options.soul_crosshair_type.focus","Focus");
+            add("MODID.options.soul_crosshair_math","Soul crosshair math");
+            add("MODID.options.soul_crosshair_math.linear","Linear");
+            add("MODID.options.soul_crosshair_math.multiplicative","Multiplicative");
         }
 
         tb=null;

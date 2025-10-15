@@ -57,8 +57,13 @@ public class GeomancyConfig extends ReflectiveConfig {
     @SerializedName("whisper_volume")
     public final TrackedValue<Float> whisperVolume = this.value(0.5f);
 
-    @Comment("changes how loud whispers are")
-    @Comment("valid values: spiral, pyramid")
+    @Comment("changes the shape of the soulcasting crosshair")
+    @Comment("valid values: spiral, pyramid, hourglass, focus")
     @SerializedName("soul_crosshair_type")
     public final TrackedValue<String> soulCrosshairType = this.value("spiral");
+
+    @Comment("changes what single blobs of the soulcasting crosshair represent")
+    @Comment("valid values: linear, multiplicative")
+    @SerializedName("soul_crosshair_math")
+    public final TrackedValue<String> soulCrosshairMath = this.value("linear");
 }

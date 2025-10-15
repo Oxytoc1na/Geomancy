@@ -86,6 +86,12 @@ public class ConfigScreen extends Screen {
                         Text.translatable("geomancy.options.soul_crosshair_type"),(button, val) ->
                                 GeomancyConfig.CONFIG.soulCrosshairType.setValue(val)));
 
+        // soul crosshair math
+        adder.add(CyclingButtonWidget.<String>builder(b->Text.translatable("geomancy.options.soul_crosshair_math."+b)).values("linear","multiplicative")
+                .initially(GeomancyConfig.CONFIG.soulCrosshairMath.value()).build(0,0, 150, 20,
+                        Text.translatable("geomancy.options.soul_crosshair_math"),(button, val) ->
+                                GeomancyConfig.CONFIG.soulCrosshairMath.setValue(val)));
+
         // credits and attribution
         adder.add(this.createButton(CREDITS_AND_ATTRIBUTION_TEXT, () -> new GeomancyCreditsScreen(this,false,()->{})));
 

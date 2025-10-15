@@ -21,6 +21,7 @@ import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ModHudRenderer {
 
@@ -164,18 +165,46 @@ public class ModHudRenderer {
         // each next blob holds 1.5 times as much soul as the previous
         int drawnBlobs = 1;
         List<Pair<Float,Float>> drawnBlobFractions = new ArrayList<>(); // fraction, maxSoul
-        float workMaxSoul = 10;
-        float workSoulLeft = soul;
-        float workBlobMaxSoul = 10;
-        drawnBlobFractions.add(new Pair<>(Toolbox.clampF(workSoulLeft/workBlobMaxSoul,0,1),workBlobMaxSoul));
-        workSoulLeft-=workBlobMaxSoul;
-        while(workMaxSoul < maxSoul){
-            workBlobMaxSoul *= 1.5f;
-            workMaxSoul += workBlobMaxSoul;
-            drawnBlobs++;
 
-            drawnBlobFractions.add(new Pair<>(Toolbox.clampF(workSoulLeft/workBlobMaxSoul,0,1),workBlobMaxSoul));
-            workSoulLeft-=workBlobMaxSoul;
+        switch(Geomancy.CONFIG.soulCrosshairMath.value()){
+            case "linear" : {
+                float workMaxSoul = 10;
+                float workSoulLeft = soul;
+                float workBlobMaxSoul = 10;
+                workSoulLeft-=workBlobMaxSoul;
+                while(workMaxSoul < maxSoul){
+                    workBlobMaxSoul *= 1.5f;
+                    workMaxSoul += workBlobMaxSoul;
+                    drawnBlobs++;
+                    workSoulLeft-=workBlobMaxSoul;
+                }
+                workBlobMaxSoul = maxSoul/drawnBlobs;
+                workSoulLeft = soul;
+                for (int i = 0; i < drawnBlobs; i++) {
+                    float soulForThisBlob = Math.min(workBlobMaxSoul,workSoulLeft);
+                    workSoulLeft -= soulForThisBlob;
+                    drawnBlobFractions.add(new Pair<>(Toolbox.clampF(soulForThisBlob/workBlobMaxSoul,0,1),workBlobMaxSoul));
+                }
+                break;
+            }
+            case "multiplicative":
+            default:
+            {
+                float workMaxSoul = 10;
+                float workSoulLeft = soul;
+                float workBlobMaxSoul = 10;
+                drawnBlobFractions.add(new Pair<>(Toolbox.clampF(workSoulLeft/workBlobMaxSoul,0,1),workBlobMaxSoul));
+                workSoulLeft-=workBlobMaxSoul;
+                while(workMaxSoul < maxSoul){
+                    workBlobMaxSoul *= 1.5f;
+                    workMaxSoul += workBlobMaxSoul;
+                    drawnBlobs++;
+
+                    drawnBlobFractions.add(new Pair<>(Toolbox.clampF(workSoulLeft/workBlobMaxSoul,0,1),workBlobMaxSoul));
+                    workSoulLeft-=workBlobMaxSoul;
+                }
+                break;
+            }
         }
 
         // determine blob animation status (breaking orbs by fully depleting them instantly)
