@@ -120,7 +120,8 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
                         ModItems.JOURNEY_GLOVE,
                         ModItems.EXPERT_GLOVE,
                         ModItems.MASTER_GLOVE,
-                        ModItems.PRECOMP_CASTER
+                        ModItems.PRECOMP_CASTER,
+                        ModItems.STELLGE_CASTER
                         );
 
         // chiseled bookshelf

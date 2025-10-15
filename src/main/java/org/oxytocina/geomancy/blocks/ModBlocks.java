@@ -23,10 +23,7 @@ import org.oxytocina.geomancy.blocks.blockEntities.*;
 import org.oxytocina.geomancy.blocks.fluids.GoldFluidBlock;
 import org.oxytocina.geomancy.blocks.fluids.ModFluids;
 import org.oxytocina.geomancy.blocks.fluids.MoltenGoldCauldronBlock;
-import org.oxytocina.geomancy.items.ExtraItemSettings;
-import org.oxytocina.geomancy.items.LeadBlockItem;
-import org.oxytocina.geomancy.items.ModItems;
-import org.oxytocina.geomancy.items.OctanguliteBlockItem;
+import org.oxytocina.geomancy.items.*;
 import org.oxytocina.geomancy.registries.ModBlockSetTypes;
 import org.oxytocina.geomancy.registries.ModWoodTypes;
 import org.oxytocina.geomancy.sound.ModBlockSoundGroups;
@@ -266,9 +263,17 @@ public class ModBlocks {
                 LeadBlockItem blockItem = new LeadBlockItem(block, itemSettings,leadBlock.getInventoryPoisoningSpeed());
                 registerBlockItem(itemKey.getValue().getPath(),blockItem,extraItemSettings);
             }
-            else if(block instanceof IMaddeningBlock octanguliteBlock){
-                OctanguliteBlockItem blockItem = new OctanguliteBlockItem(block, itemSettings,octanguliteBlock.getInventoryMaddeningSpeed());
-                registerBlockItem(itemKey.getValue().getPath(),blockItem,extraItemSettings);
+            else if(block instanceof IMaddeningBlock maddeningBlock){
+                if(maddeningBlock.getInventoryMaddeningSpeed() > 0)
+                {
+                    OctanguliteBlockItem blockItem = new OctanguliteBlockItem(block, itemSettings,maddeningBlock.getInventoryMaddeningSpeed());
+                    registerBlockItem(itemKey.getValue().getPath(),blockItem,extraItemSettings);
+                }
+                else{
+                    MaddeningBlockItem blockItem = new MaddeningBlockItem(block, itemSettings,maddeningBlock.getInventoryMaddeningSpeed());
+                    registerBlockItem(itemKey.getValue().getPath(),blockItem,extraItemSettings);
+                }
+
             }
             else if(extraSettings.shouldItemHaveOwnName){
                 AliasedBlockItem blockItem = new AliasedBlockItem(block, itemSettings);

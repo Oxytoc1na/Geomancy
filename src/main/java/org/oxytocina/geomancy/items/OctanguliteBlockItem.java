@@ -5,18 +5,11 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 
-public class OctanguliteBlockItem extends BlockItem implements IMaddeningItem, ICustomRarityItem{
+public class OctanguliteBlockItem extends MaddeningBlockItem implements ICustomRarityItem{
 
-    public final float maddeningSpeed;
 
     public OctanguliteBlockItem(Block block, Settings settings, float maddeningSpeed) {
-        super(block, settings);
-        this.maddeningSpeed =maddeningSpeed;
-    }
-
-    @Override
-    public float getInInventoryMaddeningSpeed() {
-        return maddeningSpeed;
+        super(block, settings,maddeningSpeed);
     }
 
     @Override
