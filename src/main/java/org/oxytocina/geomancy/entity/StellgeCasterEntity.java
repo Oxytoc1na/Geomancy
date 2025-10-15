@@ -17,6 +17,7 @@ import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.SpellStoringItem;
 import org.oxytocina.geomancy.items.tools.SoulCastingItem;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
+import org.oxytocina.geomancy.spells.PremadeSpells;
 import org.oxytocina.geomancy.spells.SpellBlocks;
 import org.oxytocina.geomancy.spells.SpellComponent;
 import org.oxytocina.geomancy.spells.SpellGrid;
@@ -75,33 +76,13 @@ public class StellgeCasterEntity extends StellgeEntity implements RangedAttackMo
     @Override
     protected void initEquipment(Random random, LocalDifficulty localDifficulty) {
         // build weapon
-        var caster = new ItemStack(ModItems.PRECOMP_CASTER);
+        var caster = new ItemStack(ModItems.STELLGE_CASTER);
         var casterItem = (SoulCastingItem) caster.getItem();
-        ItemStack spellStack = new ItemStack(ModItems.SPELLSTORAGE_MEDIUM);
-        SpellGrid grid = switch(getRandom().nextInt(1)){
-            case 0 -> SpellGrid.builder("fireball")
-                    .dim(ModItems.SPELLSTORAGE_MEDIUM)
-                    .add(SpellComponent.builder(SpellBlocks.FIREBALL).pos(2,2)
-                            .conf(SpellComponent.confBuilder("ne","position").mode(SpellComponent.SideConfig.Mode.Input))
-                            .conf(SpellComponent.confBuilder("e","direction").mode(SpellComponent.SideConfig.Mode.Input))
-                            .conf(SpellComponent.confBuilder("se","speed").mode(SpellComponent.SideConfig.Mode.Input))
-                            .conf(SpellComponent.confBuilder("sw","power").mode(SpellComponent.SideConfig.Mode.Input))
-                    )
-                    .add(SpellComponent.builder(SpellBlocks.SUM).pos(2,1)
-                            .conf(SpellComponent.confBuilder("sw").mode(SpellComponent.SideConfig.Mode.Output))
-                            .conf(SpellComponent.confBuilder("e","a").mode(SpellComponent.SideConfig.Mode.Input))
-                            .conf(SpellComponent.confBuilder("ne","b").mode(SpellComponent.SideConfig.Mode.Input))
-                    )
-                    .add(SpellComponent.builder(SpellBlocks.EYEPOS_CASTER).pos(3,1).conf(SpellComponent.confBuilder("w").mode(SpellComponent.SideConfig.Mode.Output)))
-                    .add(SpellComponent.builder(SpellBlocks.DIR_CASTER).pos(3,0).conf(SpellComponent.confBuilder("sw").mode(SpellComponent.SideConfig.Mode.Output)))
-                    .add(SpellComponent.builder(SpellBlocks.DIR_CASTER).pos(3,2).conf(SpellComponent.confBuilder("w").mode(SpellComponent.SideConfig.Mode.Output)))
-                    .add(SpellComponent.builder(SpellBlocks.CONST_NUM).param("val",1).pos(2,3).conf(SpellComponent.confBuilder("nw").mode(SpellComponent.SideConfig.Mode.Output)))
-                    .add(SpellComponent.builder(SpellBlocks.CONST_NUM).param("val",1).pos(1,3).conf(SpellComponent.confBuilder("ne").mode(SpellComponent.SideConfig.Mode.Output)))
-                    .build();
-            default -> null;
+        ItemStack spellStack = switch(getRandom().nextInt(1)){
+            case 0 -> PremadeSpells.FIREBALL.getMiddle();
+            default -> new ItemStack(ModItems.SPELLSTORAGE_MEDIUM);
         };
-        SpellStoringItem.writeGrid(spellStack,grid);
-        casterItem.setStack(caster,0,spellStack);
+        casterItem.setStack(caster,0,spellStack.copy());
         this.equipStack(EquipmentSlot.MAINHAND, caster);
     }
 

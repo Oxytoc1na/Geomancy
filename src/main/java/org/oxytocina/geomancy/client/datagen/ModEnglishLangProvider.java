@@ -488,7 +488,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("item.MODID.journey_glove",         "Journeyman Spellglove");
             add("item.MODID.expert_glove",          "Expert Spellglove");
             add("item.MODID.master_glove",          "Master Spellglove");
-            add("item.MODID.precomp_caster",    "Precompiled Machine");
+            add("item.MODID.precomp_caster",        "Precompiled Machine");
+            add("item.MODID.stellge_caster",        "Enigmatic Caster");
             add("item.MODID.component_pouch","Component Pouch");
             add("MODID.storage.tooltip","Use to open");
 
@@ -532,6 +533,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
             add("block.MODID.pedestal"            , "Pedestal");
             add("block.MODID.soul_forge"          , "Soul Forge");
+            add("block.MODID.restrictor"          , "Restrictor");
 
             addOres("octangulite_ore", "Octangulite Ore");
             add("block.MODID.raw_octangulite_block"     , "Octangulite Scrap");

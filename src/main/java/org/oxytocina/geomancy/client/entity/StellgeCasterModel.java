@@ -33,13 +33,14 @@ public class StellgeCasterModel<T extends StellgeCasterEntity> extends SinglePar
     public static TexturedModelData getTexturedModelData() {
         ModelData modelData = new ModelData();
         ModelPartData modelPartData = modelData.getRoot();
-        ModelPartData head = modelPartData.addChild("head", ModelPartBuilder.create().uv(-20, -10).cuboid(-6.0F, -35.0F, -6.0F, 12.0F, 12.0F, 12.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
+        ModelPartData head = modelPartData.addChild("head", ModelPartBuilder.create().uv(0, 40).cuboid(-6.0F, -12.0F, -6.0F, 12.0F, 12.0F, 12.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 1.0F, 0.0F));
 
         for (int i = 0; i < RING_COUNT; i++) {
-            ModelPartData ring = modelPartData.addChild("ring"+(i+1), ModelPartBuilder.create().uv(-7, 0).cuboid(-8.0F, -2.0F, -8.0F, 16.0F, 2.0F, 2.0F, new Dilation(0.0F))
-                    .uv(-7, 0).cuboid(-8.0F, -2.0F, 6.0F, 16.0F, 2.0F, 2.0F, new Dilation(0.0F))
-                    .uv(-3, -10).cuboid(6.0F, -2.0F, -6.0F, 2.0F, 2.0F, 12.0F, new Dilation(0.0F))
-                    .uv(-3, -10).cuboid(-8.0F, -2.0F, -6.0F, 2.0F, 2.0F, 12.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
+            ModelPartData ring = modelPartData.addChild("ring"+(i+1), ModelPartBuilder.create().uv(28, 0).cuboid(-8.0F, -2.0F, -8.0F, 16.0F, 2.0F, 2.0F, new Dilation(0.0F))
+                    .uv(28, 4).cuboid(-8.0F, -2.0F, 6.0F, 16.0F, 2.0F, 2.0F, new Dilation(0.0F))
+                    .uv(0, 0).cuboid(6.0F, -2.0F, -6.0F, 2.0F, 2.0F, 12.0F, new Dilation(0.0F))
+                    .uv(0, 14).cuboid(-8.0F, -2.0F, -6.0F, 2.0F, 2.0F, 12.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
+
 
         }
 
@@ -61,12 +62,12 @@ public class StellgeCasterModel<T extends StellgeCasterEntity> extends SinglePar
 
         // animate rings
         entity.ringAnimationState.update(ageInTicks, 1f);
-        final float height = 10;
+        final float height = 5;
         for (int i = 0; i < RING_COUNT; i++) {
             var ring = rings[i];
             float progress = (entity.ringAnimationState.getTimeRunning()/20f*0.01f + (float)i/RING_COUNT)%1;
 
-            float y = (float)Math.sin(progress*Math.PI*2)*height;
+            float y = (float)Math.sin(progress*Math.PI*2)*height+12;
             float scale = 0.5f+((float)Math.cos(progress*Math.PI*2)+1)/2f;
 
             ring.setPivot(ring.pivotX,y,ring.pivotZ);

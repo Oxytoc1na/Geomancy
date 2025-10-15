@@ -1,4 +1,4 @@
-// Made with Blockbench 4.12.5
+// Made with Blockbench 4.12.6
 // Exported for Minecraft version 1.17+ for Yarn
 // Paste this class into your mod and generate all required imports
 public class StellgeCasterModel extends EntityModel<StellgeCasterEntity> {
@@ -15,12 +15,12 @@ public class StellgeCasterModel extends EntityModel<StellgeCasterEntity> {
 	public static TexturedModelData getTexturedModelData() {
 		ModelData modelData = new ModelData();
 		ModelPartData modelPartData = modelData.getRoot();
-		ModelPartData head = modelPartData.addChild("head", ModelPartBuilder.create().uv(-20, -10).cuboid(-6.0F, -35.0F, -6.0F, 12.0F, 12.0F, 12.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
+		ModelPartData head = modelPartData.addChild("head", ModelPartBuilder.create().uv(0, 40).cuboid(-6.0F, -12.0F, -6.0F, 12.0F, 12.0F, 12.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 1.0F, 0.0F));
 
-		ModelPartData ring1 = modelPartData.addChild("ring1", ModelPartBuilder.create().uv(-7, 0).cuboid(-8.0F, -2.0F, -8.0F, 16.0F, 2.0F, 2.0F, new Dilation(0.0F))
-		.uv(-7, 0).cuboid(-8.0F, -2.0F, 6.0F, 16.0F, 2.0F, 2.0F, new Dilation(0.0F))
-		.uv(-3, -10).cuboid(6.0F, -2.0F, -6.0F, 2.0F, 2.0F, 12.0F, new Dilation(0.0F))
-		.uv(-3, -10).cuboid(-8.0F, -2.0F, -6.0F, 2.0F, 2.0F, 12.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
+		ModelPartData ring1 = modelPartData.addChild("ring1", ModelPartBuilder.create().uv(28, 0).cuboid(-8.0F, -2.0F, -8.0F, 16.0F, 2.0F, 2.0F, new Dilation(0.0F))
+		.uv(28, 4).cuboid(-8.0F, -2.0F, 6.0F, 16.0F, 2.0F, 2.0F, new Dilation(0.0F))
+		.uv(0, 0).cuboid(6.0F, -2.0F, -6.0F, 2.0F, 2.0F, 12.0F, new Dilation(0.0F))
+		.uv(0, 14).cuboid(-8.0F, -2.0F, -6.0F, 2.0F, 2.0F, 12.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
 
 		ModelPartData ring2 = modelPartData.addChild("ring2", ModelPartBuilder.create().uv(-7, 0).cuboid(-8.0F, -2.0F, -8.0F, 16.0F, 2.0F, 2.0F, new Dilation(0.0F))
 		.uv(-7, 0).cuboid(-8.0F, -2.0F, 6.0F, 16.0F, 2.0F, 2.0F, new Dilation(0.0F))
@@ -31,7 +31,7 @@ public class StellgeCasterModel extends EntityModel<StellgeCasterEntity> {
 		.uv(-7, 0).cuboid(-8.0F, -2.0F, 6.0F, 16.0F, 2.0F, 2.0F, new Dilation(0.0F))
 		.uv(-3, -10).cuboid(6.0F, -2.0F, -6.0F, 2.0F, 2.0F, 12.0F, new Dilation(0.0F))
 		.uv(-3, -10).cuboid(-8.0F, -2.0F, -6.0F, 2.0F, 2.0F, 12.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 20.0F, 0.0F));
-		return TexturedModelData.of(modelData, 16, 16);
+		return TexturedModelData.of(modelData, 64, 64);
 	}
 	@Override
 	public void setAngles(StellgeCasterEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {

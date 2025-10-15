@@ -31,6 +31,7 @@ import org.oxytocina.geomancy.loottables.ModLootTables;
 import org.oxytocina.geomancy.registries.ModBlockTags;
 import org.oxytocina.geomancy.registries.ModItemTags;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
+import org.oxytocina.geomancy.spells.PremadeSpells;
 import org.oxytocina.geomancy.util.LeadUtil;
 import org.oxytocina.geomancy.util.MadnessUtil;
 
@@ -257,7 +258,8 @@ public class ModItems {
     public static final SpellComponentStoringItem SPELLCOMPONENT =  register("spellcomponent",      new SpellComponentStoringItem(new FabricItemSettings()),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom).group(ExtraItemSettings.Group.Spells));
     public static final StorageItem COMPONENT_POUCH =               register("component_pouch",     new StorageItem(new FabricItemSettings().maxCount(1),9*6, ModItemTags.COMPONENT_STORING,true,s->SpellComponentStoringItem.readComponent(s)!=null),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom).group(ExtraItemSettings.Group.Spells));
 
-    public static final PrecompiledSoulCastingItem PRECOMP_CASTER = register("precomp_caster",      new PrecompiledSoulCastingItem(new FabricItemSettings().maxCount(1),4,200,2),ExtraItemSettings.create().group(ExtraItemSettings.Group.Spells));
+    public static final PrecompiledSoulCastingItem PRECOMP_CASTER   = register("precomp_caster",      new PrecompiledSoulCastingItem(new FabricItemSettings().maxCount(1),4,200,2),ExtraItemSettings.create().group(ExtraItemSettings.Group.Spells));
+    public static final SoulCastingItem STELLGE_CASTER              = register("stellge_caster",      new SoulCastingItem(new FabricItemSettings().maxCount(1),5,200,2),ExtraItemSettings.create().group(ExtraItemSettings.Group.Spells));
 
     public static final VariableStoringItem VARSTORAGE_SMALL =       register("varstorage_small",  new VariableStoringItem(new FabricItemSettings().maxCount(8),1),ExtraItemSettings.create().group(ExtraItemSettings.Group.Spells));
     public static final VariableStoringItem VARSTORAGE_MEDIUM =      register("varstorage_medium", new VariableStoringItem(new FabricItemSettings().maxCount(8),4),ExtraItemSettings.create().group(ExtraItemSettings.Group.Spells));
@@ -331,7 +333,7 @@ public class ModItems {
                 itemGroup.add(i);
 
             // add premade spells
-            for(var stack : ModLootTables.getPremadeSpells().keySet())
+            for(var stack : PremadeSpells.getPremadeSpells().keySet())
                 itemGroup.add(stack);
 
         });

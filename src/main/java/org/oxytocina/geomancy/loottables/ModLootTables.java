@@ -42,10 +42,7 @@ import org.oxytocina.geomancy.items.SpellComponentStoringItem;
 import org.oxytocina.geomancy.items.jewelry.GemSlot;
 import org.oxytocina.geomancy.items.jewelry.IJewelryItem;
 import org.oxytocina.geomancy.items.jewelry.JewelryItem;
-import org.oxytocina.geomancy.spells.SpellBlocks;
-import org.oxytocina.geomancy.spells.SpellComponent;
-import org.oxytocina.geomancy.spells.SpellGrid;
-import org.oxytocina.geomancy.spells.SpellSignal;
+import org.oxytocina.geomancy.spells.*;
 
 import java.util.HashMap;
 import java.util.Set;
@@ -780,7 +777,7 @@ public class ModLootTables {
         // broken fireball
         // broken blink (up)
 
-        var spells = getPremadeSpells();
+        var spells = PremadeSpells.getPremadeSpells();
 
         for(var spellStack : spells.keySet()){
             int weight = spells.get(spellStack);
@@ -799,78 +796,7 @@ public class ModLootTables {
         return res;
     }
 
-    public static HashMap<ItemStack,Integer> getPremadeSpells(){
-        final HashMap<ItemStack,Integer> spells = new HashMap<>();
 
-        // hello world
-        {
-            spells.put(SpellGrid.builder("hello world")
-                    .dim(ModItems.SPELLSTORAGE_SMALL)
-                    .add(SpellComponent.builder(SpellBlocks.CONST_TEXT)
-                            .pos(0,1)
-                            .param("val","hello world")
-                            .conf(SpellComponent.confBuilder("e").mode(SpellComponent.SideConfig.Mode.Output))
-                    )
-                    .add(SpellComponent.builder(SpellBlocks.PRINT)
-                            .pos(1,1)
-                            .conf(SpellComponent.confBuilder("w").mode(SpellComponent.SideConfig.Mode.Input))
-                    )
-                    .buildStack(),1);
-        }
-
-        // into block teleport
-        {
-            spells.put(SpellGrid.builder("teleport")
-                    .dim(ModItems.SPELLSTORAGE_SMALL)
-                    .add(SpellComponent.builder(SpellBlocks.ENTITY_CASTER)
-                            .pos(0,1)
-                            .conf(SpellComponent.confBuilder("ne").mode(SpellComponent.SideConfig.Mode.Output))
-                    )
-                    .add(SpellComponent.builder(SpellBlocks.TELEPORT)
-                            .pos(1,0)
-                            .conf(SpellComponent.confBuilder("sw","entity").mode(SpellComponent.SideConfig.Mode.Input))
-                            .conf(SpellComponent.confBuilder("se","position").mode(SpellComponent.SideConfig.Mode.Input))
-                    )
-                    .add(SpellComponent.builder(SpellBlocks.RAYCAST_POS)
-                            .pos(1,1)
-                            .conf(SpellComponent.confBuilder("nw").mode(SpellComponent.SideConfig.Mode.Output))
-                            .conf(SpellComponent.confBuilder("sw","length").mode(SpellComponent.SideConfig.Mode.Input))
-                            .conf(SpellComponent.confBuilder("se","dir").mode(SpellComponent.SideConfig.Mode.Input))
-                            .conf(SpellComponent.confBuilder("e","from").mode(SpellComponent.SideConfig.Mode.Input))
-                    )
-                    .add(SpellComponent.builder(SpellBlocks.CONST_NUM)
-                            .pos(1,2)
-                            .conf(SpellComponent.confBuilder("ne").mode(SpellComponent.SideConfig.Mode.Output))
-                            .param("val", SpellSignal.createNumber(100))
-                    )
-                    .add(SpellComponent.builder(SpellBlocks.DIR_CASTER)
-                            .pos(2,2)
-                            .conf(SpellComponent.confBuilder("nw").mode(SpellComponent.SideConfig.Mode.Output))
-                    )
-                    .add(SpellComponent.builder(SpellBlocks.EYEPOS_CASTER)
-                            .pos(2,1)
-                            .conf(SpellComponent.confBuilder("w").mode(SpellComponent.SideConfig.Mode.Output))
-                    )
-                    .buildStack(), 1);
-        }
-
-        // self lightning
-        {
-            spells.put(SpellGrid.builder("lightning")
-                    .dim(ModItems.SPELLSTORAGE_SMALL)
-                    .add(SpellComponent.builder(SpellBlocks.LIGHTNING)
-                            .pos(1,1)
-                            .conf(SpellComponent.confBuilder("w").mode(SpellComponent.SideConfig.Mode.Input))
-                    )
-                    .add(SpellComponent.builder(SpellBlocks.POS_CASTER)
-                            .pos(0,1)
-                            .conf(SpellComponent.confBuilder("e").mode(SpellComponent.SideConfig.Mode.Output))
-                    )
-                    .buildStack(),1);
-        }
-
-        return spells;
-    }
 
     private static LootPool.Builder jewelryBuilder(){
         var res = LootPool.builder();
