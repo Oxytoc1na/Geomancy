@@ -10,6 +10,7 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.util.Pair;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.*;
 import org.jetbrains.annotations.Nullable;
@@ -21,8 +22,19 @@ import org.oxytocina.geomancy.spells.PremadeSpells;
 import org.oxytocina.geomancy.spells.SpellBlocks;
 import org.oxytocina.geomancy.spells.SpellComponent;
 import org.oxytocina.geomancy.spells.SpellGrid;
+import org.oxytocina.geomancy.util.Toolbox;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class StellgeCasterEntity extends StellgeEntity implements RangedAttackMob {
+
+    public static Map<Pair<String,Integer>,Integer> WEAPONS = new HashMap<>();
+
+    static{
+        WEAPONS.put(new Pair<>("fireball",40),100);
+        WEAPONS.put(new Pair<>("curse",20*5),30);
+    }
 
     public StellgeCasterEntity(EntityType<? extends HostileEntity> entityType, World world) {
         super(entityType,world);
@@ -40,7 +52,7 @@ public class StellgeCasterEntity extends StellgeEntity implements RangedAttackMo
     @Override
     protected void initCustomGoals() {
         super.initCustomGoals();
-        this.goalSelector.add(2,new ProjectileAttackGoal(this,1,40,25));
+        this.goalSelector.add(2,new ProjectileAttackGoal(this,1,1,25));
     }
 
     @Override
@@ -51,11 +63,13 @@ public class StellgeCasterEntity extends StellgeEntity implements RangedAttackMo
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
+        nbt.putInt("cooldown",attackCooldown);
     }
 
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
+        attackCooldown = nbt.getInt("cooldown");
     }
 
     @Override
@@ -73,15 +87,17 @@ public class StellgeCasterEntity extends StellgeEntity implements RangedAttackMo
         return ModSoundEvents.ENTITY_STELLGE_ENGINEER_DEATH;
     }
 
+
+
     @Override
     protected void initEquipment(Random random, LocalDifficulty localDifficulty) {
         // build weapon
         var caster = new ItemStack(ModItems.STELLGE_CASTER);
         var casterItem = (SoulCastingItem) caster.getItem();
-        ItemStack spellStack = switch(getRandom().nextInt(1)){
-            case 0 -> PremadeSpells.FIREBALL.getMiddle();
-            default -> new ItemStack(ModItems.SPELLSTORAGE_MEDIUM);
-        };
+
+        var weapon = Toolbox.selectWeightedRandomIndex(WEAPONS,null);
+        attackCooldown = weapon.getRight();
+        ItemStack spellStack = PremadeSpells.SPELLS.get(weapon.getLeft()).getMiddle();
         casterItem.setStack(caster,0,spellStack.copy());
         this.equipStack(EquipmentSlot.MAINHAND, caster);
     }
@@ -109,8 +125,14 @@ public class StellgeCasterEntity extends StellgeEntity implements RangedAttackMo
         return entityData;
     }
 
+    public int currentAttackCooldown = 0;
+    public int attackCooldown = 0;
+
     @Override
     public void attack(LivingEntity target, float pullProgress) {
+        currentAttackCooldown--;
+        if(currentAttackCooldown>0) return;
+        currentAttackCooldown = attackCooldown;
         // cast into target direction
         var stack = getEquippedStack(EquipmentSlot.MAINHAND);
         if(stack.isEmpty()) return;

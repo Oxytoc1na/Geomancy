@@ -631,11 +631,12 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         }
 
         // Enchantments
-        add("enchantment.MODID.skillful"    , "Skillful");
-        add("enchantment.MODID.mighty"      , "Mighty");
-        add("enchantment.MODID.brilliance"  , "Brilliance");
-        add("enchantment.MODID.soul_saver"  , "Soul Saver");
-        add("enchantment.MODID.mesmerizing" , "Mesmerizing");
+        addWithDescription("enchantment.MODID.skillful"    , "Skillful","increases smithing skill of the hammer");
+        addWithDescription("enchantment.MODID.mighty"      , "Mighty","increases smithing progress per hit");
+        addWithDescription("enchantment.MODID.brilliance"  , "Brilliance","increases jewelry effectiveness");
+        addWithDescription("enchantment.MODID.soul_saver"  , "Soul Saver","decreases soul consumption");
+        addWithDescription("enchantment.MODID.mesmerizing" , "Mesmerizing","increases soul capacity");
+        addWithDescription("enchantment.MODID.focused"     , "Focused","decreases distance-based soul consumption");
 
         // damage types
         add("death.attack.geomancy.duplicate_trinkets", "%1$s felt their own hubris");
@@ -1800,6 +1801,10 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
     void addGBEntryAndInfo(String prefix, String value){
         add(prefix+".",new String[]{"name","info.title"}, value);
+    }
+    void addWithDescription(String key, String value, String description){
+        add(key, value);
+        add(key+".desc", description);
     }
 
     String getS(String key){
