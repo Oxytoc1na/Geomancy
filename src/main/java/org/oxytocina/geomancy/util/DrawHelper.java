@@ -99,6 +99,10 @@ public class DrawHelper {
     }
 
     public static void drawItem(DrawContext ctx,@Nullable LivingEntity entity, @Nullable World world, ItemStack stack, float x, float y, int seed, float z, float r, float g, float b) {
+        drawItem(ctx,entity,world,stack,x,y,seed,z,r,g,b,1);
+    }
+
+    public static void drawItem(DrawContext ctx,@Nullable LivingEntity entity, @Nullable World world, ItemStack stack, float x, float y, int seed, float z, float r, float g, float b, float a) {
         if (!stack.isEmpty()) {
             BakedModel bakedModel = MinecraftClient.getInstance().getItemRenderer().getModel(stack, world, entity, seed);
             ctx.getMatrices().push();
@@ -112,12 +116,14 @@ public class DrawHelper {
                     DiffuseLighting.disableGuiDepthLighting();
                 }
 
-                RenderSystem.setShaderColor(r,g,b,1);
+                RenderSystem.setShaderColor(r,g,b,a);
                 MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformationMode.GUI, false, ctx.getMatrices(), ctx.getVertexConsumers(), 15728880, OverlayTexture.DEFAULT_UV, bakedModel);
                 ctx.draw();
                 if (bl) {
                     DiffuseLighting.enableGuiDepthLighting();
                 }
+                RenderSystem.setShaderColor(1,1,1,1);
+
             } catch (Throwable throwable) {
                 CrashReport crashReport = CrashReport.create(throwable, "Rendering item");
                 CrashReportSection crashReportSection = crashReport.addElement("Item being rendered");

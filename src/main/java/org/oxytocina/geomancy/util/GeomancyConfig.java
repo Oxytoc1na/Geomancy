@@ -56,4 +56,9 @@ public class GeomancyConfig extends ReflectiveConfig {
     @Comment("valid range: 0-1")
     @SerializedName("whisper_volume")
     public final TrackedValue<Float> whisperVolume = this.value(0.5f);
+
+    @Comment("changes how loud whispers are")
+    @Comment("valid values: spiral, pyramid")
+    @SerializedName("soul_crosshair_type")
+    public final TrackedValue<String> soulCrosshairType = this.value("spiral");
 }

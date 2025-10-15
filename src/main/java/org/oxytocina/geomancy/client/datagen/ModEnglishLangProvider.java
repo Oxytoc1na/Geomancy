@@ -1759,6 +1759,11 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.options.spellcradle_tooltip_truncation","Spellcradle tooltip truncation");
             add("MODID.options.player_variable_loading","Player reference loading");
             add("MODID.options.whisper_volume","Whisper volume");
+            add("MODID.options.soul_crosshair_type","Soul crosshair type");
+            add("MODID.options.soul_crosshair_type.spiral","Spiral");
+            add("MODID.options.soul_crosshair_type.pyramid","Pyramid");
+            add("MODID.options.soul_crosshair_type.hourglass","Hourglass");
+            add("MODID.options.soul_crosshair_type.focus","Focus");
         }
 
         tb=null;

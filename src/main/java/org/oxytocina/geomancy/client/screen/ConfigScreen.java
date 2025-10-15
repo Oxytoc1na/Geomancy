@@ -80,6 +80,12 @@ public class ConfigScreen extends Screen {
                 GeomancyConfig.CONFIG.spellcradleTooltipTruncation.value(),1,20, GeomancyConfig.CONFIG.spellcradleTooltipTruncation::setValue);
         adder.add(intSlider);
 
+        // soul crosshair type
+        adder.add(CyclingButtonWidget.<String>builder(b->Text.translatable("geomancy.options.soul_crosshair_type."+b)).values("spiral","pyramid","hourglass","focus")
+                .initially(GeomancyConfig.CONFIG.soulCrosshairType.value()).build(0,0, 150, 20,
+                        Text.translatable("geomancy.options.soul_crosshair_type"),(button, val) ->
+                                GeomancyConfig.CONFIG.soulCrosshairType.setValue(val)));
+
         // credits and attribution
         adder.add(this.createButton(CREDITS_AND_ATTRIBUTION_TEXT, () -> new GeomancyCreditsScreen(this,false,()->{})));
 
