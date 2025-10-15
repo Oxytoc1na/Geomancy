@@ -6,6 +6,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -25,6 +26,7 @@ import org.oxytocina.geomancy.client.util.CamShakeUtil;
 import org.oxytocina.geomancy.effects.ModStatusEffects;
 import org.oxytocina.geomancy.enchantments.ModEnchantments;
 import org.oxytocina.geomancy.entity.CasterDelegateEntity;
+import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.SpellStoringItem;
 import org.oxytocina.geomancy.util.ByteUtil;
 import org.oxytocina.geomancy.util.EntityUtil;
@@ -478,6 +480,19 @@ public class SpellGrid {
                 res.tryAddComponent(b.build(res));
             }
             return res;
+        }
+
+        public ItemStack buildStack(){
+            var grid = build();
+            ItemStack stack = new ItemStack(getStorerItemFor(grid.width));
+            SpellStoringItem.writeGrid(stack,grid);
+            return stack;
+        }
+
+        public static Item getStorerItemFor(int width){
+            if(width>5) return ModItems.SPELLSTORAGE_LARGE;
+            else if(width>3) return ModItems.SPELLSTORAGE_MEDIUM;
+            return ModItems.SPELLSTORAGE_SMALL;
         }
 
         public Builder dim(SpellStoringItem storer){

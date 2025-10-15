@@ -780,22 +780,42 @@ public class ModLootTables {
         // broken fireball
         // broken blink (up)
 
-        final HashMap<SpellGrid,Integer> spells = new HashMap<>();
+        var spells = getPremadeSpells();
+
+        for(var spellStack : spells.keySet()){
+            int weight = spells.get(spellStack);
+            if(weight <= 0) continue;
+            NbtCompound nbt = new NbtCompound();
+            try {
+                nbt.put("spell",spellStack.getSubNbt("spell"));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            res.with(ItemEntry.builder(ModItems.SPELLSTORAGE_SMALL)
+                    .weight(weight)
+                    .apply(SetNbtLootFunction.builder(nbt)));
+        }
+
+        return res;
+    }
+
+    public static HashMap<ItemStack,Integer> getPremadeSpells(){
+        final HashMap<ItemStack,Integer> spells = new HashMap<>();
 
         // hello world
         {
             spells.put(SpellGrid.builder("hello world")
-                            .dim(ModItems.SPELLSTORAGE_SMALL)
-                            .add(SpellComponent.builder(SpellBlocks.CONST_TEXT)
-                                    .pos(0,1)
-                                    .param("val","hello world")
-                                    .conf(SpellComponent.confBuilder("e").mode(SpellComponent.SideConfig.Mode.Output))
-                            )
-                            .add(SpellComponent.builder(SpellBlocks.PRINT)
-                                    .pos(1,1)
-                                    .conf(SpellComponent.confBuilder("w").mode(SpellComponent.SideConfig.Mode.Input))
-                            )
-                    .build(),1);
+                    .dim(ModItems.SPELLSTORAGE_SMALL)
+                    .add(SpellComponent.builder(SpellBlocks.CONST_TEXT)
+                            .pos(0,1)
+                            .param("val","hello world")
+                            .conf(SpellComponent.confBuilder("e").mode(SpellComponent.SideConfig.Mode.Output))
+                    )
+                    .add(SpellComponent.builder(SpellBlocks.PRINT)
+                            .pos(1,1)
+                            .conf(SpellComponent.confBuilder("w").mode(SpellComponent.SideConfig.Mode.Input))
+                    )
+                    .buildStack(),1);
         }
 
         // into block teleport
@@ -827,11 +847,11 @@ public class ModLootTables {
                             .pos(2,2)
                             .conf(SpellComponent.confBuilder("nw").mode(SpellComponent.SideConfig.Mode.Output))
                     )
-                    .add(SpellComponent.builder(SpellBlocks.POS_CASTER)
+                    .add(SpellComponent.builder(SpellBlocks.EYEPOS_CASTER)
                             .pos(2,1)
                             .conf(SpellComponent.confBuilder("w").mode(SpellComponent.SideConfig.Mode.Output))
                     )
-                    .build(), 1);
+                    .buildStack(), 1);
         }
 
         // self lightning
@@ -846,25 +866,10 @@ public class ModLootTables {
                             .pos(0,1)
                             .conf(SpellComponent.confBuilder("e").mode(SpellComponent.SideConfig.Mode.Output))
                     )
-                    .build(),1);
+                    .buildStack(),1);
         }
 
-        for(var spell : spells.keySet()){
-            int weight = spells.get(spell);
-            NbtCompound nbt = new NbtCompound();
-            NbtCompound spellNbt = new NbtCompound();
-            try {
-                spell.writeNbt(spellNbt);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-            nbt.put("spell",spellNbt);
-            res.with(ItemEntry.builder(ModItems.SPELLSTORAGE_SMALL)
-                    .weight(weight)
-                    .apply(SetNbtLootFunction.builder(nbt)));
-        }
-
-        return res;
+        return spells;
     }
 
     private static LootPool.Builder jewelryBuilder(){

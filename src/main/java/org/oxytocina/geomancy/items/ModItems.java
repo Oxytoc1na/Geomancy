@@ -27,6 +27,7 @@ import org.oxytocina.geomancy.entity.ExtraEntitySettings;
 import org.oxytocina.geomancy.items.artifacts.*;
 import org.oxytocina.geomancy.items.jewelry.*;
 import org.oxytocina.geomancy.items.trinkets.CastingTrinketItem;
+import org.oxytocina.geomancy.loottables.ModLootTables;
 import org.oxytocina.geomancy.registries.ModBlockTags;
 import org.oxytocina.geomancy.registries.ModItemTags;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
@@ -328,6 +329,11 @@ public class ModItems {
         ItemGroupEvents.modifyEntriesEvent(SPELLS_ITEM_GROUP_KEY).register(itemGroup -> {
             for(Item i : ExtraItemSettings.ITEMS_IN_SPELLS_GROUP)
                 itemGroup.add(i);
+
+            // add premade spells
+            for(var stack : ModLootTables.getPremadeSpells().keySet())
+                itemGroup.add(stack);
+
         });
 
     }
