@@ -788,6 +788,7 @@ public class ModLootTables {
                             .dim(ModItems.SPELLSTORAGE_SMALL)
                             .add(SpellComponent.builder(SpellBlocks.CONST_TEXT)
                                     .pos(0,1)
+                                    .param("val","hello world")
                                     .conf(SpellComponent.confBuilder("e").mode(SpellComponent.SideConfig.Mode.Output))
                             )
                             .add(SpellComponent.builder(SpellBlocks.PRINT)
@@ -851,11 +852,13 @@ public class ModLootTables {
         for(var spell : spells.keySet()){
             int weight = spells.get(spell);
             NbtCompound nbt = new NbtCompound();
+            NbtCompound spellNbt = new NbtCompound();
             try {
-                spell.writeNbt(nbt);
+                spell.writeNbt(spellNbt);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
+            nbt.put("spell",spellNbt);
             res.with(ItemEntry.builder(ModItems.SPELLSTORAGE_SMALL)
                     .weight(weight)
                     .apply(SetNbtLootFunction.builder(nbt)));
