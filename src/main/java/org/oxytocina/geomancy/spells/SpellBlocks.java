@@ -1872,7 +1872,7 @@ public class SpellBlocks {
 
                         if(trySpendSoul(comp,manaCost)){
                             var effectInst = new StatusEffectInstance(Registries.STATUS_EFFECT.get(id),Math.round(duration*20),amp);
-                            ent.addStatusEffect(effectInst);
+                            ent.addStatusEffect(effectInst,comp.context.caster);
                             spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,ent.getPos()));
 
                             if((ent instanceof VillagerEntity || (ent instanceof PlayerEntity pe&&pe!=comp.caster())) && List.of(

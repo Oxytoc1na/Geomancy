@@ -8,8 +8,10 @@ import net.minecraft.util.math.MathHelper;
 import org.joml.Vector3f;
 import org.oxytocina.geomancy.client.entity.animation.StellgeCasterAnimations;
 import org.oxytocina.geomancy.client.entity.animation.StellgeEngineerAnimations;
+import org.oxytocina.geomancy.client.rendering.ModColorizationHandler;
 import org.oxytocina.geomancy.entity.StellgeCasterEntity;
 import org.oxytocina.geomancy.entity.StellgeEngineerEntity;
+import org.oxytocina.geomancy.util.Toolbox;
 
 public class StellgeCasterModel<T extends StellgeCasterEntity> extends SinglePartEntityModel<T> {
     public final static int RING_COUNT = 3;
@@ -49,9 +51,12 @@ public class StellgeCasterModel<T extends StellgeCasterEntity> extends SinglePar
     @Override
     public void render(MatrixStack matrices, VertexConsumer vertexConsumer, int light, int overlay, float red, float green, float blue, float alpha) {
         head.render(matrices, vertexConsumer, light, overlay, red, green, blue, alpha);
-        ring1.render(matrices, vertexConsumer, light, overlay, red, green, blue, alpha);
-        ring2.render(matrices, vertexConsumer, light, overlay, red, green, blue, alpha);
-        ring3.render(matrices, vertexConsumer, light, overlay, red, green, blue, alpha);
+        var colVec = Toolbox.colorIntToVec(ModColorizationHandler.octanguliteItemBarNoise(1,0.5f,0,0,0));
+        ring1.render(matrices, vertexConsumer, light, overlay, red*colVec.x, green*colVec.y, blue*colVec.z, alpha);
+        colVec = Toolbox.colorIntToVec(ModColorizationHandler.octanguliteItemBarNoise(1,0.5f,50,0,0));
+        ring2.render(matrices, vertexConsumer, light, overlay, red*colVec.x, green*colVec.y, blue*colVec.z, alpha);
+        colVec = Toolbox.colorIntToVec(ModColorizationHandler.octanguliteItemBarNoise(1,0.5f,100,0,0));
+        ring3.render(matrices, vertexConsumer, light, overlay, red*colVec.x, green*colVec.y, blue*colVec.z, alpha);
     }
     @Override
     public void setAngles(StellgeCasterEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {

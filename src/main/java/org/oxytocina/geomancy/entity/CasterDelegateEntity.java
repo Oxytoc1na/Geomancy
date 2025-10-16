@@ -1,45 +1,16 @@
 package org.oxytocina.geomancy.entity;
 
-import net.fabricmc.api.Environment;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.attribute.EntityAttributeInstance;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.mob.Angerable;
-import net.minecraft.entity.mob.HostileEntity;
-import net.minecraft.entity.mob.ZombieEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.listener.ClientPlayPacketListener;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.predicate.entity.EntityPredicates;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.TimeHelper;
 import net.minecraft.util.math.*;
-import net.minecraft.util.math.intprovider.UniformIntProvider;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.*;
-import org.jetbrains.annotations.Nullable;
-import org.oxytocina.geomancy.Geomancy;
-import org.oxytocina.geomancy.entity.goal.WanderNearHomeGoal;
-import org.oxytocina.geomancy.sound.ModSoundEvents;
 import org.oxytocina.geomancy.spells.SpellBlockArgs;
 import org.oxytocina.geomancy.spells.SpellContext;
 import org.oxytocina.geomancy.spells.SpellGrid;
-import org.oxytocina.geomancy.util.Toolbox;
-
-import java.util.UUID;
+import org.oxytocina.geomancy.util.ParticleUtil;
 
 public class CasterDelegateEntity extends Entity {
 
@@ -67,6 +38,10 @@ public class CasterDelegateEntity extends Entity {
     @Override
     public void tick() {
         if(isRemoved()) return;
+
+        if(getWorld() instanceof ServerWorld sw && age%10==0){
+            ParticleUtil.ParticleData.createGeneric(sw, ParticleTypes.SCULK_SOUL,getPos(),getVelocity(),5,0.3f).send();
+        }
 
         if(delay-- <= 0){
             cast();
@@ -126,6 +101,11 @@ public class CasterDelegateEntity extends Entity {
     @Override
     public boolean canAvoidTraps() {
         return true;
+    }
+
+    public Vec3d getRotationVec3d(){
+        var base = getRotationVector();
+        return new Vec3d(-base.x,-base.y,base.z);
     }
 
 }

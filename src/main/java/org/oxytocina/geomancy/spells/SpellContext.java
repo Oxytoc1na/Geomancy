@@ -380,7 +380,7 @@ public class SpellContext {
         return switch(sourceType)
         {
             case Caster->caster.getRotationVector();
-            case Delegate->delegate.getRotationVector();
+            case Delegate->delegate.getRotationVec3d();
             case Block->new Vec3d(casterBlock.getDirection().getUnitVector());
             default->null;
         };
