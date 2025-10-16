@@ -854,6 +854,19 @@ public class SpellComponent {
             return pos(new Vector2i(x,y));
         }
 
+        public Builder pos(int width, int height, String sequence){
+            var args = sequence.split(",");
+            Vector2i center = new Vector2i(width/2,height/2);
+            Vector2i pos = new Vector2i(center);
+            for(var arg:args) {
+                var neighbors = SpellGrid.getNeighboringPositions(pos);
+                if(Arrays.stream(directions).toList().contains(arg)){
+                    pos = neighbors.get(getDirIndex(arg));
+                }
+            }
+            return pos(pos.x,pos.y);
+        }
+
         public Builder conf(ConfBuilder conf){
             this.confs[conf.dir]=conf; return this;
         }

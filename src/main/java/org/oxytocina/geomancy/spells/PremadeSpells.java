@@ -19,6 +19,10 @@ public class PremadeSpells {
     public static final Triple<SpellGrid,ItemStack,Integer> FLAWED_TELEPORT;
     public static final Triple<SpellGrid,ItemStack,Integer> FIREBALL;
     public static final Triple<SpellGrid,ItemStack,Integer> CURSE;
+    public static final Triple<SpellGrid,ItemStack,Integer> P_RAY_POS;
+    public static final Triple<SpellGrid,ItemStack,Integer> P_RAY_DIR;
+    public static final Triple<SpellGrid,ItemStack,Integer> P_RAY_COMBINED;
+    public static final Triple<SpellGrid,ItemStack,Integer> P_RAY_ENTITY;
 
     static{
         SPELLS = new HashMap<>();
@@ -148,6 +152,87 @@ public class PremadeSpells {
                     .add(SpellComponent.builder(SpellBlocks.CONST_NUM).param("val",1).pos(3,2).conf(SpellComponent.confBuilder("w").mode(SpellComponent.SideConfig.Mode.Output)))
                     .buildStack());
         }
+
+        // ray pos
+        {
+            P_RAY_POS = addSpell("rayP",SpellGrid.builder("rayP")
+                    .dim(ModItems.SPELLSTORAGE_SMALL)
+                    .add(SpellComponent.builder(SpellBlocks.RAYCAST_POS).pos(3,3,"")
+                            .conf(SpellComponent.confBuilder("nw","from").mode(SpellComponent.SideConfig.Mode.Input))
+                            .conf(SpellComponent.confBuilder("w","dir").mode(SpellComponent.SideConfig.Mode.Input))
+                            .conf(SpellComponent.confBuilder("sw","length").mode(SpellComponent.SideConfig.Mode.Input))
+                            .conf(SpellComponent.confBuilder("e","hitPos").mode(SpellComponent.SideConfig.Mode.Output))
+                    )
+                    .add(SpellComponent.builder(SpellBlocks.EYEPOS_CASTER).pos(3,3,"nw")
+                            .conf(SpellComponent.confBuilder("se").mode(SpellComponent.SideConfig.Mode.Output)))
+                    .add(SpellComponent.builder(SpellBlocks.DIR_CASTER).pos(3,3,"w")
+                            .conf(SpellComponent.confBuilder("e").mode(SpellComponent.SideConfig.Mode.Output)))
+                    .add(SpellComponent.builder(SpellBlocks.CONST_NUM).pos(3,3,"sw").param("val",100)
+                            .conf(SpellComponent.confBuilder("ne").mode(SpellComponent.SideConfig.Mode.Output)))
+                    .add(SpellComponent.builder(SpellBlocks.REF_INPUT).pos(3,3,"e").param("varName","res")
+                            .conf(SpellComponent.confBuilder("w").mode(SpellComponent.SideConfig.Mode.Input)))
+                    .buildStack());
+        }
+
+        // ray dir
+        {
+            P_RAY_DIR = addSpell("rayD",SpellGrid.builder("rayD")
+                    .dim(ModItems.SPELLSTORAGE_SMALL)
+                    .add(SpellComponent.builder(SpellBlocks.RAYCAST_DIR).pos(3,3,"")
+                            .conf(SpellComponent.confBuilder("nw","from").mode(SpellComponent.SideConfig.Mode.Input))
+                            .conf(SpellComponent.confBuilder("w","dir").mode(SpellComponent.SideConfig.Mode.Input))
+                            .conf(SpellComponent.confBuilder("sw","length").mode(SpellComponent.SideConfig.Mode.Input))
+                            .conf(SpellComponent.confBuilder("e","hitDir").mode(SpellComponent.SideConfig.Mode.Output))
+                    )
+                    .add(SpellComponent.builder(SpellBlocks.EYEPOS_CASTER).pos(3,3,"nw")
+                            .conf(SpellComponent.confBuilder("se").mode(SpellComponent.SideConfig.Mode.Output)))
+                    .add(SpellComponent.builder(SpellBlocks.DIR_CASTER).pos(3,3,"w")
+                            .conf(SpellComponent.confBuilder("e").mode(SpellComponent.SideConfig.Mode.Output)))
+                    .add(SpellComponent.builder(SpellBlocks.CONST_NUM).pos(3,3,"sw").param("val",100)
+                            .conf(SpellComponent.confBuilder("ne").mode(SpellComponent.SideConfig.Mode.Output)))
+                    .add(SpellComponent.builder(SpellBlocks.REF_INPUT).pos(3,3,"e").param("varName","res")
+                            .conf(SpellComponent.confBuilder("w").mode(SpellComponent.SideConfig.Mode.Input)))
+                    .buildStack());
+        }
+
+        // ray entity
+        {
+            P_RAY_ENTITY = addSpell("rayE",SpellGrid.builder("rayE")
+                    .dim(ModItems.SPELLSTORAGE_SMALL)
+                    .add(SpellComponent.builder(SpellBlocks.RAYCAST_ENTITY).pos(3,3,"")
+                            .conf(SpellComponent.confBuilder("nw","from").mode(SpellComponent.SideConfig.Mode.Input))
+                            .conf(SpellComponent.confBuilder("w","dir").mode(SpellComponent.SideConfig.Mode.Input))
+                            .conf(SpellComponent.confBuilder("sw","length").mode(SpellComponent.SideConfig.Mode.Input))
+                            .conf(SpellComponent.confBuilder("e","hitEntity").mode(SpellComponent.SideConfig.Mode.Output))
+                    )
+                    .add(SpellComponent.builder(SpellBlocks.EYEPOS_CASTER).pos(3,3,"nw")
+                            .conf(SpellComponent.confBuilder("se").mode(SpellComponent.SideConfig.Mode.Output)))
+                    .add(SpellComponent.builder(SpellBlocks.DIR_CASTER).pos(3,3,"w")
+                            .conf(SpellComponent.confBuilder("e").mode(SpellComponent.SideConfig.Mode.Output)))
+                    .add(SpellComponent.builder(SpellBlocks.CONST_NUM).pos(3,3,"sw").param("val",100)
+                            .conf(SpellComponent.confBuilder("ne").mode(SpellComponent.SideConfig.Mode.Output)))
+                    .add(SpellComponent.builder(SpellBlocks.REF_INPUT).pos(3,3,"e").param("varName","res")
+                            .conf(SpellComponent.confBuilder("w").mode(SpellComponent.SideConfig.Mode.Input)))
+                    .buildStack());
+        }
+
+        // ray combined
+        {
+            P_RAY_COMBINED = addSpell("rayC",SpellGrid.builder("rayC")
+                    .dim(ModItems.SPELLSTORAGE_SMALL)
+                    .add(SpellComponent.builder(SpellBlocks.SUM).pos(3,3,"")
+                            .conf(SpellComponent.confBuilder("nw","a").mode(SpellComponent.SideConfig.Mode.Input))
+                            .conf(SpellComponent.confBuilder("w","b").mode(SpellComponent.SideConfig.Mode.Input))
+                            .conf(SpellComponent.confBuilder("e").mode(SpellComponent.SideConfig.Mode.Output))
+                    )
+                    .add(SpellComponent.builder(SpellBlocks.PROVIDER).pos(3,3,"nw").param("function","rayP")
+                            .conf(SpellComponent.confBuilder("se").mode(SpellComponent.SideConfig.Mode.Output)))
+                    .add(SpellComponent.builder(SpellBlocks.PROVIDER).pos(3,3,"w").param("function","rayD")
+                            .conf(SpellComponent.confBuilder("e").mode(SpellComponent.SideConfig.Mode.Output)))
+                    .add(SpellComponent.builder(SpellBlocks.REF_INPUT).pos(3,3,"e").param("varName","res")
+                            .conf(SpellComponent.confBuilder("w").mode(SpellComponent.SideConfig.Mode.Input)))
+                    .buildStack());
+        }
     }
 
     public static HashMap<ItemStack,Integer> getPremadeSpells(){
@@ -164,8 +249,7 @@ public class PremadeSpells {
         return addSpell(name,stack,0);
     }
 
-
-        private static Triple<SpellGrid,ItemStack,Integer> addSpell(String name, ItemStack stack, int weight){
+    private static Triple<SpellGrid,ItemStack,Integer> addSpell(String name, ItemStack stack, int weight){
         var res = new ImmutableTriple<>(SpellStoringItem.readGrid(stack),stack,weight);
         SPELLS.put(name,res);
         return res;

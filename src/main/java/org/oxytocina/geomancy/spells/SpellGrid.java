@@ -234,7 +234,7 @@ public class SpellGrid {
         }
     }
 
-    public ArrayList<Vector2i> getNeighboringPositions(Vector2i pos){
+    public static ArrayList<Vector2i> getNeighboringPositions(Vector2i pos){
         ArrayList<Vector2i> res = new ArrayList<>();
 
         int ySkew = pos.y%2;
