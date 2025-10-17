@@ -77,7 +77,7 @@ public interface ISpellSelectorItem {
     }
 
     default SpellGrid getSpell(ItemStack casterItem, String name){
-        if(!(casterItem.getItem() instanceof ISpellSelectorItem caster)) return null;
+        if(casterItem==null||!(casterItem.getItem() instanceof ISpellSelectorItem caster)) return null;
 
         for (int i = 0; i < caster.getStorageSize(casterItem); i++) {
             var contender = caster.getStack(casterItem,i);

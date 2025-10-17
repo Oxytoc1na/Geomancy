@@ -66,4 +66,9 @@ public class GeomancyConfig extends ReflectiveConfig {
     @Comment("valid values: linear, multiplicative")
     @SerializedName("soul_crosshair_math")
     public final TrackedValue<String> soulCrosshairMath = this.value("linear");
+
+    @Comment("changes how complex spells are allowed to get")
+    @Comment("valid range: 10-the literal integer limit (config screen:10000)")
+    @SerializedName("max_spell_depth")
+    public final TrackedValue<Integer> maxSpellDepth = this.value(100);
 }

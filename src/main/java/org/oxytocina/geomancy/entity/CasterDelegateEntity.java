@@ -8,9 +8,12 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.*;
 import net.minecraft.world.*;
 import org.oxytocina.geomancy.spells.SpellBlockArgs;
+import org.oxytocina.geomancy.spells.SpellBlocks;
 import org.oxytocina.geomancy.spells.SpellContext;
 import org.oxytocina.geomancy.spells.SpellGrid;
 import org.oxytocina.geomancy.util.ParticleUtil;
+
+import java.util.Objects;
 
 public class CasterDelegateEntity extends Entity {
 
@@ -40,7 +43,7 @@ public class CasterDelegateEntity extends Entity {
         if(isRemoved()) return;
 
         if(getWorld() instanceof ServerWorld sw && age%10==0){
-            ParticleUtil.ParticleData.createGeneric(sw, ParticleTypes.SCULK_SOUL,getPos(),getVelocity(),5,0.3f).send();
+            ParticleUtil.ParticleData.createGeneric(sw, ParticleTypes.SCULK_SOUL,getPos(),getVelocity(),2,0.3f).send();
         }
 
         if(delay-- <= 0){
@@ -54,9 +57,15 @@ public class CasterDelegateEntity extends Entity {
         if(parent.casterBlock!=null && parent.casterBlock.isRemoved()) {destroy(); return;}
         if(parent.caster!=null && parent.caster.isRemoved()) {destroy(); return;}
         // make sure the caster item still exists
-        if(parent.casterItem.isEmpty()) {destroy(); return;}
+        // not necessary anymore, hopefully
+        // if(!parent.hasCasterItem()) {destroy(); return;}
 
-        grid.run(parent.casterItem,parent.spellStorage,parent.caster,parent.casterBlock,this, SpellBlockArgs.empty(), SpellContext.SoundBehavior.Reduced,false);
+        // threading
+        if(parent.delegate!=null)
+            SpellBlocks.tryUnlockSpellAdvancement(parent.caster,"threading");
+
+        grid.run(parent.casterItem,parent.spellStorage,parent.caster,parent.casterBlock,this, SpellBlockArgs.empty(),
+                SpellContext.SoundBehavior.Reduced,false,parent.baseDepth+1);
         destroy();
     }
 

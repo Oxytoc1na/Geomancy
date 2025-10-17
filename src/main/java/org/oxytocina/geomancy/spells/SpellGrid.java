@@ -77,6 +77,15 @@ public class SpellGrid {
         SpellContext context = parent.createReferenced(casterComp);
         context.internalVars = args;
         context.grid = this;
+        context.baseDepth++;
+        context.highestRecordedDepth++;
+        if(context.highestRecordedDepth>context.depthLimit) {context.depthLimitReached=true;parent.depthLimitReached=true;}
+
+        if(parent.depthLimitReached) return context.referenceResult;
+
+        // recursion
+        if(Objects.equals(parent.grid.name, context.grid.name))
+            SpellBlocks.tryUnlockSpellAdvancement(parent.caster,"recursion");
 
         context.refreshAvailableSoul();
         for (var comp : components.values())
@@ -96,6 +105,12 @@ public class SpellGrid {
     public void run(ItemStack casterItem, ItemStack spellStorage, LivingEntity casterEntity,
                     AutocasterBlockEntity blockEntity,CasterDelegateEntity delegate, SpellBlockArgs args,
                     SpellContext.SoundBehavior soundBehavior, boolean activatedByHotkey){
+        run(casterItem,spellStorage,casterEntity,blockEntity,delegate,args,soundBehavior,activatedByHotkey,0);
+    }
+
+    public void run(ItemStack casterItem, ItemStack spellStorage, LivingEntity casterEntity,
+                    AutocasterBlockEntity blockEntity,CasterDelegateEntity delegate, SpellBlockArgs args,
+                    SpellContext.SoundBehavior soundBehavior, boolean activatedByHotkey,int depth){
         long startTime = System.nanoTime();
         World world = casterEntity!=null?casterEntity.getWorld() : blockEntity!=null?blockEntity.getWorld() : delegate!=null?delegate.getWorld():null;
 
@@ -103,6 +118,7 @@ public class SpellGrid {
         SpellContext.Restrictions restrictions = SpellContext.Restrictions.NONE;
 
         // soul cost
+        if(casterItem==null) casterItem = ItemStack.EMPTY;
         float casterItemCostMultiplier = 1 - 0.1f*EnchantmentHelper.getLevel(ModEnchantments.SOUL_SAVER,casterItem);
         float costMultiplier = this.soulCostMultiplier*casterItemCostMultiplier;
         if(casterEntity!=null&&casterEntity.hasStatusEffect(ModStatusEffects.REGRETFUL))
@@ -116,7 +132,7 @@ public class SpellGrid {
             costMultiplier *= 1-(amp+1)*0.2f;
         }
 
-        SpellContext context = new SpellContext(this,casterEntity,blockEntity,delegate,casterItem,spellStorage,0,costMultiplier,0,soundBehavior);
+        SpellContext context = new SpellContext(this,casterEntity,blockEntity,delegate,casterItem,spellStorage,0,costMultiplier,0,soundBehavior,depth);
         context.activatedByHotkey = activatedByHotkey;
         context.refreshAvailableSoul();
         context.internalVars = args;
@@ -139,8 +155,9 @@ public class SpellGrid {
             Geomancy.logError(Arrays.toString(ignored.getStackTrace()));
         }
 
-        if(context.depthLimitReached && context.debugging){
+        if(context.depthLimitReached){
             SpellBlocks.tryLogDebugDepthLimitReached(context);
+            SpellBlocks.tryUnlockSpellAdvancement(context.caster,"depthlimit");
         }
 
         // casting a spell that takes too long

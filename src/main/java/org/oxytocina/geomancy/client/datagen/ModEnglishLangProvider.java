@@ -706,6 +706,9 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addAdvancement(".spells.simple_ulterior_motives","Ulterior Motives","Save a reference to another player onto a varpot");
             addAdvancement(".spells.simple_build_big","Technical debt","Fill three quarters of a spacious spellcradle with components");
             addAdvancement(".spells.simple_deconsciousness","Deconsciousness","Cast a spell that costs at least 10000 souls");
+            addAdvancement(".spells.simple_recursion","Recursion","Cast a spell from within itself");
+            addAdvancement(".spells.simple_threading","Threading","Have a delegate create a delegate");
+            addAdvancement(".spells.simple_depthlimit","Out of memory exception","Cast a spell that reached maximum depth");
             addAdvancement(".spells.simple_enlightenment_1","Conqueror of Soul","Activate something strange at a lively place");
             addAdvancement(".spells.simple_enlightenment_2","Conqueror of Calculation","Pass the job interview programming question");
             addAdvancement(".spells.simple_enlightenment_3","Conqueror of Presence","Tell the world how you truly feel. Give it your all. It deserves to be heard.");

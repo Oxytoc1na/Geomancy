@@ -152,7 +152,7 @@ public class SpellBlocks2 {
                 .func((comp,args)->{
                     if(!(comp.context.caster instanceof ServerPlayerEntity spe)) return SpellBlockResult.empty();
                     if(EnlightenmentUtil.getEnlightenmentServer(spe) < 1) return SpellBlockResult.empty();
-                    if(!(comp.context.casterItem.getItem() instanceof ISpellSelectorItem sps)) return SpellBlockResult.empty();
+                    if(!comp.context.hasCasterItem() || !(comp.context.casterItem.getItem() instanceof ISpellSelectorItem sps)) return SpellBlockResult.empty();
                     if(!(comp.world() instanceof ServerWorld sw)) return SpellBlockResult.empty();
                     // pick task to complete
                     var task = EXODIA_2_DATA.get((int) (sw.getSeed() % EXODIA_2_DATA.size()));

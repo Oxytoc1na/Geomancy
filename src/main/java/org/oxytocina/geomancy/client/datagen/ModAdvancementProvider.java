@@ -147,6 +147,9 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         Advancement spell_ulterior_motives =    AddSimpleAdvancement(Items.WRITABLE_BOOK            ,"ulterior_motives" ,"do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
         Advancement spell_build_big =           AddSimpleAdvancement(Items.CHEST                    ,"build_big"        ,"do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
         Advancement spell_deconsciousness =     AddSimpleAdvancement(Items.SOUL_CAMPFIRE            ,"deconsciousness"  ,"do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_recursion =           AddSimpleAdvancement(Items.OAK_SAPLING              ,"recursion"        ,"do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_threading =           AddSimpleAdvancement(Items.STRING                   ,"threading"        ,"do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_depthlimit =          AddSimpleAdvancement(Items.WRITTEN_BOOK             ,"depthlimit"       ,"do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
         Advancement enlightenment_1 =           AddSimpleAdvancement(ModItems.LORE_LOG_EXODIA_1     ,"enlightenment_1"  ,"do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
         Advancement enlightenment_2 =           AddSimpleAdvancement(ModItems.LORE_LOG_EXODIA_2     ,"enlightenment_2"  ,"do","spells",AdvancementFrame.CHALLENGE,true,true,enlightenment_1);
         Advancement enlightenment_3 =           AddSimpleAdvancement(ModItems.LORE_LOG_EXODIA_3     ,"enlightenment_3"  ,"do","spells",AdvancementFrame.CHALLENGE,true,true,enlightenment_2);

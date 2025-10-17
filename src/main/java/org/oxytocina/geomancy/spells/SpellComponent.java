@@ -131,7 +131,7 @@ public class SpellComponent {
     }
 
     public void pushSignals(SpellBlockResult res){
-        if(res.depth>context.depthLimit) return;
+        if(res.depth>context.depthLimit) { context.depthLimitReached = true; return;}
         res.refreshSignalDepths();
         pushSignals(res.vars);
     }

@@ -109,7 +109,7 @@ public class EntityUtil {
     }
 
     public static void slipItem(LivingEntity entity, ItemStack heldStack) {
-        if(entity==null) return;
+        if(entity==null||heldStack==null||heldStack.isEmpty()) return;
         if(entity instanceof ServerPlayerEntity spe){
             int slot = spe.getInventory().getSlotWithStack(heldStack);
             if(slot==-1) return;

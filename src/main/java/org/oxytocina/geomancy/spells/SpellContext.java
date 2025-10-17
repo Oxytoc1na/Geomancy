@@ -14,6 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlockEntity;
 import org.oxytocina.geomancy.enchantments.ModEnchantments;
 import org.oxytocina.geomancy.entity.CasterDelegateEntity;
@@ -43,7 +44,7 @@ public class SpellContext {
     public boolean silent = false;
     public boolean invisible = false;
     private Restrictions restrictions = Restrictions.NONE; /// for use in caster dungeons to prevent teleport spells from working
-    public int depthLimit = 100;
+    public int depthLimit = Geomancy.CONFIG.maxSpellDepth.value();
     public int baseDepth = 0;
     public int highestRecordedDepth = 0;
     public boolean depthLimitReached = false;
@@ -74,7 +75,8 @@ public class SpellContext {
             float availableSoul,
             float soulCostMultiplier,
             float soulConsumed,
-            SoundBehavior soundBehavior
+            SoundBehavior soundBehavior,
+            int depth
     ){
         this.grid=grid;
         this.caster = caster;
@@ -89,6 +91,8 @@ public class SpellContext {
         this.soundBehavior=soundBehavior;
         this.startTime = System.nanoTime();
         this.flags = null;
+        this.baseDepth = depth;
+        this.highestRecordedDepth = depth;
 
         sourceType = delegate!=null?SourceType.Delegate
                 : caster!=null?SourceType.Caster
@@ -141,7 +145,8 @@ public class SpellContext {
         var res =new SpellContext(
                 nbt.contains("grid")?new SpellGrid(casterItem,nbt.getCompound("grid")):null,
                 (LivingEntity) caster,(AutocasterBlockEntity) casterBlock,(CasterDelegateEntity) delegate,casterItem,spellStorage,
-                nbt.getFloat("availableSoul"),nbt.getFloat("soulCostMultiplier"),nbt.getFloat("soulConsumed"),Enum.valueOf(SoundBehavior.class,nbt.getString("soundBehavior"))
+                nbt.getFloat("availableSoul"),nbt.getFloat("soulCostMultiplier"),nbt.getFloat("soulConsumed"),
+                Enum.valueOf(SoundBehavior.class,nbt.getString("soundBehavior")),nbt.getInt("baseDepth")
         );
         res.debugging=nbt.getBoolean("debugging");
         res.stage = Enum.valueOf(Stage.class,nbt.getString("stage"));
@@ -151,7 +156,7 @@ public class SpellContext {
 
     /// to be used SOLELY for stringifying spell signals!!
     public static SpellContext ofWorld(@Nullable World world, @Nullable PlayerEntity caster) {
-        var res = new SpellContext(null,caster,null,null,null,null,0,0,0,null);
+        var res = new SpellContext(null,caster,null,null,null,null,0,0,0,null,0);
         res.worldOverride = world;
         return res;
     }
@@ -300,11 +305,10 @@ public class SpellContext {
     }
 
     public SpellContext createReferenced(SpellComponent comp){
-        SpellContext res = new SpellContext(this.grid,caster,casterBlock,delegate,casterItem,spellStorage,availableSoul,soulCostMultiplier,soulConsumed,soundBehavior);
+        SpellContext res = new SpellContext(this.grid,caster,casterBlock,delegate,casterItem,spellStorage,availableSoul,soulCostMultiplier,soulConsumed,soundBehavior,highestRecordedDepth);
         res.parentCall = this;
         res.referenceCallingFrom = comp;
         res.internalVars=new SpellBlockArgs();
-        res.baseDepth = highestRecordedDepth;
         return res;
     }
 
@@ -342,7 +346,7 @@ public class SpellContext {
     }
 
     public ISpellSelectorItem getSpellSelector() {
-        return (ISpellSelectorItem)casterItem.getItem();
+        return hasCasterItem() ? (ISpellSelectorItem)casterItem.getItem() : null;
     }
 
     public Inventory getInventory() {
@@ -400,6 +404,7 @@ public class SpellContext {
     }
 
     private Vec3d getMuzzleOffsetForCaster(){
+        if(!hasCasterItem()) return new Vec3d(0,0,0);
         Item item = casterItem.getItem();
         if(item instanceof CastingArmorItem armor){
             switch(armor.getType()){
@@ -417,6 +422,7 @@ public class SpellContext {
     }
 
     private Vec3d getMuzzleOffsetForItem(){
+        if(!hasCasterItem()) return new Vec3d(0,0,0);
         var item = casterItem.getItem();
         boolean bl = caster.getOffHandStack().isOf(item) && !caster.getMainHandStack().isOf(item);
         Arm arm = bl ? caster.getMainArm().getOpposite() : caster.getMainArm();
@@ -451,11 +457,15 @@ public class SpellContext {
     }
 
     public boolean isFromPrecomiled() {
-        return casterItem.getItem() == ModItems.PRECOMP_CASTER;
+        return hasCasterItem() && casterItem.getItem() == ModItems.PRECOMP_CASTER;
     }
 
     public float getDistanceCostMultiplier() {
-        return 1 - (0.9f/5)*EnchantmentHelper.getLevel(ModEnchantments.FOCUSED,casterItem);
+        return hasCasterItem() ? 1 - (0.9f/5)*EnchantmentHelper.getLevel(ModEnchantments.FOCUSED,casterItem) : 1;
+    }
+
+    public boolean hasCasterItem(){
+        return casterItem != null && !casterItem.isEmpty();
     }
 
     public enum SourceType{

@@ -315,7 +315,7 @@ public class SpellBlocks {
                         SpellBlockResult res = new SpellBlockResult();
                         var inv = component.context.getInventory();
                         if(inv==null) return SpellBlockResult.empty();
-                        res.add("slot",InventoryUtil.getSlotWithStack(inv,component.context.casterItem));
+                        res.add("slot",component.context.hasCasterItem() ? InventoryUtil.getSlotWithStack(inv,component.context.casterItem) : -1);
                         return res;
                     })
                     .category(cat).build());
@@ -1298,7 +1298,7 @@ public class SpellBlocks {
                             fireball.setPosition(pos);
                             comp.world().spawnEntity(fireball);
                             spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
-                            if(Objects.equals(comp.context.root().grid.name, "fireball") && comp.context.casterItem.getItem() instanceof CastingArmorItem cai && cai.getType() == ArmorItem.Type.BOOTS)
+                            if(Objects.equals(comp.context.root().grid.name, "fireball") && comp.context.hasCasterItem() && comp.context.casterItem.getItem() instanceof CastingArmorItem cai && cai.getType() == ArmorItem.Type.BOOTS)
                             {
                                 if(comp.context.root().internalVars.has("message") && comp.context.root().internalVars.getText("message").contains("fireball"))
                                 {
@@ -1481,7 +1481,7 @@ public class SpellBlocks {
                             if(vel.y>=1)
                                 tryUnlockSpellAdvancement(comp,"liftoff");
                             if(entity==comp.caster()){
-                                if(!entity.isOnGround() && comp.context.casterItem.getItem() instanceof CastingArmorItem cai && cai.getType()== ArmorItem.Type.LEGGINGS)
+                                if(!entity.isOnGround() && comp.context.hasCasterItem() && comp.context.casterItem.getItem() instanceof CastingArmorItem cai && cai.getType()== ArmorItem.Type.LEGGINGS)
                                     tryUnlockSpellAdvancement(comp,"brazilian");
                                 if(comp.context.isActivatedByHotkey())
                                     tryUnlockSpellAdvancement(comp,"celeste");
@@ -1655,6 +1655,7 @@ public class SpellBlocks {
                     )
                     .func((comp,vars) -> {
                         var spell = vars.getText("spell");
+                        if(comp.context.getSpellSelector()==null) return SpellBlockResult.empty();
                         if(!(comp.context.casterItem.getItem() instanceof ISpellSelectorItem sps)) return SpellBlockResult.empty();
                         final float manaCost = 3;
                         if(canAfford(comp,manaCost)){
@@ -2146,6 +2147,7 @@ public class SpellBlocks {
                     .outputs(SpellSignal.createUUID().named("delegate"))
                     .func((comp,vars) -> {
                         var spellName = vars.getText("spell");
+                        if(comp.context.getSpellSelector()==null) return SpellBlockResult.empty();
                         var spell =comp.context.getSpellSelector().getSpell(comp.context.casterItem,spellName);
                         if(spell==null) return SpellBlockResult.empty();
                         var pos = vars.getVector("position");
@@ -2689,7 +2691,7 @@ public class SpellBlocks {
                     .inputs(SpellSignal.createAny().named("trigger"))
                     .parameters(SpellBlock.Parameter.createText("function","helloworld"))
                     .func((comp,vars) -> {
-                        if(!(comp.context.casterItem.getItem() instanceof ISpellSelectorItem sps)) return SpellBlockResult.empty();
+                        if(!comp.context.hasCasterItem() || !(comp.context.casterItem.getItem() instanceof ISpellSelectorItem sps)) return SpellBlockResult.empty();
                         var funcName = vars.getText("function");
                         // check if specified function exists
                         var refSpell = sps.getSpell(comp.context.casterItem,funcName);
@@ -2708,7 +2710,7 @@ public class SpellBlocks {
                     .outputs(SpellSignal.createAny().named("res"))
                     .parameters(SpellBlock.Parameter.createText("function","helloworld"))
                     .func((comp,vars) -> {
-                        if(!(comp.context.casterItem.getItem() instanceof ISpellSelectorItem sps)) return SpellBlockResult.empty();
+                        if(!comp.context.hasCasterItem() || !(comp.context.casterItem.getItem() instanceof ISpellSelectorItem sps)) return SpellBlockResult.empty();
                         var funcName = vars.getText("function");
                         // check if specified function exists
                         var refSpell = sps.getSpell(comp.context.casterItem,funcName);
@@ -2728,7 +2730,7 @@ public class SpellBlocks {
                     .outputs(SpellSignal.createAny().named("res"))
                     .parameters(SpellBlock.Parameter.createText("spell","helloworld"))
                     .func((comp,vars) -> {
-                        if(!(comp.context.casterItem.getItem() instanceof ISpellSelectorItem sps)) return SpellBlockResult.empty();
+                        if(!comp.context.hasCasterItem() || !(comp.context.casterItem.getItem() instanceof ISpellSelectorItem sps)) return SpellBlockResult.empty();
                         var funcName = vars.getText("spell");
                         // check if specified function exists
                         var refSpell = sps.getSpell(comp.context.casterItem,funcName);
@@ -2748,7 +2750,7 @@ public class SpellBlocks {
                     .outputs(SpellSignal.createAny().named("res"))
                     .parameters(SpellBlock.Parameter.createText("spell","helloworld"))
                     .func((comp,vars) -> {
-                        if(!(comp.context.casterItem.getItem() instanceof ISpellSelectorItem sps)) return SpellBlockResult.empty();
+                        if(!comp.context.hasCasterItem() || !(comp.context.casterItem.getItem() instanceof ISpellSelectorItem sps)) return SpellBlockResult.empty();
                         var funcName = vars.getText("spell");
                         // check if specified function exists
                         var refSpell = sps.getSpell(comp.context.casterItem,funcName);
@@ -2792,7 +2794,6 @@ public class SpellBlocks {
                     .inputs(SpellSignal.createText().named("varID"))
                     .outputs(SpellSignal.createAny().named("var"))
                     .func((comp,vars) -> {
-                        if(!(comp.context.casterItem.getItem() instanceof ISpellSelectorItem sps)) return SpellBlockResult.empty();
                         var varID = vars.getText("varID");
                         if(!varID.contains(":")) varID="default:"+varID;
                         var splitID = varID.split(":");
@@ -2817,7 +2818,6 @@ public class SpellBlocks {
             VAR_INPUT = register(SpellBlock.Builder.create("var_input")
                     .inputs(SpellSignal.createAny().named("var"),SpellSignal.createText().named("varID"))
                     .func((comp,vars) -> {
-                        if(!(comp.context.casterItem.getItem() instanceof ISpellSelectorItem sps)) return SpellBlockResult.empty();
                         var varID = vars.getText("varID");
                         var sig = vars.get("var");
                         if(!varID.contains(":")) varID="default:"+varID;
@@ -2842,7 +2842,6 @@ public class SpellBlocks {
             VAR_DELETE = register(SpellBlock.Builder.create("var_delete")
                     .inputs(SpellSignal.createText().named("varID"))
                     .func((comp,vars) -> {
-                        if(!(comp.context.casterItem.getItem() instanceof ISpellSelectorItem sps)) return SpellBlockResult.empty();
                         var varID = vars.getText("varID");
                         if(!varID.contains(":")) varID="default:"+varID;
                         var splitID = varID.split(":");
@@ -2864,7 +2863,6 @@ public class SpellBlocks {
                     .inputs(SpellSignal.createText().named("varID"))
                     .outputs(SpellSignal.createBoolean().named("exists"))
                     .func((comp,vars) -> {
-                        if(!(comp.context.casterItem.getItem() instanceof ISpellSelectorItem sps)) return SpellBlockResult.empty();
                         var varID = vars.getText("varID");
                         if(!varID.contains(":")) varID="default:"+varID;
                         var splitID = varID.split(":");

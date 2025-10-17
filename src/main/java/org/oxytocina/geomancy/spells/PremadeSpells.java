@@ -8,6 +8,7 @@ import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.SpellStoringItem;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class PremadeSpells {
@@ -25,7 +26,7 @@ public class PremadeSpells {
     public static final Triple<SpellGrid,ItemStack,Integer> P_RAY_ENTITY;
 
     static{
-        SPELLS = new HashMap<>();
+        SPELLS = new LinkedHashMap<>();
         // hello world
         {
             HELLO_WORLD = addSpell("hello_world",SpellGrid.builder("hello world")
