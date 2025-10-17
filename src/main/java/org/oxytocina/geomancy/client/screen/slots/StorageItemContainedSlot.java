@@ -22,11 +22,14 @@ public class StorageItemContainedSlot extends TagFilterSlot {
         return enabled;
     }
 
+    //@Override
+    //public void setStack(ItemStack stack) {
+    //    this.inventory.setStack(this.getIndex(), stack);
+    //}
+
     @Override
-    public void setStack(ItemStack stack) {
-        this.inventory.setStack(this.getIndex(), stack);
+    public void markDirty() {
+        super.markDirty();
         handler.markDirty();
     }
-
-
 }

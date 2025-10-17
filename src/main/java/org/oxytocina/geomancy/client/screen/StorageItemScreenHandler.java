@@ -249,4 +249,8 @@ public class StorageItemScreenHandler extends ScreenHandler {
     }
 
 
+    public static void checkPanicClose(ServerPlayerEntity spe, ItemStack storage) {
+        if(spe.currentScreenHandler instanceof StorageItemScreenHandler sish && sish.parent == storage)
+            spe.closeHandledScreen();
+    }
 }

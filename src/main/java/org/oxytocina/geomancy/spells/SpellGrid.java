@@ -79,7 +79,7 @@ public class SpellGrid {
         context.grid = this;
         context.baseDepth++;
         context.highestRecordedDepth++;
-        if(context.highestRecordedDepth>context.depthLimit) {context.depthLimitReached=true;parent.depthLimitReached=true;}
+        if(context.highestRecordedDepth>context.depthLimit) {context.depthLimitReached=true;parent.depthLimitReached=true;SpellBlocks.tryLogDebugDepthLimitReached(context);}
 
         if(parent.depthLimitReached) return context.referenceResult;
 

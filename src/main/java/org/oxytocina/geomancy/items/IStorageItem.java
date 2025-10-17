@@ -12,6 +12,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.collection.DefaultedList;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.client.screen.StorageItemScreenHandler;
 import org.oxytocina.geomancy.util.AdvancementHelper;
 import org.oxytocina.geomancy.util.Toolbox;
 
@@ -91,6 +92,9 @@ public interface IStorageItem {
                     AdvancementHelper.grantAdvancementCriterion(spe, Geomancy.locate("spellcomponents/get_"+comp.function.identifier.getPath()),"got_"+comp.function.identifier.getPath());
                 }
             }
+
+            StorageItemScreenHandler.checkPanicClose(spe,storage);
+
         }
     }
 
