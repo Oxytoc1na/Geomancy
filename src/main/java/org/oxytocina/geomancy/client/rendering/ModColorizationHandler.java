@@ -58,7 +58,7 @@ public class ModColorizationHandler {
                 ModBlocks.IRIDESCENT_VINES
                 );
 
-        // double tintets, for example vault blocks (first index is uncolored)
+        // double tinteds, for example vault blocks (first index is uncolored)
         ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> {
             if (view == null || pos == null || tintIndex == 0) {return 0xFFFFFFFF;} else {return octanguliteBlockNoise(pos,tintIndex,0.03f);}
         },
@@ -68,6 +68,14 @@ public class ModColorizationHandler {
                 ModBlocks.VAULT_GLASS,
                 ModBlocks.VAULT_GATE,
                 ModBlocks.VAULT_GATE_CONTROL
+        );
+
+        // double tinteds like above, but brighter, for illuminating blocks
+        ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> {
+                    if (view == null || pos == null || tintIndex == 0) {return 0xFFFFFFFF;} else {return octanguliteLuminantBlockNoise(pos,tintIndex,0.03f);}
+                },
+                ModBlocks.VAULT_LAMP,
+                ModBlocks.VAULT_OBSERVER
         );
 
         // soul oak wood only has one tint index, but should use tint index 1 for the bark
@@ -218,6 +226,23 @@ public class ModColorizationHandler {
                 (float)(org.oxytocina.geomancy.util.SimplexNoise.noise(x,y,z)+1)/2,
                 (float) (1-Math.pow(1F-((SimplexNoise.noise(x2,y2,z2)+1)/2),2)),
                 (float) (1-Math.pow(1F-((SimplexNoise.noise(x3,y3,z3)+1)/2),2))
+        );
+
+    }
+
+    private static int octanguliteLuminantBlockNoise(BlockPos pos, int tintIndex, float zoom){
+        float x = zoom*(pos.getX() * (1+tintIndex*0.3f) + tintIndex*16);
+        float y = zoom*(pos.getY() * (1+tintIndex*0.3f) + tintIndex*16);
+        float z = zoom*(pos.getZ() * (1+tintIndex*0.3f) + tintIndex*16);
+
+        float x2 = zoom*1.5f*((pos.getX()+230) * (1+tintIndex*0.3f) + tintIndex*16);
+        float y2 = zoom*1.5f*((pos.getY()+590) * (1+tintIndex*0.3f) + tintIndex*16);
+        float z2 = zoom*1.5f*((pos.getZ()+367) * (1+tintIndex*0.3f) + tintIndex*16);
+
+        return Toolbox.colorFromHSV(
+                (float)(org.oxytocina.geomancy.util.SimplexNoise.noise(x,y,z)+1)/2,
+                (float) (1-Math.pow(1F-((SimplexNoise.noise(x2,y2,z2)+1)/2),2)),
+                1
         );
 
     }

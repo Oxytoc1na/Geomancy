@@ -194,6 +194,8 @@ public class ModBlocks {
     public static final StairsBlock VAULT_BLOCK_STAIRS  = register("vault_block_stairs", s->new StairsBlock(VAULT_BLOCK.getDefaultState(),s),AbstractBlock.Settings.copy(VAULT_BLOCK),ExtraBlockSettings.copyFrom(VAULT_BLOCK).stairs(VAULT_BLOCK),new FabricItemSettings());
     public static final DungeonGateBlock VAULT_GATE     = register("vault_gate", DungeonGateBlock::new,AbstractBlock.Settings.copy(VAULT_BLOCK).nonOpaque().solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never),ExtraBlockSettings.copyFrom(VAULT_BLOCK).layer(ExtraBlockSettings.Layer.Transparent),new FabricItemSettings());
     public static final DungeonGateControlBlock VAULT_GATE_CONTROL = register("vault_gate_control", DungeonGateControlBlock::new,AbstractBlock.Settings.copy(VAULT_BLOCK),ExtraBlockSettings.copyFrom(VAULT_BLOCK),new FabricItemSettings());
+    public static final VaultLampBlock VAULT_LAMP       = register("vault_lamp", VaultLampBlock::new,AbstractBlock.Settings.copy(VAULT_BLOCK).solidBlock(Blocks::never).suffocates(Blocks::never).luminance(s->s.get(VaultLampBlock.LIT)?15:0),ExtraBlockSettings.copyFrom(VAULT_BLOCK),new FabricItemSettings());
+    public static final VaultObserverBlock VAULT_OBSERVER = register("vault_observer", VaultObserverBlock::new,AbstractBlock.Settings.copy(VAULT_BLOCK).solidBlock(Blocks::never).suffocates(Blocks::never),ExtraBlockSettings.copyFrom(VAULT_BLOCK),new FabricItemSettings());
 
     // block entities
     public static final SmitheryBlock SMITHERY      = register("smithery_block", SmitheryBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe());

@@ -40,7 +40,7 @@ public class PremadeSpells {
                             .pos(1,1)
                             .conf(SpellComponent.confBuilder("w").mode(SpellComponent.SideConfig.Mode.Input))
                     )
-                    .buildStack(),1);
+                    .buildStack(),100);
         }
 
         // into block teleport
@@ -76,7 +76,7 @@ public class PremadeSpells {
                             .pos(2,1)
                             .conf(SpellComponent.confBuilder("w").mode(SpellComponent.SideConfig.Mode.Output))
                     )
-                    .buildStack(), 1);
+                    .buildStack(), 100);
         }
 
         // self lightning
@@ -91,7 +91,7 @@ public class PremadeSpells {
                             .pos(0,1)
                             .conf(SpellComponent.confBuilder("e").mode(SpellComponent.SideConfig.Mode.Output))
                     )
-                    .buildStack(),1);
+                    .buildStack(),100);
         }
 
         // fireball
@@ -114,7 +114,7 @@ public class PremadeSpells {
                     .add(SpellComponent.builder(SpellBlocks.DIR_CASTER).pos(3,2).conf(SpellComponent.confBuilder("w").mode(SpellComponent.SideConfig.Mode.Output)))
                     .add(SpellComponent.builder(SpellBlocks.CONST_NUM).param("val",1).pos(2,3).conf(SpellComponent.confBuilder("nw").mode(SpellComponent.SideConfig.Mode.Output)))
                     .add(SpellComponent.builder(SpellBlocks.CONST_NUM).param("val",1).pos(1,3).conf(SpellComponent.confBuilder("ne").mode(SpellComponent.SideConfig.Mode.Output)))
-                    .buildStack());
+                    .buildStack(),50);
         }
 
         // curse (instant damage)
@@ -151,7 +151,7 @@ public class PremadeSpells {
                             .conf(SpellComponent.confBuilder("nw").mode(SpellComponent.SideConfig.Mode.Output))
                     )
                     .add(SpellComponent.builder(SpellBlocks.CONST_NUM).param("val",1).pos(3,2).conf(SpellComponent.confBuilder("w").mode(SpellComponent.SideConfig.Mode.Output)))
-                    .buildStack());
+                    .buildStack(),25);
         }
 
         // ray pos
@@ -172,7 +172,7 @@ public class PremadeSpells {
                             .conf(SpellComponent.confBuilder("ne").mode(SpellComponent.SideConfig.Mode.Output)))
                     .add(SpellComponent.builder(SpellBlocks.REF_INPUT).pos(3,3,"e").param("varName","res")
                             .conf(SpellComponent.confBuilder("w").mode(SpellComponent.SideConfig.Mode.Input)))
-                    .buildStack());
+                    .buildStack(),100);
         }
 
         // ray dir
@@ -193,7 +193,7 @@ public class PremadeSpells {
                             .conf(SpellComponent.confBuilder("ne").mode(SpellComponent.SideConfig.Mode.Output)))
                     .add(SpellComponent.builder(SpellBlocks.REF_INPUT).pos(3,3,"e").param("varName","res")
                             .conf(SpellComponent.confBuilder("w").mode(SpellComponent.SideConfig.Mode.Input)))
-                    .buildStack());
+                    .buildStack(),100);
         }
 
         // ray entity
@@ -214,7 +214,7 @@ public class PremadeSpells {
                             .conf(SpellComponent.confBuilder("ne").mode(SpellComponent.SideConfig.Mode.Output)))
                     .add(SpellComponent.builder(SpellBlocks.REF_INPUT).pos(3,3,"e").param("varName","res")
                             .conf(SpellComponent.confBuilder("w").mode(SpellComponent.SideConfig.Mode.Input)))
-                    .buildStack());
+                    .buildStack(),100);
         }
 
         // ray combined
@@ -232,12 +232,12 @@ public class PremadeSpells {
                             .conf(SpellComponent.confBuilder("e").mode(SpellComponent.SideConfig.Mode.Output)))
                     .add(SpellComponent.builder(SpellBlocks.REF_INPUT).pos(3,3,"e").param("varName","res")
                             .conf(SpellComponent.confBuilder("w").mode(SpellComponent.SideConfig.Mode.Input)))
-                    .buildStack());
+                    .buildStack(),100);
         }
     }
 
     public static HashMap<ItemStack,Integer> getPremadeSpells(){
-        final HashMap<ItemStack,Integer> spells = new HashMap<>();
+        final HashMap<ItemStack,Integer> spells = new LinkedHashMap<>();
 
         for(var triplet : SPELLS.values()){
             spells.put(triplet.getMiddle(),triplet.getRight());

@@ -85,7 +85,9 @@ public class Geomancy implements ModInitializer {
                     Thread.sleep(1);
                     waited++;
                     if(waited%10000 == 0)
+                    {
                         Geomancy.logWarning("waited for finished initialization from foreign entrypoint "+from+" for "+waited+"ms!");
+                    }
 
                 }
                 catch (Exception ignored)
@@ -169,6 +171,8 @@ public class Geomancy implements ModInitializer {
                     t.fillInStackTrace(), Arrays.toString(t.getStackTrace())));
             
             Log.debug(LogCategory.ENTRYPOINT, "Geomancy");
+            finishedInitialization=true;
+            initializing = false;
             throw t;
         }
 

@@ -1,7 +1,6 @@
 package org.oxytocina.geomancy.blocks.blockEntities;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -119,17 +118,20 @@ public class AutocasterBlockEntity extends LootableContainerBlockEntity implemen
         return INVENTORY_SIZE;
     }
 
-    public void cast(){
+    private BlockState castStateResult = null;
+    public BlockState cast(BlockState state){
+        castStateResult=state;
         // fetch cast spell
         var caster = getFirstCasterItem(this);
-        if(caster==null) return;
+        if(caster==null) return castStateResult;
         var spells = getCastableSpellItems(this,caster);
-        if(spells.isEmpty()) return;
+        if(spells.isEmpty()) return castStateResult;
         var spell = spells.get(getSelectedSpellIndex(this,caster));
         var grid = SpellStoringItem.readGrid(spell);
-        if(grid==null) return;
+        if(grid==null) return castStateResult;
 
         grid.run(caster,spell,null,this,null, SpellBlockArgs.empty(), SpellContext.SoundBehavior.Reduced,false);
+        return castStateResult;
     }
 
     public void tick(World world, BlockPos pos, BlockState state) {
@@ -232,6 +234,18 @@ public class AutocasterBlockEntity extends LootableContainerBlockEntity implemen
             }
         }
         return s;
+    }
+
+    public void setComparatorOverride(int override){
+        if(getWorld()!=null)
+        {
+            castStateResult = getWorld().getBlockState(pos).with(AutocasterBlock.COMPARATOR_OVERRIDE,override);
+            getWorld().setBlockState(pos,castStateResult, Block.NOTIFY_ALL);
+        }
+    }
+
+    public int getComparatorOverride(){
+        return getWorld()!=null?getWorld().getBlockState(pos).get(AutocasterBlock.COMPARATOR_OVERRIDE):16;
     }
 
     public Vec3d getMuzzlePos() {

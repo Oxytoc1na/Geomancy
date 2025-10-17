@@ -67,7 +67,7 @@ public class SpellComponentStoringItem extends Item {
         SpellComponent comp = readComponent(stack);
         MutableText compText = Text.translatable("geomancy.spellcomponent."+(comp!=null?comp.function.identifier.getPath():"empty"));
         if(comp!=null&&comp.isObfuscated()) return StellgeUtil.stellgify(compText);
-        return Text.translatable(this.getTranslationKey(stack)).append(Text.literal(" [").append(compText).append("]")).formatted(Formatting.GRAY);
+        return Text.translatable(this.getTranslationKey(stack)).append(Text.literal(" [").append(compText).append("]").formatted(Formatting.GRAY));
     }
 
     @Override

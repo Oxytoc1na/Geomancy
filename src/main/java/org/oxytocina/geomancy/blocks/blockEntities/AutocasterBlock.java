@@ -15,10 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.DirectionProperty;
-import net.minecraft.state.property.Properties;
-import net.minecraft.state.property.Property;
+import net.minecraft.state.property.*;
 import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.*;
@@ -33,16 +30,12 @@ public class AutocasterBlock extends BlockWithEntity implements BlockEntityProvi
 
     public static final DirectionProperty FACING;
     public static final BooleanProperty TRIGGERED;
-    private static final Map<Item, DispenserBehavior> BEHAVIORS;
+    public static final IntProperty COMPARATOR_OVERRIDE;
     private static final int SCHEDULED_TICK_DELAY = 4;
-
-    public static void registerBehavior(ItemConvertible provider, DispenserBehavior behavior) {
-        BEHAVIORS.put(provider.asItem(), behavior);
-    }
 
     public AutocasterBlock(AbstractBlock.Settings settings) {
         super(settings);
-        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(TRIGGERED, false));
+        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(TRIGGERED, false).with(COMPARATOR_OVERRIDE,16));
     }
 
     @Override
@@ -59,10 +52,10 @@ public class AutocasterBlock extends BlockWithEntity implements BlockEntityProvi
         }
     }
 
-    protected void cast(ServerWorld world, BlockPos pos) {
+    protected BlockState cast(ServerWorld world, BlockPos pos,BlockState state) {
         BlockPointerImpl blockPointerImpl = new BlockPointerImpl(world, pos);
         AutocasterBlockEntity casterBlockEntity = (AutocasterBlockEntity)blockPointerImpl.getBlockEntity();
-        casterBlockEntity.cast();
+        return casterBlockEntity.cast(state);
     }
 
     @Override
@@ -71,8 +64,7 @@ public class AutocasterBlock extends BlockWithEntity implements BlockEntityProvi
         boolean isTriggered = (Boolean)state.get(TRIGGERED);
         if (receivingRedstone && !isTriggered) {
             if(world instanceof ServerWorld sw)
-                this.cast(sw, pos);
-            //world.scheduleBlockTick(pos, this, SCHEDULED_TICK_DELAY);
+                state = this.cast(sw, pos,state);
             world.setBlockState(pos, (BlockState)state.with(TRIGGERED, true), 2|4);
         } else if (!receivingRedstone && isTriggered) {
             world.setBlockState(pos, (BlockState)state.with(TRIGGERED, false), 2|4);
@@ -119,14 +111,6 @@ public class AutocasterBlock extends BlockWithEntity implements BlockEntityProvi
         }
     }
 
-    public static Position getOutputLocation(BlockPointer pointer) {
-        Direction direction = (Direction)pointer.getBlockState().get(FACING);
-        double d = pointer.getX() + 0.7 * (double)direction.getOffsetX();
-        double e = pointer.getY() + 0.7 * (double)direction.getOffsetY();
-        double f = pointer.getZ() + 0.7 * (double)direction.getOffsetZ();
-        return new PositionImpl(d, e, f);
-    }
-
     @Override
     public boolean hasComparatorOutput(BlockState state) {
         return true;
@@ -134,7 +118,8 @@ public class AutocasterBlock extends BlockWithEntity implements BlockEntityProvi
 
     @Override
     public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
-        return ScreenHandler.calculateComparatorOutput(world.getBlockEntity(pos));
+        int override = state.get(COMPARATOR_OVERRIDE);
+        return override!=16?override:ScreenHandler.calculateComparatorOutput(world.getBlockEntity(pos));
     }
 
     @Override
@@ -154,13 +139,13 @@ public class AutocasterBlock extends BlockWithEntity implements BlockEntityProvi
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(new Property[]{FACING, TRIGGERED});
+        builder.add(new Property[]{FACING, TRIGGERED,COMPARATOR_OVERRIDE});
     }
 
     static {
         FACING = FacingBlock.FACING;
         TRIGGERED = Properties.TRIGGERED;
-        BEHAVIORS = (Map)Util.make(new Object2ObjectOpenHashMap(), (map) -> map.defaultReturnValue(new ItemDispenserBehavior()));
+        COMPARATOR_OVERRIDE = IntProperty.of("comparator_override",0,16);
     }
 
     @Override

@@ -33,6 +33,7 @@ import net.minecraft.util.math.*;
 import net.minecraft.world.*;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.ModBlocks;
+import org.oxytocina.geomancy.blocks.VaultLampBlock;
 import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlock;
 import org.oxytocina.geomancy.blocks.blockEntities.RestrictorBlockEntity;
 import org.oxytocina.geomancy.blocks.blockEntities.SoulForgeBlock;
@@ -148,6 +149,7 @@ public class SpellBlocks {
     public static final SpellBlock TAKE;
     public static final SpellBlock TRANSFER;
     public static final SpellBlock PARTICLES;
+    public static final SpellBlock SET_OUTPUT;
 
     // reference
     public static final SpellBlock ACTION;
@@ -2364,7 +2366,11 @@ public class SpellBlocks {
                             }
                             // lamp
                             else if(targetBlock instanceof RedstoneLampBlock){
-                                world.setBlockState(blockPos, (BlockState)targetState.cycle(RedstoneLampBlock.LIT), 2);
+                                world.setBlockState(blockPos, (BlockState)targetState.cycle(RedstoneLampBlock.LIT), Block.NOTIFY_ALL);
+                            }
+                            // vault lamp
+                            else if(targetBlock instanceof VaultLampBlock){
+                                world.setBlockState(blockPos, (BlockState)targetState.cycle(VaultLampBlock.LIT), Block.NOTIFY_ALL);
                             }
                             // note block
                             else if(targetBlock instanceof NoteBlock nb){
@@ -2677,6 +2683,29 @@ public class SpellBlocks {
                             // too broke
                             tryLogDebugBroke(comp,manaCost);
                             spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,pos));
+                        }
+
+                        return SpellBlockResult.empty();
+                    })
+                    .category(cat).build());
+
+            SET_OUTPUT = register(SpellBlock.Builder.create("set_output")
+                    .inputs(
+                            SpellSignal.createNumber().named("strength")
+                    )
+                    .func((comp,vars) -> {
+                        var strength = Toolbox.clampI(vars.getInt("strength"),0,16);
+                        if(comp.context.casterBlock==null || strength == comp.context.casterBlock.getComparatorOverride()) return SpellBlockResult.empty();
+                        float manaCost = 1f;
+                        if(canAfford(comp,manaCost)){
+                            comp.context.casterBlock.setComparatorOverride(strength);
+                            trySpendSoul(comp,manaCost);
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,comp.context.getOriginPos()));
+                        }
+                        else{
+                            // too broke
+                            tryLogDebugBroke(comp,manaCost);
+                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,comp.context.getOriginPos()));
                         }
 
                         return SpellBlockResult.empty();

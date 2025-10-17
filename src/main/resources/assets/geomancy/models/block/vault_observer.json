@@ -1,0 +1,28 @@
+{
+    "parent": "block/block",
+    "textures": {
+        "front": "geomancy:block/vault_observer_front_base",
+        "front2": "geomancy:block/vault_observer_front_eye",
+        "back": "geomancy:block/vault_observer_back_off",
+        "side": "geomancy:block/vault_observer_side"
+    },
+    "elements": [
+        {   "from": [ 0, 0, 0 ],
+            "to": [ 16, 16, 16 ],
+            "faces": {
+                "down":  { "texture": "#side", "tintindex": 0, "cullface": "down" },
+                "up":    { "texture": "#side", "tintindex": 0, "cullface": "up" },
+                "north": { "texture": "#front", "tintindex": 0, "cullface": "north" },
+                "south": { "texture": "#back", "tintindex": 0, "cullface": "south" },
+                "west":  { "texture": "#side", "tintindex": 0, "cullface": "west" },
+                "east":  { "texture": "#side", "tintindex": 0, "cullface": "east" }
+            }
+        },
+        {   "from": [ 0, 0, 0 ],
+            "to": [ 16, 16, 16 ],
+            "faces": {
+                "north": { "texture": "#front2", "tintindex": 1, "cullface": "north" }
+            }
+        }
+    ]
+}

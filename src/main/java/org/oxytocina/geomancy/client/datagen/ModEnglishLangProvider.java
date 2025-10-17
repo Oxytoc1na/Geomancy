@@ -187,6 +187,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("particles","Particles","spawns decorative particles in the world");
             addSpell("shout","Shout","outputs a value to the chat of anyone within range");
             addSpell("whisper","Whisper","outputs a value to the chat of a specified player");
+            addSpell("set_output","Set Output","overrides comparator output of the autocaster. Range: 0-16 (reset)");
             // reference
             addSpell("action","Action","calls another installed spell");
             addSpell("provider","Provider","automatically returns the result of a spell");
@@ -608,6 +609,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("block.MODID.vault_glass"                   , "Vault Glass");
             add("block.MODID.vault_gate"                    , "Vault Gate");
             add("block.MODID.vault_gate_control"            , "Vault Gate Control");
+            add("block.MODID.vault_lamp"                    , "Vault Lamp");
+            add("block.MODID.vault_observer"                , "Vault Observer");
 
             // null
             {

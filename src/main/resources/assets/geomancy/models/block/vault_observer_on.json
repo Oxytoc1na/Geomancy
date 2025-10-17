@@ -1,0 +1,6 @@
+{
+    "parent": "geomancy:block/vault_observer",
+    "textures": {
+        "back": "geomancy:block/vault_observer_back_on"
+    }
+}
