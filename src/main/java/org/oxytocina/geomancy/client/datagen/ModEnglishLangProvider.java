@@ -611,6 +611,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("block.MODID.vault_gate_control"            , "Vault Gate Control");
             add("block.MODID.vault_lamp"                    , "Vault Lamp");
             add("block.MODID.vault_observer"                , "Vault Observer");
+            add("block.MODID.vault_glass_seethrough"        , "Vault Glass (Seethrough)");
 
             // null
             {

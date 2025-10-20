@@ -21,6 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.spells.SpellContext;
 
 import java.awt.*;
 import java.util.*;
@@ -239,6 +240,14 @@ public class Toolbox {
 
     public static boolean roughlyEqual(float a, float b, float maxDifference) {
         return Math.abs(b-a) <maxDifference;
+    }
+
+    public static <T> T tryElse(java.util.function.Supplier<T> supplier, T ifFailed) {
+        try{
+            return supplier.get();
+        } catch (Exception ignored) {
+            return ifFailed;
+        }
     }
 
     public static class GradientBuilder{

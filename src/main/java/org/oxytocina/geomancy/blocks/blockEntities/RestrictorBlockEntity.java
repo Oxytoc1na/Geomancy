@@ -4,6 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.inventory.Inventories;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
@@ -46,7 +47,7 @@ public class RestrictorBlockEntity extends BlockEntity {
             double dist = (r.getPos().toCenterPos().subtract(pos)).length();
             if(dist < minDist){
                 minDist=dist;
-                if(minDist < RANGE)
+                if(minDist < r.getRange())
                     be = r;
             }
         }
@@ -132,8 +133,14 @@ public class RestrictorBlockEntity extends BlockEntity {
         }
     }
 
-    public static float RANGE = 100;
+    public static float RANGE = 20;
     public static int DURATION = 20;
+
+    public float range = RANGE;
+    public SpellContext.Restrictions restrictions = SpellContext.Restrictions.DUNGEON;
+    public float getRange(){
+        return range;
+    }
 
     public static void clear(){
         PLAYER_INFLUENCES.clear();
@@ -197,7 +204,21 @@ public class RestrictorBlockEntity extends BlockEntity {
     }
 
     public SpellContext.Restrictions getRestrictions(){
-        return SpellContext.Restrictions.DUNGEON;
+        return restrictions;
+    }
+
+    @Override
+    public void readNbt(NbtCompound nbt) {
+        super.readNbt(nbt);
+        range = nbt.getFloat("range");
+        restrictions = Toolbox.tryElse(()->Enum.valueOf(SpellContext.Restrictions.class,nbt.getString("type")),SpellContext.Restrictions.DUNGEON);
+    }
+
+    @Override
+    protected void writeNbt(NbtCompound nbt) {
+        super.writeNbt(nbt);
+        nbt.putFloat("range",range);
+        nbt.putString("type",restrictions.getName());
     }
 
     @Override
@@ -224,7 +245,7 @@ public class RestrictorBlockEntity extends BlockEntity {
         if(!(world instanceof ServerWorld sw)) return;
         for(var spe : sw.getPlayers()){
             // check if in range
-            if(!EntityUtil.isInRange(spe,sw,getPos().toCenterPos(),RANGE)) continue;
+            if(!EntityUtil.isInRange(spe,sw,getPos().toCenterPos(),getRange())) continue;
 
             var uuid = spe.getUuid();
 

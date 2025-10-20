@@ -4,7 +4,8 @@
         "front": "geomancy:block/vault_observer_front_base",
         "front2": "geomancy:block/vault_observer_front_eye",
         "back": "geomancy:block/vault_observer_back_off",
-        "side": "geomancy:block/vault_observer_side"
+        "side": "geomancy:block/vault_observer_side",
+        "particle": "#side"
     },
     "elements": [
         {   "from": [ 0, 0, 0 ],

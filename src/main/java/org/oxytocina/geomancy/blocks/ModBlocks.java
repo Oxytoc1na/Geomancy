@@ -196,6 +196,7 @@ public class ModBlocks {
     public static final DungeonGateControlBlock VAULT_GATE_CONTROL = register("vault_gate_control", DungeonGateControlBlock::new,AbstractBlock.Settings.copy(VAULT_BLOCK),ExtraBlockSettings.copyFrom(VAULT_BLOCK),new FabricItemSettings());
     public static final VaultLampBlock VAULT_LAMP       = register("vault_lamp", VaultLampBlock::new,AbstractBlock.Settings.copy(VAULT_BLOCK).solidBlock(Blocks::never).suffocates(Blocks::never).luminance(s->s.get(VaultLampBlock.LIT)?15:0),ExtraBlockSettings.copyFrom(VAULT_BLOCK),new FabricItemSettings());
     public static final VaultObserverBlock VAULT_OBSERVER = register("vault_observer", VaultObserverBlock::new,AbstractBlock.Settings.copy(VAULT_BLOCK).solidBlock(Blocks::never).suffocates(Blocks::never),ExtraBlockSettings.copyFrom(VAULT_BLOCK),new FabricItemSettings());
+    public static final GlassBlock VAULT_GLASS_SEETHROUGH = register("vault_glass_seethrough", GlassBlock::new,AbstractBlock.Settings.copy(VAULT_BLOCK).nonOpaque().solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never),ExtraBlockSettings.create().layer(ExtraBlockSettings.Layer.Cutout),new FabricItemSettings());
 
     // block entities
     public static final SmitheryBlock SMITHERY      = register("smithery_block", SmitheryBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe());

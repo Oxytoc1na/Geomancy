@@ -486,20 +486,23 @@ public class SpellContext {
     }
 
     public enum Restrictions {
-        NONE("none",true,true,true),
-        UNLOADED("unloaded",true,false,false),
-        DUNGEON("dungeon",false,false,true);
+        NONE("NONE",true,true,true,true),
+        UNLOADED("UNLOADED",true,false,false,true),
+        DUNGEON("DUNGEON",false,false,true,true),
+        DUNGEON_STRICT("DUNGEON_STRICT",false,false,true,false);
 
         private final String name;
         private final boolean allowTeleports;
         private final boolean allowBlockManipulation;
         private final boolean allowActivate;
+        private final boolean allowNonPrecompiled;
 
-        private Restrictions(String name, boolean allowTeleports, boolean allowBlockManipulation, boolean allowActivate) {
+        private Restrictions(String name, boolean allowTeleports, boolean allowBlockManipulation, boolean allowActivate,boolean allowNonPrecompiled) {
             this.name = name;
             this.allowTeleports = allowTeleports;
             this.allowBlockManipulation = allowBlockManipulation;
             this.allowActivate=allowActivate;
+            this.allowNonPrecompiled=allowNonPrecompiled;
         }
 
         public String getName() {
@@ -517,5 +520,11 @@ public class SpellContext {
         public boolean allowsActivate() {
             return allowActivate;
         }
+
+        public boolean allowsNonPrecompiled() {
+            return allowNonPrecompiled;
+        }
+
+
     }
 }
