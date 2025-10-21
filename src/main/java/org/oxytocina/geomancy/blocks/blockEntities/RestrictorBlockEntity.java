@@ -4,6 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
@@ -11,8 +12,11 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -63,6 +67,38 @@ public class RestrictorBlockEntity extends BlockEntity {
             return sw.isChunkLoaded(blockPos) ? SpellContext.Restrictions.NONE : SpellContext.Restrictions.UNLOADED;
         }
         return SpellContext.Restrictions.UNLOADED;
+    }
+
+    public void onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        if(player.isCreative()){
+            if(player.isSneaking())
+            {
+                // cycle restrictions
+                var restrictions = getRestrictions();
+                switch(restrictions.getName()){
+                    case "DUNGEON" : setRestrictions(SpellContext.Restrictions.DUNGEON_STRICT,player); break;
+                    case "DUNGEON_STRICT" : setRestrictions(SpellContext.Restrictions.DUNGEON,player); break;
+                }
+            }
+            else{
+                // cycle range
+                float newRange = getRange() + 10;
+                if(newRange > 100) newRange = 10;
+                setRange(newRange,player);
+            }
+        }
+    }
+
+    public void setRestrictions(SpellContext.Restrictions newRes,PlayerEntity player){
+        restrictions=newRes;
+        markDirty();
+        player.sendMessage(Text.literal("restrictor mode: "+restrictions.getName()));
+    }
+
+    public void setRange(float newRange,PlayerEntity player){
+        range=newRange;
+        markDirty();
+        player.sendMessage(Text.literal("restrictor range: "+newRange));
     }
 
     public static class PotentiallyForbiddenAction{

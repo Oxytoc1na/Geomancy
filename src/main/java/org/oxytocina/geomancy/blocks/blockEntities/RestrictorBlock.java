@@ -54,10 +54,11 @@ public class RestrictorBlock extends BlockWithEntity implements BlockEntityProvi
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if(!world.isClient && world.getBlockEntity(pos) instanceof PedestalBlockEntity pedestal){
-            pedestal.onUse(state,world,pos,player,hand,hit);
+        if(hand == Hand.MAIN_HAND && !world.isClient && player.isCreative() && world.getBlockEntity(pos) instanceof RestrictorBlockEntity restrictor){
+            restrictor.onUse(state,world,pos,player,hand,hit);
+            return ActionResult.SUCCESS;
         }
-        return ActionResult.SUCCESS;
+        return ActionResult.PASS;
     }
 
     @Override

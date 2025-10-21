@@ -78,6 +78,12 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
         addHybridTag(BlockTags.LOGS_THAT_BURN,ItemTags.LOGS_THAT_BURN,SOUL_OAK_LOGS, ModItemTags.SOUL_OAK_LOGS);
         addHybrid(BlockTags.LEAVES,ItemTags.LEAVES,ModBlocks.SOUL_OAK_LEAVES);
         addHybrid(BlockTags.SAPLINGS,ItemTags.SAPLINGS,ModBlocks.SOUL_OAK_SAPLING);
+        addHybrid(SOUL_OAK_LOGS,ModItemTags.SOUL_OAK_LOGS,
+                ModBlocks.SOUL_OAK_LOG,
+                ModBlocks.SOUL_OAK_WOOD,
+                ModBlocks.STRIPPED_SOUL_OAK_LOG,
+                ModBlocks.STRIPPED_SOUL_OAK_WOOD
+                );
 
         // ores
         addHybrid(LEAD_ORES,ModItemTags.LEAD_ORES,ModBlocks.LEAD_ORE,ModBlocks.DEEPSLATE_LEAD_ORE);
@@ -160,17 +166,6 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
             getOrCreateTagBuilder(NULL_HOLDS_SPIKES).setReplace(false)
                     .add(ModBlocks.NULL_ROCK,ModBlocks.NULL_RUBBLE);
         }
-
-
-        getOrCreateTagBuilder(SOUL_OAK_LOGS).setReplace(false)
-                .add(ModBlocks.SOUL_OAK_LOG)
-                .add(ModBlocks.SOUL_OAK_WOOD)
-                .add(ModBlocks.STRIPPED_SOUL_OAK_LOG)
-                .add(ModBlocks.STRIPPED_SOUL_OAK_WOOD)
-        ;
-
-
-
 
         // ambient souls
         addSoulTag(BlockTags.WOOL,SoulLevel.Few);
