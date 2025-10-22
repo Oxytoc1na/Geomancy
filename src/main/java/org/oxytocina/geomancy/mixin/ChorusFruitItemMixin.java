@@ -2,6 +2,7 @@ package org.oxytocina.geomancy.mixin;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ChorusFruitItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -25,7 +26,7 @@ public class ChorusFruitItemMixin {
                     SpellContext.ofCaster(user),
                     user.getPos(),user.getPos()
             ));
-            cir.cancel();
+            cir.setReturnValue(user.eatFood(world,stack));
         }
     }
 }

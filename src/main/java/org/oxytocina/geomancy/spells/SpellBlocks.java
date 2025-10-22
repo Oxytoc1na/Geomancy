@@ -3141,7 +3141,7 @@ public class SpellBlocks {
 
     public static void punishDisallowedAction(SpellContext context) {
         if(context.caster instanceof ServerPlayerEntity spe){
-            spe.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS,5));
+            spe.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS,5*20));
             spe.damage(ModDamageTypes.of(context.getWorld(),ModDamageTypes.RESTRICTED_ACTION),4);
             AdvancementHelper.grantAdvancementCriterion(spe,Geomancy.locate("main/simple_tried_disallowed_action"),"simple_tried_disallowed_action");
         }
