@@ -13,6 +13,7 @@ import net.minecraft.util.Arm;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlockEntity;
@@ -98,6 +99,11 @@ public class SpellContext {
                 : caster!=null?SourceType.Caster
                 : casterBlock!=null?SourceType.Block
         : SourceType.Caster;
+    }
+
+    public static SpellContext ofCaster(LivingEntity caster) {
+        var res = new SpellContext(null,caster,null,null,null,null,0,1,0,SoundBehavior.Silent,0);
+        return res;
     }
 
     public NbtCompound toNbt(){

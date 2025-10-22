@@ -6,6 +6,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
+import net.minecraft.item.ChorusFruitItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
@@ -20,6 +21,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.registries.ModDamageTypes;
@@ -108,14 +110,14 @@ public class RestrictorBlockEntity extends BlockEntity {
         public Identifier fromID;
         public Identifier toID;
         public long tick = 0;
-        public SpellContext ctx;
+        public @NotNull SpellContext ctx;
 
-        private PotentiallyForbiddenAction(SpellContext ctx){
+        private PotentiallyForbiddenAction(@NotNull SpellContext ctx){
             tick = Geomancy.tick;
             this.ctx=ctx;
         }
 
-        public static PotentiallyForbiddenAction createTeleport(SpellContext ctx, Vec3d from, Vec3d to){
+        public static PotentiallyForbiddenAction createTeleport(@NotNull SpellContext ctx, Vec3d from, Vec3d to){
             PotentiallyForbiddenAction res = new PotentiallyForbiddenAction(ctx);
             res.type = Type.Teleport;
             res.from=from;
