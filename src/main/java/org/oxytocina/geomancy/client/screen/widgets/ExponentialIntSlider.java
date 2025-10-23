@@ -6,23 +6,25 @@ import net.minecraft.util.math.MathHelper;
 
 import java.util.function.Consumer;
 
-public class IntSlider extends SliderWidget {
+public class ExponentialIntSlider extends SliderWidget {
     public int min;
     public int max;
     public Consumer<Integer> applyVal;
     public Text baseMessage;
+    public float exponent = 2;
 
-    public static IntSlider create(int x, int y, int width, int height, Text text, int value, int min, int max, Consumer<Integer> applyVal){
+    public static ExponentialIntSlider create(int x, int y, int width, int height, Text text, int value, int min, int max, float exponent, Consumer<Integer> applyVal){
         //value = Math.round((float)getValueUnscaled(value,min,max));
-        return new IntSlider(x,y,width,height,text,value,min,max,applyVal);
+        return new ExponentialIntSlider(x,y,width,height,text,value,min,max,exponent,applyVal);
     }
 
-    protected IntSlider(int x, int y, int width, int height, Text text, int value, int min, int max, Consumer<Integer> applyVal) {
-        super(x, y, width, height, text,getValueUnscaled(value,min,max));
+    protected ExponentialIntSlider(int x, int y, int width, int height, Text text, int value, int min, int max, float exponent, Consumer<Integer> applyVal) {
+        super(x, y, width, height, text,getValueUnscaled(value,min,max,exponent));
         this.baseMessage=text;
         this.min=min;
         this.max=max;
         this.applyVal=applyVal;
+        this.exponent=exponent;
         updateMessage();
     }
 
@@ -48,10 +50,10 @@ public class IntSlider extends SliderWidget {
     }
 
     public int getValueScaled(){
-        return MathHelper.lerp((float)value,min,max);
+        return MathHelper.lerp((float)Math.pow((float)value,exponent),min,max);
     }
 
-    public static double getValueUnscaled(float val, int min, int max) {
-        return (val-(double)min)/(max-min);
+    public static double getValueUnscaled(float val, int min, int max, float exponent) {
+        return Math.pow((val-(double)min)/(max-min),1/exponent);
     }
 }
