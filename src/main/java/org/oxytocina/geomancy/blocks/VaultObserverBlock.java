@@ -62,6 +62,9 @@ public class VaultObserverBlock extends FacingBlock {
         else if(block instanceof DoorBlock) newPowered = observedState.get(DoorBlock.OPEN);
         else if(block instanceof TrapdoorBlock) newPowered = observedState.get(TrapdoorBlock.OPEN);
         else if(block instanceof FenceGateBlock) newPowered = observedState.get(FenceGateBlock.OPEN);
+        else if(block instanceof VaultObserverBlock) newPowered = observedState.get(VaultObserverBlock.POWERED);
+        else if(block instanceof DungeonGateBlock) newPowered = observedState.get(DungeonGateBlock.VANISHED);
+        else if(block instanceof DungeonGateControlBlock) newPowered = observedState.get(DungeonGateControlBlock.POWERED);
 
         if(state.get(INVERTED)) newPowered=!newPowered;
 
