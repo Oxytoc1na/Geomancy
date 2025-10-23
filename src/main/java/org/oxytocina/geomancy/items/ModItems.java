@@ -79,7 +79,7 @@ public class ModItems {
     public static final Item AXINITE =      register("axinite",     new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof()));
 
     // crafting materials
-    public static final Item SOUL_ACTUATOR = register("soul_actuator", new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON)));
+    public static final Item SOUL_ACTUATOR = register("soul_actuator", new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON)),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom));
 
 
     // guidebook and lore

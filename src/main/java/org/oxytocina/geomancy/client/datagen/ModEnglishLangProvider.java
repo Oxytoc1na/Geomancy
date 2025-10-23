@@ -337,6 +337,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("item.MODID.octangulite_helmet"         , "Octangulite Helmet");
             add("item.MODID.octangulite_apple"          , "Octangulite Apple");
 
+            add("item.MODID.soul_actuator","Soul Actuator");
+
             add("item.MODID.casting_boots"          , "Soulcasting Boots");
             add("item.MODID.casting_leggings"       , "Soulcasting Leggings");
             add("item.MODID.casting_chestplate"     , "Soulcasting Chestplate");
