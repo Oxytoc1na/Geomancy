@@ -133,6 +133,12 @@ public class RestrictorBlockEntity extends BlockEntity {
             return res;
         }
 
+        public static PotentiallyForbiddenAction createNonCompiledCaster(SpellContext ctx){
+            PotentiallyForbiddenAction res = new PotentiallyForbiddenAction(ctx);
+            res.type = Type.NonCompiledCaster;
+            return res;
+        }
+
         public void undo(){
             switch(type){
                 case Teleport : {
@@ -151,6 +157,12 @@ public class RestrictorBlockEntity extends BlockEntity {
                     SpellBlocks.punishDisallowedAction(ctx);
                     break;
                 }
+                case NonCompiledCaster :
+                default:{
+                    if(ctx.caster==null || ctx.caster.isRemoved()) break;
+                    SpellBlocks.punishDisallowedAction(ctx);
+                    break;
+                }
             }
         }
 
@@ -161,13 +173,18 @@ public class RestrictorBlockEntity extends BlockEntity {
                     if(!restrictions.allowsTeleports()) return true;
                     break;
                 }
+                case NonCompiledCaster:{
+                    if(!restrictions.allowsNonPrecompiled()) return true;
+                    break;
+                }
             }
             return false;
         }
 
         public enum Type {
             Teleport,
-            Dimhop
+            Dimhop,
+            NonCompiledCaster
         }
     }
 

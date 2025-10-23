@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "geomancy:item/soul_actuator_base",
+    "layer1": "geomancy:item/soul_actuator_soul"
+  }
+}

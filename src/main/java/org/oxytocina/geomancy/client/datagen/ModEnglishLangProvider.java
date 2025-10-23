@@ -337,6 +337,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("item.MODID.octangulite_helmet"         , "Octangulite Helmet");
             add("item.MODID.octangulite_apple"          , "Octangulite Apple");
 
+            add("item.MODID.soul_actuator","Soul Actuator");
+
             add("item.MODID.casting_boots"          , "Soulcasting Boots");
             add("item.MODID.casting_leggings"       , "Soulcasting Leggings");
             add("item.MODID.casting_chestplate"     , "Soulcasting Chestplate");
@@ -1761,6 +1763,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
 
         // config
         {
+            add("MODID.options.client","Client Settings");
+            add("MODID.options.server","Server Settings (the hosts settings are used)");
             add("MODID.options.epilepsy","Epilepsy Mode");
             add("MODID.options.spellmakeruispeed","Spellmaker UI speed");
             add("MODID.options.no_spellmaker_move","No Spellmaker UI movement");
@@ -1777,6 +1781,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.options.soul_crosshair_math","Soul crosshair math");
             add("MODID.options.soul_crosshair_math.linear","Linear");
             add("MODID.options.soul_crosshair_math.multiplicative","Multiplicative");
+            add("MODID.options.max_spell_depth","Max. Spell Depth");
         }
 
         tb=null;

@@ -3,7 +3,6 @@ package org.oxytocina.geomancy.client.screen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.gui.widget.*;
 import net.minecraft.network.packet.c2s.play.UpdateDifficultyC2SPacket;
 import net.minecraft.screen.ScreenTexts;
@@ -11,6 +10,7 @@ import net.minecraft.text.Text;
 import net.minecraft.world.Difficulty;
 import org.oxytocina.geomancy.client.screen.widgets.FloatSlider;
 import org.oxytocina.geomancy.client.screen.widgets.IntSlider;
+import org.oxytocina.geomancy.client.screen.widgets.ExponentialIntSlider;
 import org.oxytocina.geomancy.util.GeomancyConfig;
 
 import java.util.function.Supplier;
@@ -36,61 +36,80 @@ public class ConfigScreen extends Screen {
         //adder.add(this.settings.getFov().createWidget(this.client.options, 0, 0, 150));
         //adder.add(this.createTopRightButton());
 
-        // epilepsy
-        adder.add(CyclingButtonWidget.<Boolean>builder(b->Text.literal(b.toString())).values(true,false)
-                .initially(GeomancyConfig.CONFIG.epilepsyMode.value()).build(0,0, 150, 20,
-                        Text.translatable("geomancy.options.epilepsy"),(button, toggle) ->
-                                GeomancyConfig.CONFIG.epilepsyMode.setValue(toggle)));
+        // client
+        {
+            adder.add(new TextWidget(Text.translatable("geomancy.options.client"),MinecraftClient.getInstance().textRenderer),2);
 
-        // spellmaker move
-        adder.add(CyclingButtonWidget.<Boolean>builder(b->Text.literal(b.toString())).values(true,false)
-                .initially(GeomancyConfig.CONFIG.noSpellmakerMove.value()).build(0,0, 150, 20,
-                        Text.translatable("geomancy.options.no_spellmaker_move"),(button, toggle) ->
-                                GeomancyConfig.CONFIG.noSpellmakerMove.setValue(toggle)));
+            // epilepsy
+            adder.add(CyclingButtonWidget.<Boolean>builder(b->Text.literal(b.toString())).values(true,false)
+                    .initially(GeomancyConfig.CONFIG.epilepsyMode.value()).build(0,0, 150, 20,
+                            Text.translatable("geomancy.options.epilepsy"),(button, toggle) ->
+                                    GeomancyConfig.CONFIG.epilepsyMode.setValue(toggle)));
 
-        // spell timeout penalty
-        adder.add(CyclingButtonWidget.<Boolean>builder(b->Text.literal(b.toString())).values(true,false)
-                .initially(GeomancyConfig.CONFIG.penalizeSpellTimeout.value()).build(0,0, 150, 20,
-                        Text.translatable("geomancy.options.penalize_spell_timeout"),(button, toggle) ->
-                                GeomancyConfig.CONFIG.penalizeSpellTimeout.setValue(toggle)));
+            // spellmaker move
+            adder.add(CyclingButtonWidget.<Boolean>builder(b->Text.literal(b.toString())).values(true,false)
+                    .initially(GeomancyConfig.CONFIG.noSpellmakerMove.value()).build(0,0, 150, 20,
+                            Text.translatable("geomancy.options.no_spellmaker_move"),(button, toggle) ->
+                                    GeomancyConfig.CONFIG.noSpellmakerMove.setValue(toggle)));
 
-        // player variable loading
-        adder.add(CyclingButtonWidget.<Boolean>builder(b->Text.literal(b.toString())).values(true,false)
-                .initially(GeomancyConfig.CONFIG.playerVariableLoading.value()).build(0,0, 150, 20,
-                        Text.translatable("geomancy.options.player_variable_loading"),(button, toggle) ->
-                                GeomancyConfig.CONFIG.playerVariableLoading.setValue(toggle)));
+            // spellmaker ui speed
+            var slider = FloatSlider.create(0,0,150,20,Text.translatable("geomancy.options.spellmakeruispeed"),
+                    GeomancyConfig.CONFIG.spellmakerUiSpeed.value(),0.1f,1f, GeomancyConfig.CONFIG.spellmakerUiSpeed::setValue);
+            adder.add(slider);
 
-        // spellmaker ui speed
-        var slider = FloatSlider.create(0,0,150,20,Text.translatable("geomancy.options.spellmakeruispeed"),
-                GeomancyConfig.CONFIG.spellmakerUiSpeed.value(),0.1f,1f, GeomancyConfig.CONFIG.spellmakerUiSpeed::setValue);
-        adder.add(slider);
+            // cam shake
+            slider = FloatSlider.create(0,0,150,20,Text.translatable("geomancy.options.shake_intensity"),
+                    GeomancyConfig.CONFIG.shakeIntensity.value(),0f,1f, GeomancyConfig.CONFIG.shakeIntensity::setValue);
+            adder.add(slider);
 
-        // cam shake
-        slider = FloatSlider.create(0,0,150,20,Text.translatable("geomancy.options.shake_intensity"),
-                GeomancyConfig.CONFIG.shakeIntensity.value(),0f,1f, GeomancyConfig.CONFIG.shakeIntensity::setValue);
-        adder.add(slider);
+            // whisper volume
+            slider = FloatSlider.create(0,0,150,20,Text.translatable("geomancy.options.whisper_volume"),
+                    GeomancyConfig.CONFIG.whisperVolume.value(),0f,1f, GeomancyConfig.CONFIG.whisperVolume::setValue);
+            adder.add(slider);
 
-        // whisper volume
-        slider = FloatSlider.create(0,0,150,20,Text.translatable("geomancy.options.whisper_volume"),
-                GeomancyConfig.CONFIG.whisperVolume.value(),0f,1f, GeomancyConfig.CONFIG.whisperVolume::setValue);
-        adder.add(slider);
+            // spellcradle tooltip truncation
+            var intSlider = IntSlider.create(0,0,150,20,Text.translatable("geomancy.options.spellcradle_tooltip_truncation"),
+                    GeomancyConfig.CONFIG.spellcradleTooltipTruncation.value(),1,20, GeomancyConfig.CONFIG.spellcradleTooltipTruncation::setValue);
+            adder.add(intSlider);
 
-        // spellcradle tooltip truncation
-        var intSlider = IntSlider.create(0,0,150,20,Text.translatable("geomancy.options.spellcradle_tooltip_truncation"),
-                GeomancyConfig.CONFIG.spellcradleTooltipTruncation.value(),1,20, GeomancyConfig.CONFIG.spellcradleTooltipTruncation::setValue);
-        adder.add(intSlider);
+            // soul crosshair type
+            adder.add(CyclingButtonWidget.<String>builder(b->Text.translatable("geomancy.options.soul_crosshair_type."+b)).values("spiral","pyramid","hourglass","focus")
+                    .initially(GeomancyConfig.CONFIG.soulCrosshairType.value()).build(0,0, 150, 20,
+                            Text.translatable("geomancy.options.soul_crosshair_type"),(button, val) ->
+                                    GeomancyConfig.CONFIG.soulCrosshairType.setValue(val)));
 
-        // soul crosshair type
-        adder.add(CyclingButtonWidget.<String>builder(b->Text.translatable("geomancy.options.soul_crosshair_type."+b)).values("spiral","pyramid","hourglass","focus")
-                .initially(GeomancyConfig.CONFIG.soulCrosshairType.value()).build(0,0, 150, 20,
-                        Text.translatable("geomancy.options.soul_crosshair_type"),(button, val) ->
-                                GeomancyConfig.CONFIG.soulCrosshairType.setValue(val)));
+            // soul crosshair math
+            adder.add(CyclingButtonWidget.<String>builder(b->Text.translatable("geomancy.options.soul_crosshair_math."+b)).values("linear","multiplicative")
+                    .initially(GeomancyConfig.CONFIG.soulCrosshairMath.value()).build(0,0, 150, 20,
+                            Text.translatable("geomancy.options.soul_crosshair_math"),(button, val) ->
+                                    GeomancyConfig.CONFIG.soulCrosshairMath.setValue(val)));
+        }
 
-        // soul crosshair math
-        adder.add(CyclingButtonWidget.<String>builder(b->Text.translatable("geomancy.options.soul_crosshair_math."+b)).values("linear","multiplicative")
-                .initially(GeomancyConfig.CONFIG.soulCrosshairMath.value()).build(0,0, 150, 20,
-                        Text.translatable("geomancy.options.soul_crosshair_math"),(button, val) ->
-                                GeomancyConfig.CONFIG.soulCrosshairMath.setValue(val)));
+        // server
+        {
+            adder.add(new TextWidget(Text.translatable("geomancy.options.server"),MinecraftClient.getInstance().textRenderer),2);
+
+            // spell timeout penalty
+            adder.add(CyclingButtonWidget.<Boolean>builder(b->Text.literal(b.toString())).values(true,false)
+                    .initially(GeomancyConfig.CONFIG.penalizeSpellTimeout.value()).build(0,0, 150, 20,
+                            Text.translatable("geomancy.options.penalize_spell_timeout"),(button, toggle) ->
+                                    GeomancyConfig.CONFIG.penalizeSpellTimeout.setValue(toggle)));
+
+            // player variable loading
+            adder.add(CyclingButtonWidget.<Boolean>builder(b->Text.literal(b.toString())).values(true,false)
+                    .initially(GeomancyConfig.CONFIG.playerVariableLoading.value()).build(0,0, 150, 20,
+                            Text.translatable("geomancy.options.player_variable_loading"),(button, toggle) ->
+                                    GeomancyConfig.CONFIG.playerVariableLoading.setValue(toggle)));
+
+            // max spell depth
+            var intSlider = ExponentialIntSlider.create(0,0,150,20,Text.translatable("geomancy.options.max_spell_depth"),
+                    GeomancyConfig.CONFIG.maxSpellDepth.value(),10,10000,3, GeomancyConfig.CONFIG.maxSpellDepth::setValue);
+            adder.add(intSlider);
+        }
+
+
+
+
 
         // credits and attribution
         adder.add(this.createButton(CREDITS_AND_ATTRIBUTION_TEXT, () -> new GeomancyCreditsScreen(this,false,()->{})));

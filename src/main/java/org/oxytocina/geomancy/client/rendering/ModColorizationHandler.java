@@ -173,7 +173,8 @@ public class ModColorizationHandler {
                 ModItems.APPRENTICE_GLOVE,
                 ModItems.JOURNEY_GLOVE,
                 ModItems.EXPERT_GLOVE,
-                ModItems.MASTER_GLOVE
+                ModItems.MASTER_GLOVE,
+                ModItems.SOUL_ACTUATOR
         );
     }
 

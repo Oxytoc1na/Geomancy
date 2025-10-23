@@ -22,6 +22,7 @@ import net.minecraft.world.World;
 import org.joml.Vector2i;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlockEntity;
+import org.oxytocina.geomancy.blocks.blockEntities.RestrictorBlockEntity;
 import org.oxytocina.geomancy.client.util.CamShakeUtil;
 import org.oxytocina.geomancy.effects.ModStatusEffects;
 import org.oxytocina.geomancy.enchantments.ModEnchantments;
@@ -114,8 +115,6 @@ public class SpellGrid {
         long startTime = System.nanoTime();
         World world = casterEntity!=null?casterEntity.getWorld() : blockEntity!=null?blockEntity.getWorld() : delegate!=null?delegate.getWorld():null;
 
-        // check restrictions
-        SpellContext.Restrictions restrictions = SpellContext.Restrictions.NONE;
 
         // soul cost
         if(casterItem==null) casterItem = ItemStack.EMPTY;
@@ -136,7 +135,16 @@ public class SpellGrid {
         context.activatedByHotkey = activatedByHotkey;
         context.refreshAvailableSoul();
         context.internalVars = args;
+        // check restrictions
+        SpellContext.Restrictions restrictions = RestrictorBlockEntity.getRestrictionsAt(context.getOriginPos(),world);
         context.setRestrictions(restrictions);
+
+        if(!context.isFromPrecomiled() && !restrictions.allowsNonPrecompiled())
+        {
+            // cancel cast, non-precompiled sources are forbidden here
+            RestrictorBlockEntity.registerPFA(RestrictorBlockEntity.PotentiallyForbiddenAction.createNonCompiledCaster(context));
+            return;
+        }
 
         try{
             for (var comp : components.values())

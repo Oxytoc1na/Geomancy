@@ -68,6 +68,10 @@ public class ModLootTables {
 
     public static final LootTable DIGSITE_HALLWAY_CHEST;
 
+    // entities
+    public static final LootTable ENTITY_STELLGE_ENGINEER;
+    public static final LootTable ENTITY_STELLGE_CASTER;
+
 
     static {
         // DWARVEN_REMNANTS_CHEST
@@ -698,6 +702,32 @@ public class ModLootTables {
                             .with(ItemEntry.builder(ModItems.COMPONENT_POUCH).weight(10)
                                     .conditionally(RandomChanceLootCondition.builder(0.05f))
                                     .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                    )
+            );
+        }
+
+        // ENTITY_STELLGE_ENGINEER
+        {
+            ENTITY_STELLGE_ENGINEER = register("entities/stellge_engineer", LootTable.builder()
+                    .pool(LootPool.builder()
+                            .rolls(ConstantLootNumberProvider.create(1.0F))
+                            .with(ItemEntry.builder(ModItems.SOUL_ACTUATOR)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(0,2)))
+                                    .apply(LootingEnchantLootFunction.builder(UniformLootNumberProvider.create(0,1)))
+                            )
+                    )
+            );
+        }
+
+        // ENTITY_STELLGE_CASTER
+        {
+            ENTITY_STELLGE_CASTER = register("entities/stellge_caster", LootTable.builder()
+                    .pool(LootPool.builder()
+                            .rolls(ConstantLootNumberProvider.create(1.0F))
+                            .with(ItemEntry.builder(ModItems.SOUL_ACTUATOR)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(0,2)))
+                                    .apply(LootingEnchantLootFunction.builder(UniformLootNumberProvider.create(0,1)))
+                            )
                     )
             );
         }
