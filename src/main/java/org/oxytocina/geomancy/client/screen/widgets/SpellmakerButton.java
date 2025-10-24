@@ -20,6 +20,10 @@ public class SpellmakerButton extends ButtonWidget {
     protected final List<Text> tooltip;
     protected final SoundEvent soundEvent;
 
+    public SpellmakerButton(int x, int y, int u, int v, int w, int h, Text pMessage, PressAction onPress,SoundEvent soundEvent, Text... tooltip) {
+        this(null, x, y, u, v, w, h, () -> true, pMessage, onPress,soundEvent, tooltip);
+    }
+
     public SpellmakerButton(SpellmakerScreen parent, int x, int y, int u, int v, int w, int h, Text pMessage, PressAction onPress,SoundEvent soundEvent, Text... tooltip) {
         this(parent, x, y, u, v, w, h, () -> true, pMessage, onPress,soundEvent, tooltip);
     }

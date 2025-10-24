@@ -199,12 +199,13 @@ public class ModBlocks {
     public static final GlassBlock VAULT_GLASS_SEETHROUGH = register("vault_glass_seethrough", GlassBlock::new,AbstractBlock.Settings.copy(VAULT_BLOCK).nonOpaque().solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never),ExtraBlockSettings.create().layer(ExtraBlockSettings.Layer.Cutout),new FabricItemSettings());
 
     // block entities
-    public static final SmitheryBlock SMITHERY      = register("smithery_block", SmitheryBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe());
-    public static final SpellmakerBlock SPELLMAKER  = register("spellmaker_block", SpellmakerBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe());
-    public static final AutocasterBlock AUTOCASTER  = register("autocaster", AutocasterBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe());
-    public static final SoulForgeBlock SOUL_FORGE   = register("soul_forge", SoulForgeBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe());
-    public static final PedestalBlock PEDESTAL      = register("pedestal", PedestalBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe());
-    public static final RestrictorBlock RESTRICTOR  = register("restrictor", RestrictorBlock::new, AbstractBlock.Settings.create().strength(-1, 1000000), new ExtraBlockSettings().mineableByPickaxe());
+    public static final SmitheryBlock SMITHERY          = register("smithery_block", SmitheryBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe());
+    public static final SpellmakerBlock SPELLMAKER      = register("spellmaker_block", SpellmakerBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe());
+    public static final SpellprinterBlock SPELLPRINTER  = register("spellprinter", SpellprinterBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe());
+    public static final AutocasterBlock AUTOCASTER      = register("autocaster", AutocasterBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe());
+    public static final SoulForgeBlock SOUL_FORGE       = register("soul_forge", SoulForgeBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe());
+    public static final PedestalBlock PEDESTAL          = register("pedestal", PedestalBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe());
+    public static final RestrictorBlock RESTRICTOR      = register("restrictor", RestrictorBlock::new, AbstractBlock.Settings.create().strength(-1, 1000000), new ExtraBlockSettings().mineableByPickaxe());
 
     // fluids
     private static AbstractBlock.Settings fluid(MapColor mapColor) {

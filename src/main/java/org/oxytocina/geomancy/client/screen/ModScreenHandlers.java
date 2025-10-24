@@ -15,6 +15,10 @@ public class ModScreenHandlers {
             Registry.register(Registries.SCREEN_HANDLER, new Identifier(Geomancy.MOD_ID, "spellmaker_block.json"),
                     new ExtendedScreenHandlerType<>(SpellmakerScreenHandler::new));
 
+    public static final ExtendedScreenHandlerType<SpellprinterScreenHandler> SPELLPRINTER_SCREEN_HANDLER =
+            Registry.register(Registries.SCREEN_HANDLER, new Identifier(Geomancy.MOD_ID, "spellprinter_block.json"),
+                    new ExtendedScreenHandlerType<>(SpellprinterScreenHandler::new));
+
     public static final ExtendedScreenHandlerType<StorageItemScreenHandler> STORAGE_ITEM_SCREEN_HANDLER =
             Registry.register(Registries.SCREEN_HANDLER, new Identifier(Geomancy.MOD_ID, "storage_item.json"),
                     new ExtendedScreenHandlerType<>(StorageItemScreenHandler::new));

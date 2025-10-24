@@ -534,9 +534,13 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("block.MODID.autocaster"            , "Autocaster");
             add("MODID.autocaster"        , "Autocaster");
 
-            add("block.MODID.pedestal"            , "Pedestal");
-            add("block.MODID.soul_forge"          , "Soul Forge");
-            add("block.MODID.restrictor"          , "Restrictor");
+            add("block.MODID.pedestal"              , "Pedestal");
+            add("block.MODID.soul_forge"            , "Soul Forge");
+            add("block.MODID.restrictor"            , "Restrictor");
+            add("block.MODID.spellprinter"          ,"Spell Printer");
+            add("container.MODID.spellprinter"      ,"Spell Printer");
+            add("spellprinter.print"      ,"Print");
+            add("spellprinter.scan"      ,"Scan");
 
             addOres("octangulite_ore", "Octangulite Ore");
             add("block.MODID.raw_octangulite_block"     , "Octangulite Scrap");
