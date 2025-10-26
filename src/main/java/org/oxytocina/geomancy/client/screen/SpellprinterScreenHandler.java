@@ -1,11 +1,6 @@
 package org.oxytocina.geomancy.client.screen;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -14,25 +9,13 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.DefaultedList;
-import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.blockEntities.SpellprinterBlockEntity;
-import org.oxytocina.geomancy.client.screen.slots.SpellComponentSelectionSlot;
-import org.oxytocina.geomancy.client.screen.slots.SpellmakerHotbarSlot;
 import org.oxytocina.geomancy.client.screen.slots.TagFilterSlot;
 import org.oxytocina.geomancy.inventories.ImplementedInventory;
-import org.oxytocina.geomancy.items.SpellStoringItem;
 import org.oxytocina.geomancy.registries.ModItemTags;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
-import org.oxytocina.geomancy.spells.SpellGrid;
 import org.oxytocina.geomancy.util.Toolbox;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class SpellprinterScreenHandler extends ScreenHandler {
     public static SpellprinterScreenHandler current;
@@ -45,13 +28,7 @@ public class SpellprinterScreenHandler extends ScreenHandler {
 
     public SpellprinterScreen screen;
 
-    public ItemStack currentOutput;
-    public SpellGrid currentGrid;
-
     public static final int NEW_COMPONENTS_SLOT_COUNT = 14;
-    public static final int NEW_COMPONENTS_X = 8;
-    public static final int NEW_COMPONENTS_WIDTH = 7;
-    public static final int NEW_COMPONENTS_Y = 124;
     public static final int NEW_COMPONENTS_SLOT_OFFSET = 10;
 
     public SpellprinterScreenHandler(int syncID, PlayerInventory inventory, PacketByteBuf buf){
@@ -96,7 +73,6 @@ public class SpellprinterScreenHandler extends ScreenHandler {
             Toolbox.playUISound(ModSoundEvents.SPELLMAKER_REMOVE_CRADLE);
 
         prevOutput = newOutput.copy();
-        currentGrid = SpellStoringItem.getOrCreateGrid(newOutput);
     }
 
     public ItemStack getOutput(){
@@ -160,59 +136,6 @@ public class SpellprinterScreenHandler extends ScreenHandler {
     }
 
     public void tick(){
-
-    }
-
-    public int getBgPosX(){
-        return (screen.width-screen.getBackgroundWidth())/2;
-    }
-    public int getBgPosY(){
-        return (screen.height-screen.getBackgroundHeight())/2;
-    }
-
-    public boolean mouseInField(double x, double y){
-        int bgPosX = getBgPosX();
-        int bgPosY = getBgPosY();
-
-        return  x > bgPosX+fieldPosX &&
-                y > bgPosY+fieldPosY &&
-                x < bgPosX+fieldPosX+fieldWidth &&
-                y < bgPosY+fieldPosY+fieldHeight;
-    }
-
-    public boolean hasGrid(){return currentGrid!=null;}
-
-    public static final int fieldPosX = 8;
-    public static final int fieldPosY = 8;
-    public static final int fieldWidth = 160;
-    public static final int fieldHeight = 112;
-    public static final Identifier spellprinterGuiTexture = Geomancy.locate("textures/gui/spellprinter_block_gui.png");
-    public static final int appearanceSlotYOffset = 70;
-
-    @Environment(EnvType.CLIENT)
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        int bgPosX = getBgPosX();
-        int bgPosY = getBgPosY();
-
-        var newOutput = getOutput();
-        if(currentOutput!=newOutput){
-            outputItemChanged();
-        }
-        currentOutput = newOutput;
-
-        // render grid info
-        if(hasGrid()){
-            final int infoPosX = bgPosX+SpellprinterScreen.bgWidth+10;
-            final int infoPosY = bgPosY+10;
-            RenderSystem.setShaderColor(1,1,1,1);
-            context.drawText(MinecraftClient.getInstance().textRenderer, Text.translatable("geomancy.spellmaker.grid.name"),infoPosX,infoPosY,0xFFFFFFFF,true);
-
-            // appearance
-            context.drawText(MinecraftClient.getInstance().textRenderer, Text.translatable("geomancy.spellmaker.grid.appearance"),infoPosX+25,infoPosY-10+appearanceSlotYOffset+(18-10)/2,0xFFFFFFFF,true);
-
-        }
-
-        RenderSystem.setShaderColor(1,1,1,1);
 
     }
 
