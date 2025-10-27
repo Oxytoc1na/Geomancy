@@ -36,6 +36,9 @@ public class SpellprinterScreenHandler extends ScreenHandler {
                 new ArrayPropertyDelegate(3));
     }
 
+    public static final int OUTPUT_SLOT_X = 152;
+    public static final int OUTPUT_SLOT_Y = 142;
+
     public SpellprinterScreenHandler(int syncID, PlayerInventory playerInventory, BlockEntity blockEntity, PropertyDelegate arrayPropertyDelegate) {
         super(ModScreenHandlers.SPELLPRINTER_SCREEN_HANDLER,syncID);
 
@@ -50,7 +53,7 @@ public class SpellprinterScreenHandler extends ScreenHandler {
         availableComponents = ImplementedInventory.ofSize(NEW_COMPONENTS_SLOT_COUNT);
 
         // 0
-        this.addSlot(new TagFilterSlot(inventory,SpellprinterBlockEntity.OUTPUT_SLOT,152,142, ModItemTags.SPELL_STORING,1));
+        this.addSlot(new TagFilterSlot(inventory,SpellprinterBlockEntity.OUTPUT_SLOT,OUTPUT_SLOT_X,OUTPUT_SLOT_Y, ModItemTags.SPELL_STORING,1));
 
         // 1-9
         addPlayerHotbar(playerInventory);

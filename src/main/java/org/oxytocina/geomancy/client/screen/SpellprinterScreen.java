@@ -27,6 +27,7 @@ import org.oxytocina.geomancy.items.SpellStoringItem;
 import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
 import org.oxytocina.geomancy.spells.SpellGrid;
+import org.oxytocina.geomancy.util.DrawHelper;
 import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.*;
@@ -204,6 +205,9 @@ public class SpellprinterScreen extends HandledScreen<SpellprinterScreenHandler>
         int bgPosX = getBgPosX();
         int bgPosY = getBgPosY();
 
+        int outputX = SpellprinterScreenHandler.OUTPUT_SLOT_X;
+        int outputY = SpellprinterScreenHandler.OUTPUT_SLOT_Y;
+
         // render grid info
         if(hasGrid()){
             final int infoPosX = bgPosX+SpellprinterScreen.bgWidth+10;
@@ -212,7 +216,14 @@ public class SpellprinterScreen extends HandledScreen<SpellprinterScreenHandler>
             context.drawText(MinecraftClient.getInstance().textRenderer, Text.translatable("geomancy.spellmaker.grid.name"),infoPosX,infoPosY,0xFFFFFFFF,true);
 
             // appearance
+            var previewStack = recipeGrid.displayStack;
+            if((previewStack==null||previewStack.isEmpty()) && recipeItem!=null) previewStack=recipeItem.getDefaultStack();
+            if(previewStack!=null&&!previewStack.isEmpty())
+            {
+                DrawHelper.drawItem(context,null,null,previewStack,outputX,outputY,0,0,1,1,1);
+            }
             context.drawText(MinecraftClient.getInstance().textRenderer, Text.translatable("geomancy.spellmaker.grid.appearance"),infoPosX+25,infoPosY-10+appearanceSlotYOffset+(18-10)/2,0xFFFFFFFF,true);
+
 
         }
 
