@@ -464,14 +464,7 @@ public class SpellComponent {
 
     @Environment(EnvType.CLIENT)
     public boolean isObfuscated() {
-        return switch(function.identifier.toString()){
-            case "geomancy:exodia_1" -> EnlightenmentUtil.getEnlightenmentClient() < 1;
-            case "geomancy:exodia_2" -> EnlightenmentUtil.getEnlightenmentClient() < 2;
-            case "geomancy:exodia_3" -> EnlightenmentUtil.getEnlightenmentClient() < 3;
-            case "geomancy:exodia_4" -> EnlightenmentUtil.getEnlightenmentClient() < 4;
-            case "geomancy:exodia_5" -> EnlightenmentUtil.getEnlightenmentClient() < 5;
-            default -> false;
-        };
+        return function.isObfuscated();
     }
 
     public static class SideConfig{

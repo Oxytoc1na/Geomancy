@@ -539,8 +539,24 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("block.MODID.restrictor"            , "Restrictor");
             add("block.MODID.spellprinter"          ,"Spell Printer");
             add("container.MODID.spellprinter"      ,"Spell Printer");
-            add("spellprinter.print"      ,"Print");
-            add("spellprinter.scan"      ,"Scan");
+            {
+                add("MODID.spellprinter.info"      ,"Spellprinter");
+                add("MODID.spellprinter.ingredients","Ingredients:");
+                add("MODID.spellprinter.print"      ,"Print");
+                add("MODID.spellprinter.scan"      ,"Scan");
+                add("MODID.spellprinter.scan.empty","ERROR: Empty");
+                add("MODID.spellprinter.scan.notcradle","ERROR: Not a cradle");
+                add("MODID.spellprinter.scan.cradleempty","ERROR: Cradle empty");
+                add("MODID.spellprinter.error.norecipe","Missing recipe!");
+                add("MODID.spellprinter.error.broke","Missing ingredients!");
+                add("MODID.spellprinter.error.nocradle","Missing Spellcradle!");
+                add("MODID.spellprinter.error.wrongitem","Spellcradle incompatible!");
+                add("MODID.spellprinter.error.cradlefull","Spellcradle already full!");
+                add("MODID.spellprinter.tooltip.missing","Missing %1$s component(s)");
+                add("MODID.spellprinter.tooltip.base","Base");
+                add("MODID.spellprinter.tooltip.appearance","Menu Appearance");
+                add("MODID.spellprinter.tooltip.base.missing","Inserted base does not match!");
+            }
 
             addOres("octangulite_ore", "Octangulite Ore");
             add("block.MODID.raw_octangulite_block"     , "Octangulite Scrap");

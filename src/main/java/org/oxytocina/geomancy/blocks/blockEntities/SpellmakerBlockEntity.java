@@ -122,14 +122,14 @@ public class SpellmakerBlockEntity extends BlockEntity implements ExtendedScreen
         initialized=true;
     }
 
-    public Inventory getCreativeComponentItems(){
+    public static Inventory getCreativeComponentItems(){
         LinkedHashMap<SpellBlock,Integer> comps = new LinkedHashMap<>();
         for(var comp : SpellBlocks.functions.values())
             comps.put(comp,1);
         return componentMapToInventory(comps);
     }
 
-    public Inventory componentMapToInventory(LinkedHashMap<SpellBlock,Integer> comps){
+    public static Inventory componentMapToInventory(LinkedHashMap<SpellBlock,Integer> comps){
         DefaultedList<ItemStack> stacksComposed = DefaultedList.ofSize(comps.size(),ItemStack.EMPTY);
         int i = 0;
         for(var block : comps.keySet())
@@ -142,7 +142,7 @@ public class SpellmakerBlockEntity extends BlockEntity implements ExtendedScreen
         return ImplementedInventory.of(stacksComposed);
     }
 
-    public Inventory getComponentItems(Inventory inventory){
+    public static Inventory getComponentItems(Inventory inventory){
         var comps = getComponentAmountsIn(inventory);
         // sort components
         List<SpellBlock> keys = new ArrayList<>(comps.keySet());
@@ -153,8 +153,8 @@ public class SpellmakerBlockEntity extends BlockEntity implements ExtendedScreen
         return componentMapToInventory(compsSorted);
     }
 
-    public Inventory getComponentItemsFromPlayer(PlayerEntity player){
-        return player.isCreative() ? this.getCreativeComponentItems() : this.getComponentItems(player.getInventory());
+    public static Inventory getComponentItemsFromPlayer(PlayerEntity player){
+        return player.isCreative() ? getCreativeComponentItems() : getComponentItems(player.getInventory());
     }
 
     public static LinkedHashMap<SpellBlock, Integer> getComponentAmountsIn(Inventory inv){

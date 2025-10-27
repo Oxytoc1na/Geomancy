@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
@@ -15,6 +16,7 @@ import net.minecraft.util.crash.CrashException;
 import net.minecraft.util.crash.CrashReport;
 import net.minecraft.util.crash.CrashReportSection;
 import net.minecraft.util.math.ColorHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
@@ -136,6 +138,13 @@ public class DrawHelper {
 
             ctx.getMatrices().pop();
         }
+    }
+
+    public static void drawCustomItemCount(DrawContext context, int x, int y, String text, int color) {
+        context.getMatrices().push();
+        context.getMatrices().translate(0.0F, 0.0F, 200.0F);
+        context.drawText(MinecraftClient.getInstance().textRenderer, text, x + 19 - 2 - MinecraftClient.getInstance().textRenderer.getWidth(text), y + 6 + 3, color, true);
+        context.getMatrices().pop();
     }
 
     /// draws a nine-sliced texture while allowing its proportions to exceed half of the entire width/height

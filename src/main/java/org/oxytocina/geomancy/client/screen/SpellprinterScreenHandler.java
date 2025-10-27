@@ -12,16 +12,12 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import org.oxytocina.geomancy.blocks.blockEntities.SpellprinterBlockEntity;
 import org.oxytocina.geomancy.client.screen.slots.TagFilterSlot;
-import org.oxytocina.geomancy.inventories.ImplementedInventory;
 import org.oxytocina.geomancy.registries.ModItemTags;
-import org.oxytocina.geomancy.sound.ModSoundEvents;
-import org.oxytocina.geomancy.util.Toolbox;
 
 public class SpellprinterScreenHandler extends ScreenHandler {
     public static SpellprinterScreenHandler current;
 
     private final Inventory inventory;
-    private Inventory availableComponents;
     private final PropertyDelegate propertyDelegate;
     public final SpellprinterBlockEntity blockEntity;
     public final PlayerEntity player;
@@ -36,7 +32,7 @@ public class SpellprinterScreenHandler extends ScreenHandler {
                 new ArrayPropertyDelegate(3));
     }
 
-    public static final int OUTPUT_SLOT_X = 152;
+    public static final int OUTPUT_SLOT_X = 8;
     public static final int OUTPUT_SLOT_Y = 142;
 
     public SpellprinterScreenHandler(int syncID, PlayerInventory playerInventory, BlockEntity blockEntity, PropertyDelegate arrayPropertyDelegate) {
@@ -50,8 +46,6 @@ public class SpellprinterScreenHandler extends ScreenHandler {
         this.propertyDelegate = arrayPropertyDelegate;
         this.blockEntity = (SpellprinterBlockEntity) blockEntity;
 
-        availableComponents = ImplementedInventory.ofSize(NEW_COMPONENTS_SLOT_COUNT);
-
         // 0
         this.addSlot(new TagFilterSlot(inventory,SpellprinterBlockEntity.OUTPUT_SLOT,OUTPUT_SLOT_X,OUTPUT_SLOT_Y, ModItemTags.SPELL_STORING,1));
 
@@ -59,23 +53,6 @@ public class SpellprinterScreenHandler extends ScreenHandler {
         addPlayerHotbar(playerInventory);
 
         addProperties(arrayPropertyDelegate);
-    }
-
-    public void outputItemChanged(){
-        rebuild();
-    }
-
-
-    private ItemStack prevOutput = ItemStack.EMPTY;
-    public void rebuild(){
-        var newOutput = getOutput();
-
-        if(prevOutput.isEmpty() && !newOutput.isEmpty())
-            Toolbox.playUISound(ModSoundEvents.SPELLMAKER_INSERT_CRADLE);
-        else if(!prevOutput.isEmpty() && newOutput.isEmpty())
-            Toolbox.playUISound(ModSoundEvents.SPELLMAKER_REMOVE_CRADLE);
-
-        prevOutput = newOutput.copy();
     }
 
     public ItemStack getOutput(){

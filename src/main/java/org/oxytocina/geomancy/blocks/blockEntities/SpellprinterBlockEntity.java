@@ -1,5 +1,6 @@
 package org.oxytocina.geomancy.blocks.blockEntities;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -7,16 +8,21 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.registry.Registries;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.Pair;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -32,6 +38,7 @@ import org.oxytocina.geomancy.items.SpellStoringItem;
 import org.oxytocina.geomancy.registries.ModItemTags;
 import org.oxytocina.geomancy.spells.SpellBlock;
 import org.oxytocina.geomancy.spells.SpellBlocks;
+import org.oxytocina.geomancy.spells.SpellGrid;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -80,6 +87,7 @@ public class SpellprinterBlockEntity extends BlockEntity implements ExtendedScre
         super.writeNbt(nbt);
         Inventories.writeNbt(nbt,inventory);
         //nbt.putInt("Progress",progress);
+        nbt.putString("recipe",recipe);
     }
 
     @Override
@@ -88,6 +96,7 @@ public class SpellprinterBlockEntity extends BlockEntity implements ExtendedScre
         clear();
         Inventories.readNbt(nbt,inventory);
         //progress = nbt.getInt("Progress");
+        this.recipe=nbt.getString("recipe");
     }
 
     @Override
@@ -288,5 +297,35 @@ public class SpellprinterBlockEntity extends BlockEntity implements ExtendedScre
         if(stack.isEmpty()) return;
         setStack(OUTPUT_SLOT,stack.copyWithCount(1));
         stack.decrement(1);
+    }
+
+    public static Pair<SpellGrid, Item> parseGrid(String recipe){
+        try{
+            var recipeNbt = StringNbtReader.parse(recipe);
+            Identifier itemID = Identifier.tryParse(recipeNbt.getString("item"));
+            Item item = itemID!=null? Registries.ITEM.get(itemID):null;
+            return new Pair<>(new SpellGrid(ItemStack.EMPTY,recipeNbt),item);
+
+        } catch (CommandSyntaxException e) {
+            return new Pair<>(null,null);
+        }
+    }
+
+    public static String serializeGrid(SpellGrid grid,ItemStack on){
+        var nbt = new NbtCompound();
+        grid.writeNbt(nbt);
+        nbt.putString("item", Registries.ITEM.getId(on.getItem()).toString());
+        return nbt.asString();
+    }
+
+    public String recipe = "";
+
+    public void setRecipe(String recipe){
+        this.recipe=recipe;
+        markDirty();
+    }
+
+    public String getRecipe() {
+        return recipe;
     }
 }

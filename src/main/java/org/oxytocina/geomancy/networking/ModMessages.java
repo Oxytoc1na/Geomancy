@@ -65,6 +65,7 @@ public class ModMessages {
     public static final Identifier CAST_SPELL_PRESSED =                 Geomancy.locate("cast_spell_pressed");
     public static final Identifier OPEN_STORAGE_ITEM_SCREEN =           Geomancy.locate("open_storage_item_screen");
     public static final Identifier SPELLPRINTER_DESIRE_PRINT =          Geomancy.locate("spellprinter_desire_print");
+    public static final Identifier SPELLPRINTER_SET_RECIPE =            Geomancy.locate("spellprinter_set_recipe");
 
     public static void registerC2SPackets(){
         ServerPlayNetworking.registerGlobalReceiver(CLIENT_JOINED,                      ClientJoinedC2SPacket::receive);
@@ -82,6 +83,7 @@ public class ModMessages {
         ServerPlayNetworking.registerGlobalReceiver(CAST_SPELL_PRESSED,                 CastSpellPressedC2S::receive);
         ServerPlayNetworking.registerGlobalReceiver(OPEN_STORAGE_ITEM_SCREEN,           OpenStorageItemScreenC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(SPELLPRINTER_DESIRE_PRINT,          SpellprinterDesirePrintC2SPacket::receive);
+        ServerPlayNetworking.registerGlobalReceiver(SPELLPRINTER_SET_RECIPE,            SpellprinterSetRecipeC2SPacket::receive);
 
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
             server.execute(() -> {

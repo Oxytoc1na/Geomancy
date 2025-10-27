@@ -4,11 +4,15 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.SpellComponentStoringItem;
 import org.oxytocina.geomancy.util.AdvancementHelper;
+import org.oxytocina.geomancy.util.EnlightenmentUtil;
+import org.oxytocina.geomancy.util.StellgeUtil;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -130,6 +134,27 @@ public class SpellBlock {
 
     public boolean isAncient() {
         return overarchingCategory == OverarchingCategory.Ancient;
+    }
+
+    public MutableText getName(){
+        return Text.translatable("geomancy.spellcomponent."+this.identifier.getPath());
+    }
+
+    public MutableText getNameWithObfuscation(){
+        if(isObfuscated()) return Text.empty().append(StellgeUtil.stellgify(getName()));
+        return getName();
+    }
+
+    @Environment(EnvType.CLIENT)
+    public boolean isObfuscated() {
+        return switch(this.identifier.toString()){
+            case "geomancy:exodia_1" -> EnlightenmentUtil.getEnlightenmentClient() < 1;
+            case "geomancy:exodia_2" -> EnlightenmentUtil.getEnlightenmentClient() < 2;
+            case "geomancy:exodia_3" -> EnlightenmentUtil.getEnlightenmentClient() < 3;
+            case "geomancy:exodia_4" -> EnlightenmentUtil.getEnlightenmentClient() < 4;
+            case "geomancy:exodia_5" -> EnlightenmentUtil.getEnlightenmentClient() < 5;
+            default -> false;
+        };
     }
 
     public boolean recipeUnlocked(ServerPlayerEntity spe) {

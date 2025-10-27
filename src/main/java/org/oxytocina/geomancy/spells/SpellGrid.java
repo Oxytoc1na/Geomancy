@@ -487,6 +487,24 @@ public class SpellGrid {
         return false;
     }
 
+    public Map<SpellBlock, Integer> getIngredients() {
+        var res = new HashMap<SpellBlock,Integer>();
+
+        for(var comp : components.values()){
+            if(res.containsKey(comp.function)){
+                res.put(comp.function,res.get(comp.function)+1);
+                continue;
+            }
+            res.put(comp.function,1);
+        }
+
+        return res;
+    }
+
+    public boolean isEmpty() {
+        return components.isEmpty();
+    }
+
     public static class Builder{
         public String name = "";
         public int width = 3;
