@@ -86,6 +86,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
                 addSpellmakerTip("activate","Activation","The activate component can interact with buttons, levers, doors, and can activate things like droppers and dispensers.");
                 addSpellmakerTip("varpots","Variable storage","Varpots (short for variable pots) let you save signals and retrieve them at a later time. They allow for reusable recall spells and two-point fill spells, to name a few examples. You can also save references to entities, including players.");
                 addSpellmakerTip("varpots2","Variable storage Pt. 2","Components that manipulate variables not only do so with varpots within casters,\nthey can also read and write variables from and to varpots stored within other casters, or plainly just your inventory!");
+                addSpellmakerTip("spellprinter","Spell printing","Tired of building the same spells over and over again?\nCraving to share your spells, or see what others have built?\nThen this little box is for you!\n(Ink and paper not included. Using the Spell printer waives the right to trial.)");
 
                 addSpellmakerTip("rockandstone","Rock and stone!","What is the difference?\nPerhaps that rocking is more legal than stoning.\nWe may never know.");
             }
@@ -540,7 +541,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("block.MODID.spellprinter"          ,"Spell Printer");
             add("container.MODID.spellprinter"      ,"Spell Printer");
             {
-                add("MODID.spellprinter.info"      ,"Spellprinter");
+                add("MODID.spellprinter.info"      ,"Spell Printer");
                 add("MODID.spellprinter.ingredients","Ingredients:");
                 add("MODID.spellprinter.print"      ,"Print");
                 add("MODID.spellprinter.scan"      ,"Scan");

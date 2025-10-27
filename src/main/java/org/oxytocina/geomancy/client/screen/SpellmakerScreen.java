@@ -29,6 +29,7 @@ import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.glfw.GLFW;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.client.GeomancyClient;
 import org.oxytocina.geomancy.client.screen.widgets.SpellmakerButton;
 import org.oxytocina.geomancy.client.screen.widgets.SpellmakerCheckbox;
@@ -84,6 +85,7 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
         hints.put(SpellBlocks.ACTIVATE.copyItemStack(),"activate");
         hints.put(ModItems.VARSTORAGE_SMALL.getDefaultStack(),"varpots");
         hints.put(ModItems.VARSTORAGE_LARGE.getDefaultStack(),"varpots2");
+        hints.put(ModBlocks.SPELLPRINTER.asItem().getDefaultStack(),"spellprinter");
 
         hints.put(Items.STONE.getDefaultStack(),"rockandstone");
     }

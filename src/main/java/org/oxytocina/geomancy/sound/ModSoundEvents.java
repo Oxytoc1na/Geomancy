@@ -55,6 +55,10 @@ public class ModSoundEvents {
     public static final SoundEvent SPELLMAKER_CHANGE_VAR = register("spellmaker_change_var",new ExtraData().count(1).prefix("geomancy:spellmaker/change_var"));
     public static final SoundEvent SPELLMAKER_TEXTFIELD_FINISHED = register("spellmaker_textfield_finished",new ExtraData().count(1).prefix("geomancy:spellmaker/textfield_finished"));
 
+    // spellprinter UI
+    public static final SoundEvent SPELLPRINTER_SCAN = register("spellprinter_scan",new ExtraData().count(1).prefix("geomancy:spellprinter/scan"));
+    public static final SoundEvent SPELLPRINTER_PRINT = register("spellprinter_print",new ExtraData().count(1).prefix("geomancy:spellprinter/print"));
+
     public static void register(){
 
     }

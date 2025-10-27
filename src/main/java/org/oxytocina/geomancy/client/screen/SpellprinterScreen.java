@@ -201,6 +201,7 @@ public class SpellprinterScreen extends HandledScreen<SpellprinterScreenHandler>
             data.writeBlockPos(handler.blockEntity.getPos());
             data.writeString(printerInput.getText());
             ClientPlayNetworking.send(ModMessages.SPELLPRINTER_DESIRE_PRINT, data);
+            Toolbox.playUISound(ModSoundEvents.SPELLPRINTER_PRINT);
 
         },ModSoundEvents.SPELLMAKER_REMOVE_COMPONENT);
         addDrawableChild(printButton);
@@ -216,6 +217,7 @@ public class SpellprinterScreen extends HandledScreen<SpellprinterScreenHandler>
             printerInput.setText(recipe);
             // update spell recipe
             setRecipe(recipe);
+            Toolbox.playUISound(ModSoundEvents.SPELLPRINTER_SCAN);
 
         },ModSoundEvents.SPELLMAKER_REMOVE_COMPONENT);
         addDrawableChild(scanButton);
