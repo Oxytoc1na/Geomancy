@@ -44,6 +44,7 @@ import org.oxytocina.geomancy.items.tools.IVariableStoringItem;
 import org.oxytocina.geomancy.registries.ModDamageTypes;
 import org.oxytocina.geomancy.registries.ModRecipeTypes;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
+import org.oxytocina.geomancy.spells.individual.*;
 import org.oxytocina.geomancy.util.*;
 
 import java.util.*;
@@ -138,6 +139,7 @@ public class SpellBlocks {
     public static final SpellBlock DEGRADE_BLOCK;
     public static final SpellBlock REPLACE;
     public static final SpellBlock IGNITE;
+    public static final SpellBlock FREEZE;
     public static final SpellBlock PLAY_SOUND;
     public static final SpellBlock DELEGATE;
     public static final SpellBlock SET_WEATHER;
@@ -183,10 +185,7 @@ public class SpellBlocks {
     public static final SpellBlock EXODIA_4;
     public static final SpellBlock EXODIA_5;
 
-    private static final HashMap<Identifier, ImbueData> imbueData = new HashMap();
     private static final List<TransmuteData> transmuteData = new ArrayList<>();
-    private static final HashMap<Function<BlockState,Boolean>, BlockState> degradeBlockData = new LinkedHashMap<>();
-    private static final HashMap<Function<BlockState,Boolean> , BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult>> igniteBehavior = new LinkedHashMap<>();
     private static final List<SoundEvent> exodia3TriggerEvents = new ArrayList<>();
 
     private static SpellBlock.Category cat;
@@ -1680,222 +1679,9 @@ public class SpellBlocks {
                     })
                     .category(cat).build());
 
-            // degrade block data
-            {
-                addDegradeBlockData(Blocks.COBWEB,Blocks.TRIPWIRE);
-                addDegradeBlockData(Blocks.TNT,Blocks.SAND);
-                addDegradeBlockData(Blocks.COBBLED_DEEPSLATE,Blocks.STONE);
-                addDegradeBlockData(Blocks.COBBLESTONE,Blocks.GRAVEL);
-                addDegradeBlockData(Blocks.GRAVEL,Blocks.SAND);
-                addDegradeBlockData(Blocks.SAND,Blocks.DIRT);
-                addDegradeBlockData(Blocks.ANVIL,Blocks.CHIPPED_ANVIL);
-                addDegradeBlockData(Blocks.CHIPPED_ANVIL,Blocks.DAMAGED_ANVIL);
-                addDegradeBlockData(Blocks.DAMAGED_ANVIL,Blocks.AIR);
-                addDegradeBlockData(Blocks.BOOKSHELF,Blocks.CHISELED_BOOKSHELF);
-                // ore blocks to ores
-                addDegradeBlockData(Blocks.COAL_BLOCK,Blocks.COAL_ORE);
-                addDegradeBlockData(Blocks.IRON_BLOCK,Blocks.IRON_ORE);
-                addDegradeBlockData(Blocks.GOLD_BLOCK,Blocks.GILDED_BLACKSTONE);
-                addDegradeBlockData(Blocks.REDSTONE_BLOCK,Blocks.REDSTONE_ORE);
-                addDegradeBlockData(Blocks.LAPIS_BLOCK,Blocks.LAPIS_ORE);
-                addDegradeBlockData(Blocks.COPPER_BLOCK,Blocks.COPPER_ORE);
-                addDegradeBlockData(Blocks.DIAMOND_BLOCK,Blocks.DIAMOND_ORE);
-                addDegradeBlockData(Blocks.DIAMOND_ORE,Blocks.COAL_ORE);
-                addDegradeBlockData(Blocks.DEEPSLATE_DIAMOND_ORE,Blocks.DEEPSLATE_COAL_ORE);
-                addDegradeBlockData(Blocks.EMERALD_BLOCK,Blocks.EMERALD_ORE);
-                addDegradeBlockData(Blocks.QUARTZ_BLOCK,Blocks.NETHER_QUARTZ_ORE);
-                addDegradeBlockData(ModBlocks.LEAD_BLOCK,ModBlocks.LEAD_ORE);
-                addDegradeBlockData(ModBlocks.TITANIUM_BLOCK,ModBlocks.TITANIUM_ORE);
-                addDegradeBlockData(ModBlocks.MOLYBDENUM_BLOCK,ModBlocks.MOLYBDENUM_ORE);
-                addDegradeBlockData(ModBlocks.MITHRIL_BLOCK,ModBlocks.MITHRIL_ORE);
-                addDegradeBlockData(ModBlocks.OCTANGULITE_BLOCK,ModBlocks.OCTANGULITE_ORE);
-                addDegradeBlockData(ModBlocks.TOURMALINE_BLOCK,ModBlocks.TOURMALINE_ORE);
-                addDegradeBlockData(ModBlocks.ORTHOCLASE_BLOCK,ModBlocks.ORTHOCLASE_ORE);
-                addDegradeBlockData(ModBlocks.AXINITE_BLOCK,ModBlocks.AXINITE_ORE);
-                addDegradeBlockData(ModBlocks.PERIDOT_BLOCK,ModBlocks.PERIDOT_ORE);
 
-                addDegradeBlockData(Blocks.STONE,Blocks.COBBLESTONE);
-                addDegradeBlockData(b->b.isIn(BlockTags.STONE_ORE_REPLACEABLES),Blocks.STONE.getDefaultState());
-                addDegradeBlockData(Blocks.DEEPSLATE,Blocks.COBBLED_DEEPSLATE);
-                addDegradeBlockData(b->b.isIn(BlockTags.DEEPSLATE_ORE_REPLACEABLES),Blocks.DEEPSLATE.getDefaultState());
-
-                // ores to stone
-                addDegradeBlockData(b->Registries.BLOCK.getId(b.getBlock()).getPath().contains("_ore") && Registries.BLOCK.getId(b.getBlock()).getPath().contains("deepslate"),Blocks.DEEPSLATE.getDefaultState());
-                addDegradeBlockData(b->Registries.BLOCK.getId(b.getBlock()).getPath().contains("_ore"),Blocks.STONE.getDefaultState());
-            }
-            DEGRADE_BLOCK = register(SpellBlock.Builder.create("degrade_block")
-                    .inputs(
-                            SpellSignal.createVector().named("position")
-                    )
-                    .func((comp,vars) -> {
-                        if(!(comp.world() instanceof ServerWorld sw)) return SpellBlockResult.empty(); // not in a server world
-                        var pos = vars.getVector("position");
-                        var blockPos = Toolbox.posToBlockPos(pos);
-                        var restrictions = RestrictorBlockEntity.getRestrictionsAt(pos,comp.world());
-                        if(!restrictions.allowsBlockManipulation() && !comp.context.isFromPrecomiled()){
-                            // not allowed to place here! punish!
-                            punishDisallowedAction(comp.context);
-                            return SpellBlockResult.empty();
-                        }
-
-                        // calculate breaking cost
-                        BlockState targetState = comp.world().getBlockState(blockPos);
-
-                        float manaCost = 1f
-                                +targetState.getBlock().getHardness()/10f
-                                +normalCastOffsetSoulCost(comp,pos);
-
-                        if(canAfford(comp,manaCost)){
-
-                            // special interactions
-                            for(var predicate : degradeBlockData.keySet())
-                                if(predicate.apply(targetState))
-                                {
-                                    if (!BlockHelper.replaceBlock(comp.world(),blockPos,degradeBlockData.get(predicate))) {
-                                        // couldnt replace
-                                        tryLogDebugNotBreakable(comp,targetState);
-                                        return SpellBlockResult.empty();
-                                    }
-
-                                    trySpendSoul(comp,manaCost);
-                                    spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
-                                    return SpellBlockResult.empty();
-                                }
-
-                            // replace with mined variant
-                            {
-                                ItemStack stack = new ItemStack(Items.DIRT);
-                                if(targetState.isToolRequired()){
-                                    if(targetState.isIn(BlockTags.PICKAXE_MINEABLE)) stack = new ItemStack(Items.NETHERITE_PICKAXE);
-                                    else if(targetState.isIn(BlockTags.AXE_MINEABLE)) stack = new ItemStack(Items.NETHERITE_AXE);
-                                    else if(targetState.isIn(BlockTags.SHOVEL_MINEABLE)) stack = new ItemStack(Items.NETHERITE_SHOVEL);
-                                    else if(targetState.isIn(BlockTags.HOE_MINEABLE)) stack = new ItemStack(Items.NETHERITE_HOE);
-                                    else if(targetState.isIn(BlockTags.SWORD_EFFICIENT)) stack = new ItemStack(Items.NETHERITE_SWORD);
-                                }
-                                final ItemStack s2 = stack.copy();
-                                Predicate<BlockState> minableBlocksPredicate = s -> !s.isToolRequired() || s2.isSuitableFor(s);
-                                if (!minableBlocksPredicate.test(targetState)) {
-                                    // couldnt mine
-                                    tryLogDebugNotBreakable(comp,targetState);
-                                    return SpellBlockResult.empty();
-                                }
-
-                                // fetch replacement state
-                                var droppedStacks = Block.getDroppedStacks(targetState,sw,blockPos,comp.context.casterBlock,comp.caster(),stack);
-                                BlockState replacementState = Blocks.AIR.getDefaultState();
-                                for(var droppedStack:droppedStacks){
-                                    if(!(droppedStack.getItem() instanceof BlockItem bi)) continue;
-                                    replacementState = bi.getBlock().getDefaultState();
-                                    break;
-                                }
-
-                                // replacing a block with itself, unnecessary
-                                if(targetState.isOf(replacementState.getBlock()))
-                                {
-                                    return SpellBlockResult.empty();
-                                }
-
-                                if (!BlockHelper.replaceBlock(comp.world(),blockPos,replacementState)) {
-                                    // couldnt replace
-                                    tryLogDebugNotBreakable(comp,targetState);
-                                    return SpellBlockResult.empty();
-                                }
-
-                                trySpendSoul(comp,manaCost);
-                                spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
-                            }
-                        }
-                        else{
-                            // too broke
-                            tryLogDebugBroke(comp,manaCost);
-                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,pos));
-                        }
-
-                        return SpellBlockResult.empty();
-                    })
-                    .category(cat).build());
-
-            // imbue data
-            {
-                addImbueData(StatusEffects.REGENERATION,new ImbueData(10,1));
-                addImbueData(StatusEffects.POISON,new ImbueData(10,1,1.5f));
-                addImbueData(StatusEffects.WITHER,new ImbueData(10,1,1.5f));
-                addImbueData(StatusEffects.STRENGTH,new ImbueData(10,2));
-                addImbueData(StatusEffects.WEAKNESS,new ImbueData(10,2));
-                addImbueData(StatusEffects.SPEED,new ImbueData(10,2));
-                addImbueData(StatusEffects.SLOWNESS,new ImbueData(10,2,1.5f));
-                addImbueData(StatusEffects.JUMP_BOOST,new ImbueData(10,2));
-                addImbueData(StatusEffects.NIGHT_VISION,new ImbueData(0,1,1));
-                addImbueData(StatusEffects.BLINDNESS,new ImbueData(0,1,1));
-                addImbueData(StatusEffects.WATER_BREATHING,new ImbueData(0,1,1));
-                addImbueData(StatusEffects.DOLPHINS_GRACE,new ImbueData(0,3,1));
-                addImbueData(StatusEffects.FIRE_RESISTANCE,new ImbueData(0,1,1));
-                addImbueData(StatusEffects.INVISIBILITY,new ImbueData(0,0.5f,1));
-                addImbueData(StatusEffects.GLOWING,new ImbueData(0,0.25f,1f));
-                addImbueData(StatusEffects.RESISTANCE,new ImbueData(4,2f,2));
-                addImbueData(StatusEffects.LUCK,new ImbueData(10,0.5f,1.5f));
-                addImbueData(StatusEffects.UNLUCK,new ImbueData(10,0.25f,1.2f));
-                addImbueData(StatusEffects.SLOW_FALLING,new ImbueData(0,0.5f,1f));
-                addImbueData(StatusEffects.LEVITATION,new ImbueData(10,2,2f));
-                addImbueData(StatusEffects.HERO_OF_THE_VILLAGE,new ImbueData(3,3f,2f));
-                addImbueData(StatusEffects.BAD_OMEN,new ImbueData(0,0.1f,1f));
-                addImbueData(StatusEffects.HUNGER,new ImbueData(10,0.5f,1.5f));
-                addImbueData(StatusEffects.SATURATION,new ImbueData(10,10f,2f));
-                addImbueData(StatusEffects.HASTE,new ImbueData(10,2));
-                addImbueData(StatusEffects.MINING_FATIGUE,new ImbueData(10,2));
-                addImbueData(StatusEffects.ABSORPTION,new ImbueData(10,1,1.5f));
-                addImbueData(StatusEffects.HEALTH_BOOST,new ImbueData(10,1,1.5f));
-                addImbueData(StatusEffects.INSTANT_HEALTH,new ImbueData(10,50,1f,true));
-                addImbueData(StatusEffects.INSTANT_DAMAGE,new ImbueData(10,70,1f,true));
-            }
-            IMBUE = register(SpellBlock.Builder.create("imbue")
-                    .inputs(
-                            SpellSignal.createUUID().named("entity"),
-                            SpellSignal.createNumber(0).named("amp"),
-                            SpellSignal.createNumber(10).named("duration")
-                    )
-                    .parameters(SpellBlock.Parameter.createText("effect","regeneration"))
-                    .func((comp,vars) -> {
-                        var uuid = vars.getUUID("entity");
-                        var effect = vars.getText("effect");
-                        var amp = vars.getInt("amp");
-                        var duration = vars.getNumber("duration");
-                        LivingEntity ent = comp.world() instanceof ServerWorld sw ? (sw.getEntity(uuid) instanceof LivingEntity le ? le : null) : null;
-                        if(ent==null) return SpellBlockResult.empty(); // invalid entity
-                        if(duration<0||amp<0) return SpellBlockResult.empty(); // invalid amp or duration
-                        Identifier id = Identifier.tryParse(effect);
-                        if(id==null) { tryLogDebugNoSuchEffect(comp,effect); return SpellBlockResult.empty();  } // invalid status effect
-                        if(!imbueData.containsKey(id)) { tryLogDebugUnimbuableEffect(comp,Registries.STATUS_EFFECT.get(id).getName()); return SpellBlockResult.empty();  } // unimbuable status effect;
-                        var data = imbueData.get(id);
-                        amp = Toolbox.clampI(amp,0,data.maxAmp);
-                        if(data.instant) duration = 1f;
-                        float manaCost = 0.5f + data.getCost(amp,duration);
-                        if(data.instant) duration = 1/20f;
-
-
-                        if(trySpendSoul(comp,manaCost)){
-                            var effectInst = new StatusEffectInstance(Registries.STATUS_EFFECT.get(id),Math.round(duration*20),amp);
-                            ent.addStatusEffect(effectInst,comp.context.caster);
-                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,ent.getPos()));
-
-                            if((ent instanceof VillagerEntity || (ent instanceof PlayerEntity pe&&pe!=comp.caster())) && List.of(
-                                    StatusEffects.INSTANT_HEALTH,StatusEffects.REGENERATION).contains(effectInst.getEffectType()))
-                                tryUnlockSpellAdvancement(comp,"medic");
-                        }
-                        else{
-                            // too broke
-                            tryLogDebugBroke(comp,manaCost);
-                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,comp.context.getOriginPos()));
-                        }
-
-                        return SpellBlockResult.empty();
-                    })
-                    .sideConfigGetter((comp)->{
-                        SpellComponent.SideConfig[] res = new SpellComponent.SideConfig[6];
-                        for(int i = 0; i <6; i++) res[i] = SpellComponent.SideConfig.createToggleableInput(comp,SpellComponent.getDirString(i)).named(i%3==0?"amp":i%3==1?"entity":"duration");
-                        return res;
-                    })
-                    .category(cat).build());
+            DEGRADE_BLOCK = register(DegradeSpell.get());
+            IMBUE = register(ImbueSpell.get());
 
             REPLACE = register(SpellBlock.Builder.create("replace")
                     .inputs(
@@ -1974,99 +1760,8 @@ public class SpellBlocks {
                     })
                     .category(cat).build());
 
-            // ignite behaviors
-            {
-                BiConsumer<World,BlockPos> playUseSound = (World world, BlockPos pos) -> Toolbox.playSound(SoundEvents.ITEM_FIRECHARGE_USE,world,pos,SoundCategory.BLOCKS,0.2f,0.8f+Toolbox.random.nextFloat()*0.4f);
-
-                addIgniteBehavior(b->b.isOf(Blocks.FURNACE),(comp,vars)->{
-                    var be = ((FurnaceBlockEntity)(comp.world().getBlockEntity(vars.getBlockPos("position"))));
-                    if(be.burnTime<800) {be.burnTime=800;be.fuelTime=800;be.markDirty();}
-                    playUseSound.accept(comp.world(),vars.getBlockPos("position"));
-                    return SpellBlockResult.empty();
-                });
-                addIgniteBehavior(b->b.isOf(Blocks.BLAST_FURNACE),(comp,vars)->{
-                    var be = ((BlastFurnaceBlockEntity)(comp.world().getBlockEntity(vars.getBlockPos("position"))));
-                    if(be.burnTime<800) {be.burnTime=800;be.fuelTime=800;be.markDirty();}
-                    playUseSound.accept(comp.world(),vars.getBlockPos("position"));
-                    return SpellBlockResult.empty();
-                });
-                addIgniteBehavior(b->b.isIn(BlockTags.STONE_ORE_REPLACEABLES)||b.isIn(BlockTags.DEEPSLATE_ORE_REPLACEABLES),(comp,vars)->{
-                    comp.world().setBlockState(vars.getBlockPos("position"),Blocks.MAGMA_BLOCK.getDefaultState());
-                    playUseSound.accept(comp.world(),vars.getBlockPos("position"));
-                    return SpellBlockResult.empty();
-                });
-                addIgniteBehavior(b->b.isOf(Blocks.MAGMA_BLOCK),(comp,vars)->{
-                    comp.world().setBlockState(vars.getBlockPos("position"),Blocks.LAVA.getDefaultState());
-                    playUseSound.accept(comp.world(),vars.getBlockPos("position"));
-                    return SpellBlockResult.empty();
-                });
-                addIgniteBehavior(b->b.getBlock() instanceof CandleBlock,(comp,vars)->{
-                    comp.world().setBlockState(vars.getBlockPos("position"),comp.world().getBlockState(vars.getBlockPos("position")).with(CandleBlock.LIT, true), 11);
-                    playUseSound.accept(comp.world(),vars.getBlockPos("position"));
-                    return SpellBlockResult.empty();
-                });
-                addIgniteBehavior(b->b.getBlock() instanceof CampfireBlock,(comp,vars)->{
-                    comp.world().setBlockState(vars.getBlockPos("position"),comp.world().getBlockState(vars.getBlockPos("position")).with(CampfireBlock.LIT, true), 11);
-                    playUseSound.accept(comp.world(),vars.getBlockPos("position"));
-                    return SpellBlockResult.empty();
-                });
-                addIgniteBehavior(b->b.isReplaceable(),(comp,vars)->{
-                    var pos = vars.getBlockPos("position");
-                    var state = comp.world().getBlockState(pos);
-                    if(!state.isReplaceable()) return SpellBlockResult.empty();
-                    comp.world().setBlockState(pos,Blocks.FIRE.getDefaultState());
-                    playUseSound.accept(comp.world(),pos);
-                    return SpellBlockResult.empty();
-                });
-                addIgniteBehavior(b->true,(comp,vars)->{
-                    var pos = vars.getBlockPos("position");
-                    for(var dir : Direction.values())
-                    {
-                        var pos2 = pos.add(dir.getOffsetX(),dir.getOffsetY(),dir.getOffsetZ());
-                        if(!comp.world().getBlockState(pos2).isReplaceable()) continue;
-                        comp.world().setBlockState(pos2,Blocks.FIRE.getDefaultState());
-                    }
-                    playUseSound.accept(comp.world(),pos);
-                    return SpellBlockResult.empty();
-                });
-            }
-            IGNITE = register(SpellBlock.Builder.create("ignite")
-                    .inputs(SpellSignal.createVector().named("position"))
-                    .func((comp,vars) -> {
-                        var pos = vars.getVector("position");
-                        var blockPos = Toolbox.posToBlockPos(pos);
-                        var restrictions = RestrictorBlockEntity.getRestrictionsAt(pos,comp.world());
-                        if(!restrictions.allowsBlockManipulation() && !comp.context.isFromPrecomiled()){
-                            // not allowed to place here! punish!
-                            punishDisallowedAction(comp.context);
-                            return SpellBlockResult.empty();
-                        }
-
-                        // calculate breaking cost
-                        BlockState targetState = comp.world().getBlockState(blockPos);
-
-                        float manaCost = 30f
-                                +normalCastOffsetSoulCost(comp,pos);
-
-                        if(canAfford(comp,manaCost)){
-                            for(var pred : igniteBehavior.keySet()){
-                                if(!pred.apply(targetState)) continue;
-                                igniteBehavior.get(pred).apply(comp,vars);
-                                trySpendSoul(comp,manaCost);
-                                spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
-                                tryUnlockSpellAdvancement(comp,"ignition");
-                                break;
-                            }
-                        }
-                        else{
-                            // too broke
-                            tryLogDebugBroke(comp,manaCost);
-                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,pos));
-                        }
-
-                        return SpellBlockResult.empty();
-                    })
-                    .category(cat).build());
+            IGNITE = register(IgniteSpell.get());
+            FREEZE = register(FreezeSpell.get());
 
             // exodia 3 trigger events
             {
@@ -3149,7 +2844,7 @@ public class SpellBlocks {
         tryLogDebugRestricted(context);
     }
 
-    private static void tryUnlockSpellAdvancement(SpellComponent comp, String name) {
+    public static void tryUnlockSpellAdvancement(SpellComponent comp, String name) {
         tryUnlockSpellAdvancement(comp.caster(),name);
     }
 
@@ -3254,12 +2949,12 @@ public class SpellBlocks {
                 comp.getRuntimeName(),state.getBlock().getName()));
     }
 
-    private static void tryLogDebugNotBreakable(SpellComponent comp, BlockState state){
+    public static void tryLogDebugNotBreakable(SpellComponent comp, BlockState state){
         tryLogDebug(comp,Text.translatable("geomancy.spells.debug.notbreakable",
                 comp.getRuntimeName(),state.getBlock().getName()));
     }
 
-    private static void tryLogDebugNoSuchEffect(SpellComponent comp, String text){
+    public static void tryLogDebugNoSuchEffect(SpellComponent comp, String text){
         tryLogDebug(comp,Text.translatable("geomancy.spells.debug.invalideffect",
                 comp.getRuntimeName(),Text.literal(text)));
     }
@@ -3268,7 +2963,7 @@ public class SpellBlocks {
         tryLogDebug(comp,Text.translatable("geomancy.spells.debug.player_variables_disallowed",comp.getRuntimeName()));
     }
 
-    private static void tryLogDebugUnimbuableEffect(SpellComponent comp, Text text){
+    public static void tryLogDebugUnimbuableEffect(SpellComponent comp, Text text){
         tryLogDebug(comp,Text.translatable("geomancy.spells.debug.notimbuable",
                 comp.getRuntimeName(),text));
     }
@@ -3355,28 +3050,6 @@ public class SpellBlocks {
         return new SpellBlockResult(vars);
     }
 
-    public static boolean canImbueEffect(String effect){
-        return true;
-    }
-
-    private static void addDegradeBlockData(Block b, Block replacement){
-        addDegradeBlockData(b.getDefaultState(),replacement);
-    }
-    private static void addDegradeBlockData(BlockState b, Block replacement){
-        addDegradeBlockData(b1->b1.isOf(b.getBlock()),replacement.getDefaultState());
-    }
-    private static void addDegradeBlockData(Function<BlockState,Boolean> predicate, BlockState replacement){
-        degradeBlockData.put(predicate,replacement);
-    }
-
-    private static void addIgniteBehavior(Function<BlockState,Boolean> predicate,java.util.function.BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult> func){
-        igniteBehavior.put(predicate,func);
-    }
-
-    private static void addImbueData(StatusEffect effect, ImbueData data){
-        imbueData.put(Registries.STATUS_EFFECT.getId(effect),data);
-    }
-
     public static void spawnMuzzleParticles(SpellContext context) {
         if(!context.showsParticles()) return;
         if(context.getSoulConsumed()<=0 && context.soundBehavior== SpellContext.SoundBehavior.Reduced) return;
@@ -3384,32 +3057,6 @@ public class SpellBlocks {
     }
 
 
-    public static class ImbueData{
-        public final int maxAmp;
-        public final float ampExponent;
-        public final float costMult;
-        public final boolean instant;
-
-        public ImbueData(int maxAmp, float costMult){
-            this(maxAmp,costMult,2,false);
-        }
-
-        public ImbueData(int maxAmp, float costMult, float ampExponent){
-            this(maxAmp,costMult,ampExponent,false);
-        }
-
-        public ImbueData(int maxAmp, float costMult, float ampExponent,boolean instant){
-            this.maxAmp=maxAmp;
-            this.costMult=costMult;
-            this.ampExponent=ampExponent;
-            this.instant=instant;
-        }
-
-        public float getCost(int amp, float duration) {
-            return (float)Math.pow((amp+1),ampExponent) * duration * costMult * 0.2f;
-        }
-    }
-    
     public static class TransmuteData{
         public final float cost;
         public final Function<ItemEntity,Boolean> predicate;

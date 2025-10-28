@@ -1,6 +1,7 @@
 package org.oxytocina.geomancy.spells;
 
 import com.mojang.datafixers.util.Function3;
+import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.block.entity.SculkSensorBlockEntity;
 import net.minecraft.block.entity.SculkShriekerBlockEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -289,4 +290,26 @@ public class SpellBlocks2 {
                 })
                 .category(cat).defaultLootWeight(0).build());
     }
+
+    public static TriState allAndOneOfPositionOrEntity(SpellComponent comp){
+        boolean hasPosition = false;
+        boolean hasEntity = false;
+        for(var input : comp.function.inputs.entrySet()){
+            if(comp.receivedSignals.containsKey(input.getKey())){
+                switch(comp.receivedSignals.get(input.getKey()).type){
+                    case UUID : hasEntity=true; break;
+                    case Vector: hasPosition=true; break;
+                }
+            }
+            else{
+                switch(comp.receivedSignals.get(input.getKey()).type){
+                    case UUID : break;
+                    case Vector: break;
+                    default: return TriState.FALSE;
+                }
+            }
+        }
+        return TriState.of(hasPosition||hasEntity);
+    }
 }
+

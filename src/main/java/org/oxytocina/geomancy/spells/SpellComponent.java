@@ -5,6 +5,7 @@ import io.netty.buffer.Unpooled;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -197,6 +198,12 @@ public class SpellComponent {
     // check if all required signals have been received
     public boolean canExecute(){
         if(context==null) return false;
+        // custom behavior
+        if(function.fireConditionOverride!=null){
+            var triState = function.fireConditionOverride.apply(this);
+            if(triState != TriState.DEFAULT) return triState.get();
+        }
+        // default behavior: all input signals necessary to fire
         for(var varName : function.inputs.keySet()){
             if(!receivedSignals.containsKey(varName)) return false;
             var varObj = function.inputs.get(varName);

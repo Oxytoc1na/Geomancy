@@ -11,7 +11,6 @@ import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.client.event.KeyInputHandler;
 import org.oxytocina.geomancy.items.ModItems;
 import org.oxytocina.geomancy.items.jewelry.GemSlot;
-import org.oxytocina.geomancy.registries.ModItemTags;
 import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.HashMap;
@@ -173,7 +172,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("set_spell","Set Spell","sets the selected spell of the caster item");
             addSpell("degrade_block","Degrade Block","degrades a targeted block into something else");
             addSpell("replace","Replace","a combination of the break and place components");
-            addSpell("ignite","Ignite","heats a given block position up");
+            addSpell("ignite","Ignite","heats a given block or entity up");
             addSpell("play_sound","Play Sound","plays a sound in the world");
             addSpell("delegate","Delegate","runs a spell with a specified delay");
             addSpell("set_weather","Set Weather","sets weather. 0 clears, 1 rains, 2 thunders");
@@ -189,6 +188,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("shout","Shout","outputs a value to the chat of anyone within range");
             addSpell("whisper","Whisper","outputs a value to the chat of a specified player");
             addSpell("set_output","Set Output","overrides comparator output of the autocaster. Range: 0-16 (reset)");
+            addSpell("freeze","Freeze","freezes a given block or entity");
             // reference
             addSpell("action","Action","calls another installed spell");
             addSpell("provider","Provider","automatically returns the result of a spell");
@@ -658,19 +658,23 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
         }
 
         // Enchantments
-        addWithDescription("enchantment.MODID.skillful"    , "Skillful","increases smithing skill of the hammer");
-        addWithDescription("enchantment.MODID.mighty"      , "Mighty","increases smithing progress per hit");
-        addWithDescription("enchantment.MODID.brilliance"  , "Brilliance","increases jewelry effectiveness");
-        addWithDescription("enchantment.MODID.soul_saver"  , "Soul Saver","decreases soul consumption");
-        addWithDescription("enchantment.MODID.mesmerizing" , "Mesmerizing","increases soul capacity");
-        addWithDescription("enchantment.MODID.focused"     , "Focused","decreases distance-based soul consumption");
+        {
+            addWithDescription("enchantment.MODID.skillful"    , "Skillful","increases smithing skill of the hammer");
+            addWithDescription("enchantment.MODID.mighty"      , "Mighty","increases smithing progress per hit");
+            addWithDescription("enchantment.MODID.brilliance"  , "Brilliance","increases jewelry effectiveness");
+            addWithDescription("enchantment.MODID.soul_saver"  , "Soul Saver","decreases soul consumption");
+            addWithDescription("enchantment.MODID.mesmerizing" , "Mesmerizing","increases soul capacity");
+            addWithDescription("enchantment.MODID.focused"     , "Focused","decreases distance-based soul consumption");
+        }
 
         // damage types
-        add("death.attack.geomancy.duplicate_trinkets", "%1$s felt their own hubris");
-        add("death.attack.geomancy.molten_gold", "%1$s fell into King Midas' bathtub");
-        add("death.attack.geomancy.plumbometer", "%1$s died of Hypochondria");
-        add("death.attack.geomancy.restricted_action", "%1$s was caught trespassing");
-        add("death.attack.geomancy.null_rubble", "%1$s's head was caved in by nothing");
+        {
+            add("death.attack.geomancy.duplicate_trinkets", "%1$s felt their own hubris");
+            add("death.attack.geomancy.molten_gold", "%1$s fell into King Midas' bathtub");
+            add("death.attack.geomancy.plumbometer", "%1$s died of Hypochondria");
+            add("death.attack.geomancy.restricted_action", "%1$s was caught trespassing");
+            add("death.attack.geomancy.null_rubble", "%1$s's head was caved in by nothing");
+        }
 
         // Misc
         {
@@ -694,6 +698,11 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add(KeyInputHandler.LANG_CAST_2,"Cast Trinket 2");
             add(KeyInputHandler.LANG_CAST_3,"Cast Trinket 3");
             add(KeyInputHandler.LANG_ACTIVATE_SPELLS,"Trinket Hotbar Casting");
+
+            // commands
+            {
+                add("geomancy.commands.soul","added 1000000 soul to %1$s");
+            }
         }
 
         // Toasts

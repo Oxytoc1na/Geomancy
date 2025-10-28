@@ -425,6 +425,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     AddGenericSpellcomponentRecipe(SpellBlocks.WHISPER,Items.WRITABLE_BOOK,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.PARTICLES,Items.SAND,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.SET_OUTPUT,Items.COMPARATOR,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.FREEZE,Items.BLUE_ICE,baseIngot);
                 }
 
                 // reference

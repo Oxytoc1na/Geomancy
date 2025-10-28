@@ -2,6 +2,7 @@ package org.oxytocina.geomancy.spells;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.MutableText;
@@ -27,6 +28,7 @@ public class SpellBlock {
     public HashMap<String, SpellSignal> inputs;
     public HashMap<String, Parameter> parameters;
     public HashMap<String, SpellSignal> outputs;
+    public Function<SpellComponent,TriState> fireConditionOverride;
     public boolean singleOutput;
     public SpellSignal output;
     public Identifier identifier;
@@ -70,7 +72,8 @@ public class SpellBlock {
                 int recipeRequiredProgress,
                 int recipeDifficulty,
                 ItemStack stack,
-                OverarchingCategory overarchingCategory){
+                OverarchingCategory overarchingCategory,
+                Function<SpellComponent,TriState> fireConditionOverride){
         this.identifier=identifier;
         this.inputs = new HashMap<>();
         this.outputs = new HashMap<>();
@@ -85,6 +88,7 @@ public class SpellBlock {
         this.recipeDifficulty=recipeDifficulty;
         this.overarchingCategory=overarchingCategory;
 
+        this.fireConditionOverride = fireConditionOverride;
         this.function=function;
         this.sideConfigGetter = sideConfigGetter;
         this.initFunction = initFunction;
@@ -173,6 +177,7 @@ public class SpellBlock {
         public int recipeRequiredProgress = 100;
         public int recipeDifficulty = 20;
         OverarchingCategory overarchingCategory = null;
+        Function<SpellComponent,TriState> fireConditionOverride = null;
 
         public Function<SpellComponent,SpellComponent.SideConfig[]> sideConfigGetter;
         public BiFunction<SpellComponent,SpellBlockArgs,SpellBlockResult> function;
@@ -213,7 +218,8 @@ public class SpellBlock {
                     recipeRequiredProgress,
                     recipeDifficulty,
                     stack,
-                    overarchingCategory
+                    overarchingCategory,
+                    fireConditionOverride
             );
         }
 
@@ -269,6 +275,11 @@ public class SpellBlock {
 
         public Builder post(Consumer<SpellComponent> postFunction){
             this.postFunction=postFunction;
+            return this;
+        }
+
+        public Builder fireCondition(Function<SpellComponent, TriState> fireConditionOverride){
+            this.fireConditionOverride=fireConditionOverride;
             return this;
         }
 
