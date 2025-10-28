@@ -258,7 +258,7 @@ public class ModBlocks {
 
             var extraItemSettings = ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom);
             if(!extraSettings.shouldAddItemToGroup) extraItemSettings.dontGroupItem();
-            if(block instanceof WallBlock || block instanceof FenceBlock)
+            if(block instanceof WallBlock || block instanceof FenceBlock || block instanceof ButtonBlock)
                 extraItemSettings.modelType(ExtraItemSettings.ModelType.BlockPlusInventory);
             else if(block instanceof TrapdoorBlock)
                 extraItemSettings.modelType(ExtraItemSettings.ModelType.BlockPlusBottom);
