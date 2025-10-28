@@ -274,7 +274,7 @@ public class SpellprinterScreen extends HandledScreen<SpellprinterScreenHandler>
         for(var errorMessage : errors){
             boolean last = errorI>=maxErrorsShown-1;
             context.drawText(MinecraftClient.getInstance().textRenderer,
-                    Text.empty().append(errorMessage).append(last?"...":"").formatted(Formatting.RED)
+                    Text.empty().append(errorMessage).append(last&&errors.size()>maxErrorsShown?(" [+"+(errors.size()-maxErrorsShown)+"]"):"").formatted(Formatting.RED)
                     ,infoPosX,infoPosY+(errorI+1)*10,0xFF0000,true);
             errorI++;
             if(last) break;
