@@ -4,19 +4,18 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.crash.CrashException;
 import net.minecraft.util.crash.CrashReport;
 import net.minecraft.util.crash.CrashReportSection;
 import net.minecraft.util.math.ColorHelper;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
@@ -191,11 +190,30 @@ public class DrawHelper {
         }
     }
 
+    public static int drawText(DrawContext context, TextRenderer textRenderer, Text text, float x, float y, int color, boolean shadow) {
+        if (text == null) {
+            return 0;
+        } else {
+            int i = textRenderer.draw(text, x, y, color, shadow, context.getMatrices().peek().getPositionMatrix(), context.getVertexConsumers(), TextRenderer.TextLayerType.NORMAL, 0, 15728880);
+            context.draw();
+            return i;
+        }
+    }
+
     public static void drawTextOutlined(DrawContext context,TextRenderer textRenderer, @Nullable String text, float x, float y, int color, int outlineColor){
         drawText(context,textRenderer, text, x + 1, y, outlineColor, false);
         drawText(context,textRenderer, text, x - 1, y, outlineColor, false);
         drawText(context,textRenderer, text, x, y + 1, outlineColor, false);
         drawText(context,textRenderer, text, x, y - 1, outlineColor, false);
+        drawText(context,textRenderer, text, x, y, color, false);
+    }
+
+    public static void drawTextOutlined(DrawContext context,TextRenderer textRenderer, Text text, float x, float y, int color, int outlineColor){
+        Text outlineText = Text.empty().append(text).styled(style -> style.withColor(outlineColor));
+        drawText(context,textRenderer, outlineText, x + 1, y, outlineColor, false);
+        drawText(context,textRenderer, outlineText, x - 1, y, outlineColor, false);
+        drawText(context,textRenderer, outlineText, x, y + 1, outlineColor, false);
+        drawText(context,textRenderer, outlineText, x, y - 1, outlineColor, false);
         drawText(context,textRenderer, text, x, y, color, false);
     }
 }

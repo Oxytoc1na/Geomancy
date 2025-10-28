@@ -6,31 +6,24 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.*;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.sound.PositionedSoundInstance;
-import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.slot.Slot;
-import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.glfw.GLFW;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.ModBlocks;
-import org.oxytocina.geomancy.client.GeomancyClient;
 import org.oxytocina.geomancy.client.screen.widgets.SpellmakerButton;
 import org.oxytocina.geomancy.client.screen.widgets.SpellmakerCheckbox;
 import org.oxytocina.geomancy.client.screen.widgets.SpellmakerTextInput;
@@ -41,15 +34,12 @@ import org.oxytocina.geomancy.spells.SpellBlocks;
 import org.oxytocina.geomancy.spells.SpellComponent;
 import org.oxytocina.geomancy.util.TextUtil;
 import org.oxytocina.geomancy.util.Toolbox;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
 public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
 
     private static final Identifier TEXTURE = new Identifier(Geomancy.MOD_ID,"textures/gui/spellmaker_block_gui.png");
-    private static final Logger log = LoggerFactory.getLogger(SpellmakerScreen.class);
 
     private final SpellmakerScreenHandler handler;
 
@@ -63,7 +53,6 @@ public class SpellmakerScreen extends HandledScreen<SpellmakerScreenHandler> {
 
     public SpellmakerButton[] sideConfigButtons = new SpellmakerButton[12];
     public List<Widget> widgets = new ArrayList<>();
-    public HashMap<Widget,Integer> initialWidgetOffsets = new HashMap<>();
     public SpellmakerButton[] selectNewCompScrollBtns = new SpellmakerButton[2];
 
     public boolean moving = !Geomancy.CONFIG.noSpellmakerMove.value();

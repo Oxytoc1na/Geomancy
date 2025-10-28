@@ -127,6 +127,7 @@ public class ModCommands {
                                     var player = context.getSource().getPlayer();
                                     if(player==null) return 1;
                                     SoulUtil.addSoulToPlayer(player,1000000f);
+                                    context.getSource().sendFeedback(()->Text.translatable("geomancy.commands.soul",player.getEntityName()),true);
                                     return 1;
                                 })
                         )

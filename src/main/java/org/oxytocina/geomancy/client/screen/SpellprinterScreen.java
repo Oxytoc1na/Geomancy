@@ -1,7 +1,6 @@
 package org.oxytocina.geomancy.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
@@ -12,10 +11,7 @@ import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
@@ -255,27 +251,24 @@ public class SpellprinterScreen extends HandledScreen<SpellprinterScreenHandler>
         int bgPosX = getBgPosX();
         int bgPosY = getBgPosY();
 
-        int outputX = bgPosX+SpellprinterScreenHandler.OUTPUT_SLOT_X;
-        int outputY = bgPosY+SpellprinterScreenHandler.OUTPUT_SLOT_Y;
-
         final int infoPosX = bgPosX+5;
         final int infoPosY = bgPosY+5;
 
         boolean hasDrawnTooltip = false;
 
         RenderSystem.setShaderColor(1,1,1,1);
-        context.drawText(MinecraftClient.getInstance().textRenderer,
+        DrawHelper.drawTextOutlined(context,MinecraftClient.getInstance().textRenderer,
                 Text.translatable("geomancy.spellprinter.info")
-                ,infoPosX,infoPosY,0xFFFFFFFF,true);
+                ,infoPosX,infoPosY,0xFFFFFFFF,0);
 
         // draw errors
         int errorI = 0;
         final int maxErrorsShown = 1;
         for(var errorMessage : errors){
             boolean last = errorI>=maxErrorsShown-1;
-            context.drawText(MinecraftClient.getInstance().textRenderer,
-                    Text.empty().append(errorMessage).append(last&&errors.size()>maxErrorsShown?(" [+"+(errors.size()-maxErrorsShown)+"]"):"").formatted(Formatting.RED)
-                    ,infoPosX,infoPosY+(errorI+1)*10,0xFF0000,true);
+            DrawHelper.drawTextOutlined(context,MinecraftClient.getInstance().textRenderer,
+                    Text.empty().append(errorMessage).append(last&&errors.size()>maxErrorsShown?(" [+"+(errors.size()-maxErrorsShown)+"]"):"")
+                    ,infoPosX,infoPosY+(errorI+1)*10,0xFF7070,0x704040);
             errorI++;
             if(last) break;
         }
