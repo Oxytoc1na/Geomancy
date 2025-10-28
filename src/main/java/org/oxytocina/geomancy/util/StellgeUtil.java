@@ -91,7 +91,7 @@ public class StellgeUtil {
         if(clientAdvancementKnowledge<amount)
         {
             // show toast
-            GeomancyToast.show(new StellgeKnowledgeToast());
+            StellgeKnowledgeToast.tryShow();
         }
         clientAdvancementKnowledge=amount;
     }

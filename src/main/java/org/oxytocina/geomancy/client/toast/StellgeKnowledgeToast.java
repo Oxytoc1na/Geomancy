@@ -17,6 +17,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import org.oxytocina.geomancy.Geomancy;
+import org.oxytocina.geomancy.client.GeomancyClient;
 
 import java.util.Iterator;
 import java.util.List;
@@ -24,9 +25,18 @@ import java.util.List;
 @Environment(EnvType.CLIENT)
 public class StellgeKnowledgeToast extends GeomancyToast {
 
+    public static final int LIFE_MS = 5000;
+    public static final int COOLDOWN_TICKS = 4*20;
 
     public StellgeKnowledgeToast() {
         super(new ItemStack(Items.KNOWLEDGE_BOOK), SoundEvents.AMBIENT_UNDERWATER_LOOP_ADDITIONS);
+    }
+
+    public static long lastShowTick = 0;
+    public static void tryShow() {
+        if(GeomancyClient.tick - lastShowTick < COOLDOWN_TICKS) return;
+        GeomancyToast.show(new StellgeKnowledgeToast());
+        lastShowTick = GeomancyClient.tick;
     }
 
     @Override
@@ -41,7 +51,7 @@ public class StellgeKnowledgeToast extends GeomancyToast {
         List<OrderedText> wrappedText = textRenderer.wrapLines(text, 125);
         List<OrderedText> wrappedTitle = textRenderer.wrapLines(title, 125);
         int l;
-        long toastTimeMilliseconds = 5000;//Geomancy.CONFIG.ToastTimeMilliseconds;
+        long toastTimeMilliseconds = LIFE_MS;//Geomancy.CONFIG.ToastTimeMilliseconds;
         if (startTime < toastTimeMilliseconds / 2) {
             l = MathHelper.floor(MathHelper.clamp((float) (toastTimeMilliseconds / 2 - startTime) / 300.0F, 0.0F, 1.0F) * 255.0F) << 24 | 67108864;
             int halfHeight = this.getHeight() / 2;
