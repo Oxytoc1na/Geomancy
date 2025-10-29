@@ -189,6 +189,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("whisper","Whisper","outputs a value to the chat of a specified player");
             addSpell("set_output","Set Output","overrides comparator output of the autocaster. Range: 0-16 (reset)");
             addSpell("freeze","Freeze","freezes a given block or entity");
+            addSpell("shift","Shift","moves blocks and launches caught entities");
+            addSpell("launch","Launch","launches blocks with a given velocity");
             // reference
             addSpell("action","Action","calls another installed spell");
             addSpell("provider","Provider","automatically returns the result of a spell");

@@ -206,6 +206,7 @@ public class ModBlocks {
     public static final SoulForgeBlock SOUL_FORGE       = register("soul_forge", SoulForgeBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe());
     public static final PedestalBlock PEDESTAL          = register("pedestal", PedestalBlock::new, AbstractBlock.Settings.create().strength(3.0F, 6.0F).nonOpaque(), new ExtraBlockSettings().notSimpleCube().mineableByPickaxe());
     public static final RestrictorBlock RESTRICTOR      = register("restrictor", RestrictorBlock::new, AbstractBlock.Settings.create().strength(-1, 1000000), new ExtraBlockSettings().mineableByPickaxe());
+    public static final Block SHIFT                     = register("shift",ShiftBlock::new,AbstractBlock.Settings.create().nonOpaque().strength(-1,1000000));
 
     // fluids
     private static AbstractBlock.Settings fluid(MapColor mapColor) {

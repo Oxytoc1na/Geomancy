@@ -26,6 +26,8 @@ public class ModBlockEntities {
             FabricBlockEntityTypeBuilder.create(PedestalBlockEntity::new,ModBlocks.PEDESTAL).build());
     public static final BlockEntityType<RestrictorBlockEntity> RESTRICTOR_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE,Geomancy.locate("restrictor_be"),
             FabricBlockEntityTypeBuilder.create(RestrictorBlockEntity::new,ModBlocks.RESTRICTOR).build());
+    public static final BlockEntityType<ShiftBlockEntity> SHIFT = Registry.register(Registries.BLOCK_ENTITY_TYPE,Geomancy.locate("shift"),
+            FabricBlockEntityTypeBuilder.create(ShiftBlockEntity::new,ModBlocks.SHIFT).build());
 
     public static void register() {
 

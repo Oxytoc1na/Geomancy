@@ -20,5 +20,6 @@ public class ModEntityRenderers {
         EntityRendererRegistry.register(ModEntityTypes.STELLGE_CASTER, StellgeCasterRenderer::new);
         EntityModelLayerRegistry.registerModelLayer(MODEL_STELLGE_CASTER_LAYER, StellgeCasterModel::getTexturedModelData);
         EntityRendererRegistry.register(ModEntityTypes.CASTER_DELEGATE, EmptyEntityRenderer::new);
+        EntityRendererRegistry.register(ModEntityTypes.LAUNCHED_BLOCK, LaunchedBlockEntityRenderer::new);
     }
 }

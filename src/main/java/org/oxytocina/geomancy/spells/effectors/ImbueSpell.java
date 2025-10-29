@@ -1,4 +1,4 @@
-package org.oxytocina.geomancy.spells.individual;
+package org.oxytocina.geomancy.spells.effectors;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;

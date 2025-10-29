@@ -36,6 +36,7 @@ public class ModMessages {
     public static final Identifier CAM_SHAKE =              Geomancy.locate("cam_shake");
     public static final Identifier UPDATE_SOULFORGE =       Geomancy.locate("update_soulforge");
     public static final Identifier WHISPER =                Geomancy.locate("whisper");
+    public static final Identifier SHIFT_BLOCK =            Geomancy.locate("shift_block");
 
     // client to server
 
@@ -122,6 +123,7 @@ public class ModMessages {
         ClientPlayNetworking.registerGlobalReceiver(CAM_SHAKE, CamShakeS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(UPDATE_SOULFORGE, SoulforgeUpdateS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(WHISPER, WhisperS2CPacket::receive);
+        ClientPlayNetworking.registerGlobalReceiver(SHIFT_BLOCK, ShiftBlockS2CPacket::receive);
     }
 
     public static void sendToAllClients(MinecraftServer server, Identifier id, PacketByteBuf buf){

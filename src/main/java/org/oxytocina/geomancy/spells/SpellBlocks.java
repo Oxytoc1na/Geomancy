@@ -4,7 +4,6 @@ import net.minecraft.block.*;
 import net.minecraft.block.entity.*;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
-import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.passive.VillagerEntity;
@@ -25,26 +24,19 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.*;
 import net.minecraft.world.*;
 import org.oxytocina.geomancy.Geomancy;
-import org.oxytocina.geomancy.blocks.ModBlocks;
-import org.oxytocina.geomancy.blocks.VaultLampBlock;
-import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlock;
 import org.oxytocina.geomancy.blocks.blockEntities.RestrictorBlockEntity;
-import org.oxytocina.geomancy.blocks.blockEntities.SoulForgeBlock;
-import org.oxytocina.geomancy.inventories.ImplementedInventory;
 import org.oxytocina.geomancy.items.ISpellSelectorItem;
 import org.oxytocina.geomancy.items.armor.CastingArmorItem;
 import org.oxytocina.geomancy.items.tools.IVariableStoringItem;
 import org.oxytocina.geomancy.registries.ModDamageTypes;
-import org.oxytocina.geomancy.registries.ModRecipeTypes;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
-import org.oxytocina.geomancy.spells.individual.*;
+import org.oxytocina.geomancy.spells.effectors.*;
 import org.oxytocina.geomancy.util.*;
 
 import java.util.*;
@@ -152,6 +144,8 @@ public class SpellBlocks {
     public static final SpellBlock TRANSFER;
     public static final SpellBlock PARTICLES;
     public static final SpellBlock SET_OUTPUT;
+    public static final SpellBlock SHIFT;
+    public static final SpellBlock LAUNCH;
 
     // reference
     public static final SpellBlock ACTION;
@@ -185,7 +179,6 @@ public class SpellBlocks {
     public static final SpellBlock EXODIA_4;
     public static final SpellBlock EXODIA_5;
 
-    private static final List<TransmuteData> transmuteData = new ArrayList<>();
     private static final List<SoundEvent> exodia3TriggerEvents = new ArrayList<>();
 
     private static SpellBlock.Category cat;
@@ -1973,194 +1966,8 @@ public class SpellBlocks {
                     })
                     .category(cat).build());
 
-            ACTIVATE = register(SpellBlock.Builder.create("activate")
-                    .inputs(
-                            SpellSignal.createVector().named("position")
-                    )
-                    .func((comp,vars) -> {
-                        var pos = vars.getVector("position");
-                        var blockPos = Toolbox.posToBlockPos(pos);
-                        var restrictions = RestrictorBlockEntity.getRestrictionsAt(pos,comp.world());
-                        if(!restrictions.allowsActivate() && !comp.context.isFromPrecomiled()){
-                            // not allowed to place here! punish!
-                            punishDisallowedAction(comp.context);
-                            return SpellBlockResult.empty();
-                        }
-
-                        World world = comp.world();
-                        BlockState targetState = world.getBlockState(blockPos);
-                        Block targetBlock = targetState.getBlock();
-                        BlockEntity targetEntity = world.getBlockEntity(blockPos);
-
-                        float manaCost = 5f
-                                +normalCastOffsetSoulCost(comp,pos);
-
-                        if(canAfford(comp,manaCost)){
-                            boolean success=true;
-                            // open doors, trapdoors, press butons, flip levers
-                            if(
-                                    targetBlock instanceof DoorBlock
-                                            || targetBlock instanceof TrapdoorBlock
-                                            || targetBlock instanceof ButtonBlock
-                                            || targetBlock instanceof LeverBlock
-                                            || targetBlock instanceof FenceGateBlock
-                            ){
-                                try{
-                                    targetBlock.onUse(targetState,world,blockPos,(PlayerEntity) comp.caster(),null,null);
-                                }
-                                catch(Exception ignored){
-                                    // some modded variant wanted to use hand, hit, or the caster and errored because of it
-                                }
-                            }
-                            // trigger pressure plates
-                            else if(targetBlock instanceof PressurePlateBlock pp){
-                                world.setBlockState(blockPos,targetState.with(PressurePlateBlock.POWERED,true));
-                                world.scheduleBlockTick(blockPos, pp, pp.getTickRate());
-                            }
-                            // trigger tripwire
-                            else if(targetBlock instanceof TripwireBlock tw){
-                                if(!targetState.get(TripwireBlock.POWERED))
-                                {
-                                    var blockState = targetState.with(TripwireBlock.POWERED, true);
-                                    tw.update(world, blockPos, blockState);
-                                    world.setBlockState(blockPos,targetState.with(TripwireBlock.POWERED,true),3);
-                                    world.scheduleBlockTick(blockPos, tw, 10);
-                                }
-                            }
-                            // trigger tripwire hook
-                            else if(targetBlock instanceof TripwireHookBlock tw){
-                                if(!targetState.get(TripwireHookBlock.POWERED))
-                                {
-                                    var blockState = targetState.with(TripwireHookBlock.POWERED, true);
-                                    tw.update(world, blockPos,blockState,false,true,-1,null);
-                                    world.setBlockState(blockPos,blockState,3);
-                                    world.scheduleBlockTick(blockPos, tw, 10);
-                                }
-                            }
-                            // trigger tnt
-                            else if(targetBlock instanceof TntBlock){
-                                TntBlock.primeTnt(world, blockPos);
-                                world.removeBlock(blockPos, false);
-                            }
-                            // trigger detector rail
-                            else if(targetBlock instanceof DetectorRailBlock drb){
-                                BlockState blockState = (BlockState)targetState.with(DetectorRailBlock.POWERED, true);
-                                world.setBlockState(blockPos, blockState, 3);
-                                drb.updateNearbyRails(world, blockPos, blockState, true);
-                                world.updateNeighborsAlways(blockPos, drb);
-                                world.updateNeighborsAlways(blockPos.down(), drb);
-                                world.scheduleBlockTick(blockPos, drb, 20);
-                            }
-                            // trigger dispenser, dropper, observers, autocasters
-                            else if(
-                                    targetBlock instanceof DispenserBlock
-                                            || targetBlock instanceof ObserverBlock
-                                            || targetBlock instanceof AutocasterBlock
-                            ){
-                                world.scheduleBlockTick(blockPos, targetBlock, 0);
-                            }
-                            // lamp
-                            else if(targetBlock instanceof RedstoneLampBlock){
-                                world.setBlockState(blockPos, (BlockState)targetState.cycle(RedstoneLampBlock.LIT), Block.NOTIFY_ALL);
-                            }
-                            // vault lamp
-                            else if(targetBlock instanceof VaultLampBlock){
-                                world.setBlockState(blockPos, (BlockState)targetState.cycle(VaultLampBlock.LIT), Block.NOTIFY_ALL);
-                            }
-                            // note block
-                            else if(targetBlock instanceof NoteBlock nb){
-                                nb.playNote(null,targetState,world,blockPos);
-                            }
-                            // jukebox
-                            else if(targetBlock instanceof JukeboxBlock){
-                                if ((Boolean)targetState.get(JukeboxBlock.HAS_RECORD)) {
-                                    if (world.getBlockEntity(blockPos) instanceof JukeboxBlockEntity jbe) {
-                                        jbe.dropRecord();
-                                    }
-                                }
-                            }
-                            // bell
-                            else if(targetBlock instanceof BellBlock bb){
-                                bb.ring(world,blockPos,null);
-                            }
-                            // soul forge
-                            else if(targetBlock instanceof SoulForgeBlock sfb){
-                                sfb.activate(world,blockPos,comp.context);
-                            }
-                            else success = false;
-
-                            if(success){
-                                if(comp.caster()!=null && EntityUtil.distanceTo(comp.caster(),pos) >=1000)
-                                    tryUnlockSpellAdvancement(comp,"ftl");
-
-                                trySpendSoul(comp,manaCost);
-                                spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
-                            }
-                        }
-                        else{
-                            // too broke
-                            tryLogDebugBroke(comp,manaCost);
-                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,pos));
-                        }
-
-                        return SpellBlockResult.empty();
-                    })
-                    .category(cat).build());
-
-            TRANSMUTE_ITEM = register(SpellBlock.Builder.create("transmute_item")
-                    .inputs(SpellSignal.createUUID().named("item"))
-                    .func((comp,vars) -> {
-                        var ent = vars.get("item").getEntity(comp.world());
-                        if(!(ent instanceof ItemEntity ient)) return SpellBlockResult.empty();
-
-                        // find recipe
-
-                        // try the special ones first
-                        for(var dat : transmuteData){
-                            if(!dat.test(ient)) continue;
-                            // calculate cost
-                            float manaCost = 5f
-                                    +normalCastOffsetSoulCost(comp,ent.getPos())
-                                    +dat.cost*ient.getStack().getCount();
-                            if(canAfford(comp,manaCost)){
-                                dat.run(ient);
-                                trySpendSoul(comp,manaCost);
-                                spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,comp.context.getOriginPos()));
-                            }
-                            else{
-                                // too broke
-                                tryLogDebugBroke(comp,manaCost);
-                                spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,comp.context.getOriginPos()));
-                            }
-                            return SpellBlockResult.empty();
-                        }
-
-                        // go after recipes
-                        var recipe = RecipeUtil.getConversionRecipeFor(ModRecipeTypes.TRANSMUTE,comp.world(),ient.getStack());
-                        if(recipe!=null){
-                            // calculate cost
-                            float manaCost = 5f
-                                    +normalCastOffsetSoulCost(comp,ent.getPos())
-                                    +recipe.getCost()*ient.getStack().getCount();
-                            if(canAfford(comp,manaCost)){
-                                var resStack = recipe.craft(ImplementedInventory.of(DefaultedList.ofSize(1,ient.getStack())),null);
-                                resStack.setCount(ient.getStack().getCount());
-                                ient.setStack(resStack);
-                                trySpendSoul(comp,manaCost);
-                                spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,comp.context.getOriginPos()));
-                            }
-                            else{
-                                // too broke
-                                tryLogDebugBroke(comp,manaCost);
-                                spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,comp.context.getOriginPos()));
-                            }
-                            return SpellBlockResult.empty();
-                        }
-
-                        // no fitting transmutation recipe found
-                        return SpellBlockResult.empty();
-                    })
-                    .category(cat).build());
+            ACTIVATE = register(ActivateSpell.get());
+            TRANSMUTE_ITEM = register(TransmuteItemSpell.get());
 
             STORE = register(SpellBlock.Builder.create("store")
                     .inputs(
@@ -2406,6 +2213,9 @@ public class SpellBlocks {
                         return SpellBlockResult.empty();
                     })
                     .category(cat).build());
+
+            SHIFT = register(ShiftSpell.get());
+            LAUNCH = register(LaunchSpell.get());
         }
 
         // reference
@@ -3054,41 +2864,5 @@ public class SpellBlocks {
         if(!context.showsParticles()) return;
         if(context.getSoulConsumed()<=0 && context.soundBehavior== SpellContext.SoundBehavior.Reduced) return;
         ParticleUtil.ParticleData.createGenericCastMuzzle(context,context.getMuzzlePos(),context.getDirection()).send();
-    }
-
-
-    public static class TransmuteData{
-        public final float cost;
-        public final Function<ItemEntity,Boolean> predicate;
-        public Consumer<ItemEntity> func;
-
-        public TransmuteData(float cost, Item item){
-            this.cost=cost;
-            this.predicate=e->e.getStack().getItem()==item;
-            func = t->{};
-        }
-
-        public TransmuteData(float cost, Function<ItemEntity,Boolean> predicate){
-            this.cost=cost;
-            this.predicate=predicate;
-            func = t->{};
-        }
-
-        public TransmuteData func(Consumer<ItemEntity> func){this.func=func;return this;}
-        public TransmuteData into(ItemConvertible item){this.func=s->s.setStack(new ItemStack(item,s.getStack().getCount()));return this;}
-        public TransmuteData into(ItemStack item){
-            this.func=s->{
-                ItemStack res = item.copy();
-                res.setCount(s.getStack().getCount());
-                s.setStack(res);
-            };return this;}
-
-        public boolean test(ItemEntity ent){
-            return predicate.apply(ent);
-        }
-
-        public void run(ItemEntity ent){
-            func.accept(ent);
-        }
     }
 }
