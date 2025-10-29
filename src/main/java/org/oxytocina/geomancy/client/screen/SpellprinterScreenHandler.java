@@ -40,7 +40,7 @@ public class SpellprinterScreenHandler extends ScreenHandler {
 
         current = this;
         checkSize((Inventory)blockEntity,SpellprinterBlockEntity.SLOT_COUNT);
-        this.player = playerInventory.player;;
+        this.player = playerInventory.player;
         this.inventory = (Inventory) blockEntity;
         playerInventory.onOpen(this.player);
         this.propertyDelegate = arrayPropertyDelegate;

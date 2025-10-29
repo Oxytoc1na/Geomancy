@@ -7,6 +7,7 @@ import net.minecraft.entity.FallingBlockEntity;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.Direction;
 import org.oxytocina.geomancy.blocks.blockEntities.RestrictorBlockEntity;
+import org.oxytocina.geomancy.entity.LaunchedBlockEntity;
 import org.oxytocina.geomancy.spells.SpellBlock;
 import org.oxytocina.geomancy.spells.SpellBlockResult;
 import org.oxytocina.geomancy.spells.SpellSignal;
@@ -46,12 +47,10 @@ public class LaunchSpell {
                             +normalCastOffsetSoulCost(comp,pos);
                     var res = SpellBlockResult.empty();
                     if(canAfford(comp,manaCost)){
-                        FallingBlockEntity entity = new FallingBlockEntity(
-                                comp.world(), pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, fromState.contains(Properties.WATERLOGGED) ? fromState.with(Properties.WATERLOGGED, false) : fromState
+                        LaunchedBlockEntity entity = LaunchedBlockEntity.spawnFromBlock(
+                                comp.world(), fromPos,velocity,
+                                fromState.contains(Properties.WATERLOGGED) ? fromState.with(Properties.WATERLOGGED, false) : fromState
                         );
-                        entity.setVelocity(velocity);
-                        comp.world().setBlockState(fromPos, fromState.getFluidState().getBlockState(), Block.NOTIFY_ALL);
-                        comp.world().spawnEntity(entity);
                         trySpendSoul(comp,manaCost);
                         spawnCastParticles(comp, ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
                         res.add("entity",entity.getUuid());
