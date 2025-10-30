@@ -8,17 +8,23 @@ import net.minecraft.registry.Registries;
 
 public class NetworkingUtil {
     public static BlockState readState(PacketByteBuf buf){
+        return parseBlockState(buf.readString());
+    }
+
+    public static void writeState(PacketByteBuf buf,BlockState state){
+        buf.writeString(serializeBlockState(state));
+    }
+
+    public static String serializeBlockState(BlockState state){
+        return NbtHelper.fromBlockState(state).asString();
+    }
+
+    public static BlockState parseBlockState(String string){
         try{
-            var string = buf.readString();
             return NbtHelper.toBlockState(Registries.BLOCK.getReadOnlyWrapper(),NbtHelper.fromNbtProviderString(string));
 
         } catch (CommandSyntaxException e) {
             throw new RuntimeException(e);
         }
-
-    }
-
-    public static void writeState(PacketByteBuf buf,BlockState state){
-        buf.writeString(NbtHelper.fromBlockState(state).asString());
     }
 }

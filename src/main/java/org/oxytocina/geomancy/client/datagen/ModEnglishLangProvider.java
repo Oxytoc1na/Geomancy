@@ -676,6 +676,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("death.attack.geomancy.plumbometer", "%1$s died of Hypochondria");
             add("death.attack.geomancy.restricted_action", "%1$s was caught trespassing");
             add("death.attack.geomancy.null_rubble", "%1$s's head was caved in by nothing");
+            add("death.attack.geomancy.launch", "%1$s got smashed by a block");
         }
 
         // Misc

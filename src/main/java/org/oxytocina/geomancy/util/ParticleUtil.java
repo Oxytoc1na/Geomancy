@@ -2,17 +2,22 @@ package org.oxytocina.geomancy.util;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.particle.BlockDustParticle;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleType;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.LocalRandom;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
 import org.oxytocina.geomancy.blocks.blockEntities.SmitheryBlockEntity;
 import org.oxytocina.geomancy.client.GeomancyClient;
@@ -89,6 +94,9 @@ public class ParticleUtil {
         public static ParticleData createRestrictedAction(World world, Vec3d where){
             return create(world,where).type(Type.RESTRICTED_ACTION).amount(20).dispersion(0.75f).vel(new Vec3d(-0.2,-0.2,-0.2), new Vec3d(0.2,0.2,0.2));
         }
+        public static ParticleData createBlock(World world, BlockState state, Vec3d pos, Vec3d vel, int count, float disp){
+            return create(world,pos).type(Type.BLOCK).amount(count).dispersion(disp).vel(vel,vel).data(NetworkingUtil.serializeBlockState(state));
+        }
 
         
         public static ParticleData create(World world, Vec3d pos){
@@ -137,9 +145,10 @@ public class ParticleUtil {
 
         @Environment(EnvType.CLIENT)
         public void run(){
-            World worldObj = MinecraftClient.getInstance().world;
+            ClientWorld worldObj = MinecraftClient.getInstance().world;
             if(!worldObj.getRegistryKey().getValue().equals(world)) return; // ignore particle spawns in different worlds
             Random rand = new LocalRandom(GeomancyClient.tick);
+            BlockState state = switch(type) { case BLOCK-> NetworkingUtil.parseBlockState(data); default->null;};
             for (int i = 0; i < amount; i++) {
                 Vec3d pPos = new Vec3d(
                         pos.x+(rand.nextFloat()*2-1)*dispersion,
@@ -212,6 +221,10 @@ public class ParticleUtil {
                         worldObj.addParticle(ParticleTypes.SQUID_INK,pPos.x,pPos.y,pPos.z,0,0,0);
                         break;
                     }
+                    case BLOCK:{
+                        addBlockBreakParticle(worldObj,pPos,vel,state);
+                        break;
+                    }
                 }
             }
         }
@@ -229,6 +242,47 @@ public class ParticleUtil {
             FORGE_CONSUME,
             GENERIC,
             RESTRICTED_ACTION,
+            BLOCK
+        }
+
+        public enum Shape{
+            DEFAULT,
+            RING
+        }
+    }
+
+    public static void addBlockBreakParticles(ClientWorld world, BlockPos pos, BlockState state) {
+        if (!state.isAir() && state.hasBlockBreakParticles()) {
+            VoxelShape voxelShape = state.getOutlineShape(world, pos);
+            voxelShape.forEachBox((minX, minY, minZ, maxX, maxY, maxZ) -> {
+                double d = Math.min((double)1.0F, maxX - minX);
+                double e = Math.min((double)1.0F, maxY - minY);
+                double f = Math.min((double)1.0F, maxZ - minZ);
+                int i = Math.max(2, MathHelper.ceil(d / (double)0.25F));
+                int j = Math.max(2, MathHelper.ceil(e / (double)0.25F));
+                int k = Math.max(2, MathHelper.ceil(f / (double)0.25F));
+
+                for(int l = 0; l < i; ++l) {
+                    for(int m = 0; m < j; ++m) {
+                        for(int n = 0; n < k; ++n) {
+                            double g = ((double)l + (double)0.5F) / (double)i;
+                            double h = ((double)m + (double)0.5F) / (double)j;
+                            double o = ((double)n + (double)0.5F) / (double)k;
+                            double p = g * d + minX;
+                            double q = h * e + minY;
+                            double r = o * f + minZ;
+                            MinecraftClient.getInstance().particleManager.addParticle(new BlockDustParticle(world, (double)pos.getX() + p, (double)pos.getY() + q, (double)pos.getZ() + r, g - (double)0.5F, h - (double)0.5F, o - (double)0.5F, state, pos));
+                        }
+                    }
+                }
+
+            });
+        }
+    }
+
+    public static void addBlockBreakParticle(ClientWorld world, Vec3d pos, Vec3d vel, BlockState state) {
+        if (!state.isAir() && state.hasBlockBreakParticles()) {
+            MinecraftClient.getInstance().particleManager.addParticle(new BlockDustParticle(world, (double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), vel.x, vel.y,vel.z, state, Toolbox.posToBlockPos(pos)));
         }
     }
 }

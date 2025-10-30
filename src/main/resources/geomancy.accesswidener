@@ -52,3 +52,4 @@ accessible method net/minecraft/block/NoteBlock playNote (Lnet/minecraft/entity/
 
 accessible method net/minecraft/entity/FallingBlockEntity <init> (Lnet/minecraft/world/World;DDDLnet/minecraft/block/BlockState;)V
 accessible field net/minecraft/entity/FallingBlockEntity block Lnet/minecraft/block/BlockState;
+accessible field net/minecraft/entity/FallingBlockEntity destroyedOnLanding Z

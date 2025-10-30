@@ -91,6 +91,8 @@ public class ShiftBlockEntity extends BlockEntity {
 		return this.pushedBlock;
 	}
 
+
+
 	private static void pushEntities(World world, BlockPos pos, float progress, ShiftBlockEntity blockEntity) {
 		Direction direction = blockEntity.getMovementDirection();
 		double deltaProgress = progress - blockEntity.progress;
