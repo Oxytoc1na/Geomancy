@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import org.oxytocina.geomancy.blocks.blockEntities.RestrictorBlockEntity;
 import org.oxytocina.geomancy.registries.ModDamageTypes;
 import org.oxytocina.geomancy.spells.*;
+import org.oxytocina.geomancy.util.EntityUtil;
 import org.oxytocina.geomancy.util.ParticleUtil;
 import org.oxytocina.geomancy.util.Toolbox;
 
@@ -123,8 +124,7 @@ public class FreezeSpell {
 
                     if(canAfford(comp,manaCost)){
                         if(entityMode){
-                            targetEntity.damage(ModDamageTypes.of(comp.world(),DamageTypes.FREEZE),4);
-                            targetEntity.setFrozenTicks(20*10);
+                            EntityUtil.freezeEntity(targetEntity,4,20*10);
                             trySpendSoul(comp,manaCost);
                             spawnCastParticles(comp, ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
                         }

@@ -43,9 +43,23 @@ public class ModBlockTags {
     public static final TagKey<Block> NULL_CRYSTAL_REPLACEABLE = register( "null/crystal_replaceable");
     public static final TagKey<Block> NULL_HOLDS_SPIKES = register( "null/holds_spikes");
 
+    public static final TagKey<Block> RAW_ORE_BLOCKS = register( "raw_ore");
+    public static final TagKey<Block> METAL_BLOCKS = register( "metal");
+
+    public static final TagKey<Block> LAUNCHED_HOT = register( "launched/hot");
+    public static final TagKey<Block> LAUNCHED_COLD = register( "launched/cold");
+    public static final TagKey<Block> LAUNCHED_HARMLESS = register( "launched/harmless");
+    public static final TagKey<Block> LAUNCHED_WEAK = register( "launched/weak");
+    public static final TagKey<Block> LAUNCHED_STRONG = register( "launched/strong");
+    public static final TagKey<Block> LAUNCHED_HEAVY = register( "launched/heavy");
+    public static final TagKey<Block> LAUNCHED_SUPERHEAVY = register( "launched/superheavy");
+
+
     // common tags
     public static final TagKey<Block> C_ORES = registerCommon("ores");
     public static final TagKey<Block> C_GLASS_BLOCKS = registerCommon("glass_blocks");
+    public static final TagKey<Block> C_GLASS_PANES = registerCommon("glass_panes");
+    public static final TagKey<Block> C_OBSIDIANS = registerCommon("obsidians");
 
 
     public static TagKey<Block> register(String name){

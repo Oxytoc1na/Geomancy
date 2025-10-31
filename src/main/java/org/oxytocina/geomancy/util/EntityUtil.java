@@ -2,6 +2,7 @@ package org.oxytocina.geomancy.util;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
@@ -14,6 +15,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.items.armor.IListenerArmor;
+import org.oxytocina.geomancy.registries.ModDamageTypes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -167,5 +169,10 @@ public class EntityUtil {
         float j = MathHelper.cos(f);
         float k = MathHelper.sin(f);
         return new Vec3d((double)(i * j), (double)(-k), (double)(h * j));
+    }
+
+    public static void freezeEntity(LivingEntity target, float damage, int duration) {
+        if(damage>0)target.damage(ModDamageTypes.of(target.getWorld(), DamageTypes.FREEZE),4);
+        target.setFrozenTicks(target.getFrozenTicks() + duration);
     }
 }

@@ -204,6 +204,66 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
 
         addSoulTag(NULL_BLOCKS,SoulLevel.RemoveMany);
 
+        // raw ore blocks
+        getOrCreateTagBuilder(RAW_ORE_BLOCKS).setReplace(false).add(
+                Blocks.COAL_BLOCK,
+                Blocks.REDSTONE_BLOCK,
+                Blocks.RAW_IRON_BLOCK,
+                Blocks.RAW_COPPER_BLOCK,
+                Blocks.RAW_GOLD_BLOCK,
+                Blocks.EMERALD_BLOCK,
+                Blocks.LAPIS_BLOCK,
+                Blocks.DIAMOND_BLOCK,
+                ModBlocks.RAW_LEAD_BLOCK,
+                ModBlocks.RAW_MOLYBDENUM_BLOCK,
+                ModBlocks.RAW_TITANIUM_BLOCK,
+                ModBlocks.RAW_MITHRIL_BLOCK,
+                ModBlocks.RAW_OCTANGULITE_BLOCK
+        );
+
+        // metal blocks
+        getOrCreateTagBuilder(METAL_BLOCKS).setReplace(false).add(
+                Blocks.IRON_BLOCK,
+                Blocks.COPPER_BLOCK,
+                Blocks.GOLD_BLOCK,
+                Blocks.EMERALD_BLOCK,
+                Blocks.LAPIS_BLOCK,
+                Blocks.DIAMOND_BLOCK,
+                ModBlocks.LEAD_BLOCK,
+                ModBlocks.MOLYBDENUM_BLOCK,
+                ModBlocks.TITANIUM_BLOCK,
+                ModBlocks.MITHRIL_BLOCK,
+                ModBlocks.OCTANGULITE_BLOCK
+        );
+
+
+        // launched blocks
+        {
+            getOrCreateTagBuilder(LAUNCHED_HOT).setReplace(false).add(
+                    Blocks.MAGMA_BLOCK);
+            getOrCreateTagBuilder(LAUNCHED_COLD).setReplace(false).add(
+                    Blocks.POWDER_SNOW_CAULDRON)
+                    .forceAddTag(BlockTags.ICE)
+                    .forceAddTag(BlockTags.SNOW);
+
+            getOrCreateTagBuilder(LAUNCHED_HARMLESS).setReplace(false)
+                    .forceAddTag(BlockTags.WOOL)
+                    .forceAddTag(BlockTags.WOOL_CARPETS);
+            getOrCreateTagBuilder(LAUNCHED_WEAK).setReplace(false)
+                    .forceAddTag(BlockTags.SAND);
+            getOrCreateTagBuilder(LAUNCHED_STRONG).setReplace(false)
+                    .forceAddTag(C_GLASS_BLOCKS)
+                    .forceAddTag(C_GLASS_PANES)
+            ;
+
+            getOrCreateTagBuilder(LAUNCHED_HEAVY).setReplace(false)
+                    .add(Blocks.OBSIDIAN,Blocks.CRYING_OBSIDIAN)
+                    .forceAddTag(RAW_ORE_BLOCKS);
+            getOrCreateTagBuilder(LAUNCHED_SUPERHEAVY).setReplace(false)
+                    .forceAddTag(BlockTags.ANVIL)
+                    .forceAddTag(METAL_BLOCKS);
+        }
+
         actualizeHybrids();
     }
     void addSoulBlock(Block block) { addSoulBlocks(SoulLevel.Normal,block); }
