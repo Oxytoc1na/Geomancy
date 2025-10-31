@@ -19,7 +19,7 @@ public class ModEntityTypes {
 
     public static final EntityType<StellgeEngineerEntity> STELLGE_ENGINEER = registerMob("stellge_engineer", StellgeEngineerEntity::new,StellgeEngineerEntity::defAttributes,new ExtraEntitySettings().dim(0.75f,1.5f).group(SpawnGroup.MONSTER).spawnEgg(0xFFFFFF,0xFFFFFF));
     public static final EntityType<StellgeCasterEntity> STELLGE_CASTER = registerMob("stellge_caster", StellgeCasterEntity::new,StellgeCasterEntity::defAttributes,new ExtraEntitySettings().dim(0.75f,1.5f).group(SpawnGroup.MONSTER).spawnEgg(0xFFFFFF,0xFFFFFF));
-    public static final EntityType<CasterDelegateEntity> CASTER_DELEGATE = registerEntity("caster_delegate", CasterDelegateEntity::new,new ExtraEntitySettings().dim(0.75f,1.5f).group(SpawnGroup.MISC));
+    public static final EntityType<CasterDelegateEntity> CASTER_DELEGATE = registerEntity("caster_delegate", CasterDelegateEntity::new,new ExtraEntitySettings().dim(0,0).group(SpawnGroup.MISC));
     public static final EntityType<LaunchedBlockEntity> LAUNCHED_BLOCK = registerEntity("launched_block", LaunchedBlockEntity::new,new ExtraEntitySettings().dim(1,1).group(SpawnGroup.MISC));
 
 

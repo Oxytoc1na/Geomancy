@@ -111,6 +111,7 @@ public class SpellBlocks {
     public static final SpellBlock PARSE;
     public static final SpellBlock TO_TEXT;
     public static final SpellBlock TRANSLATE;
+    public static final SpellBlock ROTATE;
 
     // effectors
     public static final SpellBlock PRINT;
@@ -537,6 +538,7 @@ public class SpellBlocks {
                                     case Vector:
                                         res.add(SpellSignal.createNumber(a.getVectorValue().dotProduct(b.getVectorValue())).named("dotproduct"));
                                         res.add(SpellSignal.createVector(a.getVectorValue().crossProduct(b.getVectorValue())).named("crossproduct"));
+                                        res.add(SpellSignal.createVector(Toolbox.memberwiseMult(a.getVectorValue(),b.getVectorValue())).named("product"));
                                         break;
                                     case Number:
                                         res.add(SpellSignal.createNumber(a.getNumberValue()*b.getNumberValue()).named("product"));
@@ -755,6 +757,21 @@ public class SpellBlocks {
                             SpellBlockResult res = SpellBlockResult.empty();
                             res.add("res",vars.get("signal").getTextValue(comp.context));
                             return res;
+                        })
+                        .category(cat).build());
+
+                ROTATE = register(SpellBlock.Builder.create("rotate")
+                        .inputs(
+                                SpellSignal.createVector().named("input"),
+                                SpellSignal.createVector().named("axis"),
+                                SpellSignal.createNumber().named("degrees"))
+                        .outputs(SpellSignal.createVector().named("rotated"))
+                        .func((comp,vars)->{
+                            Vec3d input = vars.getVector("input");
+                            Vec3d axis = vars.getVector("axis");
+                            if(axis.length()<=0) return SpellBlockResult.empty().add("rotated",input);
+                            float degrees = vars.getNumber("degrees");
+                            return SpellBlockResult.empty().add("rotated",Toolbox.rotateVector(input,axis,degrees/180*Math.PI));
                         })
                         .category(cat).build());
 
@@ -1191,7 +1208,7 @@ public class SpellBlocks {
             {
                 TRANSLATE = register(SpellBlock.Builder.create("translate")
                         .inputs(SpellSignal.createText().named("key"))
-                        .outputs(SpellSignal.createAny().named("translated"))
+                        .outputs(SpellSignal.createText().named("translated"))
                         
                         .func((comp,vars) -> {
                             SpellBlockResult res = SpellBlockResult.empty();

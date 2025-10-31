@@ -5,6 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.PistonBlock;
 import net.minecraft.entity.FallingBlockEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.property.Properties;
@@ -57,7 +58,7 @@ public class LaunchSpell {
                     var res = SpellBlockResult.empty();
                     if(canAfford(comp,manaCost)){
                         LaunchedBlockEntity entity = LaunchedBlockEntity.spawnFromBlock(
-                                comp.world(), fromPos,velocity,
+                                (ServerWorld) comp.world(), fromPos,velocity,
                                 fromState.contains(Properties.WATERLOGGED) ? fromState.with(Properties.WATERLOGGED, false) : fromState,
                                 !transformative
                         );

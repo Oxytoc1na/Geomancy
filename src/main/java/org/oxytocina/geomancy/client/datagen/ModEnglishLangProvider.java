@@ -158,6 +158,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("translate","Translate","returns the translation of a translation key");
             addSpell("greater","Greater","returns if a > b");
             addSpell("less","Less","returns if a < b");
+            addSpell("rotate","Rotate","returns a vector rotated around an axis");
             // effectors
             addSpell("print","Print","outputs a value to the casters chat");
             addSpell("fireball","Fireball","summons a fireball");

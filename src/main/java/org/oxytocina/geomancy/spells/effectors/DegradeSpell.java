@@ -7,6 +7,7 @@ import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.BlockPos;
 import org.oxytocina.geomancy.blocks.ModBlocks;
 import org.oxytocina.geomancy.blocks.blockEntities.RestrictorBlockEntity;
 import org.oxytocina.geomancy.spells.*;
@@ -170,5 +171,29 @@ public class DegradeSpell {
     }
     public static void addDegradeBlockData(Function<BlockState,Boolean> predicate, BlockState replacement){
         degradeBlockData.put(predicate,replacement);
+    }
+
+    public static BlockState getNonSilkTouchMinedState(BlockState state,ServerWorld sw){
+        ItemStack stack = Blocks.DIRT.asItem().getDefaultStack();
+        if(state.isToolRequired()){
+            if(state.isIn(BlockTags.PICKAXE_MINEABLE)) stack = new ItemStack(Items.NETHERITE_PICKAXE);
+            else if(state.isIn(BlockTags.AXE_MINEABLE)) stack = new ItemStack(Items.NETHERITE_AXE);
+            else if(state.isIn(BlockTags.SHOVEL_MINEABLE)) stack = new ItemStack(Items.NETHERITE_SHOVEL);
+            else if(state.isIn(BlockTags.HOE_MINEABLE)) stack = new ItemStack(Items.NETHERITE_HOE);
+            else if(state.isIn(BlockTags.SWORD_EFFICIENT)) stack = new ItemStack(Items.NETHERITE_SWORD);
+        }
+        final ItemStack s2 = stack.copy();
+        Predicate<BlockState> minableBlocksPredicate = s -> !s.isToolRequired() || s2.isSuitableFor(s);
+        if (!minableBlocksPredicate.test(state)) {
+            return state;
+        }
+
+        // fetch replacement state
+        var droppedStacks = Block.getDroppedStacks(state,sw, BlockPos.ORIGIN,null,null,stack);
+        for(var droppedStack:droppedStacks){
+            if(!(droppedStack.getItem() instanceof BlockItem bi)) continue;
+            return bi.getBlock().getDefaultState();
+        }
+        return state;
     }
 }

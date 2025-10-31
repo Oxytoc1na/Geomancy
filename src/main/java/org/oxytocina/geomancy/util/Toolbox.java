@@ -250,6 +250,10 @@ public class Toolbox {
         }
     }
 
+    public static Vec3d memberwiseMult(Vec3d a, Vec3d b) {
+        return new Vec3d(a.x*b.x,a.y*b.y,a.z*b.z);
+    }
+
     public static class GradientBuilder{
         public ArrayList<KeyFrame> keyFrames = new ArrayList<>();
 
@@ -313,6 +317,26 @@ public class Toolbox {
                 (float)(Math.cos(a)*v1.x-Math.sin(a)*v1.y),
                 (float)(Math.sin(a)*v1.x-Math.cos(a)*v1.y)
                 );
+    }
+
+    public static Vec3d rotateVector(Vec3d vec, Vec3d axis, double theta){
+        double x,y,z;
+        double u,v,w;
+        x=vec.x;y=vec.y;z=vec.z;
+        u=axis.x;v=axis.y;w=axis.z;
+        double added = (u*x+v*y+w*z);
+        double cos = Math.cos(theta);
+        double sin = Math.sin(theta);
+        double xP = u*added*(1d-cos)
+                + x*cos
+                + (-w*y+v*z)*sin;
+        double yP = v*added*(1d-cos)
+                + y*Math.cos(theta)
+                + (w*x-u*z)*sin;
+        double zP = w*added*(1d-cos)
+                + z*Math.cos(theta)
+                + (-v*x+u*y)*sin;
+        return new Vec3d(xP,yP,zP);
     }
 
     public static int floor(double d){

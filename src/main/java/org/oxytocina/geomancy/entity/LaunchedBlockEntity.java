@@ -8,6 +8,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.property.Properties;
@@ -19,6 +20,7 @@ import net.minecraft.world.World;
 import org.oxytocina.geomancy.client.util.CamShakeUtil;
 import org.oxytocina.geomancy.registries.ModBlockTags;
 import org.oxytocina.geomancy.registries.ModDamageTypes;
+import org.oxytocina.geomancy.spells.effectors.DegradeSpell;
 import org.oxytocina.geomancy.util.EntityUtil;
 import org.oxytocina.geomancy.util.ParticleUtil;
 import org.oxytocina.geomancy.util.Toolbox;
@@ -45,7 +47,8 @@ public class LaunchedBlockEntity extends FallingBlockEntity {
         this.health=health;
         this.setFallingBlockPos(this.getBlockPos());
     }
-    public static LaunchedBlockEntity spawnFromBlock(World world, BlockPos pos, Vec3d velocity, BlockState state, boolean destroyedOnLanding) {
+    public static LaunchedBlockEntity spawnFromBlock(ServerWorld world, BlockPos pos, Vec3d velocity, BlockState state, boolean destroyedOnLanding) {
+        state = DegradeSpell.getNonSilkTouchMinedState(state,world);
         LaunchedBlockEntity launchedBlockEntity = new LaunchedBlockEntity(
                 world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, velocity,destroyedOnLanding,
                 state.contains(Properties.WATERLOGGED) ? state.with(Properties.WATERLOGGED, false) : state,

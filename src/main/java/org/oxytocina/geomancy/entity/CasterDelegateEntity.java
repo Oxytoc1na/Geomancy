@@ -104,7 +104,7 @@ public class CasterDelegateEntity extends Entity {
 
     @Override
     public PistonBehavior getPistonBehavior() {
-        return PistonBehavior.NORMAL;
+        return PistonBehavior.IGNORE;
     }
 
     @Override
