@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MinecraftClientMixin {
 
     @Inject(method="Lnet/minecraft/client/MinecraftClient;handleInputEvents()V", at = @At(value="HEAD"))
-    private void catchHotkeyPress(CallbackInfo ci){
+    private void geomancy$catchHotkeyPress(CallbackInfo ci){
         boolean bl = KeyInputHandler.KEY_ACTIVATE_SPELLS.isPressed();
         if(!bl) return;
         var inst = MinecraftClient.getInstance();

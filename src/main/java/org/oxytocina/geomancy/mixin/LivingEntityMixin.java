@@ -1,13 +1,10 @@
 package org.oxytocina.geomancy.mixin;
 
-import com.llamalad7.mixinextras.injector.*;
 import com.llamalad7.mixinextras.injector.wrapoperation.*;
 
 //import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.MultifaceGrowthBlock;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.*;
 import net.minecraft.entity.damage.*;
@@ -26,7 +23,6 @@ import org.jetbrains.annotations.*;
 import org.oxytocina.geomancy.entity.TouchingFluidAware;
 import org.oxytocina.geomancy.items.armor.IListenerArmor;
 import org.oxytocina.geomancy.items.jewelry.IJewelryItem;
-import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.registries.ModFluidTags;
 import org.oxytocina.geomancy.util.EntityUtil;
 import org.spongepowered.asm.mixin.*;
@@ -134,18 +130,6 @@ public abstract class LivingEntityMixin {
         return amount;
     }
     */
-    
-
-    @Unique
-    private float getToughness() {
-        return (float) this.getAttributeValue(EntityAttributes.GENERIC_ARMOR_TOUGHNESS);
-    }
-
-    @ModifyExpressionValue(method = "handleFallDamage(FFLnet/minecraft/entity/damage/DamageSource;)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;computeFallDamage(FF)I"))
-    private int geomancy$puffCircletDamageNegation(int original) {
-        LivingEntity thisEntity = (LivingEntity) (Object) this;
-        return original;
-    }
 
     @ModifyVariable(at = @At("HEAD"), method = "damage(Lnet/minecraft/entity/damage/DamageSource;F)Z", argsOnly = true)
     private float geomancy$modifyDamage(float amount, DamageSource source) {
@@ -227,7 +211,7 @@ public abstract class LivingEntityMixin {
     }
 
     @Inject(method = "drop(Lnet/minecraft/entity/damage/DamageSource;)V", at = @At("HEAD"), cancellable = true)
-    protected void drop(DamageSource source, CallbackInfo ci) {
+    protected void geomancy$drop(DamageSource source, CallbackInfo ci) {
         LivingEntity thisEntity = (LivingEntity) (Object) this;
     }
 

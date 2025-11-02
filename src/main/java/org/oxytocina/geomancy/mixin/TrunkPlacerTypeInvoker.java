@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(TrunkPlacerType.class)
 public interface TrunkPlacerTypeInvoker {
     @Invoker("register")
-    static <P extends TrunkPlacer> TrunkPlacerType<P> callRegister(String id, Codec<P> codec) {
+    static <P extends TrunkPlacer> TrunkPlacerType<P> geomancy$callRegister(String id, Codec<P> codec) {
         throw new IllegalStateException();
     }
 }
