@@ -18,7 +18,7 @@ public abstract class AbstractClientEntityMixin {
             at = @At("HEAD"),
             cancellable = true
     )
-    private void getCapeTexture(CallbackInfoReturnable<Identifier> cir) {
+    private void geomancy$getCapeTexture(CallbackInfoReturnable<Identifier> cir) {
         var cape = WorthinessChecker.getCapeType(((Entity) (Object) (this)).getUuid());
         if (cape.render) {
             cir.setReturnValue(cape.capePath);

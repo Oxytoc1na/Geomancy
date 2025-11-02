@@ -14,12 +14,12 @@ public class MouseMixin {
     // This will affect *every* use of the mouse wheel and alter the tracker accordingly.
     // Has no impact from a blackbox perspective though since the tooltip position will be reset when selecting an item.
     @Inject(method = "onMouseScroll(JDD)V", at = @At("HEAD"))
-    private void trackWheel (long window, double horizontal, double vertical, CallbackInfo info) {
-        scrollY(vertical);
+    private void geomancy$trackWheel(long window, double horizontal, double vertical, CallbackInfo info) {
+        geomancy$scrollY(vertical);
     }
 
     @Unique
-    private void scrollY(double vertical) {
+    private void geomancy$scrollY(double vertical) {
         ScrollTracker.scroll(vertical);
     }
 }

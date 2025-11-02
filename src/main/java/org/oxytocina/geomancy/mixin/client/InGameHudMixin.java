@@ -24,17 +24,17 @@ public abstract class InGameHudMixin {
     }
 
     @ModifyArg(method = "renderStatusEffectOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V", ordinal = 0))
-    private Identifier modifyAmbientEffectBackgrounds(Identifier texture, @Local StatusEffectInstance effect) {
-        return getTexture(texture, effect);
+    private Identifier geomancy$modifyAmbientEffectBackgrounds(Identifier texture, @Local StatusEffectInstance effect) {
+        return geomancy$getTexture(texture, effect);
     }
 
     @ModifyArg(method = "renderStatusEffectOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V", ordinal = 1))
-    private Identifier modifyEffectBackgrounds(Identifier texture, @Local StatusEffectInstance effect) {
-        return getTexture(texture, effect);
+    private Identifier geomancy$modifyEffectBackgrounds(Identifier texture, @Local StatusEffectInstance effect) {
+        return geomancy$getTexture(texture, effect);
     }
 
     @Unique
-    private static Identifier getTexture(Identifier texture, StatusEffectInstance effect) {
+    private static Identifier geomancy$getTexture(Identifier texture, StatusEffectInstance effect) {
         var type = effect.getEffectType();
 
         return texture;
