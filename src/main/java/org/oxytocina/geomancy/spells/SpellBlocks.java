@@ -2820,7 +2820,9 @@ public class SpellBlocks {
 
         float fraction = ctx.getSoulConsumed() / ctx.getCasterMaxSoul();
         SoundEvent event = null;
-        if(fraction > 0.7f && ctx.getSoulConsumed() > 200)
+        if(ctx.couldntAffordSomething)
+            event = ModSoundEvents.CAST_FAILURE_BROKE;
+        else if(fraction > 0.7f && ctx.getSoulConsumed() > 200)
             event = ModSoundEvents.CAST_SUCCESS_EXPENSIVE;
         else if(fraction > 0.2f && ctx.getSoulConsumed() > 50)
             event = ModSoundEvents.CAST_SUCCESS_MEDIUM;
@@ -2828,10 +2830,10 @@ public class SpellBlocks {
             event = ModSoundEvents.CAST_SUCCESS_CHEAP;
         Toolbox.playSound(event,ctx.getWorld(), ctx.getOriginBlockPos(), switch(ctx.sourceType){
             case Caster -> SoundCategory.PLAYERS;
-
             case Block -> SoundCategory.BLOCKS;
             default -> SoundCategory.PLAYERS;
-        },1,0.8f+Toolbox.random.nextFloat()*0.4f);
+        },0.7f,0.8f+Toolbox.random.nextFloat()*0.4f);
+
     }
 
     public static boolean trySpendSoul(SpellComponent comp, float amount){

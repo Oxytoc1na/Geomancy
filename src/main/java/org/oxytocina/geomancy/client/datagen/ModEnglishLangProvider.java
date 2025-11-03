@@ -1818,6 +1818,23 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("MODID.options.max_spell_depth","Max. Spell Depth");
         }
 
+        // sounds
+        {
+            add("subtitles.MODID.use_hammer","Hammer hit");
+            add("subtitles.MODID.smithery_finished","Smithing completed");
+            add("subtitles.MODID.use_hammer_fail","Bad hammer hit");
+            add("subtitles.MODID.use_hammer_slip","Hammer slipped");
+            add("subtitles.MODID.entity_stellge_engineer_talk","Alien gibberish");
+            add("subtitles.MODID.entity_stellge_engineer_angry","Angry alien noises");
+            add("subtitles.MODID.entity_stellge_engineer_hurt","Hurt alien noises");
+            add("subtitles.MODID.entity_stellge_engineer_death","Alien shutting down");
+            add("subtitles.MODID.whispers","Otherworldly whispers");
+            add("subtitles.MODID.cast_fail_broke","Spellcasting failed");
+            add("subtitles.MODID.cast_success_cheap","Spellcasting");
+            add("subtitles.MODID.cast_success_medium","Large spellcasting");
+            add("subtitles.MODID.cast_success_expensive","Monumental spellcasting");
+        }
+
         tb=null;
     }
 

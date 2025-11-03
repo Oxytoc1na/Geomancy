@@ -174,7 +174,7 @@ public class SpellContext {
     public boolean tryConsumeSoul(float amount){
         if(isChild()) return parentCall.tryConsumeSoul(amount);
 
-        if(!canAfford(amount)) { couldntAffordSomething = true; return false; }
+        if(!canAfford(amount)) { setCouldntAffordSomething(); return false; }
         amount *= soulCostMultiplier;
         soulConsumed += amount;
 
@@ -219,7 +219,9 @@ public class SpellContext {
                 if(caster instanceof PlayerEntity player){
                     availableSoul = SoulUtil.getSoul(player);
                     if(player.isCreative()) return true;
-                    return availableSoul>=amount;
+                    boolean res = availableSoul>=amount;
+                    if(!res) setCouldntAffordSomething();
+                    return res;
                 }
 
                 // TODO: livingentity mana
@@ -228,7 +230,9 @@ public class SpellContext {
 
             case Block:{
                 availableSoul = SoulUtil.getSoul(casterBlock.getWorld(),casterBlock);
-                return availableSoul>=amount;
+                boolean res = availableSoul>=amount;
+                if(!res) setCouldntAffordSomething();
+                return res;
             }
 
             case Delegate:
@@ -237,7 +241,9 @@ public class SpellContext {
                     if(caster instanceof PlayerEntity player){
                         availableSoul = SoulUtil.getSoul(player);
                         if(player.isCreative()) return true;
-                        return availableSoul>=amount;
+                        boolean res = availableSoul>=amount;
+                        if(!res) setCouldntAffordSomething();
+                        return res;
                     }
 
                     // TODO: livingentity mana
@@ -245,7 +251,9 @@ public class SpellContext {
                 }
                 if(casterBlock!=null){
                     availableSoul = SoulUtil.getSoul(casterBlock.getWorld(),casterBlock);
-                    return availableSoul>=amount;
+                    boolean res = availableSoul>=amount;
+                    if(!res) setCouldntAffordSomething();
+                    return res;
                 }
                 break;
             }
@@ -472,6 +480,11 @@ public class SpellContext {
 
     public boolean hasCasterItem(){
         return casterItem != null && !casterItem.isEmpty();
+    }
+
+    public void setCouldntAffordSomething(){
+        if(isChild()) {parentCall.setCouldntAffordSomething(); return;}
+        couldntAffordSomething=true;
     }
 
     public enum SourceType{

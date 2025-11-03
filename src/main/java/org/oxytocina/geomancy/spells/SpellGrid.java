@@ -199,6 +199,7 @@ public class SpellGrid {
             }
         }
 
+        // sync soul
         if(context.getSoulConsumed() > 0){
             switch(context.sourceType)
             {

@@ -12,37 +12,37 @@ public class ModSoundEvents {
     public static final HashMap<Identifier,ExtraData> EVENTS = new HashMap<>();
 
     public static final SoundEvent MUSIC_DISC_DIGGY = register("music_disc.diggy",new ExtraData().prefix("geomancy:records/diggy"));
-    public static final SoundEvent USE_HAMMER = register("use_hammer",new ExtraData().count(4).prefix("geomancy:anvil_use"));
-    public static final SoundEvent SMITHERY_FINISHED = register("smithery_finished",new ExtraData().prefix("geomancy:anvil_use_4"));
-    public static final SoundEvent USE_HAMMER_FAIL = register("use_hammer_fail",new ExtraData().prefix("geomancy:anvil_break"));
-    public static final SoundEvent USE_HAMMER_SLIP = register("use_hammer_slip",new ExtraData().count(6).prefix("geomancy:hammer_slip"));
+    public static final SoundEvent USE_HAMMER = register("use_hammer",new ExtraData().count(4).prefix("geomancy:anvil_use").subtitled());
+    public static final SoundEvent SMITHERY_FINISHED = register("smithery_finished",new ExtraData().prefix("geomancy:anvil_use_4").subtitled());
+    public static final SoundEvent USE_HAMMER_FAIL = register("use_hammer_fail",new ExtraData().prefix("geomancy:anvil_break").subtitled());
+    public static final SoundEvent USE_HAMMER_SLIP = register("use_hammer_slip",new ExtraData().count(6).prefix("geomancy:hammer_slip").subtitled());
 
-    public static final SoundEvent BLOCK_STONE_WHISPERS_BREAK =     register("block_stone_whispers_break",new ExtraData().count(4).prefix("geomancy:block/stone_whispers/break"));
+    public static final SoundEvent BLOCK_STONE_WHISPERS_BREAK =     register("block_stone_whispers_break",new ExtraData().count(4).prefix("geomancy:block/stone_whispers/break").subtitled("subtitles.block.generic.break"));
     //public static final SoundEvent BLOCK_STONE_WHISPERS_STEP =      register("block_stone_whispers_step");
-    public static final SoundEvent BLOCK_STONE_WHISPERS_PLACE =     register("block_stone_whispers_place",new ExtraData().count(6).prefix("geomancy:block/stone_whispers/place"));
+    public static final SoundEvent BLOCK_STONE_WHISPERS_PLACE =     register("block_stone_whispers_place",new ExtraData().count(6).prefix("geomancy:block/stone_whispers/place").subtitled("subtitles.block.generic.place"));
     //public static final SoundEvent BLOCK_STONE_WHISPERS_HIT =       register("block_stone_whispers_hit");
     //public static final SoundEvent BLOCK_STONE_WHISPERS_FALL =      register("block_stone_whispers_fall");
-    public static final SoundEvent BLOCK_DEEPSLATE_WHISPERS_BREAK = register("block_deepslate_whispers_break",new ExtraData().count(4).prefix("geomancy:block/deepslate_whispers/break"));
+    public static final SoundEvent BLOCK_DEEPSLATE_WHISPERS_BREAK = register("block_deepslate_whispers_break",new ExtraData().count(4).prefix("geomancy:block/deepslate_whispers/break").subtitled("subtitles.block.generic.break"));
     //public static final SoundEvent BLOCK_DEEPSLATE_WHISPERS_STEP =  register("block_deepslate_whispers_step");
-    public static final SoundEvent BLOCK_DEEPSLATE_WHISPERS_PLACE = register("block_deepslate_whispers_place",new ExtraData().count(6).prefix("geomancy:block/deepslate_whispers/place"));
+    public static final SoundEvent BLOCK_DEEPSLATE_WHISPERS_PLACE = register("block_deepslate_whispers_place",new ExtraData().count(6).prefix("geomancy:block/deepslate_whispers/place").subtitled("subtitles.block.generic.place"));
     //public static final SoundEvent BLOCK_DEEPSLATE_WHISPERS_HIT =   register("block_deepslate_whispers_hit");
     //public static final SoundEvent BLOCK_DEEPSLATE_WHISPERS_FALL =  register("block_deepslate_whispers_fall");
-    public static final SoundEvent BLOCK_METAL_WHISPERS_BREAK =     register("block_metal_whispers_break",new ExtraData().count(6).prefix("geomancy:block/metal_whispers/place"));
+    public static final SoundEvent BLOCK_METAL_WHISPERS_BREAK =     register("block_metal_whispers_break",new ExtraData().count(6).prefix("geomancy:block/metal_whispers/place").subtitled("subtitles.block.generic.break"));
     //public static final SoundEvent BLOCK_METAL_WHISPERS_STEP =      register("block_metal_whispers_step");
-    public static final SoundEvent BLOCK_METAL_WHISPERS_PLACE =     register("block_metal_whispers_place",new ExtraData().count(6).prefix("geomancy:block/metal_whispers/place"));
+    public static final SoundEvent BLOCK_METAL_WHISPERS_PLACE =     register("block_metal_whispers_place",new ExtraData().count(6).prefix("geomancy:block/metal_whispers/place").subtitled("subtitles.block.generic.place"));
     //public static final SoundEvent BLOCK_METAL_WHISPERS_HIT =       register("block_metal_whispers_hit");
     //public static final SoundEvent BLOCK_METAL_WHISPERS_FALL =      register("block_metal_whispers_fall");
 
-    public static final SoundEvent ENTITY_STELLGE_ENGINEER_TALK =   register("entity_stellge_engineer_talk",new ExtraData().count(7).prefix("geomancy:mob/stellge_engineer/talk"));
-    public static final SoundEvent ENTITY_STELLGE_ENGINEER_ANGRY =  register("entity_stellge_engineer_angry",new ExtraData().count(1).prefix("geomancy:mob/stellge_engineer/angry"));
-    public static final SoundEvent ENTITY_STELLGE_ENGINEER_HURT =   register("entity_stellge_engineer_hurt",new ExtraData().count(1).prefix("geomancy:mob/stellge_engineer/hurt"));
-    public static final SoundEvent ENTITY_STELLGE_ENGINEER_DEATH =  register("entity_stellge_engineer_death",new ExtraData().count(1).prefix("geomancy:mob/stellge_engineer/death"));
+    public static final SoundEvent ENTITY_STELLGE_ENGINEER_TALK =   register("entity_stellge_engineer_talk",new ExtraData().count(7).prefix("geomancy:mob/stellge_engineer/talk").subtitled());
+    public static final SoundEvent ENTITY_STELLGE_ENGINEER_ANGRY =  register("entity_stellge_engineer_angry",new ExtraData().count(1).prefix("geomancy:mob/stellge_engineer/angry").subtitled());
+    public static final SoundEvent ENTITY_STELLGE_ENGINEER_HURT =   register("entity_stellge_engineer_hurt",new ExtraData().count(1).prefix("geomancy:mob/stellge_engineer/hurt").subtitled());
+    public static final SoundEvent ENTITY_STELLGE_ENGINEER_DEATH =  register("entity_stellge_engineer_death",new ExtraData().count(1).prefix("geomancy:mob/stellge_engineer/death").subtitled());
 
-    public static final SoundEvent WHISPERS = register("whispers",new ExtraData().count(4).prefix("geomancy:octangulite/whispers_single"));
-    public static final SoundEvent CAST_FAILURE_BROKE = register("cast_fail_broke",new ExtraData().count(1).prefix("geomancy:casting/fail_broke"));
-    public static final SoundEvent CAST_SUCCESS_CHEAP = register("cast_success_cheap",new ExtraData().count(1).prefix("geomancy:casting/small"));
-    public static final SoundEvent CAST_SUCCESS_MEDIUM = register("cast_success_medium",new ExtraData().count(1).prefix("geomancy:casting/medium"));
-    public static final SoundEvent CAST_SUCCESS_EXPENSIVE = register("cast_success_expensive",new ExtraData().count(1).prefix("geomancy:casting/large"));
+    public static final SoundEvent WHISPERS = register("whispers",new ExtraData().count(4).prefix("geomancy:octangulite/whispers_single").subtitled());
+    public static final SoundEvent CAST_FAILURE_BROKE = register("cast_fail_broke",new ExtraData().count(1).prefix("geomancy:casting/fail_broke").subtitled());
+    public static final SoundEvent CAST_SUCCESS_CHEAP = register("cast_success_cheap",new ExtraData().count(1).prefix("geomancy:casting/small").subtitled());
+    public static final SoundEvent CAST_SUCCESS_MEDIUM = register("cast_success_medium",new ExtraData().count(1).prefix("geomancy:casting/medium").subtitled());
+    public static final SoundEvent CAST_SUCCESS_EXPENSIVE = register("cast_success_expensive",new ExtraData().count(1).prefix("geomancy:casting/large").subtitled());
 
     // spellmaker ui
     public static final SoundEvent SPELLMAKER_INSERT_CRADLE = register("spellmaker_insert_cradle",new ExtraData().count(1).prefix("geomancy:spellmaker/insert_cradle"));
@@ -79,8 +79,12 @@ public class ModSoundEvents {
         public SoundEvent event;
         public int plurality = 1;
         public String pathPrefix = null;
+        public boolean subtitled = false;
+        public String subtitle = null;
 
         public ExtraData count(int count){plurality=count;return this;}
         public ExtraData prefix(String pathPrefix){this.pathPrefix=pathPrefix;return this;}
+        public ExtraData subtitled(){this.subtitled=true;return this;}
+        public ExtraData subtitled(String id){this.subtitle=id;return subtitled();}
     }
 }

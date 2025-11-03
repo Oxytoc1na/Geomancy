@@ -89,6 +89,7 @@ public class ModSoundProvider implements DataProvider {
                 if(data.plurality>1) sound.name+="_"+(i+1);
                 res.sounds.add(sound);
             }
+            res.subtitle = data.subtitled ? (data.subtitle != null ? data.subtitle : "subtitles."+id.toString().replaceAll(":",".").replaceAll("/",".")) : null;
 
             add(id.getPath(),res);
         }
