@@ -749,6 +749,9 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addAdvancement(".spells.simple_recursion","Recursion","Cast a spell from within itself");
             addAdvancement(".spells.simple_threading","Threading","Have a delegate create a delegate");
             addAdvancement(".spells.simple_depthlimit","Out of memory exception","Cast a spell that reached maximum depth");
+            addAdvancement(".spells.simple_earth_bending","Ontoph of the world","Move the earth by using a spell");
+            addAdvancement(".spells.simple_juggling","Juggling","Redirect the same launched block three times");
+
             addAdvancement(".spells.simple_enlightenment_1","Conqueror of Soul","Activate something strange at a lively place");
             addAdvancement(".spells.simple_enlightenment_2","Conqueror of Calculation","Pass the job interview programming question");
             addAdvancement(".spells.simple_enlightenment_3","Conqueror of Presence","Tell the world how you truly feel. Give it your all. It deserves to be heard.");

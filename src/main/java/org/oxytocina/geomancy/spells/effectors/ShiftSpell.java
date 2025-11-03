@@ -4,8 +4,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.PistonBlock;
 import net.minecraft.util.math.Direction;
 import org.oxytocina.geomancy.blocks.blockEntities.RestrictorBlockEntity;
+import org.oxytocina.geomancy.registries.ModBlockTags;
 import org.oxytocina.geomancy.spells.SpellBlock;
 import org.oxytocina.geomancy.spells.SpellBlockResult;
+import org.oxytocina.geomancy.spells.SpellBlocks;
 import org.oxytocina.geomancy.spells.SpellSignal;
 import org.oxytocina.geomancy.util.BlockHelper;
 import org.oxytocina.geomancy.util.ParticleUtil;
@@ -116,6 +118,8 @@ public class ShiftSpell {
 
                     if(canAfford(comp,manaCost)){
                         BlockHelper.push(comp.world(),fromPos.offset(direction.getOpposite()),direction);
+                        if(fromState.isIn(ModBlockTags.TRIGGERS_EARTH_BENDING_ADVANCEMENT))
+                            SpellBlocks.tryUnlockSpellAdvancement(comp,"earth_bending");
                         trySpendSoul(comp,manaCost);
                         spawnCastParticles(comp, ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
                     }

@@ -5,6 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.PistonBlock;
 import net.minecraft.entity.FallingBlockEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -15,10 +16,8 @@ import net.minecraft.util.math.Vec3d;
 import org.oxytocina.geomancy.blocks.blockEntities.RestrictorBlockEntity;
 import org.oxytocina.geomancy.client.util.CamShakeUtil;
 import org.oxytocina.geomancy.entity.LaunchedBlockEntity;
-import org.oxytocina.geomancy.spells.SpellBlock;
-import org.oxytocina.geomancy.spells.SpellBlockResult;
-import org.oxytocina.geomancy.spells.SpellComponent;
-import org.oxytocina.geomancy.spells.SpellSignal;
+import org.oxytocina.geomancy.registries.ModBlockTags;
+import org.oxytocina.geomancy.spells.*;
 import org.oxytocina.geomancy.util.BlockHelper;
 import org.oxytocina.geomancy.util.ParticleUtil;
 import org.oxytocina.geomancy.util.Toolbox;
@@ -62,6 +61,9 @@ public class LaunchSpell {
                                 fromState.contains(Properties.WATERLOGGED) ? fromState.with(Properties.WATERLOGGED, false) : fromState,
                                 !transformative
                         );
+                        entity.setOwner(comp.caster());
+                        if(fromState.isIn(ModBlockTags.TRIGGERS_EARTH_BENDING_ADVANCEMENT))
+                            SpellBlocks.tryUnlockSpellAdvancement(comp,"earth_bending");
                         Toolbox.playSound(fromState.getSoundGroup().getBreakSound(),comp.world(),fromPos, SoundCategory.BLOCKS,1);
                         ParticleUtil.ParticleData.createBlock(comp.world(),fromState,fromPos.toCenterPos(),velocity.multiply(5),50,0.5f).send();
                         CamShakeUtil.cause(comp.world(),fromPos.toCenterPos(),15,0.3f);

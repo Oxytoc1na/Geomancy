@@ -105,9 +105,7 @@ TODO EFFECT BLOCKS
 - make logistics take -1 as fromSlot (first with item)
 
 autocaster
-- set block redstone level
 - get block redstone level
-- get block facing position
 
 TODO NULL DIMENSION
 - endless maze
@@ -121,9 +119,6 @@ TODO MODONOMICON
 
 TODO textures
 - master glove
-- stellge caster
-- restrictor
-- component bag
 
 TODO ITEMS
 - give mithril tools gem slots

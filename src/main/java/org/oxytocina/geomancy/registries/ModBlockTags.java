@@ -54,6 +54,7 @@ public class ModBlockTags {
     public static final TagKey<Block> LAUNCHED_HEAVY = register( "launched/heavy");
     public static final TagKey<Block> LAUNCHED_SUPERHEAVY = register( "launched/superheavy");
 
+    public static final TagKey<Block> TRIGGERS_EARTH_BENDING_ADVANCEMENT = register("triggers_earth_bending_advancement");
 
     // common tags
     public static final TagKey<Block> C_ORES = registerCommon("ores");

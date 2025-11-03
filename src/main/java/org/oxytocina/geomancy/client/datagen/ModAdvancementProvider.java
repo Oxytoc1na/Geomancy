@@ -150,6 +150,8 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         Advancement spell_recursion =           AddSimpleAdvancement(Items.OAK_SAPLING              ,"recursion"        ,"do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
         Advancement spell_threading =           AddSimpleAdvancement(Items.STRING                   ,"threading"        ,"do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
         Advancement spell_depthlimit =          AddSimpleAdvancement(Items.WRITTEN_BOOK             ,"depthlimit"       ,"do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_earth_bending =       AddSimpleAdvancement(Items.STONE                    ,"earth_bending"    ,"do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
+        Advancement spell_juggling =            AddSimpleAdvancement(Items.SNOWBALL                 ,"juggling"         ,"do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
         Advancement enlightenment_1 =           AddSimpleAdvancement(ModItems.LORE_LOG_EXODIA_1     ,"enlightenment_1"  ,"do","spells",AdvancementFrame.CHALLENGE,true,true,spell_unlocker);
         Advancement enlightenment_2 =           AddSimpleAdvancement(ModItems.LORE_LOG_EXODIA_2     ,"enlightenment_2"  ,"do","spells",AdvancementFrame.CHALLENGE,true,true,enlightenment_1);
         Advancement enlightenment_3 =           AddSimpleAdvancement(ModItems.LORE_LOG_EXODIA_3     ,"enlightenment_3"  ,"do","spells",AdvancementFrame.CHALLENGE,true,true,enlightenment_2);

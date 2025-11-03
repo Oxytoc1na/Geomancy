@@ -31,7 +31,8 @@
     "client.LivingEntityClientMixin",
     "client.ModelLoaderMixin",
     "client.MouseMixin",
-    "client.PlayerInventoryClientMixin"
+    "client.PlayerInventoryClientMixin",
+    "client.SplashTextResourceSupplierMixin"
   ],
   "injectors": {
     "defaultRequire": 1

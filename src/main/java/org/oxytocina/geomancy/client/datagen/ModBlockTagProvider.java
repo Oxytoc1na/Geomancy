@@ -264,6 +264,16 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
                     .forceAddTag(METAL_BLOCKS);
         }
 
+        getOrCreateTagBuilder(TRIGGERS_EARTH_BENDING_ADVANCEMENT).setReplace(false)
+                .forceAddTag(BlockTags.BASE_STONE_OVERWORLD)
+                .forceAddTag(BlockTags.BASE_STONE_NETHER)
+                .forceAddTag(BlockTags.STONE_ORE_REPLACEABLES)
+                .forceAddTag(BlockTags.DEEPSLATE_ORE_REPLACEABLES)
+                .forceAddTag(BlockTags.DEEPSLATE_ORE_REPLACEABLES)
+                .forceAddTag(BlockTags.DIRT)
+                .add(Blocks.END_STONE)
+        ;
+
         actualizeHybrids();
     }
     void addSoulBlock(Block block) { addSoulBlocks(SoulLevel.Normal,block); }

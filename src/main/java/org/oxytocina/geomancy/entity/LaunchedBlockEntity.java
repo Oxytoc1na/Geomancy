@@ -6,8 +6,10 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.FallingBlockEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -20,12 +22,14 @@ import net.minecraft.world.World;
 import org.oxytocina.geomancy.client.util.CamShakeUtil;
 import org.oxytocina.geomancy.registries.ModBlockTags;
 import org.oxytocina.geomancy.registries.ModDamageTypes;
+import org.oxytocina.geomancy.spells.SpellBlocks;
 import org.oxytocina.geomancy.spells.effectors.DegradeSpell;
 import org.oxytocina.geomancy.util.EntityUtil;
 import org.oxytocina.geomancy.util.ParticleUtil;
 import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.List;
+import java.util.UUID;
 
 public class LaunchedBlockEntity extends FallingBlockEntity {
     public LaunchedBlockEntity(EntityType<? extends LaunchedBlockEntity> entityType, World world) {
@@ -33,6 +37,9 @@ public class LaunchedBlockEntity extends FallingBlockEntity {
     }
 
     public float health = 10;
+    public int redirects = 0;
+    public UUID ownerID;
+    public PlayerEntity ownerPlayer;
 
     private LaunchedBlockEntity(World world, double x, double y, double z, Vec3d velocity,boolean destroyedOnLanding, BlockState block, float health) {
         this(ModEntityTypes.LAUNCHED_BLOCK, world);
@@ -264,6 +271,7 @@ public class LaunchedBlockEntity extends FallingBlockEntity {
     @Override
     public boolean handleAttack(Entity attacker) {
         setVelocity(attacker.getRotationVector());
+        onRedirect();
         return true;
     }
 
@@ -277,16 +285,39 @@ public class LaunchedBlockEntity extends FallingBlockEntity {
     protected void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
         nbt.putFloat("h",health);
+        nbt.putUuid("owner",ownerID);
+        nbt.putInt("redirects",redirects);
     }
 
     @Override
     protected void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
         health = nbt.getFloat("h");
+        ownerID = nbt.getUuid("owner");
+        redirects = nbt.getInt("redirects");
+        tryGetOwnerPlayer();
+    }
+
+    private void tryGetOwnerPlayer() {
+        if(getWorld() instanceof ServerWorld sw){
+            ownerPlayer = sw.getPlayerByUuid(ownerID);
+        }
     }
 
     @Override
     public boolean doesRenderOnFire() {
         return isHot();
+    }
+
+    public void setOwner(Entity entity){
+        if(entity instanceof PlayerEntity pe) ownerPlayer = pe;
+        ownerID = entity.getUuid();
+    }
+
+    public void onRedirect(){
+        redirects++;
+        if(redirects >= 3 && ownerPlayer instanceof ServerPlayerEntity spe){
+            SpellBlocks.tryUnlockSpellAdvancement(spe,"juggling");
+        }
     }
 }
