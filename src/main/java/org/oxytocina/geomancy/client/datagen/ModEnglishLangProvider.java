@@ -657,6 +657,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("effect.MODID.ecstatic"    , "Ecstatic");
             add("effect.MODID.blissful"    , "Blissful");
             add("effect.MODID.righteous"   , "Righteous");
+            add("effect.MODID.creative_block"   , "Creative Block");
 
         }
 

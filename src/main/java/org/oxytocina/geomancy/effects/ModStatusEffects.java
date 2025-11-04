@@ -31,6 +31,9 @@ public class ModStatusEffects {
     /// makes you hear footsteps, ambient mob sounds, chests opening and closing, etc.
     public static final StatusEffect PARANOIA = register("paranoia", new ParanoiaStatusEffect(StatusEffectCategory.HARMFUL, 0x2324f8));
 
+    /// makes you unable to place or break blocks
+    public static final StatusEffect CREATIVE_BLOCK = register("creative_block", new CreativeBlockStatusEffect(StatusEffectCategory.HARMFUL, 0x2324f8));
+
 
     private static StatusEffect register(String id, StatusEffect entry) {
         return Registry.register(Registries.STATUS_EFFECT, Geomancy.locate(id), entry);
