@@ -1,7 +1,6 @@
 package org.oxytocina.geomancy.enchantments;
 
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
@@ -30,7 +29,10 @@ public class ModEnchantments {
     public static final MesmerizingEnchantment MESMERIZING  = register("mesmerizing",new MesmerizingEnchantment());
     /// decreases effect of distance on casting cost
     /// targets: caster items
-    public static final FocusedEnchantment FOCUSED          = register("focused",new FocusedEnchantment());
+    public static final CasterEnchantment FOCUSED          = register("focused",new CasterEnchantment());
+    /// decreases effect of distance on casting cost
+    /// targets: caster items
+    public static final CasterEnchantment PARALLELISM      = register("parallelism",new CasterEnchantment());
 
     public static void register(){
 

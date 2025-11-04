@@ -302,7 +302,7 @@ public class SpellBlocks2 {
                 }
             }
             else{
-                switch(comp.receivedSignals.get(input.getKey()).type){
+                switch(input.getValue().type){
                     case UUID : break;
                     case Vector: break;
                     default: return TriState.FALSE;

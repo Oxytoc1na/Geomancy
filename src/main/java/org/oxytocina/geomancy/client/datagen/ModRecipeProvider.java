@@ -390,6 +390,8 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     AddGenericSpellcomponentRecipe(SpellBlocks.LESS,Items.OAK_SAPLING,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.TRANSLATE,Items.SPRUCE_SIGN,baseIngot);
                     AddGenericSpellcomponentRecipe(SpellBlocks.ROTATE,Items.ITEM_FRAME,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.COUNT,Items.BARREL,baseIngot);
+                    AddGenericSpellcomponentRecipe(SpellBlocks.CONTAINS,Items.HOPPER,baseIngot);
 
                 }
 

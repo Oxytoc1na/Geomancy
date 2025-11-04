@@ -91,6 +91,7 @@ public class FreezeSpell {
                 {
                     var pos2 = pos.add(dir.getOffsetX(),dir.getOffsetY(),dir.getOffsetZ());
                     if(!comp.world().getBlockState(pos2).isReplaceable()) continue;
+                    if(!Blocks.SNOW.canPlaceAt(comp.world().getBlockState(pos2),comp.world(),pos2)) continue;
                     comp.world().setBlockState(pos2,Blocks.SNOW.getDefaultState());
                 }
                 playUseSound.accept(comp.world(),pos);

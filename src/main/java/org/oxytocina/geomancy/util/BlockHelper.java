@@ -185,6 +185,13 @@ public class BlockHelper {
                 Math.abs(distance.getZ())) <= pedestalRange;
     }
 
+    public static List<BlockPos> getMovedBlockPositions(World world, BlockPos fromBlockPos, Direction direction){
+        ShiftHandler shiftHandler = new ShiftHandler(world, fromBlockPos, direction);
+        if (!shiftHandler.calculatePush())
+            return List.of();
+        return shiftHandler.getMovedBlocks();
+    }
+
     public static boolean push(World world, BlockPos fromBlockPos, Direction direction) {
         BlockPos toBlockPos = fromBlockPos.offset(direction);
 

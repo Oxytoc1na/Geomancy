@@ -1,13 +1,12 @@
 package org.oxytocina.geomancy.enchantments;
 
-import org.oxytocina.geomancy.items.ISoulStoringItem;
 import org.oxytocina.geomancy.items.armor.CastingArmorItem;
 import org.oxytocina.geomancy.items.tools.SoulCastingItem;
 import org.oxytocina.geomancy.items.trinkets.CastingTrinketItem;
 
-public class FocusedEnchantment extends ModEnchantment {
+public class CasterEnchantment extends ModEnchantment {
 
-    protected FocusedEnchantment() {
+    protected CasterEnchantment() {
         super(Rarity.COMMON, s->
                 s.getItem() instanceof SoulCastingItem ||
                 s.getItem() instanceof CastingArmorItem ||

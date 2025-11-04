@@ -1,10 +1,20 @@
 package org.oxytocina.geomancy.spells.effectors;
 
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.PistonBlock;
+import net.minecraft.block.piston.PistonBehavior;
+import net.minecraft.entity.Entity;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Boxes;
 import net.minecraft.util.math.Direction;
 import org.oxytocina.geomancy.blocks.blockEntities.RestrictorBlockEntity;
+import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.registries.ModBlockTags;
+import org.oxytocina.geomancy.registries.ModDamageTypes;
 import org.oxytocina.geomancy.spells.SpellBlock;
 import org.oxytocina.geomancy.spells.SpellBlockResult;
 import org.oxytocina.geomancy.spells.SpellBlocks;
@@ -12,6 +22,9 @@ import org.oxytocina.geomancy.spells.SpellSignal;
 import org.oxytocina.geomancy.util.BlockHelper;
 import org.oxytocina.geomancy.util.ParticleUtil;
 import org.oxytocina.geomancy.util.Toolbox;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.oxytocina.geomancy.spells.SpellBlocks.*;
 import static org.oxytocina.geomancy.spells.SpellBlocks.spawnCastParticles;
@@ -46,78 +59,48 @@ public class ShiftSpell {
                     ) return SpellBlockResult.empty();
 
                     // check for mobs caught in the blast
-                    /*
-                    Box box = Box.of(toPos.toCenterPos(),1,1,1);
-                    List<Entity> contenders = comp.world().getOtherEntities(null, Boxes.stretch(box, direction, 1).union(box));
-                    if (!contenders.isEmpty()) {
-                        List<Box> list2 = voxelShape.getBoundingBoxes();
-                        boolean isSLime = blockEntity.pushedBlock.isOf(Blocks.SLIME_BLOCK);
-                        Iterator var12 = contenders.iterator();
-
-                        while (true) {
-                            Entity entity;
-                            while (true) {
-                                if (!var12.hasNext()) {
-                                    return;
-                                }
-
-                                entity = (Entity)var12.next();
-                                if (entity.getPistonBehavior() != PistonBehavior.IGNORE) {
-                                    if (!isSLime) {
-                                        break;
-                                    }
-
-                                    if (!(entity instanceof ServerPlayerEntity)) {
-                                        Vec3d vec3d = entity.getVelocity();
-                                        double e = vec3d.x;
-                                        double g = vec3d.y;
-                                        double h = vec3d.z;
-                                        switch (direction.getAxis()) {
-                                            case X:
-                                                e = direction.getOffsetX();
-                                                break;
-                                            case Y:
-                                                g = direction.getOffsetY();
-                                                break;
-                                            case Z:
-                                                h = direction.getOffsetZ();
-                                        }
-
-                                        entity.setVelocity(e, g, h);
-                                        break;
-                                    }
-                                }
-                            }
-
-                            double i = 0.0;
-
-                            for (Box box2 : list2) {
-                                Box box3 = Boxes.stretch(offsetHeadBox(pos, box2, blockEntity), direction, d);
-                                Box box4 = entity.getBoundingBox();
-                                if (box3.intersects(box4)) {
-                                    i = Math.max(i, getIntersectionSize(box3, direction, box4));
-                                    if (i >= d) {
-                                        break;
-                                    }
-                                }
-                            }
-
-                            if (!(i <= 0.0)) {
-                                i = Math.min(i, d) + 0.01;
-                                moveEntity(direction, entity, i, direction);
-                                if (!blockEntity.extending && blockEntity.source) {
-                                    push(pos, entity, direction, d);
-                                }
+                    var positions = BlockHelper.getMovedBlockPositions(comp.world(),fromPos.offset(direction.getOpposite()),direction);
+                    List<Entity> pushedEntities = new ArrayList<>();
+                    for(var pushedPos : positions){
+                        var pushedState = comp.world().getBlockState(pushedPos);
+                        var voxelShape = pushedState.getCollisionShape(comp.world(),pushedPos);
+                        Box box = Box.of(pushedPos.toCenterPos(),1,1,1);
+                        List<Entity> contenders = comp.world().getOtherEntities(null, Boxes.stretch(box, direction, 1).union(box));
+                        if (!contenders.isEmpty()) {
+                            //List<Box> list2 = voxelShape.getBoundingBoxes();
+                            for(var contender : contenders)
+                            {
+                                if(contender.getPistonBehavior() == PistonBehavior.IGNORE) continue;
+                                //for (Box box2 : list2) {
+                                    //Box box3 = Boxes.stretch(box2, direction, 1);
+                                    //Box box4 = contender.getBoundingBox();
+                                    //if (box3.intersects(box4)) {
+                                        pushedEntities.add(contender);
+                                        //break;
+                                    //}
+                                //}
                             }
                         }
                     }
-*/
+
                     // calculate cost
                     float manaCost = 2f
+                            +pushedEntities.size()*3
                             +normalCastOffsetSoulCost(comp,pos);
 
                     if(canAfford(comp,manaCost)){
                         BlockHelper.push(comp.world(),fromPos.offset(direction.getOpposite()),direction);
+                        for(var entity : pushedEntities){
+                            if(entity != comp.caster())
+                                entity.damage(ModDamageTypes.of(comp.world(),ModDamageTypes.SHIFT),4);
+                            var vel = entity.getVelocity().withAxis(direction.getAxis(),1*direction.getAxis().choose(direction.getOffsetY(),direction.getOffsetY(),direction.getOffsetZ()));
+                            entity.setVelocity(vel);
+                            if(entity instanceof ServerPlayerEntity spe){
+                                var buf = PacketByteBufs.create();
+                                buf.writeVector3f(vel.toVector3f());
+                                ServerPlayNetworking.send(spe, ModMessages.SET_VELOCITY,buf);
+                            }
+                        }
                         if(fromState.isIn(ModBlockTags.TRIGGERS_EARTH_BENDING_ADVANCEMENT))
                             SpellBlocks.tryUnlockSpellAdvancement(comp,"earth_bending");
                         trySpendSoul(comp,manaCost);

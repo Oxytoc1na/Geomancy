@@ -159,6 +159,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addSpell("greater","Greater","returns if a > b");
             addSpell("less","Less","returns if a < b");
             addSpell("rotate","Rotate","returns a vector rotated around an axis");
+            addSpell("count","Count","returns list size, text length, or amount of items inside a container");
+            addSpell("contains","Contains","interacts with lists, texts and containers.");
             // effectors
             addSpell("print","Print","outputs a value to the casters chat");
             addSpell("fireball","Fireball","summons a fireball");
@@ -669,6 +671,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addWithDescription("enchantment.MODID.soul_saver"  , "Soul Saver","decreases soul consumption");
             addWithDescription("enchantment.MODID.mesmerizing" , "Mesmerizing","increases soul capacity");
             addWithDescription("enchantment.MODID.focused"     , "Focused","decreases distance-based soul consumption");
+            addWithDescription("enchantment.MODID.parallelism" , "Parallelism","decreases delegate soul consumption");
         }
 
         // damage types
@@ -678,7 +681,8 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("death.attack.geomancy.plumbometer", "%1$s died of Hypochondria");
             add("death.attack.geomancy.restricted_action", "%1$s was caught trespassing");
             add("death.attack.geomancy.null_rubble", "%1$s's head was caved in by nothing");
-            add("death.attack.geomancy.launch", "%1$s got smashed by a block");
+            add("death.attack.geomancy.launch", "%1$s got hit by the reason snow fights are not allowed at schools");
+            add("death.attack.geomancy.shift", "%1$s got surprise car crashed");
         }
 
         // Misc

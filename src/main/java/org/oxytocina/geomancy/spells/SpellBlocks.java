@@ -36,6 +36,8 @@ import org.oxytocina.geomancy.items.armor.CastingArmorItem;
 import org.oxytocina.geomancy.items.tools.IVariableStoringItem;
 import org.oxytocina.geomancy.registries.ModDamageTypes;
 import org.oxytocina.geomancy.sound.ModSoundEvents;
+import org.oxytocina.geomancy.spells.arithmetic.ContainsSpell;
+import org.oxytocina.geomancy.spells.arithmetic.CountSpell;
 import org.oxytocina.geomancy.spells.effectors.*;
 import org.oxytocina.geomancy.util.*;
 
@@ -112,6 +114,8 @@ public class SpellBlocks {
     public static final SpellBlock TO_TEXT;
     public static final SpellBlock TRANSLATE;
     public static final SpellBlock ROTATE;
+    public static final SpellBlock CONTAINS;
+    public static final SpellBlock COUNT;
 
     // effectors
     public static final SpellBlock PRINT;
@@ -1202,6 +1206,9 @@ public class SpellBlocks {
                             return res;
                         })
                         .category(cat).build());
+
+                COUNT = register(CountSpell.get());
+                CONTAINS = register(ContainsSpell.get());
             }
 
             //misc
@@ -1508,157 +1515,8 @@ public class SpellBlocks {
                     })
                     .category(cat).build());
 
-            PLACE = register(SpellBlock.Builder.create("place")
-                    .inputs(
-                            SpellSignal.createVector().named("position"),
-                            SpellSignal.createNumber().named("slot")
-                    )
-                    .func((comp,vars) -> {
-                        var pos = vars.getVector("position");
-                        var slot = vars.getNumber("slot");
-                        int slotInt = Math.round(slot);
-                        Inventory inv = comp.context.getInventory();
-                        if(inv==null) return SpellBlockResult.empty();
-                        if(slotInt <0||slotInt>=inv.size()) { tryLogDebugSlotOOB(comp,slotInt); return SpellBlockResult.empty();} // slot OOB
-                        ItemStack stack = inv.getStack(slotInt);
-                        if(!(stack.getItem() instanceof BlockItem bi)) { tryLogDebugNotPlaceable(comp,stack); return SpellBlockResult.empty(); } // not a block
-                        if(stack.isEmpty()) return SpellBlockResult.empty();
-                        var blockPos = Toolbox.posToBlockPos(pos);
-                        var restrictions = RestrictorBlockEntity.getRestrictionsAt(pos,comp.world());
-                        if(!restrictions.allowsBlockManipulation() && !comp.context.isFromPrecomiled()){
-                            // not allowed to place here! punish!
-                            punishDisallowedAction(comp.context);
-                            return SpellBlockResult.empty();
-                        }
-
-                        float manaCost = 1
-                                +normalCastOffsetSoulCost(comp,pos);
-
-                        if(canAfford(comp,manaCost)){
-
-                            BlockState targetState = comp.world().getBlockState(blockPos);
-                            if(!targetState.isReplaceable())
-                            {
-                                // couldnt replace
-                                tryLogDebugNotReplaceable(comp,targetState);
-                                return SpellBlockResult.empty();
-                            }
-
-                            // place block in world
-                            comp.world().setBlockState(Toolbox.posToBlockPos(pos), bi.getBlock().getDefaultState());
-
-                            // remove block from inventory
-                            if(!(comp.context.sourceType== SpellContext.SourceType.Caster && ((PlayerEntity)comp.caster()).isCreative()))
-                                stack.decrement(1);
-
-                            Toolbox.playSound(bi.getBlock().getSoundGroup(targetState).getPlaceSound(),comp.world(),blockPos, SoundCategory.BLOCKS,1,1);
-                            if(comp.caster()!=null && EntityUtil.distanceTo(comp.caster(),pos) >7)
-                                tryUnlockSpellAdvancement(comp,"long_arms");
-                            trySpendSoul(comp,manaCost);
-                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
-                        }
-                        else{
-                            // too broke
-                            tryLogDebugBroke(comp,manaCost);
-                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,pos));
-                        }
-
-                        return SpellBlockResult.empty();
-                    })
-                    .category(cat).build());
-
-            BREAK = register(SpellBlock.Builder.create("break")
-                    .inputs(
-                            SpellSignal.createVector().named("position"),
-                            SpellSignal.createBoolean(true).named("silk touch"),
-                            SpellSignal.createBoolean(true).named("autocollect")
-                    )
-                    .func((comp,vars) -> {
-                        var pos = vars.getVector("position");
-                        var silkTouch = vars.getBoolean("silk touch");
-                        var autocollect = vars.getBoolean("autocollect");
-                        var blockPos = Toolbox.posToBlockPos(pos);
-                        var restrictions = RestrictorBlockEntity.getRestrictionsAt(pos,comp.world());
-                        if(!restrictions.allowsBlockManipulation() && !comp.context.isFromPrecomiled()){
-                            // not allowed to place here! punish!
-                            punishDisallowedAction(comp.context);
-                            return SpellBlockResult.empty();
-                        }
-
-                        // calculate breaking cost
-                        BlockState targetState = comp.world().getBlockState(blockPos);
-
-                        float manaCost = 0.2f
-                                +targetState.getBlock().getHardness()/5f* (silkTouch?2:1)
-                                +(autocollect?0.2f:0f)
-                                +normalCastOffsetSoulCost(comp,pos);
-
-                        if(canAfford(comp,manaCost)){
-
-                            ItemStack stack = new ItemStack(Items.DIRT);
-                            if(targetState.isToolRequired()){
-                                if(targetState.isIn(BlockTags.PICKAXE_MINEABLE)) stack = new ItemStack(Items.NETHERITE_PICKAXE);
-                                else if(targetState.isIn(BlockTags.AXE_MINEABLE)) stack = new ItemStack(Items.NETHERITE_AXE);
-                                else if(targetState.isIn(BlockTags.SHOVEL_MINEABLE)) stack = new ItemStack(Items.NETHERITE_SHOVEL);
-                                else if(targetState.isIn(BlockTags.HOE_MINEABLE)) stack = new ItemStack(Items.NETHERITE_HOE);
-                                else if(targetState.isIn(BlockTags.SWORD_EFFICIENT)) stack = new ItemStack(Items.NETHERITE_SWORD);
-                            }
-
-                            if(silkTouch)
-                                stack.addEnchantment(Enchantments.SILK_TOUCH,1);
-
-                            final ItemStack s2 = stack.copy();
-
-                            Predicate<BlockState> minableBlocksPredicate = s -> s.getBlock().getHardness()>=0&&(!s.isToolRequired() || s2.isSuitableFor(s));
-
-                            if (!minableBlocksPredicate.test(targetState)) {
-                                // couldnt mine
-                                tryLogDebugNotBreakable(comp,targetState);
-                                return SpellBlockResult.empty();
-                            }
-
-                            PlayerEntity pe = switch(comp.context.sourceType){
-                                case Caster -> (PlayerEntity) comp.caster();
-                                case Delegate -> (PlayerEntity) comp.caster();
-                                default->null;
-                            };
-
-                            boolean broke = BlockHelper.breakBlock(pe,stack,comp.world(),blockPos,minableBlocksPredicate,!autocollect);
-
-                            if(!broke){
-                                // couldnt mine... again?
-                                tryLogDebugNotBreakable(comp,targetState);
-                                return SpellBlockResult.empty();
-                            }
-
-                            if(autocollect){
-                                // give the caster the drops
-                                var stacks = Block.getDroppedStacks(targetState,(ServerWorld)comp.world(),blockPos,comp.world().getBlockEntity(blockPos),comp.caster(),stack);
-                                var casterPos = comp.context.getOriginPos();
-                                var inv = comp.context.getInventory();
-                                for(var s : stacks){
-                                    s = InventoryUtil.tryInsert(inv,s);
-                                    if(s.isEmpty()) continue;
-
-                                    ItemEntity ie = new ItemEntity(comp.world(),casterPos.x,casterPos.y,casterPos.z,s);
-                                    comp.world().spawnEntity(ie);
-                                }
-                            }
-
-                            if(comp.caster()!=null && EntityUtil.distanceTo(comp.caster(),pos) >7)
-                                tryUnlockSpellAdvancement(comp,"long_arms");
-                            trySpendSoul(comp,manaCost);
-                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
-                        }
-                        else{
-                            // too broke
-                            tryLogDebugBroke(comp,manaCost);
-                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,pos));
-                        }
-
-                        return SpellBlockResult.empty();
-                    })
-                    .category(cat).build());
+            PLACE = register(PlaceSpell.get());
+            BREAK = register(BreakSpell.get());
 
             SET_SPELL = register(SpellBlock.Builder.create("set_spell")
                     .inputs(
@@ -1844,49 +1702,7 @@ public class SpellBlocks {
                     })
                     .category(cat).build());
 
-            DELEGATE = register(SpellBlock.Builder.create("delegate")
-                    .inputs(
-                            SpellSignal.createVector().named("position"),
-                            SpellSignal.createVector().named("direction"),
-                            SpellSignal.createText().named("spell"),
-                            SpellSignal.createNumber().named("delay")
-                    )
-                    .outputs(SpellSignal.createUUID().named("delegate"))
-                    .func((comp,vars) -> {
-                        var spellName = vars.getText("spell");
-                        if(comp.context.getSpellSelector()==null) return SpellBlockResult.empty();
-                        var spell =comp.context.getSpellSelector().getSpell(comp.context.casterItem,spellName);
-                        if(spell==null) return SpellBlockResult.empty();
-                        var pos = vars.getVector("position");
-                        var dir = vars.getVector("direction");
-                        int delay = Math.round(20*vars.getNumber("delay"));
-
-                        // calculate cost
-                        float manaCost = 3f
-                                +normalCastOffsetSoulCost(comp,pos);
-
-                        if(canAfford(comp,manaCost)){
-                            // spawn delegate
-                            var d = dir.horizontalLength();
-                            Vec2f rot = new Vec2f(
-                                    (float)(MathHelper.atan2(dir.x, dir.z) * (double)(180F / (float)Math.PI)),
-                                    (float)(MathHelper.atan2(dir.y, d) * (double)(180F / (float)Math.PI))
-                            );
-
-                            spell.spawnDelegate(comp.context,pos,rot,delay);
-
-                            trySpendSoul(comp,manaCost);
-                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastSuccess(comp,pos));
-                        }
-                        else{
-                            // too broke
-                            tryLogDebugBroke(comp,manaCost);
-                            spawnCastParticles(comp,ParticleUtil.ParticleData.createGenericCastBroke(comp,pos));
-                        }
-
-                        return SpellBlockResult.empty();
-                    })
-                    .category(cat).build());
+            DELEGATE = register(DelegateSpell.get());
 
             SET_TIME = register(SpellBlock.Builder.create("set_time")
                     .inputs(
@@ -2499,6 +2315,8 @@ public class SpellBlocks {
                     .category(cat)
                     .build());
 
+            // UNUSED CONTENT
+            // functionally replaced by the count component
             SIZE = register(SpellBlock.Builder.create("size")
                     .inputs(SpellSignal.createList().named("list"))
                     .outputs(SpellSignal.createNumber().named("size"))
@@ -2510,6 +2328,7 @@ public class SpellBlocks {
                         return res;
                     })
                     .category(cat)
+                    .defaultLootWeight(0)
                     .build());
 
             GET_ELEMENT = register(SpellBlock.Builder.create("get_element")
@@ -2761,17 +2580,17 @@ public class SpellBlocks {
                 comp.getRuntimeName(),spellname));
     }
 
-    private static void tryLogDebugSlotOOB(SpellComponent comp,int slot){
+    public static void tryLogDebugSlotOOB(SpellComponent comp, int slot){
         tryLogDebug(comp,Text.translatable("geomancy.spells.debug.slotoob",
                 comp.getRuntimeName(),slot));
     }
 
-    private static void tryLogDebugNotPlaceable(SpellComponent comp, ItemStack stack){
+    public static void tryLogDebugNotPlaceable(SpellComponent comp, ItemStack stack){
         tryLogDebug(comp,Text.translatable("geomancy.spells.debug.notplaceable",
                 comp.getRuntimeName(),stack.getName()));
     }
 
-    private static void tryLogDebugNotReplaceable(SpellComponent comp, BlockState state){
+    public static void tryLogDebugNotReplaceable(SpellComponent comp, BlockState state){
         tryLogDebug(comp,Text.translatable("geomancy.spells.debug.notreplaceable",
                 comp.getRuntimeName(),state.getBlock().getName()));
     }

@@ -3,10 +3,12 @@ package org.oxytocina.geomancy.mixin;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnchantmentLevelEntry;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import org.oxytocina.geomancy.enchantments.ModEnchantment;
+import org.oxytocina.geomancy.registries.ModItemTags;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -21,7 +23,23 @@ public abstract class EnchantmentHelperMixin {
         var list = cir.getReturnValue();
         boolean isBook = stack.isOf(Items.BOOK);
         for (Enchantment enchantment : Registries.ENCHANTMENT) {
-            if (enchantment instanceof ModEnchantment modEnchantment && (!modEnchantment.isTreasure()||treasureAllowed) && modEnchantment.isAvailableForRandomSelection() && (modEnchantment.isAcceptableItem(stack)||isBook)) {
+            if (enchantment instanceof ModEnchantment modEnchantment
+                    && (!modEnchantment.isTreasure()||treasureAllowed)
+                    && modEnchantment.isAvailableForRandomSelection()
+                    && (modEnchantment.isAcceptableItem(stack)||isBook)) {
+                for (int i = enchantment.getMaxLevel(); i > enchantment.getMinLevel() - 1; i--) {
+                    if (power >= enchantment.getMinPower(i) && power <= enchantment.getMaxPower(i)) {
+                        list.add(new EnchantmentLevelEntry(enchantment, i));
+                        break;
+                    }
+                }
+            }
+        }
+
+        boolean isCaster = stack.isIn(ModItemTags.CASTING_ITEM);
+        if(isCaster){
+            final List<Enchantment> casterCompatibleEnchantments = List.of(Enchantments.FORTUNE);
+            for (Enchantment enchantment : casterCompatibleEnchantments) {
                 for (int i = enchantment.getMaxLevel(); i > enchantment.getMinLevel() - 1; i--) {
                     if (power >= enchantment.getMinPower(i) && power <= enchantment.getMaxPower(i)) {
                         list.add(new EnchantmentLevelEntry(enchantment, i));
