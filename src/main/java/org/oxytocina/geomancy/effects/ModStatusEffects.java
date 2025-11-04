@@ -32,7 +32,7 @@ public class ModStatusEffects {
     public static final StatusEffect PARANOIA = register("paranoia", new ParanoiaStatusEffect(StatusEffectCategory.HARMFUL, 0x2324f8));
 
     /// makes you unable to place or break blocks
-    public static final StatusEffect CREATIVE_BLOCK = register("creative_block", new CreativeBlockStatusEffect(StatusEffectCategory.HARMFUL, 0x2324f8));
+    public static final StatusEffect CREATIVE_SHOCK = register("creative_shock", new CreativeShockStatusEffect(StatusEffectCategory.HARMFUL, 0x2324f8));
 
 
     private static StatusEffect register(String id, StatusEffect entry) {

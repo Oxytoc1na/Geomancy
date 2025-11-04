@@ -15,6 +15,7 @@
     "LivingEntityMixin",
     "ModEntityDataSaverMixin",
     "PlayerAdvancementTrackerMixin",
+    "PlayerEntityMixin",
     "PlayerInventoryMixin",
     "ServerPlayNetworkHandlerMixin",
     "TrunkPlacerTypeInvoker",

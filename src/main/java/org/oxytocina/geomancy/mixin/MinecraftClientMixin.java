@@ -2,15 +2,17 @@ package org.oxytocina.geomancy.mixin;
 
 import net.minecraft.client.MinecraftClient;
 import org.oxytocina.geomancy.client.event.KeyInputHandler;
+import org.oxytocina.geomancy.effects.ModStatusEffects;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MinecraftClient.class)
 public abstract class MinecraftClientMixin {
 
-    @Inject(method="Lnet/minecraft/client/MinecraftClient;handleInputEvents()V", at = @At(value="HEAD"))
+    @Inject(method= "handleInputEvents()V", at = @At(value="HEAD"))
     private void geomancy$catchHotkeyPress(CallbackInfo ci){
         boolean bl = KeyInputHandler.KEY_ACTIVATE_SPELLS.isPressed();
         if(!bl) return;
@@ -24,6 +26,15 @@ public abstract class MinecraftClientMixin {
                 }
             }
         }
+    }
+
+    @ModifyArg(method = "Lnet/minecraft/client/MinecraftClient;handleInputEvents()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;handleBlockBreaking(Z)V"),index=0)
+    private boolean geomancy$handleBlockBreaking(boolean original) {
+        var p = MinecraftClient.getInstance().player;
+        if(p!=null&&p.hasStatusEffect(ModStatusEffects.CREATIVE_SHOCK)){
+            return false;
+        }
+        return original;
     }
 
 }
