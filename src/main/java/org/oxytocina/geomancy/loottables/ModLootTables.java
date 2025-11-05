@@ -68,6 +68,8 @@ public class ModLootTables {
 
     public static final LootTable DIGSITE_HALLWAY_CHEST;
 
+    public static final LootTable VAULT_PUZZLE_REWARD;
+
     // entities
     public static final LootTable ENTITY_STELLGE_ENGINEER;
     public static final LootTable ENTITY_STELLGE_CASTER;
@@ -626,6 +628,89 @@ public class ModLootTables {
         // DIGSITE_HALLWAY_CHEST
         {
             DIGSITE_HALLWAY_CHEST = register("chests/digsite_hallway", LootTable.builder()
+                    // lore
+                    .pool(LootPool.builder()
+                            .with(ItemEntry.builder(ModItems.LORE_LOG_EXODIA_1).weight(10)
+                                    .conditionally(RandomChanceLootCondition.builder(0.1f))
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                    )
+                    .pool(LootPool.builder()
+                            .rolls(UniformLootNumberProvider.create(-3,1))
+                            .with(ItemEntry.builder(ModItems.LORE_LOG_EXPEDITION_1).weight(10)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(ModItems.LORE_LOG_EXPEDITION_2).weight(10)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(ModItems.LORE_LOG_EXPEDITION_3).weight(10)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(ModItems.LORE_LOG_EXPEDITION_4).weight(10)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                            .with(ItemEntry.builder(ModItems.LORE_LOG_EXPEDITION_5).weight(10)
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                    )
+                    // octangulite
+                    .pool(LootPool.builder()
+                            .rolls(UniformLootNumberProvider.create(0.0F, 2.0F))
+                            .with(ItemEntry.builder(ModItems.RAW_OCTANGULITE).weight(20)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))))
+                            .with(ItemEntry.builder(ModItems.OCTANGULITE_INGOT).weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 2.0F))))
+                            .with(ItemEntry.builder(ModItems.OCTANGULITE_NUGGET).weight(10)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(5.0F, 16.0F)))))
+                    // blocks
+                    .pool(LootPool.builder()
+                            .rolls(UniformLootNumberProvider.create(1.0F, 2.0F))
+                            .with(ItemEntry.builder(ModBlocks.CUT_TITANIUM)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(3.0F, 8.0F))))
+                            .with(ItemEntry.builder(ModBlocks.CUT_LEAD)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(3.0F, 8.0F))))
+                    )
+                    // generic treasure
+                    .pool(LootPool.builder()
+                            .rolls(UniformLootNumberProvider.create(-1.0F, 2.0F))
+                            .with(ItemEntry.builder(Items.EMERALD).weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 2.0F))))
+                            .with(ItemEntry.builder(Items.DIAMOND).weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(0.0F, 2.0F))))
+                            .with(ItemEntry.builder(Items.GOLD_INGOT).weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
+                            .with(ItemEntry.builder(ModItems.TITANIUM_INGOT).weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
+                            .with(ItemEntry.builder(ModItems.LEAD_INGOT).weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
+                            .with(ItemEntry.builder(ModItems.MOLYBDENUM_INGOT).weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
+                            .with(ItemEntry.builder(ModItems.MITHRIL_INGOT).weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
+                            .with(ItemEntry.builder(ModItems.ORTHOCLASE).weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
+                            .with(ItemEntry.builder(ModItems.PERIDOT).weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
+                            .with(ItemEntry.builder(ModItems.TOURMALINE).weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
+                            .with(ItemEntry.builder(ModItems.AXINITE).weight(5)
+                                    .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F))))
+                    )
+                    // spell component
+                    .pool(spellComponentsBuilder()
+                            .rolls(UniformLootNumberProvider.create(2.0F, 4.0F))
+                    )
+                    .pool(LootPool.builder()
+                            .rolls(UniformLootNumberProvider.create(1, 2.0F))
+                            .conditionally(RandomChanceLootCondition.builder(0.1f))
+                            .with(ItemEntry.builder(ModItems.COMPONENT_BAG))
+                    )
+                    // component pouch
+                    .pool(LootPool.builder()
+                            .with(ItemEntry.builder(ModItems.COMPONENT_POUCH).weight(10)
+                                    .conditionally(RandomChanceLootCondition.builder(0.05f))
+                                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))))
+                    )
+            );
+        }
+
+        // VAULT_PUZZLE_REWARD
+        {
+            VAULT_PUZZLE_REWARD = register("chests/vault/puzzle_reward", LootTable.builder()
                     // lore
                     .pool(LootPool.builder()
                             .with(ItemEntry.builder(ModItems.LORE_LOG_EXODIA_1).weight(10)

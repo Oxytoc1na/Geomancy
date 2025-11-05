@@ -174,8 +174,13 @@ public class SpellContext {
     public boolean tryConsumeSoul(float amount){
         if(isChild()) return parentCall.tryConsumeSoul(amount);
 
+
         if(!canAfford(amount)) { setCouldntAffordSomething(); return false; }
         amount *= soulCostMultiplier;
+        if(amount<0){
+            Geomancy.logWarning("trying to cast something that costs <0 soul");
+            return true;
+        }
         soulConsumed += amount;
 
         switch (sourceType){
@@ -211,6 +216,10 @@ public class SpellContext {
     }
 
     public boolean canAfford(float amount){
+        if(amount<0){
+            Geomancy.logWarning("trying to cast something that costs <0 soul");
+            return true;
+        }
         if(isChild()) return parentCall.canAfford(amount);
 
         amount *= soulCostMultiplier;
@@ -383,7 +392,7 @@ public class SpellContext {
 
     public final int TIMEOUT_MS = 1000;
     public boolean timedOut(){
-        return getExecutionTimeMS() > TIMEOUT_MS;
+        return !Geomancy.CONFIG.debugMode.value() && getExecutionTimeMS() > TIMEOUT_MS;
     }
 
     public boolean isSilent() {
@@ -485,6 +494,10 @@ public class SpellContext {
     public void setCouldntAffordSomething(){
         if(isChild()) {parentCall.setCouldntAffordSomething(); return;}
         couldntAffordSomething=true;
+    }
+
+    public boolean isCreative() {
+        return caster instanceof PlayerEntity pe && pe.isCreative();
     }
 
     public enum SourceType{

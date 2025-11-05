@@ -7,6 +7,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -474,6 +475,10 @@ public class SpellComponent {
         return function.isObfuscated();
     }
 
+    public boolean isCreative() {
+        return context.isCreative();
+    }
+
     public static class SideConfig{
         public byte dir;
         public String varName;
@@ -815,6 +820,11 @@ public class SpellComponent {
     public MutableText getRuntimeName(){
         return Text.translatable("geomancy.spellcomponent."+this.function.identifier.getPath()).formatted(Formatting.DARK_AQUA)
                 .append(Text.literal(" ["+context.grid.getRuntimeName(context).getString()+":"+position.x+","+position.y+"]").formatted(Formatting.DARK_GRAY));
+    }
+
+    @Override
+    public String toString() {
+        return getRuntimeName().getString();
     }
 
     public static Builder builder(SpellBlock func){return new Builder(func);}

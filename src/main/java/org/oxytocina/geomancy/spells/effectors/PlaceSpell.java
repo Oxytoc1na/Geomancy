@@ -35,7 +35,7 @@ public class PlaceSpell {
                     if(!(stack.getItem() instanceof BlockItem bi)) { tryLogDebugNotPlaceable(comp,stack); return SpellBlockResult.empty(); } // not a block
                     if(stack.isEmpty()) return SpellBlockResult.empty();
                     var blockPos = Toolbox.posToBlockPos(pos);
-                    var restrictions = RestrictorBlockEntity.getRestrictionsAt(pos,comp.world());
+                    var restrictions = comp.isCreative()? SpellContext.Restrictions.NONE :RestrictorBlockEntity.getRestrictionsAt(pos,comp.world());
                     if(!restrictions.allowsBlockManipulation() && !comp.context.isFromPrecomiled()){
                         // not allowed to place here! punish!
                         punishDisallowedAction(comp.context);

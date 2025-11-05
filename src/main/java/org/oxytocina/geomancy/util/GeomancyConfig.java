@@ -26,6 +26,10 @@ public class GeomancyConfig extends ReflectiveConfig {
     @SerializedName("epilepsy_mode")
     public final TrackedValue<Boolean> epilepsyMode = this.value(false);
 
+    @Comment("if set to true, removes spell execution time limit")
+    @SerializedName("debug_mode")
+    public final TrackedValue<Boolean> debugMode = this.value(false);
+
     @Comment("changes how quickly the spellmaker ui moves")
     @Comment("valid range: 0.1-1")
     @SerializedName("spellmaker_ui_speed")

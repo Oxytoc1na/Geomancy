@@ -9,11 +9,16 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.oxytocina.geomancy.blocks.MultiblockCrafter;
 import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlockEntity;
+import org.oxytocina.geomancy.inventories.ImplementedInventory;
 
 public class InventoryUtil {
     public static ItemStack tryInsert(Inventory inv, ItemStack stack){return tryInsert(inv,stack,-1);}
     public static ItemStack tryInsert(Inventory inv, ItemStack stack, int slotOverride){
         if(slotOverride>=0) return tryInsertSlot(inv,stack,slotOverride);
+
+        if(inv instanceof PlayerInventory playerInv){
+            return tryInsertPlayer(playerInv,stack,slotOverride);
+        }
 
         // try to stack onto existing stacks
         for (int i = 0; i < inv.size(); i++) {
@@ -36,6 +41,7 @@ public class InventoryUtil {
 
         // try to stack onto free slots
         for (int i = 0; i < inv.size(); i++) {
+            if(!inv.isValid(i,stack)) continue;
             var baseStack = inv.getStack(i);
             if(!baseStack.isEmpty()) continue;
             inv.setStack(i,stack.copy());
@@ -46,6 +52,42 @@ public class InventoryUtil {
         // leftovers
         return stack;
     }
+    public static ItemStack tryInsertPlayer(PlayerInventory inv, ItemStack stack, int slotOverride){
+        if(slotOverride>=0) return tryInsertSlot(inv,stack,slotOverride);
+
+        // try to stack onto existing stacks
+        for (int i = 0; i < inv.main.size(); i++) {
+            if(stack.isEmpty()) return stack;
+
+            var baseStack = inv.getStack(i);
+            if(!baseStack.isStackable()) continue;
+            if(!ItemStack.canCombine(baseStack, stack)) continue;
+
+            int combinedCount = baseStack.getCount() + stack.getCount();
+            if (combinedCount <= stack.getMaxCount()) {
+                baseStack.setCount(combinedCount);
+                stack.setCount(0);
+                return stack;
+            } else if (baseStack.getCount() < stack.getMaxCount()) {
+                stack.decrement(stack.getMaxCount() - baseStack.getCount());
+                baseStack.setCount(stack.getMaxCount());
+            }
+        }
+
+        // try to stack onto free slots
+        for (int i = 0; i < inv.main.size(); i++) {
+            if(!inv.isValid(i,stack)) continue;
+            var baseStack = inv.getStack(i);
+            if(!baseStack.isEmpty()) continue;
+            inv.setStack(i,stack.copy());
+            stack.setCount(0);
+            return stack;
+        }
+
+        // leftovers
+        return stack;
+    }
+
 
     public static boolean canInsertFully(Inventory inv, ItemStack stack){return canInsertFully(inv,stack,-1);}
     public static boolean canInsertFully(Inventory inv, ItemStack stack, int slotOverride) {

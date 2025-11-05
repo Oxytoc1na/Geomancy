@@ -52,6 +52,15 @@ public class ModBiomeTagProvider extends FabricTagProvider<Biome> {
                 )
                 .setReplace(true);
 
+        getOrCreateTagBuilder(HAS_VAULT)
+                .add(
+                        ModBiomes.SOUL_SWAMP,
+                        BiomeKeys.SWAMP,
+                        BiomeKeys.MANGROVE_SWAMP
+                )
+                .forceAddTag(BiomeTags.IS_FOREST)
+                .setReplace(true);
+
         getOrCreateTagBuilder(HAS_PERIDOT_ORE)
                 .forceAddTag(BiomeTags.IS_FOREST)
                 .setReplace(true);
