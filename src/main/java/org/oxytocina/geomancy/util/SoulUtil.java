@@ -372,10 +372,10 @@ public class SoulUtil {
 
         float left = amount;
         for (int i = 0; i < keys.size(); i++) {
-            if(left<=0) break;
+            if(left<=0.00001) break;
             var prioStorers = storerPriorityMap.get(keys.get(i));
             boolean changed=true;
-            while(left>0){
+            while(left>0.00001){
                 if(!changed) break;
                 changed=false;
                 int stacksWithMana = 0;
@@ -416,10 +416,10 @@ public class SoulUtil {
 
         float left = amount;
         for (int i = 0; i < keys.size(); i++) {
-            if(left<=0) break;
+            if(left<=0.0001) break;
             var prioStorers = storerPriorityMap.get(keys.get(i));
             boolean changed=true;
-            while(left>0){
+            while(left>0.0001){
                 if(!changed) break;
                 changed=false;
                 int stacksWithMana = 0;
