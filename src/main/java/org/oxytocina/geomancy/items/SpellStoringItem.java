@@ -25,11 +25,18 @@ public class SpellStoringItem extends Item {
 
     public final int width;
     public final int height;
+    protected final float soulCostMultiplier;
 
-    public SpellStoringItem(Settings settings, int width, int height) {
+    public SpellStoringItem(Settings settings, int width, int height, float soulCostMultiplier) {
         super(settings);
         this.width=width;
         this.height=height;
+        this.soulCostMultiplier = soulCostMultiplier;
+    }
+
+
+    public SpellStoringItem(Settings settings, int width, int height) {
+        this(settings,width,height,1);
     }
 
     public static SpellGrid getOrCreateGrid(ItemStack stack){
@@ -73,7 +80,7 @@ public class SpellStoringItem extends Item {
     }
 
     public float getSoulCostMultiplier(ItemStack stack) {
-        return Math.max(0,1 * (
+        return Math.max(0,soulCostMultiplier * (
                 // save 15% per level of soul saver
                 // for 25% cost at level 5
                 1f-0.15f*getSoulSaverLevel(stack)

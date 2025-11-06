@@ -9,6 +9,33 @@
         "projection": "rigid",
         "processors": "geomancy:vault_degrade"
       }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "geomancy:vault/puzzles/tiles/diamond",
+        "projection": "rigid",
+        "processors": "geomancy:vault_degrade"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "geomancy:vault/puzzles/tiles/book",
+        "projection": "rigid",
+        "processors": "geomancy:vault_degrade"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "geomancy:vault/puzzles/tiles/dot",
+        "projection": "rigid",
+        "processors": "geomancy:vault_degrade"
+      }
     }
   ]
 }

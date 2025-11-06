@@ -78,7 +78,8 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
                 .add(
                         ModItems.SPELLSTORAGE_SMALL,
                         ModItems.SPELLSTORAGE_MEDIUM,
-                        ModItems.SPELLSTORAGE_LARGE
+                        ModItems.SPELLSTORAGE_LARGE,
+                        ModItems.SPELLSTORAGE_CREATIVE
                 );
 
         // variable storing

@@ -443,6 +443,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             add("item.MODID.spellstorage_small",        "Minute Spellcradle");
             add("item.MODID.spellstorage_medium",       "Mundane Spellcradle");
             add("item.MODID.spellstorage_large",        "Spacious Spellcradle");
+            add("item.MODID.spellstorage_creative",     "Creative Spellcradle");
             add("item.MODID.varstorage_small",          "Minute Varpot");
             add("item.MODID.varstorage_medium",         "Mundane Varpot");
             add("item.MODID.varstorage_large",          "Spacious Varpot");
@@ -770,6 +771,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addAdvancement(":location/ancient_hall","Ancient","Discover the once prosperous remains of the ancients");
             addAdvancement(":location/octangula","Geometric","Discover the vessel of something else");
             addAdvancement(":location/digsite","Imposing","Discover the discarded remains of something else");
+            addAdvancement(":location/vault","Impenetrable","Discover a mysterious facility");
 
             addAdvancement(".octangulite.get_spellcomponent","Building Blocks","Discover the foundation of soulcasting");
         }

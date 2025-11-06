@@ -534,7 +534,8 @@ public class SpellGrid {
         }
 
         public static Item getStorerItemFor(int width){
-            if(width>5) return ModItems.SPELLSTORAGE_LARGE;
+            if(width>7) return ModItems.SPELLSTORAGE_CREATIVE;
+            else if(width>5) return ModItems.SPELLSTORAGE_LARGE;
             else if(width>3) return ModItems.SPELLSTORAGE_MEDIUM;
             return ModItems.SPELLSTORAGE_SMALL;
         }

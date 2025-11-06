@@ -255,6 +255,7 @@ public class ModItems {
     public static final SpellStoringItem SPELLSTORAGE_SMALL =       register("spellstorage_small",  new SpellStoringItem(new FabricItemSettings().maxCount(8),3,3),new ExtraItemSettings().group(ExtraItemSettings.Group.Spells));
     public static final SpellStoringItem SPELLSTORAGE_MEDIUM =      register("spellstorage_medium", new SpellStoringItem(new FabricItemSettings().maxCount(8),5,5),new ExtraItemSettings().group(ExtraItemSettings.Group.Spells));
     public static final SpellStoringItem SPELLSTORAGE_LARGE =       register("spellstorage_large",  new SpellStoringItem(new FabricItemSettings().maxCount(8),7,7),new ExtraItemSettings().group(ExtraItemSettings.Group.Spells));
+    public static final SpellStoringItem SPELLSTORAGE_CREATIVE =    register("spellstorage_creative",new SpellStoringItem(new FabricItemSettings().maxCount(8),11,11,0),new ExtraItemSettings().group(ExtraItemSettings.Group.Spells));
     public static final SpellComponentStoringItem SPELLCOMPONENT =  register("spellcomponent",      new SpellComponentStoringItem(new FabricItemSettings()),new ExtraItemSettings().modelType(ExtraItemSettings.ModelType.Custom).group(ExtraItemSettings.Group.Spells));
     public static final StorageItem COMPONENT_POUCH =               register("component_pouch",     new StorageItem(new FabricItemSettings().maxCount(1),9*6, ModItemTags.COMPONENT_STORING,true,s->SpellComponentStoringItem.readComponent(s)!=null),ExtraItemSettings.create().modelType(ExtraItemSettings.ModelType.Custom).group(ExtraItemSettings.Group.Spells));
 
