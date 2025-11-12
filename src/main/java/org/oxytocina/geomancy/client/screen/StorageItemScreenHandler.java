@@ -44,6 +44,7 @@ public class StorageItemScreenHandler extends ScreenHandler {
     public final ItemStack initialParent;
     public final int parentSlot;
     public final PlayerEntity player;
+    public final PlayerInventory playerInventory;
     public final TagKey<Item> storableKey;
 
     private boolean dirty = false;
@@ -72,6 +73,7 @@ public class StorageItemScreenHandler extends ScreenHandler {
 
         current = this;
         this.player = playerInventory.player;
+        this.playerInventory = playerInventory;
         playerInventory.onOpen(this.player);
         this.propertyDelegate = arrayPropertyDelegate;
         this.parent = parent;
@@ -184,10 +186,11 @@ public class StorageItemScreenHandler extends ScreenHandler {
 
     public void tick(){
 
-        // check if somehow, the caster item got removed or changed
+        // check if somehow, the storage item got removed or changed
         // in that case, panic and close the screen
         if(parent.getItem() != initialParent.getItem()
         || parent.getCount() != initialParent.getCount()
+                || parentSlot != playerInventory.getSlotWithStack(initialParent)
         )
         {
             screen.close();
