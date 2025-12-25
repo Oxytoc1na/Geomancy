@@ -730,6 +730,7 @@ public class ModEnglishLangProvider extends FabricLanguageProvider {
             addAdvancement(".main.get_molten_gold","Greedy","Discover Molten Gold");
             addAdvancement(".main.get_gilded_deepslate","Adorned","Discover Gilded Deepslate");
             addAdvancement(".main.get_spellmaker","Technomagical","Discover the Spellmaker");
+            addAdvancement(".main.get_soul_oak","Mesmerizing","Discover a different kind of wood");
 
             addAdvancement(".main.simple_duplicate_trinkets","Hubris","Try and fail to equip two artifacts of the same type at once");
             addAdvancement(".main.simple_tried_to_take_smithery_result","You've gotta hammer it!","Hit the Smithery with a Hammer to craft!");

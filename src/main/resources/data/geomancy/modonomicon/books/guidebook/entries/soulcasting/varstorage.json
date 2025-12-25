@@ -36,7 +36,7 @@
       "anchor": "",
       "condition": {
         "type": "modonomicon:advancement",
-        "advancement_id": "geomancy:milestones/milestone_soulforge"
+        "advancement_id": "geomancy:spells/simple_enlightenment_2"
       },
       "recipe_id_1": "geomancy:soulforge_varstorage_medium",
       "text": "book.geomancy.guidebook.soulcasting.varstorage.varstorage_medium.text",
@@ -48,7 +48,7 @@
       "anchor": "",
       "condition": {
         "type": "modonomicon:advancement",
-        "advancement_id": "geomancy:milestones/milestone_soulforge"
+        "advancement_id": "geomancy:spells/simple_enlightenment_4"
       },
       "recipe_id_1": "geomancy:soulforge_varstorage_large",
       "text": "book.geomancy.guidebook.soulcasting.varstorage.varstorage_large.text",

@@ -4,7 +4,7 @@
   "category": "geomancy:soulcasting",
   "condition": {
     "type": "modonomicon:advancement",
-    "advancement_id": "geomancy:lore/get_lorelog_exodia_4"
+    "advancement_id": "geomancy:spells/simple_enlightenment_4"
   },
   "description": "book.geomancy.guidebook.soulcasting.enlightenment_4.description",
   "hide_while_locked": true,
