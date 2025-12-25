@@ -2538,7 +2538,7 @@ public class SpellBlocks {
         }
 
         Box entityCheckBox = new Box(start,end).expand((double)1.0F, (double)1.0F, (double)1.0F);
-        return EntityUtil.raycast(comp.world(), start, end, entityCheckBox, (entityx) -> !entityx.isSpectator() && entityx.canHit() &&entityx!=comp.caster(), squaredEntityReach);
+        return EntityUtil.raycast(comp.world(), start, end, entityCheckBox, (entityx) -> !entityx.isSpectator() && (EntityUtil.raycastable(entityx)) &&entityx!=comp.caster(), squaredEntityReach);
     }
 
 

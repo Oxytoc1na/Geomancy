@@ -1,6 +1,7 @@
 package org.oxytocina.geomancy.util;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.mob.MobEntity;
@@ -125,7 +126,7 @@ public class EntityUtil {
         Entity resultEntity = null;
         Vec3d hitPos = null;
 
-        for(Entity contenderEntity : world.getEntitiesByClass(LivingEntity.class, box, predicate)) {
+        for(Entity contenderEntity : world.getEntitiesByClass(Entity.class, box, predicate)) {
             Box hitBox = contenderEntity.getBoundingBox().expand((double)contenderEntity.getTargetingMargin());
             Optional<Vec3d> hitBoxHit = hitBox.raycast(min, max);
             if (hitBox.contains(min)) {
@@ -174,5 +175,9 @@ public class EntityUtil {
     public static void freezeEntity(LivingEntity target, float damage, int duration) {
         if(damage>0)target.damage(ModDamageTypes.of(target.getWorld(), DamageTypes.FREEZE),4);
         target.setFrozenTicks(target.getFrozenTicks() + duration);
+    }
+
+    public static boolean raycastable(Entity ent) {
+        return ent.canHit() || ent instanceof ItemEntity;
     }
 }

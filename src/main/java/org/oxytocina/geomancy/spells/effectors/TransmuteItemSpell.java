@@ -23,6 +23,18 @@ import static org.oxytocina.geomancy.spells.SpellBlocks.*;
 public class TransmuteItemSpell {
     private static final List<TransmuteData> transmuteData = new ArrayList<>();
 
+    static{
+        transmuteData.add(new TransmuteData(1,(ent)->{
+            return ent.getStack().isDamaged();
+        })
+        .func(ent->{
+            ent.getStack().setDamage(0);
+        })
+        .costFunc((ent)->{
+            return ent.getStack().getDamage()*0.3f;
+        }));
+    }
+
     public static SpellBlock get(){
         return SpellBlock.Builder.create("transmute_item")
                 .inputs(SpellSignal.createUUID().named("item"))
@@ -39,6 +51,9 @@ public class TransmuteItemSpell {
                         float manaCost = 5f
                                 +normalCastOffsetSoulCost(comp,ent.getPos())
                                 +dat.cost*ient.getStack().getCount();
+                        if(dat.costFunc!=null){
+                            manaCost += dat.costFunc.apply(ient);
+                        }
                         if(canAfford(comp,manaCost)){
                             dat.run(ient);
                             trySpendSoul(comp,manaCost);
@@ -84,6 +99,7 @@ public class TransmuteItemSpell {
         public final float cost;
         public final Function<ItemEntity,Boolean> predicate;
         public Consumer<ItemEntity> func;
+        public Function<ItemEntity,Float> costFunc = null;
 
         public TransmuteData(float cost, Item item){
             this.cost=cost;
@@ -98,6 +114,10 @@ public class TransmuteItemSpell {
         }
 
         public TransmuteData func(Consumer<ItemEntity> func){this.func=func;return this;}
+        public TransmuteData costFunc(Function<ItemEntity,Float> costFunc){
+            this.costFunc=costFunc;
+            return this;
+        }
         public TransmuteData into(ItemConvertible item){this.func= s->s.setStack(new ItemStack(item,s.getStack().getCount()));return this;}
         public TransmuteData into(ItemStack item){
             this.func=s->{
