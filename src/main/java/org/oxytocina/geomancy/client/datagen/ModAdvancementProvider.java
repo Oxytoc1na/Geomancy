@@ -167,9 +167,14 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
     private Advancement AddGetItemAdvancement(ItemConvertible item,String name, ItemConvertible[] conditionItems, String category, AdvancementFrame frame, boolean announce, boolean hidden, Advancement parent)
     {
 
-        var res = Advancement.Builder.create()
-                .criterion("got_"+name, InventoryChangedCriterion.Conditions.items(conditionItems))
-                .parent(parent);
+        var res = Advancement.Builder.create().parent(parent);
+        var reqs = new ArrayList<String>();
+        for(var conditionItem : conditionItems){
+            res = res.criterion("got_"+Registries.ITEM.getId(conditionItem.asItem()).getPath(), InventoryChangedCriterion.Conditions.items(conditionItem));
+            reqs.add("got_"+Registries.ITEM.getId(conditionItem.asItem()).getPath());
+        }
+
+        res.requirements(new String[][] {reqs.toArray(new String[0])});
 
         if(item!=null) res = res.display(
             item, // The display icon
