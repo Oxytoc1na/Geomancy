@@ -522,7 +522,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
             // pedestal
             AddShapedSmitheryRecipe(new String[]{
-                            "ttt",
+                            "btb",
                             " m ",
                             "bbb"}
                     ,new SPatKey[]{
@@ -675,7 +675,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         NbtIngredient.ofItems(TITANIUM_INGOT),
                         NbtIngredient.ofItems(MITHRIL_INGOT),
                         NbtIngredient.ofItems(OCTANGULITE_INGOT)
-                ),APPRENTICE_GLOVE,1,500,0.2f,1f,"",conditionsFromItem(SOUL_FORGE),null);
+                ),APPRENTICE_GLOVE,1,300,0.2f,1f,"",conditionsFromItem(SOUL_FORGE),null);
 
                 // journey glove
                 AddSimpleSoulForgeRecipe(List.of(
@@ -745,7 +745,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         NbtIngredient.ofItems(SPELLCOMPONENT),
                         NbtIngredient.ofItems(RAW_OCTANGULITE_BLOCK),
                         NbtIngredient.ofItems(10,SOUL_OAK_LOG)
-                ), SpellBlocks.EXODIA_1.getItemStack(),1,500,1f,1f,"",
+                ), SpellBlocks.EXODIA_1.getItemStack(),1,300,1f,1f,"",
                         ModAdvancementCriterion.conditionsFromAdvancement(Geomancy.locate("lore/get_lorelog_exodia_1")),Geomancy.locate("lore/get_lorelog_exodia_1"),"exodia_1");
 
                 // 2 : calculation
