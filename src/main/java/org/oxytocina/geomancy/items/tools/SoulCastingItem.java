@@ -305,4 +305,9 @@ public class SoulCastingItem extends StorageItem implements ISoulStoringItem, IS
     public SoundEvent getCloseSound() {
         return SoundEvents.BLOCK_IRON_TRAPDOOR_CLOSE;
     }
+
+    @Override
+    public boolean allowNbtUpdateAnimation(PlayerEntity player, Hand hand, ItemStack oldStack, ItemStack newStack) {
+        return false;
+    }
 }

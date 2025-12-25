@@ -369,4 +369,9 @@ public class CastingArmorItem extends ArmorItem implements IMaddeningItem, IStor
     public SoundEvent getCloseSound() {
         return SoundEvents.ITEM_BUNDLE_REMOVE_ONE;
     }
+
+    @Override
+    public boolean allowNbtUpdateAnimation(PlayerEntity player, Hand hand, ItemStack oldStack, ItemStack newStack) {
+        return false;
+    }
 }

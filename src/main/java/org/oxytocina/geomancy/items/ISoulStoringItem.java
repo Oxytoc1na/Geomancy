@@ -13,23 +13,26 @@ import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.client.rendering.ModColorizationHandler;
 import org.oxytocina.geomancy.enchantments.ModEnchantments;
-import org.oxytocina.geomancy.entity.SoulStoringItemData;
 import org.oxytocina.geomancy.spells.SpellContext;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface ISoulStoringItem {
-    static void init(World world, ItemStack stack){
-        if(stack.getSubNbt("soul")!=null) return;
-        NbtCompound soul = new NbtCompound();
-        soul.putUuid("uuid", SoulStoringItemData.getNextUUID());
-        stack.setSubNbt("soul",soul);
+    static void init(ItemStack stack){
+        var soulNbt = getSoulNbt(stack);
+        if(soulNbt==null){
+            stack.setSubNbt("soul",new NbtCompound());
+            soulNbt = getSoulNbt(stack);
+        }
+        if(!(stack.getItem() instanceof ISoulStoringItem storer)) return;
+        if(!soulNbt.contains("soul")) soulNbt.putFloat("soul",storer.getInitialMana(stack));
+        if(!soulNbt.contains("cap")) soulNbt.putFloat("cap",storer.getBaseSoulCapacity(stack));
+        if(!soulNbt.contains("speed")) soulNbt.putFloat("speed",storer.getBaseRechargeSpeed(stack));
     }
 
-    static SoulStoringItemData getData(World world, ItemStack stack){
-        init(world,stack);
-        return SoulStoringItemData.from(world,stack,getUUID(stack));
+    static NbtCompound getSoulNbt(ItemStack stack){
+        return stack.getSubNbt("soul");
     }
 
     default float getInitialMana(ItemStack base){
@@ -54,51 +57,37 @@ public interface ISoulStoringItem {
     }
 
     default float getCapacity(World world, ItemStack stack){
-        init(world,stack);
-        return getData(world,stack).maxMana * getCapacityMultiplier(stack);
+        init(stack);
+        return getSoulNbt(stack).getFloat("cap") * getCapacityMultiplier(stack);
     }
     default float getRechargeSpeedMultiplier(World world, ItemStack stack, LivingEntity entity){
-        init(world,stack);
-        return getData(world,stack).speedMultiplier;
+        init(stack);
+        return getSoulNbt(stack).getFloat("speed");
     }
     default void setRechargeSpeedMultiplier(World world, ItemStack stack, float speed){
-        init(world,stack);
-        getData(world,stack).speedMultiplier = speed;
+        init(stack);
+        getSoulNbt(stack).putFloat("speed",speed);
     }
     default float getMana(World world, ItemStack stack){
-        init(world,stack);
+        init(stack);
 
-        float mana = getData(world,stack).mana;
+        float mana = getSoulNbt(stack).getFloat("soul");
         if(Float.isNaN(mana))
         {
             Geomancy.logError("item mana was NaN!");
             setMana(world,stack,0);
+            return 0;
         }
 
-        return getData(world,stack).mana;
+        return mana;
     }
     default void setCapacity(World world, ItemStack stack, float capacity){
-        init(world,stack);
-        getData(world,stack).maxMana = capacity;
+        init(stack);
+        getSoulNbt(stack).putFloat("cap",capacity);
     }
     default void setMana(World world, ItemStack stack, float mana){
-        init(world,stack);
-        getData(world,stack).mana = mana;
-    }
-    static void setUUID(ItemStack stack, UUID uuid){
-        NbtCompound soul = new NbtCompound();
-        soul.putUuid("uuid",uuid);
-        stack.setSubNbt("soul",soul);
-    }
-    static UUID getUUID(ItemStack stack){
-        //init(stack);
-        NbtCompound soul = stack.getOrCreateSubNbt("soul");
-        UUID uuid = soul.containsUuid("uuid")? soul.getUuid("uuid") : null;
-        if(uuid==null){
-            uuid = UUID.randomUUID();
-            setUUID(stack,uuid);
-        }
-        return uuid;
+        init(stack);
+        getSoulNbt(stack).putFloat("soul",mana);
     }
 
     @Environment(EnvType.CLIENT)
@@ -113,6 +102,7 @@ public interface ISoulStoringItem {
     }
 
     float getBaseSoulCapacity(ItemStack stack);
+    default float getBaseRechargeSpeed(ItemStack stack) {return 1;}
 
     @Environment(EnvType.CLIENT)
     default void addManaTooltip(World world, ItemStack stack, List<Text> tooltip){

@@ -25,7 +25,6 @@ import org.jetbrains.annotations.Nullable;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.blocks.blockEntities.AutocasterBlockEntity;
 import org.oxytocina.geomancy.effects.ModStatusEffects;
-import org.oxytocina.geomancy.entity.SoulStoringItemData;
 import org.oxytocina.geomancy.entity.PlayerData;
 import org.oxytocina.geomancy.items.ISoulStoringItem;
 import org.oxytocina.geomancy.items.jewelry.IJewelryItem;
@@ -137,30 +136,6 @@ public class SoulUtil {
         buf.writeFloat(getMaxSoul(player));
         buf.writeFloat(getSoul(player));
         ServerPlayNetworking.send(spe,ModMessages.MANA_SYNC,buf);
-    }
-
-    public static void syncItemSoul(World world, ItemStack stack){
-        if(!(world instanceof ServerWorld svw)) return;
-        if(!(stack.getItem() instanceof ISoulStoringItem)) return;
-        for(var p : svw.getPlayers())
-            syncItemSoul(world,stack,p);
-    }
-
-
-    public static void syncItemSoul(World world, ItemStack stack, ServerPlayerEntity with){
-        if(with==null) return;
-        if(!(world instanceof ServerWorld svw)) return;
-        if(!(stack.getItem() instanceof ISoulStoringItem)) return;
-
-        ISoulStoringItem.init(world,stack);
-        SoulStoringItemData data = SoulStoringItemData.from(world,stack, ISoulStoringItem.getUUID(stack));
-
-        PacketByteBuf buf = PacketByteBufs.create();
-        data.writeBuf(buf);
-
-        // TODO: dont send unneeded packets!!
-        ServerPlayNetworking.send(with,ModMessages.ITEM_MANA_SYNC,buf);
-
     }
 
     public static float getAmbientSoulsPerBlock(Entity entity){
@@ -292,7 +267,7 @@ public class SoulUtil {
     private static boolean tickSoulRegen(ItemStack stack, World world, float ambientMana, float regenSpeed, ServerPlayerEntity player){
         var changed = false;
         var item = (ISoulStoringItem) stack.getItem();
-        var data = ISoulStoringItem.getData(world,stack);
+        float mana = item.getMana(world,stack);
         float max = item.getCapacity(world,stack);
 
         // per tick
@@ -305,7 +280,7 @@ public class SoulUtil {
         // make regen less effective the fuller the item is
         // at 0%, 100% speed
         // at 100%, 50% speed
-        actualRegenSpeed *= 1-0.5f*(data.mana/Math.max(max,1));
+        actualRegenSpeed *= 1-0.5f*(mana/Math.max(max,1));
 
         // prevent passive loss of soul
         if(actualRegenSpeed <= 0){
@@ -313,20 +288,20 @@ public class SoulUtil {
         }
 
         // regen from ambiance
-        float newMana = Toolbox.clampF(data.mana + actualRegenSpeed,0,max);
-        if(newMana!=data.mana)
+        float newMana = Toolbox.clampF(mana + actualRegenSpeed,0,max);
+        if(newMana!=mana)
         {
             if(Float.isNaN(newMana))
             {
                 Geomancy.logError("setting new mana as NaN!");
                 newMana=0;
             }
-            data.mana = newMana;
+            mana = newMana;
             changed=true;
         }
 
         if(changed)
-            syncItemSoul(world,stack,player);
+            item.setMana(world,stack,mana);
         return changed;
     }
 
@@ -347,11 +322,6 @@ public class SoulUtil {
         if(getSoul(casterBlock.getWorld(),casterBlock) < amount) return false;
         var storers = getAllSoulStoringItems(casterBlock);
         removeSoul(storers,amount,casterBlock.getWorld(),ctx);
-
-        if(ctx.caster instanceof  ServerPlayerEntity spe)
-        for(var storer:storers)
-            syncItemSoul(casterBlock.getWorld(),storer,spe);
-
         return true;
     }
 
@@ -393,9 +363,6 @@ public class SoulUtil {
                 }
             }
         }
-
-        for(var s : stacksToSync)
-            syncItemSoul(world,s);
 
         return left;
     }
@@ -439,9 +406,6 @@ public class SoulUtil {
             }
         }
 
-        for(var s : stacksToSync)
-            syncItemSoul(world,s);
-
         return left;
     }
 
@@ -468,12 +432,6 @@ public class SoulUtil {
         if(!canStoreSoul(stack)) return false;
 
         return tickSoulRegen(stack,world,getAmbientSoulsPerBlock(world,pos),1,player);
-    }
-
-    public static void syncItemSoul(ServerPlayerEntity player) {
-        var items = getAllSoulStoringItems(player);
-        for (var stack : items)
-            syncItemSoul(player.getWorld(),stack,player);
     }
 
     public static void addSoulToPlayer(ServerPlayerEntity player, float amount){

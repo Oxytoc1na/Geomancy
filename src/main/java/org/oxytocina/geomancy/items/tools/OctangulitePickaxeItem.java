@@ -1,7 +1,9 @@
 package org.oxytocina.geomancy.items.tools;
 
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.text.Text;
+import net.minecraft.util.Hand;
 import org.oxytocina.geomancy.items.ICustomRarityItem;
 import org.oxytocina.geomancy.items.IMaddeningItem;
 import org.oxytocina.geomancy.items.ISoulStoringItem;
@@ -37,5 +39,10 @@ public class OctangulitePickaxeItem extends PickaxeItem implements IMaddeningIte
     @Override
     public ICustomRarityItem.Rarity getRarity() {
         return ICustomRarityItem.Rarity.Octangulite;
+    }
+
+    @Override
+    public boolean allowNbtUpdateAnimation(PlayerEntity player, Hand hand, ItemStack oldStack, ItemStack newStack) {
+        return false;
     }
 }

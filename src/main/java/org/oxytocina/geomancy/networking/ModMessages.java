@@ -95,9 +95,6 @@ public class ModMessages {
                     playerState.writeBuf(data);
                     ServerPlayNetworking.send(handler.getPlayer(), INITIAL_SYNC, data);
 
-                    // send item mana data to player
-                    SoulUtil.syncItemSoul(handler.getPlayer());
-
                     // sync various other things
                     StellgeUtil.syncKnowledge(handler.getPlayer());
                     ClientAdvancements.sync(handler.getPlayer());
@@ -114,7 +111,6 @@ public class ModMessages {
         ClientPlayNetworking.registerGlobalReceiver(LEAD_POISONING_SYNC, LeadPoisoningSyncS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(STELLGE_KNOWLEDGE_SYNC, StellgeKnowledgeSyncS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(MADNESS_SYNC, MadnessSyncS2CPacket::receive);
-        ClientPlayNetworking.registerGlobalReceiver(ITEM_MANA_SYNC, ItemManaSyncS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(INITIAL_SYNC, InitialSyncS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(SPELLMAKER_REFRESH, SpellmakerRefreshS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(PARTICLES, ParticlesS2CPacket::receive);

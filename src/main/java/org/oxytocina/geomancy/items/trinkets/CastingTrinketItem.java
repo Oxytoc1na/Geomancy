@@ -330,4 +330,9 @@ public class CastingTrinketItem extends TrinketItem implements IStorageItem, Ext
     public SoundEvent getCloseSound() {
         return SoundEvents.BLOCK_IRON_TRAPDOOR_CLOSE;
     }
+
+    @Override
+    public boolean allowNbtUpdateAnimation(PlayerEntity player, Hand hand, ItemStack oldStack, ItemStack newStack) {
+        return false;
+    }
 }

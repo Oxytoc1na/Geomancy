@@ -40,7 +40,7 @@ public class AutocasterBlockEntity extends LootableContainerBlockEntity implemen
         this.inventory = DefaultedList.ofSize(INVENTORY_SIZE, ItemStack.EMPTY);
         this.stateManager = new ViewerCountManager() {
             protected void onContainerOpen(World world, BlockPos pos, BlockState state) {
-                syncManaContainers();
+
             }
 
             protected void onContainerClose(World world, BlockPos pos, BlockState state) {
@@ -135,7 +135,7 @@ public class AutocasterBlockEntity extends LootableContainerBlockEntity implemen
     }
 
     public void tick(World world, BlockPos pos, BlockState state) {
-        if(SoulUtil.tickStorage(world,this,pos) && observed()) syncManaContainers();
+
     }
 
     @Override
@@ -204,13 +204,6 @@ public class AutocasterBlockEntity extends LootableContainerBlockEntity implemen
     @Override
     public void markDirty(BlockEntity entity) {
         markDirty();
-    }
-
-    public void syncManaContainers(){
-        for(var player : inspectingPlayers)
-            for (int i = 0; i < size(); i++) {
-                SoulUtil.syncItemSoul(getWorld(),getStack(i),(ServerPlayerEntity) player);
-            }
     }
 
     public ItemStack tryCollect(ItemStack s) {

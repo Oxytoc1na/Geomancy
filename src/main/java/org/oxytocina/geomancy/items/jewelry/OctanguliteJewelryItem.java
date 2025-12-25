@@ -126,6 +126,6 @@ public class OctanguliteJewelryItem extends JewelryItem implements ISoulStoringI
     @Override
     public void onCraft(ItemStack stack, World world, PlayerEntity player) {
         super.onCraft(stack, world, player);
-        ISoulStoringItem.init(world,stack);
+        ISoulStoringItem.init(stack);
     }
 }
