@@ -1,6 +1,5 @@
 package org.oxytocina.geomancy.blocks.blockEntities;
 
-import com.mojang.datafixers.util.Function4;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -18,7 +17,6 @@ import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import net.minecraft.util.Hand;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -34,6 +32,7 @@ import org.oxytocina.geomancy.items.SpellStoringItem;
 import org.oxytocina.geomancy.registries.ModItemTags;
 import org.oxytocina.geomancy.spells.SpellBlock;
 import org.oxytocina.geomancy.spells.SpellBlocks;
+import org.oxytocina.geomancy.util.AdvancementHelper;
 
 import java.util.*;
 
@@ -104,8 +103,25 @@ public class SpellmakerBlockEntity extends BlockEntity implements ExtendedScreen
         return Text.translatable("container."+Geomancy.MOD_ID+".spellmaker_block");
     }
 
+    public void grantInsertedComponentAdvancements(ServerPlayerEntity spe){
+        // check inserted grid, grant component obtainment advancements
+        if(getOutput()!=null
+                && !getOutput().isEmpty()
+                && getOutput().getItem() instanceof SpellStoringItem){
+            var grid = SpellStoringItem.readGrid(getOutput());
+            if(grid!=null){
+                for(var comp : grid.components.values()){
+                    AdvancementHelper.grantAdvancementCriterion(spe, Geomancy.locate("spellcomponents/get_"+comp.function.identifier.getPath()),"got_"+comp.function.identifier.getPath());
+                }
+            }
+        }
+    }
+
     @Nullable
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+        if(player instanceof ServerPlayerEntity spe)
+            grantInsertedComponentAdvancements(spe);
+
         return new SpellmakerScreenHandler(syncId, playerInventory, this, this.propertyDelegate);
     }
 
