@@ -57,7 +57,7 @@ public class ComponentBagItem extends Item {
             // spawn loot
             for(var lStack : loot){
                 // spawn component
-                Toolbox.spawnItemStackAsEntity(world,user.getPos(),lStack);
+                Toolbox.spawnItemStackAsEntity(world,user.getPos(),lStack).setPickupDelay(0);
             }
 
             Toolbox.playSound(SoundEvents.ITEM_BUNDLE_DROP_CONTENTS,world,user.getBlockPos(), SoundCategory.PLAYERS,0.5f,Toolbox.randomPitch());
