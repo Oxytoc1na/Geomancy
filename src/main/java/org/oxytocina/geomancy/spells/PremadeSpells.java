@@ -158,6 +158,7 @@ public class PremadeSpells {
         {
             P_RAY_POS = addSpell("rayP",SpellGrid.builder("rayP")
                     .dim(ModItems.SPELLSTORAGE_SMALL)
+                    .lib()
                     .add(SpellComponent.builder(SpellBlocks.RAYCAST_POS).pos(3,3,"")
                             .conf(SpellComponent.confBuilder("nw","from").mode(SpellComponent.SideConfig.Mode.Input))
                             .conf(SpellComponent.confBuilder("w","dir").mode(SpellComponent.SideConfig.Mode.Input))
@@ -179,6 +180,7 @@ public class PremadeSpells {
         {
             P_RAY_DIR = addSpell("rayD",SpellGrid.builder("rayD")
                     .dim(ModItems.SPELLSTORAGE_SMALL)
+                    .lib()
                     .add(SpellComponent.builder(SpellBlocks.RAYCAST_DIR).pos(3,3,"")
                             .conf(SpellComponent.confBuilder("nw","from").mode(SpellComponent.SideConfig.Mode.Input))
                             .conf(SpellComponent.confBuilder("w","dir").mode(SpellComponent.SideConfig.Mode.Input))
@@ -200,6 +202,7 @@ public class PremadeSpells {
         {
             P_RAY_ENTITY = addSpell("rayE",SpellGrid.builder("rayE")
                     .dim(ModItems.SPELLSTORAGE_SMALL)
+                    .lib()
                     .add(SpellComponent.builder(SpellBlocks.RAYCAST_ENTITY).pos(3,3,"")
                             .conf(SpellComponent.confBuilder("nw","from").mode(SpellComponent.SideConfig.Mode.Input))
                             .conf(SpellComponent.confBuilder("w","dir").mode(SpellComponent.SideConfig.Mode.Input))
@@ -221,6 +224,7 @@ public class PremadeSpells {
         {
             P_RAY_COMBINED = addSpell("rayC",SpellGrid.builder("rayC")
                     .dim(ModItems.SPELLSTORAGE_SMALL)
+                    .lib()
                     .add(SpellComponent.builder(SpellBlocks.SUM).pos(3,3,"")
                             .conf(SpellComponent.confBuilder("nw","a").mode(SpellComponent.SideConfig.Mode.Input))
                             .conf(SpellComponent.confBuilder("w","b").mode(SpellComponent.SideConfig.Mode.Input))

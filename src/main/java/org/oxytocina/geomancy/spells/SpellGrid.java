@@ -510,6 +510,7 @@ public class SpellGrid {
         public String name = "";
         public int width = 3;
         public int height = 3;
+        public boolean library = false;
         public HashMap<Vector2i,SpellComponent.Builder> components;
 
         public Builder(String name){
@@ -520,6 +521,7 @@ public class SpellGrid {
         public SpellGrid build(){
             SpellGrid res = new SpellGrid(width,height);
             res.name=name;
+            res.library = library;
             for(var b : components.values()){
                 res.tryAddComponent(b.build(res));
             }
@@ -543,6 +545,11 @@ public class SpellGrid {
         public Builder dim(SpellStoringItem storer){
             width=storer.getWidth();
             height=storer.getHeight();
+            return this;
+        }
+
+        public Builder lib(){
+            this.library = true;
             return this;
         }
 
