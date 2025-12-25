@@ -20,7 +20,7 @@ import org.oxytocina.geomancy.util.Toolbox;
 public class SimpleMaskTrinketRenderer implements TrinketRenderer {
     @Override
     public void render(ItemStack stack, SlotReference slotReference, EntityModel<? extends LivingEntity> contextModel, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, LivingEntity entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
-        if(entity instanceof ClientPlayerEntity player){
+        if(entity instanceof AbstractClientPlayerEntity player){
             var model = Toolbox.safeCast(contextModel,(PlayerEntityModel<AbstractClientPlayerEntity>) null);
             if(model==null) return;
             ItemRenderer itemRenderer = MinecraftClient.getInstance().getItemRenderer();
