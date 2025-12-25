@@ -19,7 +19,7 @@ public class ParticlesS2CPacket {
     public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler,
                                PacketByteBuf buf, PacketSender responseSender) {
         ParticleUtil.ParticleData data = ParticleUtil.ParticleData.from(buf);
-        data.run();
+        client.execute(data::run);
     }
 
     public static void send(World world, ParticleUtil.ParticleData data){
