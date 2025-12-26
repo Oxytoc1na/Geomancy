@@ -165,8 +165,8 @@ public interface IJewelryItem {
         return res;
     }
 
-    public static float getManaRegenMultiplier(ItemStack stack,LivingEntity wearer){
-        float res = 0;
+    static float getManaRegenMultiplier(ItemStack stack,LivingEntity wearer){
+        float res = 1;
 
         IJewelryItem jewelryItem = (IJewelryItem) stack.getItem();
         if(jewelryItem.isPendant()) return res;
