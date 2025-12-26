@@ -135,7 +135,7 @@ public class AutocasterBlockEntity extends LootableContainerBlockEntity implemen
     }
 
     public void tick(World world, BlockPos pos, BlockState state) {
-
+        SoulUtil.tickStorage(world,this,pos);
     }
 
     @Override
