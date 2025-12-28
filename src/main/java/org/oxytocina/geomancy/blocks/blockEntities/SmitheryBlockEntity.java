@@ -258,6 +258,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
     public void onHitWithHammer(@Nullable PlayerEntity player, ItemStack hammer,float skill){
         if(world==null) return;
         if(player==null && automatedHitCooldown>0) return;
+        if(currentRecipe==null) return;
 
         HammerItem hammerItem = ((HammerItem)hammer.getItem());
         lastHammerer=player;
@@ -302,6 +303,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
                     case 0:
                     {
                         int slotID = getMishapInputItemSlotIndex();
+                        if(slotID<=-1) break;
                         ItemStack stackToDrop = getStack(slotID);
                         setStack(slotID,ItemStack.EMPTY);
                         Vec3d spos = Vec3d.ofCenter(pos).add(0,0.6f,0);
@@ -315,6 +317,7 @@ public class SmitheryBlockEntity extends BlockEntity implements ExtendedScreenHa
                     case 1:
                     {
                         int slotID = getMishapInputItemSlotIndex();
+                        if(slotID<=-1) break;
                         setStack(slotID,ItemStack.EMPTY);
                         if(!world.isClient)
                         {

@@ -2,6 +2,7 @@ package org.oxytocina.geomancy.items;
 
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -17,6 +18,7 @@ import org.oxytocina.geomancy.util.AdvancementHelper;
 import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public interface IStorageItem {
     HashMap<ItemStack,DefaultedList<ItemStack>> inventories = new HashMap<>();
@@ -25,6 +27,29 @@ public interface IStorageItem {
     static void clear(){
         inventories.clear();
         actualInventories.clear();
+    }
+
+    static int getSlotWithStorageItem(PlayerInventory playerInventory, ItemStack stack) {
+        var nbt1 = stack.getNbt();
+        for(int i = 0; i < playerInventory.main.size(); ++i) {
+            var compStack = (ItemStack)playerInventory.main.get(i);
+            if(compStack.isEmpty()) continue;
+            if (!stack.isOf(compStack.getItem())) continue;
+            var nbt2 = compStack.getNbt();
+
+            // TODO: check only NBT compounds that dont change while inside the screen
+            return i;
+        }
+        return -1;
+    }
+
+    static int getInitialSlot(PlayerInventory playerInventory, ItemStack parent) {
+        for(int i = 0; i < 9; i++){
+            var compStack = playerInventory.main.get(i);
+            if(compStack == parent) return i;
+        }
+        Geomancy.logError("couldnt find initial storage item slot");
+        return -1;
     }
 
     DefaultedList<ItemStack> readInventoryFromNbt(ItemStack stack);

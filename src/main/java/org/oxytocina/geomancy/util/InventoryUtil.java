@@ -170,7 +170,7 @@ public class InventoryUtil {
         return left<=0;
     }
 
-    public static float getSlotWithStack(Inventory inv, ItemStack stack) {
+    public static int getSlotWithStack(Inventory inv, ItemStack stack) {
         if(inv instanceof PlayerInventory pi) return pi.getSlotWithStack(stack);
         if(inv instanceof AutocasterBlockEntity acbe) return acbe.getSlotWithStack(stack);
 

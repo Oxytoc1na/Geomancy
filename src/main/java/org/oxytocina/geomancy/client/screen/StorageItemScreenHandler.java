@@ -23,10 +23,12 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import org.oxytocina.geomancy.Geomancy;
 import org.oxytocina.geomancy.client.screen.slots.StorageItemContainedSlot;
+import org.oxytocina.geomancy.client.screen.slots.StorageItemHotbarSlot;
 import org.oxytocina.geomancy.inventories.ImplementedInventory;
 import org.oxytocina.geomancy.items.IStorageItem;
 import org.oxytocina.geomancy.networking.ModMessages;
 import org.oxytocina.geomancy.registries.ModItemTags;
+import org.oxytocina.geomancy.util.InventoryUtil;
 import org.oxytocina.geomancy.util.Toolbox;
 
 import java.util.ArrayList;
@@ -78,7 +80,7 @@ public class StorageItemScreenHandler extends ScreenHandler {
         this.propertyDelegate = arrayPropertyDelegate;
         this.parent = parent;
         this.initialParent=parent.copy();
-        this.parentSlot = playerInventory.getSlotWithStack(parent);
+        this.parentSlot = IStorageItem.getInitialSlot(playerInventory,parent);
         this.storableKey=storableKey;
         containedItems = ((IStorageItem)parent.getItem()).getInventory(parent);
         rows = Math.round((float)Math.ceil(containedItems.size()/(float)STORAGE_DISPLAY_SLOTS_WIDTH));
@@ -169,7 +171,7 @@ public class StorageItemScreenHandler extends ScreenHandler {
 
     private void addPlayerHotbar(PlayerInventory playerInventory) {
         for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(playerInventory, i, INVENTORY_DISPLAY_X + i * 18, getInventoryOffsetY()+18*3+4));
+            this.addSlot(new StorageItemHotbarSlot(playerInventory, i, INVENTORY_DISPLAY_X + i * 18, getInventoryOffsetY()+18*3+4,i!=parentSlot));
         }
     }
 
@@ -190,7 +192,6 @@ public class StorageItemScreenHandler extends ScreenHandler {
         // in that case, panic and close the screen
         if(parent.getItem() != initialParent.getItem()
         || parent.getCount() != initialParent.getCount()
-                || parentSlot != playerInventory.getSlotWithStack(initialParent)
         )
         {
             screen.close();
